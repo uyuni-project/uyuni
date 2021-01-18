@@ -38,11 +38,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
     And I select "SUSE Linux Enterprise Server 11 SP3 i586" as a product
     Then I should see the "SUSE Linux Enterprise Server 11 SP3 i586" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP3 i586"
-    And I select "SUSE Linux Enterprise Server LTSS 11 SP3 i586" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 11 SP3 i586" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 11 SP3 i586" product has been added
+    And I add "sles11-sp3-ltss-updates-i586" channel
 
   Scenario: SUSE Linux Enterprise Server 11 SP4
     Given I am on the Products page
@@ -52,10 +50,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP4 x86_64"
     And I select "SUSE Linux Enterprise Software Development Kit 11 SP4" as a product
     Then I should see the "SUSE Linux Enterprise Software Development Kit 11 SP4" selected
-    And I select "SUSE Linux Enterprise Server LTSS 11 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 11 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 11 SP4 x86_64" product has been added
+    And I add "sles11-sp4-ltss-updates-x86_64" channel
 
   Scenario: SUSE Linux Enterprise Server 15
     Given I am on the Products page
