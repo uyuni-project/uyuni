@@ -25,12 +25,13 @@ import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
-import com.suse.manager.webui.utils.LoginHelper;
-import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
+import com.suse.manager.webui.utils.LoginHelper;
+import com.suse.utils.Json;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -71,7 +73,10 @@ public class LoginController {
      * @return the model and view
      */
     public static ModelAndView loginView(Request request, Response response) {
+        Map<String, Object> model = new HashMap<>();
+
         if (ConfigDefaults.get().isSingleSignOnEnabled() && SSOConfig.getSSOSettings().isPresent()) {
+            /* Single Sign-On is enabled */
             try {
                 Auth auth = new Auth(SSOConfig.getSSOSettings().get(), request.raw(), response.raw());
                 auth.login(LoginHelper.DEFAULT_URL_BOUNCE);
@@ -79,12 +84,13 @@ public class LoginController {
             catch (SettingsException | IOException e) {
                 log.error(e.getMessage());
             }
-            return new ModelAndView(new HashMap<>(), "controllers/login/templates/login.jade");
-            // the return above is dummy, we already sent a redirect to the IdP login page via `auth.login`
+            /*
+                The return at the end of the method is dummy: the login page will not be displayed as we will be
+                redirected to IdP's login page.
+             */
         }
         else {
-            // Redirect to user creation if needed
-            if (!UserManager.satelliteHasUsers()) {
+            if (!UserManager.satelliteHasUsers()) { // Redirect to user creation if needed
                 response.redirect(URL_CREATE_FIRST_USER);
             }
 
@@ -99,26 +105,25 @@ public class LoginController {
                 response.redirect(urlBounce);
             }
 
-            Map<String, Object> model = new HashMap<>();
             model.put("url_bounce", urlBounce);
-            model.put("isUyuni", ConfigDefaults.get().isUyuni());
-            model.put("title", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + " - Sign In");
             model.put("request_method", reqMethod);
-            model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
-            model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
-            model.put("webVersion", ConfigDefaults.get().getProductVersion());
-            model.put("productName", Config.get().getString(ConfigDefaults.PRODUCT_NAME));
-            model.put("customHeader", Config.get().getString("java.custom_header"));
-            model.put("customFooter", Config.get().getString("java.custom_footer"));
-            model.put("legalNote", Config.get().getString("java.legal_note"));
-            model.put("loginLength", Config.get().getString("max_user_len"));
-            model.put("passwordLength", Config.get().getString("max_passwd_len"));
-            model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
-            model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
-            model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
-
-            return new ModelAndView(model, "controllers/login/templates/login.jade");
         }
+        model.put("isUyuni", ConfigDefaults.get().isUyuni());
+        model.put("title", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + " - Sign In");
+        model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
+        model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
+        model.put("webVersion", ConfigDefaults.get().getProductVersion());
+        model.put("productName", Config.get().getString(ConfigDefaults.PRODUCT_NAME));
+        model.put("customHeader", Config.get().getString("java.custom_header"));
+        model.put("customFooter", Config.get().getString("java.custom_footer"));
+        model.put("legalNote", Config.get().getString("java.legal_note"));
+        model.put("loginLength", Config.get().getString("max_user_len"));
+        model.put("passwordLength", Config.get().getString("max_passwd_len"));
+        model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
+        model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
+        model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
+
+        return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
 
     /**
