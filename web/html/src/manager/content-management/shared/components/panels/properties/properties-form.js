@@ -7,6 +7,7 @@ import type {ProjectPropertiesType} from '../../../type/project.type.js';
 
 type Props = {
   properties: ProjectPropertiesType,
+  errors: Object,
   onChange: Function,
   editing?: boolean
 };
@@ -14,6 +15,7 @@ type Props = {
 const PropertiesForm = (props: Props) => (
   <Form
     model={props.properties}
+    errors={props.errors}
     onChange={model => {
       props.onChange(model);
     }}

@@ -29,12 +29,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.google.gson.Gson;
 import com.suse.manager.webui.controllers.contentmanagement.request.NewProjectRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPropertiesRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
-
-import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
 
@@ -94,7 +93,8 @@ public class ProjectApiController {
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e),
+                            ValidationUtils.convertFieldValidationErrors(e)));
         }
         catch (ContentManagementException error) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(error.getMessage()));
@@ -155,7 +155,8 @@ public class ProjectApiController {
         }
         catch (ValidatorException e) {
             return json(GSON, res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(ValidationUtils.convertValidationErrors(e)));
+                    ResultJson.error(ValidationUtils.convertValidationErrors(e),
+                            ValidationUtils.convertFieldValidationErrors(e)));
         }
 
         return ControllerApiUtils.fullProjectJsonResponse(res, updatedProject.getLabel(), user);

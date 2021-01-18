@@ -47,7 +47,7 @@ const EnvironmentLifecycle = (props: Props) => {
       collapsible
       customIconClass="fa-small"
       disableOperations={isLoading}
-      onSave={({ item, closeDialog }) =>
+      onSave={({ item, closeDialog, setErrors }) =>
         onAction(mapAddEnvironmentRequest(item, props.environments, props.projectId), "create", props.projectId)
           .then((projectWithCreatedEnvironment) => {
             closeDialog();
@@ -55,11 +55,12 @@ const EnvironmentLifecycle = (props: Props) => {
             props.onChange(projectWithCreatedEnvironment)
           })
           .catch((error) => {
-            showErrorToastr(error, {autoHide: false});
+            setErrors(error.errors);
+            showErrorToastr(error.messages, {autoHide: false});
           })}
       onOpen={({ setItem }) => setItem({})}
       onCancel={() => cancelAction()}
-      renderCreationContent={({ open, item, setItem }) => {
+      renderCreationContent={({ open, item, setItem, errors }) => {
 
         if (!open) {
           return null;
@@ -74,6 +75,7 @@ const EnvironmentLifecycle = (props: Props) => {
         return (
           <EnvironmentForm
             environment={{...item}}
+            errors={errors}
             environments={props.environments}
             onChange={(item) => setItem(item)}/>
         )
@@ -97,7 +99,7 @@ const EnvironmentLifecycle = (props: Props) => {
                       panelLevel="3"
                       disableEditing={!hasEditingPermissions}
                       disableOperations={isLoading}
-                      onSave={({ item, closeDialog }) =>
+                      onSave={({ item, closeDialog, setErrors }) =>
                         onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update", props.projectId)
                           .then((projectWithUpdatedEnvironment) => {
                             props.onChange(projectWithUpdatedEnvironment)
@@ -105,7 +107,8 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment updated successfully"));
                           })
                           .catch((error) => {
-                            showErrorToastr(error, {autoHide: false});
+                            setErrors(error.errors);
+                            showErrorToastr(error.messages, {autoHide: false});
                           })}
                       onOpen={({ setItem }) => setItem(environment)}
                       onCancel={() => cancelAction()}
@@ -120,10 +123,10 @@ const EnvironmentLifecycle = (props: Props) => {
                             showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
                           })
                           .catch((error) => {
-                            showErrorToastr(error, {autoHide: false});
+                            showErrorToastr(error.messages, {autoHide: false});
                           })
                       }}
-                      renderCreationContent={({ open, item, setItem }) => {
+                      renderCreationContent={({ open, item, setItem, errors }) => {
                         if (!open) {
                           return null;
                         }
@@ -144,6 +147,7 @@ const EnvironmentLifecycle = (props: Props) => {
                             }
                             <EnvironmentForm
                               environment={{...item}}
+                              errors={errors}
                               environments={props.environments}
                               onChange={(item) => setItem(item)}
                               editing

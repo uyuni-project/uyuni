@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.gson;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Generic JSON response wrapper class
@@ -25,6 +26,7 @@ public class ResultJson<T> {
 
     private final boolean success;
     private final List<String> messages;
+    private final Map<String, List<String>> errors;
     private final T data;
 
     /**
@@ -51,12 +53,25 @@ public class ResultJson<T> {
      * Create an error result with the given messages.
      *
      * @param messagesIn a list of messages
-     * @param dataIn the data
+     * @param errorsIn a map of field level errors
      * @param <T> the type of data
      * @return a ResultJson
      */
-    public static <T> ResultJson<T> error(List<String> messagesIn, T dataIn) {
-        return new ResultJson<>(false, messagesIn, dataIn);
+    public static <T> ResultJson<T> error(List<String> messagesIn, Map<String, List<String>> errorsIn) {
+        return new ResultJson<>(false, messagesIn, errorsIn, null);
+    }
+
+    /**
+     * Create an error result with the given messages.
+     *
+     * @param messagesIn a list of messages
+     * @param dataIn the data
+     * @param errorsIn a map of field level errors
+     * @param <T> the type of data
+     * @return a ResultJson
+     */
+    public static <T> ResultJson<T> error(List<String> messagesIn, Map<String, List<String>> errorsIn, T dataIn) {
+        return new ResultJson<>(false, messagesIn, errorsIn, dataIn);
     }
 
     /**
@@ -76,7 +91,7 @@ public class ResultJson<T> {
      * @return a ResultJson
      */
     public static <T> ResultJson<T> success(T dataIn) {
-        return new ResultJson<>(true, null, dataIn);
+        return new ResultJson<>(true, null, null, dataIn);
     }
 
     /**
@@ -87,7 +102,7 @@ public class ResultJson<T> {
      * @return a ResultJson
      */
     public static <T> ResultJson<T> successMessage(String... messagesIn) {
-        return new ResultJson<>(true, Arrays.asList(messagesIn), null);
+        return new ResultJson<>(true, Arrays.asList(messagesIn), null, null);
     }
 
     /**
@@ -95,11 +110,13 @@ public class ResultJson<T> {
      *
      * @param successIn  the success
      * @param messagesIn the messages
+     * @param errorsIn   the field level errors
      * @param dataIn     the data
      */
-    public ResultJson(boolean successIn, List<String> messagesIn, T dataIn) {
+    public ResultJson(boolean successIn, List<String> messagesIn, Map<String, List<String>> errorsIn, T dataIn) {
         this.success = successIn;
         this.messages = messagesIn;
+        this.errors = errorsIn;
         this.data = dataIn;
     }
 
@@ -110,6 +127,15 @@ public class ResultJson<T> {
      */
     public List<String> getMessages() {
         return messages;
+    }
+
+    /**
+     * Gets field level errors.
+     *
+     * @return the field level errors
+     */
+    public Map<String, List<String>> getErrors() {
+        return errors;
     }
 
     /**

@@ -34,7 +34,10 @@ const getApiUrl = (resource, nestedResource, id) => {
   }
 }
 
-const getErrorMessage = ({messages = [], errors}) => messages.filter(Boolean);
+const getErrorMessage = ({messages = [], errors = {}}) => ({
+    messages: messages.filter(Boolean),
+    errors: errors
+});
 
 
 const useLifecycleActionsApi = (props:Props): returnUseProjectActionsApi => {

@@ -133,7 +133,7 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                               onBuild(projectWithUpdatedSources)
                             })
                             .catch((error) => {
-                              showErrorToastr(error, {autoHide: false});
+                              showErrorToastr(error.messages, {autoHide: false});
                               closeDialog();
                             });
                         }}

@@ -8,6 +8,7 @@ import type {ProjectEnvironmentType} from '../../../type/project.type.js';
 
 type Props = {
   environment: ProjectEnvironmentType,
+  errors: Object,
   environments: Array<ProjectEnvironmentType>,
   onChange: Function,
   editing?: boolean
@@ -16,6 +17,7 @@ type Props = {
 const EnvironmentForm = (props: Props) =>
   <Form
     model={props.environment}
+    errors={props.errors}
     onChange={model => {
       props.onChange(model);
     }}

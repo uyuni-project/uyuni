@@ -36,8 +36,10 @@ const CreatorPanel = (props: Props) => {
 
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
+  const [errors, setErrors] = useState(null);
 
   const setStateItem = (item: Object) => setItem(item);
+  const setStateErrors = (errors: Object) => setErrors(errors);
   const modalNameId = `${props.id}-modal`;
   const panelCollapseId = props.collapsible ? `${props.id}-panel` : null;
 
@@ -59,7 +61,10 @@ const CreatorPanel = (props: Props) => {
             target={modalNameId}
             onClick={() => {
               setOpen(true)
-              props.onOpen && props.onOpen({setItem: setStateItem})
+              props.onOpen && props.onOpen({
+                setItem: setStateItem,
+                setErrors: setStateErrors
+              })
             }}
           />
         }>
@@ -79,7 +84,8 @@ const CreatorPanel = (props: Props) => {
                   props.renderCreationContent({
                     open,
                     item,
-                    setItem: setStateItem
+                    setItem: setStateItem,
+                    errors
                   })
                 }
                 onClosePopUp={() => setOpen(false)}
@@ -119,7 +125,8 @@ const CreatorPanel = (props: Props) => {
                           disabled={props.disableOperations}
                           handler={() => props.onSave({
                             item,
-                            closeDialog: () => closeDialog(modalNameId)
+                            closeDialog: () => closeDialog(modalNameId),
+                            setErrors: setStateErrors
                           })}
                         />
                       </div>

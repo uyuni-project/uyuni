@@ -97,7 +97,7 @@ const FiltersProject = (props:  FiltersProps) => {
       disableEditing={!hasEditingPermissions}
       onCancel={() => cancelAction()}
       onOpen={({setItem}) => setItem(props.selectedFilters.map(filter => filter.id))}
-      onSave={({closeDialog, item}) => {
+      onSave={({closeDialog, item, setErrors}) => {
         const requestParam = {
           projectLabel: props.projectId,
           filtersIds: item,
@@ -110,7 +110,8 @@ const FiltersProject = (props:  FiltersProps) => {
             props.onChange(projectWithUpdatedSources)
           })
           .catch((error) => {
-            showErrorToastr(error, {autoHide: false});
+            setErrors(error.errors);
+            showErrorToastr(error.messages, {autoHide: false});
           });
       }}
       renderCreationContent={({setItem}) => {

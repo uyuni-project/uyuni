@@ -43,6 +43,10 @@ export type Props = {
 type State = {
   isValid: boolean,
   showErrors: boolean,
+  /** Error messages received from FormContext
+   *  (typically errors messages received from server response)
+   */
+  errors: Array<string>
 };
 
 export class InputBase extends React.Component<Props, State> {
@@ -63,6 +67,7 @@ export class InputBase extends React.Component<Props, State> {
     this.state = {
       isValid: true,
       showErrors: false,
+      errors: null
     };
   }
 
@@ -110,9 +115,13 @@ export class InputBase extends React.Component<Props, State> {
     return this.state.isValid;
   }
 
-  validate (value: string): void {
+  validate (value: string, errors: Array<string>): void {
     const results = [];
     let isValid = true;
+
+    if (errors && errors.length > 0) {
+      isValid = false;
+    }
 
     if (!this.props.disabled && (value || this.props.required)) {
       if (this.props.required && !value) {
@@ -129,7 +138,11 @@ export class InputBase extends React.Component<Props, State> {
       result.forEach((r) => {
         isValid = isValid && r;
       });
-      this.setState({isValid}, () => {
+      this.setState((state) => ({
+          isValid: isValid,
+          errors: errors,
+          showErrors: state.showErrors || errors && errors.length > 0
+        }), () => {
         if (this.context.validateForm != null) {
           this.context.validateForm();
         }
@@ -146,12 +159,27 @@ export class InputBase extends React.Component<Props, State> {
     if (this.props.onChange) this.props.onChange(name, value);
   }
 
+  pushHint(hints, hint) {
+    if (hint) {
+      if (hints.length > 0) {
+        hints.push(<br />)
+      }
+      hints.push(hint);
+    }
+  }
+
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
     const invalidHint = isError && (
       this.props.invalidHint || (this.props.required && (`${this.props.label} is required.`))
     );
-    const hint = [this.props.hint, (invalidHint && this.props.hint && <br />), invalidHint];
+    const hints = [];
+    this.pushHint(hints, this.props.hint);
+    if (this.state.errors) {
+      this.state.errors.forEach((error) => this.pushHint(hints, error));
+    } else {
+      this.pushHint(hints, invalidHint);
+    }
     return (
       <FormGroup isError={isError}>
         {
@@ -171,10 +199,10 @@ export class InputBase extends React.Component<Props, State> {
               onBlur: this.onBlur.bind(this),
             })
           }
-          { hint
+          { hints
             && (
               <div className="help-block">
-                {hint}
+                {hints}
               </div>
             )
           }

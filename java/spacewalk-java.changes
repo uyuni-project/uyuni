@@ -1,3 +1,4 @@
+- Content Lifecycle Management input validation errors are now displayed at the field-level instead of a popup
 - Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
 - Fix CVE audit results for affected and patched entries (bsc#1180893)
 - Replace custom version comparison method with the standard one which also takes debian packages into account

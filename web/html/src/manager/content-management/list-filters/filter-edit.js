@@ -13,7 +13,7 @@ import {mapFilterFormToRequest} from "./filter.utils";
 import _isEmpty from "lodash/isEmpty";
 import useUserLocalization from "core/user-localization/use-user-localization";
 
-const FilterEditModalContent = ({open, isLoading, filter, onChange, onClientValidate, editing}) => {
+const FilterEditModalContent = ({open, isLoading, filter, errors, onChange, onClientValidate, editing}) => {
   if (!open) {
     return null;
   }
@@ -27,6 +27,7 @@ const FilterEditModalContent = ({open, isLoading, filter, onChange, onClientVali
   return (
     <FilterForm
       filter={filter}
+      errors={errors}
       editing={editing}
       onChange={(updatedFilter) => onChange(updatedFilter)}
       onClientValidate={onClientValidate}
@@ -53,6 +54,7 @@ const FilterEdit = (props: FilterEditProps) => {
 
   const [open, setOpen] = useState(false);
   const [item, setFormData] = useState(props.initialFilterForm);
+  const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
   const {localTime} = useUserLocalization();
 
@@ -93,6 +95,7 @@ const FilterEdit = (props: FilterEditProps) => {
               content={
                 <FilterEditModalContent
                   filter={item}
+                  errors={errors}
                   open={open}
                   onChange={setFormData}
                   onClientValidate={setFormValidInClient}
@@ -117,7 +120,7 @@ const FilterEdit = (props: FilterEditProps) => {
                               props.onChange(updatedListOfFilters);
                             })
                             .catch((error) => {
-                              showErrorToastr(error, {autoHide: false});
+                              showErrorToastr(error.messages, {autoHide: false});
                             })
                         }}
                       />
@@ -159,7 +162,8 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error, {autoHide: false});
+                                  setErrors(error.errors);
+                                  showErrorToastr(error.messages, {autoHide: false});
                                 })
                             } else {
                               onAction(mapFilterFormToRequest(item, props.projectLabel, localTime), "create")
@@ -173,7 +177,8 @@ const FilterEdit = (props: FilterEditProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  showErrorToastr(error, {autoHide: false});
+                                  setErrors(error.errors);
+                                  showErrorToastr(error.messages, {autoHide: false});
                                 })
                             }
                           }
