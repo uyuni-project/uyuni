@@ -72,6 +72,8 @@ public class LoginControllerTest extends BaseControllerTestCase {
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         assertNotNull(result); // redirect to the SSO login page
+        // we still need to check that the model has been correctly populated
+        assertNotNull(((Map<String, Object>) result.getModel()).get("webTheme"));
     }
 
     public void testUrlBounceNotAuthenticated() throws UnsupportedEncodingException {
