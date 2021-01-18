@@ -3094,7 +3094,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target state="translated">名称和描述</target>
+        <target state="translated">名称和说明</target>
       </trans-unit>
       <trans-unit id="packages.search.free_form" xml:space="preserve">
         <source>Free form</source>
@@ -3195,7 +3195,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target state="translated">名称/描述</target>
+        <target state="translated">名称/说明</target>
       </trans-unit>
       <trans-unit id="systemsearch_id" xml:space="preserve">
         <source>ID</source>
@@ -3307,7 +3307,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_driver" xml:space="preserve">
         <source>Driver</source>
@@ -3703,7 +3703,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">
             /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target state="translated">描述</target>
+        <target state="translated">说明</target>
       </trans-unit>
       <trans-unit id="solution" xml:space="preserve">
         <source>Solution</source>
@@ -6211,7 +6211,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target state="translated">此描述已被使用。请为此密钥输入新描述。</target>
+        <target state="translated">此说明已被使用。请为此密钥输入新说明。</target>
       </trans-unit>
       <trans-unit id="label" xml:space="preserve">
         <source>Label</source>
@@ -7145,7 +7145,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">配置频道描述</target>
+        <target state="translated">配置频道说明</target>
       </trans-unit>
       <!-- config-file form-bean I18N -->
       <trans-unit id="cffUid" xml:space="preserve">
@@ -9533,7 +9533,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="system.customkey.error.tooshort" xml:space="preserve">
         <source>A Custom Key label and description must be at least two characters long.</source>
-        <target state="translated">自定义键的标签和描述必须至少包含两个字符。</target>
+        <target state="translated">自定义键的标签和说明必须至少包含两个字符。</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.toolong" xml:space="preserve">
         <source>A Custom Key label can only be 64 characters long at maximum.</source>
@@ -9541,7 +9541,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="system.customkey.error.descr_toolong" xml:space="preserve">
         <source>A Custom Key description can only be 4000 characters long at maximum.</source>
-        <target>自定义键描述最多只能包含 4000 个字符。</target>
+        <target>自定义键说明最多只能包含 4000 个字符。</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.invalid" xml:space="preserve">
         <source>A Custom Key label can only contain letters, numbers, hyphens (-), and underscores (_).</source>
