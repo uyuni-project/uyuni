@@ -1149,7 +1149,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
      *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
-     *                  following: 'final', 'testing', or 'retracted'")
+     *                  following: 'final', 'testing', or 'stable'")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
@@ -1221,7 +1221,10 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryReleaseException(advisoryRelease.longValue());
         }
         String advisoryType = (String) getRequiredAttribute(errataInfo, "advisory_type");
-        String advisoryStatus = (String) getRequiredAttribute(errataInfo, "advisory_status");
+        String advisoryStatusString = (String) getRequiredAttribute(errataInfo, "advisory_status");
+        AdvisoryStatus advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusString)
+                .filter(a -> a != AdvisoryStatus.RETRACTED)
+                .orElseThrow(() -> new InvalidAdvisoryTypeException(advisoryStatusString));
         String product = (String) getRequiredAttribute(errataInfo, "product");
         String errataFrom = (String) errataInfo.get("errataFrom");
         String topic = (String) getRequiredAttribute(errataInfo, "topic");
@@ -1255,10 +1258,7 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryTypeException(advisoryType);
         }
 
-        AdvisoryStatus errataStatus = AdvisoryStatus.fromMetadata(advisoryStatus)
-                .orElseThrow(() -> new InvalidAdvisoryTypeException(advisoryStatus));
-        newErrata.setAdvisoryStatus(errataStatus);
-
+        newErrata.setAdvisoryStatus(advisoryStatus);
         newErrata.setProduct(product);
         newErrata.setTopic(topic);
         newErrata.setDescription(description);
