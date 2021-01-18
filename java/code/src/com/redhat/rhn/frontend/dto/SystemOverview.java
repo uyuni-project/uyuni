@@ -77,8 +77,6 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private boolean isVirtualGuest;
     private Long extraPkgCount;
     private static final  String NONE_VALUE = "(none)";
-    private Long totalCrashCount;
-    private Long uniqueCrashCount;
     private Long lastBoot;
     private String statusType;
 
@@ -829,36 +827,6 @@ public class SystemOverview extends BaseDto implements Serializable  {
      */
     public Long getExtraPkgCount() {
         return this.extraPkgCount;
-    }
-
-    /**
-     * Sets total number of crashes on the system.
-     * @param totalCrashCountIn crash count to set
-     */
-    public void setTotalCrashCount(Long totalCrashCountIn) {
-        this.totalCrashCount = totalCrashCountIn;
-    }
-
-    /**
-     * @return Returns the totalCrashCount
-     */
-    public Long getTotalCrashCount() {
-        return this.totalCrashCount;
-    }
-
-    /**
-     * Sets number of unique crashes on the system.
-     * @param uniqueCrashCountIn crash count to set
-     */
-    public void setUniqueCrashCount(Long uniqueCrashCountIn) {
-        this.uniqueCrashCount = uniqueCrashCountIn;
-    }
-
-    /**
-     * @return Returns the uniqueCrashCount
-     */
-    public Long getUniqueCrashCount() {
-        return this.uniqueCrashCount;
     }
 
     /**

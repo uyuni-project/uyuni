@@ -30,9 +30,6 @@ public class OrgConfig extends BaseDomainHelper {
     private Long orgId;
     private boolean stagingContentEnabled;
     private boolean errataEmailsEnabled;
-    private boolean crashReportingEnabled;
-    private boolean crashfileUploadEnabled;
-    private Long crashFileSizelimit;
     private boolean scapfileUploadEnabled;
     private Long scapFileSizelimit;
     private Long scapRetentionPeriodDays;
@@ -80,50 +77,6 @@ public class OrgConfig extends BaseDomainHelper {
      */
     public void setErrataEmailsEnabled(boolean errataEmailsEnabledIn) {
         this.errataEmailsEnabled = errataEmailsEnabledIn;
-    }
-
-    /**
-     * @return Returns the crashReportingEnabled flag.
-     */
-    public boolean isCrashReportingEnabled() {
-        return crashReportingEnabled;
-    }
-
-    /**
-     * @param crashReportingEnabledIn The crashReportingEnabled to set.
-     */
-    public void setCrashReportingEnabled(boolean crashReportingEnabledIn) {
-        crashReportingEnabled = crashReportingEnabledIn;
-    }
-
-    /**
-     * @return Returns the crashfileUploadEnabled flag.
-     */
-    public boolean isCrashfileUploadEnabled() {
-        return crashfileUploadEnabled;
-    }
-
-    /**
-     * @param crashfileUploadEnabledIn The crashfileUploadEnabled to set.
-     */
-    public void setCrashfileUploadEnabled(boolean crashfileUploadEnabledIn) {
-        crashfileUploadEnabled = crashfileUploadEnabledIn;
-    }
-
-    /**
-     * Get the org-wide crash file size limit.
-     * @return Returns the org-wide crash file size limit.
-     */
-    public Long getCrashFileSizelimit() {
-        return crashFileSizelimit;
-    }
-
-    /**
-     * Set the org-wide crash file size limit.
-     * @param sizeLimitIn The org-wide crash file size limit to set.
-     */
-    public void setCrashFileSizelimit(Long sizeLimitIn) {
-        crashFileSizelimit = sizeLimitIn;
     }
 
     /**

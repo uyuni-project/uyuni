@@ -1,19 +1,5 @@
---
--- Copyright (c) 2008--2013 Red Hat, Inc.
---
--- This software is licensed to you under the GNU General Public License,
--- version 2 (GPLv2). There is NO WARRANTY for this software, express or
--- implied, including the implied warranties of MERCHANTABILITY or FITNESS
--- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
--- along with this software; if not, see
--- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
---
--- Red Hat trademarks are not licensed under GPLv2. No permission is
--- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation.
---
---
---
+DROP VIEW IF EXISTS rhnServerOverview;
+DROP VIEW IF EXISTS rhnServerCrashCount;
 
 create or replace view
 rhnServerOverview
@@ -111,3 +97,24 @@ select
 from
     rhnServer S
 ;
+
+DROP TRIGGER IF EXISTS rhn_server_crash_mod_trig ON rhnServerCrash;
+DROP TRIGGER IF EXISTS rhn_server_crash_file_mod_trig ON rhnServerCrashFile;
+DROP TRIGGER IF EXISTS rhn_server_crash_note_mod_trig ON rhnServerCrashNote;
+
+DROP FUNCTION IF EXISTS insert_crash_file();
+DROP FUNCTION IF EXISTS rhn_server_crash_mod_trig_fun();
+DROP FUNCTION IF EXISTS rhn_server_crash_file_mod_trig_fun();
+DROP FUNCTION IF EXISTS rhn_server_crash_note_mod_trig_fun();
+
+DROP TABLE IF EXISTS rhnServerCrashFile;
+DROP TABLE IF EXISTS rhnServerCrashNote;
+DROP TABLE IF EXISTS rhnServerCrash;
+
+DROP SEQUENCE IF EXISTS rhn_server_crash_id_seq;
+DROP SEQUENCE IF EXISTS rhn_server_crash_file_id_seq;
+DROP SEQUENCE IF EXISTS rhn_srv_crash_note_id_seq;
+
+ALTER TABLE rhnOrgConfiguration DROP COLUMN IF EXISTS crash_reporting_enabled;
+ALTER TABLE rhnOrgConfiguration DROP COLUMN IF EXISTS crashfile_upload_enabled;
+ALTER TABLE rhnOrgConfiguration DROP COLUMN IF EXISTS crash_file_sizelimit;

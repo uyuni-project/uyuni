@@ -47,7 +47,6 @@
       <c:set var="noErrata" value="1" />
       <c:set var="noPackages" value="1" />
       <c:set var="noConfigFiles" value="1" />
-      <c:set var="noCrashes" value="1" />
       <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
     </rl:listset>
 

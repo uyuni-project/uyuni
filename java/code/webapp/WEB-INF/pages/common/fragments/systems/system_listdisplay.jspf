@@ -125,28 +125,6 @@
         </rl:column>
     </c:if>
 
-    <!-- Crashes Column -->
-    <!-- Hide the "Crashes" column: https://bugzilla.suse.com/1033811 -->
-    <c:set var="noCrashes" value="1" />
-    <c:if test="${empty extraPackagesMode and empty noCrashes}">
-        <rl:column sortable="false"
-                bound="false"
-                headerkey="systemlist.jsp.crashes"
-                styleclass="center"
-                headerclass="thin-column">
-            <c:choose>
-                <c:when test="${current.totalCrashCount == null}">
-                    <bean:message key="none.message"/>
-                </c:when>
-                <c:otherwise>
-                    <a href="/rhn/systems/details/SoftwareCrashes.do?sid=${current.id}" class="js-spa">
-                        <c:out value="${current.totalCrashCount}" escapeXml="false"/>
-                    </a>
-                </c:otherwise>
-            </c:choose>
-        </rl:column>
-    </c:if>
-
     <!-- LastCheckIn Column -->
     <c:if test = "${not empty showLastCheckin}">
         <rl:column sortable="false"

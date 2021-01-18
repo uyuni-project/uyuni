@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,14 +31,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * OrgDetailsAction extends RhnAction - Class representation of the table
@@ -72,33 +72,18 @@ public class OrgConfigAction extends RhnAction {
             org.getOrgConfig().setErrataEmailsEnabled(request.
                     getParameter("errata_emails_enabled") != null);
 
-
-            if (request.getParameter("crash_reporting_enabled") == null) {
-                org.getOrgConfig().setCrashReportingEnabled(false);
-                org.getOrgConfig().setCrashfileUploadEnabled(false);
-            }
-            else {
-                org.getOrgConfig().setCrashReportingEnabled(true);
-                org.getOrgConfig().setCrashfileUploadEnabled(request.
-                    getParameter("crashfile_upload_enabled") != null);
-            }
-
             org.getOrgConfig().setScapfileUploadEnabled(request.
                     getParameter("scapfile_upload_enabled") != null);
 
-            Long newCrashLimit = null;
             Long newScapLimit = null;
             Long newScapRetentionPeriod = null;
             try {
-                newCrashLimit = Long.parseLong(
-                           request.getParameter("crashfile_sizelimit"));
-
                 newScapLimit = Long.parseLong(
                            request.getParameter("scapfile_sizelimit"));
                 newScapRetentionPeriod = Long.parseLong(
                            request.getParameter(SCAP_RETENTION_PERIOD));
 
-                if (newCrashLimit < 0 || newScapLimit < 0 || newScapRetentionPeriod < 0) {
+                if (newScapLimit < 0 || newScapRetentionPeriod < 0) {
                     throw new IllegalArgumentException();
                 }
             }
@@ -109,9 +94,6 @@ public class OrgConfigAction extends RhnAction {
 
                 return getStrutsDelegate().forwardParam(mapping.findForward("error"),
                            RequestContext.ORG_ID, org.getId().toString());
-            }
-            if (StringUtils.isNotEmpty(request.getParameter("crashfile_sizelimit"))) {
-                org.getOrgConfig().setCrashFileSizelimit(newCrashLimit);
             }
             if (StringUtils.isNotEmpty(request.getParameter("scapfile_sizelimit"))) {
                 org.getOrgConfig().setScapFileSizelimit(newScapLimit);

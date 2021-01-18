@@ -39,6 +39,16 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.SystemRecord;
+
 import java.net.IDN;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -55,15 +65,6 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.SystemRecord;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -123,8 +124,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private ProxyInfo proxyInfo;
     private Set<ServerGroup> groups = new HashSet<>();
     private Set<ClientCapability> capabilities = new HashSet<>();
-    private CrashCount crashCount;
-    private Set<Crash> crashes;
     private Set<InstalledProduct> installedProducts = new HashSet<>();
     private String machineId;
     private String hostname;
@@ -1895,20 +1894,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return Return application crashes.
-     */
-    public CrashCount getCrashCount() {
-        return crashCount;
-    }
-
-    /**
-     * @param crashIn Set application crashes.
-     */
-    public void setCrashCount(CrashCount crashIn) {
-        crashCount = crashIn;
-    }
-
-    /**
      * @param installedProductsIn the installedProducts to set
      */
     public void setInstalledProducts(Set<InstalledProduct> installedProductsIn) {
@@ -1981,20 +1966,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
             }
         }
         return active;
-    }
-
-    /**
-     * @return Returns the crashes.
-     */
-    public Set<Crash> getCrashes() {
-        return crashes;
-    }
-
-    /**
-     * @param c The crashes to set.
-     */
-    public void setCrashes(Set<Crash> c) {
-        this.crashes = c;
     }
 
     /**
