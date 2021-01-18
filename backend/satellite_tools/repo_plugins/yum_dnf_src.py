@@ -27,6 +27,7 @@ from libdnf.conf import ConfigParser
 from dnf.exceptions import Error, RepoError
 from uyuni.common import checksum, fileutils
 from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import ContentSource as zypper_ContentSource
@@ -116,31 +117,10 @@ class ContentSource(zypper_ContentSource):
         if query:
             self.authtoken = query
 
-        if CFG.http_proxy:
-            self.proxy_url= CFG.http_proxy
-            self.proxy_user = CFG.http_proxy_username
-            self.proxy_pass = CFG.http_proxy_password
-        else:
-            db_cfg = self.configparser
-            section_name = None
+        # load proxy configuration based on the url
+        self._load_proxy_settings(self.url)
 
-            if db_cfg.has_section(self.name):
-                section_name = self.name
-            elif db_cfg.has_section(channel_label):
-                section_name = channel_label
-            elif db_cfg.has_section('main'):
-                section_name = 'main'
-
-            if section_name:
-                if db_cfg.has_option(section_name, option='proxy'):
-                    self.proxy_url = db_cfg.get(section_name, option='proxy')
-
-                if db_cfg.has_option(section_name, 'proxy_username'):
-                    self.proxy_user = db_cfg.get(section_name, 'proxy_username')
-
-                if db_cfg.has_option(section_name, 'proxy_password'):
-                    self.proxy_pass = db_cfg.get(section_name, 'proxy_password')
-
+        # perform authentication if implemented
         self._authenticate(url)
 
         # Check for settings in yum configuration files (for custom repos/channels only)
