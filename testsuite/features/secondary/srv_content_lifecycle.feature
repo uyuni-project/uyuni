@@ -113,7 +113,7 @@ Feature: Content lifecycle
     And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
     And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
 
-  Scenario: Promote promote the sources in the project
+  Scenario: Promote the sources in the project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
