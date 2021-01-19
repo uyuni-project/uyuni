@@ -1,3 +1,5 @@
+- Reposync: Fix modular data handling for cloned channels (bsc#1177508)
+
 -------------------------------------------------------------------
 Fri Jan 15 14:00:54 CET 2021 - jgonzalez@suse.com
 
