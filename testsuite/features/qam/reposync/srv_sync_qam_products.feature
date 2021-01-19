@@ -97,32 +97,32 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 6 x86_64
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 6
     Given I am on the Products page
-    When I enter "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" selected
+    When I enter "SUSE Linux Enterprise Server with Expanded Support 6" as the filtered product description
+    And I select "SUSE Linux Enterprise Server with Expanded Support 6" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 6" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 6 x86_64" product has been added
+    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 6" product has been added
 
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 7 x86_64
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 7
     Given I am on the Products page
-    When I enter "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" selected
+    When I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
+    And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7 x86_64" product has been added
+    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
 
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 8 x86_64
+  Scenario: SUSE Linux Enterprise Server with Expanded Support 8
     Given I am on the Products page
-    When I enter "RHEL or SLES ES or CentOS 8 Base x86_64" as the filtered product description
-    And I select "RHEL or SLES ES or CentOS 8 Base x86_64" as a product
-    Then I should see the "RHEL or SLES ES or CentOS 8 Base x86_64" selected
-    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base x86_64"
-    And I select "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8 x86_64" selected
+    When I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
+    And I select "RHEL or SLES ES or CentOS 8 Base" as a product
+    Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
+    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
+    And I select "SUSE Linux Enterprise Server with Expanded Support 8" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8" selected
     When I click the Add Product button
-    And I wait until I see "RHEL or SLES ES or CentOS 8 Base x86_64" product has been added
+    And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
 
   Scenario: SUSE Manager Proxy 4.0 x86_64
     Given I am on the Products page
