@@ -7,9 +7,9 @@
 {%- set port = salt['pillar.get']('pkg_download_point_port', args.get('port', 443))%}
 {%- if grains['os'] == 'Debian' or grains['os'] == 'Ubuntu' %}
 {%- if (grains['os'] == 'Debian' and grains['osmajorrelease']|int < 10) or (grains['os'] == 'Ubuntu' and grains['osmajorrelease']|int < 18) %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} https://{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/download {{ chan }} main
 {%- else %}
-deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} https://{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} {{protocol}}://{{hostname}}:{{port}}/rhn/manager/download {{ chan }} main
 {%- endif %}
 {%- else %}
 [{{ args['alias'] }}]
