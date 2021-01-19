@@ -1,3 +1,5 @@
+- Reposync: Fixed Kickstart functionality.
+- Reposync: Fixed URLGrabber error handling.
 - Reposync: Fix modular data handling for cloned channels (bsc#1177508)
 - Truncate author name in the changelog (bsc#1180285)
 - Drop Transfer-Encoding header from proxy respone to fix error response messages (bsc#1176906)
