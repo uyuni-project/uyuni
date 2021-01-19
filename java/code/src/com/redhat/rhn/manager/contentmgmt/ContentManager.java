@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
@@ -721,10 +722,6 @@ public class ContentManager {
                 .sorted((t1, t2) -> Boolean.compare(t1.getChannel().isBaseChannel(), t2.getChannel().isBaseChannel()))
                 .forEach(toRemove -> ContentProjectFactory.purgeTarget(toRemove));
 
-        // Strip modules metadata from the modular repositories if any modular filter is present
-        if (filters.stream().anyMatch(f -> f.asModuleFilter().isPresent())) {
-            newSrcTgtPairs.stream().map(p -> p.getRight().getChannel()).forEach(this::stripModuleMetadata);
-        }
 
         // Resolve filters for dependencies
         try {
@@ -732,8 +729,9 @@ public class ContentManager {
             DependencyResolutionResult result = resolver.resolveFilters(filters);
 
             // align the contents
-            newSrcTgtPairs.forEach(srcTgt ->
-                    alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user));
+            newSrcTgtPairs.forEach(srcTgt -> {
+                alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), result.getFilters(), async, user);
+            });
         }
         catch (DependencyResolutionException e) {
             // Build shouldn't be allowed if dependency resolution fails
@@ -742,7 +740,7 @@ public class ContentManager {
 
     }
 
-    private void stripModuleMetadata(Channel channel) {
+    private static void stripModuleMetadata(Channel channel) {
         if (channel != null && channel.getModules() != null) {
             HibernateFactory.getSession().delete(channel.getModules());
             channel.setModules(null);
@@ -760,15 +758,18 @@ public class ContentManager {
      */
     private List<Pair<Channel, SoftwareEnvironmentTarget>> cloneChannelsToEnv(ContentEnvironment env,
             Channel leader, Stream<Channel> channels, User user) {
+        boolean moduleFiltersPresent =
+                !extractFiltersOfType(env.getContentProject().getActiveFilters(), ModuleFilter.class).isEmpty();
+
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
-                .map(tgt -> fixTargetProperties(tgt, leader, null))
+                .map(tgt -> fixTargetProperties(tgt, leader, null, moduleFiltersPresent))
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
                 .map(src -> lookupTarget(src, env, user)
-                        .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel()))
+                        .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel(), moduleFiltersPresent))
                         .map(tgt -> Pair.of(src, tgt))
                         .orElseGet(() ->
                                 Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
@@ -792,11 +793,11 @@ public class ContentManager {
      * @param swTgt the target
      * @param newSource new source channel of the target
      * @param newParent new parent channel of the target
-     *
+     * @param stripModuleData whether to strip the module data
      * @return the fixed target
      */
     private static SoftwareEnvironmentTarget fixTargetProperties(SoftwareEnvironmentTarget swTgt, Channel newSource,
-            Channel newParent) {
+            Channel newParent, boolean stripModuleData) {
         Channel tgt = swTgt.getChannel();
         // make sure parent is set correctly
         tgt.setParentChannel(newParent);
@@ -808,6 +809,15 @@ public class ContentManager {
                     log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
                     ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
                 });
+
+        // handle the module data: if there are modules filters present, we strip them, even if the source is modular;
+        // otherwise we set them according to the source channel modules
+        if (stripModuleData) {
+            stripModuleMetadata(tgt);
+        }
+        else {
+            tgt.cloneModulesFrom(newSource);
+        }
 
         return swTgt;
     }
@@ -913,16 +923,11 @@ public class ContentManager {
      * @param tgt the target {@link Channel}
      * @param user the user
      */
-    public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
-            User user) {
-        // align packages and the cache (rhnServerNeededCache)
-        List<PackageFilter> packageFilters = filters.stream()
-                .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
-                .collect(toList());
-        List<ErrataFilter> errataFilters = filters.stream()
-                .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
-                .collect(toList());
+    public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt, User user) {
+        List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
+        List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
 
+        // align packages and the cache (rhnServerNeededCache)
         alignPackages(src, tgt, packageFilters);
 
         // align errata and the cache (rhnServerNeededCache)
@@ -938,6 +943,15 @@ public class ContentManager {
         tgt.setLastModified(new Date());
         HibernateFactory.getSession().saveOrUpdate(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
+    }
+
+    // helper for extracting certain filter types
+    // it's not optimal to run this method multiple times for same collection of filters, but at least it's clear
+    private static <T> List<T> extractFiltersOfType(Collection<ContentFilter> filters, Class<T> type) {
+        return filters.stream()
+                .filter(f -> type.isAssignableFrom(f.getClass()))
+                .map(f -> (T) f)
+                .collect(toList());
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {

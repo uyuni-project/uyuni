@@ -1372,4 +1372,27 @@ public class ChannelFactory extends HibernateFactory {
         var m = ModeFactory.getCallableMode("Channel_queries", "analyze_channel_packages");
         m.execute(new HashMap<>(), new HashMap<>());
     }
+
+    /**
+     * Sets channel modules data from given channel.
+     *
+     * @param from the source Channel
+     * @param to  the target Channel
+     */
+    public static void cloneModulesMetadata(Channel from, Channel to) {
+        if (!from.isModular()) {
+            if (to.isModular()) {
+                HibernateFactory.getSession().delete(to.getModules());
+                to.setModules(null);
+            }
+        }
+        else {
+            if (!to.isModular()) {
+                Modules modules = new Modules();
+                modules.setChannel(to);
+                to.setModules(modules);
+            }
+            to.getModules().setRelativeFilename(from.getModules().getRelativeFilename());
+        }
+    }
 }

@@ -20,6 +20,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 import traceback
 import base64
@@ -734,6 +735,13 @@ class RepoSync(object):
             elif notices_type == 'patches':
                 self.upload_patches(notices)
 
+    @staticmethod
+    def _get_decompressed_file_checksum(abspath, hashtype):
+        with fileutils.decompress_open(abspath) as src, tempfile.TemporaryFile('w') as tmp:
+            shutil.copyfileobj(src, tmp)
+            tmp.flush()
+            return getFileChecksum(hashtype, fd=tmp.fileno())
+
     def copy_metadata_file(self, plug, filename, comps_type, relative_dir):
         old_checksum = None
         db_timestamp = datetime.fromtimestamp(0.0, utc)
@@ -748,6 +756,12 @@ class RepoSync(object):
         if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
             log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
             basename = 'comps' + basename[basename.find('.'):]
+        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')*', basename):
+            # decompress only for getting the checksum
+            checksum = self._get_decompressed_file_checksum(filename, 'sha256')
+            basename = checksum + "-" + basename
+            log(0, "  Including the checksum in the modules file name: %s" % basename)
+
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
         for suffix in compressed_suffixes:
