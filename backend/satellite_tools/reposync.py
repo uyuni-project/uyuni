@@ -14,6 +14,8 @@
 # in this software or its documentation.
 #
 
+import base64
+import configparser
 import os
 import re
 import shutil
@@ -23,7 +25,6 @@ import sys
 import tempfile
 import time
 import traceback
-import base64
 from datetime import datetime
 try:
     from html.parser import HTMLParser
@@ -143,7 +144,7 @@ class KSDirHtmlParser(KSDirParser):
         if dir_html is None:
             return
 
-        for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html)):
+        for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html.decode())):
             if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or
                     re.search(r'\.rpm$', s)):
                 if re.search(r'/$', s):
@@ -177,14 +178,14 @@ class TreeInfoError(Exception):
 
 class TreeInfoParser(object):
     def __init__(self, filename):
-        self.parser = ConfigParser.RawConfigParser()
+        self.parser = configparser.RawConfigParser()
         # do not lowercase
         self.parser.optionxform = str
         fp = open(filename)
         try:
             try:
                 self.parser.readfp(fp)
-            except ConfigParser.ParsingError:
+            except configparser.ParsingError:
                 raise TreeInfoError("Could not parse treeinfo file!")
         finally:
             if fp is not None:
