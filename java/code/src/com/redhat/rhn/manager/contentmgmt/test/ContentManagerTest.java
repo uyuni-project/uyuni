@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -63,6 +64,7 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -1501,6 +1503,65 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
             fail("No ContentManagementException expected");
         }
         getFirstTarget(env5).setStatus(Status.BUILT); // revert
+    }
+
+    /**
+     * Tests that building a project with a non-modular source strips the data in the existing target
+     *
+     * @throws Exception
+     */
+    public void testModularDataAlignmentNoModulesSource() throws Exception {
+        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        var env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+
+        var channel = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+
+        // we already have a modular target cloned from the past
+        var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
+        Modules modules = new Modules();
+        modules.setRelativeFilename("srcfilename");
+        modules.setChannel(alreadyExistingTgt);
+        alreadyExistingTgt.setModules(modules);
+        env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
+
+        ContentManager.buildProject("cplabel", empty(), false, user);
+
+        // building project with unmodular source should reset the modular data in corresponding target
+        assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
+    }
+
+    /**
+     * Tests consisting of multiple steps verifying that modules metadata is aligned throughout multiple builds
+     * @throws Exception
+     */
+    public void testModularDataAlignment() throws Exception {
+        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        var env = ContentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+
+        // verify that a non-modular source results in an non-modular target
+        var channel = createPopulatedChannel();
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
+
+        // verify that a modular source results in a modular target
+        Modules modules = new Modules();
+        modules.setRelativeFilename("srcfilename");
+        modules.setChannel(channel);
+        channel.setModules(modules);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        var tgtChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+        assertTrue(tgtChannel.isModular());
+        assertEquals("srcfilename",  tgtChannel.getModules().getRelativeFilename());
+
+        // verify that a non-modular source strips the modular data
+        HibernateFactory.getSession().delete(channel.getModules());
+        channel.setModules(null);
+        ContentManager.buildProject("cplabel", empty(), false, user);
+        assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
     }
 
     private void assertBuildFails(String projectLabel) {

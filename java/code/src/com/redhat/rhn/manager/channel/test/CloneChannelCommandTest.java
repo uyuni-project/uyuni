@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.channel.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -39,5 +40,50 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         Channel clone = ccc.create();
         assertNull(clone.getParentChannel());
+    }
+
+    /**
+     * Test cloning a channel without modular data
+     *
+     * @throws Exception
+     */
+    public void testCloneNoModular() throws Exception {
+        Channel original = createBaseChannel();
+        assertFalse(original.isModular());
+
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
+        ccc.setUser(user);
+        Channel clone = ccc.create();
+        assertFalse(clone.isModular());
+    }
+
+    /**
+     * Test cloning a channel with modular data
+     *
+     * @throws Exception
+     */
+    public void testCloneModularSource() throws Exception {
+        Channel original = createBaseChannel();
+        Modules modules = new Modules();
+        modules.setChannel(original);
+        modules.setRelativeFilename("blablafilename");
+        original.setModules(modules);
+        assertTrue(original.isModular());
+
+        CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
+        ccc.setUser(user);
+        Channel clone = ccc.create();
+        Modules originalModules = original.getModules();
+        Modules cloneModules = clone.getModules();
+        assertEquals(originalModules.getRelativeFilename(), cloneModules.getRelativeFilename());
+        assertEquals(clone, cloneModules.getChannel());
+        assertFalse(originalModules.getId().equals(cloneModules.getId()));
+    }
+
+    private Channel createBaseChannel() throws Exception {
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
+        channel.setSummary("summary");
+        return channel;
     }
 }

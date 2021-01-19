@@ -223,10 +223,27 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Sets modules data from given channel.
+     *
+     * @param from the Channel
+     */
+    public void cloneModulesFrom(Channel from) {
+        ChannelFactory.cloneModulesMetadata(from, this);
+    }
+
+    /**
      * @return Returns the Modules.
      */
     public Modules getModules() {
         return modules;
+    }
+
+    /**
+     * Return true if the channel is modular.
+     * @return true if the channel is modular.
+     */
+    public boolean isModular() {
+        return modules != null;
     }
 
     /**

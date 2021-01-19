@@ -284,7 +284,7 @@ def merge_channels(source_label, dest_label) -> None:
     if not options.dry_run:
         # merge the packages from one channel into another
         try:
-            packages = client.channel.software.mergePackages(session, source_label, dest_label)
+            packages = client.channel.software.mergePackages(session, source_label, dest_label, True)
             logging.info('Added %i packages', len(packages))
         except xmlrpclib.Fault as e:
             if options.debug:

@@ -1,3 +1,5 @@
+- Fix modular data handling for cloned channels (bsc#1177508)
+
 -------------------------------------------------------------------
 Thu Sep 03 10:35:31 CEST 2020 - jgonzalez@suse.com
 
