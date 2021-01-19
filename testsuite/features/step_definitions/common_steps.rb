@@ -180,22 +180,7 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
 
-Then(/^I add "([^"]*)" channel$/) do |channel|
-  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
-end
-
-# channel steps
-When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel$/) do
-  child_channel = 'test-channel-x86_64-child-channel'
-  step %(I execute spacewalk\-channel and pass "--add -c #{child_channel} -u admin -p admin")
-end
-
-When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel$/) do
-  child_channel = 'test-channel-x86_64-child-channel'
-  step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
-end
-
-And(/^I navigate to "([^"]*)" page$/) do |page|
+When(/^I navigate to "([^"]*)" page$/) do |page|
   visit("https://#{$server.full_hostname}/#{page}")
 end
 
