@@ -1165,6 +1165,15 @@ type=rpm-md
         try:
             try:
                 temp_file = ""
+                try:
+                    if not urlparse(path).scheme:
+                        (s,b,p,q,f,o) = urlparse(self.url)
+                        if p[-1] != '/':
+                            p = p + '/'
+                        p = p + path
+                        url = urlunparse((s,b,p,q,f,o))
+                except (ValueError, IndexError, KeyError) as e:
+                    return None
                 if local_base is not None:
                     target_file = os.path.join(local_base, path)
                     target_dir = os.path.dirname(target_file)
@@ -1178,7 +1187,7 @@ type=rpm-md
                     return target_file
                 else:
                     return urlgrabber.urlread(path)
-            except urlgrabber.URLGrabError:
+            except urlgrabber.grabber.URLGrabError:
                 return
         finally:
             if os.path.exists(temp_file):
