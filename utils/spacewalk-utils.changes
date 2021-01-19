@@ -1,3 +1,4 @@
+- Fix modular data handling for cloned channels (bsc#1177508)
 - spacewalk-common-channels: Update CentOS6 URLs to use vault.centos.org
 - spacewalk-common-channels: re-use repositories when different channels
   use the same one

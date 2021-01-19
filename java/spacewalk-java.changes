@@ -1,3 +1,4 @@
+- Fix modular data handling for cloned channels (bsc#1177508)
 - Fix: login gets an ISE when SSO is enabled (bsc#1181048)
 - Content Lifecycle Management input validation errors are now displayed at the field-level instead of a popup
 - Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
