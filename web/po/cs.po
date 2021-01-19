@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2021-01-05 19:38+0000\n"
+"PO-Revision-Date: 2021-01-20 09:43+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -221,7 +221,6 @@ msgid "Are you sure you want to {0} {1} "
 msgstr "Opravdu chcete {0} {1} "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
-#, fuzzy
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 
@@ -315,10 +314,10 @@ msgstr ""
 "a konfiguraci softwaru."
 
 #: ../html/src/components/formulas/EditGroup.js:266
-#, fuzzy
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
-"Toto pole se používá jako identifikátor 'klíče' ve výsledných datech pilíře."
+"Toto pole se používá jako identifikátor 'klíče' ve výsledných pilířových "
+"datech (v Salt)."
 
 #: ../html/src/components/formula-selection.js:128
 msgid " No group"
@@ -447,23 +446,20 @@ msgstr "Normální"
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
-#, fuzzy
 msgid "Expert"
 msgstr "Odborník"
 
 #: ../html/src/components/input/Select.stories.js:62
-#, fuzzy
 msgid "Flavor"
-msgstr "Příchuť"
+msgstr "Varianta"
 
 #: ../html/src/components/input/Select.stories.js:64
 msgid "Start typing..."
 msgstr "Začněte psát..."
 
 #: ../html/src/components/input/Select.stories.js:65
-#, fuzzy
 msgid "No flavors"
-msgstr "Bez příchutí"
+msgstr "Bez variant"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
@@ -507,7 +503,6 @@ msgid "Select a Schedule"
 msgstr "Vybrat plán"
 
 #: ../html/src/components/picker/recurring-event-picker.js:314
-#, fuzzy
 msgid "Hourly:"
 msgstr "Co hodinu:"
 
@@ -536,7 +531,6 @@ msgstr ""
 "měsíce"
 
 #: ../html/src/components/picker/recurring-event-picker.js:370
-#, fuzzy
 msgid "Custom Quartz format:"
 msgstr "Vlastní Quartz formát:"
 
@@ -546,7 +540,6 @@ msgstr "např. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:203
-#, fuzzy
 msgid "Security Advisory"
 msgstr "Bezpečnostní poradenství"
 
@@ -790,46 +783,48 @@ msgstr "Všeobecné"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "Zavlékací (Bootstrap) skript"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
-msgstr ""
+msgstr "Organizace"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler Linux server"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "Serverové systémy s jediným virtuálem"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:236
 #: ../html/src/manager/admin/config/monitoring-admin.js:241
 #: ../html/src/manager/admin/config/monitoring-admin.js:253
 msgid "Monitoring"
-msgstr ""
+msgstr "Monitorování"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:264
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
-msgstr ""
+msgstr " Aby se změny konfigurace projevily, je potřeba Tomcat a Taskomatic."
 
 #: ../html/src/manager/admin/setup/products/products.js:114
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
+"Není k dispozici žádné předplatné serveru SUSE Manager. Produkty vyžadující "
+"kanál nástrojů klienta se nezobrazí."
 
 #: ../html/src/manager/admin/setup/products/products.js:156
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "Probíhá aktualizace katalogu produktů..."
 
 #: ../html/src/manager/admin/setup/products/products.js:226
 msgid "Setup Wizard"
@@ -840,27 +835,29 @@ msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
+"Aktualizace údajů o produktu aktuálně běží na pozadí. Zkuste to znovu "
+"později."
 
 #: ../html/src/manager/admin/setup/products/products.js:251
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "Katalog produktů se stále aktualizuje, vyčkejte."
 
 #: ../html/src/manager/admin/setup/products/products.js:253
 msgid "Select some product first."
-msgstr ""
+msgstr "Nejprve vyberte nějaký produkt."
 
 #: ../html/src/manager/admin/setup/products/products.js:262
 #: ../html/src/manager/admin/setup/products/products.js:269
 msgid "Add products"
-msgstr ""
+msgstr "Přidat produkty"
 
 #: ../html/src/manager/admin/setup/products/products.js:286
 msgid "Clear products selection"
-msgstr ""
+msgstr "Vymazat výběr produktů"
 
 #: ../html/src/manager/admin/setup/products/products.js:326
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "Proč se v seznamu nezobrazují všechny produkty?"
 
 #: ../html/src/manager/admin/setup/products/products.js:327
 msgid ""
@@ -868,6 +865,9 @@ msgid ""
 "your                   Organization credentials (Mirror credentials) as well "
 "as your SUSE subscriptions."
 msgstr ""
+"Produkty zobrazené v tomto seznamu jsou přímo propojeny                   s "
+"přihlašovacími údaji Vaší organizace (zrcadlená pověření) a Vašimi "
+"předplatnými SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.js:329
 msgid ""
@@ -875,31 +875,35 @@ msgid ""
 "correct                   Organization credentials in the previous wizard "
 "step."
 msgstr ""
+"Domníváte-li se, že nějaké produkty chybí, ujistěte se, že jste v předchozím "
+"kroku                   průvodce přidali správná pověření organizace."
 
 #: ../html/src/manager/admin/setup/products/products.js:338
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
+"Tento server je konfigurován jako podřízený synchronizace mezi servery (ISS)"
+". Produkty lze spravovat pouze na ISS master."
 
 #: ../html/src/manager/admin/setup/products/products.js:351
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
-msgstr ""
+msgstr "Předchozí"
 
 #: ../html/src/manager/admin/setup/products/products.js:401
 msgid "Filter by architecture"
-msgstr ""
+msgstr "Filtrovat podle architektury"
 
 #: ../html/src/manager/admin/setup/products/products.js:488
 msgid "Filter by product Description"
-msgstr ""
+msgstr "Filtrovat podle popisu produktu"
 
 #: ../html/src/manager/admin/setup/products/products.js:538
 msgid "Product Description"
-msgstr ""
+msgstr "Popis výrobku"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
@@ -907,39 +911,40 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
-msgstr ""
+msgstr "Architektura"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 msgid "Arch"
-msgstr ""
+msgstr "Arch"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 msgid "Channels"
-msgstr ""
+msgstr "Kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:704
 msgid " channels sync failed"
-msgstr ""
+msgstr " synchronizace kanálů selhala"
 
 #: ../html/src/manager/admin/setup/products/products.js:710
 msgid " channels sync in progress"
-msgstr ""
+msgstr " probíhá synchronizace kanálů"
 
 #: ../html/src/manager/admin/setup/products/products.js:716
 msgid " channels synced"
-msgstr ""
+msgstr " kanály synchronizovány"
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
+"Chcete-li povolit tento produkt, je třeba nejprve vybrat nadřazený produkt"
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "Select this product"
-msgstr ""
+msgstr "Zvolit tento produkt"
 
 #: ../html/src/manager/admin/setup/products/products.js:744
 msgid "This product is mirrored."
-msgstr ""
+msgstr "Tento produkt je zrcadlen."
 
 #: ../html/src/manager/admin/setup/products/products.js:770
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
@@ -947,7 +952,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
-msgstr ""
+msgstr "doporučeno"
 
 #: ../html/src/manager/admin/setup/products/products.js:784
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
@@ -955,59 +960,59 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
-msgstr ""
+msgstr "zahrnout, co je doporučeno"
 
 #: ../html/src/manager/admin/setup/products/products.js:824
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "Probíhá aktualizace katalogu produktů SCC"
 
 #: ../html/src/manager/admin/setup/products/products.js:828
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "Plánování resynchronizace produktů kanálů"
 
 #: ../html/src/manager/admin/setup/products/products.js:832
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "Je naplánována resynchronizace produktu kanálů"
 
 #: ../html/src/manager/admin/setup/products/products.js:836
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "Naplánovat resynchronizaci produktů kanálů"
 
 #: ../html/src/manager/admin/setup/products/products.js:875
 msgid "Show product's channels"
-msgstr ""
+msgstr "Zobrazit kanály produktu"
 
 #: ../html/src/manager/admin/setup/products/products.js:899
 msgid "Product Channels - "
-msgstr ""
+msgstr "Kanály produktů - "
 
 #: ../html/src/manager/admin/setup/products/products.js:904
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "Povinné kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:909
 msgid "Optional Channels"
-msgstr ""
+msgstr "Volitelné kanály"
 
 #: ../html/src/manager/admin/setup/products/products.js:931
 msgid "not synced"
-msgstr ""
+msgstr "nesynchronizováno"
 
 #: ../html/src/manager/admin/setup/products/products.js:933
 msgid "sync in progress"
-msgstr ""
+msgstr "probíhá synchronizace"
 
 #: ../html/src/manager/admin/setup/products/products.js:935
 msgid "synced"
-msgstr ""
+msgstr "synchronizováno"
 
 #: ../html/src/manager/admin/setup/products/products.js:937
 msgid "sync failed"
-msgstr ""
+msgstr "synchronizace selhala"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:213
@@ -1017,20 +1022,20 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
-msgstr ""
+msgstr "Aktualizovat"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "Buďte prosím trpěliví, může to trvat několik minut."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
-msgstr ""
+msgstr "Dokončeno"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view.js:600
@@ -1040,57 +1045,58 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:86
 msgid " running"
-msgstr ""
+msgstr " běžící"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:87
 msgid " finished"
-msgstr ""
+msgstr " dokončeno"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:88
 msgid " failed"
-msgstr ""
+msgstr " selhalo"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:89
 msgid " interrupted"
-msgstr ""
+msgstr " přerušeno"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:90
 msgid " ready to run"
-msgstr ""
+msgstr " připraven ke spuštění"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:91
 msgid " skipped"
-msgstr ""
+msgstr " přeskočen"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:107
 msgid "Task Engine Status"
-msgstr ""
+msgstr "Stav stroje úloh"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:115
 msgid "Last Execution Times"
-msgstr ""
+msgstr "Časy posledních provedení"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:116
 msgid "Runtime Status"
-msgstr ""
+msgstr "Stav průběhu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:128
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
 msgstr ""
+"Server běží nebo dokončil provádění těchto úkolů během posledních 5 minut."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "Data se obnovují každých "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid " seconds"
-msgstr ""
+msgstr " sekund"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:139
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:228
@@ -1099,27 +1105,27 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.js:72
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
-msgstr ""
+msgstr "Filtrovat podle názvu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:144
 msgid "Task Id"
-msgstr ""
+msgstr "ID úkolu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:150
 msgid "Task Name"
-msgstr ""
+msgstr "Název úkolu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:156
 msgid "Start Time"
-msgstr ""
+msgstr "Čas spuštění"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:162
 msgid "End Time"
-msgstr ""
+msgstr "Čas ukončení"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:168
 msgid "Elapsed Time"
-msgstr ""
+msgstr "Spotřebovaný čas"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:174
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:234
@@ -1128,22 +1134,24 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:180
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:192
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
+"Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
+"znovu."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1152,11 +1160,11 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:164
 msgid "CVE Audit"
-msgstr ""
+msgstr "Audit CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:170
 msgid "CVE"
