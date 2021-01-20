@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-01-20 11:01+0100\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
@@ -70,6 +70,16 @@ msgstr "Server \"%s\" nemá povolen ISS."
 msgid "Invalid system_id/action_id pair."
 msgstr "Neplatný pár system_id/action_id."
 
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Očekávám jméno balíku, nikoliv \"%s\""
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Očekávám balík, nikoliv \"%s\""
+
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -92,11 +102,6 @@ msgstr "Neplatná hodnota operace typu %s (%s)"
 #, python-format
 msgid "Action %s does not belong to server %s"
 msgstr "Operace %s nenáleží k serveru %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -139,15 +144,10 @@ msgstr "Jako argument u produktu je očekáván slovník"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Očekávám jméno balíku, nikoliv \"%s\""
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Očekávám balík, nikoliv \"%s\""
+msgid "Invalid value %s (%s)"
+msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -187,6 +187,11 @@ msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Tato služba není aktivována pro systémový profil: \"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektura '%s' není podporována"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -233,11 +238,6 @@ msgstr "Nesouhlasí session kickstartu"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Sčítání re-registračních tokenů není podporováno"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektura '%s' není podporována"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -298,44 +298,6 @@ msgstr "uživatelské jméno by mělo mít alespoň %d znaků"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nelze registrovat uživatelská jména končící na %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Byl vyžádán neplatný RPM balík %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Balík nenalezen"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Neplatná žádost (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DŮLEŽITÉ UPOZORNĚNÍ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Při běhu '%s': zachyceno\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Neplatné URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -405,6 +367,44 @@ msgstr ""
 "na:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Byl vyžádán neplatný RPM balík %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Balík nenalezen"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Neplatná žádost (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"DŮLEŽITÉ UPOZORNĚNÍ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Při běhu '%s': zachyceno\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Neplatné URI %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1287,6 +1287,41 @@ msgstr "Import spustitelných stromů (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Importované startovatelné stromy (%d)"
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (uvedeno v příkazovém řádku)\n"
+"nelze otevřít a přečíst:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s“ nelze otevřít a/nebo\n"
+"do něj zapisovat:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:117 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ odesílání protokolu jako e-mailu +++"
+
+#: ../satellite_tools/reposync.py:120
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s synchronizační zpráva od %s"
+
+#: ../satellite_tools/reposync.py:130 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1351,18 +1386,10 @@ msgstr "Hlavní server SUSE Manager nepodporuje synchronizaci dat organizací."
 msgid "Skipping..."
 msgstr "Přeskakuji..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
-msgid "+++ sending log as an email +++"
-msgstr "+++ odesílání protokolu jako e-mailu +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Zpráva o synchronizaci SUSE Manager Inter Server z %s"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ vyžadován e-mail, ale není nic k odeslání +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2070,33 +2097,6 @@ msgstr "  28 - chyba: --master je platný pouze s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznámá verze výpisu, zkuste jeden z %s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (uvedeno v příkazovém řádku)\n"
-"nelze otevřít a přečíst:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s“ nelze otevřít a/nebo\n"
-"do něj zapisovat:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s synchronizační zpráva od %s"
 
 #~ msgid "turn off SSL (not recommended)"
 #~ msgstr "vypnout SSL (nedoporučuje se)"

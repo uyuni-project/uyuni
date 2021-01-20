@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-01-20 11:01+0100\n"
 "PO-Revision-Date: 2020-11-21 02:26+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -75,6 +75,16 @@ msgstr "サーバー「%s」は ISS に有効になっていません。"
 msgid "Invalid system_id/action_id pair."
 msgstr "system_id/action_id の対が正しくありません。"
 
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "パッケージ名が期待されています、次ではありません: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "パッケージが期待されています、 次ではありません: %s"
+
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -99,11 +109,6 @@ msgstr "無効な動作値タイプ %s (%s)"
 #, python-format
 msgid "Action %s does not belong to server %s"
 msgstr "動作 %s はサーバー %s に属していません"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "無効な値  %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -146,15 +151,10 @@ msgstr "製品の引数としてディクショナリが期待されています
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Expected a package name, not: %s"
-msgstr "パッケージ名が期待されています、次ではありません: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "パッケージが期待されています、 次ではありません: %s"
+msgid "Invalid value %s (%s)"
+msgstr "無効な値  %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -197,6 +197,11 @@ msgstr ""
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -243,11 +248,6 @@ msgstr "キックスタートセッションの不一致です"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -308,44 +308,6 @@ msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてく�
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "%s で終わるユーザー名は登録できません"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "無効な RPM パッケージ %s を要求しています"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "パッケージが見つかりません"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "無効な要求を受け取りました (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要なメッセージです:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"「%s」の実行中: 次をキャッチしました\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "無効な URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -421,6 +383,44 @@ msgstr ""
 "さい。\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "無効な RPM パッケージ %s を要求しています"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "パッケージが見つかりません"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "無効な要求を受け取りました (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要なメッセージです:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"「%s」の実行中: 次をキャッチしました\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "無効な URI %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1317,6 +1317,41 @@ msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:117 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 電子メールでログを送信 +++"
+
+#: ../satellite_tools/reposync.py:120
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同期。 %s からのレポート"
+
+#: ../satellite_tools/reposync.py:130 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1381,18 +1416,10 @@ msgstr "SUSE Manager マスターは組織データの同期をサポートし�
 msgid "Skipping..."
 msgstr "飛ばしています..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
-msgid "+++ sending log as an email +++"
-msgstr "+++ 電子メールでログを送信 +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "SUSE Manager サーバ間同期です。 %s からのレポート"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2105,33 +2132,6 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同期。 %s からのレポート"
 
 #~ msgid "turn off SSL (not recommended)"
 #~ msgstr "SSL を無効化する (非推奨)"
