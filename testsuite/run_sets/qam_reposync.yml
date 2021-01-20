@@ -9,6 +9,7 @@
 ## Channels and Product synchronization features BEGIN ###
 
 - features/qam/reposync/srv_sync_qam_products.feature
+- features/qam/reposync/srv_common_channels.feature
 
 ## Channels and Product synchronization features END ###
 
