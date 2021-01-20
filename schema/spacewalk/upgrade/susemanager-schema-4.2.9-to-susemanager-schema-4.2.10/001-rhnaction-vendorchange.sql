@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE IF NOT EXISTS rhnActionDetails 
+CREATE TABLE IF NOT EXISTS rhnActionPackageDetails
 (
     action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_act_eu_act_fk
@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS rhnActionDetails
 );
 
 CREATE INDEX IF NOT EXISTS rhn_act_eud_aid_idx
-    ON rhnActionDetails (action_id);
+    ON rhnActionPackageDetails (action_id);

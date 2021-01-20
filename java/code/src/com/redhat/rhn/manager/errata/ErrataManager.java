@@ -1834,10 +1834,14 @@ public class ErrataManager extends BaseManager {
             concat(updateStackActions,
             nonUpdateStackActions))
             .collect(toList());
-        traditionalErrataActions.stream().forEach(ea-> actionIds.add(ActionManager.storeAction(ea).getId()));
         List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
+        traditionalErrataActions.stream().forEach(ea-> {
+            ea.getActionPackageDetails().setAllowVendorChange(allowVendorChange);
+            actionIds.add(ActionManager.storeAction(ea).getId());
+        });
         minionErrataActions.stream().forEach(ea-> {
+           ea.getActionPackageDetails().setAllowVendorChange(allowVendorChange);
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());
@@ -1845,8 +1849,12 @@ public class ErrataManager extends BaseManager {
         //Taskomatic part is needed only for minionActions
         //and only if actions are not added to an action chain
         if (actionChain == null && !minionTaskoActions.isEmpty()) {
-            taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
-            MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
+            try {
+                taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
+                MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return actionIds;
     }

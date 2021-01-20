@@ -291,7 +291,7 @@ public class SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
-            return errataAction(minions, errataIds);
+            return errataAction(minions, errataIds, errataAction.getActionPackageDetails().getAllowVendorChange());
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -334,7 +334,7 @@ public class SaltServerActionService {
             return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
                     ip -> imageBuildAction(
                             minions,
-                            Optional.ofNullable(details.getVersion()),
+                            ofNullable(details.getVersion()),
                             ip,
                             imageBuildAction.getSchedulerUser(),
                             imageBuildAction.getId())
@@ -467,7 +467,7 @@ public class SaltServerActionService {
                         (actionType != null ? actionType.getName() : "") +
                         " is not supported with Salt");
             }
-            return Collections.emptyMap();
+            return emptyMap();
         }
     }
 
