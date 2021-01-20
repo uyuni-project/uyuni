@@ -110,6 +110,11 @@ When(/^I use spacewalk\-channel to list available channels$/) do
   $command_output, _code = $client.run(command)
 end
 
+When(/^I use spacewalk\-common\-channel to add Debian channel "([^"]*)"$/) do |child_channel|
+  command = "spacewalk-common-channels -u admin -p admin -a amd64-deb #{child_channel}"
+  $command_output, _code = $server.run(command)
+end
+
 Then(/^I should get "([^"]*)"$/) do |value|
   raise "'#{value}' not found in output '#{$command_output}'" unless $command_output.include? value
 end
