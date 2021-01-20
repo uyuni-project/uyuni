@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -137,19 +138,13 @@ public class FileDetailsAction extends RhnAction {
                     StringUtil.displayFileSize(
                             cr.getConfigContent().getFileSize().longValue()));
         }
-        request.setAttribute(REV_CREATED,
-                StringUtil.categorizeTime(cr.getConfigFile().getCreated().getTime(),
-                        StringUtil.WEEKS_UNITS));
+        request.setAttribute(REV_CREATED, cr.getConfigFile().getCreated());
 
         if (cr.getConfigContent() == null) {
-            request.setAttribute(REV_MODIFIED,
-                    StringUtil.categorizeTime(cr.getModified().getTime(),
-                                            StringUtil.WEEKS_UNITS));
+            request.setAttribute(REV_MODIFIED, cr.getModified());
         }
         else {
-            request.setAttribute(REV_MODIFIED,
-                    StringUtil.categorizeTime(cr.getConfigContent().getModified().getTime(),
-                                            StringUtil.WEEKS_UNITS));
+            request.setAttribute(REV_MODIFIED, cr.getConfigContent().getModified());
         }
 
 

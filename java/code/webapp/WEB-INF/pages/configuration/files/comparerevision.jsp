@@ -31,7 +31,8 @@
     </rhn:column>
 
     <rhn:column header="comparerevision.jsp.created">
-        ${current.createdDisplay}
+        <rhn:formatDate humanStyle="from" value="${current.created}"
+                        type="both" dateStyle="short" timeStyle="long"/>
     </rhn:column>
 
     <rhn:column header="comparerevision.jsp.comparison">

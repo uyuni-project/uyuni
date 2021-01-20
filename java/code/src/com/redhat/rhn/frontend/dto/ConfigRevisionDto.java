@@ -107,12 +107,4 @@ public class ConfigRevisionDto extends BaseDto {
         return StringUtil.displayFileSize(fileSize.longValue());
     }
 
-    /**
-     * @return A localized display of the time this revision was created relative
-     *         to now.  Using friendly time display.
-     */
-    public String getCreatedDisplay() {
-        return StringUtil.categorizeTime(created.getTime(), StringUtil.WEEKS_UNITS);
-    }
-
 }
