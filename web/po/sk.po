@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-20 11:02+0100\n"
-"PO-Revision-Date: 2021-01-20 09:43+0000\n"
+"PO-Revision-Date: 2021-02-05 10:01+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -785,7 +785,7 @@ msgstr "Všeobecné"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
-msgstr "Skript Bootstrap"
+msgstr "Zavádzací skript"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
@@ -1224,61 +1224,67 @@ msgstr "Upraviť správcov virtuálnych hostiteľov"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
 msgid "Subscription Matching"
-msgstr ""
+msgstr "Priraďovanie predplatného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Subscriptions"
-msgstr ""
+msgstr "Predplatné"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
 msgid "Unmatched Products"
-msgstr ""
+msgstr "Nepriradené produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Pins "
-msgstr ""
+msgstr "Pripnutia "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Messages "
-msgstr ""
+msgstr "Správy "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
-msgstr ""
+msgstr "Stav údajov priradenia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
 msgstr ""
+"Nepodarilo sa spustiť beh priraďovania. Prosím, kontaktujte svojho "
+"administrátora SUSE Manager a uistite sa, že je spustený plánovač úloh."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
 msgid "No match data is currently available."
-msgstr ""
+msgstr "Momentálne nie sú k dispozícii žiadne dáta priradenia."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "Môžete tiež teraz spustiť prvý beh kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
 msgid "Matching data is currently being recomputed, it was started {0}."
-msgstr ""
+msgstr "Priraďovacie dáta sa momentálne prepočítavajú, bolo to spustené {0}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
 msgstr ""
+"Najnovšie úspešné dáta priradenia boli vypočítané {0}, nový beh môžete "
+"spustiť kliknutím na tlačidlo nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
 msgstr ""
+"Dáta priradenia sa počítajú podľa plánu úloh, každú noc v predvolenom "
+"nastavení (môžete "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "zmeniť plán úloh z administračnej stránky"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
 msgid "). "
@@ -1286,144 +1292,158 @@ msgstr "). "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
 msgid "Refresh matching data"
-msgstr ""
+msgstr "Obnoviť priraďovacie údaje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:20
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "Bolo zistené nepodporované číslo časti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
+"Fyzický systém je hlásený ako virtuálny hosť. prosím, skontrolujte "
+"hardvérové údaje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr ""
+"Virtuálny hosť má neznámeho hostiteľa za predpokladu, že ide o fyzický systém"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "Systém má neznámy počet soketov, predpokladá sa 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr ""
+"Dve predplatné s rovnakým číslom časti sú vo zväzku - zlúčené do jedného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
 msgstr ""
+"Dve predplatné s rovnakým číslom čast (a ďalšími vlastnosťami) boli zlúčené "
+"dohromady - dátum začiatku/konca môže byť orientačný"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
+msgstr "Pripnuté priradenie bolo upravené z dôvodu zlúčeného predplatného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
 msgid "Subscription IDs"
-msgstr ""
+msgstr "ID položiek predplatného"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:67
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "Prosím, skontrolujte varovné a informačné správy nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:77
 msgid "Message"
-msgstr ""
+msgstr "Správa"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:83
 msgid "Additional information"
-msgstr ""
+msgstr "Ďalšie informácie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:93
 msgid "No messages from the last match run."
-msgstr ""
+msgstr "Žiadne správy z posledného behu priradení."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:98
 msgid "Messages"
-msgstr ""
+msgstr "Správy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:74
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
 msgstr ""
+"Môžete pripnúť predplatné systému, aby ste navrhli určité priradenie "
+"algoritmu priraďovania. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:76
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
 msgstr ""
+"Pri ďalšom pokuse o priradenie sa algoritmus pokúsi dosiahnuť výsledok, "
+"ktorým aplikuje predplatné na vami zadaný systém. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:78
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
 msgstr ""
+"Treba upozorniť, že algoritmus môže rozhodnúť, že určité pripnutie nemožno "
+"rešpektovať, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
 msgstr ""
+"v závislosti od pravidiel dostupnosti a použiteľnosti predplatného, v takom "
+"prípade sa zobrazí, že je nespokojný. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:104
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:76
 msgid "Policy"
-msgstr ""
+msgstr "Politika"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:139
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:140
 msgid "Add a Pin"
-msgstr ""
+msgstr "Pridať pripnutie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:159
 msgid "pending next run"
-msgstr ""
+msgstr "čaká na ďalší beh"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
 msgid "not satisfied"
-msgstr ""
+msgstr "nespokojný"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:213
 msgid "Available Systems"
-msgstr ""
+msgstr "Dostupné systémy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:214
 msgid "Step 1/2: select the system to pin from the table below."
-msgstr ""
+msgstr "Krok 1/2: z tabuľky nižšie vyberte systém, ktorý chcete pripnúť."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:234
 msgid "Socket/IFL count"
-msgstr ""
+msgstr "Počet Soket/IFL"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
 msgid "Products"
-msgstr ""
+msgstr "Produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
 msgid "Select"
-msgstr ""
+msgstr "Vybrať"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:261
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "Dostupné predplatné pre vybraný systém"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:262
 msgid "Step 2/2: pick a subscription for system "
-msgstr ""
+msgstr "Krok 2/2: vyberte predplatné pre systém "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:270
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "Späť na výber systému"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:314
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:64
 msgid "Part number"
-msgstr ""
+msgstr "Číslo časti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
@@ -1440,17 +1460,19 @@ msgstr "Popis"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:97
 msgid "End date"
-msgstr ""
+msgstr "Dátum konca"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:337
 msgid "Save Pin"
-msgstr ""
+msgstr "Uložiť pripnutie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:343
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
 msgstr ""
+"Nenašli sa žiadne predplatné, ktoré by zodpovedali tomuto systému vzhľadom "
+"na všetky nainštalované produkty, či už priamo alebo vo virtuálnych hosťoch."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:59
 msgid "Filter by description"
@@ -1458,74 +1480,74 @@ msgstr "Filtrovať podľa popisu"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:82
 msgid "Matched/Total"
-msgstr ""
+msgstr "Priradené/Celkovo"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:88
 msgid "Start date"
-msgstr ""
+msgstr "Dátum začiatku"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:116
 msgid "No subscriptions found."
-msgstr ""
+msgstr "Nenašli sa žiadne predplatné."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:121
 msgid "Your subscriptions"
-msgstr ""
+msgstr "Vaše predplatné"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:58
 msgid "Product name"
-msgstr ""
+msgstr "Názov produktu"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:64
 msgid "Unmatched system count"
-msgstr ""
+msgstr "Počet nepriradených systémov"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:70
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:71
 msgid "Show system list"
-msgstr ""
+msgstr "Zobraziť zoznam systémov"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:90
 msgid "No unmatching products are found."
-msgstr ""
+msgstr "Nenašli sa žiadne nepriraďované produkty."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:140
 msgid "System name"
-msgstr ""
+msgstr "Názov systému"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:145
 msgid "Unmatched systems"
-msgstr ""
+msgstr "Nepriradené systémy"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:39
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:44
 msgid "Add Cluster"
-msgstr ""
+msgstr "Pridať klaster"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:53
 msgid "Select management node"
-msgstr ""
+msgstr "Vybrať uzol správy"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:62
 #: ../html/src/manager/clusters/cluster/cluster.js:103
 msgid "Provider Settings"
-msgstr ""
+msgstr "Nastavenia poskytovateľa"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:77
 msgid "Provider:"
-msgstr ""
+msgstr "Poskytovateľ:"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:81
 msgid "Management Node:"
-msgstr ""
+msgstr "Uzol správy:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:45
 msgid "Add cluster"
-msgstr ""
+msgstr "Pridať klaster"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:69
 msgid "Name:"
-msgstr ""
+msgstr "Názov:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
@@ -1538,15 +1560,15 @@ msgstr "Popis:"
 
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:21
 msgid "Available cluster providers"
-msgstr ""
+msgstr "Dostupní poskytovatelia klastrov"
 
 #: ../html/src/manager/clusters/cluster/cluster-config.js:59
 msgid "Settings saved successfully"
-msgstr ""
+msgstr "Nastavenia sa úspešne uložili"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 msgid "Action has been "
-msgstr ""
+msgstr "Akcia bola "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 #: ../html/src/manager/images/image-build.js:178
@@ -1554,7 +1576,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
-msgstr ""
+msgstr "naplánované"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
@@ -1566,61 +1588,61 @@ msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:22
 msgid "Cluster "
-msgstr ""
+msgstr "Klaster "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:74
 #: ../html/src/manager/clusters/cluster/cluster.js:85
 msgid "Delete cluster"
-msgstr ""
+msgstr "Vymazať klaster"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:75
 msgid "Delete Cluster"
-msgstr ""
+msgstr "Vymazať klaster"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "Are you sure you want to delete cluster?"
-msgstr ""
+msgstr "Naozaj chcete vymazať klaster?"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
+msgstr "Klaster sa týmto nezničí. Odstráni ho to iba z Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:98
 #: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.js:61
 msgid "Overview"
-msgstr ""
+msgstr "Prehľad"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:32
 #: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
-msgstr ""
+msgstr "Áno"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:87
 msgid "System group refresh action scheduled successfully"
-msgstr ""
+msgstr "Akcia obnovenia systémovej skupiny bola úspešne naplánovaná"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:112
 msgid "Cluster properties updated successfully"
-msgstr ""
+msgstr "Vlastnosti klastra sa úspešne aktualizovali"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:185
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:241
 msgid "Edit cluster details"
-msgstr ""
+msgstr "Upraviť podrobnosti klastra"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:198
 msgid "Join node"
-msgstr ""
+msgstr "Pripojiť uzol"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:207
 #: ../html/src/manager/clusters/remove-node/remove-node.js:47
 msgid "Remove node"
-msgstr ""
+msgstr "Odstrániť uzol"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:221
 msgid "Upgrade cluster"
-msgstr ""
+msgstr "Zvýšiť verziu klastra"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:228
 msgid "Refresh system group"
@@ -1628,11 +1650,11 @@ msgstr "Obnoviť systémovú skupinu"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:235
 msgid "Cluster Properties"
-msgstr ""
+msgstr "Vlastnosti klastra"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:240
 msgid "Edit properties"
-msgstr ""
+msgstr "Upraviť vlastnosti"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
@@ -1650,12 +1672,12 @@ msgstr "Označenie"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:260
 msgid "Cluster provider"
-msgstr ""
+msgstr "Poskytovateľ klastrov"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:264
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:108
 msgid "Management node"
-msgstr ""
+msgstr "Uzol správy"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:268
 msgid "System group"
@@ -1670,21 +1692,21 @@ msgstr "Filtrovať podľa ľubovoľnej hodnoty"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:303
 msgid "Node Hostname"
-msgstr ""
+msgstr "Názov hostiteľa uzla"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:310
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
-msgstr ""
+msgstr "(žiadne)"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:38
 msgid "Join "
-msgstr ""
+msgstr "Pripojiť "
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:41
 msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr ""
+msgstr "POZNÁMKA: pred pripojením nového uzla sa uistite, že uzol má:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:43
 msgid ""
@@ -1698,40 +1720,41 @@ msgstr ""
 msgid ""
 "The management node can access the node as root via ssh without password"
 msgstr ""
+"Uzol správy môže pristupovať k uzlu ako root prostredníctvom ssh bez hesla"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:51
 msgid "Select system to join"
-msgstr ""
+msgstr "Vybrať systém, ktorý sa má pripojiť"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:59
 msgid "New node configuration"
-msgstr ""
+msgstr "Konfigurácia nového uzla"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:72
 msgid "Schedule join node"
-msgstr ""
+msgstr "Naplánovať pripojenie uzla"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:76
 #: ../html/src/manager/clusters/remove-node/remove-node.js:63
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
 msgid "Cluster:"
-msgstr ""
+msgstr "Klaster:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:80
 msgid "Node to join:"
-msgstr ""
+msgstr "Uzol na pripojenie:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:88
 msgid "Join"
-msgstr ""
+msgstr "Pripojiť"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
 msgid "Add an existing cluster"
-msgstr ""
+msgstr "Pridať existujúci klaster"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:70
 msgid "Clusters"
-msgstr ""
+msgstr "Klastre"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:99
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
@@ -1746,47 +1769,47 @@ msgstr "Typ"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:40
 msgid "Remove nodes"
-msgstr ""
+msgstr "Odstrániť uzly"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:59
 msgid "Schedule remove node"
-msgstr ""
+msgstr "Naplánovať odstránenie uzla"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:67
 msgid "Nodes to remove:"
-msgstr ""
+msgstr "Uzly na odstránenie:"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
 msgid "Upgrade "
-msgstr ""
+msgstr "Zvýšiť verziu "
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:48
 msgid "Configuration override"
-msgstr ""
+msgstr "Prepísanie konfigurácie"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:60
 msgid "Schedule upgrade cluster"
-msgstr ""
+msgstr "Naplánovať zvýšenie verzie klastra"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
 msgid "Upgrade"
-msgstr ""
+msgstr "Zvýšenie verzie"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
 msgid "Upgrade plan"
-msgstr ""
+msgstr "Plán zvýšenia verzie"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
-msgstr ""
+msgstr "Na vykonanie tejto akcie nemáte oprávnenia"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
-msgstr ""
+msgstr "Vytvoriť nový projekt životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
-msgstr ""
+msgstr "Vytvoriť projekt"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.js:367
@@ -1801,47 +1824,47 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
-msgstr ""
+msgstr "Vytvoriť"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:31
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:24
 msgid "Module"
-msgstr ""
+msgstr "Modul"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:36
 msgid "Select a module..."
-msgstr ""
+msgstr "Vybrať modul..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:37
 msgid "No modules available"
-msgstr ""
+msgstr "Žiadne dostupné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:43
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:148
 msgid "Stream"
-msgstr ""
+msgstr "Prúd"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:48
 msgid "Select a stream..."
-msgstr ""
+msgstr "Vybrať prúd..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:49
 msgid "No streams available"
-msgstr ""
+msgstr "Nie sú k dispozícii žiadne prúdy"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:34
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
-msgstr ""
+msgstr "Kanál"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
-msgstr ""
+msgstr "Názov modulu"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:23
 msgid "Updating the filter..."
-msgstr ""
+msgstr "Aktualizovanie filtra..."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:74
 msgid "Filter Details"
@@ -1849,41 +1872,43 @@ msgstr "Podrobnosti filtra"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:75
 msgid "Create a new filter"
-msgstr ""
+msgstr "Vytvoriť nový filter"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:119
 msgid "Filter deleted successfully"
-msgstr ""
+msgstr "Filter bol úspešne vymazaný"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:151
 msgid "Check the required fields below"
-msgstr ""
+msgstr "Skontrolujte povinné polia nižšie"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:160
 msgid "Filter updated successfully"
-msgstr ""
+msgstr "Filter bol úspešne aktualizovaný"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:175
 msgid "Filter created successfully"
-msgstr ""
+msgstr "Filter bol úspešne vytvorený"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:65
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr ""
+"Majte na pamäti, že všetky pridružené projekty musia byť po aktualizácii "
+"filtra znovu zostavené"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:72
 msgid "Filter Name"
-msgstr ""
+msgstr "Názov filtra"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:82
 msgid "Filter Type"
-msgstr ""
+msgstr "Typ filtra"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:96
 msgid "Matcher"
-msgstr ""
+msgstr "Párovač"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:111
 #: ../html/src/manager/content-management/list-filters/filter-form.js:123
@@ -1892,12 +1917,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
-msgstr ""
+msgstr "Názov balíka"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:130
 #: ../html/src/manager/content-management/list-filters/filter-form.js:168
 msgid "Epoch"
-msgstr ""
+msgstr "Obdobie"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:135
 #: ../html/src/manager/content-management/list-filters/filter-form.js:173
@@ -1907,12 +1932,12 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
 msgid "Version"
-msgstr ""
+msgstr "Verzia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:142
 #: ../html/src/manager/content-management/list-filters/filter-form.js:180
 msgid "Release"
-msgstr ""
+msgstr "Vydanie"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:192
 msgid "Advisory name"
@@ -1933,21 +1958,21 @@ msgstr "Typ upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:218
 msgid "Issued"
-msgstr ""
+msgstr "Vydané"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:230
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
-msgstr ""
+msgstr "Súhrn"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:243
 msgid "Reboot Required"
-msgstr ""
+msgstr "Vyžaduje sa reštart"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:244
 msgid "Package Manager Restart Required"
-msgstr ""
+msgstr "Vyžaduje sa reštart správcu balíkov"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:247
 msgid "Advisory Keywords"
@@ -1956,57 +1981,57 @@ msgstr "Kľúčové slová upozornenia"
 #: ../html/src/manager/content-management/list-filters/filter-form.js:277
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
-msgstr ""
+msgstr "Odmietnuť"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:278
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
-msgstr ""
+msgstr "Umožniť"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:280
 msgid "Rule"
-msgstr ""
+msgstr "Pravidlo"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:63
 msgid "Content Lifecycle Filters"
-msgstr ""
+msgstr "Filtre životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:84
 msgid "Projects in use"
-msgstr ""
+msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:65
 msgid "Create a new content lifecycle project"
-msgstr ""
+msgstr "Vytvoriť nový projekt životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:66
 msgid "Create Project"
-msgstr ""
+msgstr "Vytvoriť projekt"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:74
 msgid "Content Lifecycle Projects"
-msgstr ""
+msgstr "Projekty životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
-msgstr ""
+msgstr "Životný cyklus prostredia"
 
 #: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
-msgstr ""
+msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
 
 #: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
-msgstr ""
+msgstr "Projekt životného cyklu obsahu - {0}"
 
 #: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
-msgstr ""
+msgstr "Vymazať projekt"
 
 #: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
-msgstr ""
+msgstr "Naozaj chcete vymazať projekt"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:70
 #: ../html/src/manager/login/use-login-api.js:54
@@ -2018,6 +2043,8 @@ msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
 msgstr ""
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
+"Prosím, skúste znova."
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:16
 msgid "Package"
@@ -2029,85 +2056,85 @@ msgstr "Oprava"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:31
 msgid "contains"
-msgstr ""
+msgstr "obsahuje"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:32
 msgid "containing"
-msgstr ""
+msgstr "obsahujúce"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:36
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:81
 msgid "matches"
-msgstr ""
+msgstr "zhoduje sa"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:37
 msgid "regular expression matches package name"
-msgstr ""
+msgstr "regulárny výraz sa zhoduje s názvom balíka"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:41
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:71
 msgid "equals"
-msgstr ""
+msgstr "rovná sa"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:42
 msgid "contains package name equals"
-msgstr ""
+msgstr "obsahuje názov balíka rovný"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:46
 msgid "version lower than"
-msgstr ""
+msgstr "verzia nižšia ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:47
 msgid "contains package with epoch/version/release lower than"
-msgstr ""
+msgstr "obsahuje balík s obdobím/verziou/vydaním nižším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:51
 msgid "version lower or equal than"
-msgstr ""
+msgstr "verzia nižšia alebo rovná ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:52
 msgid "contains package with epoch/version/release lower or equal than"
-msgstr ""
+msgstr "obsahuje balík s obdobím/verziou/vydaním nižším alebo rovným ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:56
 msgid "version equal"
-msgstr ""
+msgstr "verzia rovnaká"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:57
 msgid "contains package with epoch/version/release equal than"
-msgstr ""
+msgstr "obsahuje balík s obdobím/verziou/vydaním rovnakým ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:61
 msgid "version greater or equal than"
-msgstr ""
+msgstr "verzia väčšia alebo rovná ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:62
 msgid "contains package with epoch/version/release greater or equal than"
-msgstr ""
+msgstr "obsahuje balík s obdobím/verziou/vydaním väčším alebo rovným ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:67
 msgid "contains package with epoch/version/release greater than"
-msgstr ""
+msgstr "obsahuje balík s obdobím/verziou/vydaním väčším ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:72
 msgid "equal"
-msgstr ""
+msgstr "rovnaké"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:76
 msgid "later or equal"
-msgstr ""
+msgstr "neskorší alebo rovnaký"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:77
 msgid "later or equal than"
-msgstr ""
+msgstr "neskorší alebo rovnaký ako"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:82
 msgid "matches regular expression"
-msgstr ""
+msgstr "sa zhoduje s regulárnym výrazom"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:96
 msgid "NEVRA"
-msgstr ""
+msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
@@ -2115,19 +2142,19 @@ msgstr "Názov upozornenia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
-msgstr ""
+msgstr "Kľúčové slovo"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:126
 msgid "Issue date"
-msgstr ""
+msgstr "Dátum vydania"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:132
 msgid "Contains Package Name"
-msgstr ""
+msgstr "Obsahuje názov balíka"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:138
 msgid "Contains Package"
-msgstr ""
+msgstr "Obsahuje balík"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
@@ -2135,7 +2162,7 @@ msgstr "povoliť modul"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
 msgid "Build ({0})"
-msgstr ""
+msgstr "Zostaviť ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
@@ -2145,15 +2172,15 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.js:375
 #: ../html/src/manager/images/image-view-overview.js:457
 msgid "Build"
-msgstr ""
+msgstr "Zostaviť"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
 msgid "Build Project"
-msgstr ""
+msgstr "Zostaviť projekt"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
 msgid "Building project.."
-msgstr ""
+msgstr "Zostavuje sa projekt.."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
 msgid "Version Message"
@@ -2229,31 +2256,31 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
-msgstr ""
+msgstr "Upraviť filter {0}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Filters"
-msgstr ""
+msgstr "Filtre"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
 msgid "Attach/Detach Filters"
-msgstr ""
+msgstr "Pripojiť/Odpojiť filtre"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
 msgid "Filter edited successfully"
-msgstr ""
+msgstr "Filter bol úspešne upravený"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
-msgstr ""
+msgstr "Položky AppStream"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
-msgstr ""
+msgstr "povolené prúdy modulov"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
-msgstr ""
+msgstr "odfiltrovať"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
@@ -2262,15 +2289,15 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
 msgid "Loading global filters..."
-msgstr ""
+msgstr "Načítavajú sa globálne filtre..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
 msgid "Updating project filters..."
-msgstr ""
+msgstr "Aktualizácia filtrov projektu..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
 msgid "Create New Filter"
-msgstr ""
+msgstr "Vytvoriť nový filter"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
@@ -2283,7 +2310,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
 msgid "Promoting project.."
-msgstr ""
+msgstr "Povyšovanie projektu.."
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
 msgid "Target environment"
@@ -2304,23 +2331,23 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
-msgstr ""
+msgstr "Vlastnosti projektu"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
 msgid "(draft - not built) - Check the changes below"
-msgstr ""
+msgstr "(návrh - nezostavené) - Skontrolujte zmeny uvedené nižšie"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
 msgid "Edit Properties"
-msgstr ""
+msgstr "Upraviť vlastnosti"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:67
 msgid "Project properties updated successfully"
-msgstr ""
+msgstr "Vlastnosti projektu sa úspešne aktualizovali"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:86
 msgid "Editing properties.."
-msgstr ""
+msgstr "Upravovanie vlastností.."
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
@@ -2382,6 +2409,8 @@ msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization. The address you are copying may also be outdated."
 msgstr ""
+"Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis "
+"a veľké písmená. Adresa, ktorú kopírujete, môže byť tiež zastaraná."
 
 #: ../html/src/manager/errors/not-found.js:25
 msgid ""
@@ -2396,6 +2425,8 @@ msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
 msgstr ""
+"Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
+"tejto skupine"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
@@ -2781,7 +2812,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.js:460
 #: ../html/src/manager/images/image-view-overview.js:107
 msgid "Cluster"
-msgstr ""
+msgstr "Klaster"
 
 #: ../html/src/manager/images/image-view.js:461
 #: ../html/src/manager/images/image-view.js:515
@@ -2792,7 +2823,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.js:487
 #: ../html/src/manager/images/image-view-overview.js:134
 msgid "View cluster summary"
-msgstr ""
+msgstr "Zobraziť súhrn klastrov"
 
 #: ../html/src/manager/images/image-view.js:508
 #: ../html/src/manager/images/image-view.js:670
@@ -2983,11 +3014,11 @@ msgstr "Upozornenie na vylepšenia produktu"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "Vyžaduje sa reštart"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
-msgstr ""
+msgstr "Ovplyvňuje zásobník správy balíkov"
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
@@ -3007,11 +3038,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
-msgstr ""
+msgstr "Klaster je v súlade so SUSE Manager"
 
 #: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "Klaster je zastaraný"
 
 #: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
@@ -3026,6 +3057,9 @@ msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
+"Vyžaduje sa zvýšenie verzie schémy. Zvýšte verziu svojej schémy hneď, ako sa "
+"vám to bude hodiť, aby ste dostávali najnovšie opravy chýb a vyhli sa "
+"potenciálnym problémom."
 
 #: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
@@ -3402,7 +3436,7 @@ msgstr "Synchronizácia kanála je dokončená"
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr "Vytvorenie repozitára Bootstrap zlyhalo"
+msgstr "Vytvorenie zavádzacieho repozitára zlyhalo"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
@@ -3418,7 +3452,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
-msgstr ""
+msgstr "Varovanie"
 
 #: ../html/src/manager/notifications/notification-messages.js:217
 msgid "Error"
@@ -3463,7 +3497,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:398
 msgid "Filter by summary"
-msgstr ""
+msgstr "Filtrovať podľa súhrnu"
 
 #: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
@@ -3471,7 +3505,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
-msgstr ""
+msgstr "Súhrn"
 
 #: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
@@ -3528,6 +3562,8 @@ msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
 msgstr ""
+"Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
+"tejto organizácii"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:48
 #: ../html/src/manager/salt/keys/key-management.js:55
@@ -3560,7 +3596,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
-msgstr ""
+msgstr "Prestať čakať na odpoveď všetkých klientov minion"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
@@ -3569,7 +3605,7 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
-msgstr ""
+msgstr "Skontrolujte, ktorí klienti minion sa zhodujú s cieľovým výrazom"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
@@ -3577,7 +3613,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
-msgstr ""
+msgstr "Spustiť príkaz na cieľových klientoch minion"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
@@ -3589,7 +3625,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:193
 msgid "Type the minion_id pattern to target here"
-msgstr ""
+msgstr "Sem zadajte vzor minion_id, na ktorý sa chcete zamerať"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:205
 msgid "Target systems"
@@ -3605,11 +3641,11 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
-msgstr ""
+msgstr "Nie všetci klienti minion odpovedali včas."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
-msgstr ""
+msgstr "Žiadni klienti minion sa nezhodovali s cieľovým výrazom."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
@@ -3618,7 +3654,7 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
-msgstr ""
+msgstr "Priraďovanie ssh-push klientom minion..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
@@ -3664,7 +3700,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.js:170
 msgid "Filter menu"
-msgstr ""
+msgstr "Ponuka filtra"
 
 #: ../html/src/manager/shared/menu/menu.js:205
 #: ../html/src/manager/shared/menu/menu.js:208
@@ -3816,10 +3852,12 @@ msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
+"Požiadavka bola prerušená alebo bola zo servera prijatá neplatná odpoveď. "
+"Prosím, skontrolujte, či bol váš klient minion správne zavedený."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr ""
+msgstr "Hostiteľ bol úspešne zavedený! Váš systém by sa mal objaviť v"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "systems"
@@ -3831,7 +3869,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
 msgid "Your system is bootstrapping: waiting for a response.."
-msgstr ""
+msgstr "Váš systém sa zavádza: čakanie na odpoveď.."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
 msgid "Loading SSH Private Key.."
@@ -3839,7 +3877,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr "Bootstrap"
+msgstr "Zavádzať"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
@@ -3855,6 +3893,8 @@ msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
+"Súbor bude uložený v dočasnom súbore na serveri a bude vymazaný po "
+"zavádzacej procedúre"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
 msgid "SSH Private Key Passphrase"
@@ -3866,7 +3906,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
-msgstr ""
+msgstr "Zavádzať klientov minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
@@ -3902,7 +3942,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/delete-system.js:16
 msgid "Cleanup timed out. Please check if the machine is reachable."
-msgstr ""
+msgstr "Vyčistenie vypršalo. Prosím, skontrolujte, či je stroj dosiahnuteľný."
 
 #: ../html/src/manager/systems/delete-system.js:17
 msgid "No result found in state apply response."
@@ -4001,7 +4041,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:214
 msgid "Systems subscribed to"
-msgstr ""
+msgstr "Systémy prihlásené k"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:388
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:565
@@ -4034,18 +4074,24 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:477
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
+"Ak pre kanál nechcete robiť žiadne zmeny, zaškrtnite Nerobiť nič pre tento "
+"kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr ""
+"Ak chcete prihlásiť vybrané systémy ku kanálu, zaškrtnite Prihlásený pre "
+"tento kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
 msgstr ""
+"Ak chcete odhlásiť vybrané systémy z kanála, zaškrtnite Odhlásený pre tento "
+"kanál."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
@@ -4106,6 +4152,9 @@ msgid ""
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
+"Tento systém je prihlásený k zaškrtnutým kanálom uvedeným nižšie, ak nejaké "
+"sú. Zablokované zaškrtávacie polia označujú kanály, ku ktorým nie je možné "
+"sa ručne prihlásiť alebo odhlásiť."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
@@ -4124,11 +4173,11 @@ msgstr "Bolo spustené obnovenie dát pre tohto správcu virtuálnych hostiteľo
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
 msgid "Nodes"
-msgstr ""
+msgstr "Uzly"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
 msgid "OS"
@@ -4192,7 +4241,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
 msgid "Kubernetes Cluster"
-msgstr ""
+msgstr "Klaster Kubernetes"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
 msgid "Amazon EC2"
@@ -4322,6 +4371,8 @@ msgstr ""
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
+"Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na "
+"tomto hostiteľovi."
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Guest"
@@ -4424,7 +4475,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
-msgstr ""
+msgstr "Prosím, nainštalujte modul libvirt python."
 
 #: ../html/src/manager/virtualization/ListTab.js:143
 msgid "{0} selected"
@@ -4498,7 +4549,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
-msgstr ""
+msgstr "Filtrovať podľa názvu zväzku alebo fondu"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
@@ -4628,11 +4679,11 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
-msgstr ""
+msgstr "Režim oprávnení"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
-msgstr ""
+msgstr "oprávnenia cieľového adresára v osmičkovej forme, napríklad 0775"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
@@ -4665,11 +4716,11 @@ msgstr "Pridať potomkov do SSM"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
-msgstr ""
+msgstr "Filtrovanie"
 
 #: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
-msgstr ""
+msgstr "Rozdelenie"
 
 #: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
@@ -4699,7 +4750,7 @@ msgstr "napr. client.nue.sles"
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
-msgstr ""
+msgstr "Filtrovať podľa základného kanála systému"
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
@@ -4708,7 +4759,7 @@ msgstr "napr. SLE12"
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
-msgstr ""
+msgstr "Filtrovať podľa nainštalovaných produktov systémov"
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
@@ -4716,7 +4767,7 @@ msgstr "napr. SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
-msgstr ""
+msgstr "Rozdeliť systémy na základe toho, či pre ne existujú opravy:"
 
 #: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
@@ -4724,11 +4775,11 @@ msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
-msgstr ""
+msgstr " filtre"
 
 #: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
-msgstr ""
+msgstr "Rozdeliť systémy podľa daného času registrácie:"
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
