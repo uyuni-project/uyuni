@@ -85,6 +85,44 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
 
+When(/^I add "([^"]*)" channel$/) do |channel|
+  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
+end
+
+When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
+  command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
+  $command_output, _code = $client.run(command)
+end
+
+Then(/^spacewalk\-channel should fail adding "([^"]*)"$/) do |invalid_channel|
+  command = "spacewalk-channel --add -c #{invalid_channel} -u admin -p admin"
+  $command_output, code = $client.run(command, false)
+  raise "#{command} should fail, but hasn't" if code.zero?
+end
+
+When(/^I use spacewalk\-channel to remove "([^"]*)"$/) do |child_channel|
+  command = "spacewalk-channel --remove -c #{child_channel} -u admin -p admin"
+  $command_output, _code = $client.run(command)
+end
+
+When(/^I use spacewalk\-channel to list channels$/) do
+  command = "spacewalk-channel --list"
+  $command_output, _code = $client.run(command)
+end
+
+When(/^I use spacewalk\-channel to list available channels$/) do
+  command = "spacewalk-channel --available-channels -u admin -p admin"
+  $command_output, _code = $client.run(command)
+end
+
+Then(/^I should get "([^"]*)"$/) do |value|
+  raise "'#{value}' not found in output '#{$command_output}'" unless $command_output.include? value
+end
+
+Then(/^I shouldn't get "([^"]*)"$/) do |value|
+  raise "'#{value}' found in output '#{$command_output}'" if $command_output.include? value
+end
+
 # Packages
 
 Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
@@ -519,26 +557,6 @@ end
 When(/^I clean the search index on the server$/) do
   output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
   raise 'The output includes an error log' if output[:stdout].include?('ERROR')
-end
-
-When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
-  command = "spacewalk-channel #{arg1}"
-  $command_output, _code = $client.run(command)
-end
-
-When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
-  command = "spacewalk-channel #{arg1}"
-  # we are checking that the cmd should fail here
-  $command_output, code = $client.run(command, false)
-  raise "#{command} should fail, but hasn't" if code.zero?
-end
-
-Then(/^I should get "([^"]*)"$/) do |arg1|
-  raise "'#{arg1}' not found in output '#{$command_output}'" unless $command_output.include? arg1
-end
-
-Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
-  raise "'#{arg1}' found in output '#{$command_output}'" unless not $command_output.include? arg1
 end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
