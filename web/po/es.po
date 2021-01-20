@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-01-20 11:02+0100\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -225,9 +225,9 @@ msgstr ""
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
-#: ../html/src/components/panels/CreatorPanel.js:107
+#: ../html/src/components/panels/CreatorPanel.js:113
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:166
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:131
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:134
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -243,8 +243,8 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
-#: ../html/src/components/panels/CreatorPanel.js:93
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:110
+#: ../html/src/components/panels/CreatorPanel.js:99
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:113
 #: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/images/image-profiles.js:106
@@ -326,10 +326,10 @@ msgid ""
 msgstr ""
 
 #: ../html/src/components/formula-selection.js:234
-#: ../html/src/components/panels/CreatorPanel.js:118
+#: ../html/src/components/panels/CreatorPanel.js:124
 #: ../html/src/manager/clusters/cluster/cluster-config.js:81
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:174
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:144
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:147
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
 msgstr "Guardar"
@@ -529,7 +529,7 @@ msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
 #: ../html/src/components/systems.js:45
-#: ../html/src/manager/content-management/list-filters/filter-form.js:203
+#: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Security Advisory"
 msgstr "Recomendación de seguridad"
 
@@ -881,7 +881,7 @@ msgstr "Descripción de producto"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
-#: ../html/src/manager/content-management/list-filters/filter-form.js:147
+#: ../html/src/manager/content-management/list-filters/filter-form.js:149
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1129,7 +1129,6 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:468
 #: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
 msgstr "Se produjo un error en el servidor; revise los archivos de registro."
 
@@ -1158,8 +1157,8 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.js:79
 #: ../html/src/manager/content-management/list-projects/list-projects.js:90
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:90
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:29
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
@@ -1398,9 +1397,9 @@ msgstr "Número de parte"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:256
 #: ../html/src/manager/content-management/list-projects/list-projects.js:102
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:48
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
 msgstr "Descripción"
@@ -1605,9 +1604,9 @@ msgid "Edit properties"
 msgstr "Editar propiedades"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
 #: ../html/src/manager/images/image-profile-edit.js:381
 #: ../html/src/manager/images/image-profiles.js:134
 #: ../html/src/manager/images/image-store-edit.js:193
@@ -1748,11 +1747,11 @@ msgstr ""
 msgid "Upgrade plan"
 msgstr ""
 
-#: ../html/src/manager/content-management/create-project/create-project.js:29
+#: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
 msgstr ""
 
-#: ../html/src/manager/content-management/create-project/create-project.js:34
+#: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
 msgstr ""
 
@@ -1816,64 +1815,64 @@ msgstr "Nombre del filtro"
 msgid "Updating the filter..."
 msgstr "Actualizando el filtro…"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:72
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:74
 msgid "Filter Details"
 msgstr "Detalles del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:73
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:75
 msgid "Create a new filter"
 msgstr "Crear un filtro nuevo"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:116
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:119
 msgid "Filter deleted successfully"
 msgstr "Se eliminó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:148
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:151
 msgid "Check the required fields below"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:157
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:160
 msgid "Filter updated successfully"
 msgstr "Se actualizó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:171
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:175
 msgid "Filter created successfully"
 msgstr "Se creó el filtro correctamente"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:63
+#: ../html/src/manager/content-management/list-filters/filter-form.js:65
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:70
+#: ../html/src/manager/content-management/list-filters/filter-form.js:72
 msgid "Filter Name"
 msgstr "Nombre del filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:80
+#: ../html/src/manager/content-management/list-filters/filter-form.js:82
 msgid "Filter Type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:94
+#: ../html/src/manager/content-management/list-filters/filter-form.js:96
 msgid "Matcher"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:109
-#: ../html/src/manager/content-management/list-filters/filter-form.js:121
-#: ../html/src/manager/content-management/list-filters/filter-form.js:159
-#: ../html/src/manager/content-management/list-filters/filter-form.js:255
+#: ../html/src/manager/content-management/list-filters/filter-form.js:111
+#: ../html/src/manager/content-management/list-filters/filter-form.js:123
+#: ../html/src/manager/content-management/list-filters/filter-form.js:161
+#: ../html/src/manager/content-management/list-filters/filter-form.js:257
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:128
-#: ../html/src/manager/content-management/list-filters/filter-form.js:166
+#: ../html/src/manager/content-management/list-filters/filter-form.js:130
+#: ../html/src/manager/content-management/list-filters/filter-form.js:168
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:133
-#: ../html/src/manager/content-management/list-filters/filter-form.js:171
+#: ../html/src/manager/content-management/list-filters/filter-form.js:135
+#: ../html/src/manager/content-management/list-filters/filter-form.js:173
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -1882,61 +1881,61 @@ msgstr ""
 msgid "Version"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:140
-#: ../html/src/manager/content-management/list-filters/filter-form.js:178
+#: ../html/src/manager/content-management/list-filters/filter-form.js:142
+#: ../html/src/manager/content-management/list-filters/filter-form.js:180
 msgid "Release"
 msgstr "Versión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:190
+#: ../html/src/manager/content-management/list-filters/filter-form.js:192
 msgid "Advisory name"
 msgstr "Nombre de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:204
+#: ../html/src/manager/content-management/list-filters/filter-form.js:206
 msgid "Bug Fix Advisory"
 msgstr "Recomendación de corrección de error"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:205
+#: ../html/src/manager/content-management/list-filters/filter-form.js:207
 msgid "Product Enhancement Advisory"
 msgstr "Recomendación de mejoras de productos"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:207
+#: ../html/src/manager/content-management/list-filters/filter-form.js:209
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
 msgstr "Tipo de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:216
+#: ../html/src/manager/content-management/list-filters/filter-form.js:218
 msgid "Issued"
 msgstr "Emisión"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:228
+#: ../html/src/manager/content-management/list-filters/filter-form.js:230
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "Sinopsis"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:241
+#: ../html/src/manager/content-management/list-filters/filter-form.js:243
 msgid "Reboot Required"
 msgstr "Se necesita un reinicio"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:242
+#: ../html/src/manager/content-management/list-filters/filter-form.js:244
 msgid "Package Manager Restart Required"
 msgstr "Se necesita reiniciar el gestor de paquetes"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:245
+#: ../html/src/manager/content-management/list-filters/filter-form.js:247
 msgid "Advisory Keywords"
 msgstr "Palabras clave de recomendación"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:275
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/list-filters/filter-form.js:277
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
 msgstr "Denegar"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:276
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/list-filters/filter-form.js:278
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
 msgstr "Permitir"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:278
+#: ../html/src/manager/content-management/list-filters/filter-form.js:280
 msgid "Rule"
 msgstr "Regla"
 
@@ -1981,7 +1980,7 @@ msgstr "Eliminar proyecto"
 msgid "Are you sure you want to delete project"
 msgstr "¿Confirma que quiere eliminar el proyecto"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:67
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:70
 #: ../html/src/manager/login/use-login-api.js:54
 #: ../html/src/manager/virtualization/ActionApi.js:47
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -2141,7 +2140,7 @@ msgstr ""
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:57
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
 msgstr ""
 
@@ -2153,19 +2152,19 @@ msgstr ""
 msgid "Environment created successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:70
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:87
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:105
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:107
 msgid "Environment updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:120
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:123
 msgid "Environment {0} deleted successfully"
 msgstr ""
 
@@ -2217,19 +2216,19 @@ msgstr ""
 msgid "Filter edited successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr ""
@@ -2275,7 +2274,7 @@ msgstr ""
 msgid "Version {0} successfully promoted into {1}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:17
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
 msgstr ""
@@ -2288,11 +2287,11 @@ msgstr ""
 msgid "Edit Properties"
 msgstr "Editar propiedades"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:63
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:67
 msgid "Project properties updated successfully"
 msgstr "Se actualizaron las propiedades del proyecto correctamente"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:81
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:86
 msgid "Editing properties.."
 msgstr "Editando propiedades…"
 
@@ -3511,7 +3510,6 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.js:57
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
@@ -4753,16 +4751,4 @@ msgstr ""
 
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
-msgstr ""
-
-#: ../html/src/utils/network.js:55
-msgid "Session expired, please reload the page."
-msgstr ""
-
-#: ../html/src/utils/network.js:59
-msgid "Resource not found."
-msgstr ""
-
-#: ../html/src/utils/network.js:63
-msgid "HTTP Error code "
 msgstr ""

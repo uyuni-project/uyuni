@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-01-20 11:02+0100\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -224,9 +224,9 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
-#: ../html/src/components/panels/CreatorPanel.js:107
+#: ../html/src/components/panels/CreatorPanel.js:113
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:166
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:131
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:134
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -242,8 +242,8 @@ msgid "Cancel"
 msgstr "取消"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
-#: ../html/src/components/panels/CreatorPanel.js:93
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:110
+#: ../html/src/components/panels/CreatorPanel.js:99
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:113
 #: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/images/image-profiles.js:106
@@ -325,10 +325,10 @@ msgstr ""
 "样您就可以自动安装和配置软件。"
 
 #: ../html/src/components/formula-selection.js:234
-#: ../html/src/components/panels/CreatorPanel.js:118
+#: ../html/src/components/panels/CreatorPanel.js:124
 #: ../html/src/manager/clusters/cluster/cluster-config.js:81
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:174
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:144
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:147
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
 msgstr "保存"
@@ -528,7 +528,7 @@ msgid "e.g. \"0 15 2 ? * 7\""
 msgstr "例如 \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
-#: ../html/src/manager/content-management/list-filters/filter-form.js:203
+#: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -882,7 +882,7 @@ msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
-#: ../html/src/manager/content-management/list-filters/filter-form.js:147
+#: ../html/src/manager/content-management/list-filters/filter-form.js:149
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1129,7 +1129,6 @@ msgstr "会话已失效，请重新装载页面以查看最新数据。"
 #: ../html/src/manager/notifications/notification-messages.js:468
 #: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
@@ -1158,8 +1157,8 @@ msgstr "审计映像"
 #: ../html/src/manager/content-management/list-filters/list-filters.js:79
 #: ../html/src/manager/content-management/list-projects/list-projects.js:90
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:90
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:29
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
@@ -1400,9 +1399,9 @@ msgstr "部件号"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:153
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:256
 #: ../html/src/manager/content-management/list-projects/list-projects.js:102
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:48
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:43
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
 msgstr "说明"
@@ -1605,9 +1604,9 @@ msgid "Edit properties"
 msgstr "编辑属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:39
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:34
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
 #: ../html/src/manager/images/image-profile-edit.js:381
 #: ../html/src/manager/images/image-profiles.js:134
 #: ../html/src/manager/images/image-store-edit.js:193
@@ -1744,11 +1743,11 @@ msgstr "升级"
 msgid "Upgrade plan"
 msgstr "升级计划"
 
-#: ../html/src/manager/content-management/create-project/create-project.js:29
+#: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
 msgstr "您无权执行此操作"
 
-#: ../html/src/manager/content-management/create-project/create-project.js:34
+#: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
 msgstr "创建新的内容生命周期项目"
 
@@ -1811,64 +1810,64 @@ msgstr "模块名称"
 msgid "Updating the filter..."
 msgstr "正在更新过滤器..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:72
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:74
 msgid "Filter Details"
 msgstr "过滤器细节"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:73
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:75
 msgid "Create a new filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:116
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:119
 msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:148
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:151
 msgid "Check the required fields below"
 msgstr "检查以下必填字段"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:157
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:160
 msgid "Filter updated successfully"
 msgstr "已成功更新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.js:171
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:175
 msgid "Filter created successfully"
 msgstr "已成功创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:63
+#: ../html/src/manager/content-management/list-filters/filter-form.js:65
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:70
+#: ../html/src/manager/content-management/list-filters/filter-form.js:72
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:80
+#: ../html/src/manager/content-management/list-filters/filter-form.js:82
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:94
+#: ../html/src/manager/content-management/list-filters/filter-form.js:96
 msgid "Matcher"
 msgstr "匹配器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:109
-#: ../html/src/manager/content-management/list-filters/filter-form.js:121
-#: ../html/src/manager/content-management/list-filters/filter-form.js:159
-#: ../html/src/manager/content-management/list-filters/filter-form.js:255
+#: ../html/src/manager/content-management/list-filters/filter-form.js:111
+#: ../html/src/manager/content-management/list-filters/filter-form.js:123
+#: ../html/src/manager/content-management/list-filters/filter-form.js:161
+#: ../html/src/manager/content-management/list-filters/filter-form.js:257
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "软件包名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:128
-#: ../html/src/manager/content-management/list-filters/filter-form.js:166
+#: ../html/src/manager/content-management/list-filters/filter-form.js:130
+#: ../html/src/manager/content-management/list-filters/filter-form.js:168
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:133
-#: ../html/src/manager/content-management/list-filters/filter-form.js:171
+#: ../html/src/manager/content-management/list-filters/filter-form.js:135
+#: ../html/src/manager/content-management/list-filters/filter-form.js:173
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -1877,61 +1876,61 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:140
-#: ../html/src/manager/content-management/list-filters/filter-form.js:178
+#: ../html/src/manager/content-management/list-filters/filter-form.js:142
+#: ../html/src/manager/content-management/list-filters/filter-form.js:180
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:190
+#: ../html/src/manager/content-management/list-filters/filter-form.js:192
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:204
+#: ../html/src/manager/content-management/list-filters/filter-form.js:206
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:205
+#: ../html/src/manager/content-management/list-filters/filter-form.js:207
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:207
+#: ../html/src/manager/content-management/list-filters/filter-form.js:209
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:216
+#: ../html/src/manager/content-management/list-filters/filter-form.js:218
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:228
+#: ../html/src/manager/content-management/list-filters/filter-form.js:230
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:241
+#: ../html/src/manager/content-management/list-filters/filter-form.js:243
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:242
+#: ../html/src/manager/content-management/list-filters/filter-form.js:244
 msgid "Package Manager Restart Required"
 msgstr "需要重启动软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:245
+#: ../html/src/manager/content-management/list-filters/filter-form.js:247
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:275
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/list-filters/filter-form.js:277
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:276
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/list-filters/filter-form.js:278
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.js:278
+#: ../html/src/manager/content-management/list-filters/filter-form.js:280
 msgid "Rule"
 msgstr "规则"
 
@@ -1976,7 +1975,7 @@ msgstr "删除项目"
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:67
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:70
 #: ../html/src/manager/login/use-login-api.js:54
 #: ../html/src/manager/virtualization/ActionApi.js:47
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -2135,7 +2134,7 @@ msgstr "版本 {0} 历史记录"
 msgid "Version {0} successfully built into {1}"
 msgstr "已成功在 {1} 中构建版本 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:57
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
 msgstr "在前面插入"
 
@@ -2147,19 +2146,19 @@ msgstr "添加环境"
 msgid "Environment created successfully"
 msgstr "已成功创建环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:70
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
 msgstr "正在创建环境..."
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:87
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
 msgstr "未创建环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:105
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:107
 msgid "Environment updated successfully"
 msgstr "已成功更新环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:120
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:123
 msgid "Environment {0} deleted successfully"
 msgstr "已成功删除环境 {0}"
 
@@ -2211,19 +2210,19 @@ msgstr "挂接/分离过滤器"
 msgid "Filter edited successfully"
 msgstr "已成功编辑过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
 msgstr "AppStreams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
 msgstr "已启用模块流"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
 msgstr "过滤掉"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
@@ -2269,7 +2268,7 @@ msgstr "升级环境"
 msgid "Version {0} successfully promoted into {1}"
 msgstr "已成功将版本 {0} 升级到 {1}"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:17
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
 msgstr "项目属性"
@@ -2282,11 +2281,11 @@ msgstr "（草稿 - 未构建）- 请检查下面的更改"
 msgid "Edit Properties"
 msgstr "编辑属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:63
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:67
 msgid "Project properties updated successfully"
 msgstr "已成功更新项目属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:81
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:86
 msgid "Editing properties.."
 msgstr "正在编辑属性..."
 
@@ -3483,7 +3482,6 @@ msgstr "会话已失效，请重新装载页面以实时接收通知。"
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.js:57
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr "授权错误，请重新装载页面或重试注销/登录。"
@@ -4709,17 +4707,14 @@ msgstr "选择系统组"
 msgid "Split into groups"
 msgstr "分割成组"
 
-#: ../html/src/utils/network.js:55
-msgid "Session expired, please reload the page."
-msgstr "会话已失效，请重新装载页面。"
+#~ msgid "Session expired, please reload the page."
+#~ msgstr "会话已失效，请重新装载页面。"
 
-#: ../html/src/utils/network.js:59
-msgid "Resource not found."
-msgstr "未找到资源。"
+#~ msgid "Resource not found."
+#~ msgstr "未找到资源。"
 
-#: ../html/src/utils/network.js:63
-msgid "HTTP Error code "
-msgstr "HTTP 错误代码 "
+#~ msgid "HTTP Error code "
+#~ msgstr "HTTP 错误代码 "
 
 #~ msgid "Select a channel to browse available modules"
 #~ msgstr "选择一个频道以浏览可用模块"
