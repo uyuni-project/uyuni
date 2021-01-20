@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-01-20 11:01+0100\n"
 "PO-Revision-Date: 2020-12-29 08:37+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -73,6 +73,16 @@ msgstr "未为 ISS 启用服务器 \"%s\"。"
 msgid "Invalid system_id/action_id pair."
 msgstr "无效的 system_id/action_id 对。"
 
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "预期需要提供软件包名称，而不是：%s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "预期需要提供软件包，而不是：%s"
+
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
@@ -95,11 +105,6 @@ msgstr "无效的操作值类型 %s (%s)"
 #, python-format
 msgid "Action %s does not belong to server %s"
 msgstr "操作 %s 不属于服务器 %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "无效的值 %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -140,15 +145,10 @@ msgstr "预期需要提供一个字典作为产品参数"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "值 '%s'（为 %s (%s) 提供）无效"
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Expected a package name, not: %s"
-msgstr "预期需要提供软件包名称，而不是：%s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "预期需要提供软件包，而不是：%s"
+msgid "Invalid value %s (%s)"
+msgstr "无效的值 %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -188,6 +188,11 @@ msgstr "请在此客户端中以 root 身份运行 rhn_register"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "不支持体系结构 `%s'"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -232,11 +237,6 @@ msgstr "Kickstart 会话不匹配"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "不支持堆叠重新注册令牌"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "不支持体系结构 `%s'"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -297,44 +297,6 @@ msgstr "用户名长度应至少为 %d 个字符"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "无法注册以 %s 结尾的用户名"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "请求的 RPM 软件包 %s 无效"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "找不到软件包"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "收到的请求无效 (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要消息如下：\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"运行 '%s' 时捕获到\n"
-"%s：%s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "无效的 URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -403,6 +365,44 @@ msgstr ""
 "服务权利。要为此系统赋予服务权利，请登录网站：\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "请求的 RPM 软件包 %s 无效"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "找不到软件包"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "收到的请求无效 (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要消息如下：\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"运行 '%s' 时捕获到\n"
+"%s：%s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "无效的 URI %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1271,6 +1271,41 @@ msgstr "正在导入 kickstart 树 (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"无法打开和读取（在\n"
+"命令行中指定的）\"%s\"\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"无法打开和/或\n"
+"写入 \"%s\"：\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:117 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 正在以电子邮件形式发送日志 +++"
+
+#: ../satellite_tools/reposync.py:120
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同步报告，来自 %s"
+
+#: ../satellite_tools/reposync.py:130 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1335,18 +1370,10 @@ msgstr "SUSE Manager 主服务器不支持同步组织数据。"
 msgid "Skipping..."
 msgstr "正在跳过..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:111
-msgid "+++ sending log as an email +++"
-msgstr "+++ 正在以电子邮件形式发送日志 +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "来自 %s 的 SUSE Manager 服务器间同步报告"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:124
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2032,33 +2059,6 @@ msgstr "  28 - 错误：--master 只在与 --mount-point 结合使用时才有�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "错误：未知转储版本，请尝试使用某个 %s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"无法打开和读取（在\n"
-"命令行中指定的）\"%s\"\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"无法打开和/或\n"
-"写入 \"%s\"：\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同步报告，来自 %s"
 
 #~ msgid "turn off SSL (not recommended)"
 #~ msgstr "关闭 SSL（不建议）"
