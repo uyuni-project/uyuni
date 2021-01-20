@@ -788,7 +788,6 @@ select sa.server_id
                              NULL as permission_owner,
                              NULL as permission_group,
                              NULL as permission_seclabel,
-                             NULL as allow_vendor_change,
                              NULL as source from dual) ra_16_,
                      (select NULL as pool_name,
                              NULL as volume_name from dual) ra_17_,

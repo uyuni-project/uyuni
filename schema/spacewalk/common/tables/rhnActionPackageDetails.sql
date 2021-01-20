@@ -14,7 +14,7 @@
 --
 
 
-CREATE TABLE rhnActionDetails
+CREATE TABLE rhnActionPackageDetails
 (
     action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_act_eu_act_fk
@@ -25,4 +25,4 @@ CREATE TABLE rhnActionDetails
 );
 
 CREATE INDEX rhn_act_eud_aid_idx
-    ON rhnActionDetails (action_id);
+    ON rhnActionPackageDetails (action_id);
