@@ -4,9 +4,8 @@ import _keyBy from "lodash/keyBy";
 import { ChannelType } from "core/channels/type/channels.type";
 import produce from "immer";
 
-// https://github.com/facebook/flow/issues/2221
 export const getChannelsTreeValues = (channelsTree: ChannelsTreeType): Array<ChannelType> =>
-  Object.values(channelsTree.channelsById) as any;
+  Object.values(channelsTree.channelsById);
 
 export type ChannelsTreeType = {
   baseIds: Array<number>;
