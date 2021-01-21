@@ -115,26 +115,26 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-%if 0%{?sle_version} >= 150300
-Requires:       postgresql13
-Requires:       postgresql13-contrib
-# we do not support postgresql versions > 13.x yet
-Conflicts:      postgresql-implementation >= 14
-Conflicts:      postgresql-contrib-implementation >= 14
-%else # not sle_version >= 150300
+%if 0%{?sle_version} >= 150200
 Requires:       postgresql12
 Requires:       postgresql12-contrib
-# we do not support postgresql versions > 13.x yet
+# we do not support postgresql versions > 12.x yet
 Conflicts:      postgresql-implementation >= 13
 Conflicts:      postgresql-contrib-implementation >= 13
-%endif # if sle_version >= 150300
-%else # not suse_version
+%else
+# mainly for openSUSE Leap 15.1
+Requires:       postgresql10
+Requires:       postgresql10-contrib
+Conflicts:      postgresql-implementation >= 12
+Conflicts:      postgresql-contrib-implementation >= 12
+%endif
+%else
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
-# we do not support postgresql versions > 13.x yet
+# we do not support postgresql versions > 12.x yet
 Conflicts:      postgresql >= 13
 Conflicts:      postgresql-contrib >= 13
-%endif # if suse_version
+%endif
 
 %description postgresql
 Spacewalk is a systems management application that will 
