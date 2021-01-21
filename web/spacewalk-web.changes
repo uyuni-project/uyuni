@@ -1,5 +1,3 @@
-- Improved node requirements in spec file.
-- Updated Source to Uyuni repo.
 - Fix source selection form in CLM project page
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Fix sorting in content lifecycle projects and cluster tables (bsc#1180558)
