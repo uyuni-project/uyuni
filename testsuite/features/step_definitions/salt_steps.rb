@@ -202,6 +202,7 @@ end
 
 # Salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
+  $server.run("zypper --non-interactive refresh")
   $server.run("zypper --non-interactive install --force #{package}-formula")
 end
 
