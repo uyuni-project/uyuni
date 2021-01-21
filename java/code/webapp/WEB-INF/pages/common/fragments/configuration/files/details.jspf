@@ -52,7 +52,10 @@
                     <bean:message key="filedetails.details.jspf.creation-name" />
                 </label>
                 <div class="col-md-9">
-                    <p class="form-control-static">${created}</p>
+                    <p class="form-control-static">
+                        <rhn:formatDate humanStyle="from" value="${created}"
+                                        type="both" dateStyle="short" timeStyle="long"/>
+                    </p>
                 </div>
             </div>
             <div class="form-group">
@@ -61,6 +64,10 @@
                 </label>
                 <div class="col-md-9">
                     <p class="form-control-static">
+                        <c:set var="modifiedarg" scope="request">
+                            <rhn:formatDate humanStyle="from" value="${modified}"
+                                            type="both" dateStyle="short" timeStyle="long"/>
+                        </c:set>
                         <c:choose>
                             <c:when test="${lastUser != null}">
                                 <%--
@@ -81,11 +88,11 @@
                                     </rhn:require>
                                 </c:set>
                                 <bean:message key="filedetails.details.jspf.modifiedBy"
-                                              arg0="${modified}"
+                                              arg0="${modifiedarg}"
                                               arg1='${beanarg}' />
                             </c:when>
                             <c:otherwise>
-                                <bean:message key="filedetails.details.jspf.modifiedBy-unknown" arg0="${modified}"/>
+                                <bean:message key="filedetails.details.jspf.modifiedBy-unknown" arg0="${modifiedarg}"/>
                             </c:otherwise>
                         </c:choose>
                     </p>
