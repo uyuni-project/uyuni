@@ -55,12 +55,11 @@ function renderNavigationReact(element: JSX.Element, container: Element | null |
 }
 
 function beforeNavigation() {
-  if (!window.pageRenderers?.spa) {
-    return;
+  if (window.pageRenderers?.spa) {
+    window.pageRenderers.spa.previousReactRenderers = window.pageRenderers.spa.reactRenderers;
+    window.pageRenderers.spa.reactAppsName = [];
+    window.pageRenderers.spa.reactRenderers = [];
   }
-  window.pageRenderers.spa.previousReactRenderers = window.pageRenderers?.spa?.reactRenderers;
-  window.pageRenderers.spa.reactAppsName = [];
-  window.pageRenderers.spa.reactRenderers = [];
 }
 
 function afterNavigationTransition() {
