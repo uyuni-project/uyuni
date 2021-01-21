@@ -33,7 +33,7 @@ export type UseMandatoryChannelsApiReturnType = {
 };
 
 const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
-  const [messages, setMessages] = useState([] as MessageType[]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [requiredChannels, setRequiredChannels] = useState(new Map());
   const [requiredByChannels, setRequiredByChannels] = useState(new Map());
   const [mandatoryChannelsRaw, setMandatoryChannelsRaw] = useState(new Map());
