@@ -22,7 +22,12 @@
       "utils/*": ["./utils/*"]
     },
     "target": "es5",
-    "lib": ["es5", "dom", "dom.iterable"],
+    "lib": [
+      "es5",
+      "dom",
+      "dom.iterable",
+      "es2019.array"
+    ],
     "strict": true,
     // Should eventually be false
     "allowJs": true,

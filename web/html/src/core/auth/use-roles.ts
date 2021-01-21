@@ -1,7 +1,6 @@
-// @flow
 // Note: To use this component make sure it's used in a placed wrapped by the roles-context-provider
-import {useContext} from 'react';
-import {RolesContext} from './roles-context';
+import { useContext } from "react";
+import { RolesContext } from "./roles-context";
 
 const useRoles = () => useContext(RolesContext);
 
