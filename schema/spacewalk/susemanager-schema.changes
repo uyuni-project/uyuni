@@ -1,3 +1,4 @@
+- Update to postgresql13 (jsc#SLE-17030)
 - Update CentOS6 URLs to use vault.centos.org
 - Changed to versioned Python3 to SPEC file.
 - Python3 port for blend tool
