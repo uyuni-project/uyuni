@@ -150,8 +150,6 @@ public class JobReturnEventMessageAction implements MessageAction {
 
             saltServerActionService.handleActionChainResult(jobReturnEvent.getMinionId(),
                     jobReturnEvent.getJobId(),
-                    jobReturnEvent.getData().getRetcode(),
-                    jobReturnEvent.getData().isSuccess(),
                     actionChainResult,
                     stateResult -> false);
 

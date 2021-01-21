@@ -716,7 +716,7 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                handleActionChainResult(minionId, "", 0, true,
+                handleActionChainResult(minionId, "",
                         actionChainResult,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
@@ -2451,13 +2451,11 @@ public class SaltServerActionService {
      *
      * @param minionId the minion id
      * @param jobId the job id
-     * @param retCode the ret code
-     * @param success whether result is successful or not
      * @param actionChainResult job result
      * @param skipFunction function to check if a result should be skipped from handling
      */
     public void handleActionChainResult(
-            String minionId, String jobId, int retCode, boolean success,
+            String minionId, String jobId,
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
