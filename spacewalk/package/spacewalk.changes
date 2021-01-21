@@ -1,4 +1,3 @@
-- Update to postgresql13 (jsc#SLE-17030)
 - Remove SUSE PXE boot requirement for non-SUSE systems.
 
 -------------------------------------------------------------------
