@@ -13,7 +13,7 @@ export type ChannelsDependencies = {
 function dependenciesTooltip(
   requiredChannels: Array<string>,
   requiredByChannels: Array<string>
-): string | null | undefined {
+): string | null {
   if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
     return null;
   }
