@@ -291,7 +291,7 @@ public class SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
-            return errataAction(minions, errataIds, errataAction.getActionPackageDetails().getAllowVendorChange());
+            return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);

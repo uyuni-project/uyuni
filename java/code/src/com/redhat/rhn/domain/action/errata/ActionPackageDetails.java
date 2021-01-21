@@ -1,9 +1,17 @@
 
 package com.redhat.rhn.domain.action.errata;
 
-public class ActionPackageDetails {
+import com.redhat.rhn.domain.action.ActionChild;
+
+public class ActionPackageDetails extends ActionChild {
      private Long id;
      private boolean allowVendorChange = false;
+
+     public ActionPackageDetails() {     }
+
+     public ActionPackageDetails(boolean allowVendorChangeIn) {
+         this.allowVendorChange = allowVendorChangeIn;
+     }
 
     /**
      * Return the ID.

@@ -15,6 +15,8 @@
 
 CREATE TABLE IF NOT EXISTS rhnActionPackageDetails
 (
+    id         NUMERIC NOT NULL
+               CONSTRAINT rhn_actionpd_id_pk PRIMARY KEY,
     action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_act_eu_act_fk
                        REFERENCES rhnAction (id)
@@ -25,3 +27,5 @@ CREATE TABLE IF NOT EXISTS rhnActionPackageDetails
 
 CREATE INDEX IF NOT EXISTS rhn_act_eud_aid_idx
     ON rhnActionPackageDetails (action_id);
+
+CREATE SEQUENCE IF NOT EXISTS rhn_actiondpd_id_seq;
