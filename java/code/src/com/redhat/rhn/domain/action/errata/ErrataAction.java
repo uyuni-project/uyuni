@@ -30,20 +30,21 @@ import java.util.Set;
 public class ErrataAction extends Action {
 
     private Set<Errata> errata;
-    private ActionPackageDetails apd;
+    private ActionPackageDetails details;
 
     /**
      * @return Returns ActionPackageDetails
      */
-    public ActionPackageDetails getActionPackageDetails() {
-        return apd;
+    public ActionPackageDetails getDetails() {
+        return details;
     }
 
     /**
-     * @param  Set ActionPackageDetails
+     * @param detailsIn ActionPackageDetails
      */
-    public void setActionPackageDetails(ActionPackageDetails apdIn){
-        this.apd = apdIn;
+    public void setDetails(ActionPackageDetails detailsIn){
+        detailsIn.setParentAction(this);
+        this.details = detailsIn;
     }
 
     /**

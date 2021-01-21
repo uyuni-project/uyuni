@@ -38,6 +38,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1837,11 +1838,13 @@ public class ErrataManager extends BaseManager {
         List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
         traditionalErrataActions.stream().forEach(ea-> {
-            ea.getActionPackageDetails().setAllowVendorChange(allowVendorChange);
-            actionIds.add(ActionManager.storeAction(ea).getId());
+            ea.setDetails(new ActionPackageDetails(allowVendorChange));
+            Action action = ActionManager.storeAction(ea);
+            actionIds.add(action.getId());
         });
+
         minionErrataActions.stream().forEach(ea-> {
-           ea.getActionPackageDetails().setAllowVendorChange(allowVendorChange);
+           ea.setDetails(new ActionPackageDetails(allowVendorChange));
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());

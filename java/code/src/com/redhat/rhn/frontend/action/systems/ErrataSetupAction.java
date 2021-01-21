@@ -178,6 +178,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
         Long sid = requestContext.getParamAsLong("sid");
         User user = requestContext.getCurrentUser();
         RhnSet set = getSetDecl(sid).get(user);
+        boolean allowVendorChange = request.getParameterValues(ALLOW_VENDOR_CHANGE) != null;
 
         //if they chose no errata, return to the same page with a message
         if (set.isEmpty()) {
