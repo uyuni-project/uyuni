@@ -12,7 +12,8 @@ export * from "@testing-library/react";
 export const {
   click,
   dblClick,
-  type,
+  // We provide our own `type()` below
+  type: rawType,
   upload,
   clear,
   selectOptions,
@@ -23,6 +24,14 @@ export const {
   paste,
   specialChars,
 } = userEvent;
+
+/** @testing-library/user-event's `type()` is inconsistent without a delay */
+export const type = async (element, text, options) => {
+  const mergedOptions = Object.assign({
+    delay: 10
+  }, options);
+  return rawType(element, text, mergedOptions);
+}
 
 const server = setupServer();
 
