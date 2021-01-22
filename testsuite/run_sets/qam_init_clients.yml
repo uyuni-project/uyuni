@@ -31,7 +31,7 @@
 - features/qam/init_clients/ubuntu1604_ssh_minion.feature
 - features/qam/init_clients/ubuntu1804_minion.feature
 - features/qam/init_clients/ubuntu1804_ssh_minion.feature
-- features/qam/init_clients/ubuntu2004_minion.feature
-- features/qam/init_clients/ubuntu2004_ssh_minion.feature
+#- features/qam/init_clients/ubuntu2004_minion.feature
+#- features/qam/init_clients/ubuntu2004_ssh_minion.feature
 
 ## QAM Init Clients END ###
