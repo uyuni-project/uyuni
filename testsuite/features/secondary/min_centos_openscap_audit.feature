@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -10,7 +10,7 @@ Feature: OpenSCAP audit of CentOS Salt minion
 
 @centos_minion
   Scenario: Install the OpenSCAP packages on the CentOS minion
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     When I enable repository "CentOS-Base" on this "ceos_minion"
     And I install OpenSCAP dependencies on "ceos_minion"
     And I fix CentOS 7 OpenSCAP files on "ceos_minion"
