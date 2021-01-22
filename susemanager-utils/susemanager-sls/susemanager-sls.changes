@@ -1,3 +1,4 @@
+- fix apt login for similar channel labels (bsc#1180803)
 - Change behavior of mgrcompat wrapper after deprecation changes on Salt 3002
 - Make autoinstallation provisoning compatible with GRUB and ELILO
   in addition to GRUB2 only (bsc#1164227)
