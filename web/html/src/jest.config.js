@@ -3,9 +3,9 @@ const { defaults } = require("jest-config");
 module.exports = {
   // See https://kulshekhar.github.io/ts-jest/docs/presets#the-presets
   // Using Babel allows us to keep current Flow stuff at least somewhat working
-  preset: 'ts-jest/presets/js-with-babel',
+  preset: "ts-jest/presets/js-with-babel",
   // Required for in-memory rendering with @testing-library/react
-  testEnvironment: 'jsdom',
+  testEnvironment: "jsdom",
   verbose: true,
   moduleFileExtensions: [...defaults.moduleFileExtensions, "ts", "tsx"],
   moduleNameMapper: {
