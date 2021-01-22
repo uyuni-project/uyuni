@@ -9,7 +9,7 @@ import { SearchField } from 'components/table/SearchField';
 import { ModalButton } from 'components/dialog/ModalButton';
 import { LinkButton } from 'components/buttons';
 import { VirtualizationListRefreshApi } from './virtualization-list-refresh-api';
-import { useVirtNotification } from './useVirtNotification.js';
+import { useVirtNotification } from './useVirtNotification';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { ActionStatus } from 'components/action/ActionStatus';
 import { SimpleActionApi } from './SimpleActionApi';

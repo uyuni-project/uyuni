@@ -15,7 +15,7 @@ import {
   initialStateChannelsSelection,
   reducerChannelsSelection
 } from "./channels-selection.state"
-import type {UseChannelsType} from "core/channels/api/use-channels-tree-api.js"
+import type {UseChannelsType} from "core/channels/api/use-channels-tree-api"
 import {getVisibleChannels, isGroupVisible, orderBaseChannels} from "./channels-selection.utils";
 import useMandatoryChannelsApi from "core/channels/api/use-mandatory-channels-api";
 import {getSelectedChannelsIdsInGroup} from "core/channels/utils/channels-state.utils";
