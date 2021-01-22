@@ -61,7 +61,7 @@ export default class PagedDataEndpoint {
      *  - ps: Number of items to retrieve
      *  - q: The query string for filter
      */
-    setPage(pageControl: PageControl) {
+    setPage(pageControl?: PageControl) {
         const query = this.getNewQuery();
         if (pageControl) {
             query.set("p", String(pageControl.page));
