@@ -10,6 +10,7 @@
         </id>
 
         <property name="label" column="label" type="string"/>
+        <property name="dispatched" column="dispatched" type="yes_no"/>
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp" insert="false"/>
 

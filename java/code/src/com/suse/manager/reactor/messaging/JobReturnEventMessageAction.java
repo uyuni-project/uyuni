@@ -16,6 +16,8 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -132,8 +134,36 @@ public class JobReturnEventMessageAction implements MessageAction {
             // a Salt error when the 'mgractionchains' custom module is not yet deployed.
             if (Arrays.asList(1, 254).contains(jobReturnEvent.getData().getRetcode()) &&
                     !jobReturnEvent.getData().isSuccess() &&
-                    jobReturnEvent.getData().getResult().toString()
-                            .contains("'mgractionchains.resume' is not available")) {
+                    jobReturnEvent.getData().getResult().toString().startsWith("'mgractionchains") &&
+                    jobReturnEvent.getData().getResult().toString().endsWith("' is not available.")
+            ) {
+
+                jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).ifPresent(metadata -> {
+                    Optional<ActionChain> actionChain =
+                            Optional.ofNullable(metadata.getActionChainId())
+                                    .flatMap(ActionChainFactory::getActionChain);
+
+                    actionChain.ifPresent(ac -> {
+                        if (ac.isDispatched()) {
+                            ac.getEntries().stream()
+                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
+                                    .filter(sa -> sa.getServer().asMinionServer()
+                                            .filter(m -> m.getMinionId().equals(jobReturnEvent.getMinionId()))
+                                            .isPresent()
+                                    )
+                                    .filter(sa -> !sa.getStatus().isDone())
+                                    .forEach(sa -> sa.fail(jobReturnEvent.getData().getResult().toString()));
+                            if (ac.isDone()) {
+                                ActionChainFactory.delete(ac);
+                            }
+                        }
+                        else {
+                            LOG.warn("got response referencing action chain " + ac.getId() +
+                                    " which is not dispatched yet.");
+                        }
+                    });
+                });
+
                 return;
             }
 
