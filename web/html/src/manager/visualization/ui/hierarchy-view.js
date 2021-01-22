@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import * as Utils from '../utils.js';
+import * as Utils from '../utils';
 
 // Display given hierarchy (given by it's root node) in given container using
 // force based layout.

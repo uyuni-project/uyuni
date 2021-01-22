@@ -10,7 +10,7 @@ import './polyfills';
 import 'react-hot-loader';
 
 import SpaRenderer from "core/spa/spa-renderer";
-import 'core/spa/spa-engine.js';
+import 'core/spa/spa-engine';
 
 import Admin from "./admin";
 import Audit from "./audit";
