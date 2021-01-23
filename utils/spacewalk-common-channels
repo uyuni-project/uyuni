@@ -61,6 +61,32 @@ CHANNEL_ARCH = {
     'mips-deb':     'channel-mips-deb'
 
 }
+CHANNEL_NAME_TO_ARCH = {
+    'AArch64': 'aarch64',
+    'Alpha': 'alpha',
+    'Alpha Debian': 'alpha-deb',
+    'AMD64 Debian': 'amd64-deb',
+    'ARM64 Debian': 'arm64-deb',
+    'arm Debian': 'arm-deb',
+    'ARM hard. FP':  'armhfp',
+    'ARM soft. FP': 'arm',
+    'IA-32':  'i386',
+    'IA-32 Debian': 'ia32-deb',
+    'IA-64': 'ia64',
+    'IA-64 Debian': 'ia64-deb',
+    'iSeries': 'iSeries',
+    'mips Debian': 'mips-deb',
+    'PowerPC Debian': 'powerpc-deb',
+    'PPC': 'ppc',
+    'PPC64LE': 'ppc64le',
+    'pSeries': 'pSeries',
+    's390': 's390',
+    's390 Debian': 's390-deb',
+    's390x': 's390x',
+    'Sparc': 'sparc',
+    'Sparc Debian': 'sparc-deb',
+    'x86_64': 'x86_64'
+}
 
 SPLIT_PATTERN = '[ ,]+'
 
@@ -120,7 +146,7 @@ def add_channels(channels, section, arch, client):
                 channels[channel['base_channel']] = {'label': channel_base_server['label'],
                                                      'name' : channel_base_server['name'],
                                                      'summary': channel_base_server['summary'],
-                                                     'arch': channel_base_server['arch_name'],
+                                                     'arch': CHANNEL_NAME_TO_ARCH[channel_base_server['arch_name']],
                                                      'checksum': channel_base_server['checksum_label'],
                                                      'gpgkey_url': channel_base_server['gpg_key_url'],
                                                      'gpgkey_id': channel_base_server['gpg_key_id'],
