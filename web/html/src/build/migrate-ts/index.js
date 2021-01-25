@@ -33,7 +33,14 @@ const args = require("./args");
     const inputPaths = rawInputs.map(item => path.resolve(cwd, item));
     const inputs = inputPaths.join(" ");
     if (isVerbose) {
-      console.log(`got inputs:\n${inputPaths.join("\n")}`);
+      console.log(`got input paths:\n${inputPaths.join("\n")}`);
+    }
+
+    // Sanity check
+    console.log("finding inputs");
+    for (const item of inputPaths) {
+      // If the file exists, all is good; if it throws, the program exits
+      await fs.promises.access(item);
     }
 
     // Run an automatic tool that performs basic syntax transforms
@@ -163,7 +170,7 @@ const args = require("./args");
 
     console.log("\ndone with automations, try running `yarn tsc` to find any remaining issues\n");
   } catch (error) {
-    console.error(error);
+    console.error((error && error.message) || error || "Unknown error");
     process.exit(1);
   }
 })();
