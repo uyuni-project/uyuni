@@ -1,4 +1,4 @@
-# Copyright 2017-2020 SUSE LLC
+# Copyright 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard

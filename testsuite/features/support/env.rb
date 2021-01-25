@@ -12,17 +12,13 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
-require 'pp'
-
-# Print all the environment variables
-#WARNING: Comment it when we finish the development of QAM, to don't leak passwords
-#pp ENV
 
 ## code coverage analysis
 # SimpleCov.start
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
+$build_validation = true if ENV['BUILD_VALIDATION']
 $long_tests_enabled = true if ENV['LONG_TESTS']
 puts "Executing long running tests" if $long_tests_enabled
 
@@ -33,14 +29,17 @@ STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250
 
+# Build Validations will require longer timeouts and some concrete tweaks
+if $build_validation
+  Capybara.default_max_wait_time = 30
+  DEFAULT_TIMEOUT = 1800
+end
+
 # QAM test suite will provide a json file including all client repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
-  Capybara.default_max_wait_time = 30
-  DEFAULT_TIMEOUT = 1800
-  $qam_test = true
 end
 
 def enable_assertions
