@@ -55,6 +55,20 @@ TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> 
 This can happen when you have a string prop `headingLevel: string` and want to use it in JSX to create an element such as `<HeadingLevel style={{ width: "85%" }}>`.  
 To solve the problem, let TS know that you expect this to be a node name, not a string: `headingLevel: keyof JSX.IntrinsicElements`
 
+### Using `React.Children.toArray()` with `React.cloneElement()`  
+
+The following snippet will throw with `Type 'string' is not assignable to type ReactElement...`. The problem is that [`ReactChild` includes `string | number`](https://stackoverflow.com/a/42261933/1470607), which is not a valid clone target.
+
+```ts
+React.Children.toArray(props.children).map(child => React.cloneElement(child));
+```
+
+To solve the problem, add a type guard that checks whether the child is a valid element to clone:
+
+```ts
+React.Children.toArray(props.children).map(child => React.isValidElement(child) ? React.cloneElement(child) : child);
+```
+
 ## Technical tidbits
 
 We rely on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.  
