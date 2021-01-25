@@ -50,6 +50,11 @@ In certain cases `JSX.Element` may be applicable as well, see [examples and disc
 
 TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.
 
+### `Property 'children' does not exist on type 'IntrinsicAttributes'`
+
+This can happen when you have a string prop `headingLevel: string` and want to use it in JSX to create an element such as `<HeadingLevel style={{ width: "85%" }}>`.  
+To solve the problem, let TS know that you expect this to be a node name, not a string: `headingLevel: keyof JSX.IntrinsicElements`
+
 ## Technical tidbits
 
 We rely on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.  
