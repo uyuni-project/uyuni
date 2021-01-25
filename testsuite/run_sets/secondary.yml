@@ -8,7 +8,6 @@
 
 # IDEMPOTENT
 
-- features/secondary/srv_manage_activation_keys.feature
 - features/secondary/srv_users.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature

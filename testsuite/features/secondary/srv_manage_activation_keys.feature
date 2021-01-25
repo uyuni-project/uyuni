@@ -1,10 +1,10 @@
-# Copyright (c) 2010-2019 SUSE LLC
+# Copyright (c) 2010-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to manipulate activation keys
   In order to register systems to the spacewalk server
   As the testing user
-  I want to use activation keys
+  I want to edit activation keys
 
   Scenario: Change limit of the activation key
     Given I am on the Systems page

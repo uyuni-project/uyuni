@@ -72,5 +72,6 @@
 - features/secondary/trad_check_patches_install.feature
 - features/secondary/trad_sp_migration.feature
 - features/secondary/trad_check_registration.feature
+- features/secondary/srv_manage_activation_keys.feature
 
 ## Parallelizable Secondary features END ##
