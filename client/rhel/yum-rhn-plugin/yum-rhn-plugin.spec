@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%define __python /usr/bin/python2
 
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
@@ -29,13 +30,13 @@ Group:          System Environment/Base
 Name:           yum-rhn-plugin
 Version:        4.2.3
 Release:        1%{?dist}
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Url:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
 BuildArch:      noarch
 %endif
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  python2
 %else
 BuildRequires:  python
@@ -50,7 +51,7 @@ Requires:       python-m2crypto >= 0.16-6
 %else
 Requires:       m2crypto >= 0.16-6
 %endif
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 Requires:       python2-iniparse
 %else
 Requires:       python-iniparse
