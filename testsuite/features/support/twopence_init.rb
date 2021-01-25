@@ -33,8 +33,8 @@ $xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_X
 
 $nodes = [$localhost, $server, $proxy, $kvm_server, $xen_server]
 
-if $qam_test
-  # Define twopence objects for QAM environment
+if $build_validation
+  # Define twopence objects for QAM or Build Validation environment
   $sle11sp4_minion = twopence_init("ssh:#{ENV['SLE11SP4_MINION']}") if ENV['SLE11SP4_MINION']
   $sle11sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE11SP4_SSHMINION']}") if ENV['SLE11SP4_SSHMINION']
   $sle11sp4_client = twopence_init("ssh:#{ENV['SLE11SP4_CLIENT']}") if ENV['SLE11SP4_CLIENT']
@@ -118,7 +118,7 @@ $nodes.each do |node|
   raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
+  puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
 end
 
 # Initialize IP address or domain name
@@ -149,8 +149,12 @@ def get_system_name(host)
     end
     system_name = 'pxeboot.example.org' if system_name.nil?
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    begin
+      node = get_target(host)
+      system_name = node.full_hostname
+    rescue RuntimeError => e
+      puts e.message
+    end
   end
   system_name
 end
