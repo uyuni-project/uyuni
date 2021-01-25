@@ -41,6 +41,9 @@ declare global {
   var Loggerhead: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
+
+  // Used by section-toolbar, defined in spacewalk-essentials.js
+  var handleSst: Function;
 }
 
 export {};
