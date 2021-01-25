@@ -1,28 +1,36 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Label } from './Label';
-import { FormGroup } from './FormGroup';
-import { FormContext } from './Form';
+import { Label } from "./Label";
+import { FormGroup } from "./FormGroup";
+import { FormContext } from "./Form";
+
+type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
 export type Props = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
-  name: string | Array<string>,
+  name: string | Array<string>;
+
   /** Default value if none is set.
    * In the case of multiple properties managed by this input, an object with the properties
    * as keys and defaults as values should be passed. If a single value is passed it will be
    * set to all keys.
    */
-  defaultValue?: string | Object,
+  defaultValue?: string | Object;
+
   /** Label to display for the field */
-  label?: string,
+  label?: string;
+
   /** Hint string to display */
-  hint?: string,
+  hint?: string;
+
   /** CSS class to use for the label */
-  labelClass?: string,
+  labelClass?: string;
+
   /** CSS class to use for the <div> element wrapping the field input part */
-  divClass?: string,
+  divClass?: string;
+
   /** Function rendering the children in the value <div>.
    * Takes two parameters:
    *
@@ -30,29 +38,34 @@ export type Props = {
    *   This function takes a name and a value parameter.
    * - *onBlur*: a function to call when loosing the focus on the component.
    */
-  children: ({
-    setValue: (name: string, value: string) => void,
-    onBlur: () => void,
-  }) => React.Node,
+  children: (arg0: { setValue: (name: string, value: string) => void; onBlur: () => void }) => React.ReactNode;
+
   /** Indicates whether the field is required in the form */
-  required?: boolean,
+  required?: boolean;
+
   /** Indicates whether the field is disabled */
-  disabled?: boolean,
+  disabled?: boolean;
+
+  /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
+  validators?: Validator[];
+
   /** Hint to display on a validation error */
-  invalidHint?: string,
+  invalidHint?: string;
+
   /** Function to call when the data model needs to be changed.
    *  Takes a name and a value parameter.
    */
-  onChange?: (name: string, value: string) => void,
+  onChange?: (name: string, value: string) => void;
 };
 
 type State = {
-  isValid: boolean,
-  showErrors: boolean,
+  isValid: boolean;
+  showErrors: boolean;
+
   /** Error messages received from FormContext
    *  (typically errors messages received from server response)
    */
-  errors: Array<string>
+  errors?: Array<string> | Object;
 };
 
 export class InputBase extends React.Component<Props, State> {
@@ -73,7 +86,7 @@ export class InputBase extends React.Component<Props, State> {
     this.state = {
       isValid: true,
       showErrors: false,
-      errors: null
+      errors: undefined,
     };
   }
 
@@ -85,11 +98,10 @@ export class InputBase extends React.Component<Props, State> {
 
       const model = this.context.model || {};
       const checkValueChange = (name, defaultValue) => {
-        const value = model[name] || defaultValue || '';
+        const value = model[name] || defaultValue || "";
         const valueChanged =
-          (value instanceof Date && model[name] instanceof Date
-            && value.getTime() !== model[name].getTime())
-          || value !== model[name];
+          (value instanceof Date && model[name] instanceof Date && value.getTime() !== model[name].getTime()) ||
+          value !== model[name];
 
         if (valueChanged) {
           this.setValue(name, value);
@@ -97,8 +109,8 @@ export class InputBase extends React.Component<Props, State> {
       };
       if (this.props.name instanceof Array) {
         this.props.name.forEach(name => {
-          const defaultValue = this.props.defaultValue instanceof Object ?
-            this.props.defaultValue[name] : this.props.defaultValue;
+          const defaultValue =
+            this.props.defaultValue instanceof Object ? this.props.defaultValue[name] : this.props.defaultValue;
           checkValueChange(name, defaultValue);
         });
       } else {
@@ -109,8 +121,7 @@ export class InputBase extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps) {
     // Support validation when changing the following props on-the-fly
-    if (this.props.required !== prevProps.required ||
-        this.props.disabled !== prevProps.disabled) {
+    if (this.props.required !== prevProps.required || this.props.disabled !== prevProps.disabled) {
       if (this.props.name instanceof Array) {
         const values = Object.keys(this.context.model).reduce((filtered, key) => {
           if (this.props.name.includes(key)) {
@@ -146,11 +157,11 @@ export class InputBase extends React.Component<Props, State> {
     return this.state.isValid;
   }
 
-  validate (value: string | Object, errors: Array<string> | Object): void {
-    const results = [];
+  validate(value: string | Object, errors?: Array<string> | Object): void {
+    const results: ReturnType<Validator>[] = [];
     let isValid = true;
 
-    if (errors && errors.length > 0) {
+    if (Array.isArray(errors) && errors.length > 0) {
       isValid = false;
     }
 
@@ -159,25 +170,28 @@ export class InputBase extends React.Component<Props, State> {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
-        validators.forEach((v) => {
-          results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ''}`)));
+        validators.forEach(v => {
+          results.push(Promise.resolve(v(value instanceof Object ? value : `${value || ""}`)));
         });
       }
     }
 
-    Promise.all(results).then((result) => {
-      result.forEach((r) => {
+    Promise.all(results).then(result => {
+      result.forEach(r => {
         isValid = isValid && r;
       });
-      this.setState((state) => ({
+      this.setState(
+        state => ({
           isValid: isValid,
           errors: errors,
-          showErrors: state.showErrors || errors && errors.length > 0
-        }), () => {
-        if (this.context.validateForm != null) {
-          this.context.validateForm();
+          showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
+        }),
+        () => {
+          if (this.context.validateForm != null) {
+            this.context.validateForm();
+          }
         }
-      });
+      );
     });
   }
 
@@ -186,13 +200,13 @@ export class InputBase extends React.Component<Props, State> {
       this.context.setModelValue(name, value);
     }
     if (this.props.name instanceof Array) {
-        const values = Object.keys(this.context.model).reduce((filtered, key) => {
-          if (this.props.name.includes(key)) {
-            filtered[key] = this.context.model[key];
-          }
-          return filtered;
-        }, {});
-        this.validate(Object.assign({}, values, {[name]: value}));
+      const values = Object.keys(this.context.model).reduce((filtered, key) => {
+        if (this.props.name.includes(key)) {
+          filtered[key] = this.context.model[key];
+        }
+        return filtered;
+      }, {});
+      this.validate(Object.assign({}, values, { [name]: value }));
     } else {
       this.validate(value);
     }
@@ -203,7 +217,7 @@ export class InputBase extends React.Component<Props, State> {
   pushHint(hints, hint) {
     if (hint) {
       if (hints.length > 0) {
-        hints.push(<br />)
+        hints.push(<br />);
       }
       hints.push(hint);
     }
@@ -211,43 +225,35 @@ export class InputBase extends React.Component<Props, State> {
 
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
-    const invalidHint = isError && (
-      this.props.invalidHint || (this.props.required && (`${this.props.label} is required.`))
-    );
+    const invalidHint =
+      isError && (this.props.invalidHint || (this.props.required && `${this.props.label} is required.`));
     const hints = [];
     this.pushHint(hints, this.props.hint);
-    if (this.state.errors) {
-      this.state.errors.forEach((error) => this.pushHint(hints, error));
+
+    const errors = this.state.errors && Array.isArray(this.state.errors) ? this.state.errors : [this.state.errors];
+    if (errors) {
+      errors.forEach(error => this.pushHint(hints, error));
     } else {
       this.pushHint(hints, invalidHint);
     }
+
     return (
       <FormGroup isError={isError} key={`${this.props.name}-group`}>
-        {
-          this.props.label
-          && (
-            <Label
-              name={this.props.label}
-              className={this.props.labelClass}
-              required={this.props.required}
-              key={`${this.props.name}-label`}
-              htmlFor={typeof this.props.name === "string" ? this.props.name : null}
-            />)
-        }
+        {this.props.label && (
+          <Label
+            name={this.props.label}
+            className={this.props.labelClass}
+            required={this.props.required}
+            key={`${this.props.name}-label`}
+            htmlFor={typeof this.props.name === "string" ? this.props.name : undefined}
+          />
+        )}
         <div className={this.props.divClass}>
-          {
-            this.props.children({
-              setValue: this.setValue.bind(this),
-              onBlur: this.onBlur.bind(this),
-            })
-          }
-          { hints
-            && (
-              <div className="help-block">
-                {hints}
-              </div>
-            )
-          }
+          {this.props.children({
+            setValue: this.setValue.bind(this),
+            onBlur: this.onBlur.bind(this),
+          })}
+          {hints && <div className="help-block">{hints}</div>}
         </div>
       </FormGroup>
     );

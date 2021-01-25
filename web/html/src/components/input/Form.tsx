@@ -1,57 +1,65 @@
-// @flow
-
-import * as React from 'react';
+import * as React from "react";
 
 type Props = {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
-  model: Object,
+  model: any;
+
   /** Object storing form field errors */
-  errors: Object,
+  errors: any;
+
   /** Function to trigger when the Submit button is clicked */
-  onSubmit?: Function,
+  onSubmit?: Function;
+
   /** Function to trigger when the Submit button is clicked while the model is invalid */
-  onSubmitInvalid?: Function,
+  onSubmitInvalid?: Function;
+
   /** A reference to pass to the <form> element */
-  formRef?: string,
+  formRef?: string;
+
   /** CSS class of the form */
-  className?: string,
+  className?: string;
+
   /** CSS class of the div right within the form */
-  divClass?: string,
+  divClass?: string;
+
   /** CSS class name for the form direction style */
-  formDirection?: string,
+  formDirection?: string;
+
   /** Children elements of the form. Usually includes fields and a submit button */
-  children: React.Node,
+  children: React.ReactNode;
+
   /** Function called when the model has been changed.
    * Takes a new model as single parameter.
    */
-  onChange: (model: Object) => void,
+  onChange: (model: any) => void;
+
   /** Function called after having validated the form.
    * Takes a single parameter indicating whether the form is valid or not.
    */
-  onValidate?: (valid: boolean) => void,
+  onValidate?: (valid: boolean) => void;
 };
 
 type FormContextType = {
-  model: Object,
-  errors: Object,
-  setModelValue: Function,
-  registerInput: Function,
-  unregisterInput: Function,
-  validateForm: () => void,
+  model: any;
+  errors: any;
+  setModelValue: Function;
+  registerInput: Function;
+  unregisterInput: Function;
+  validateForm: () => void;
 };
 
-export const FormContext = React.createContext<FormContextType>({});
+export const FormContext = React.createContext<Partial<FormContextType>>({});
 
 export class Form extends React.Component<Props> {
   static defaultProps = {
     onSubmit: undefined,
     onSubmitInvalid: undefined,
     formRef: undefined,
-    divClass: '',
+    divClass: "",
     onValidate: undefined,
-    formDirection: "form-horizontal"
+    formDirection: "form-horizontal",
   };
 
   inputs = {};
@@ -81,16 +89,16 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  getComponentName(component: React.ElementRef<any>) {
+  getComponentName(component: React.ReactElement<any>) {
     return Array.isArray(component.props.name) ? component.props.name.join() : component.props.name;
   }
 
   splitComponentName(name: string) {
-    return name.split(',');
+    return name.split(",");
   }
 
-  unregisterInput(component: React.ElementRef<any>) {
-    if (component.props && component.props.name){
+  unregisterInput(component: React.ReactElement<any>) {
+    if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       if (this.inputs[name] === component) {
         delete this.inputs[name];
@@ -98,7 +106,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  registerInput(component: React.ElementRef<any>) {
+  registerInput(component: React.ReactElement<any>) {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       this.inputs[name] = component;
@@ -107,7 +115,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  submit(event: Object) {
+  submit(event: any) {
     event.preventDefault();
     if (this.allValid() && this.props.onSubmit) {
       this.props.onSubmit(this.props.model, event);
@@ -116,13 +124,12 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps: Object) {
-    if (prevProps.model !== this.props.model ||
-        prevProps.errors !== this.props.errors) {
+  componentDidUpdate(prevProps: any) {
+    if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
       Object.keys(this.inputs).forEach(name => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
-          this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name])
+          this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name]);
         } else {
           const values = Object.keys(this.props.model).reduce((filtered, key) => {
             if (names.includes(key)) {
@@ -144,18 +151,18 @@ export class Form extends React.Component<Props> {
 
   render() {
     return (
-      <FormContext.Provider value={
-        {
+      <FormContext.Provider
+        value={{
           model: this.props.model,
           errors: this.props.errors,
           setModelValue: this.setModelValue.bind(this),
           registerInput: this.registerInput.bind(this),
           unregisterInput: this.unregisterInput.bind(this),
           validateForm: this.validateForm.bind(this),
-        }
-      }>
+        }}
+      >
         <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
-          <div className={`${this.props.formDirection || ''} ${this.props.divClass ? ` ${this.props.divClass}` : ''}`}>
+          <div className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}>
             {this.props.children}
           </div>
         </form>
