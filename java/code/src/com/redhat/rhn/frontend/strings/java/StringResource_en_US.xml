@@ -1580,7 +1580,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -7609,6 +7609,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
+      </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>

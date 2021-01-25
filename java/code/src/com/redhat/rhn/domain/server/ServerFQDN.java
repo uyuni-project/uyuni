@@ -28,6 +28,7 @@ public class ServerFQDN extends BaseDomainHelper implements Identifiable {
     private Long id;
     private Server server;
     private String name;
+    private boolean primary;
 
     /**
      * Constructor for the class ServerFQDN
@@ -71,6 +72,20 @@ public class ServerFQDN extends BaseDomainHelper implements Identifiable {
      */
     public void setName(String nameIn) {
         this.name = nameIn;
+    }
+
+    /**
+     * @return Boolean which indicates primary FQDN
+     */
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    /**
+     * @param primaryIn Boolean which sets primary FQDN
+     */
+    public void setPrimary(boolean primaryIn) {
+        primary = primaryIn;
     }
 
     /**

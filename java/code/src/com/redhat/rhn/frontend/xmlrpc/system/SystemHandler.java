@@ -77,6 +77,7 @@ import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
@@ -119,6 +120,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
 import com.redhat.rhn.frontend.xmlrpc.NoPushClientException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchCobblerSystemRecordException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchFQDNException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchNetworkInterfaceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSnapshotTagException;
@@ -1853,6 +1855,7 @@ public class SystemHandler extends BaseHandler {
      *       #prop_desc("string", "ip", "IPv4 address of system")
      *       #prop_desc("string", "ip6", "IPv6 address of system")
      *       #prop_desc("string", "hostname", "Hostname of system")
+     *       #prop_desc("string", "primary_fqdn", "Primary FQDN of system")
      *     #struct_end()
      *   #array_end()
      */
@@ -1867,6 +1870,8 @@ public class SystemHandler extends BaseHandler {
             network.put("ip", StringUtils.defaultString(server.getIpAddress()));
             network.put("ip6", StringUtils.defaultString(server.getIp6Address()));
             network.put("hostname", StringUtils.defaultString(server.getHostname()));
+            ServerFQDN fqdn = server.findPrimaryFqdn();
+            network.put("primary_fqdn", StringUtils.defaultString(fqdn != null ? fqdn.getName() : null));
             result.add(network);
         }
         return result;
@@ -6603,6 +6608,27 @@ public class SystemHandler extends BaseHandler {
                     interfaceName);
         }
         server.setPrimaryInterfaceWithName(interfaceName);
+        return 1;
+    }
+
+    /**
+     * Sets new primary FQDN
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @param fqdn Primary FQDN
+     * @return 1 if success, exception thrown otherwise
+     * @throws Exception If FQDN does not exist Exception is thrown
+     *
+     * @xmlrpc.doc Sets new primary FQDN
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "fqdn")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setPrimaryFqdn(User loggedInUser, Integer serverId, String fqdn) {
+        Server server = lookupServer(loggedInUser, serverId);
+        server.lookupFqdn(fqdn).orElseThrow(() -> new NoSuchFQDNException(fqdn));
+        server.setPrimaryFQDNWithName(fqdn);
         return 1;
     }
 

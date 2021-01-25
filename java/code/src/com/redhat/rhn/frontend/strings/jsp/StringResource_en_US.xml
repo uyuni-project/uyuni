@@ -21407,7 +21407,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
-        <source>FQDNs:</source>
+        <source>Primary FQDN:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
