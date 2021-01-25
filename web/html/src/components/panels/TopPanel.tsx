@@ -1,17 +1,16 @@
-// @flow
-import * as React from 'react';
-import { HelpLink } from 'components/utils/HelpLink';
+import * as React from "react";
+import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
-  helpUrl?: string,
-  button?: React.Node,
-  title: string,
-  icon?: string,
-  children: React.Node,
+  helpUrl?: string;
+  button?: React.ReactNode;
+  title: string;
+  icon?: string;
+  children: React.ReactNode;
 };
 
 export function TopPanel(props: Props) {
-  const help = props.helpUrl ? <HelpLink url={props.helpUrl}/> : null;
+  const help = props.helpUrl ? <HelpLink url={props.helpUrl} /> : null;
 
   return (
     <div>
