@@ -7,7 +7,7 @@ type Props = {
   model: any;
 
   /** Object storing form field errors */
-  errors: any;
+  errors?: object;
 
   /** Function to trigger when the Submit button is clicked */
   onSubmit?: Function;
@@ -137,8 +137,8 @@ export class Form extends React.Component<Props> {
             }
             return filtered;
           }, {});
-          const errors = Object.keys(this.props.errors).reduce((filtered, key) => {
-            if (names.includes(key)) {
+          const errors = Object.keys(this.props.errors || {}).reduce((filtered, key) => {
+            if (names.includes(key) && this.props.errors?.[key]) {
               return filtered.concat(this.props.errors[key]);
             }
             return filtered;

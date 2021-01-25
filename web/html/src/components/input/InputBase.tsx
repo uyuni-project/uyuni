@@ -6,7 +6,7 @@ import { FormContext } from "./Form";
 
 type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
-export type Props = {
+export type Props<T> = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
@@ -23,7 +23,7 @@ export type Props = {
   label?: string;
 
   /** Hint string to display */
-  hint?: string;
+  hint?: React.ReactNode;
 
   /** CSS class to use for the label */
   labelClass?: string;
@@ -38,7 +38,7 @@ export type Props = {
    *   This function takes a name and a value parameter.
    * - *onBlur*: a function to call when loosing the focus on the component.
    */
-  children: (arg0: { setValue: (name: string, value: string) => void; onBlur: () => void }) => React.ReactNode;
+  children: (arg0: { setValue: (name: string, value: T) => void; onBlur: () => void }) => React.ReactNode;
 
   /** Indicates whether the field is required in the form */
   required?: boolean;
@@ -50,12 +50,12 @@ export type Props = {
   validators?: Validator[];
 
   /** Hint to display on a validation error */
-  invalidHint?: string;
+  invalidHint?: React.ReactNode;
 
   /** Function to call when the data model needs to be changed.
    *  Takes a name and a value parameter.
    */
-  onChange?: (name: string, value: string) => void;
+  onChange?: (name: string, value: T) => void;
 };
 
 type State = {
@@ -68,7 +68,7 @@ type State = {
   errors?: Array<string> | Object;
 };
 
-export class InputBase extends React.Component<Props, State> {
+export class InputBase<T = string> extends React.Component<Props<T>, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -81,7 +81,7 @@ export class InputBase extends React.Component<Props, State> {
     onChange: undefined,
   };
 
-  constructor(props: Props) {
+  constructor(props: Props<T>) {
     super(props);
     this.state = {
       isValid: true,
@@ -129,7 +129,7 @@ export class InputBase extends React.Component<Props, State> {
           }
           return filtered;
         }, {});
-        this.validate(values);
+        this.validate(values as (T extends {} ? T : never));
       } else {
         this.validate(this.context.model[this.props.name]);
       }
@@ -157,7 +157,7 @@ export class InputBase extends React.Component<Props, State> {
     return this.state.isValid;
   }
 
-  validate(value: string | Object, errors?: Array<string> | Object): void {
+  validate(value: T, errors?: Array<string> | Object): void {
     const results: ReturnType<Validator>[] = [];
     let isValid = true;
 
@@ -195,7 +195,7 @@ export class InputBase extends React.Component<Props, State> {
     });
   }
 
-  setValue(name: string, value: string) {
+  setValue(name: string, value: T) {
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
@@ -206,7 +206,7 @@ export class InputBase extends React.Component<Props, State> {
         }
         return filtered;
       }, {});
-      this.validate(Object.assign({}, values, { [name]: value }));
+      this.validate(Object.assign({}, values, { [name]: value }) as (T extends {} ? T : never));
     } else {
       this.validate(value);
     }
@@ -214,7 +214,7 @@ export class InputBase extends React.Component<Props, State> {
     if (this.props.onChange) this.props.onChange(name, value);
   }
 
-  pushHint(hints, hint) {
+  pushHint(hints: React.ReactNode[], hint: React.ReactNode) {
     if (hint) {
       if (hints.length > 0) {
         hints.push(<br />);
@@ -227,7 +227,7 @@ export class InputBase extends React.Component<Props, State> {
     const isError = this.state.showErrors && !this.state.isValid;
     const invalidHint =
       isError && (this.props.invalidHint || (this.props.required && `${this.props.label} is required.`));
-    const hints = [];
+    const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
 
     const errors = this.state.errors && Array.isArray(this.state.errors) ? this.state.errors : [this.state.errors];
