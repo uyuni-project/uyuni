@@ -9,21 +9,17 @@ import argparse
 import binascii
 
 from typing import Any, Dict, List, Set, Optional
-from mgrlibmod import mltypes, mlerrcode
+from mgrlibmod import mltypes, mlerrcode, mlresolver
 
 import gi  # type: ignore
 
 gi.require_version("Modulemd", "2.0")
 from gi.repository import Modulemd  # type: ignore
 
-
 class MLLibmodProc:
     """
     Libmod process.
     """
-
-    RESERVED_STREAMS = ["platform"]
-
     def __init__(self, metadata: List[str]):
         """
         __init__
@@ -33,23 +29,9 @@ class MLLibmodProc:
         """
         self.metadata = metadata
         self._mod_index: Modulemd.ModuleIndex = None
-        self._enabled_stream_modules: Dict = {}
-        self._streams: List = []
 
         if gi is None or Modulemd is None:
             raise mlerrcode.MlGeneralException("No python libmodulemd was found")
-
-
-    def _is_stream_enabled(self, s_type: mltypes.MLStreamType) -> bool:
-        """
-        _is_stream_enabled -- returns True if stream is enabled. NOTE: "platform" is always enabled.
-
-        :param s_type: stream type object
-        :type s_type: MLStreamType
-        :return: True, if stream is enabled.
-        :rtype: bool
-        """
-        return s_type.name in self._enabled_stream_modules
 
     def _is_meta_compressed(self, path: str) -> bool:
         """
@@ -63,41 +45,12 @@ class MLLibmodProc:
         with open(path, "rb") as metafile:
             return binascii.hexlify(metafile.read(2)) == b"1f8b"  # Almost reliable :-)
 
-    def enable_stream(self, s_obj) -> None:
-        """
-        enable_stream -- enables stream.
+    def get_stream_contexts(self, stream: mltypes.MLStreamType) -> List:
+        '''
+        get_stream_contexts -- get all the alternative contexts for a module stream
 
-        :param s_obj: module type
-        :type s_obj: Module object
-        """
-        self._enabled_stream_modules[s_obj.get_module_name()] = s_obj
-
-    def disable_stream(self, name: str) -> None:
-        """
-        disable_stream -- disabled stream.
-
-        :param name: stream name
-        :type name: str
-        """
-        if name not in MLLibmodProc.RESERVED_STREAMS:
-            self._enabled_stream_modules.pop(name, None)
-
-    def get_module_streams(self, name: str) -> List:
-        if self._mod_index is None:
-            self.index_modules()
-
-        if self._mod_index is None:
-            raise mlerrcode.MlGeneralException("Module index not found")
-
-        streams: Set = set()
-        module = self._mod_index.get_module(name)
-        if module:
-            for s_obj in module.get_all_streams():
-                streams.add(s_obj.get_stream_name())
-
-        return list(streams)
-
-    def get_stream_contexts(self, s_type: mltypes.MLStreamType) -> List:
+        :param stream: the specified module stream
+        '''
         if self._mod_index is None:
             self.index_modules()
 
@@ -105,30 +58,15 @@ class MLLibmodProc:
             raise mlerrcode.MlGeneralException("Module index not found")
 
         contexts: List = []
-        module = self._mod_index.get_module(s_type.name)
+        module = self._mod_index.get_module(stream.name)
         if module:
-            for stream in module.get_all_streams():
-                if stream.get_stream_name() == s_type.stream:
-                    contexts.append(stream)
+            stream_name = stream.stream if stream.stream \
+                    else self.get_default_stream(stream.name)
+            for ctx in module.get_all_streams():
+                if ctx.get_stream_name() == stream_name:
+                    contexts.append(ctx)
 
         return contexts
-
-    def get_stream_dependencies(self, ctx: Modulemd.ModuleStreamV2) -> List[str]:
-        """
-        get_stream_dependencies -- get stream dependencies.
-
-        :param ctx: module stream context
-        :type ctx: Modulemd.ModuleStreamV2
-        :return: list of dependency names.
-        :rtype: List[str]
-        """
-        deps: List[str] = []
-        s_deps: List[Modulemd.Dependencies] = ctx.get_dependencies() or []
-        dep: Modulemd.Dependencies
-        for dep in s_deps:
-            deps.extend(dep.get_runtime_modules())
-
-        return deps
 
     def index_modules(self) -> None:
         """
@@ -161,45 +99,18 @@ class MLLibmodProc:
 
         return module.get_all_streams()[0].get_stream_name()
 
-    def get_dep_streams(self, s_obj):
-        dep = s_obj.get_dependencies()[0]
-        all_deps = []  # type: ignore
-        for m in dep.get_runtime_modules():
-            deps = dep.get_runtime_streams(m)
-            if deps:
-                all_deps.append((m, deps[0],))
-        return all_deps
+    def get_streams_with_defaults(self, streams):
+        streams_with_defaults = []
+        for s in streams:
+            stream_name = s.stream
+            if not stream_name:
+                stream_name = self.get_default_stream(s.name)
+            streams_with_defaults.append(mltypes.MLStreamType(s.name, stream_name))
+        return streams_with_defaults
 
-    def get_actual_stream(self, name: str):
-        if name == "platform":
-            return "el8"
-        if name not in self._enabled_stream_modules:
-            return self.get_default_stream(name)
-        return self._enabled_stream_modules[name].get_stream_name()
-
-    def list_enabled_streams(self):
-        for stream in self._enabled_stream_modules.values():
-            print(stream.get_NSVCA())
-
-    def get_rpm_blacklist(self):
-        if self._mod_index is None:
-            raise mlerrcode.MlGeneralException("No module index has been found")
-
-        enabled_packages: Set = set()
-        for stream in self._enabled_stream_modules.values():
-            enabled_packages = enabled_packages.union(stream.get_rpm_artifacts())
-
-        all_packages: Set = set()
-        for name in self._mod_index.get_module_names():
-            module = self._mod_index.get_module(name)
-            for stream in module.get_all_streams():
-                all_packages = all_packages.union(stream.get_rpm_artifacts())
-
-        return list(all_packages.difference((enabled_packages)))
-
-    def get_pkg_name(self, pkg_name: str) -> str:
+    def _get_pkg_name(self, pkg_name: str) -> str:
         """
-        get_pkg_name -- get package name
+        _get_pkg_name -- get package name
 
         :param pkg_name: package name
         :type pkg_name: str
@@ -216,42 +127,14 @@ class MLLibmodProc:
 
         return wover
 
-    def get_artifact_with_name(self, artifacts, name):
+    def _get_artifact_with_name(self, artifacts, name):
         for artifact in artifacts:
-            n = self.get_pkg_name(artifact)
+            n = self._get_pkg_name(artifact)
             if name == n:
                 return artifact
         return None
 
-    def _get_api_provides(self) -> Dict[str, mltypes.MLSet]:
-        """
-        _get_api_provides -- get provided apis.
-
-        :return: List of apis in the list in a fashion of a Set.
-        :rtype: Dict[str, mltypes.MLSet]
-        """
-        api_provides: Dict[str, mltypes.MLSet] = {
-            "_other_": mltypes.MLSet(),
-        }
-        for stream in self._enabled_stream_modules.values():
-            if not stream:
-                continue
-            s_arts = stream.get_rpm_artifacts()
-            for rpm in stream.get_rpm_api():
-                artifact = self.get_artifact_with_name(s_arts, rpm)
-                if artifact:
-                    if rpm not in api_provides:
-                        api_provides[rpm] = mltypes.MLSet([artifact])
-                    else:
-                        api_provides[rpm].add(artifact)
-                    s_arts.remove(artifact)
-
-        # Add the remaining non-api artifacts
-            for artifact in s_arts:
-                api_provides["_other_"].add(artifact)
-        return api_provides
-
-    def _select_stream(self, m_name, stream) -> Dict:
+    def _get_stream_object(self, m_name, stream) -> Dict:
         s_obj: Dict = {
             "name": m_name,
             "stream": stream.get_stream_name(),
@@ -261,14 +144,14 @@ class MLLibmodProc:
         }
         return s_obj
 
-    def get_api_provides(self):
+    def get_api_provides(self, streams):
         api_provides: Dict[str, mltypes.MLSet] = {
             "apis": mltypes.MLSet(),
             "packages": mltypes.MLSet(),
             "selected": mltypes.MLSet(),
         }
 
-        for stream in self._streams:
+        for stream in streams:
             if not stream:
                 continue
 
@@ -279,59 +162,14 @@ class MLLibmodProc:
                     api_provides["packages"].add(rpm)
 
             for rpm in stream.get_rpm_api():
-                artifact = self.get_artifact_with_name(stream_artifacts, rpm)
+                artifact = self._get_artifact_with_name(stream_artifacts, rpm)
                 if artifact:
                     api_provides["apis"].add(rpm)
                     if not artifact.endswith(".src"):
                         api_provides["packages"].add(artifact)
-            api_provides["selected"].add(self._select_stream(stream.get_module_name(), stream))
+            api_provides["selected"].add(self._get_stream_object(stream.get_module_name(), stream))
 
         return api_provides
-
-    def pick_stream(self, s_type: mltypes.MLStreamType):
-        if s_type.name in MLLibmodProc.RESERVED_STREAMS:
-            # Reserved streams are always enabled
-            return
-
-        if self._is_stream_enabled(s_type):
-            enabled_stream = self._enabled_stream_modules[s_type.name]
-            if enabled_stream.get_stream_name() == s_type.stream:
-                # Stream already enabled, nothing to do
-                return
-            else:
-                # Another stream of the same module already enabled
-                conflicting = [
-                    mltypes.MLStreamType(s_type.name, enabled_stream.get_stream_name()).to_obj(),
-                    s_type.to_obj()
-                ]
-                raise mlerrcode.MlConflictingStreams("Conflicting streams").set_data("streams", conflicting)
-
-        all_deps = set()  # type: ignore
-        allContexts = self.get_stream_contexts(s_type=s_type)
-        if not allContexts:
-            raise mlerrcode.MlModuleNotFound("Module not found").set_data("streams", [s_type.to_obj()])
-        for c in allContexts:
-            all_deps = all_deps.union(self.get_stream_dependencies(c))
-
-        enabledDeps = []
-        for d in all_deps:
-            enabledDeps.append((d, self.get_actual_stream(d)))
-
-        for ctx in allContexts:
-            currDeps = self.get_dep_streams(ctx)
-            if all(i in enabledDeps for i in currDeps):
-                for dstream in currDeps:
-                    self.pick_stream(s_type=mltypes.MLStreamType(name=dstream[0], streamname=dstream[1]))
-
-                self.enable_stream(ctx)
-                self._streams.append(ctx)
-            else:
-                # Return s_type
-                raise mlerrcode.MlDependencyResolutionError("Dependencies cannot be resolved").set_data("streams", [s_type.to_obj()])
-
-    def pick_default_stream(self, s_type: mltypes.MLStreamType):
-        s_type = mltypes.MLStreamType(s_type.name, self.get_default_stream(s_type.name))
-        self.pick_stream(s_type=s_type)
 
 
 class MLLibmodAPI:
@@ -392,33 +230,32 @@ class MLLibmodAPI:
 
         return self
 
-    def _get_repodata_streams(self) -> List[Modulemd.ModuleStreamV2]:
+    def _validate_input_streams(self, streams):
+        for s1 in streams:
+            for s2 in streams:
+                if s1.name == s2.name and s1.stream != s2.stream:
+                    raise mlerrcode.MlConflictingStreams("Conflicting streams").set_data("streams", [s1.to_obj(), s2.to_obj()])
+
+    def _resolve_stream_dependencies(self) -> List[Modulemd.ModuleStreamV2]:
         """
-        _get_repodata_streams -- collect all repodata streams and select current default.
+        _resolve_stream_dependencies -- select all the module dependencies preferring default streams
 
         :return: List of stream objects
         :rtype: List
         """
-        self._proc._streams.clear()
-        self._proc.index_modules()
+        input_streams = self._proc.get_streams_with_defaults(self.repodata.get_streams())
+        self._validate_input_streams(input_streams)
 
-        #TODO: Optimize error data
-        not_found = []
-        for s_type in self.repodata.get_streams():
-            try:
-                if s_type.stream:
-                    self._proc.pick_stream(s_type)
-                else:
-                    self._proc.pick_default_stream(s_type=s_type)
-            except mlerrcode.MlModuleNotFound as e:
-                not_found.extend(e.data["streams"])
+        resolver = mlresolver.DependencyResolver(self._proc)
+        solutions = resolver.resolve(input_streams)
+        if not solutions:
+            raise mlerrcode.MlDependencyResolutionError("Dependencies cannot be resolved")
 
-        if not_found:
-            raise mlerrcode.MlModuleNotFound("Module not found").set_data("streams", not_found)
+        # Return the solution with highest score (most selections with default streams)
+        solutions.sort(key=lambda s: s[1], reverse=True)
+        return solutions[0][0]
 
-        return self._proc._streams
-
-    # Functions
+    # API functions
     def _function__list_modules(self) -> Dict[str, Dict]:
         """
         _function__all_modules -- lists all available modules.
@@ -434,11 +271,10 @@ class MLLibmodAPI:
         for m_name in self._proc._mod_index.get_module_names():
             mod = self._proc._mod_index.get_module(m_name)
             d_mod = mod.get_defaults()
-            if d_mod is not None:
-                mobj[m_name] = {
-                    "default": d_mod.get_default_stream(),
-                    "streams": d_mod.get_streams_with_default_profiles(),
-                }
+            mobj[m_name] = {
+                "default": d_mod.get_default_stream() if d_mod else None,
+                "streams": set([s.get_stream_name() for s in mod.get_all_streams()])
+            }
 
         modules["modules"] = mobj
         return modules
@@ -465,5 +301,7 @@ class MLLibmodAPI:
         :return: structure for module packages
         :rtype: Dict[str, List[str]]
         """
-        self._get_repodata_streams()
-        return self._proc.get_api_provides()
+        self._proc.index_modules()
+        selected_streams = self._resolve_stream_dependencies()
+        return self._proc.get_api_provides(selected_streams)
+

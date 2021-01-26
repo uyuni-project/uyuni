@@ -190,17 +190,17 @@ export class DateTimePicker extends React.Component<DateTimePickerProps> {
         return (
             <div className="input-group">
             {!this.state.hideDate && [
-                <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)}>
+                <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)} key="calendar">
                     &nbsp;<i className="fa fa-calendar"></i>
                 </span>,
-                <DatePicker id={this.props.id ? this.props.id + "_date" : null} key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
+                <DatePicker id={this.props.id ? this.props.id + "_date" : null} key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} key="date-picker"/>
             ]}
             {!this.state.hideTime && [
-                <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)}>
+                <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)} key="clock">
                     &nbsp;<i className="fa fa-clock-o"></i>
                 </span>,
-                <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />,
-                <span className="input-group-addon">
+                <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} key="time-picker"/>,
+                <span className="input-group-addon" key="tz">
                     {this.props.timezone}
                 </span>
             ]}

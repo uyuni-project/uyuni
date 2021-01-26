@@ -15,7 +15,7 @@ import { ModalButton } from 'components/dialog/ModalButton';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { VirtualizationListRefreshApi } from '../../virtualization-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
-import { useVirtNotification } from '../../useVirtNotification.js';
+import { useVirtNotification } from '../../useVirtNotification';
 import { HypervisorCheck } from '../../HypervisorCheck';
 
 import type {MessageType} from 'components/messages';

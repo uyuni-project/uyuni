@@ -6,10 +6,10 @@ import Network from '../../utils/network';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { TopPanel } from 'components/panels/TopPanel';
-import * as DataTree from './data-tree.js';
-import * as Preprocessing from './data-processing/preprocessing.js';
-import * as UI from './ui/components.js';
-import * as Utils from './utils.js';
+import * as DataTree from './data-tree';
+import * as Preprocessing from './data-processing/preprocessing';
+import * as UI from './ui/components';
+import * as Utils from './utils';
 
 function displayHierarchy(data) {
   // disable the #spacewalk-content observer:

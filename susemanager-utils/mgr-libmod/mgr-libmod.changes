@@ -1,3 +1,5 @@
+- Improve modular dependency resolution algorithm (bsc#1177267)
+
 -------------------------------------------------------------------
 Thu Nov 26 12:59:32 CET 2020 - jgonzalez@suse.com
 

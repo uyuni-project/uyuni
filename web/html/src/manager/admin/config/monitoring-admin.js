@@ -10,7 +10,7 @@ import {Messages, Utils as MessagesUtils} from 'components/messages';
 import {Utils} from 'utils/functions';
 import {IconTag as Icon} from 'components/icontag';
 import withPageWrapper from 'components/general/with-page-wrapper';
-import useMonitoringApi from './use-monitoring-api.js';
+import useMonitoringApi from './use-monitoring-api';
 import './monitoring-admin.css';
 
 const {capitalize} = Utils;

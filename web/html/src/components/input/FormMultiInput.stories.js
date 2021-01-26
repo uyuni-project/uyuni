@@ -10,8 +10,8 @@ export default {
   title: 'Forms/FormMultiInput'
 };
 
-export const Example = () => {
-  const [model, setModel] = React.useState({});
+export const MultipleFields = () => {
+  const [model, setModel] = React.useState({user0_firstname: 'John', user0_lastname: 'Doe'});
   return (
     <Form
       model={model}
@@ -65,6 +65,112 @@ export const Example = () => {
                 divClass="col-md-6"
                 validators={[(value => (value.length > 2))]}
               />
+            </>
+          )
+        }
+      </FormMultiInput>
+      <SubmitButton
+        id="submit-btn"
+        className="btn-success"
+        text={t("Submit")}
+      />
+    </Form>
+  )
+};
+
+export const SingleField = () => {
+  const [model, setModel] = React.useState({user0_login: "jdoe"});
+  return (
+    <Form
+      model={model}
+      onChange={setModel}
+      onSubmit={action('Submit clicked')}
+      onSubmitInvalid={action('Submit clicked when invalid')}
+      divClass="col-md-12"
+      formDirection="form-horizontal"
+    >
+      <FormMultiInput
+        id="users"
+        title={t('Users')}
+        prefix="user"
+        onAdd={(index) => {
+          const newModel = Object.assign({}, model, {
+            [`user${index}_login`]: '',
+          });
+          setModel(newModel);
+          action('add clicked')(index);
+        }}
+        onRemove={index => {
+          const newModel = Object.entries(model).reduce((res, entry) => {
+            const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+            return Object.assign(res, property);
+          }, {});
+          setModel(newModel);
+          action('remove clicked')(index);
+        }}
+        disabled={false}
+      >
+        {
+          (index: number) => (
+            <>
+              <Text
+                name={`user${index}_login`}
+                label={t('Login')}
+                required
+                invalidHint={t('Minimum 2 characters')}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                validators={[(value => (value.length > 2))]}
+              />
+            </>
+          )
+        }
+      </FormMultiInput>
+      <SubmitButton
+        id="submit-btn"
+        className="btn-success"
+        text={t("Submit")}
+      />
+    </Form>
+  )
+};
+
+export const CustomFieldsWithModal = () => {
+  const [model, setModel] = React.useState({user0_login: "jdoe"});
+  return (
+    <Form
+      model={model}
+      onChange={setModel}
+      onSubmit={action('Submit clicked')}
+      onSubmitInvalid={action('Submit clicked when invalid')}
+      divClass="col-md-12"
+      formDirection="form-horizontal"
+    >
+      <FormMultiInput
+        id="users"
+        title={t('Users')}
+        prefix="user"
+        onAdd={(index) => {
+          const newModel = Object.assign({}, model, {
+            [`user${index}_login`]: prompt("Username?"),
+          });
+          setModel(newModel);
+          action('add clicked')(index);
+        }}
+        onRemove={index => {
+          const newModel = Object.entries(model).reduce((res, entry) => {
+            const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+            return Object.assign(res, property);
+          }, {});
+          setModel(newModel);
+          action('remove clicked')(index);
+        }}
+        disabled={false}
+      >
+        {
+          (index: number) => (
+            <>
+              <div>{ model[`user${index}_login`]}</div>
             </>
           )
         }

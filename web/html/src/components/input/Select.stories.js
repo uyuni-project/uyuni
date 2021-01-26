@@ -40,7 +40,7 @@ export const Example = () => (
 
 
 export const AdvancedExample = () => {
-  const [model, setModel] = React.useState({});
+  const [model, setModel] = React.useState({flavor: ['vanilla', 'strawberry']});
 
   const options = [
     { value: 'chocolate', label: 'Chocolate', color: "#7B3F00" },
@@ -65,6 +65,7 @@ export const AdvancedExample = () => {
             emptyText={t("No flavors")}
             labelClass="col-md-3"
             divClass="col-md-6"
+            isMulti
             formatOptionLabel={(object, {context}) => {
               if (context === "menu") {
                 return <div style={{color: object.color}}>{object.label}</div>;

@@ -40,18 +40,20 @@ Group:          Applications/Internet
 Version:        4.2.4
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  susemanager-nodejs-sdk-devel
+BuildRequires:  nodejs-packaging
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
-BuildRequires:  nodejs-packaging
-
+BuildRequires:  nodejs10
+%else
+BuildRequires:  nodejs
 %endif
 
 %description

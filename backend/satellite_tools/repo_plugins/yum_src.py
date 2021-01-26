@@ -1137,12 +1137,13 @@ type=rpm-md
             return False
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
+    def set_download_parameters(self, params, relative_path, target_file=None, checksum_type=None,
                                 checksum_value=None, bytes_range=None):
         # Create directories if needed
-        target_dir = os.path.dirname(target_file)
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir, int('0755', 8))
+        if target_file is not None:
+            target_dir = os.path.dirname(target_file)
+            if not os.path.exists(target_dir):
+                os.makedirs(target_dir, int('0755', 8))
 
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
@@ -1165,6 +1166,16 @@ type=rpm-md
         try:
             try:
                 temp_file = ""
+                try:
+                    if not urlparse(path).scheme:
+                        (s,b,p,q,f,o) = urlparse(self.url)
+                        if p[-1] != '/':
+                            p = p + '/'
+                        p = p + path
+                        path = urlunparse((s,b,p,q,f,o))
+                except (ValueError, IndexError, KeyError) as e:
+                    return None
+
                 if local_base is not None:
                     target_file = os.path.join(local_base, path)
                     target_dir = os.path.dirname(target_file)
@@ -1173,12 +1184,16 @@ type=rpm-md
                     temp_file = target_file + '..download'
                     if os.path.exists(temp_file):
                         os.unlink(temp_file)
-                    downloaded = urlgrabber.urlgrab(path, temp_file)
+                    urlgrabber_opts = {}
+                    self.set_download_parameters(urlgrabber_opts, path, temp_file)
+                    downloaded = urlgrabber.urlgrab(path, temp_file, **urlgrabber_opts)
                     os.rename(downloaded, target_file)
                     return target_file
                 else:
-                    return urlgrabber.urlread(path)
-            except urlgrabber.URLGrabError:
+                    urlgrabber_opts = {}
+                    self.set_download_parameters(urlgrabber_opts, path)
+                    return urlgrabber.urlread(path, **urlgrabber_opts)
+            except urlgrabber.grabber.URLGrabError:
                 return
         finally:
             if os.path.exists(temp_file):
