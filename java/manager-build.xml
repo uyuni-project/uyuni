@@ -375,8 +375,6 @@
                 outputdir="${tests.results.dir}"
                 failureProperty="junit_failed">
             <fork>
-                <sysproperty key="junit.jupiter.execution.parallel.enabled" value="true" />
-                <sysproperty key="junit.jupiter.execution.parallel.mode.default" value="concurrent" />
                 <sysproperty key="rhn-home" value="." /> <!-- todo verify if these work -->
                 <sysproperty key="java.awt.headless" value="true" />
                 <!--               <sysproperty key="log4j.threshold" value="warn" /> -->
@@ -384,7 +382,6 @@
                 <jvmarg value="-ea" />
             </fork>
             <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
-            <listener type="legacy-plain" sendSysOut="true"/>
             <listener type="legacy-brief" sendSysOut="true"/>
             <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
         </testclasses>
