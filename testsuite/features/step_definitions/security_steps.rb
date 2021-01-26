@@ -2,7 +2,7 @@ require 'open-uri'
 require 'uri'
 require 'openssl'
 
-Given(/^I retrieve any static resource$/) do
+When(/^I retrieve any static resource$/) do
   resource = ['/img/action-add.gif', '/css/spacewalk.css', '/fonts/DroidSans.ttf',
               '/javascript/actionchain.js'].sample
   @url = Capybara.app_host + resource
@@ -11,14 +11,14 @@ Given(/^I retrieve any static resource$/) do
   end
 end
 
-And(/^the response header "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
+Then(/^the response header "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
   assert_includes(@headers.keys, arg1.downcase,
                   "Header '#{arg1}' not present in '#{@url}'")
   assert_equal(arg2, @headers[arg1.downcase],
                "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
 end
 
-And(/^the response header "(.*?)" should not be "(.*?)"$/) do |arg1, arg2|
+Then(/^the response header "(.*?)" should not be "(.*?)"$/) do |arg1, arg2|
   refute_equal(arg2, @headers[arg1.downcase],
                "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
 end
