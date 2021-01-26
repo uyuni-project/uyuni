@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.errata.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
