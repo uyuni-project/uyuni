@@ -1,3 +1,4 @@
+- FIX: Slow response of 'Software > Install' in Ubuntu minions (bsc#1181165)
 - Do not call page decorator in HEAD requests (bsc#1181228)
 - Add 'mgr_origin_server' to Salt pillar data (bsc#1180439)
 - Ensure new files are synced just after writing them (bsc#1175660)
