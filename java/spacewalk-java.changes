@@ -1,3 +1,4 @@
+- fix query using old EVR_T constructor (bsc#1181422) 
 - Update to postgresql13 (jsc#SLE-17030)
 - Improve modular dependency resolution algorithm (bsc#1177267)
 - Display absolute timestamps for configuration files
