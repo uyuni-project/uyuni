@@ -1159,7 +1159,11 @@ end
 
 When(/^I create the MU repositories for "([^"]*)"$/) do |client|
   repo_list = $custom_repositories[client]
-  next if repo_list.nil?
+  if repo_list.nil?
+    puts "#{File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'} is empty or it has a bad format?"
+    puts "Content:\n#{$custom_repositories}"
+    next
+  end
 
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)

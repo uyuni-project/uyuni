@@ -11,7 +11,7 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
     When I enter "Custom Channel for <client>" as "Channel Name"
     And I enter "custom_channel_<client>" as "Channel Label"
     And I select the parent channel for the "<client>" from "Parent Channel"
-    And I enter "Custom channel" as "Channel Summary"
+    And I enter "Custom channel for <client>" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for <client> created" text
 
