@@ -93,7 +93,7 @@ public class SystemHistoryEventAction extends RhnAction {
         request.setAttribute("failed",
                 serverAction.getStatus().equals(ActionFactory.STATUS_FAILED));
         request.setAttribute("pickedup",
-                serverAction.getStatus().equals(ActionFactory.STATUS_PICKEDUP));
+                serverAction.getStatus().equals(ActionFactory.STATUS_PICKED_UP));
         request.setAttribute("completed",
                 serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED));
         boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
