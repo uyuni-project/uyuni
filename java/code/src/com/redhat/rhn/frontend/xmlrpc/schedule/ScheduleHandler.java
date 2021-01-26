@@ -60,7 +60,7 @@ public class ScheduleHandler extends BaseHandler {
         for (Integer actionId : actionIds) {
             Action action = ActionManager.lookupAction(loggedInUser, Long.valueOf(actionId));
             for (ServerAction sa : action.getServerActions()) {
-                if (ActionFactory.STATUS_PICKEDUP.equals(sa.getStatus())) {
+                if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
                     throw new ActionIsPickedUpException("Cannot cancel actions in " +
                             "PICKED UP state, aborting...");
                 }

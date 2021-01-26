@@ -139,9 +139,7 @@ public class VirtNotifications {
                     // Send out a list of the latest pending actions to display
                     Server server = SystemManager.lookupByIdAndUser(newId, userOpt.get());
                     List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
-                            Arrays.asList(ActionFactory.STATUS_QUEUED,
-                                          ActionFactory.STATUS_PICKEDUP,
-                                          ActionFactory.STATUS_PICKED_UP));
+                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP));
 
                     Map<String, List<ServerAction>> groupedActions = serverActions.stream()
                             .filter(sa -> ActionFactory.isVirtualizationActionType(
