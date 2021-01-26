@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 22 13:19:00 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.20-1
+- fix apt login for similar channel labels (bsc#1180803)
+
+-------------------------------------------------------------------
 Tue Jan 12 13:57:25 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.19-1

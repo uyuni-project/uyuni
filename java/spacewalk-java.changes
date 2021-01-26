@@ -3,6 +3,12 @@
 - Fix: login gets an ISE when SSO is enabled (bsc#1181048)
 
 -------------------------------------------------------------------
+Fri Jan 22 13:14:35 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.27-1
+- Improve modular dependency resolution algorithm (bsc#1177267)
+
+-------------------------------------------------------------------
 Thu Jan 14 09:18:08 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.26-1

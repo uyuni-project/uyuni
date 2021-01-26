@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 22 13:08:32 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.6-1
+- Improve modular dependency resolution algorithm (bsc#1177267)
+
+-------------------------------------------------------------------
 Thu Nov 26 15:59:22 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.5-1
