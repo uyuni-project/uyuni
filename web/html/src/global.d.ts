@@ -2,6 +2,9 @@ declare global {
   interface Window {
     _IS_UYUNI: boolean;
 
+    // CSRF loopback
+    csrfToken?: string;
+
     // Translation data
     translationData?: any;
     preferredLocale?: string;
