@@ -1,4 +1,4 @@
-# Copyright 2015-2020 SUSE LLC
+# Copyright 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'
@@ -280,60 +280,6 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
   end
 
   @activation_key_api.add_child_channels(key, selected_child_channels)
-end
-
-# @vhm_api namespace
-
-modules = []
-vhms = []
-params = {}
-detail = {}
-
-Given(/^I am logged in via XML\-RPC @vhm_api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @vhm_api = XMLRPCVHMTest.new($server.ip)
-  @vhm_api.login(luser, password)
-end
-
-When(/^I call @vhm_api.list_available_virtual_host_gatherer_modules\(\)$/) do
-  modules = @vhm_api.list_available_virtual_host_gatherer_modules
-end
-
-When(/^I call @vhm_api.list_virtual_host_managers\(\)$/) do
-  vhms = @vhm_api.list_virtual_host_managers
-end
-
-When(/^I call @vhm_api.get_module_parameters\(\) for "([^"]*)"$/) do |module_name|
-  params = @vhm_api.get_module_parameters(module_name)
-end
-
-When(/^I call @vhm_api.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, module_name, param_file|
-  fd = File.read(File.new(param_file))
-  p = JSON.parse(fd)
-  r = @vhm_api.create(label, module_name, p)
-  raise if r != 1
-end
-
-When(/^I call @vhm_api.delete\("([^"]*)"\)$/) do |label|
-  r = @vhm_api.delete(label)
-  raise if r != 1
-end
-
-When(/^I call @vhm_api.get_detail\("([^"]*)"\)$/) do |label|
-  detail = @vhm_api.get_detail(label)
-end
-
-Then(/^"([^"]*)" should be "([^"]*)"$/) do |key1, value1|
-  assert(detail.key?(key1), "Expect parameter key '#{key1}', but got only '#{detail}'")
-  assert(detail[key1].to_s == value, "Expect value for #{key1} should be '#{value1}, but got '#{detail[key1]}'")
-end
-
-Then(/^configs "([^"]*)" should be "([^"]*)"$/) do |key1, value1|
-  assert(detail['configs'].key?(key1), "Expect parameter key '#{key1}', but got only '#{detail['configs']}'")
-  assert(detail['configs'][key1].to_s == value1, "Expect value for #{key1} should be '#{value1}, but got '#{detail['configs'][key1]}'")
-end
-
-Then(/^I logout from XML\-RPC @vhm_api namespace$/) do
-  @vhm_api.logout
 end
 
 # actionchain namespace
