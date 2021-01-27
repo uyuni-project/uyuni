@@ -58,6 +58,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
         addSubmitted();
         addRequestParameter(RequestContext.DISPATCH,
                 LocalizationService.getInstance().getMessage("errata.jsp.apply"));
+        addRequestParameter("allowVendorChange", "true");
 
         // Create System
         Server server = ServerFactoryTest.createTestServer(user, true);

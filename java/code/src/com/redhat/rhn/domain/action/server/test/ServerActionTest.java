@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.action.server.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -91,7 +93,8 @@ public class ServerActionTest extends RhnBaseTestCase {
     public void testCreate() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        parent.setDetails(new ActionPackageDetails());
         ServerAction child = createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
