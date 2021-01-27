@@ -34,6 +34,31 @@ type Props = {
   actionChains: Array<ActionChain>,
 };
 
+function clearFields(initialModel, setModel) {
+  if (initialModel != null) {
+    // Split the hosts name and port
+    let model = initialModel;
+    if ((model.source || {}).hosts) {
+      const splitHosts = model.source.hosts.map(
+        host => {
+          const [hostname, port] = host.split(':');
+          return {name: hostname, port};
+        }
+      );
+      model.source.hosts = splitHosts;
+    }
+    // Flatten the model for the form
+    let flattened = flattenModel(model);
+    // Set source_adapter_selection
+    if (flattened.type === "scsi") {
+      flattened[`source_adapter_selection`] = FieldsData.computeSourceAdapterSelection(flattened);
+    }
+    setModel(flattened);
+  } else {
+    setModel({});
+  }
+};
+
 export function PoolProperties(props: Props) {
   const [model, setModel] = React.useState(props.initialModel ? flattenModel(props.initialModel) : {});
   const [invalid, setInvalid] = React.useState(false);
@@ -41,33 +66,8 @@ export function PoolProperties(props: Props) {
   const [earliest, setEarliest] = React.useState(Utils.dateWithTimezone(props.localTime));
 
   React.useEffect(() => {
-    clearFields();
+    clearFields(props.initialModel, setModel);
   }, [props.initialModel]);
-
-  const clearFields = () => {
-    if (props.initialModel) {
-      // Split the hosts name and port
-      let initialModel = props.initialModel;
-      if ((props.initialModel.source || {}).hosts) {
-        const splitHosts = props.initialModel.source.hosts.map(
-          host => {
-            const [hostname, port] = host.split(':');
-            return {name: hostname, port};
-          }
-        );
-        initialModel.source.hosts = splitHosts;
-      }
-      // Flatten the model for the form
-      let flattened = flattenModel(initialModel);
-      // Set source_adapter_selection
-      if (flattened.type === "scsi") {
-        flattened[`source_adapter_selection`] = FieldsData.computeSourceAdapterSelection(flattened);
-      }
-      setModel(flattened);
-    } else {
-      setModel({});
-    }
-  };
 
   const onValidate = (isValid: boolean) => {
     setInvalid(!isValid);
