@@ -1,4 +1,4 @@
-# Copyright 2015-2020 SUSE LLC
+# Copyright 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'
@@ -21,7 +21,7 @@ end
 When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
-  akey = salt_ssh ? '1-SUSE-SSH-DEV-x86_64' : '1-SUSE-DEV-x86_64'
+  akey = salt_ssh ? '1-SUSE-SSH-KEY-x86_64' : '1-SUSE-KEY-x86_64'
   result = @system_api.bootstrap_system(system_name, akey, salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
@@ -41,7 +41,7 @@ When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
 but with activation key with Default contact method, I should get an XML-RPC fault with code -1$/) do
   exception_thrown = false
   begin
-    @system_api.bootstrap_system($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
+    @system_api.bootstrap_system($minion.full_hostname, '1-SUSE-KEY-x86_64', true)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')

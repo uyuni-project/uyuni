@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on a JeOS image present on the proxy
@@ -338,7 +338,7 @@ Feature: PXE boot a Retail terminal
   Scenario: Bootstrap the PXE boot minion
     Given I am authorized
     When I stop and disable avahi on the PXE boot minion
-    And I create bootstrap script and set the activation key "1-SUSE-DEV-x86_64" in the bootstrap script on the proxy
+    And I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
