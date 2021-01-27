@@ -798,6 +798,7 @@ end
 
 When(/^I (install|remove) the traditional stack utils (on|from) "([^"]*)"$/) do |action, where, host|
   pkgs = 'spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions'
+  step %(I refresh the metadata for "#{host}") if action == 'install'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
