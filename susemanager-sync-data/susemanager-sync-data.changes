@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:11:46 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - change centos 6 URLs to vault.centos.org
 - add SLE15 SP1 LTSS
 
