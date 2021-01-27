@@ -82,7 +82,9 @@ type WithMessages = {
 // TS can't fully infer the wrapper types on its own, see https://stackoverflow.com/a/65917007/1470607
 type WrapperProps<T> = Omit<T, keyof WithMessages>;
 
-export function withErrorMessages<T extends WithMessages>(PageComponent: (props: T | (WithMessages & WrapperProps<T>)) => JSX.Element) {
+export function withErrorMessages<T extends WithMessages>(
+  PageComponent: (props: T | (WithMessages & WrapperProps<T>)) => JSX.Element
+) {
   return (props: WrapperProps<T>) => {
     const showMessages = (messages: MessageType[]) => {
       messages.forEach(msg => {
@@ -145,7 +147,7 @@ const useClustersApi = () => {
   const fetchProviderFormulaForm = (
     provider: string,
     formula: string,
-    context: FormulaContextType | null | undefined
+    context?: FormulaContextType | null
   ): Promise<any> => {
     return Network.post(
       `/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`,
@@ -218,7 +220,7 @@ const useClustersApi = () => {
     serverIds: Array<number>,
     joinFormula: FormulaValuesType,
     earliest: Date,
-    actionChain: string | null | undefined
+    actionChain?: string | null
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/join`,
@@ -240,7 +242,7 @@ const useClustersApi = () => {
     serverIds: Array<number>,
     removeFormula: FormulaValuesType,
     earliest: Date,
-    actionChain: string | null | undefined
+    actionChain?: string | null
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/remove-node`,
@@ -257,11 +259,7 @@ const useClustersApi = () => {
       .catch(handleResponseError);
   };
 
-  const scheduleUpgradeCluster = (
-    clusterId: number,
-    earliest: Date,
-    actionChain: string | null | undefined
-  ): Promise<number> => {
+  const scheduleUpgradeCluster = (clusterId: number, earliest: Date, actionChain?: string | null): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/upgrade`,
       JSON.stringify({
