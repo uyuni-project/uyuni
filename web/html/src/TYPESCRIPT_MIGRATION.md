@@ -85,6 +85,11 @@ type Props = {
 }
 ```
 
+### `Type 'string' is not assignable to type 'Location'` when using `window.location`
+
+The problem stems from code like: `window.location = "/rhn/manager/clusters";`  
+`window.location` is an object, the correct property to assign to is `window.location.href` which is the location string: `window.location.href = "/rhn/manager/clusters";`
+
 ## Technical tidbits
 
 We rely on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.  
