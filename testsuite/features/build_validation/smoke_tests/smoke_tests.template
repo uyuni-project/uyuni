@@ -62,13 +62,25 @@ Feature: Smoke tests for <client>
     And I enter the hostname of "<client>" as "target"
     And I click on preview
     Then I should see a "Target systems (1)" text
-    When I wait until I do not see "pending" text
-    And I click on run
+    And I wait until I do not see "pending" text
+    When I click on run
     And I wait until I see "show response" text
     And I expand the results for "<client>"
     Then I should see "My remote command output" in the command output for "<client>"
 
-  #TODO: Run a remote command on traditional clients
+@skip_for_minion
+  Scenario: Run a remote command on <client> traditional client
+    Given I am on the Systems overview page of this "<client>"
+    When I follow "Remote Command" in the content area
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      touch /tmp/remote-command-on-<client>
+      """
+    And I click on "Schedule"
+    Then I should see a "Remote Command has been scheduled successfully" text
+    When I force picking pending events on "<client>" if necessary
+    Then I wait until file "/tmp/remote-command-on-<client>" exists on "<client>"
 
   Scenario: Check that Software package refresh works on a <client>
     When I am on the Systems overview page of this "<client>"
