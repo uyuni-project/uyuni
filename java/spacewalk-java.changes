@@ -3,6 +3,12 @@
 - Fix: login gets an ISE when SSO is enabled (bsc#1181048)
 
 -------------------------------------------------------------------
+Wed Jan 27 11:17:10 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.28-1
+- fix query using old EVR_T constructor (bsc#1181422)
+
+-------------------------------------------------------------------
 Fri Jan 22 13:14:35 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.27-1
