@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC.
+# Copyright (c) 2017-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'date'
@@ -96,6 +96,8 @@ end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
+  raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
+
   execute_script("$('#date_timepicker_widget_input')
     .timepicker('setTime', '#{action_time}').trigger('changeTime');")
 end
