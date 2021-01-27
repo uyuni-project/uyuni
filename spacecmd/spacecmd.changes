@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 12:57:11 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - Fix spacecmd with no parameters produces traceback
   on SLE 11 SP4 (bsc#1176823)
 - Fixed "non-advanced" package search when using multiple package names (bsc#1180584)
