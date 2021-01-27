@@ -77,12 +77,12 @@ export class ErrorMessages extends Error {
  * The wrapper provides it so whoever uses the wrapper doesn't have to provide it
  */
 type WithMessages = {
-  setMessages?: (messages: MessageType[]) => void;
+  setMessages: (messages: MessageType[]) => void;
 };
 // TS can't fully infer the wrapper types on its own, see https://stackoverflow.com/a/65917007/1470607
 type WrapperProps<T> = Omit<T, keyof WithMessages>;
 
-export function withErrorMessages<T extends WithMessages>(PageComponent: (props: T | WrapperProps<T>) => JSX.Element) {
+export function withErrorMessages<T extends WithMessages>(PageComponent: (props: T | (WithMessages & WrapperProps<T>)) => JSX.Element) {
   return (props: WrapperProps<T>) => {
     const showMessages = (messages: MessageType[]) => {
       messages.forEach(msg => {

@@ -48,7 +48,7 @@ type Props = {
   initialSortDirection?: number;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ElementRef<typeof SearchField>;
+  searchField?: React.ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number;

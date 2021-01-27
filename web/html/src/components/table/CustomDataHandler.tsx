@@ -13,7 +13,7 @@ type Props = {
   cssClassFunction?: Function;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ElementRef<typeof SearchField>;
+  searchField?: React.ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;

@@ -33,7 +33,7 @@ type TableProps = {
   cssClassFunction?: Function;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ElementRef<typeof SearchField>;
+  searchField?: React.ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
@@ -50,6 +50,9 @@ type TableProps = {
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
+  /** Indicate whether the data is loading (only effective for tables using SimpleDataProvider) */
+  loading?: boolean;
+
   /** The message which is shown when the data is loading */
   loadingText?: string;
 
@@ -64,7 +67,7 @@ function isColumn(input: any): input is React.ReactElement<React.ComponentProps<
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
-export function Table(props: TableProps): React.ReactNode {
+export function Table(props: TableProps) {
   const { ...allProps } = props;
   const columns = React.Children.toArray(props.children)
     .filter(isColumn)

@@ -18,12 +18,12 @@ type Props = {
   selectedServers: Array<ServerType> | null | undefined;
   onNext: (arg0: Array<ServerType>) => void;
   onPrev: () => void;
-  setMessages: (arg0: Array<MessageType>) => void;
+  setMessages: (messages: MessageType[]) => void;
   fetchServers: () => Promise<Array<ServerType>>;
   multiple?: boolean;
 };
 
-const SystemMessages = (props: { messages: Array<MessageType> }) => {
+const SystemMessages = (props: { messages: MessageType[] }) => {
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px", margin: "0px" }}>
       {props.messages.map(msg => (

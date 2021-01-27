@@ -69,6 +69,22 @@ To solve the problem, add a type guard that checks whether the child is a valid 
 React.Children.toArray(props.children).map(child => React.isValidElement(child) ? React.cloneElement(child) : child);
 ```
 
+### Passing down a specific component as a prop
+
+Given a component that wants to consume a specific component as a prop
+
+```tsx
+<Parent child={<Child />} />
+```
+
+If the strict type of `child` is important, you can define the prop as 
+
+```ts
+type Props = {
+	child?: React.ReactComponentElement<typeof Child>;
+}
+```
+
 ## Technical tidbits
 
 We rely on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.  
