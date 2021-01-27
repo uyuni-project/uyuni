@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
