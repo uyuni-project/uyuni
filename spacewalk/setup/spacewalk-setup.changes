@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:05:48 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - Use Java module com.sun.bind only for SUSE systems.
 - Added RHEL Apache gid handling.
 - Drop the ssl_available option (SSL is always present)
