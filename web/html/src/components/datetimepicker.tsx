@@ -195,7 +195,14 @@ type DateTimePickerProps = {
   hideTimePicker: boolean;
 };
 
-export class DateTimePicker extends React.Component<DateTimePickerProps> {
+type DateTimePickerState = {
+  dateOpen: boolean;
+  timeOpen: boolean;
+  hideDate: boolean;
+  hideTime: boolean;
+};
+
+export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {
     super(props);
     this.state = {
