@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:15:55 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - Use Python3 for RHEL.
 - Disabled debug package build.
 
