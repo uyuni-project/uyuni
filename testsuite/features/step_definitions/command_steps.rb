@@ -847,7 +847,13 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
   if (os_version.include? '15') && (host.include? 'proxy')
-    cmd = "mgr-create-bootstrap-repo -c SUMA-41-PROXY-#{arch}"
+    proxy_version = '40'
+    if os_version.include? 'SP3'
+      proxy_version = '42'
+    elsif os_version.include? 'SP2'
+      proxy_version = '41'
+    end
+    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
   elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'
@@ -1339,4 +1345,16 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control})
   end
+end
+
+When(/^I set correct product for "(proxy|branch server)"$/) do |product|
+  if product.include? 'proxy'
+    prod = 'SUSE-Manager-Proxy'
+  elsif product.include? 'branch server'
+    prod = 'SUSE-Manager-Retail-Branch-Server'
+  else
+    raise 'Incorrect product used.'
+  end
+  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting correct product: #{out}"
 end
