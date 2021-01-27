@@ -247,8 +247,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
+    const requiredHint = this.props.label ? t(`${this.props.label} is required.`) : t('required')
     const invalidHint =
-      isError && (this.props.invalidHint || (this.props.required && `${this.props.label} is required.`));
+      isError && (this.props.invalidHint || (this.props.required && requiredHint));
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
 
