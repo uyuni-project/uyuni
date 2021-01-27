@@ -12,6 +12,7 @@
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
+- features/secondary/srv_manage_activationkey.feature
 - features/secondary/srv_xmlrpc_activationkey.feature
 - features/secondary/srv_distro_cobbler.feature
 - features/secondary/srv_mainpage.feature

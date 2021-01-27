@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -22,10 +22,10 @@ Feature: Migrate a traditional client into a Salt SSH minion
   Scenario: Change contact method of activation key to ssh-push
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Activation Keys"
-    And I follow "SUSE Test PKG Key x86_64" in the content area
+    And I follow "SUSE Test Key x86_64" in the content area
     And I select "Push via SSH" from "contactMethodId"
     And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified" text
+    Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
   Scenario: Migrate a SLES client into a Salt SSH minion
     Given I am authorized
@@ -34,7 +34,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-PKG-x86_64" from "activationKeys"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I check "manageWithSSH"
     And I click on "Bootstrap"
@@ -65,11 +65,9 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I run "systemctl status nhsd" on "sle_migrated_minion" without error control
     Then the command should fail
 
-  # bsc#1031081 - old and new activation keys shown for the migrated client
-  Scenario: Check that SSH minion only has the new activation key
+  Scenario: Check that SSH minion has the new activation key
     Given I am on the Systems overview page of this "sle_migrated_minion"
-    Then I should see a "Activation Key:	1-SUSE-PKG-x86_64" text
-    And I should not see a "1-SUSE-DEV-x86_64" text
+    Then I should see a "Activation Key:       1-SUSE-KEY-x86_64" text
 
   Scenario: Check that channels are still the same after migration to Salt SSH
     Given I am on the Systems overview page of this "sle_migrated_minion"
@@ -122,23 +120,22 @@ Feature: Migrate a traditional client into a Salt SSH minion
   Scenario: Cleanup: register SSH minion again as traditional client
     When I enable SUSE Manager tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
-    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: change contact method of activation key back to default
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Activation Keys"
-    And I follow "SUSE Test PKG Key x86_64" in the content area
+    And I follow "SUSE Test Key x86_64" in the content area
     And I select "Default" from "contactMethodId"
     And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified" text
+    Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
-  Scenario: Cleanup: check that this minion is a traditional client again
+  Scenario: Cleanup: check that the migrated SSH minion is a traditional client again
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:     Management" text, refreshing the page
 
-  Scenario: Cleanup: check that we have again the old activation key after migration
+  Scenario: Cleanup: check that we still have the activation key after migration
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Activation Key:	1-SUSE-DEV-x86_64" text
-    And I should not see a "1-SUSE-PKG-x86_64" text
+    Then I should see a "Activation Key:	1-SUSE-KEY-x86_64" text

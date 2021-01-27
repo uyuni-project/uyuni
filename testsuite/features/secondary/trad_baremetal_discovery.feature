@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -118,7 +118,7 @@ Feature: Bare metal discovery
     And the PXE default profile should be disabled
 
   Scenario: Cleanup: register a traditional client after bare metal tests
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests

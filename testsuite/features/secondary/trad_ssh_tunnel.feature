@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 SUSE LLC
+# Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -13,7 +13,7 @@ Feature: Register a traditional system to be managed via SSH push
     Then "sle_client" should not be registered
 
   Scenario: Create bootstrap script for traditional SSH push via tunnel
-    When I execute mgr-bootstrap "--activation-keys=1-SUSE-SSH-TUNNEL-DEV-x86_64 --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
+    When I execute mgr-bootstrap "--activation-keys=1-SUSE-SSH-TUNNEL-KEY-x86_64 --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
     Then I should get "* bootstrap script (written):"
     And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'"
 
@@ -40,5 +40,5 @@ Feature: Register a traditional system to be managed via SSH push
     And I remove server hostname from hosts file on "sle_ssh_tunnel_client"
 
   Scenario: Cleanup: register a traditional client after SSH tunnel tests
-    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
