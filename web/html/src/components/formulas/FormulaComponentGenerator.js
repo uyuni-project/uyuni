@@ -18,6 +18,7 @@ export const FormulaFormContext = React.createContext({
         onFormulaChange: null,
         getCleanValues: null,
         clearValues: null,
+        validate: null,
     });
 
 export function generateFormulaComponent(element, value, formulaForm, parents, wrapper, disabled = false) {

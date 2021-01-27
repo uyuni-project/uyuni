@@ -9,7 +9,9 @@ export const renderer = (id, {clusters, flashMessage}) => {
   let clustersJson = [];
   try{
     clustersJson = JSON.parse(clusters);
-  }  catch(error) {}
+  }  catch(error) {
+    console.log(error);
+  }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>

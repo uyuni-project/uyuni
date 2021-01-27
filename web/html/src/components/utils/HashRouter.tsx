@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 declare var history: any;
 
 type HashContextType = {
-  hash: string | null | undefined;
+  hash?: string | null;
   switch?: boolean;
   match?: boolean;
-  goTo: (arg0: string | null | undefined) => void;
+  goTo: (arg0?: string | null) => void;
   back: () => void;
   initial: () => void;
 };
@@ -46,7 +46,7 @@ const HashRouter = ({ initialPath, children }: HashRouterProps) => {
     });
   }, []);
 
-  const goTo = (hash: string | null | undefined): void => {
+  const goTo = (hash?: string | null): void => {
     if (hash) {
       history.pushState(null, "", "#/" + hash);
       setHash(hash);

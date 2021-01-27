@@ -9,7 +9,9 @@ export const renderer = (id, {projects, flashMessage}) => {
   let projectsJson = [];
   try{
     projectsJson = JSON.parse(projects);
-  }  catch(error) {}
+  }  catch(error) {
+    console.log(error);
+  }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>

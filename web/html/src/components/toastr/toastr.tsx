@@ -7,8 +7,6 @@ type OptionalParams = {
   autoHide: boolean;
 };
 
-type MessagesContainerProps = {};
-
 const FadeTransition = cssTransition({
   enter: "toast-enter",
   exit: "toast-exit",
@@ -70,7 +68,7 @@ export function showInfoToastr(message: React.ReactNode, optionalParams: Optiona
   show(message, notify);
 }
 
-export const MessagesContainer = (props: MessagesContainerProps) => {
+export const MessagesContainer = () => {
   return (
     <ToastContainer
       position="top-center"
