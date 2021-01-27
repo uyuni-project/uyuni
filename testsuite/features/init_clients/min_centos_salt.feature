@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 SUSE LLC
+# Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new CentOS minion via salt
@@ -15,7 +15,7 @@ Feature: Bootstrap a CentOS minion and do some basic operations on it
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-PKG-x86_64" from "activationKeys"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text

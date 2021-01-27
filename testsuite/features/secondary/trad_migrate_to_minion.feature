@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -14,7 +14,7 @@ Feature: Migrate a traditional client into a Salt minion
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-SUSE-PKG-x86_64" from "activationKeys"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
@@ -43,11 +43,9 @@ Feature: Migrate a traditional client into a Salt minion
     When I run "systemctl status nhsd" on "sle_migrated_minion" without error control
     Then the command should fail
 
-  # bsc#1031081 - old and new activation keys shown for the migrated client
-  Scenario: Check that minion only has the new activation key
+  Scenario: Check that minion has the new activation key
     Given I am on the Systems overview page of this "sle_migrated_minion"
-    Then I should see a "Activation Key:	1-SUSE-PKG-x86_64" text
-    And I should not see a "1-SUSE-DEV-x86_64" text
+    Then I should see a "Activation Key:	1-SUSE-KEY-x86_64" text
 
   Scenario: Check that channels are still the same after migration
     Given I am on the Systems overview page of this "sle_migrated_minion"
@@ -100,15 +98,14 @@ Feature: Migrate a traditional client into a Salt minion
     When I enable SUSE Manager tools repositories on "sle_client"
     And I install the traditional stack utils on "sle_client"
     And I remove package "salt-minion" from this "sle_client"
-    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd
 
-  Scenario: Cleanup: check that this is again a traditional client
+  Scenario: Cleanup: check that the migrated minion is again a traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:     Management" text, refreshing the page
 
-  Scenario: Cleanup: check that we have again the old activation key
+  Scenario: Cleanup: check that we still have the activation key
     Given I am on the Systems overview page of this "sle_client"
-    Then I should see a "Activation Key:	1-SUSE-DEV-x86_64" text
-    And I should not see a "1-SUSE-PKG-x86_64" text
+    Then I should see a "Activation Key:	1-SUSE-KEY-x86_64" text
