@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:08:05 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
+- Update to postgresql13 (jsc#SLE-17030)
 - Updated file permissions in mgr-setup.
 - Variable folder installation location.
 - internal code cleanup (dropping unused table rhnErrataTmp)

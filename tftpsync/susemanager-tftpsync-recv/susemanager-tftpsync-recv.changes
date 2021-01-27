@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:16:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - fix option parsing in configure-tftpsync (bsc#1180017)
 - Added RHEL8 compatibility.
 

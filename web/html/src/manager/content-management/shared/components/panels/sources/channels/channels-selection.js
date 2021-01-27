@@ -82,6 +82,7 @@ const ChannelsSelection = (props: PropsType) => {
         <div className='col-lg-8'>
           <Select
             name='selectedBaseChannel'
+            id='selectedBaseChannel'
             value={orderedBaseChannels.find(item => item.id === state.selectedBaseChannelId)}
             onChange={value => {
                 if (typeof value === "object" && !(Array.isArray(value))) {

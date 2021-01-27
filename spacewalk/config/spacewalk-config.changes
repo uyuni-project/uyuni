@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:03:39 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - Fixed apache group for RHEL.
 - Updated Source URL in SPEC.
 - Drop the ssl_available option (SSL is always present)

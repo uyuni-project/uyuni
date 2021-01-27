@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 12:52:41 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.2-1
 - SPEC: Updated Python definitions for RHEL8 and quoted text comparisons.
 
 -------------------------------------------------------------------

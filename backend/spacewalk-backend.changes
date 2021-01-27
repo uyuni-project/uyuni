@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:01:05 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
 - Reposync: Fixed Kickstart functionality.
 - Reposync: Fixed URLGrabber error handling.
 - Reposync: Fix modular data handling for cloned channels (bsc#1177508)

@@ -33,7 +33,7 @@
 %endif
 
 Name:           uyuni-base
-Version:        4.2.2
+Version:        4.2.3
 Release:        1
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz

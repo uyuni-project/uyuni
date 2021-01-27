@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:05:16 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - Fixes no file content in `spacewalk-report config-files`
 - Write `<binary data>` placeholder instead of dumping binary data
 - Added RHEL and Fedora to the Python3 builds.
