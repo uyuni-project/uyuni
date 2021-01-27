@@ -12,6 +12,9 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
+    # WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
+    And I set correct product for "proxy"
+    # End of WORKAROUND
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized
@@ -47,14 +50,6 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page
-
-@proxy
-@private_net
-  Scenario: Install or update branch network formulas on the server
-    When I manually install the "branch-network" formula on the server
-    And I manually install the "dhcpd" formula on the server
-    And I manually install the "bind" formula on the server
-    And I synchronize all Salt dynamic modules on "proxy"
 
 @proxy
 @private_net
