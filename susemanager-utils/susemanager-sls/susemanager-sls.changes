@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:11:15 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - fix apt login for similar channel labels (bsc#1180803)
 - Change behavior of mgrcompat wrapper after deprecation changes on Salt 3002
 - Remove the virtpoller beacon
