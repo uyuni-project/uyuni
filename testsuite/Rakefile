@@ -84,16 +84,8 @@ namespace :utils do
     end
   end
 
-  desc 'Generate all the features need for Build Validation from templates'
+  desc 'Generate all the features we need for a Build Validation from templates'
   task :generate_build_validation_features do
-    Rake::Task['utils:generate_smoke_tests'].invoke
-    Rake::Task['utils:generate_smoke_tests'].reenable
-    Rake::Task['utils:generate_add_activation_keys_features'].invoke
-    Rake::Task['utils:generate_add_activation_keys_features'].reenable
-  end
-
-  desc 'Generate all the features need for QAM from templates'
-  task :generate_qam_features do
     Rake::Task['utils:generate_smoke_tests'].invoke
     Rake::Task['utils:generate_smoke_tests'].reenable
     Rake::Task['utils:generate_add_maintenance_update_repository_features'].invoke
