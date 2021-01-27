@@ -3,7 +3,7 @@
 # This yaml file contains all the features performing the creation of custom channels
 # for each Maintenance Update
 
-## Add MU repositories BEGIN ###
+## Add Custom repositories BEGIN ###
 
 - features/build_validation/add_custom_repositories/add_ubuntu1604_repositories.feature
 - features/build_validation/add_custom_repositories/add_ubuntu1804_repositories.feature
