@@ -8,7 +8,7 @@ type Props = {
 };
 
 type returnUseProjectActionsApi = {
-  onAction: (arg0: any, arg1: string, arg2: string | null | undefined) => Promise<Object>;
+  onAction: (arg0: any, arg1: string, arg2?: string | null) => Promise<Object>;
   cancelAction: () => void;
   isLoading: boolean;
 };

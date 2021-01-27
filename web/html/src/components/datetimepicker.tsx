@@ -191,8 +191,8 @@ type DateTimePickerProps = {
   value: Date;
   timezone?: string;
   onChange: (value: any) => any;
-  hideDatePicker: boolean;
-  hideTimePicker: boolean;
+  hideDatePicker?: boolean;
+  hideTimePicker?: boolean;
 };
 
 type DateTimePickerState = {

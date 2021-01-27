@@ -1,27 +1,24 @@
-// @flow
-
-import * as React from 'react';
-import {useContext} from 'react';
-import {Select} from 'components/input/Select';
-import {FormContext} from 'components/input/Form';
+import * as React from "react";
+import { useContext } from "react";
+import { Select } from "components/input/Select";
+import { FormContext } from "components/input/Form";
 
 type ModuleSelectorProps = {
   modules: {
     [name: string]: {
-      default: string,
-      streams: Array<string>
-    }
-  },
-  isLoading: boolean
-}
+      default: string;
+      streams: Array<string>;
+    };
+  };
+  isLoading: boolean;
+};
 
 export default function ModuleSelector(props: ModuleSelectorProps) {
   const formContext = useContext(FormContext);
-  const createOption = value => ({value: value, label: value});
+  const createOption = value => ({ value: value, label: value });
   const moduleOptions = Object.keys(props.modules).map(createOption);
-  const getModuleName = ctx => ctx.model['moduleName'];
-  const getStreamOptions = ctx =>
-    ((props.modules[getModuleName(ctx)] || {}).streams || []).map(createOption);
+  const getModuleName = ctx => ctx.model["moduleName"];
+  const getStreamOptions = ctx => ((props.modules[getModuleName(ctx)] || {}).streams || []).map(createOption);
   const getDefaultStream = module => (props.modules[module] || {}).default;
 
   return (
@@ -35,7 +32,9 @@ export default function ModuleSelector(props: ModuleSelectorProps) {
         divClass="col-md-6"
         placeholder={t("Select a module...")}
         emptyText={t("No modules available")}
-        onChange={(name, module) => {formContext.model['moduleStream'] = getDefaultStream(module)}}
+        onChange={(name, module) => {
+          formContext.model["moduleStream"] = getDefaultStream(module);
+        }}
         required
       />
       <Select

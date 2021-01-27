@@ -1,31 +1,29 @@
-// @flow
-
-import * as React from 'react';
-import {useState} from 'react';
-import {Select} from 'components/input/Select';
-import {showErrorToastr} from 'components/toastr/toastr';
-import useLifecycleActionsApi from '../../shared/api/use-lifecycle-actions-api';
-import ModuleSelector from './module-selector';
+import * as React from "react";
+import { useState } from "react";
+import { Select } from "components/input/Select";
+import { showErrorToastr } from "components/toastr/toastr";
+import useLifecycleActionsApi from "../../shared/api/use-lifecycle-actions-api";
+import ModuleSelector from "./module-selector";
 
 type SelectInputProps = {
-  channels: Array<{id: string, name: string}>
-}
+  channels: Array<{ id: string; name: string }>;
+};
 
 export default function SelectInput(props: SelectInputProps) {
   const [modules, setModules] = useState({});
   const [isShowInputs, setShowInputs] = useState(false);
-  const {onAction, isLoading} = useLifecycleActionsApi({resource: "appstreams"});
+  const { onAction, isLoading } = useLifecycleActionsApi({ resource: "appstreams" });
 
   const onChannelChange = (name, value) => {
     if (value) {
       setShowInputs(true);
       onAction(null, "get", value)
         .then(setModules)
-        .catch((error) => showErrorToastr(error.messages));
+        .catch(error => showErrorToastr(error.messages));
     } else {
       setModules({});
     }
-  }
+  };
 
   return (
     <>
@@ -39,9 +37,7 @@ export default function SelectInput(props: SelectInputProps) {
         getOptionValue={c => c.id}
         getOptionLabel={c => c.name}
       />
-      { isShowInputs &&
-          <ModuleSelector modules={modules} isLoading={isLoading}/>
-      }
+      {isShowInputs && <ModuleSelector modules={modules} isLoading={isLoading} />}
     </>
   );
 }

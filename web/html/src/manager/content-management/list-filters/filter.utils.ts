@@ -1,21 +1,24 @@
-//@flow
 /* global moment */
 import _isEmpty from "lodash/isEmpty";
-import {clmFilterOptions, findClmFilterByKey} from "../shared/business/filters.enum";
-import type {FilterFormType, FilterServerType} from "../shared/type/filter.type";
-import {Utils} from "utils/functions";
+import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
+import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
+import { Utils } from "utils/functions";
 
 declare var Loggerhead: any;
 
-export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel: string, localTime: string): FilterServerType {
-  const requestForm = {};
+export function mapFilterFormToRequest(
+  filterForm: FilterFormType,
+  projectLabel?: string,
+  localTime?: string
+): FilterServerType {
+  const requestForm: any = {};
   requestForm.projectLabel = projectLabel;
   requestForm.name = filterForm.filter_name;
   requestForm.rule = filterForm.rule;
   requestForm.matcher = filterForm.matcher;
 
   const selectedFilterOption = findClmFilterByKey(filterForm.type);
-  if(selectedFilterOption) {
+  if (selectedFilterOption) {
     // By default the enum KEY is used either for the criteriaKey and to map the form field into the criteriaValue
     requestForm.entityType = selectedFilterOption.entityType.key;
     requestForm.criteriaKey = selectedFilterOption.key;
@@ -29,26 +32,26 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
   if (filterForm.type === clmFilterOptions.ISSUE_DATE.key) {
     const formDateValue = filterForm[clmFilterOptions.ISSUE_DATE.key];
     requestForm.criteriaValue = formDateValue
-      ? moment(Utils.dateWithoutTimezone(formDateValue, localTime)).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
-      :  "";
+      ? moment(Utils.dateWithoutTimezone(formDateValue, localTime || "")).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      : "";
   } else if (filterForm.type === clmFilterOptions.NEVRA.key) {
     // UI filter NEVRA form can map either into nevr or nevra
-    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
-    if(_isEmpty(filterForm.architecture)){
-      requestForm.criteriaKey = "nevr"
-      requestForm.criteriaValue =
-        `${filterForm.packageName || ""}-${epochName}${filterForm.version|| ""}-${filterForm.release|| ""}`;
+    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : "";
+    if (_isEmpty(filterForm.architecture)) {
+      requestForm.criteriaKey = "nevr";
+      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version ||
+        ""}-${filterForm.release || ""}`;
     } else {
-      requestForm.criteriaKey = "nevra"
-      requestForm.criteriaValue =
-        `${filterForm.packageName || ""}-${epochName}${filterForm.version || ""}-${filterForm.release || ""}.${filterForm.architecture}`;
+      requestForm.criteriaKey = "nevra";
+      requestForm.criteriaValue = `${filterForm.packageName || ""}-${epochName}${filterForm.version ||
+        ""}-${filterForm.release || ""}.${filterForm.architecture}`;
     }
   } else if (filterForm.type === clmFilterOptions.PACKAGE_NEVR.key) {
-    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : '';
-    requestForm.criteriaValue =
-      `${filterForm.packageName || ""} ${epochName}${filterForm.version|| ""}-${filterForm.release|| ""}`;
+    const epochName = !_isEmpty(filterForm.epoch) ? `${filterForm.epoch}:` : "";
+    requestForm.criteriaValue = `${filterForm.packageName || ""} ${epochName}${filterForm.version ||
+      ""}-${filterForm.release || ""}`;
   } else if (filterForm.type === clmFilterOptions.STREAM.key) {
-    const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : '';
+    const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : "";
     requestForm.criteriaValue = `${filterForm.moduleName || ""}${streamName}`;
     requestForm.rule = "allow";
   }
@@ -58,7 +61,7 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
 
 export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType> = []): Array<FilterFormType> {
   return filtersResponse.map(filterResponse => {
-    let filterForm = {};
+    let filterForm: any = {};
     filterForm.id = filterResponse.id;
     filterForm.filter_name = filterResponse.name;
     filterForm.rule = filterResponse.rule;
@@ -67,7 +70,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
 
     const selectedFilterOption = findClmFilterByKey(filterResponse.criteriaKey);
     // If we can find a filter option using the CriteriaKey we assume the default behavior
-    if(selectedFilterOption) {
+    if (selectedFilterOption) {
       filterForm.type = selectedFilterOption && selectedFilterOption.key;
       filterForm[selectedFilterOption.key] = filterResponse.criteriaValue;
     } else {
@@ -78,18 +81,12 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
     if (filterResponse.criteriaKey === clmFilterOptions.ISSUE_DATE.key) {
       filterForm[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(filterResponse.criteriaValue);
-    } else if(filterResponse.criteriaKey === "nevr") {
-    // NEVR filter is mapped into NEVRA in the UI
+    } else if (filterResponse.criteriaKey === "nevr") {
+      // NEVR filter is mapped into NEVRA in the UI
       filterForm.type = clmFilterOptions.NEVRA.key;
-      if(!_isEmpty(filterResponse.criteriaValue)) {
-        const [
-          ,
-          packageName,
-          ,
-          epoch,
-          version,
-          release
-        ] = filterResponse.criteriaValue.match(/(.*)-((.*):)?(.*)-(.*)/);
+      if (!_isEmpty(filterResponse.criteriaValue)) {
+        const [, packageName, , epoch, version, release] =
+          filterResponse.criteriaValue.match(/(.*)-((.*):)?(.*)-(.*)/) || [];
 
         filterForm.packageName = packageName;
         filterForm.epoch = epoch;
@@ -97,32 +94,19 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.release = release;
       }
     } else if (filterResponse.criteriaKey === clmFilterOptions.PACKAGE_NEVR.key) {
-      if(!_isEmpty(filterResponse.criteriaValue)) {
-        const [
-          ,
-          packageName,
-          ,
-          epoch,
-          version,
-          release
-        ] = filterResponse.criteriaValue.match(/(.*) ((.*):)?(.*)-(.*)/);
+      if (!_isEmpty(filterResponse.criteriaValue)) {
+        const [, packageName, , epoch, version, release] =
+          filterResponse.criteriaValue.match(/(.*) ((.*):)?(.*)-(.*)/) || [];
 
         filterForm.packageName = packageName;
         filterForm.epoch = epoch;
         filterForm.version = version;
         filterForm.release = release;
       }
-    } else if(filterResponse.criteriaKey === clmFilterOptions.NEVRA.key) {
-      if(!_isEmpty(filterResponse.criteriaValue)) {
-        const [
-          ,
-          packageName,
-          ,
-          epoch,
-          version,
-          release,
-          architecture
-        ] = filterResponse.criteriaValue.match(/(.*)-((.*):)?(.*)-(.*)\.(.*)/);
+    } else if (filterResponse.criteriaKey === clmFilterOptions.NEVRA.key) {
+      if (!_isEmpty(filterResponse.criteriaValue)) {
+        const [, packageName, , epoch, version, release, architecture] =
+          filterResponse.criteriaValue.match(/(.*)-((.*):)?(.*)-(.*)\.(.*)/) || [];
 
         filterForm.packageName = packageName;
         filterForm.epoch = epoch;
@@ -130,14 +114,14 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
         filterForm.release = release;
         filterForm.architecture = architecture;
       }
-    } else if(filterResponse.criteriaKey === clmFilterOptions.STREAM.key) {
-      if(!_isEmpty(filterResponse.criteriaValue)) {
-        const [, module, stream] = filterResponse.criteriaValue.match(/([^:]*)(?::(.*))?/);
+    } else if (filterResponse.criteriaKey === clmFilterOptions.STREAM.key) {
+      if (!_isEmpty(filterResponse.criteriaValue)) {
+        const [, module, stream] = filterResponse.criteriaValue.match(/([^:]*)(?::(.*))?/) || [];
         filterForm.moduleName = module;
         filterForm.moduleStream = stream;
       }
     }
 
     return filterForm;
-  })
+  });
 }
