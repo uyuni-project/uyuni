@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 27 13:07:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
 - Fix source selection form in CLM project page
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Fix sorting in content lifecycle projects and cluster tables (bsc#1180558)
