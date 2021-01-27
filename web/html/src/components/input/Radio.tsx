@@ -43,7 +43,7 @@ export function Radio(props: Props) {
         return (
           <span className={styles.radio}>
             {props.items.map(({ label, value }) => (
-              <label className={radioClass}>
+              <label className={radioClass} key={`${props.name}_${value}`}>
                 <input
                   type="radio"
                   name={props.name}
