@@ -15,6 +15,8 @@ import type {FilterFormType, FilterServerType} from "../shared/type/filter.type"
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 
+declare var userPrefPageSize: string;
+
 type Props = {
   filters: Array<FilterServerType>,
   openFilterId: number,

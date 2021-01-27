@@ -14,6 +14,8 @@ import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import _truncate from "lodash/truncate";
 
+declare var userPrefPageSize: string;
+
 type ContentProjectOverviewType = {
   properties: {
     label: String,
