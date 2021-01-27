@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import _isNil from "lodash/isNil";
+
 import { Label } from "./Label";
 import { FormGroup } from "./FormGroup";
 import { FormContext } from "./Form";
@@ -161,6 +163,13 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     return this.state.isValid;
   }
 
+  isEmptyValue(input: any) {
+    if (typeof input === 'string') {
+      return input.trim() === '';
+    }
+    return _isNil(input);
+  }
+
   /**
    * Validate the input, updating state and errors if necessary.
    *
@@ -177,7 +186,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
 
     if (!this.props.disabled && (value || this.props.required)) {
-      if (this.props.required && !value) {
+      const noValue = this.isEmptyValue(value) ||
+        (Array.isArray(this.props.name) && Object.values(value).filter(v => !this.isEmptyValue(v)).length === 0);
+      if (this.props.required && noValue) {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
