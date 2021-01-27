@@ -108,6 +108,9 @@ Feature: Migrate a traditional client into a Salt SSH minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle_migrated_minion"
     And I remove package "orion-dummy-1.1-1.1" from this "sle_migrated_minion"
 
+  Scenario: Cleanup: ensure the package information is up to date before migrating back
+    When I refresh the metadata for "sle_migrated_minion"
+
   Scenario: Cleanup: unregister migrated SSH minion
     Given I am on the Systems overview page of this "sle_migrated_minion"
     When I follow "Delete System"

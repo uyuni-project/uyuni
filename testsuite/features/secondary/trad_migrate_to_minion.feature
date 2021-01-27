@@ -85,6 +85,9 @@ Feature: Migrate a traditional client into a Salt minion
   Scenario: Cleanup: remove package from the migrated minion
     When I remove package "perseus-dummy-1.1-1.1" from this "sle_migrated_minion"
 
+  Scenario: Cleanup: ensure the package information is up to date before migrating back
+    When I refresh the metadata for "sle_migrated_minion"
+
   Scenario: Cleanup: unregister migrated minion
     Given I am on the Systems overview page of this "sle_migrated_minion"
     When I follow "Delete System"
