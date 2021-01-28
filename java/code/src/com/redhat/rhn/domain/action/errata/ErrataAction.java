@@ -43,7 +43,6 @@ public class ErrataAction extends Action {
      * @param detailsIn ActionPackageDetails
      */
     public void setDetails(ActionPackageDetails detailsIn){
-        detailsIn.setParentAction(this);
         this.details = detailsIn;
     }
 

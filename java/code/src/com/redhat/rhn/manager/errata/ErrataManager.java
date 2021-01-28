@@ -1838,13 +1838,15 @@ public class ErrataManager extends BaseManager {
         List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
         traditionalErrataActions.stream().forEach(ea-> {
-            ea.setDetails(new ActionPackageDetails(allowVendorChange));
+            ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
+            //TODO: Save ActionPackageDetails directly, no save needed on Action itself
             Action action = ActionManager.storeAction(ea);
             actionIds.add(action.getId());
         });
 
         minionErrataActions.stream().forEach(ea-> {
-           ea.setDetails(new ActionPackageDetails(allowVendorChange));
+           ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
+           //TODO: Save ActionPackageDetails directly, no save needed on Action itself
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());

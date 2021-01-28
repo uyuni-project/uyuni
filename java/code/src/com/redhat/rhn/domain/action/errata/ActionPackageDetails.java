@@ -1,15 +1,19 @@
 
 package com.redhat.rhn.domain.action.errata;
 
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
 
 public class ActionPackageDetails extends ActionChild {
      private Long id;
      private boolean allowVendorChange = false;
 
-     public ActionPackageDetails() {     }
+     public ActionPackageDetails(Action parentActionIn) {
+         super.setParentAction(parentActionIn);
+     }
 
-     public ActionPackageDetails(boolean allowVendorChangeIn) {
+     public ActionPackageDetails(Action parentActionIn, boolean allowVendorChangeIn) {
+         super.setParentAction(parentActionIn);
          this.allowVendorChange = allowVendorChangeIn;
      }
 
