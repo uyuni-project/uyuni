@@ -30,17 +30,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
 #    When I click the Add Product button
 #    And I wait until I see "Ubuntu 20.04" product has been added
 
-  Scenario: SUSE Linux Enterprise Server 12 SP4
-    Given I am on the Products page
-    When I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
-    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
-
   Scenario: SUSE Linux Enterprise Server 11 SP3
     Given I am on the Products page
     When I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
@@ -61,6 +50,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 11 SP4 x86_64" product has been added
     And I add "sles11-sp4-ltss-updates-x86_64" channel
+
+  Scenario: SUSE Linux Enterprise Server 12 SP4
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
+    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
 
   Scenario: SUSE Linux Enterprise Server 15
     Given I am on the Products page
@@ -96,6 +96,21 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Development Tools Module 15 SP2 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
+
+  Scenario: SUSE Linux Enterprise Server 15 SP3
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)"
+    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+    And I select "Desktop Applications Module 15 SP3 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
+    And I select "Development Tools Module 15 SP3 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP3 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" product has been added
 
   Scenario: SUSE Linux Enterprise Server with Expanded Support 6
     Given I am on the Products page
