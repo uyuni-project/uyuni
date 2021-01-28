@@ -95,6 +95,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         request.setAttribute("date", picker);
         request.setAttribute("system", server);
+        request.setAttribute("allowVendorChange", request.getParameterValues("allowVendorChange") != null);
         request.setAttribute(ListTagHelper.PARENT_URL,
                 request.getRequestURI() + "?sid=" + sid);
 
@@ -133,7 +134,11 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         RhnSet set = ErrataSetupAction.getSetDecl(sid).get(user);
+<<<<<<< HEAD
 
+=======
+        boolean allowVendorChange = request.getParameterValues("allowVendorChange") != null;
+>>>>>>> 6fa1f87f876... Fix Hibernate issues
         // Get the errata IDs
         Set<Long> errataList = set.getElementValues();
         if (server != null && !errataList.isEmpty()) {
