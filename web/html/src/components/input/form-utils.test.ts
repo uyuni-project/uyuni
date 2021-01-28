@@ -1,4 +1,4 @@
-import { flattenModel } from "./form-utils";
+import { flattenModel, stripBlankValues } from "./form-utils";
 import { unflattenModel } from "./form-utils";
 
 describe("Testing flattenModel", () => {
@@ -106,5 +106,31 @@ describe("Test unflattenModel", () => {
         ],
       },
     });
+  });
+});
+
+describe("Test stripBlankValues", () => {
+  test("test stripping blank values", () => {
+    const flat = {
+      name: 'mine',
+      foo: '',
+      bar: null,
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts0_foo: undefined,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: 456,
+      source_hosts2_name: 'three.example.com',
+      source_hosts2_foo: '',
+    };
+
+    expect(stripBlankValues(flat)).toEqual({
+      name: 'mine',
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: 456,
+      source_hosts2_name: 'three.example.com',
+    })
   });
 });
