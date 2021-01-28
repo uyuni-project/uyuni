@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import { AsyncButton, Button } from 'components/buttons';
 import { ActionSchedule } from 'components/action-schedule';
 import Network from 'utils/network';
+import { replacer } from 'utils/json';
 import { Utils, Formats } from 'utils/functions';
 import { Messages } from 'components/messages';
 import { Table } from 'components/table/Table';
@@ -936,7 +937,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       changes: this.state.finalChanges
     };
     return Network.post("/rhn/manager/systems/ssm/channels",
-        JSON.stringify(req), "application/json")
+        JSON.stringify(req, replacer), "application/json")
         .promise
         .then((data : JsonResult<SsmScheduleChannelChangesResultJson>) => {
           const msg = MessagesUtils.info(this.state.actionChain ?

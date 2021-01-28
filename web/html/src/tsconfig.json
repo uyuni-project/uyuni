@@ -26,7 +26,8 @@
       "es5",
       "dom",
       "dom.iterable",
-      "es2019.array"
+      "es2019.array",
+      "es2019.object"
     ],
     "strict": true,
     // Should eventually be false
