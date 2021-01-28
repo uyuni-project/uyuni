@@ -1,3 +1,5 @@
+import _isNil from "lodash/isNil";
+
 type SingleOrArray<T> = T | T[];
 interface TreeLikeModel<T = any> {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
@@ -38,6 +40,18 @@ export function flattenModel<T>(treeModel: TreeLikeModel<T>): Record<string, T> 
     }
     return Object.assign({}, result, { [name]: value });
   }, {});
+}
+
+/**
+ * Remove the empty string and null values from the model.
+ */
+export function stripBlankValues<T>(flatModel: Record<string, T>): Record<string, T> {
+  return Object.fromEntries(Object.entries(flatModel).filter(entry => {
+    if (typeof entry[1] === "string") {
+      return entry[1] !== "";
+    }
+    return !_isNil(entry[1]);
+  }));
 }
 
 /**
