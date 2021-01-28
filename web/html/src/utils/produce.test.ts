@@ -9,8 +9,6 @@ type Input = {
 };
 
 describe("immer produce", () => {
-  const copy = <T>(input: T) => JSON.parse(JSON.stringify(input)) as T;
-
   let input: Input;
   beforeEach(() => {
     input = {
@@ -45,7 +43,7 @@ describe("immer produce", () => {
   };
 
   test("input is unchanged", () => {
-    const inputCopy = copy(input);
+    const inputCopy = JSON.parse(JSON.stringify(input));
     produce(input, standardProduce);
     expect(input).toStrictEqual(inputCopy);
   });
