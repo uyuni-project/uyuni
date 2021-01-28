@@ -2,6 +2,7 @@
 Wed Jan 27 13:10:03 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.5-1
+- Improve cleanup time after fixing Debian package version comparison (bsc#1181116)
 - Update to postgresql13 (jsc#SLE-17030)
 - Update CentOS6 URLs to use vault.centos.org
 - Changed to versioned Python3 to SPEC file.
