@@ -89,3 +89,42 @@ Feature: Adding the Ubuntu 18.04 distribution custom repositories
 
   Scenario: The custom channel for ubuntu-bionic-main-updates has been synced
     When I wait until the channel "ubuntu-bionic-main-updates" has been synced
+
+  Scenario: Add common channels for Ubuntu 18.04 main
+    Given I am authorized as "admin" with password "admin"
+    When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main"
+    And I follow the left menu "Software > Manage > Channels"
+    And I follow "Ubuntu 18.04 LTS AMD64 Main"
+    And I follow "Repositories" in the content area
+    And I select the "External - Ubuntu 18.04 LTS AMD64 Main" repo
+    And I click on "Save Repositories"
+    Then I should see a "repository information was successfully updated" text
+    When I follow "Sync"
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main." text
+
+  Scenario: Add common channels for Ubuntu 18.04 updates
+    Given I am authorized as "admin" with password "admin"
+    When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main-updates"
+    And I follow the left menu "Software > Manage > Channels"
+    And I follow "Ubuntu 18.04 LTS AMD64 Main Updates"
+    And I follow "Repositories" in the content area
+    And I select the "External - Ubuntu 18.04 LTS AMD64 Main Updates" repo
+    And I click on "Save Repositories"
+    Then I should see a "repository information was successfully updated" text
+    When I follow "Sync"
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Updates." text
+
+  Scenario: Add common channels for Ubuntu 18.04 security
+    Given I am authorized as "admin" with password "admin"
+    When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main-security"
+    And I follow the left menu "Software > Manage > Channels"
+    And I follow "Ubuntu 18.04 LTS AMD64 Main Security"
+    And I follow "Repositories" in the content area
+    And I select the "External - Ubuntu 18.04 LTS AMD64 Main Security" repo
+    And I click on "Save Repositories"
+    Then I should see a "repository information was successfully updated" text
+    When I follow "Sync"
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Security." text
