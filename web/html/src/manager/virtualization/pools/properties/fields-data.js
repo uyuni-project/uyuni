@@ -1,3 +1,5 @@
+import * as data from 'utils/data';
+
 const mapping = {
   dir: {
     description: 'Manages files in a directory on the virtual host',
@@ -209,21 +211,9 @@ const mapping = {
   }
 };
 
-function getObjectValue(obj, path, defaultValue) {
-  const pos = path.indexOf('.');
-  if (pos > 0) {
-    const member_name = path.substring(0, pos);
-    const path_rest = path.substring(pos + 1);
-
-    return getObjectValue(obj[member_name] || {}, path_rest, defaultValue);
-  }
-  return obj[path] != null ? obj[path] : defaultValue;
-}
-
 export function getValue(type, path, defaultValue) {
-  return getObjectValue(mapping[type] || {}, path, defaultValue);
+  return data.getValue(mapping[type], path, defaultValue);
 }
-
 
 export function computeSourceAdapterSelection(model: Object) {
   const adapter_type = model.source_adapter_type || 'scsi_host';
