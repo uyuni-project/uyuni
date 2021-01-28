@@ -464,43 +464,26 @@ where rhntransactionpackage.id = sub.id;
 -- delete all rhnpackageevr entries that are not referenced anymore
 delete from rhnpackageevr p
  using (
-    select p.id, p.evr from rhnpackageevr p left join
-        rhnactionpackage f1 on f1.evr_id = p.id left join
-        rhnactionpackageremovalfailure f2 on f2.evr_id = p.id left join
-        rhnchannelnewestpackage f3 on f3.evr_id = p.id left join
-        rhnpackage f4 on f4.evr_id = p.id left join
-        rhnpackagenevra f5 on f5.evr_id = p.id left join
-        rhnproxyinfo f6 on f6.proxy_evr_id = p.id left join
-        rhnserveractionverifymissing f7 on f7.package_evr_id = p.id left join
-        rhnserveractionverifyresult f8 on f8.package_evr_id = p.id left join
-        rhnsatelliteinfo f9 on f9.evr_id = p.id left join
-        rhnservercrash f10 on f10.package_evr_id = p.id left join
-        rhnserverprofilepackage f11 on f11.evr_id = p.id left join
-        rhntransactionpackage f12 on f12.evr_id = p.id left join
-        rhnversioninfo f13 on f13.evr_id = p.id left join
-        rhnlockedpackages f14 on f14.evr_id = p.id left join
-        rhnserverpackage f15 on f15.evr_id = p.id left join
-        susepackagestate f16 on f16.evr_id = p.id left join
-        suseproductfile f17 on f17.evr_id = p.id left join
-        suseimageinfopackage f18 on f18.evr_id = p.id
-    where f1.evr_id is null and
-          f2.evr_id is null and
-          f3.evr_id is null and
-          f4.evr_id is null and
-          f5.evr_id is null and
-          f6.proxy_evr_id is null and
-          f7.package_evr_id is null and
-          f8.package_evr_id is null and
-          f9.evr_id is null and
-          f10.package_evr_id is null and
-          f11.evr_id is null and
-          f12.evr_id is null and
-          f13.evr_id is null and
-          f14.evr_id is null and
-          f15.evr_id is null and
-          f16.evr_id is null and
-          f17.evr_id is null and
-          f18.evr_id is null
+select pe.id
+  from rhnpackageevr pe
+ where not exists (select 1 from rhnactionpackage f1 where f1.evr_id = pe.id)
+   and not exists (select 1 from rhnactionpackageremovalfailure f2 where f2.evr_id = pe.id)
+   and not exists (select 1 from rhnchannelnewestpackage f3 where f3.evr_id = pe.id)
+   and not exists (select 1 from rhnpackage f4 where f4.evr_id = pe.id)
+   and not exists (select 1 from rhnpackagenevra f5 where f5.evr_id = pe.id)
+   and not exists (select 1 from rhnproxyinfo f6 where f6.proxy_evr_id = pe.id)
+   and not exists (select 1 from rhnserveractionverifymissing f7 where f7.package_evr_id = pe.id)
+   and not exists (select 1 from rhnserveractionverifyresult f8 where f8.package_evr_id = pe.id)
+   and not exists (select 1 from rhnsatelliteinfo f9 where f9.evr_id = pe.id)
+   and not exists (select 1 from rhnservercrash f10 where f10.package_evr_id = pe.id)
+   and not exists (select 1 from rhnserverprofilepackage f11 where f11.evr_id = pe.id)
+   and not exists (select 1 from rhntransactionpackage f12 where f12.evr_id = pe.id)
+   and not exists (select 1 from rhnversioninfo f13 where f13.evr_id = pe.id)
+   and not exists (select 1 from rhnlockedpackages f14 where f14.evr_id = pe.id)
+   and not exists (select 1 from rhnserverpackage f15 where f15.evr_id = pe.id)
+   and not exists (select 1 from susepackagestate f16 where f16.evr_id = pe.id)
+   and not exists (select 1 from suseproductfile f17 where f17.evr_id = pe.id)
+   and not exists (select 1 from suseimageinfopackage f18 where f18.evr_id = pe.id)
  ) as sub
 where p.id = sub.id;
 
