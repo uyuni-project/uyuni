@@ -2,6 +2,7 @@
 Tue Jan 12 13:56:11 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.18-1
+- Improve cleanup time after fixing Debian package version comparison (bsc#1181116)
 - Changed to versioned Python3 to SPEC file.
 - Python3 port for blend tool
 - add missing unique index on suse tables
