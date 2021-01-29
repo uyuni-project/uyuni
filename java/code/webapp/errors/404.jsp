@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<page:applyDecorator name="layout_c">
+<page:applyDecorator name="layout_error">
 <body>
     <c:set value="${requestScope[&quot;javax.servlet.error.request_uri&quot;]}" var="errorUrl" />
     <c:set var="escapedUrl" value="${fn:escapeXml(errorUrl)}"/>
