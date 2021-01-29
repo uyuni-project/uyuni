@@ -1,3 +1,5 @@
+- Increase apache ssl logs to include response code and process time
+
 -------------------------------------------------------------------
 Wed Jan 27 13:03:39 CET 2021 - jgonzalez@suse.com
 
