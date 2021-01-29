@@ -221,6 +221,7 @@ public class SaltServerActionService {
 
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
+    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
 
     private boolean commitTransaction = true;
 
@@ -334,7 +335,7 @@ public class SaltServerActionService {
             return ImageProfileFactory.lookupById(details.getImageProfileId()).map(
                     ip -> imageBuildAction(
                             minions,
-                            ofNullable(details.getVersion()),
+                            Optional.ofNullable(details.getVersion()),
                             ip,
                             imageBuildAction.getSchedulerUser(),
                             imageBuildAction.getId())
@@ -467,7 +468,7 @@ public class SaltServerActionService {
                         (actionType != null ? actionType.getName() : "") +
                         " is not supported with Salt");
             }
-            return emptyMap();
+            return Collections.emptyMap();
         }
     }
 
@@ -1030,10 +1031,11 @@ public class SaltServerActionService {
      *
      * @param minionSummaries list of minion summaries to target
      * @param errataIds list of errata ids
+     * @param allowVendorChange boolean if vendor change allowed
      * @return minion summaries grouped by local call
      */
     public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
-            Set<Long> errataIds) {
+            Set<Long> errataIds, boolean allowVendorChange) {
         Set<Long> minionServerIds = minionSummaries.stream().map(MinionSummary::getServerId)
                 .collect(Collectors.toSet());
 
@@ -1060,6 +1062,7 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
+                params.put("allowVendorChange", allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
                     entry.getKey().stream()
                         .filter(e -> e.isUpdateStack())

@@ -49,6 +49,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         RhnSetManager.store(updateMe); //save the set
 
         addRequestParameter("eid", e.getId().toString());
+        addRequestParameter("allowVendorChange", new String[]{"false"});
         // Execute the Action
         actionPerform();
         verifyForward("confirmed");

@@ -1075,6 +1075,12 @@
       <form-property name="proxy_pass" type="java.lang.String" />
     </form-bean>
 
+    <form-bean name="ErrataInstallForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="allowVendorChange" type="java.lang.Boolean" />
+    </form-bean>
+
+
     <form-bean name="servicePackMigrationForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="step" type="java.lang.String" />
@@ -3087,6 +3093,7 @@
     </action>
 
     <action path="/systems/details/ErrataList"
+        name="ErrataInstallForm"
         scope="request"
         input="/WEB-INF/pages/systems/errata.jsp"
         type="com.redhat.rhn.frontend.action.systems.ErrataSetupAction"

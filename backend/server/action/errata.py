@@ -29,7 +29,7 @@ def update(serverId, actionId, dry_run=0):
     statement = """
         select r1.errata_id, r2.allow_vendor_change
         from rhnactionerrataupdate r1
-        join rhnactiondetails r2 on r1.action_id = r2.action_id
+        join rhnactionpackagedetails r2 on r1.action_id = r2.action_id
         where r1.action_id = :action_id
     """
     h = rhnSQL.prepare(statement)
@@ -41,7 +41,7 @@ def update(serverId, actionId, dry_run=0):
                             "%s for server %s" % (actionId, serverId))
 
     params = {
-        "errata_id" : [x['errata_id'] for x in ret],
+        "errata_ids" : [x['errata_id'] for x in ret],
         "allow_vendor_change" : (ret[0]['allow_vendor_change'] == 'Y')
     }
-    return (params)
+    return params

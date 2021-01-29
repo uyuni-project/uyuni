@@ -17,8 +17,12 @@ package com.redhat.rhn.frontend.action.systems;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -29,22 +33,22 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
 
 /**
  * ErrataSetupAction
@@ -66,6 +70,9 @@ public class ErrataSetupAction extends RhnAction implements Listable {
     public static final String SECUR_LOW = "errata.create.securityadvisory.low";
 
     public static final String SELECTOR = "type";
+    public static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
+    public static final String ZYPP_PLUGIN = "zypp-plugin-spacewalk";
+
 
     /** {@inheritDoc} */
     @Override
@@ -76,6 +83,17 @@ public class ErrataSetupAction extends RhnAction implements Listable {
         User user = requestContext.getCurrentUser();
         Long sid = requestContext.getRequiredParam("sid");
         RhnSet set = getSetDecl(sid).get(user);
+
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(sid);
+        // Check if this is a SUSE system
+        boolean isSUSEMinion = minion.isPresent() && minion.get().getOsFamily().equals("Suse");
+        boolean zyppPluginInstalled = false;
+        if (!isSUSEMinion) {
+            Server server = ServerFactory.lookupById(sid);
+            zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
+                    ZYPP_PLUGIN, server) != null;
+        }
+        request.setAttribute("supported", (isSUSEMinion || zyppPluginInstalled));
 
         ListRhnSetHelper help = new ListRhnSetHelper(this, request, getSetDecl(sid));
         help.setListName(LIST_NAME);
@@ -178,7 +196,9 @@ public class ErrataSetupAction extends RhnAction implements Listable {
         Long sid = requestContext.getParamAsLong("sid");
         User user = requestContext.getCurrentUser();
         RhnSet set = getSetDecl(sid).get(user);
-        boolean allowVendorChange = request.getParameterValues(ALLOW_VENDOR_CHANGE) != null;
+        DynaActionForm form = (DynaActionForm) formIn;
+        boolean allowVendorChange = BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE));
+        params.put(ALLOW_VENDOR_CHANGE, allowVendorChange);
 
         //if they chose no errata, return to the same page with a message
         if (set.isEmpty()) {
