@@ -477,13 +477,11 @@ SELECT DISTINCT
   FROM rhnPackageName PN,
        rhnPackageEVR PE,
        rhnPackageArch PA,
-       rhnChannelNewestPackage CNP,
-       rhnChannel C
- WHERE C.id = :cid
-   AND C.id = CNP.channel_id
+       rhnChannelNewestPackage CNP
+ WHERE CNP.channel_id = :cid
    AND PN.id = CNP.name_id
    AND PE.id = CNP.evr_id
-   AND PA.id = CNP.package_arch_id
+   AND PA.id = CNP.PACKAGE_ARCH_ID
 ) X
 ORDER BY UPPER(X.name)
 </query>
