@@ -90,6 +90,21 @@ type Props = {
 The problem stems from code like: `window.location = "/rhn/manager/clusters";`  
 `window.location` is an object, the correct property to assign to is `window.location.href` which is the location string: `window.location.href = "/rhn/manager/clusters";`
 
+### `SyntaxError: Unexpected token` in JSX
+
+A typical example of the error is this:  
+
+```tsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: Foo.ts: Unexpected token, expected "," (16:9)
+  15 |   return (
+> 16 |     <div className="interface">
+     |          ^
+```
+
+This slightly obscure error message usually means that your file is `.ts`, but it should be `.tsx`.  
+The migrator tries to detect this automatically, but it isn't infallible.  
+
 ## Technical tidbits
 
 We rely on TS 4.1.2, 3.x does not give sufficient debugging output for automatic migrations.  
