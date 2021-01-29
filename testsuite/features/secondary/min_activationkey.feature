@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_onboarding
@@ -122,7 +122,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"
     And I click on "Delete Activation Key"
-    And I should see a "Activation key Minion testing has been deleted." text
+    Then I should see a "Activation key Minion testing has been deleted." text
 
   Scenario: Check events history for failures on SLES minion with activation key
     Given I am on the Systems overview page of this "sle_minion"

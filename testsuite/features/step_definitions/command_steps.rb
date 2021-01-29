@@ -306,7 +306,7 @@ end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
-  $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
+  $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-KEY-#{arch} #{arg1}")[:stdout]
 end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|

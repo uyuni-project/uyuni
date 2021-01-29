@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
@@ -19,7 +19,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script
-    When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-PKG-x86_64" from the proxy
+    When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I accept "sle_minion" key in the Salt master
     Then I should see "sle_minion" via spacecmd
@@ -35,7 +35,7 @@ Feature: Register a Salt minion via Bootstrap-script
 
   Scenario: Check the activation key
     Given I am on the Systems overview page of this "sle_minion"
-    Then I should see a "1-SUSE-PKG-x86_64" text
+    Then I should see a "1-SUSE-KEY-x86_64" text
 
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
