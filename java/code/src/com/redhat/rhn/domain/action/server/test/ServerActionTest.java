@@ -95,7 +95,6 @@ public class ServerActionTest extends RhnBaseTestCase {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
-        //TODO: Save ActionPackageDetails
         new ActionPackageDetails(parent);
         ServerAction child = createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);

@@ -1138,7 +1138,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
-                saltServerActionService.errataAction(minionSummaries, Collections.singleton(e1.getId()));
+                saltServerActionService.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {

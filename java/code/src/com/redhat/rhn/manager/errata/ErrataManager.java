@@ -1839,14 +1839,12 @@ public class ErrataManager extends BaseManager {
         List<Action> minionTaskoActions = new ArrayList<>();
         traditionalErrataActions.stream().forEach(ea-> {
             ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
-            //TODO: Save ActionPackageDetails directly, no save needed on Action itself
             Action action = ActionManager.storeAction(ea);
             actionIds.add(action.getId());
         });
 
         minionErrataActions.stream().forEach(ea-> {
            ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
-           //TODO: Save ActionPackageDetails directly, no save needed on Action itself
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());
@@ -1854,12 +1852,8 @@ public class ErrataManager extends BaseManager {
         //Taskomatic part is needed only for minionActions
         //and only if actions are not added to an action chain
         if (actionChain == null && !minionTaskoActions.isEmpty()) {
-            try {
                 taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
                 MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return actionIds;
     }
