@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jan 29 14:44:57 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
 - Channel subscription via SSM should not ignore the child channel (bsc#1181520)
 
 -------------------------------------------------------------------
