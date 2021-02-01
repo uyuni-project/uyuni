@@ -30,8 +30,13 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires(pre):  (apache2 or httpd)
-Requires(pre):  (tftp(server) or tftp)
+%if 0%{?suse_version}
+Requires(pre):  apache2
+Requires(pre):  tftp(server)
+%else
+Requires(pre):  httpd
+Requires(pre):  tftp
+%endif
 %if 0%{?build_py3}
 Requires:       python3
 Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
