@@ -1,6 +1,8 @@
+import * as React from 'react';
 import App, { HtmlScreen } from "senna";
 import "senna/build/senna.css";
 import "./spa-engine.css";
+import { showErrorToastr } from "components/toastr/toastr";
 import SpaRenderer from "core/spa/spa-renderer";
 
 function isLoginPage(pathName) {
@@ -74,14 +76,23 @@ window.pageRenderers.spaengine.init = function init(timeout = 30) {
       jQuery(".modal-backdrop.removeWhenNavigationEnds").remove();
 
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
-      if (
-        navigation.error &&
-        (navigation.error.statusCode === 401 ||
-          navigation.error.invalidStatus ||
-          navigation.error.timeout ||
-          navigation.error.requestError)
-      ) {
-        window.location = navigation.path;
+      if (navigation.error) {
+        if (navigation.error.statusCode === 401 ||
+             navigation.error.invalidStatus ||
+             navigation.error.requestError) {
+          window.location = navigation.path;
+        } else if (navigation.error.timeout) {
+          // Stop loading bar
+          jQuery(document.documentElement).removeClass('senna-loading')
+          // Inform user that page must be reloaded
+          const message = (
+            <>
+                Request has timed out, please
+                <button className="btn-link" onClick={() => window.location = navigation.path}>reload the page</button>
+            </>
+          );
+          showErrorToastr(message, {autoHide: false, containerId: 'global'});
+        }
       }
 
       Loggerhead.info("[" + new Date().toUTCString() + "] - Loading `" + window.location + "`");
