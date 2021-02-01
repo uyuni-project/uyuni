@@ -55,6 +55,14 @@ public class ActionStatus {
     }
 
     /**
+     * @return if the status represents an action that is in its final state and considered done.
+     * (either completed or failed)
+     */
+    public boolean isDone() {
+        return this.equals(ActionFactory.STATUS_COMPLETED) || this.equals(ActionFactory.STATUS_FAILED);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public boolean equals(Object o) {

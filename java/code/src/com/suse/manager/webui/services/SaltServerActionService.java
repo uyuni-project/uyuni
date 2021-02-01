@@ -536,7 +536,7 @@ public class SaltServerActionService {
     private void startActionChainExecution(ActionChain actionChain, Set<MinionSummary> targetMinions) {
         // prepare the start action chain call
         Map<Boolean, ? extends Collection<MinionSummary>> results =
-                callAsyncActionChainStart(MgrActionChains.start(actionChain.getId()), targetMinions);
+                callAsyncActionChainStart(actionChain, targetMinions);
 
         results.get(false).forEach(minionSummary -> {
             LOG.warn("Failed to schedule action chain for minion: " +
@@ -935,9 +935,8 @@ public class SaltServerActionService {
             startSSHActionChain(actionChain, sshMinionIds, extraFilerefs);
         }
 
-        // We have generated the sls files for the action chain execution.
-        // Delete the action chain db entity as it's no longer needed.
-        ActionChainFactory.delete(actionChain);
+        actionChain.setDispatched(true);
+        ActionChainFactory.getSession().save(actionChain);
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
@@ -2115,27 +2114,33 @@ public class SaltServerActionService {
     }
 
     /**
-     * @param call the call
+     * @param actionChain the actionChain
      * @param minionSummaries a set of minion summaries of the minions involved in the given Action
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, ? extends Collection<MinionSummary>> callAsyncActionChainStart(LocalCall<?> call,
+    private Map<Boolean, ? extends Collection<MinionSummary>> callAsyncActionChainStart(
+            ActionChain actionChain,
             Set<MinionSummary> minionSummaries) {
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId)
                 .collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Executing action chain for: " +
-                    minionIds.stream().collect(Collectors.joining(", ")));
+            LOG.debug("Executing action chain for: " + String.join(", ", minionIds));
         }
 
         try {
             List<String> results = systemQuery
-                    .callAsync(call, new MinionList(minionIds),
-                            Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
+                    .callAsync(MgrActionChains.start(actionChain.getId()),
+                            new MinionList(minionIds),
+                            Optional.of(ScheduleMetadata.getDefaultMetadata()
+                                    .withActionChain(actionChain.getId()))
+                    ).get().getMinions();
 
-            Map<Boolean, ? extends Collection<MinionSummary>> result = minionSummaries.stream().collect(Collectors
-                    .partitioningBy(minion -> results.contains(minion.getMinionId())));
+            Map<Boolean, Set<MinionSummary>> result = minionSummaries.stream()
+                    .collect(Collectors.partitioningBy(
+                            minion -> results.contains(minion.getMinionId()),
+                            Collectors.toSet()
+                    ));
 
             return result;
         }

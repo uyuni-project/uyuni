@@ -15,6 +15,10 @@ CREATE TABLE rhnActionChain
     id          NUMERIC        NOT NULL
                     CONSTRAINT rhn_action_chain_id_pk PRIMARY KEY,
     label       VARCHAR(256) NOT NULL,
+    dispatched  CHAR(1)
+                   DEFAULT ('N') NOT NULL
+                   CONSTRAINT rhn_actionchain_dispatched_ck
+                       CHECK (dispatched in ('Y','N')),
     user_id     NUMERIC        NOT NULL
                     CONSTRAINT rhn_actionchain_uid_fk
                         REFERENCES web_contact (id)

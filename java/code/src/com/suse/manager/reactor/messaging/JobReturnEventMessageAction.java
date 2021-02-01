@@ -17,6 +17,8 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -129,8 +131,35 @@ public class JobReturnEventMessageAction implements MessageAction {
             // a Salt error when the 'mgractionchains' custom module is not yet deployed.
             if (Arrays.asList(1, 254).contains(jobReturnEvent.getData().getRetcode()) &&
                     !jobReturnEvent.getData().isSuccess() &&
-                    jobReturnEvent.getData().getResult().toString()
-                            .contains("'mgractionchains.resume' is not available")) {
+                    jobReturnEvent.getData().getResult().toString().startsWith("'mgractionchains") &&
+                    jobReturnEvent.getData().getResult().toString().endsWith("' is not available.")) {
+
+                jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).ifPresent(metadata -> {
+                    Optional<ActionChain> actionChain =
+                            Optional.ofNullable(metadata.getActionChainId())
+                                    .flatMap(ActionChainFactory::getActionChain);
+
+                    actionChain.ifPresent(ac -> {
+                        if (ac.isDispatched()) {
+                            ac.getEntries().stream()
+                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
+                                    .filter(sa -> sa.getServer().asMinionServer()
+                                            .filter(m -> m.getMinionId().equals(jobReturnEvent.getMinionId()))
+                                            .isPresent()
+                                    )
+                                    .filter(sa -> !sa.getStatus().isDone())
+                                    .forEach(sa -> sa.fail(jobReturnEvent.getData().getResult().toString()));
+                            if (ac.isDone()) {
+                                ActionChainFactory.delete(ac);
+                            }
+                        }
+                        else {
+                            LOG.warn("got response referencing action chain " + ac.getId() +
+                                    " which is not dispatched yet.");
+                        }
+                    });
+                });
+
                 return;
             }
 
@@ -219,7 +248,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             if (stateId.isPresent()) {
                 retActionChainId = stateId.get().getActionChainId();
                 chunk = stateId.get().getChunk();
-                Long actionId = stateId.get().getActionId();
+                long actionId = stateId.get().getActionId();
                 if (skipFunction.apply(actionStateApply)) {
                     continue; // skip this state from handling
                 }
@@ -252,6 +281,12 @@ public class JobReturnEventMessageAction implements MessageAction {
             // Removing the generated SLS file
             SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
                     retActionChainId, minionId, chunk, actionChainFailed);
+
+            ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+                if (ac.isDone()) {
+                    ActionChainFactory.delete(ac);
+                }
+            });
         }
     }
 
