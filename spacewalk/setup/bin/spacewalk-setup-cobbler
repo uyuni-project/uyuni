@@ -292,6 +292,8 @@ F</etc/cobbler/modules.conf>
 
 F</etc/cobbler/settings>
 
+F</etc/httpd/conf.d/*cobbler*.conf>
+
 =head1 SEE ALSO
 
 B<spacewalk-setup>(1) - Spacewalk setup program

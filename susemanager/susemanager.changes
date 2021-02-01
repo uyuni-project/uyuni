@@ -1,3 +1,5 @@
+- Removed workaround for bnc#668908.
+
 -------------------------------------------------------------------
 Fri Jan 29 16:51:52 CET 2021 - jgonzalez@suse.com
 

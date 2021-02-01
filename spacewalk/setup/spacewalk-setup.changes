@@ -1,3 +1,4 @@
+- Use syslinux folder for cobbler loaders.
 - Added Apache configuration updates for Cobbler.
 
 -------------------------------------------------------------------

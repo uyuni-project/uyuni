@@ -1,3 +1,5 @@
+- Fixed kickstart tree permissions to a+r.
+
 -------------------------------------------------------------------
 Wed Jan 27 13:01:05 CET 2021 - jgonzalez@suse.com
 
