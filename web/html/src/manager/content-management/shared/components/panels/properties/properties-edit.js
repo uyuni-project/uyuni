@@ -5,7 +5,7 @@ import PropertiesForm from "./properties-form";
 import {Loading} from "components/utils/Loading";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
-import produce from "immer";
+import produce from "utils/produce";
 
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";

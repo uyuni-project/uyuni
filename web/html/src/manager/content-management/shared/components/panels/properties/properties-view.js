@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import produce from "immer";
+import produce from "utils/produce";
 
 import type {ProjectPropertiesType} from '../../../type/project.type.js';
 import {getVersionMessage} from "./properties.utils";
