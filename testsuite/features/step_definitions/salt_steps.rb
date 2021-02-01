@@ -1,4 +1,4 @@
-# Copyright 2015-2020 SUSE LLC
+# Copyright 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -684,7 +684,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   if host.include? 'ceos'
     node.run('yum -y remove salt salt-minion', false)
   elsif host.include? 'ubuntu'
-    node.run('apt-get --assume-yes remove salt salt-minion', false)
+    node.run('apt-get --assume-yes remove salt-common salt-minion', false)
   else
     node.run('zypper --non-interactive remove -y salt salt-minion', false)
   end
