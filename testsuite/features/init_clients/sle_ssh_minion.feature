@@ -45,7 +45,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     When I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
 
-@skip_sp_migration
+@skip_service_pack_migration
 @ssh_minion
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
