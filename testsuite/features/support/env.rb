@@ -266,6 +266,30 @@ Before('@sle15sp1_client') do
   skip_this_scenario unless $sle15sp1_client
 end
 
+Before('@sle15sp2_ssh_minion') do
+  skip_this_scenario unless $sle15sp2_ssh_minion
+end
+
+Before('@sle15sp2_minion') do
+  skip_this_scenario unless $sle15sp2_minion
+end
+
+Before('@sle15sp2_client') do
+  skip_this_scenario unless $sle15sp2_client
+end
+
+Before('@sle15sp3_ssh_minion') do
+  skip_this_scenario unless $sle15sp3_ssh_minion
+end
+
+Before('@sle15sp3_minion') do
+  skip_this_scenario unless $sle15sp3_minion
+end
+
+Before('@sle15sp3_client') do
+  skip_this_scenario unless $sle15sp3_client
+end
+
 Before('@skip_for_ubuntu') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'ubuntu'
 end
