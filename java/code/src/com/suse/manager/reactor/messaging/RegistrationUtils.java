@@ -381,6 +381,13 @@ public class RegistrationUtils {
                 return Collections.singleton(product);
             }
         }
+        else if ("debian".equalsIgnoreCase(grains.getValueAsString(OS))) {
+           SUSEProduct product = SUSEProductFactory.findSUSEProduct("debian-client",
+                   grains.getValueAsString("osmajorrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+           if (product != null) {
+               return Collections.singleton(product);
+           }
+        }
         return emptySet();
     }
 
