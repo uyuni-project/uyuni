@@ -1,3 +1,4 @@
+- detect debian products (bsc#1181416)
 - show packages from channels assigned to the targeted system (bsc#1181423)
 - Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
 - Open raw output in new tab for ScriptRunAction (bsc#1180547)
