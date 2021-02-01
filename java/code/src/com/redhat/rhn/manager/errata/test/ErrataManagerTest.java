@@ -32,9 +32,10 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -150,6 +151,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
+        e.setAdvisoryStatus(AdvisoryStatus.FINAL);
         e.setSolution("This errata fixes nothing, it's just a damn test.");
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
@@ -197,6 +199,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
+        e.setAdvisoryStatus(AdvisoryStatus.FINAL);
         e.setSolution("This errata fixes nothing, it's just a damn test.");
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
