@@ -587,10 +587,13 @@ ORDER BY UPPER(X.nvre)
 <mode name="system_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
   SELECT (SELECT max(p.id) FROM rhnPackage p
+                           JOIN rhnChannelPackage cp on p.id = cp.package_id
+                           JOIN rhnServerChannel sc on cp.channel_id = sc.channel_id
                           WHERE p.name_id = pn.id
                             AND p.evr_id = pe.id
                             AND p.package_arch_id = pa.id
                             AND (p.org_id = s.org_id or p.org_id is null)
+                            AND sc.server_id = :sid
           ) as package_id,
          pn.id || '|' || pe.id || '|' || pa.id as id_combo,
          pn.name || '-' || evr_t_as_vre_simple(pe.evr) as nvre,
