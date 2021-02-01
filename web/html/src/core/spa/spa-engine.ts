@@ -11,7 +11,7 @@ function isLoginPage(pathName) {
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
-window.pageRenderers.spaengine.init = function init() {
+window.pageRenderers.spaengine.init = function init(timeout = 30) {
   // We need this until the login page refactor using a different layout template is completed
   if (!isLoginPage(window.location.pathname)) {
     const appInstance = new App();
@@ -25,6 +25,7 @@ window.pageRenderers.spaengine.init = function init() {
         handler: function(route, a, b) {
           const screen = new HtmlScreen();
 
+          screen.setTimeout(timeout * 1000);
           screen.setCacheable(false);
           //workaround for posts until https://github.com/liferay/senna.js/pull/311/files is merged
           screen.setHttpHeaders({
