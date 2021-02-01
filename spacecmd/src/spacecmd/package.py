@@ -44,8 +44,8 @@ except AttributeError:
     _ = translation.gettext
 
 def help_package_details(self):
-    print(('package_details: Show the details of a software package'))
-    print(('usage: package_details PACKAGE ...'))
+    self.help_package_search('package_details',
+                             _('Show the details of a software package'))
 
 
 def complete_package_details(self, text, line, beg, end):
@@ -117,11 +117,13 @@ def do_package_details(self, args):
 ####################
 
 
-def help_package_search(self):
-    print(_('package_search: Find packages that meet the given criteria'))
-    print(_('usage: package_search NAME|QUERY'))
+def help_package_search(self,
+                        command='package_search',
+                        description='Find packages that meet the given criteria'):
+    print('%s: %s' % (command, description))
+    print(_('usage: %s NAME|QUERY' % command))
     print('')
-    print(_('Example: package_search kernel'))
+    print(_('Example: %s kernel' % command))
     print('')
     print(_('Advanced Search:'))
     print(_('Available Fields: name, epoch, version, release, arch, description, summary'))
@@ -276,8 +278,8 @@ def do_package_removeorphans(self, args):
 
 
 def help_package_listinstalledsystems(self):
-    print(_('package_listinstalledsystems: List the systems with a package installed'))
-    print(_('usage: package_listinstalledsystems PACKAGE ...'))
+    self.help_package_search('package_listinstalledsystems',
+                             _('List the systems with a package installed'))
 
 
 def complete_package_listinstalledsystems(self, text, line, beg, end):
@@ -323,8 +325,8 @@ def do_package_listinstalledsystems(self, args):
 
 
 def help_package_listerrata(self):
-    print(_('package_listerrata: List the errata that provide this package'))
-    print(_('usage: package_listerrata PACKAGE ...'))
+    self.help_package_search('package_listerrata',
+                             _('List the errata that provide this package'))
 
 
 def complete_package_listerrata(self, text, line, beg, end):
@@ -369,8 +371,8 @@ def do_package_listerrata(self, args):
 
 
 def help_package_listdependencies(self):
-    print(_('package_listdependencies: List the dependencies for a package'))
-    print(_('usage: package_listdependencies PACKAGE'))
+    self.help_package_search('package_listdependencies',
+                             _('List the dependencies for a package'))
 
 
 def do_package_listdependencies(self, args):
