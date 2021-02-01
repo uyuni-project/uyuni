@@ -147,8 +147,6 @@ public class JobReturnEventMessageAction implements MessageAction {
 
             handleActionChainResult(jobReturnEvent.getMinionId(),
                     jobReturnEvent.getJobId(),
-                    jobReturnEvent.getData().getRetcode(),
-                    jobReturnEvent.getData().isSuccess(),
                     actionChainResult,
                     stateResult -> false);
 
@@ -201,13 +199,11 @@ public class JobReturnEventMessageAction implements MessageAction {
      *
      * @param minionId the minion id
      * @param jobId the job id
-     * @param retCode the ret code
-     * @param success whether result is successful or not
      * @param actionChainResult job result
      * @param skipFunction function to check if a result should be skipped from handling
      */
     public static void handleActionChainResult(
-            String minionId, String jobId, int retCode, boolean success,
+            String minionId, String jobId,
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;

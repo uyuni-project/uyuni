@@ -700,7 +700,7 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
+                JobReturnEventMessageAction.handleActionChainResult(minionId, "",
                         actionChainResult,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
