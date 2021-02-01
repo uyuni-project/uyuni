@@ -116,10 +116,12 @@ public abstract class AbstractMinionBootstrapper {
                 sb.append((char) character);
             }
             String commandOutput = sb.toString();
+            LOG.debug("Salt SSH Dir test output: " + commandOutput);
 
             boolean ownerCanReadWrite  = ("rw").equals(commandOutput.substring(1, 3));
             boolean userAndGroupSet    = commandOutput.contains("salt salt");
 
+            LOG.debug("User can read/write: " + ownerCanReadWrite + " user and group correct: " + userAndGroupSet);
             return userAndGroupSet && ownerCanReadWrite;
         }
         catch (IOException | StringIndexOutOfBoundsException e) {
