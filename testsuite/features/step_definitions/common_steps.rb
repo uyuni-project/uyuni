@@ -1152,11 +1152,11 @@ When(/^I click the environment build button$/) do
 end
 
 When(/^I click promote from Development to QA$/) do
-  raise 'Click on promote from Development failed' unless find_button('dev_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  raise 'Click on promote from Development failed' unless find_button('dev_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from QA to Production$/) do
-  raise 'Click on promote from QA failed' unless find_button('qa_label-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
+  raise 'Click on promote from QA failed' unless find_button('qa_name-promote-modal-link', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
