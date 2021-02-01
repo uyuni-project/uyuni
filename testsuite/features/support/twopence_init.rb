@@ -85,6 +85,9 @@ if $build_validation
              $ubuntu1604_ssh_minion, $ubuntu1604_minion,
              $ubuntu1804_ssh_minion, $ubuntu1804_minion,
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
+             $sle15sp2_buildhost,$sle15sp2_terminal,
+             $sle12sp4_buildhost,$sle12sp4_terminal,
+             $sle11sp4_buildhost,$sle11sp3_terminal,
              $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 else
   # Define twopence objects for QA environment
