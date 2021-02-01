@@ -24,6 +24,12 @@ use Spacewalk::Setup;
 use strict 'refs';
 use warnings FATAL => 'all';;
 
+# To be replaced by central configuration in future.
+my $HTTPCONFDIR = '/etc/httpd/';
+if (! -d $HTTPCONFDIR) {
+    $HTTPCONFDIR = '/etc/apache2/';
+}
+
 my $macros = '';
 my $verbose;
 my $help = 0;
@@ -80,6 +86,40 @@ foreach my $configfile ('modules.conf', 'settings') {
                                 }
                         }
                 }
+        } continue {
+                ++$i;
+        }
+
+        if (!arrays_match(\@original_content, \@modified_content)) {
+                my @backup_cmd = ('/bin/cp', '-p', '--backup=numbered', $cfpath, "$cfpath-swsave");
+                push @backup_cmd, '-v' if $verbose;
+                system(@backup_cmd);
+
+                local *FILE;
+                open FILE, ">$cfpath" or die "Error opening [$cfpath] for writing: $!\n";
+                print FILE @modified_content;
+                close FILE;
+        } else {
+                print " * Leaving $cfpath unmodified\n" if $verbose;
+        }
+}
+
+# Adapting Apache HTTP configuration
+
+# Scan httpd folder for "*cobbler*.conf"
+opendir(DIR, $HTTPCONFDIR . "conf.d/");
+@httpd_configfiles = grep(/(.*)cobbler(.*)+\.conf$/,readdir(DIR));
+closedir(DIR);
+
+# for each conf file:
+foreach my $configfile (@httpd_configfiles) {
+        my $cfpath= $HTTPCONFDIR . "conf.d/" . $configfile;
+        my @original_content = my @modified_content = @{ read_filelines($cfpath) };
+
+        print "Processing $cfpath\n" if $verbose;
+        foreach my $line (@original_content) {
+                next if ($line =~ /^\s*#/);
+		$modified_content[$i] =~ s/(.*)(VirtualHost)(.*)/## disabled by spacewalk-setup-cobbler ## $1$2$3/;
         } continue {
                 ++$i;
         }
