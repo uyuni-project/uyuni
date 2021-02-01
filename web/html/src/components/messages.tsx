@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Severity = "info" | "success" | "warning" | "error";
+export type Severity = "info" | "success" | "warning" | "error";
 
 export type ServerMessageType = {
     severity: Severity;

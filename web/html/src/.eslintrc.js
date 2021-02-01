@@ -23,7 +23,10 @@ module.exports = {
   rules: {
     "react-hooks/rules-of-hooks": "error",
     // TODO: This needs to be reworked with Typescript support in mind
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    // See https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   },
 
   settings: {
@@ -32,6 +35,7 @@ module.exports = {
         map: [
           ['components', './components'],
           ['core', './core'],
+          ['manager', './manager'],
           ['utils', './utils'],
         ]
       }

@@ -1352,8 +1352,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react v16.12.0
-https://github.com/facebook/react.git
+react v16.14.0
+git+https://github.com/facebook/react.git
 --------------------------------------------------------------------------------
 
 MIT License

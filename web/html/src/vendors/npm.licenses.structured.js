@@ -46,7 +46,7 @@ const npmDependencies = [
   { name: "object-assign", license: "MIT",  version: "4.1.1" }, 
   { name: "process", license: "MIT",  version: "0.11.10" }, 
   { name: "prop-types", license: "MIT",  version: "15.7.2" }, 
-  { name: "react", license: "MIT",  version: "16.12.0" }, 
+  { name: "react", license: "MIT",  version: "16.14.0" }, 
   { name: "react-hot-loader", license: "MIT",  version: "4.13.0" }, 
   { name: "react-input-autosize", license: "MIT",  version: "2.2.2" }, 
   { name: "react-property", license: "MIT",  version: "1.0.1" }, 

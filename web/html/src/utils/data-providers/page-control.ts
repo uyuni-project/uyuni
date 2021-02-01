@@ -6,14 +6,14 @@ type SortType = {
 export default class PageControl {
   page: number;
   pageSize: number;
-  query: string | null | undefined;
-  sort: SortType | null | undefined;
+  query?: string | null;
+  sort?: SortType | null;
 
   constructor(
     page: number,
     pageSize: number,
-    query: string | null | undefined,
-    sortColumn?: string | null | undefined,
+    query?: string | null,
+    sortColumn?: string | null,
     sortDirection: number = 1
   ) {
     this.page = page;
