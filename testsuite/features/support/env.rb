@@ -328,6 +328,11 @@ Before('@service_pack_migration') do
   skip_this_scenario unless $service_pack_migration_enabled
 end
 
+# do test only if we don't want to run service pack migration
+Before('@skip_service_pack_migration') do
+  skip_this_scenario if $service_pack_migration_enabled
+end
+
 # have more infos about the errors
 def debug_server_on_realtime_failure
   puts '=> /var/log/rhn/rhn_web_ui.log'
