@@ -278,10 +278,6 @@ Before('@skip_for_traditional') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'client'
 end
 
-Before('@skip_sp_migration') do
-  skip_this_scenario unless $service_pack_migration_enabled
-end
-
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
   skip_this_scenario unless $scc_credentials
@@ -330,6 +326,11 @@ end
 # do test only if we want to run service pack migration
 Before('@service_pack_migration') do
   skip_this_scenario unless $service_pack_migration_enabled
+end
+
+# do test only if we don't want to run service pack migration
+Before('@skip_service_pack_migration') do
+  skip_this_scenario if $service_pack_migration_enabled
 end
 
 # have more infos about the errors
