@@ -1377,9 +1377,7 @@ def do_softwarechannel_addpackages(self, args):
         return 1
 
     # expand the arguments to search for packages
-    package_names = []
-    for item in args:
-        package_names.extend(self.do_package_search(item, True))
+    package_names = self.do_package_search(' '.join(args), True)
 
     # get the package IDs from the names
     package_ids = []
