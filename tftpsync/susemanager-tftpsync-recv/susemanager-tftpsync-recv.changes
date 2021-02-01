@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Feb 01 18:05:37 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - use macros to differ between SUSE and RedHat package names
 
 -------------------------------------------------------------------
