@@ -1,3 +1,5 @@
+- use macros to differ between SUSE and RedHat package names
+
 -------------------------------------------------------------------
 Wed Jan 27 13:16:25 CET 2021 - jgonzalez@suse.com
 
