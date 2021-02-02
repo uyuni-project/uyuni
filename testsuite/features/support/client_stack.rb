@@ -90,6 +90,8 @@ end
 def get_gpg_keys(node, target = $server)
   os_version, os_family = get_os_version(node)
   if os_family =~ /^sles/
+   # HACK: SLE 15 uses SLE 12 GPG key
+    os_version = 12 if os_version =~ /^15/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
   elsif os_family =~ /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", false)
