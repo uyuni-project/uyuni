@@ -28,9 +28,6 @@ Feature: Bootstrap a SLES 15 Salt SSH Minion
     Given I am on the Systems overview page of this "sle15_ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
 
-  Scenario: Import the GPG keys for SLES 15 Salt SSH Minion
-    When I import the GPG keys for "sle15_ssh_minion"
-
 @proxy
   Scenario: Check connection from SLES 15 SSH minion to proxy
     Given I am on the Systems overview page of this "sle15_ssh_minion"
