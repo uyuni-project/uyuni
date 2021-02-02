@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Feb 02 13:06:25 CET 2021 - jgonzalez@suse.com
+
+- version 4.0.5-1
 - remove checks for obsolete packages
 - gather new configfiles
 - add more important informations
