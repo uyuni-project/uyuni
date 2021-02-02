@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Feb 02 12:55:32 CET 2021 - jgonzalez@suse.com
+
+- version 4.0.22-1
 - Fix spacecmd with no parameters produces traceback
   on SLE 11 SP4 (bsc#1176823)
 
