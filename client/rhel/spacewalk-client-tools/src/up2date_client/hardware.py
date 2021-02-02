@@ -900,9 +900,6 @@ def get_hal_system_and_smbios():
 def get_smbios():
     """ Returns dictionary with values we are interested for.
         For historical reason it is in format, which use HAL.
-        Currently in dictionary are keys:
-        smbios.system.uuid, smbios.bios.vendor, smbios.system.serial,
-        smbios.system.manufacturer.
     """
     _initialize_dmi_data()
     if _dmi_not_available:
