@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Feb 02 13:05:43 CET 2021 - jgonzalez@suse.com
+
+- version 4.0.26-1
 - Prevent deletion of CLM environments if they're used in an autoinstallation
   profile (bsc#1179552)
 - Fix mandatory channels JS API to finish loading in case of error (bsc#1178839)
