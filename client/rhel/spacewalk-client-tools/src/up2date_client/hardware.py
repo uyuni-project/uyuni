@@ -59,9 +59,9 @@ import platform
 
 if platform.processor() not in ['s390', 's390x', 'aarch64']:
     import dmidecode
-    _dmi_not_available = 0
+    _dmi_available = 1
 else:
-    _dmi_not_available = 1
+    _dmi_available = 0
 
 from up2date_client import up2dateLog
 
@@ -93,7 +93,7 @@ except ImportError:
 _dmi_data           = None
 
 def dmi_warnings():
-    if _dmi_not_available:
+    if not _dmi_available:
         return None
 
     if not hasattr(dmidecode, 'get_warnings'):
@@ -102,16 +102,16 @@ def dmi_warnings():
     return dmidecode.get_warnings()
 
 dmi_warn = dmi_warnings()
-if dmi_warn and not _dmi_not_available:
+if dmi_warn and _dmi_available:
     dmidecode.clear_warnings()
     log = up2dateLog.initLog()
     log.log_debug("Warnings collected during dmidecode import: %s" % dmi_warn)
 
 def _initialize_dmi_data():
     """ Initialize _dmi_data unless it already exist and returns it """
-    global _dmi_data, _dmi_not_available
+    global _dmi_data, _dmi_available
     if _dmi_data is None:
-        if _dmi_not_available:
+        if not _dmi_available:
             # do not try to initialize it again and again if not available
             return None
         else :
@@ -127,7 +127,7 @@ def _initialize_dmi_data():
                     log.log_debug("dmidecode warnings: %s" % dmi_warn)
             except:
                 # DMI decode FAIL, this can happend e.g in PV guest
-                _dmi_not_available = 1
+                _dmi_available = 0
                 dmi_warn = dmi_warnings()
                 if dmi_warn:
                     dmidecode.clear_warnings()
@@ -902,7 +902,7 @@ def get_smbios():
         For historical reason it is in format, which use HAL.
     """
     _initialize_dmi_data()
-    if _dmi_not_available:
+    if not _dmi_available:
         return {}
     else:
         return {
