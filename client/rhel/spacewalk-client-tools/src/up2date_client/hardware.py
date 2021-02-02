@@ -135,14 +135,53 @@ def _initialize_dmi_data():
             _dmi_data = data.xpathNewContext()
     return _dmi_data
 
+def _get_dmi_data_from_sysfs(path):
+    """ Get the DMI data from sysfs
+    """
+    dmi_dir = "/sys/devices/virtual/dmi/id"
+    # mapping between DMI XML path and the corresponding filename in the DMI in sysfs
+    xmlpath_to_filename = {
+	    "/dmidecode/SystemInfo/SystemUUID[not(@unavailable='1')]": "product_uuid",
+	    "/dmidecode/SystemInfo/SystemUUID": "product_uuid",
+	    "/dmidecode/BIOSinfo/Vendor": "bios_vendor",
+	    "/dmidecode/BIOSinfo/Version": "bios_version",
+	    "/dmidecode/BIOSinfo/ReleaseDate": "bios_date",
+	    "/dmidecode/SystemInfo/ProductName": "product_name",
+	    "/dmidecode/SystemInfo/Version": "product_version",
+	    "/dmidecode/SystemInfo/SerialNumber": "product_serial",
+	    "/dmidecode/BaseBoardInfo/Manufacturer": "board_vendor",
+	    "/dmidecode/BaseBoardInfo/SerialNumber": "board_serial",
+	    "/dmidecode/ChassisInfo/SerialNumber": "chassis_serial",
+	    "/dmidecode/ChassisInfo/AssetTag": "chassis_asset_tag",
+	    "/dmidecode/SystemInfo/Manufacturer": "sys_vendor",
+	    "/dmidecode/SystemInfo/SKUnumber": "product_sku",
+	    "/dmidecode/SystemInfo/Family": "product_family"
+	    }
+
+    try:
+        dmi_path = os.path.join(dmi_dir, xmlpath_to_filename[path])
+        with open(dmi_path) as dmi_file:
+            return dmi_file.read().strip()
+    except KeyError:
+        log = up2dateLog.initLog()
+        log.log_debug("No mapping for DMI XML path: %s\n" % path)
+    except Exception as e:
+        log = up2dateLog.initLog()
+        log.log_debug("Cannot read DMI value from sysfs: %s. Exception: %s\n" % (path, e))
+
+    return ""
+
 def get_dmi_data(path):
     """ Fetch DMI data from given section using given path.
         If data could not be retrieved, returns empty string.
         General method and should not be used outside of this module.
+
+        Tries to use python-dmidecode, falls back to reading data
+        from sysfs, if necessary.
     """
     dmi_data = _initialize_dmi_data()
     if dmi_data is None:
-        return ''
+        return _get_dmi_data_from_sysfs(path)
     data = dmi_data.xpathEval(path)
     if data != []:
         return data[0].content
