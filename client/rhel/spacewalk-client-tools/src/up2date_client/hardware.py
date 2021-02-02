@@ -59,9 +59,9 @@ import platform
 
 if platform.processor() not in ['s390', 's390x', 'aarch64']:
     import dmidecode
-    _dmi_available = 1
+    _dmi_available = True
 else:
-    _dmi_available = 0
+    _dmi_available = False
 
 from up2date_client import up2dateLog
 
@@ -127,7 +127,7 @@ def _initialize_dmi_data():
                     log.log_debug("dmidecode warnings: %s" % dmi_warn)
             except:
                 # DMI decode FAIL, this can happend e.g in PV guest
-                _dmi_available = 0
+                _dmi_available = False
                 dmi_warn = dmi_warnings()
                 if dmi_warn:
                     dmidecode.clear_warnings()
