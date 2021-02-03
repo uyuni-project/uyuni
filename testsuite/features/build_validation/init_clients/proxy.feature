@@ -10,10 +10,9 @@ Feature: Setup SUSE Manager proxy
   As the system administrator
   I want to register the proxy to the server and configure it also as branch server
 
-  Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
-    When I perform a full salt minion cleanup on "proxy"
+  Scenario: Set correct product on a SUSE Manager proxy
     # WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
-    And I set correct product for "proxy"
+    When I set correct product for "proxy"
     # End of WORKAROUND
 
   Scenario: Bootstrap the proxy as a Salt minion
