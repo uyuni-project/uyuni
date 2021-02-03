@@ -9,6 +9,7 @@
 ## Channels and Product synchronization features BEGIN ###
 
 - features/build_validation/reposync/srv_sync_all_products.feature
+- features/build_validation/reposync/srv_common_channels.feature
 
 ## Channels and Product synchronization features END ###
 
