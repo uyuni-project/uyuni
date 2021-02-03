@@ -12,7 +12,6 @@ Feature: Create activation keys
     And I follow "Create Key"
     And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-KEY-x86_64" as "key"
-    And I check "virtualization_host"
     And I enter "20" as "usageLimit"
     And I select "Test-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
