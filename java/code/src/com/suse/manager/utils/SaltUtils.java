@@ -1356,6 +1356,9 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
+
+        ValueMap grains = new ValueMap(result.getGrains());
+
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 oracleReleaseFile.isPresent() || resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
@@ -1363,15 +1366,27 @@ public class SaltUtils {
                     rhelReleaseFile, centosReleaseFile, oracleReleaseFile);
             server.setInstalledProducts(products);
         }
-        else if ("ubuntu".equalsIgnoreCase((String) result.getGrains().get("os"))) {
-            String osArch = result.getGrains().get("osarch") + "-deb";
-            String osVersion = (String) result.getGrains().get("osrelease");
+        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            String osArch = grains.getValueAsString("osarch") + "-deb";
+            String osVersion = grains.getValueAsString("osrelease");
             // Check if we have a product for the specific arch and version
             SUSEProduct ubuntuProduct = SUSEProductFactory.findSUSEProduct("ubuntu-client", osVersion, null, osArch,
                     false);
             if (ubuntuProduct != null) {
                 InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(ubuntuProduct)
                         .orElse(new InstalledProduct(ubuntuProduct));
+                server.setInstalledProducts(Collections.singleton(installedProduct));
+            }
+        }
+        else if ("debian".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            String osArch = grains.getValueAsString("osarch") + "-deb";
+            String osVersion = grains.getValueAsString("osmajorrelease");
+            // Check if we have a product for the specific arch and version
+            SUSEProduct debianProduct = SUSEProductFactory.findSUSEProduct("debian-client", osVersion, null, osArch,
+                    false);
+            if (debianProduct != null) {
+                InstalledProduct installedProduct = SUSEProductFactory.findInstalledProduct(debianProduct)
+                        .orElse(new InstalledProduct(debianProduct));
                 server.setInstalledProducts(Collections.singleton(installedProduct));
             }
         }
@@ -1383,7 +1398,6 @@ public class SaltUtils {
 
         // Update grains
         if (!result.getGrains().isEmpty()) {
-            ValueMap grains = new ValueMap(result.getGrains());
             server.setOsFamily(grains.getValueAsString("os_family"));
             server.setRunningKernel(grains.getValueAsString("kernelrelease"));
             server.setOs(grains.getValueAsString("osfullname"));
