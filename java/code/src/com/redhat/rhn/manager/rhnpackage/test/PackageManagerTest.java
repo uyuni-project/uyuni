@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -33,6 +34,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageCapabilityTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -48,6 +50,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.repomd.SimpleAttributesImpl;
 import com.redhat.rhn.taskomatic.task.repomd.SimpleContentHandler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -97,6 +100,49 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         for (Iterator itr = dr.iterator(); itr.hasNext();) {
             Object o = itr.next();
             assertTrue(o instanceof PackageListItem);
+        }
+    }
+
+    public void testSystemPackageListMulti() throws Exception {
+        // Test that the package id comes from a package of an assigned channel
+        PageControl pc = new PageControl();
+        pc.setIndexData(false);
+        pc.setStart(1);
+
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        // create 2 packages with same NEVRA in different channels
+        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageName pname = PackageNameTest.createTestPackageName();
+        PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
+
+        Package p1 = new Package();
+        PackageTest.populateTestPackage(p1, user.getOrg(), pname, pevr, parch);
+        TestUtils.saveAndFlush(p1);
+
+        Package p2 = new Package();
+        PackageTest.populateTestPackage(p2, user.getOrg(), pname, pevr, parch);
+        TestUtils.saveAndFlush(p2);
+
+        Channel c1 = ChannelFactoryTest.createTestChannel(user);
+        Channel c2 = ChannelFactoryTest.createTestChannel(user);
+        PackageTest.addPackageToChannelNewestPackage(p1, c1);
+        PackageTest.addPackageToChannelNewestPackage(p2, c2);
+
+        PackageManagerTest.associateSystemToPackage(server, p1);
+        server = SystemManager.subscribeServerToChannel(user, server, c1);
+
+        DataResult dr = PackageManager.systemPackageList(server.getId(), pc);
+        assertNotNull(dr);
+        assertEquals(1, dr.size());
+
+        for (Iterator itr = dr.iterator(); itr.hasNext();) {
+            Object o = itr.next();
+            assertTrue(o instanceof PackageListItem);
+            PackageListItem pli = (PackageListItem) o;
+            assertEquals(p1.getId(), pli.getPackageId());
         }
     }
 
@@ -190,11 +236,12 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         try {
             WriteMode m =
                 ModeFactory.
-                getWriteMode("test_queries", "insert_into_rhnServerPackageSimple");
+                getWriteMode("test_queries", "insert_into_rhnServerPackage_with_arch");
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("server_id", srvr.getId());
-            params.put("name_id", p.getPackageName().getId());
+            params.put("pn_id", p.getPackageName().getId());
             params.put("evr_id", p.getPackageEvr().getId());
+            params.put("arch_id", p.getPackageArch().getId());
 
             m.executeUpdate(params);
         }
