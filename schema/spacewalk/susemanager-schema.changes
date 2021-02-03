@@ -1,3 +1,4 @@
+- enable openscap auditing for salt systems in SSM (bsc#1157711)
 - Removed "Software Crashes" feature
 
 -------------------------------------------------------------------
