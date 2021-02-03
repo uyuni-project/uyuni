@@ -1117,8 +1117,11 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
   steps %(
     When I wait until I see "States" text
     And I follow "States" in the content area
+    And I wait until I see "Highstate" text
     And I follow "Packages" in the content area
     Then I should see a "Package States" text
+    When I follow "Search" in the content area
+    Then I should see a "Search package" text
   )
   event_table_xpath = "//div[@class='table-responsive']/table/tbody"
   rows = find(:xpath, event_table_xpath)
