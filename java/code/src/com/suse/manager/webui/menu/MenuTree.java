@@ -177,8 +177,6 @@ public class MenuTree {
                         .withAltUrl("/rhn/kickstart/cobbler/DefaultSnippetView.do")
                         .withVisibility(adminRoles.get("config")))
                     .withVisibility(adminRoles.get("config")))
-                .addChild(new MenuItem("software.crashes").withPrimaryUrl("/rhn/systems/SoftwareCrashesOverview.do")
-                    .withAltUrl("/rhn/systems/SoftwareCrashUuidDetails.do"))
                 .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
                     .withDir("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org"))));

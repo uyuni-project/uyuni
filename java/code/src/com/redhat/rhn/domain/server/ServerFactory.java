@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
-import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -1192,20 +1191,6 @@ public class ServerFactory extends HibernateFactory {
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
-    }
-
-    /**
-     * Lists software crashes for a server
-     * @param server of interest
-     * @return crash list
-     */
-    public static List<SoftwareCrashDto> listServerSoftwareCrashes(Server server) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "list_server_software_crashes");
-        Map<String, Object> params = new HashMap<String, Object>();
-        // params.put("org_id", user.getOrg().getId());
-        params.put("server_id", server.getId());
-        return m.execute(params);
     }
 
     /**

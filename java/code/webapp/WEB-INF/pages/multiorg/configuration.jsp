@@ -7,15 +7,6 @@
     <head>
     </head>
     <body>
-    <script language="javascript" type="text/javascript">
-        function modifyUploadCheckbox(checkbox) {
-            if (checkbox.checked == false) {
-                document.getElementById("crashfile_upload_enabled").disabled = true;
-            } else {
-                document.getElementById("crashfile_upload_enabled").disabled = false;
-            }
-        }
-    </script>
     <rhn:toolbar base="h1" icon="header-organisation"
         miscUrl="${url}"
         miscAcl="user_role(org_admin)"

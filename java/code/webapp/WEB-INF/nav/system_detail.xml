@@ -76,16 +76,6 @@
     <rhn-tab name="SP Migration" acl="system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SPMigration.do</rhn-tab-url>
     </rhn-tab>
-
-    <rhn-tab name="Software Crashes" acl="system_has_management_entitlement()">
-      <rhn-tab-url>/rhn/systems/details/SoftwareCrashes.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/SoftwareCrashDetail.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/SoftwareCrashDelete.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/SoftwareCrasheFiles.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/SoftwareCrashNotes.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/EditCrashNote.do</rhn-tab-url>
-      <rhn-tab-url>/rhn/systems/details/DeleteCrashNote.do</rhn-tab-url>
-    </rhn-tab>
 </rhn-tab>
 
   <rhn-tab name="Configuration" acl="system_feature(ftr_config)" url="/rhn/systems/details/configuration/Overview.do">
