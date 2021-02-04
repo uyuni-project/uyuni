@@ -1,3 +1,5 @@
+- enable openscap auditing for salt systems in SSM (bsc#1157711)
+
 -------------------------------------------------------------------
 Tue Feb 02 13:08:42 CET 2021 - jgonzalez@suse.com
 
