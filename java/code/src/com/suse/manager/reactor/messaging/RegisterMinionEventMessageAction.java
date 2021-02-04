@@ -390,7 +390,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(minion);
-            giveCapabilities(minion);
+            giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
             GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
@@ -681,12 +681,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         server.getServerPaths().addAll(proxyPaths.orElse(Collections.emptySet()));
     }
 
-    private void giveCapabilities(MinionServer server) {
+    private void giveCapabilities(MinionServer server, boolean isSaltSSH) {
         // Salt systems always have the script.run capability
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        // Salt systems can be audited
-        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+        if (!isSaltSSH) {
+            // Not Salt ssh systems can be audited
+            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+        }
 
         //Capabilities to enable configuration management for minions
         SystemManager.giveCapability(server.getId(),
