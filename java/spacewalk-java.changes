@@ -1,3 +1,4 @@
+- enable openscap auditing for salt systems in SSM (bsc#1157711)
 - detect debian products (bsc#1181416)
 - show packages from channels assigned to the targeted system (bsc#1181423)
 - Add an API endpoint to allow/disallow scheduling irrelevant patches (bsc#1180757)
