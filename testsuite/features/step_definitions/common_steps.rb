@@ -1113,7 +1113,7 @@ And(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   end
 end
 
-And(/^I remove package "([^"]*)" from highstate$/) do |package|
+When(/^I remove package "([^"]*)" from highstate$/) do |package|
   steps %(
     When I wait until I see "States" text
     And I follow "States" in the content area
@@ -1121,7 +1121,7 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
     And I follow "Packages" in the content area
     Then I should see a "Package States" text
     When I follow "Search" in the content area
-    Then I should see a "Search package" text
+    And I wait until button "Search" becomes enabled
   )
   event_table_xpath = "//div[@class='table-responsive']/table/tbody"
   rows = find(:xpath, event_table_xpath)
@@ -1137,7 +1137,7 @@ And(/^I remove package "([^"]*)" from highstate$/) do |package|
   end
 end
 
-And(/^I check for failed events on history event page$/) do
+When(/^I check for failed events on history event page$/) do
   steps %(
     When I follow "Events" in the content area
     And I follow "History" in the content area
