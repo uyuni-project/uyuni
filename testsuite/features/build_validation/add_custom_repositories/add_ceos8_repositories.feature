@@ -88,6 +88,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     Then I should see a "python-3.8: enable module python38:3.8" text
     When I follow "Add Environment"
     And I enter "result" as "name"
+    And I enter "result" as "label"
     And I enter "Filtered channels without AppStream channels" as "description"
     And I click on "Save"
     Then I should see a "not built" text
