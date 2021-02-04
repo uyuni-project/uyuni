@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15_ssh_minion
@@ -20,13 +20,20 @@ Feature: Bootstrap a SLES 15 Salt SSH Minion
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle15_ssh_minion"
 
-  # WORKAROUD for bsc#1124634
+  # HACK
   # Package 'sle-manager-tools-release' is automatically installed during bootstrap and
   # stays installed after removal of channel containing it. So it is not possible to update it.
   # Package needs to be removed from highstate to avoid failure when updating it.
   Scenario: Remove sle-manager-tools-release from state after SLES 15 bootstrap
     Given I am on the Systems overview page of this "sle15_ssh_minion"
-    When I remove package "sle-manager-tools-release" from highstate
+    When I wait until I see "States" text
+    And I follow "States" in the content area
+    And I wait until I see "Highstate" text
+    And I follow "Packages" in the content area
+    Then I should see a "Package States" text
+    When I follow "Search" in the content area
+    And I wait until button "Search" becomes enabled
+    And I remove package "sle-manager-tools-release" from highstate
 
   Scenario: Import the GPG keys for SLES 15 Salt SSH Minion
     When I import the GPG keys for "sle15_ssh_minion"
