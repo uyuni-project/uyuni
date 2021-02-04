@@ -26,6 +26,7 @@ public class ScheduleMetadata {
     public static final String SUMA_ACTION_CHAIN = "suma-action-chain";
     public static final String SUMA_MINION_STARTUP = "suma-minion-startup";
     public static final String BATCH_MODE = "batch-mode";
+    public static final String SUMA_ACTION_CHAIN_ID = "suma-action-chain-id";
 
     @SerializedName(SUMA_ACTION_ID)
     private Long sumaActionId = 0L;
@@ -42,6 +43,9 @@ public class ScheduleMetadata {
     @SerializedName(SUMA_MINION_STARTUP)
     private boolean minionStartup;
 
+    @SerializedName(SUMA_ACTION_CHAIN_ID)
+    private Long actionChainId;
+
     /**
      * Constructor for ScheduleMetadata
      * @param sumaActionIdIn the Id of the action
@@ -49,15 +53,17 @@ public class ScheduleMetadata {
      * @param actionChainIn whether the schedule action is corresponds to an action chain
      * @param batchModeIn whether the schedule action is executed in batch mode
      * @param minionStartupIn whether the schedule action corresponds to a minion start up
+     * @param actionChainIdIn action chain id
      */
     public ScheduleMetadata(Long sumaActionIdIn, boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn, boolean minionStartupIn) {
+            boolean batchModeIn, boolean minionStartupIn, Long actionChainIdIn) {
         super();
         this.sumaActionId = sumaActionIdIn;
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
         this.minionStartup = minionStartupIn;
+        this.actionChainId = actionChainIdIn;
     }
 
     /**
@@ -66,14 +72,16 @@ public class ScheduleMetadata {
      * @param actionChainIn whether the schedule action is corresponds to an action chain
      * @param batchModeIn whether the schedule action is executed in batch mode
      * @param minionStartupIn whether the schedule action corresponds to a minion start up
+     * @param actionChainIdIn action chain id
      */
     public ScheduleMetadata(boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn, boolean minionStartupIn) {
+            boolean batchModeIn, boolean minionStartupIn, Long actionChainIdIn) {
         super();
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
         this.minionStartup = minionStartupIn;
+        this.actionChainId = actionChainIdIn;
     }
 
     /**
@@ -81,7 +89,7 @@ public class ScheduleMetadata {
      * @return the new instance of ScheduleMetadata
      */
     public static ScheduleMetadata getDefaultMetadata() {
-        return new ScheduleMetadata(false, false, false, false);
+        return new ScheduleMetadata(false, false, false, false, null);
     }
 
     /**
@@ -94,9 +102,9 @@ public class ScheduleMetadata {
     public static ScheduleMetadata getMetadataForRegularMinionActions(boolean isStagingJob,
             boolean forcePackageListRefresh, long actionId) {
         if (!isStagingJob) {
-            return new ScheduleMetadata(actionId, forcePackageListRefresh, false, false, false);
+            return new ScheduleMetadata(actionId, forcePackageListRefresh, false, false, false, null);
         }
-        return new ScheduleMetadata(forcePackageListRefresh, false, false, false);
+        return new ScheduleMetadata(forcePackageListRefresh, false, false, false, null);
     }
 
     /**
@@ -104,15 +112,19 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with batchMode flag set in true
      */
     public ScheduleMetadata withBatchMode() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true, minionStartup);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true, minionStartup,
+                actionChainId);
     }
 
     /**
      * Sets the actionChain flag in true
+     * Sets the actionChain flag in true and adds action chain id
+     * @param actionChainIdIn action chain id
      * @return an instance of ScheduleMetadata with the actionChain flag set in true
      */
-    public ScheduleMetadata withActionChain() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode, minionStartup);
+    public ScheduleMetadata withActionChain(long actionChainIdIn) {
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode, minionStartup,
+                actionChainIdIn);
     }
 
     /**
@@ -120,7 +132,12 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with the minionStartup flag set in true
      */
     public ScheduleMetadata withMinionStartup() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, batchMode, true);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, batchMode, true,
+                actionChainId);
+    }
+
+    public Long getActionChainId() {
+        return actionChainId;
     }
 
     /**
