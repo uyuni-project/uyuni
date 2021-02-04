@@ -24,7 +24,7 @@ import type {ActionChain} from "components/action-schedule";
 
 declare var localTime: string;
 declare var timezone: string;
-declare var userPrefPageSize: string;
+declare var userPrefPageSize: number;
 declare var actionChains: Array<ActionChain>;
 
 const msgMap = {
