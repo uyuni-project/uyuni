@@ -493,8 +493,8 @@ When(/^the server starts mocking an IPMI host$/) do
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run('kill $(pidof ipmi_sim)')
-  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
+  $server.run('pkill ipmi_sim')
+  $server.run('pkill fake_ipmi_host.sh || :')
 end
 
 When(/^the server starts mocking a Redfish host$/) do
