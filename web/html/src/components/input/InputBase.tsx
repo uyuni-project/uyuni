@@ -6,7 +6,7 @@ import { FormContext } from "./Form";
 
 type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
-export type Props<T> = {
+export type Props<ValueType> = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
@@ -38,7 +38,7 @@ export type Props<T> = {
    *   This function takes a name and a value parameter.
    * - *onBlur*: a function to call when loosing the focus on the component.
    */
-  children: (arg0: { setValue: (name: string, value: T) => void; onBlur: () => void }) => React.ReactNode;
+  children: (arg0: { setValue: (name: string, value: ValueType) => void; onBlur: () => void }) => React.ReactNode;
 
   /** Indicates whether the field is required in the form */
   required?: boolean;
@@ -55,7 +55,7 @@ export type Props<T> = {
   /** Function to call when the data model needs to be changed.
    *  Takes a name and a value parameter.
    */
-  onChange?: (name: string, value: T) => void;
+  onChange?: (name: string, value: ValueType) => void;
 };
 
 type State = {
@@ -68,7 +68,7 @@ type State = {
   errors?: Array<string> | Object;
 };
 
-export class InputBase<T = string> extends React.Component<Props<T>, State> {
+export class InputBase<ValueType = string> extends React.Component<Props<ValueType>, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -81,7 +81,7 @@ export class InputBase<T = string> extends React.Component<Props<T>, State> {
     onChange: undefined,
   };
 
-  constructor(props: Props<T>) {
+  constructor(props: Props<ValueType>) {
     super(props);
     this.state = {
       isValid: true,
@@ -129,7 +129,7 @@ export class InputBase<T = string> extends React.Component<Props<T>, State> {
           }
           return filtered;
         }, {});
-        this.validate(values as (T extends {} ? T : never));
+        this.validate(values);
       } else {
         this.validate(this.context.model[this.props.name]);
       }
@@ -157,7 +157,14 @@ export class InputBase<T = string> extends React.Component<Props<T>, State> {
     return this.state.isValid;
   }
 
-  validate(value: T, errors?: Array<string> | Object): void {
+  /**
+   * Validate the input, updating state and errors if necessary.
+   *
+   * The default case is for InputBase<ValueType = string>, but different inputs may use any type, for example an object when
+   * `this.props.name` is an array. This makes inferring validation types tricky, so we accept whatever inputs make sense
+   * for a given branch.
+   */
+  validate<InferredValueType = ValueType>(value: InferredValueType, errors?: Array<string> | Object): void {
     const results: ReturnType<Validator>[] = [];
     let isValid = true;
 
@@ -195,7 +202,7 @@ export class InputBase<T = string> extends React.Component<Props<T>, State> {
     });
   }
 
-  setValue(name: string, value: T) {
+  setValue(name: string, value: ValueType) {
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }
@@ -206,7 +213,7 @@ export class InputBase<T = string> extends React.Component<Props<T>, State> {
         }
         return filtered;
       }, {});
-      this.validate(Object.assign({}, values, { [name]: value }) as (T extends {} ? T : never));
+      this.validate(Object.assign({}, values, { [name]: value }));
     } else {
       this.validate(value);
     }
