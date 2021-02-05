@@ -204,7 +204,7 @@ const MonitoringAdmin = props => {
     setMessages,
   } = useMonitoringApi();
 
-  const handleResponseError = (jqXHR: any, arg: string = "") => {
+  const handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
     setMessages(msg);
   };

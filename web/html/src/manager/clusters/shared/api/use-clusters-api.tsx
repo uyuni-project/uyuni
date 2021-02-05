@@ -116,7 +116,7 @@ export function withErrorMessages<T extends WithMessages>(
 }
 
 const useClustersApi = () => {
-  const handleResponseError = (jqXHR: any, arg: string = "") => {
+  const handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
     throw new ErrorMessages(Network.responseErrorMessage(jqXHR));
   };
 

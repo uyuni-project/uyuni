@@ -133,6 +133,10 @@ const args = require("./args");
     await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
 
+    // TS doesn't know what the type of this is, but we do
+    // jqXHR: any -> jqXHR: JQueryXHR
+    await execAndLog(`sed -i'${tempExtension}' -e 's/jqXHR: any/jqXHR: JQueryXHR/' ${tsInputs}`);
+
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
     {
