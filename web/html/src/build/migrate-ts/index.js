@@ -137,6 +137,12 @@ const args = require("./args");
     // jqXHR: any -> jqXHR: JQueryXHR
     await execAndLog(`sed -i'${tempExtension}' -e 's/jqXHR: any/jqXHR: JQueryXHR/' ${tsInputs}`);
 
+    // There is no excuse to keep these around anymore
+    // "use strict"; -> remove
+    // /* eslint-disable */ -> remove
+    await execAndLog(`sed -i'${tempExtension}' -e 's/"use strict";//' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/\\/* eslint-disable *\\///' ${tsInputs}`);
+
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
     {

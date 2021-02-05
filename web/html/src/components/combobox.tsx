@@ -1,10 +1,6 @@
-/* eslint-disable */
-
 import * as React from "react";
 
 import Creatable from "react-select/creatable";
-
-declare function $(param: any): any;
 
 type ReactSelectItem = {
   value: string | null | undefined;
