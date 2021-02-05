@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 11:01+0100\n"
+"POT-Creation-Date: 2021-02-05 11:22+0100\n"
 "PO-Revision-Date: 2020-11-22 17:26+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -70,16 +70,6 @@ msgstr "O servidor \"%s\" não está ativado para o ISS."
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
 msgstr "Par system_id / action_id inválido."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Esperado um nome de pacote, não: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Esperado um pacote, não: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -151,6 +141,16 @@ msgstr "Valor inválido '%s' para %s (%s)"
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Valor inválido %s (%s)"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Esperado um nome de pacote, não: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Esperado um pacote, não: %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -413,6 +413,16 @@ msgstr ""
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI %s inválida"
+
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "ERRO: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "RASTREAR: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1007,53 +1017,27 @@ msgstr "Número de revisão inválido"
 msgid "Cannot compare files of different file type"
 msgstr "Não é possível comparar arquivos de outro tipo"
 
-#. 5000 - 5999: client content uploading errors
-#. 5000 - 5099: crash reporting errors
-#: ../common/rhnException.py:248
-msgid "Crash information is invalid or incomplete"
-msgstr "As informações de falha são inválidas ou incompletas"
-
-#: ../common/rhnException.py:249
-msgid "Crash file information is invalid or incomplete"
-msgstr "As informações do arquivo de falha são inválidas ou incompletas"
-
-#: ../common/rhnException.py:250
-msgid "Error composing crash directory path"
-msgstr "Erro ao compor o caminho do diretório de falha"
-
-#: ../common/rhnException.py:251
-msgid "Error composing crash file path"
-msgstr "Erro ao compor o caminho do arquivo de falha"
-
-#: ../common/rhnException.py:252 ../common/rhnException.py:259
-msgid "Invalid content encoding"
-msgstr "Codificação de conteúdo inválida"
-
-#: ../common/rhnException.py:253
-msgid "Invalid crash name"
-msgstr "Nome de falha inválido"
-
-#: ../common/rhnException.py:254
-msgid "Crash reporting is disabled for this organization"
-msgstr "Os relatórios de falhas estão desativados para esta organização"
-
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:256
+#: ../common/rhnException.py:247
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr "A transferência do arquivo de resultados SCAP é inválida ou incompleta"
 
-#: ../common/rhnException.py:257
+#: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
 "Erro ao compor o caminho do diretório para obter resultados detalhados do "
 "SCAP"
 
-#: ../common/rhnException.py:258
+#: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
 msgstr ""
 "Erro ao compor o caminho do arquivo para obter resultados detalhados do SCAP"
 
-#: ../common/rhnException.py:306
+#: ../common/rhnException.py:250
+msgid "Invalid content encoding"
+msgstr "Codificação de conteúdo inválida"
+
+#: ../common/rhnException.py:297
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1070,7 +1054,7 @@ msgstr ""
 "     detalhes do que estava tentando fazer quando esse erro ocorreu e\n"
 "     detalhes sobre como reproduzir esse problema.\n"
 
-#: ../common/rhnException.py:358
+#: ../common/rhnException.py:349
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1079,263 +1063,26 @@ msgstr ""
 "Mensagem De Erro:\n"
 "     %s\n"
 
-#: ../common/rhnException.py:360
+#: ../common/rhnException.py:351
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Código da classe de erro: %s\n"
 
-#: ../common/rhnException.py:363
+#: ../common/rhnException.py:354
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Informações da classe de erro: %s\n"
 
-#: ../common/rhnException.py:365
+#: ../common/rhnException.py:356
 #, python-format
 msgid "Explanation: %s"
 msgstr "Explicação: %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "ERRO: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "RASTREAR: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formato de %s deve ser pelo menos AAAAMMDD.\n"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"ERRO: executando a etapa %s. O erro é:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"ERRO: Teve um problema acessando o canal de dados do seu repositório\n"
-"     temporário. Você migrou todos os dados do seu canal de ISOs\n"
-"     para esse diretório? Se sim, por favor verificar os canais de ISOs, "
-"Assegure\n"
-"    que você tem todos, e então remontar e repovoar iterativamente\n"
-"    o repositório temporário (%s).\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"ERRO: Teve um problema sincronizando as informações.\n"
-"     Mensagem de erro: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"ERRO: Ocorreu um problema na comunicação com o ISS Master.\n"
-"     Dependendo dos detalhes específicos do erro, revise sua configuração,\n"
-"     conectividade básica de rede e / ou resolução de nomes e tente "
-"novamente.\n"
-"     Mensagem de erro: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"ERRO: um canal filho não pode ser sincronizado sem que seu pai também seja\n"
-"     sincronizado. Um pai precisa ser (a) sincronizado anteriormente ou (b) "
-"sincronizado\n"
-"     em conjunto com o canal filho desejado. Pais ausentes para esta\n"
-"     transação:\n"
-"     %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"ERRO: você não tem o direito de sincronizar um canal neste conjunto de "
-"canais.\n"
-"Entre em contato com seu contato do SUSE Manager\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  ERRO: sem espaço suficiente (%s KB) no dispostivo."
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s Busca bem sucedida: %s (%s bytes)"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    Pacote extinto:  %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr "   Tamanho total: %s"
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      Baixado %s de %s. Tempo restante estimado: %s"
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    Busca mal sucedida: %s"
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   Busca de sumário RPM: %s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr "       sucesso: %d"
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr "       falhou:  %d"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr "       extinto: %d"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   Recuperando/analisando metadados do pacote *relevantes*: %s (%s)"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   Recuperando/analisando dados de erratas: %s (%s)"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   Recuperando/analisando dados do kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   Recuperando/analisando arquivos da árvore do kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   Importando metadados *relevantes* do pacote: %s (%s)"
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * AVISO: este pode ser um processo lento."
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr "Vinculando pacotes aos canais"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   Importando errata *relevante*: %s (%s)"
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr "   Nenhuma nova árvore kickstartable para importar"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Importando árvores kickstartable (%d)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Árvores kickstartable importadas (%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (especificado na linha de comando)\n"
-"não pôde ser aberto e lido:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"Não foi possível abrir \"%s\"\n"
-"e/ou escrito para:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:117 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ enviar log como um email +++"
-
-#: ../satellite_tools/reposync.py:120
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s sincronizado. relatório de %s"
-
-#: ../satellite_tools/reposync.py:130 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email solicitado, mas não há nada para enviar +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1402,10 +1149,18 @@ msgstr ""
 msgid "Skipping..."
 msgstr "Pulando..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr "+++ enviar log como um email +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sincronização do SUSE Manager Inter Server. relatório de %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email solicitado, mas não há nada para enviar +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2121,6 +1876,243 @@ msgstr "  28 - erro: --master é válido apenas com --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERRO: versão de despejo desconhecida, tente um dos %s"
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"ERRO: executando a etapa %s. O erro é:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"ERRO: Teve um problema acessando o canal de dados do seu repositório\n"
+"     temporário. Você migrou todos os dados do seu canal de ISOs\n"
+"     para esse diretório? Se sim, por favor verificar os canais de ISOs, "
+"Assegure\n"
+"    que você tem todos, e então remontar e repovoar iterativamente\n"
+"    o repositório temporário (%s).\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"ERRO: Teve um problema sincronizando as informações.\n"
+"     Mensagem de erro: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"ERRO: Ocorreu um problema na comunicação com o ISS Master.\n"
+"     Dependendo dos detalhes específicos do erro, revise sua configuração,\n"
+"     conectividade básica de rede e / ou resolução de nomes e tente "
+"novamente.\n"
+"     Mensagem de erro: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"ERRO: um canal filho não pode ser sincronizado sem que seu pai também seja\n"
+"     sincronizado. Um pai precisa ser (a) sincronizado anteriormente ou (b) "
+"sincronizado\n"
+"     em conjunto com o canal filho desejado. Pais ausentes para esta\n"
+"     transação:\n"
+"     %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"ERRO: você não tem o direito de sincronizar um canal neste conjunto de "
+"canais.\n"
+"Entre em contato com seu contato do SUSE Manager\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  ERRO: sem espaço suficiente (%s KB) no dispostivo."
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s Busca bem sucedida: %s (%s bytes)"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    Pacote extinto:  %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   Tamanho total: %s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      Baixado %s de %s. Tempo restante estimado: %s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    Busca mal sucedida: %s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   Busca de sumário RPM: %s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       sucesso: %d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       falhou:  %d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       extinto: %d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   Recuperando/analisando metadados do pacote *relevantes*: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   Recuperando/analisando dados de erratas: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   Recuperando/analisando dados do kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   Recuperando/analisando arquivos da árvore do kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   Importando metadados *relevantes* do pacote: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * AVISO: este pode ser um processo lento."
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "Vinculando pacotes aos canais"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   Importando errata *relevante*: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   Nenhuma nova árvore kickstartable para importar"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Importando árvores kickstartable (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Árvores kickstartable importadas (%d)"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (especificado na linha de comando)\n"
+"não pôde ser aberto e lido:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"Não foi possível abrir \"%s\"\n"
+"e/ou escrito para:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s sincronizado. relatório de %s"
+
+#~ msgid "Crash information is invalid or incomplete"
+#~ msgstr "As informações de falha são inválidas ou incompletas"
+
+#~ msgid "Crash file information is invalid or incomplete"
+#~ msgstr "As informações do arquivo de falha são inválidas ou incompletas"
+
+#~ msgid "Error composing crash directory path"
+#~ msgstr "Erro ao compor o caminho do diretório de falha"
+
+#~ msgid "Error composing crash file path"
+#~ msgstr "Erro ao compor o caminho do arquivo de falha"
+
+#~ msgid "Invalid crash name"
+#~ msgstr "Nome de falha inválido"
+
+#~ msgid "Crash reporting is disabled for this organization"
+#~ msgstr "Os relatórios de falhas estão desativados para esta organização"
 
 #~ msgid "turn off SSL (not recommended)"
 #~ msgstr "desativar o SSL (não recomendado)"

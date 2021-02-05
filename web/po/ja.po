@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/Range.js:68
+#: ../html/src/components/input/Range.js:69
+#: ../html/src/components/input/Range.js:83
+#: ../html/src/components/input/Range.js:84
 #: ../html/src/manager/content-management/list-filters/list-filters.js:94
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-20 11:02+0100\n"
+"POT-Creation-Date: 2021-02-05 11:22+0100\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -139,7 +143,7 @@ msgstr "戻る"
 #: ../html/src/components/config-channels.js:338
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1010
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
 msgstr "確認"
@@ -179,8 +183,8 @@ msgstr "検索"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:309
 #: ../html/src/manager/maintenance/details/schedule-details.js:206
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:82
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:675
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
 msgstr "システム"
@@ -367,14 +371,17 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
 #: ../html/src/components/input/FormMultiInput.stories.js:75
+#: ../html/src/components/input/FormMultiInput.stories.js:132
+#: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
 #: ../html/src/components/input/Radio.stories.js:99
 #: ../html/src/components/input/Radio.stories.js:130
+#: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
-#: ../html/src/components/input/Text.stories.js:36
+#: ../html/src/components/input/Text.stories.js:44
 msgid "Submit"
 msgstr "送信"
 
@@ -393,6 +400,8 @@ msgid "Remove"
 msgstr "削除"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
+#: ../html/src/components/input/FormMultiInput.stories.js:94
+#: ../html/src/components/input/FormMultiInput.stories.js:151
 msgid "Users"
 msgstr "ユーザー"
 
@@ -404,14 +413,24 @@ msgstr "名"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
+#: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/form.stories.js:28
+#: ../html/src/components/input/InputBase.test.js:43
+#: ../html/src/components/input/InputBase.test.js:71
+#: ../html/src/components/input/InputBase.test.js:99
 #: ../html/src/components/input/Text.stories.js:28
+#: ../html/src/components/input/Text.stories.js:37
 msgid "Minimum 2 characters"
 msgstr "最低 2 文字"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
 msgstr "姓"
+
+#: ../html/src/components/input/FormMultiInput.stories.js:118
+#: ../html/src/manager/login/login.js:125
+msgid "Login"
+msgstr "ログイン"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
@@ -453,6 +472,16 @@ msgstr "通常"
 msgid "Expert"
 msgstr "熟練者"
 
+#: ../html/src/components/input/Range.stories.js:34
+#, fuzzy
+msgid "Port range"
+msgstr "ポート範囲: 1 - 65535"
+
+#: ../html/src/components/input/Range.stories.js:36
+#: ../html/src/components/input/Range.test.js:71
+msgid "Both values need to be positive integers"
+msgstr ""
+
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
 msgstr "フレーバー"
@@ -475,8 +504,8 @@ msgstr "最初"
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:134
 #: ../html/src/manager/clusters/shared/ui/select-server.js:99
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:44
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:969
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:989
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:970
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
 msgstr "次へ"
@@ -487,7 +516,7 @@ msgstr "ページ"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:362
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:766
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
 msgstr "／"
 
@@ -590,37 +619,6 @@ msgstr "データがありません"
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
 msgstr "ヘルプ"
-
-#: ../html/src/core/channels/api/use-mandatory-channels-api.js:10
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
-msgid "Base channel not found or not authorized."
-msgstr "ベースチャンネルが見つからないか、認可されていません。"
-
-#: ../html/src/core/channels/api/use-mandatory-channels-api.js:11
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
-msgid "Child channel not found or not authorized."
-msgstr "子チャンネルが見つからないか、認可されていません。"
-
-#: ../html/src/core/channels/api/use-mandatory-channels-api.js:12
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
-msgid "Invalid channel id"
-msgstr "チャンネル ID が正しくありません"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
-msgid "Required channels"
-msgstr "必要なチャンネル"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.js:34
-#: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
-msgid "none"
-msgstr "なし"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.js:35
-msgid "Require this channel"
-msgstr "このチャンネルが必要"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:18
 msgid "Restart is needed for the configuration changes to take effect."
@@ -889,8 +887,8 @@ msgstr ""
 "スター上でのみ管理することができます。"
 
 #: ../html/src/manager/admin/setup/products/products.js:351
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:984
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1006
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
 msgstr "前へ"
@@ -950,7 +948,7 @@ msgstr "この製品はミラーされています。"
 #: ../html/src/manager/admin/setup/products/products.js:770
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.js:135
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:434
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
 msgstr "推奨"
@@ -958,7 +956,7 @@ msgstr "推奨"
 #: ../html/src/manager/admin/setup/products/products.js:784
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.js:166
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:394
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
 msgstr "推奨を含める"
@@ -1134,7 +1132,7 @@ msgstr "経過時間"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:123
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:682
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
 msgid "Status"
 msgstr "状態"
 
@@ -1573,7 +1571,7 @@ msgstr "スケジュールしました"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:943
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
 msgstr "動作を動作チェーンに追加しました "
@@ -1690,7 +1688,7 @@ msgid "Node Hostname"
 msgstr "ノードのホスト名"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:310
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr "(なし)"
@@ -2365,17 +2363,17 @@ msgstr "バージョン履歴"
 msgid "New Base Channel"
 msgstr "新しいベースチャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:99
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:100
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "新しいベースチャンネルとして選択すべきチャンネルを選んでください"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:108
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:471
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:109
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:472
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
 msgstr "子チャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:122
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
 msgid "Clear Search"
 msgstr "検索の消去"
 
@@ -3086,10 +3084,6 @@ msgid ""
 msgstr ""
 "Discover はサーバやパッケージ、パッチなどを 1 つのインターフェイスから管理で"
 "きる新しい方式です。"
-
-#: ../html/src/manager/login/login.js:125
-msgid "Login"
-msgstr "ログイン"
 
 #: ../html/src/manager/login/login.js:144
 msgid "Sign In"
@@ -3866,6 +3860,21 @@ msgstr "頻度"
 msgid "Target Type"
 msgstr "ターゲットタイプ"
 
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+msgid "Base channel not found or not authorized."
+msgstr "ベースチャンネルが見つからないか、認可されていません。"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+msgid "Child channel not found or not authorized."
+msgstr "子チャンネルが見つからないか、認可されていません。"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+msgid "Invalid channel id"
+msgstr "チャンネル ID が正しくありません"
+
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
 msgstr "SUSE Manager の既定値"
@@ -3991,53 +4000,53 @@ msgstr "クリーンアップ処理中にエラーが発生しました"
 msgid "Confirm Deletion"
 msgstr "削除の確認"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:31
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr ""
 "Taskomatic でのジョブスケジュール時にエラーが発生しました。ログをご確認くださ"
 "い。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
 msgid "Could not determine system default channel."
 msgstr "システムのデフォルトのチャンネルを判別できませんでした。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
 msgid "Channel change is invalid."
 msgstr "チャンネル変更が正しくありません。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
 msgid "Selected base is not compatible with system."
 msgstr "選択したベースはシステムとの互換性がありません。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:36
 msgid "No base channel change found."
 msgstr "ベースチャンネルの変更は見つかりませんでした。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:39
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:193
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
 msgid "No Change"
 msgstr "変更なし"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:452
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:453
 msgid "Subscribe"
 msgstr "サブスクライブする"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:42
 msgid "Unsubsribe"
 msgstr "サブスクライブ解除"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:140
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:141
 msgid "System Default Base Channel"
 msgstr "システムのデフォルトベースチャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:144
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
 msgstr "ベースチャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:148
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:149
 msgid ""
 "As a Channel Administrator, you may change the base channels your systems "
 "are subscribed to. Valid channels are either channels created by your "
@@ -4052,7 +4061,7 @@ msgstr ""
 "ンネルに対するサブスクライブを解除して、新しいベースチャンネルをサブスクライ"
 "ブします。 "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:150
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:151
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
@@ -4060,67 +4069,67 @@ msgstr ""
 "この操作を実行すると、システムに対して提供されるパッケージやパッチが劇的に変"
 "化します。注意してお使いください。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:165
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:166
 msgid "Current base Channel"
 msgstr "現在のベースチャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:172
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:173
 msgid "Systems"
 msgstr "システム"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:180
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:181
 msgid "Desired base Channel"
 msgstr "必要なベースチャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:196
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:197
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
 msgstr "SUSE チャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:202
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:203
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
 msgstr "カスタムチャンネル"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:214
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:215
 msgid "Systems subscribed to"
 msgstr "サブスクライブするシステム"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:388
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:565
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:578
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:389
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:566
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:579
 msgid "(Couldn't determine new base channel)"
 msgstr "(新しいベースチャンネルを判別できませんでした)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:404
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:588
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:405
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:589
 msgid "system(s) to subscribe"
 msgstr "サブスクライブするシステム"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:412
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:595
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:413
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:596
 msgid "system(s) incompatible"
 msgstr "非互換のシステム"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:445
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:446
 msgid "No change"
 msgstr "変更無し"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:459
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:460
 msgid "Unsubscribe"
 msgstr "サブスクライブの中止"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:475
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:476
 msgid "Below is a list of channels in your organization. "
 msgstr "下記はお使いの組織におけるチャンネルの一覧です。 "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:477
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 "チャンネルに対して何も変更したくない場合は、 そのチャンネルに対して \"何もし"
 "ない\" を選択してください。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
@@ -4128,7 +4137,7 @@ msgstr ""
 "選択したシステムをチャンネルにサブスクライブさせるには、そのチャンネルに対し"
 "て \"サブスクライブする\" を選択してください。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:480
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
@@ -4136,41 +4145,41 @@ msgstr ""
 "選択したシステムのチャンネルへのサブスクライブを中止するには、対象のチャンネ"
 "ルの 'サブスクライブの中止' を選択します。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:486
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:633
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:487
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:634
 msgid "Systems to subscribe to"
 msgstr "サブスクライブするシステム"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:573
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:574
 msgid "(None)"
 msgstr "(なし)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:580
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:581
 msgid " (system default)"
 msgstr " (システムのデフォルト)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:618
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:619
 msgid "Channel Changes Overview"
 msgstr "チャンネル変更の概要"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:661
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:662
 msgid "Channel Changes Actions"
 msgstr "チャンネル変更の動作"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:686
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:687
 msgid "Scheduled"
 msgstr "スケジュール済み"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:688
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:689
 msgid "Unknown error. Could not schedule channel change"
 msgstr ""
 "不明なエラーが発生しました。チャンネル変更をスケジュールできませんでした"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:818
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:819
 msgid "Some changes scheduled successfully."
 msgstr "いくつかの変更をスケジュールしました。"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:945
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:946
 msgid "Channel changes scheduled."
 msgstr "チャンネル変更をスケジュールしました。"
 
@@ -4840,6 +4849,15 @@ msgstr "システムグループの選択"
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
 msgstr "グループに分割"
+
+#~ msgid "Required channels"
+#~ msgstr "必要なチャンネル"
+
+#~ msgid "none"
+#~ msgstr "なし"
+
+#~ msgid "Require this channel"
+#~ msgstr "このチャンネルが必要"
 
 #~ msgid "Session expired, please reload the page."
 #~ msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
