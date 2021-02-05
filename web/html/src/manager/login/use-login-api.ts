@@ -56,7 +56,7 @@ const useLoginApi = () => {
         const errMessages =
           xhr.status === 0
             ? [t("Request interrupted or invalid response received from the server. Please try again.")]
-            : [...Network.errorMessageByStatus(xhr.status)];
+            : Network.errorMessageByStatus(xhr.status);
         setLoginApiState(state => {
           state.success = false;
           state.messages = errMessages;
