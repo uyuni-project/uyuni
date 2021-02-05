@@ -11,7 +11,7 @@ type HeaderProps = {
   className?: string;
 
   /** Row comparison function. See sortBy functions in utils/functions.js */
-  comparator?: (arg0: any, arg1: any, arg2: string, arg3: number) => number;
+  comparator?: (a: any, b: any, columnKey: string, sortDirection: number) => number;
 
   /** 1 for ascending, -1 for descending, 0 for no change */
   sortDirection: number;
