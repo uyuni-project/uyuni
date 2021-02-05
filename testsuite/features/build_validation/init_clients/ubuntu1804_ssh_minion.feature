@@ -25,6 +25,9 @@ Feature: Bootstrap a Ubuntu 18.04 Salt SSH Minion
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1804_ssh_minion"
 
+  Scenario: Import the GPG keys for 18.04 Salt SSH Minion
+    When I import the GPG keys for "ubuntu1804_ssh_minion"
+
   Scenario: Check events history for failures on SSH-managed Ubuntu 18.04 minion
     Given I am on the Systems overview page of this "ubuntu1804_ssh_minion"
     Then I check for failed events on history event page

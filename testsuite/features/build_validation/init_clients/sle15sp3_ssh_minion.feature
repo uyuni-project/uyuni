@@ -35,6 +35,9 @@ Feature: Bootstrap a SLES 15 SP3 Salt SSH Minion
     And I wait until button "Search" becomes enabled
     And I remove package "sle-manager-tools-release" from highstate
 
+  Scenario: Import the GPG keys for SLES 15 SP3 Salt SSH Minion
+    When I import the GPG keys for "sle15sp3_ssh_minion"
+
 @proxy
   Scenario: Check connection from SLES 15 SP3 SSH minion to proxy
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
