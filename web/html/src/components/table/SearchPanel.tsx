@@ -17,7 +17,7 @@ type SearchPanelProps = {
   selectable?: boolean;
 
   /** function called when a search is performed. Takes the criteria as single parameter */
-  onSearch: (arg0: string) => void;
+  onSearch: (criteria: string) => void;
 
   /** function called when the clear button is clicked. This should reset the selection. */
   onClear: () => void;
