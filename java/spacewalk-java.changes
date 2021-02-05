@@ -1,3 +1,4 @@
+- Cleanup sessions via SQL query instead of SQL function (bsc#1180224)
 - Rebuild and improve rendering of error pages 404 and 500 pages (bsc#1181228)
 - Fix user creation with pam auth and no password (bsc#1179579)
 - fix action chains for saltssh minions (bsc#1182200)

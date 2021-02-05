@@ -1,3 +1,4 @@
+- Drop "pxt_session_cleanup" function (bsc#1180224)
 - enable openscap auditing for salt systems in SSM (bsc#1157711)
 
 -------------------------------------------------------------------

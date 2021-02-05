@@ -133,10 +133,6 @@ java.cobbler_bootstrap.extra_kernel_options = ROOTFS_FSCK=0
 # Option generated from rhn-config-satellite.pl
 disconnected = 1
 
-# Stale sessions settings
-java.session_delete_batch_size = 50000
-java.session_delete_commit_interval = 100
-
 # This system is not a RedHat-style development environment
 java.development_environment = 0
 
