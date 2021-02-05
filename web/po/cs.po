@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-05 10:01+0000\n"
+"PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -426,7 +426,7 @@ msgstr "Poslední jméno (příjmení)"
 #: ../html/src/components/input/FormMultiInput.stories.js:118
 #: ../html/src/manager/login/login.js:125
 msgid "Login"
-msgstr ""
+msgstr "Přihlášení"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
@@ -469,14 +469,13 @@ msgid "Expert"
 msgstr "Odborník"
 
 #: ../html/src/components/input/Range.stories.js:34
-#, fuzzy
 msgid "Port range"
-msgstr "Import obrazu"
+msgstr "Rozsah portů"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Obě hodnoty musí být celá kladná čísla"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
@@ -2701,33 +2700,33 @@ msgstr "Odstranit vybrané(-á) úložiště"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete the selected store?"
-msgstr ""
+msgstr "Opravdu chcete smazat vybrané úložiště?"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr ""
+msgstr "Opravdu chcete smazat zvolená úložiště? (Vybráno {0} úložišť)"
 
 #: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
-msgstr ""
+msgstr "Úspěšně odstraněno."
 
 #: ../html/src/manager/images/image-view.js:294
 msgid "Image inspect has been scheduled."
-msgstr ""
+msgstr "Byla naplánována kontrola obrazu."
 
 #: ../html/src/manager/images/image-view.js:307
 msgid "Image build has been scheduled."
-msgstr ""
+msgstr "Je naplánováno vytvoření obrazu."
 
 #: ../html/src/manager/images/image-view.js:321
 #: ../html/src/manager/images/image-view.js:619
 #: ../html/src/manager/images/image-view-overview.js:426
 msgid "Delete Image"
-msgstr ""
+msgstr "Odstranit obraz"
 
 #: ../html/src/manager/images/image-view.js:334
 msgid "Images"
-msgstr ""
+msgstr "Obrazy"
 
 #: ../html/src/manager/images/image-view.js:397
 #: ../html/src/manager/images/image-view.js:439
@@ -2738,348 +2737,353 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:44
 #: ../html/src/manager/images/image-view-runtime.js:79
 msgid "No information"
-msgstr ""
+msgstr "Žádné údaje"
 
 #: ../html/src/manager/images/image-view.js:399
 #: ../html/src/manager/images/image-view-overview.js:296
 msgid "Critical updates available"
-msgstr ""
+msgstr "Jsou dostupné zásadní aktualizace"
 
 #: ../html/src/manager/images/image-view.js:401
 #: ../html/src/manager/images/image-view-overview.js:298
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "Jsou dostupné běžné aktualizace"
 
 #: ../html/src/manager/images/image-view.js:403
 #: ../html/src/manager/images/image-view-overview.js:300
 msgid "Package updates available"
-msgstr ""
+msgstr "Jsou dostupné aktualizace balíčků"
 
 #: ../html/src/manager/images/image-view.js:405
 #: ../html/src/manager/images/image-view-overview.js:302
 msgid "Image is up to date"
-msgstr ""
+msgstr "Obraz je aktuální"
 
 #: ../html/src/manager/images/image-view.js:414
 #: ../html/src/manager/images/image-view-overview.js:48
 msgid "Built externally"
-msgstr ""
+msgstr "Sestaveno externě"
 
 #: ../html/src/manager/images/image-view.js:416
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
-msgstr ""
+msgstr "Ve frontě"
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
-msgstr ""
+msgstr "Sestavuje se"
 
 #: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámý"
 
 #: ../html/src/manager/images/image-view.js:432
 #: ../html/src/manager/images/image-view.js:473
 #: ../html/src/manager/images/image-view-overview.js:120
 #: ../html/src/manager/images/image-view-overview.js:151
 msgid "Waiting for update ..."
-msgstr ""
+msgstr "Čeká se na aktualizaci ..."
 
 #: ../html/src/manager/images/image-view.js:437
 #: ../html/src/manager/images/image-view-overview.js:156
 msgid "All instances are consistent with SUSE Manager"
-msgstr ""
+msgstr "Všechny instance jsou v souladu se Správcem SUSE"
 
 #: ../html/src/manager/images/image-view.js:441
 #: ../html/src/manager/images/image-view-overview.js:160
 msgid "Outdated instances found"
-msgstr ""
+msgstr "Byly nalezeny zastaralé instance"
 
 #: ../html/src/manager/images/image-view.js:460
 #: ../html/src/manager/images/image-view-overview.js:107
 msgid "Cluster"
-msgstr ""
+msgstr "Klastr"
 
 #: ../html/src/manager/images/image-view.js:461
 #: ../html/src/manager/images/image-view.js:515
 #: ../html/src/manager/images/image-view-overview.js:108
 msgid "Instances"
-msgstr ""
+msgstr "Instance"
 
 #: ../html/src/manager/images/image-view.js:487
 #: ../html/src/manager/images/image-view-overview.js:134
 msgid "View cluster summary"
-msgstr ""
+msgstr "Zobrazit souhrn klastru"
 
 #: ../html/src/manager/images/image-view.js:508
 #: ../html/src/manager/images/image-view.js:670
 msgid "Runtime"
-msgstr ""
+msgstr "Runtime"
 
 #: ../html/src/manager/images/image-view.js:555
 msgid "Revision"
-msgstr ""
+msgstr "Revize"
 
 #: ../html/src/manager/images/image-view.js:561
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
-msgstr ""
+msgstr "Aktualizace"
 
 #: ../html/src/manager/images/image-view.js:566
 #: ../html/src/manager/images/image-view.js:669
 msgid "Patches"
-msgstr ""
+msgstr "Záplaty"
 
 #: ../html/src/manager/images/image-view.js:575
 #: ../html/src/manager/images/image-view.js:669
 msgid "Packages"
-msgstr ""
+msgstr "Balíčky"
 
 #: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
-msgstr ""
+msgstr "Naposledy upraveno"
 
 #: ../html/src/manager/images/image-view.js:620
 #: ../html/src/manager/images/image-view-overview.js:427
 msgid "Are you sure you want to delete image"
-msgstr ""
+msgstr "Opravdu chcete odstranit obraz"
 
 #: ../html/src/manager/images/image-view.js:626
 msgid "Delete Selected Image(s)"
-msgstr ""
+msgstr "Odstranit vybrané obrazy"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete the selected image?"
-msgstr ""
+msgstr "Opravdu chcete odstranit vybraný obraz?"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
-msgstr ""
+msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
 
 #: ../html/src/manager/images/image-view.js:636
 #: ../html/src/manager/images/image-view-overview.js:258
 msgid "Instance Details for '{0}'"
-msgstr ""
+msgstr "Podrobnosti instance pro '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 #: ../html/src/manager/images/image-view-overview.js:33
 #: ../html/src/manager/images/image-view-overview.js:35
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Go to event"
-msgstr ""
+msgstr "Jdi k události"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " je ve frontě"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "Probíhá"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " probíhá"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "Úspěšné"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " je úspěšné"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " selhalo"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " Stav"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
-msgstr ""
+msgstr "Zachyceno"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "Upravit profil"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "Upravit úložiště"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "Stav obrazu"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "Údaje o obrazu"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "Stav sestavení"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "Kontrola"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "Přebudovat"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "Přeplánovat sestavení"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "Opětná kontrola"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "Přeplánovat kontrolu"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "Údaje o zákaznickém obrazu"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "Plán sestavení"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "Přebudovat obraz"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "Plán kontroly"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "Opětná kontrola obrazu"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
-msgstr ""
+msgstr "Instalováno"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "Bezpečnostní poradna"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "Poradna k opravám chyb"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "Poradna k vylepšení produktu"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "Nutný restart systému"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
-msgstr ""
+msgstr "Ovlivňuje zásobník správy balíčků"
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "Poradenství"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
-msgstr ""
+msgstr "Aktualizováno"
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
-msgstr ""
+msgstr "Instance je konzistentní se Správcem SUSE"
 
 #: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
-msgstr ""
+msgstr "Instance je zastaralá"
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
-msgstr ""
+msgstr "Klastr je konzistentní se Správcem SUSE"
 
 #: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "Klastr je zastaralý"
 
 #: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
-msgstr ""
+msgstr "Kokon"
 
 #: ../html/src/manager/images/image-view-runtime.js:96
 msgid "Namespace"
-msgstr ""
+msgstr "Prostor názvů"
 
 #: ../html/src/manager/login/login.js:45
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
+"Je vyžadován upgrade schématu. Upgradujte prosím své schéma co nejdříve, "
+"abyste dostali nejnovější opravy chyb a vyhnuli se potenciálním problémům."
 
 #: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
-msgstr ""
+msgstr "Přihlašování ..."
 
 #: ../html/src/manager/login/login.js:103
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
+"Osvojte si nový způsob správy serverů, balíčků, oprav atd. jedním rozhraním."
 
 #: ../html/src/manager/login/login.js:144
 msgid "Sign In"
-msgstr ""
+msgstr "Přihlášení"
 
 #: ../html/src/manager/login/use-login-api.js:14
 msgid "Either the password or username is incorrect."
-msgstr ""
+msgstr "Heslo nebo uživatelské jméno je nesprávné."
 
 #: ../html/src/manager/login/use-login-api.js:15
 msgid "Your account has been deactivated."
-msgstr ""
+msgstr "Váš účet byl deaktivován."
 
 #: ../html/src/manager/login/use-login-api.js:16
 msgid "This user has read only API access. WebUI login is denied."
 msgstr ""
+"Tento uživatel má přístup API pouze pro čtení. Přihlášení k WebUI je "
+"odepřeno."
 
 #: ../html/src/manager/login/use-login-api.js:28
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
+msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:34
 #: ../html/src/manager/maintenance/list/calendar-list.js:100
 msgid "Delete maintenance calendar"
-msgstr ""
+msgstr "Vymazat kalendář údržby"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:37
 #: ../html/src/manager/maintenance/details/schedule-details.js:51
@@ -3088,94 +3092,94 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "Opravdu chcete vybranou položku odstranit?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/details/schedule-details.js:52
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
-msgstr ""
+msgstr "Tím odeberete aktuální plán ze všech k němu přiřazených systémů."
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:39
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:163
 #: ../html/src/manager/maintenance/list/calendar-list.js:105
 msgid "Cancel affected actions?"
-msgstr ""
+msgstr "Zrušit ovlivněné akce?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:65
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:115
 #: ../html/src/manager/maintenance/list/calendar-list.js:52
 msgid "Calendar Name"
-msgstr ""
+msgstr "Název kalendáře"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:66
 #: ../html/src/manager/maintenance/list/calendar-list.js:59
 msgid "Used by Schedule"
-msgstr ""
+msgstr "Použito dle plánu"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:68
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:72
 msgid "Calendar Details"
-msgstr ""
+msgstr "Podrobnosti kalendáře"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:48
 #: ../html/src/manager/maintenance/list/schedule-list.js:86
 msgid "Delete maintenance schedule"
-msgstr ""
+msgstr "Smazat plán údržby"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:66
 #: ../html/src/manager/maintenance/details/schedule-details.js:169
 msgid "Assigned Systems"
-msgstr ""
+msgstr "Přiřazené systémy"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:99
 msgid "Schedule name"
-msgstr ""
+msgstr "Název plánu"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 msgid "Assigned calendar"
-msgstr ""
+msgstr "Přiřazený kalendář"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 msgid "Schedule type"
-msgstr ""
+msgstr "Typ plánu"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:90
 msgid "Single"
-msgstr ""
+msgstr "Jednoduchý"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:91
 msgid "Multi"
-msgstr ""
+msgstr "Násobný"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:106
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
-msgstr ""
+msgstr "Podrobnosti plánu"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "Nadcházející okénka údržby"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:125
 msgid "End"
-msgstr ""
+msgstr "Konec"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:155
 msgid "Maintenance schedule has been assigned to {0} system(s)"
-msgstr ""
+msgstr "Plán údržby byl přiřazen {0} systémům"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:173
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:118
@@ -3183,43 +3187,43 @@ msgstr ""
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:144
 msgid "Cancel affected actions"
-msgstr ""
+msgstr "Zrušit ovlivněné akce"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:197
 msgid "Search systems"
-msgstr ""
+msgstr "Vyhledávat systémy"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:212
 msgid "Current Schedule"
-msgstr ""
+msgstr "Aktuální plán"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:109
 msgid "Url '{0}' is invalid"
-msgstr ""
+msgstr "URL '{0}' je neplatné"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:122
 msgid "Calendar data"
-msgstr ""
+msgstr "Data kalendáře"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:128
 msgid "Enter Url to ical file"
-msgstr ""
+msgstr "Zadejte URL do souboru ical"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:139
 msgid "Attach file"
-msgstr ""
+msgstr "Přiložit soubor"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:145
 msgid "Remove file"
-msgstr ""
+msgstr "Odebrat soubor"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:154
 msgid "Refresh data from url"
-msgstr ""
+msgstr "Obnovit data z URL"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:158
 msgid "Confirm calendar refresh"
-msgstr ""
+msgstr "Potvrdit aktualizaci kalendáře"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:161
 msgid "Refreshing the calendar will reschedule all affected actions."
