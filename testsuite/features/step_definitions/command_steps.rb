@@ -485,8 +485,8 @@ When(/^the server starts mocking an IPMI host$/) do
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run('kill $(pidof ipmi_sim)')
-  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
+  $server.run('pkill ipmi_sim')
+  $server.run('pkill fake_ipmi_host.sh || :')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
