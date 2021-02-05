@@ -10,7 +10,7 @@ type SearchFieldProps = {
   /** function called when a search is performed.
    * This is usually passed by the search panel parent component.
    */
-  onSearch?: (arg0: string) => void;
+  onSearch?: (criteria: string) => void;
 
   /** filtering function */
   filter?: (datum: any, criteria?: string) => boolean;
