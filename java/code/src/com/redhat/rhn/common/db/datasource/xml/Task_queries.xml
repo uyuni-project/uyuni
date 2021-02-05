@@ -283,11 +283,11 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
    </query>
 </write-mode>
 
-<callable-mode name="taskomatic_session_cleanup">
-   <query params="bound, commit_interval, batch_size, sessions_deleted">
-      {call pxt_session_cleanup(:bound, :commit_interval, :batch_size, :sessions_deleted)}
-   </query>
-</callable-mode>
+<write-mode name="taskomatic_session_cleanup">
+    <query params="bound">
+        DELETE FROM PXTSessions where expires &lt; :bound
+    </query>
+</write-mode>
 
 <mode name="taskomatic_task_status">
    <query params="">
