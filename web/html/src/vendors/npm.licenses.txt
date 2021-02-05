@@ -645,7 +645,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-immer v8.0.1 - Michel Weststrate
+immer v3.3.0 - Michel Weststrate
 https://github.com/immerjs/immer.git
 --------------------------------------------------------------------------------
 
