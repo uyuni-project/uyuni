@@ -30,7 +30,7 @@ const useLoginApi = () => {
           return confirmationMessage;
         }
       }),
-    [loginApiState.loading]
+    []
   );
 
   const onLogin = ({ login, password }: { login: string; password: string }) => {
