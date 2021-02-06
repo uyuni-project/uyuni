@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-05 10:01+0000\n"
+"PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -428,7 +428,7 @@ msgstr "Priezvisko"
 #: ../html/src/components/input/FormMultiInput.stories.js:118
 #: ../html/src/manager/login/login.js:125
 msgid "Login"
-msgstr ""
+msgstr "Prihlasovacie meno"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
@@ -472,12 +472,12 @@ msgstr "Expert"
 
 #: ../html/src/components/input/Range.stories.js:34
 msgid "Port range"
-msgstr ""
+msgstr "Rozsah portov"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Obe hodnoty musia byť kladné celé čísla"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
@@ -2181,75 +2181,75 @@ msgstr "Zostavuje sa projekt.."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
 msgid "Version Message"
-msgstr ""
+msgstr "Správa o verzii"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
 msgid "Version {0} history"
-msgstr ""
+msgstr "História verzie {0}"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
 msgid "Version {0} successfully built into {1}"
-msgstr ""
+msgstr "Verzia {0} bola úspešne zabudovaná do {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
-msgstr ""
+msgstr "Vložte pred"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
-msgstr ""
+msgstr "Pridať prostredie"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
-msgstr ""
+msgstr "Prostredie bolo úspešne vytvorené"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
-msgstr ""
+msgstr "Vytváranie prostredia..."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
-msgstr ""
+msgstr "Neboli vytvorené žiadne prostredia"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:107
 msgid "Environment updated successfully"
-msgstr ""
+msgstr "Prostredie bolo úspešne aktualizované"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:123
 msgid "Environment {0} deleted successfully"
-msgstr ""
+msgstr "Prostredie {0} bolo úspešne vymazané"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
 msgid "New"
-msgstr ""
+msgstr "Nový"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
 msgid "Cloning channels"
-msgstr ""
+msgstr "Klonovanie kanálov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
 msgid "Generating repositories data"
-msgstr ""
+msgstr "Generovanie údajov repozitárov"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
 #: ../html/src/manager/images/image-view.js:420
 msgid "Built"
-msgstr ""
+msgstr "Zostavené"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view.js:422
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Failed"
-msgstr ""
+msgstr "Neúspešné"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:85
 msgid "not built"
-msgstr ""
+msgstr "nezostavené"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
-msgstr ""
+msgstr "Čas zostavenia"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
@@ -2282,7 +2282,7 @@ msgstr "odfiltrovať"
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
-msgstr ""
+msgstr "vyberte z úplného zdroja, aj keď ste ich predtým vylúčili s odmietnuť"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
 msgid "Loading global filters..."
@@ -2299,11 +2299,12 @@ msgstr "Vytvoriť nový filter"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
 msgstr ""
+"Žiadna verzia na povýšenie alebo prebieha kolidujúce zostavenie prostredia"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:59
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
 msgid "Promote"
-msgstr ""
+msgstr "Povýšiť"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
 msgid "Promoting project.."
@@ -2311,19 +2312,19 @@ msgstr "Povyšovanie projektu.."
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
 msgid "Target environment"
-msgstr ""
+msgstr "Cieľové prostredie"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:96
 msgid "Promote version {0} into {1}"
-msgstr ""
+msgstr "Povýšiť verziu {0} na {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:111
 msgid "Promote environment"
-msgstr ""
+msgstr "Povýšiť prostredie"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:119
 msgid "Version {0} successfully promoted into {1}"
-msgstr ""
+msgstr "Verzia {0} bola úspešne povýšená na {1}"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
@@ -2348,15 +2349,15 @@ msgstr "Upravovanie vlastností.."
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
-msgstr ""
+msgstr "História verzií:"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
 msgid "show more"
-msgstr ""
+msgstr "zobraziť viac"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
 msgid "Versions history"
-msgstr ""
+msgstr "História verzií"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
@@ -2386,11 +2387,11 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
 msgid "Sources"
-msgstr ""
+msgstr "Zdroje"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
 msgid "Sources edited successfully"
-msgstr ""
+msgstr "Zdroje boli úspešne upravené"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
 #: ../html/src/manager/images/image-build.js:221
@@ -2533,11 +2534,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
-msgstr ""
+msgstr "Verzia obrazu"
 
 #: ../html/src/manager/images/image-import.js:264
 msgid "Image version is required."
-msgstr ""
+msgstr "Vyžaduje sa verzia obrazu."
 
 #: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
@@ -4446,11 +4447,11 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
-msgstr ""
+msgstr "Zdrojové úložné fondy"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 msgid "Source Volume"
-msgstr ""
+msgstr "Zdrojový zväzok"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
@@ -4458,7 +4459,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
-msgstr ""
+msgstr "URL zdrojového dočasného obrazu"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
@@ -4585,7 +4586,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
-msgstr ""
+msgstr "Zdroj"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
@@ -4658,7 +4659,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:479
 msgid "Source name"
-msgstr ""
+msgstr "Názov zdroja"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
