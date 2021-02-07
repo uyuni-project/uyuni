@@ -3567,7 +3567,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="needs-adaptation">此系统订阅的至少一个频道包含模块。如果您已在此系统上激活模块，请避免使用 @@PRODUCT_NAME@@ 执行软件包操作。请改用 DNF 从客户端执行所有软件包操作。</target>
+        <target state="translated">此系统订阅的频道中至少有一个频道包含模块。如果您已在此系统上激活模块，请避免使用 @@PRODUCT_NAME@@ 执行软件包操作。请改用&lt;a href="/rhn/manager/contentmanagement/projects"&gt;内容生命周期管理&lt;/a&gt;来&lt;strong&gt;创建包含模块软件包的常规频道&lt;/strong&gt;。</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -4954,11 +4954,11 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Patches</source>
-        <target state="needs-adaptation">没有已发布补丁</target>
+        <target state="translated">没有补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target state="needs-adaptation">已发布补丁</target>
+        <target state="translated">补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
@@ -17560,7 +17560,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">当前版本</target>
       </trans-unit>
@@ -17568,7 +17568,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">上次修改时间</target>
       </trans-unit>
@@ -17597,7 +17597,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">此频道中没有可部署的订阅系统</target>
       </trans-unit>
@@ -17605,7 +17605,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">操作</target>
       </trans-unit>
@@ -17613,7 +17613,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17621,7 +17621,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所有文件</target>
       </trans-unit>
@@ -17629,7 +17629,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所选文件</target>
       </trans-unit>
@@ -17637,7 +17637,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17645,7 +17645,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">您可以从下面的列表中选择要部署的文件。之后系统会要求您选择要将它们部署到哪些系统。</target>
       </trans-unit>
@@ -17653,7 +17653,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17661,7 +17661,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">确认并部署到所选系统</target>
       </trans-unit>
@@ -17669,7 +17669,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件：选择部署到的系统</target>
       </trans-unit>
@@ -17677,7 +17677,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">请选择您要将所选文件部署到的系统。</target>
       </trans-unit>
@@ -17685,7 +17685,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您尝试从 {0} 配置频道部署的任何文件被排名更高的频道中的同名文件覆盖或级别比其低，该文件的覆盖/高级别版本（而不是 {0} 配置频道中的版本）将部署到该系统。</target>
       </trans-unit>
