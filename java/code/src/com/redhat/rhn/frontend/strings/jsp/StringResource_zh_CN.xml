@@ -3567,7 +3567,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="needs-adaptation">此系统订阅的至少一个频道包含模块。如果您已在此系统上激活模块，请避免使用 @@PRODUCT_NAME@@ 执行软件包操作。请改用 DNF 从客户端执行所有软件包操作。</target>
+        <target state="translated">此系统订阅的频道中至少有一个频道包含模块。如果您已在此系统上激活模块，请避免使用 @@PRODUCT_NAME@@ 执行软件包操作。请改用&lt;a href="/rhn/manager/contentmanagement/projects"&gt;内容生命周期管理&lt;/a&gt;来&lt;strong&gt;创建包含模块软件包的常规频道&lt;/strong&gt;。</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -4769,7 +4769,7 @@ navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target state="translated">&lt;strong&gt;*提示：&lt;/strong&gt;在此页面中无法修改
-组织管理员特权。不过，您可以通过上面的最上层导航选项卡 "用户" 
+组织管理员特权。不过，您可以通过上面的最上层导航选项卡 "用户"
 来访问您组织中各个用户的配置文件。您可以在每个用户配置文件的 "细节" 选项卡
 的 "角色" 部分授予或去除组织管理员角色。</target>
       </trans-unit>
@@ -4954,7 +4954,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target state="needs-adaptation">已发布补丁</target>
+        <target state="translated">补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
@@ -8356,8 +8356,8 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="pkg.lock.summary" xml:space="preserve">
         <source>
                 You can lock packages so they will remain unmodified.
-                However, it is important to keep in mind that requesting a 
-                lock might be delayed. If a package has been updated 
+                However, it is important to keep in mind that requesting a
+                lock might be delayed. If a package has been updated
                 before the lock took action and the package is newer, the
                 lock will be canceled.
         </source>
@@ -17556,7 +17556,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">当前版本</target>
       </trans-unit>
@@ -17564,7 +17564,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">上次修改时间</target>
       </trans-unit>
@@ -17593,7 +17593,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">此频道中没有可部署的订阅系统</target>
       </trans-unit>
@@ -17601,7 +17601,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">操作</target>
       </trans-unit>
@@ -17609,7 +17609,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17617,7 +17617,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所有文件</target>
       </trans-unit>
@@ -17625,7 +17625,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所选文件</target>
       </trans-unit>
@@ -17633,7 +17633,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17641,7 +17641,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">您可以从下面的列表中选择要部署的文件。之后系统会要求您选择要将它们部署到哪些系统。</target>
       </trans-unit>
@@ -17649,7 +17649,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17657,7 +17657,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">确认并部署到所选系统</target>
       </trans-unit>
@@ -17665,7 +17665,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件：选择部署到的系统</target>
       </trans-unit>
@@ -17673,7 +17673,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">请选择您要将所选文件部署到的系统。</target>
       </trans-unit>
@@ -17681,7 +17681,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您尝试从 {0} 配置频道部署的任何文件被排名更高的频道中的同名文件覆盖或级别比其低，该文件的覆盖/高级别版本（而不是 {0} 配置频道中的版本）将部署到该系统。</target>
       </trans-unit>
@@ -17849,7 +17849,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="paramnotes">You can't deploy this file to any systems because this file is part of a config sandbox local to
 system _zanarkand.boston.redhat.com_.</context>
         </context-group>
-        <target state="translated">您不能在任何系统中部署此文件，因为该文件是系统 
+        <target state="translated">您不能在任何系统中部署此文件，因为该文件是系统
 &lt;a href="{1}"&gt;{0}&lt;/a&gt; 本地配置沙箱的一部分。</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2" xml:space="preserve">
