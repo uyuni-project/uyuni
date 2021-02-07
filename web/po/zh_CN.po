@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-01-06 12:38+0000\n"
+"PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -460,14 +460,13 @@ msgid "Expert"
 msgstr "专家"
 
 #: ../html/src/components/input/Range.stories.js:34
-#, fuzzy
 msgid "Port range"
-msgstr "端口范围：1 - 65535"
+msgstr "端口范围"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "两个值都必须为正整数"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
@@ -3276,9 +3275,8 @@ msgid "fa-edit"
 msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
-#, fuzzy
 msgid "None - clear schedule"
-msgstr "选择日程安排"
+msgstr "无 - 清除日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
