@@ -7,27 +7,30 @@ msgstr ""
 "Project-Id-Version: RHN 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2000-08-08 16:51-0400\n"
-"Last-Translator: Cristian Gafton <gafton@redhat.com>\n"
-"Language-Team: English <rhns-i18n@redhat.com>\n"
+"PO-Revision-Date: 2021-02-08 09:56+0000\n"
+"Last-Translator: Jens Maucher <jens.maucher@gmx.de>\n"
+"Language-Team: English <https://l10n.opensuse.org/projects/uyuni/backend/en/>"
+"\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr ""
+msgstr "unvollständiges Proxy-Authentifizierungstoken: %s"
 
 #: ../server/apacheAuth.py:84
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "Gesendete Proxy-Signatur %s stimmt nicht mit unserer %s überein."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "abgelehnte Proxy-Authentifizierung"
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -40,60 +43,65 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   %s Das Konto wurde auf diesem Server deaktiviert.\n"
+"                   Bitte wenden Sie sich an Ihren Org-Administrator, um "
+"weitere Hilfe zu erhalten."
 
 #: ../server/handlers/applet/applet.py:78
 #, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr ""
+msgstr "Ihr System wurde nicht in der Datenbank {PRODUCT_NAME} gefunden"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
-msgstr ""
+msgstr "ISS ist auf diesem Server deaktiviert."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
+msgstr "Server \"%s\" ist nicht für ISS aktiviert."
 
 #: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
 msgid "Invalid system_id/action_id pair."
-msgstr "Invalid system release version requested"
+msgstr "Ungültiges system_id/action_id-Paar."
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
+"Der SUSE Manager Proxy-Dienst ist für das Serverprofil nicht aktiviert: \"%"
+"s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
-msgstr ""
+msgstr "Ungültiger Sitzungsschlüssel"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Diese Server-ID existiert nicht mehr"
 
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Ungültiger Aktionswerttyp %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:464
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "Aktion %s gehört nicht zu Server %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Erforderliche Daten fehlen"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
-msgstr ""
+msgstr "Erforderliche Mitglieder fehlen"
 
 #: ../server/handlers/xmlrpc/registration.py:209
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Versuch, ein System auf einen ungültigen Benutzernamen zu registrieren"
 
 #: ../server/handlers/xmlrpc/registration.py:841
 msgid "Invalid system release version requested"
@@ -103,11 +111,13 @@ msgstr "Invalid system release version requested"
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Es konnte keine gültige Netzwerkschnittstelle gefunden werden, sowohl ipaddr "
+"als auch ip6addr wurden nicht gefunden."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
 msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
+msgstr "{PRODUCT_NAME} Willkommensnachricht"
 
 #: ../server/handlers/xmlrpc/registration.py:1127
 #, fuzzy
@@ -327,31 +337,31 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Erwartet ein Wörterbuch als Produktargument"
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Ungültiger Wert '%s' für %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Ungültiger Wert %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Erwartet wird ein Paketname, nicht: %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Erwartet wird ein Paket, nicht: %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "Sie sind nicht berechtigt, Pakete in der null org zu verwalten"
 
 #: ../server/importlib/userAuth.py:103
 #, python-format
