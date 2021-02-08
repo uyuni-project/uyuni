@@ -2,7 +2,7 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 300;
-  src: local('Poppins'), url('/uyuni_proxy/sources/fonts/Poppins-Regular.ttf') format('truetype');
+  src: local('Poppins'), url('/sources/fonts/Poppins-Regular.ttf') format('truetype');
 }
 
 body {
