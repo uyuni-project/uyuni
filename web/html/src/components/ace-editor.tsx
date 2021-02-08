@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import * as React from "react";
 import ReactDOM from "react-dom";
 
@@ -7,25 +6,15 @@ type Props = {
   minLines: number;
   maxLines: number;
   readOnly: boolean;
-  onChange: (...args: any[]) => any;
+  onChange?: (...args: any[]) => any;
   className: string;
   id: string;
   content: React.ReactNode;
+  /** Obsolete, do not use */
+  name?: string;
 }
 
 class AceEditor extends React.Component<Props> {
-  static propTypes = {
-    mode: PropTypes.string,
-    content: PropTypes.string,
-    className: PropTypes.string,
-    id: PropTypes.string,
-    minLines: PropTypes.number,
-    maxLines: PropTypes.number,
-    readOnly: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-  };
-
   componentDidMount() {
     const component = this;
 
@@ -39,7 +28,7 @@ class AceEditor extends React.Component<Props> {
     editor.setReadOnly(component.props.readOnly);
 
     editor.getSession().on("change", function() {
-      component.props.onChange(editor.getSession().getValue());
+      component.props.onChange?.(editor.getSession().getValue());
     });
   }
 
