@@ -42,6 +42,8 @@ declare global {
   function t(msg: string, ...args: Array<any>): string;
   var onDocumentReadyInitOldJS: Function;
   var Loggerhead: any;
+  var ace: any;
+  var validator: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
 

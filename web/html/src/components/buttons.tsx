@@ -50,7 +50,7 @@ type AsyncProps = BaseProps & {
    * The function is required and must return a Promise object or 'false'.
    * @return {Promise} The asynchronous action.
    */
-  action: (...args: any[]) => (Promise<any> | false),
+  action: (...args: any[]) => (Promise<any> | false | void),
 
   /**
    * One of Bootstrap button type classes (e.g. 'btn-success', 'btn-primary').
