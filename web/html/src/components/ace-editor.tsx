@@ -1,11 +1,19 @@
-/* eslint-disable */
-'use strict';
+import PropTypes from "prop-types";
+import * as React from "react";
+import ReactDOM from "react-dom";
 
-import PropTypes from 'prop-types';
-import * as React from 'react';
-import ReactDOM from 'react-dom';
+type Props = {
+  mode: string;
+  minLines: number;
+  maxLines: number;
+  readOnly: boolean;
+  onChange: (...args: any[]) => any;
+  className: string;
+  id: string;
+  content: React.ReactNode;
+}
 
-class AceEditor extends React.Component {
+class AceEditor extends React.Component<Props> {
   static propTypes = {
     mode: PropTypes.string,
     content: PropTypes.string,
@@ -26,11 +34,11 @@ class AceEditor extends React.Component {
     editor.setTheme("ace/theme/xcode");
     editor.getSession().setMode("ace/mode/" + component.props.mode);
     editor.setShowPrintMargin(false);
-    editor.setOptions({minLines: component.props.minLines});
-    editor.setOptions({maxLines: component.props.maxLines});
+    editor.setOptions({ minLines: component.props.minLines });
+    editor.setOptions({ maxLines: component.props.maxLines });
     editor.setReadOnly(component.props.readOnly);
 
-    editor.getSession().on('change', function() {
+    editor.getSession().on("change", function() {
       component.props.onChange(editor.getSession().getValue());
     });
   }
@@ -44,6 +52,4 @@ class AceEditor extends React.Component {
   }
 }
 
-export {
-    AceEditor,
-};
+export { AceEditor };
