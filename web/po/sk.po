@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-08 09:56+0000\n"
+"PO-Revision-Date: 2021-02-16 09:36+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2361,11 +2361,11 @@ msgstr "História verzií"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
-msgstr ""
+msgstr "Nový základný kanál"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:100
 msgid "Choose the channel to be elected as the new base channel"
-msgstr ""
+msgstr "Vybrať kanál, ktorý sa má zvoliť ako nový základný kanál"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:109
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:472
@@ -2375,7 +2375,7 @@ msgstr "Kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
 msgid "Clear Search"
-msgstr ""
+msgstr "Vymazať vyhľadávanie"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 msgid "no child channels"
@@ -2383,7 +2383,7 @@ msgstr "žiadne kanály potomkov"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
-msgstr ""
+msgstr "Tento kanál je odporúčaný"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
 msgid "Sources"
@@ -2396,11 +2396,11 @@ msgstr "Zdroje boli úspešne upravené"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
 #: ../html/src/manager/images/image-build.js:221
 msgid "Software Channels"
-msgstr ""
+msgstr "Softvérové kanály"
 
 #: ../html/src/manager/errors/not-found.js:11
 msgid "Page Not Found"
-msgstr ""
+msgstr "Stránka nenájdená"
 
 #: ../html/src/manager/errors/not-found.js:16
 msgid ""
@@ -2417,6 +2417,10 @@ msgid ""
 "find the page you are looking for, and if you find the document be sure to "
 "update your bookmark."
 msgstr ""
+"Ak ste použili záložku, od vytvorenia záložky sa stránka mohla presunúť na "
+"iné miesto. Pomocou horných (alebo ľavých) navigačných panelov nájdite "
+"stránku, ktorú hľadáte, a ak dokument nájdete, nezabudnite aktualizovať "
+"svoju záložku."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -2443,7 +2447,7 @@ msgstr "Highstate"
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
 msgid "Invalid target type."
-msgstr ""
+msgstr "Neplatný typ cieľa."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
@@ -2456,11 +2460,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "Vyskytla sa neznáma chyba."
 
 #: ../html/src/manager/images/image-build.js:28
 msgid "The image build has been scheduled."
-msgstr ""
+msgstr "Zostavenie obrazu bolo naplánované."
 
 #: ../html/src/manager/images/image-build.js:29
 #: ../html/src/manager/images/image-import.js:24
@@ -2473,64 +2477,64 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.js:177
 msgid "Building the image has been "
-msgstr ""
+msgstr "Zostavenie obrazu bolo "
 
 #: ../html/src/manager/images/image-build.js:207
 msgid "No profile selected"
-msgstr ""
+msgstr "Žiadny profil nebol vybraný"
 
 #: ../html/src/manager/images/image-build.js:212
 #: ../html/src/manager/images/image-profile-edit.js:382
 msgid "Image Type"
-msgstr ""
+msgstr "Typ obrazu"
 
 #: ../html/src/manager/images/image-build.js:214
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
-msgstr ""
+msgstr "Cesta"
 
 #: ../html/src/manager/images/image-build.js:271
 #: ../html/src/manager/images/image-import.js:266
 msgid "Build Host"
-msgstr ""
+msgstr "Zostaviť hostiteľa"
 
 #: ../html/src/manager/images/image-import.js:20
 msgid "Image store not found"
-msgstr ""
+msgstr "Úložisko obrazov sa nenašlo"
 
 #: ../html/src/manager/images/image-import.js:22
 msgid "The image import has been scheduled."
-msgstr ""
+msgstr "Import obrazu bol naplánovaný."
 
 #: ../html/src/manager/images/image-import.js:231
 #: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
-msgstr ""
+msgstr "Tomuto kľúču nie sú priradené žiadne kanály."
 
 #: ../html/src/manager/images/image-import.js:235
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation Key"
-msgstr ""
+msgstr "Aktivačný kľúč"
 
 #: ../html/src/manager/images/image-import.js:244
 msgid "Import Image"
-msgstr ""
+msgstr "Importovať obraz"
 
 #: ../html/src/manager/images/image-import.js:249
 msgid "You can import Container images only using this feature."
-msgstr ""
+msgstr "Obrazy kontajnerov môžete importovať iba pomocou tejto funkcie."
 
 #: ../html/src/manager/images/image-import.js:254
 msgid "Image Store"
-msgstr ""
+msgstr "Úložisko obrazov"
 
 #: ../html/src/manager/images/image-import.js:262
 msgid "Image name"
-msgstr ""
+msgstr "Názov obrazu"
 
 #: ../html/src/manager/images/image-import.js:262
 msgid "Image name is required."
-msgstr ""
+msgstr "Vyžaduje sa názov obrazu."
 
 #: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
@@ -2543,25 +2547,25 @@ msgstr "Vyžaduje sa verzia obrazu."
 #: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../html/src/manager/images/image-import.js:275
 #: ../html/src/manager/images/image-profile-edit.js:362
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
-msgstr ""
+msgstr "Vymazať polia"
 
 #: ../html/src/manager/images/image-profile-edit.js:256
 msgid "Target Image Store"
-msgstr ""
+msgstr "Cieľové úložisko obrazov"
 
 #: ../html/src/manager/images/image-profile-edit.js:276
 msgid "Config URL"
-msgstr ""
+msgstr "URL konfigurácie"
 
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation key is required for kiwi images."
-msgstr ""
+msgstr "Pre obrazy kiwi je potrebný aktivačný kľúč."
 
 #: ../html/src/manager/images/image-profile-edit.js:334
 msgid "Remove entry"
@@ -2569,11 +2573,11 @@ msgstr "Odstrániť záznam"
 
 #: ../html/src/manager/images/image-profile-edit.js:342
 msgid "Custom Info Values"
-msgstr ""
+msgstr "Vlastné informačné hodnoty"
 
 #: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Create additional custom info keys"
-msgstr ""
+msgstr "Vytvoriť ďalšie vlastné informačné kľúče"
 
 #: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
@@ -2581,15 +2585,15 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
-msgstr ""
+msgstr "Aktualizácia"
 
 #: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Edit Image Profile: '"
-msgstr ""
+msgstr "Upraviť profil obrazu: '"
 
 #: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Create Image Profile"
-msgstr ""
+msgstr "Vytvoriť profil obrazu"
 
 #: ../html/src/manager/images/image-profile-edit.js:381
 msgid ""
@@ -2601,77 +2605,77 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profiles.js:21
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.js:22
 msgid "Kiwi"
-msgstr ""
+msgstr "Kiwi"
 
 #: ../html/src/manager/images/image-profiles.js:26
 msgid "Image profile cannot be found."
-msgstr ""
+msgstr "Profil obrazu nie je možné nájsť."
 
 #: ../html/src/manager/images/image-profiles.js:27
 msgid "Image profile has been deleted."
-msgstr ""
+msgstr "Profil obrazu bol vymazaný."
 
 #: ../html/src/manager/images/image-profiles.js:28
 msgid "Image profiles have been deleted."
-msgstr ""
+msgstr "Profily obrazov boli vymazané."
 
 #: ../html/src/manager/images/image-profiles.js:107
 #: ../html/src/manager/images/image-stores.js:110
 #: ../html/src/manager/images/image-view.js:317
 msgid "Delete selected"
-msgstr ""
+msgstr "Vymazať vybrané"
 
 #: ../html/src/manager/images/image-profiles.js:117
 msgid "Image Profiles"
-msgstr ""
+msgstr "Profily obrazov"
 
 #: ../html/src/manager/images/image-profiles.js:141
 msgid "Build Type"
-msgstr ""
+msgstr "Typ zostavenia"
 
 #: ../html/src/manager/images/image-profiles.js:180
 #: ../html/src/manager/systems/delete-system-confirm.js:12
 msgid "Delete Profile"
-msgstr ""
+msgstr "Vymazať profil"
 
 #: ../html/src/manager/images/image-profiles.js:181
 msgid "Are you sure you want to delete profile"
-msgstr ""
+msgstr "Naozaj chcete vymazať profil"
 
 #: ../html/src/manager/images/image-profiles.js:187
 msgid "Delete Selected Profile(s)"
-msgstr ""
+msgstr "Vymazať vybrané profil(y)"
 
 #: ../html/src/manager/images/image-profiles.js:190
 msgid "Are you sure you want to delete the selected profile?"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybraný profil?"
 
 #: ../html/src/manager/images/image-profiles.js:190
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybrané profily? ({0} vybraných profilov)"
 
 #: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
-msgstr ""
+msgstr "Používateľské meno"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Edit Image Store: '"
-msgstr ""
+msgstr "Upraviť úložisko obrazov: '"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Create Image Store"
-msgstr ""
+msgstr "Vytvoriť úložisko obrazov"
 
 #: ../html/src/manager/images/image-store-edit.js:187
 msgid "Store Type"
-msgstr ""
+msgstr "Typ úložiska"
 
 #: ../html/src/manager/images/image-store-edit.js:193
 msgid "Label is required and must be unique."
@@ -2679,65 +2683,65 @@ msgstr "Označenie je povinné a musí byť jedinečné."
 
 #: ../html/src/manager/images/image-store-edit.js:194
 msgid "Store URI"
-msgstr ""
+msgstr "URI úložiska"
 
 #: ../html/src/manager/images/image-stores.js:21
 msgid "Image store cannot be found."
-msgstr ""
+msgstr "Úložisko obrazov nie je možné nájsť."
 
 #: ../html/src/manager/images/image-stores.js:22
 msgid "Image store has been deleted."
-msgstr ""
+msgstr "Úložisko obrazov boli vymazané."
 
 #: ../html/src/manager/images/image-stores.js:23
 msgid "Image stores have been deleted."
-msgstr ""
+msgstr "Úložiská obrazov boli vymazané."
 
 #: ../html/src/manager/images/image-stores.js:120
 msgid "Image Stores"
-msgstr ""
+msgstr "Úložiská obrazov"
 
 #: ../html/src/manager/images/image-stores.js:176
 msgid "Delete Store"
-msgstr ""
+msgstr "Vymazať úložisko"
 
 #: ../html/src/manager/images/image-stores.js:177
 msgid "Are you sure you want to delete store"
-msgstr ""
+msgstr "Naozaj chcete vymazať úložisko"
 
 #: ../html/src/manager/images/image-stores.js:183
 msgid "Delete Selected Store(s)"
-msgstr ""
+msgstr "Vymazať vybrané úložisko(á)"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete the selected store?"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybrané úložisko?"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybrané úložiská? ({0} vybraných úložísk)"
 
 #: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
-msgstr ""
+msgstr "Úspešne vymazané."
 
 #: ../html/src/manager/images/image-view.js:294
 msgid "Image inspect has been scheduled."
-msgstr ""
+msgstr "Bola naplánovaná kontrola obrazu."
 
 #: ../html/src/manager/images/image-view.js:307
 msgid "Image build has been scheduled."
-msgstr ""
+msgstr "Zostavenie obrazu bolo naplánované."
 
 #: ../html/src/manager/images/image-view.js:321
 #: ../html/src/manager/images/image-view.js:619
 #: ../html/src/manager/images/image-view-overview.js:426
 msgid "Delete Image"
-msgstr ""
+msgstr "Vymazať obraz"
 
 #: ../html/src/manager/images/image-view.js:334
 msgid "Images"
-msgstr ""
+msgstr "Obrazy"
 
 #: ../html/src/manager/images/image-view.js:397
 #: ../html/src/manager/images/image-view.js:439
@@ -2748,7 +2752,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:44
 #: ../html/src/manager/images/image-view-runtime.js:79
 msgid "No information"
-msgstr ""
+msgstr "Žiadne informácie"
 
 #: ../html/src/manager/images/image-view.js:399
 #: ../html/src/manager/images/image-view-overview.js:296
@@ -2782,7 +2786,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
-msgstr ""
+msgstr "Zostavovanie"
 
 #: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
@@ -2914,11 +2918,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "Upraviť profil"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "Upraviť úložisko"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
@@ -2930,48 +2934,48 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "Stav zostavenia"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "Skontrolovať"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "Znovu zostaviť"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "Znova naplánovať zostavenie"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "Opätovne skontrolovať"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "Znova naplánovať kontrolu"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "Informácie o vlastnom obraze"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "Naplánovať zostavenie"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "Znovu zostaviť obraz"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "Naplánovať kontrolu"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "Opätovne skontrolovať obraz"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:311
@@ -3200,7 +3204,7 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:197
 msgid "Search systems"
-msgstr ""
+msgstr "Vyhľadať systémy"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:212
 msgid "Current Schedule"
@@ -3984,7 +3988,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:36
 msgid "No base channel change found."
-msgstr ""
+msgstr "Nenašla sa žiadna zmena základného kanála."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
@@ -4002,12 +4006,12 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:141
 msgid "System Default Base Channel"
-msgstr ""
+msgstr "Predvolený základný kanál systému"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
-msgstr ""
+msgstr "Základný kanál"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:149
 msgid ""
@@ -4017,6 +4021,11 @@ msgid ""
 "version and processor type. Systems will be unsubscribed from all channels, "
 "and subscribed to their new base channels. "
 msgstr ""
+"Ako administrátor kanálov môžete zmeniť základné kanály, ku ktorým sú "
+"prihlásené vaše systémy. Platné kanály sú buď kanály vytvorené vašou "
+"organizáciou, alebo predvolený základný kanál SUSE pre verziu vášho "
+"operačného systému a typ procesora. Systémy budú odhlásené zo všetkých "
+"kanálov a prihlásené k novým základným kanálom. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:151
 msgid ""
@@ -4028,7 +4037,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:166
 msgid "Current base Channel"
-msgstr ""
+msgstr "Súčasný základný kanál"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:173
 msgid "Systems"
@@ -4036,7 +4045,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:181
 msgid "Desired base Channel"
-msgstr ""
+msgstr "Požadovaný základný kanál"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:197
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
@@ -4046,7 +4055,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:203
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
-msgstr ""
+msgstr "Vlastné kanály"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:215
 msgid "Systems subscribed to"
@@ -4056,7 +4065,7 @@ msgstr "Systémy prihlásené k"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:566
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:579
 msgid "(Couldn't determine new base channel)"
-msgstr ""
+msgstr "(Nový základný kanál sa nepodarilo určiť)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:405
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:589
@@ -4332,7 +4341,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
-msgstr ""
+msgstr "Profil automatickej inštalácie"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
