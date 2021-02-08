@@ -1,10 +1,12 @@
-/* eslint-disable */
-'use strict';
+import * as React from "react";
 
-import * as React from 'react';
+type Props = {
+  type: string;
+  className?: string;
+  title?: string;
+};
 
-function IconTag(props) {
-
+function IconTag(props: Props) {
   const icons = {
     "action-failed": "fa fa-times-circle-o fa-1-5x text-danger",
     "action-ok": "fa fa-check-circle-o fa-1-5x text-success",
@@ -112,7 +114,7 @@ function IconTag(props) {
     "setup-wizard-creds-verified": "fa fa-check-square text-success",
     "sort-down": "fa fa-arrow-circle-down",
     "sort-up": "fa fa-arrow-circle-up",
-    "spinner": "fa fa-spinner fa-spin",
+    spinner: "fa fa-spinner fa-spin",
     "system-state": "fa spacewalk-icon-salt-add",
     "system-bare-metal-legend": "fa fa-1-5x spacewalk-icon-bare-metal",
     "system-bare-metal": "fa spacewalk-icon-bare-metal",
@@ -129,9 +131,7 @@ function IconTag(props) {
     "system-warn": "fa fa-exclamation-triangle fa-1-5x text-warning",
   };
 
-  return (<i className={icons[props.type] + " " + props.className} title={props.title}></i>);
+  return <i className={icons[props.type] + " " + (props.className ?? "")} title={props.title}></i>;
 }
 
-export {
-    IconTag,
-};
+export { IconTag };
