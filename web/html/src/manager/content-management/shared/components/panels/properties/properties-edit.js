@@ -53,6 +53,7 @@ const PropertiesEdit = (props: Props) => {
         disableEditing={!hasEditingPermissions}
         title={t('Project Properties')}
         collapsible
+        icon="fa-pencil"
         customIconClass="fa-small"
         onOpen={({ setItem, setErrors }) => {
             setItem(props.properties);
