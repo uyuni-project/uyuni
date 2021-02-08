@@ -2,7 +2,7 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 300;
-  src: local('Poppins'), url('/_rhn_proxy/sources/fonts/Poppins-Regular.ttf') format('truetype');
+  src: local('Poppins'), url('/suse_proxy/sources/fonts/Poppins-Regular.ttf') format('truetype');
 }
 
 body {
