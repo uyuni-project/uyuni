@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 08 11:30:23 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- Show the correct version at the WebUI
+
+-------------------------------------------------------------------
 Wed Jan 27 13:00:02 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.2-1
