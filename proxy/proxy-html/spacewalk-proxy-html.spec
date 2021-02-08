@@ -56,18 +56,14 @@ displays, if you navigate to it using your browser.
 
 %install
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
-install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/proxy
-install -m 644 %{proxy_dir_name}/* $RPM_BUILD_ROOT%{htmldir}/proxy/
+install -m 644 %{proxy_dir_name}/* $RPM_BUILD_ROOT%{htmldir}/
 
 %files
 %defattr(-,root,root)
-%dir %{htmldir}/proxy
-%config %{htmldir}/proxy/index.html
-%{htmldir}/proxy/*.ico
-%{htmldir}/proxy/*.png
+%dir %{htmldir}
+%config %{htmldir}/index.html
+%{htmldir}/sources/img/*.ico
+%{htmldir}/sources/img/*.png
 %doc LICENSE
-%if 0%{?suse_version}
-%dir %dir %{htmldir}/proxy
-%endif
 
 %changelog
