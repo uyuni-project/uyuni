@@ -95,6 +95,7 @@ const EnvironmentLifecycle = (props: Props) => {
                     <CreatorPanel
                       id={`environment${environment.label}`}
                       title={environment.name}
+                      icon="fa-pencil"
                       creatingText="Edit"
                       panelLevel="3"
                       disableEditing={!hasEditingPermissions}
