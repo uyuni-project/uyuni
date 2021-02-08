@@ -41,6 +41,13 @@ Requires:       httpd
 This package contains placeholder html pages, which the Spacewalk Server
 displays, if you navigate to it using your browser.
 
+
+%if 0%{?sle_version} && !0%{?is_opensuse}
+%define proxy_dir_name suse_proxy
+%else
+%define proxy_dir_name uyuni_proxy
+%endif
+
 %prep
 %setup -q
 
@@ -49,18 +56,18 @@ displays, if you navigate to it using your browser.
 
 %install
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
-install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy
-install -m 644 _rhn_proxy/* $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy/
+install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/proxy
+install -m 644 %{proxy_dir_name}/* $RPM_BUILD_ROOT%{htmldir}/proxy/
 
 %files
 %defattr(-,root,root)
-%dir %{htmldir}/_rhn_proxy
-%config %{htmldir}/_rhn_proxy/index.html
-%{htmldir}/_rhn_proxy/*.ico
-%{htmldir}/_rhn_proxy/*.png
+%dir %{htmldir}/proxy
+%config %{htmldir}/proxy/index.html
+%{htmldir}/proxy/*.ico
+%{htmldir}/proxy/*.png
 %doc LICENSE
 %if 0%{?suse_version}
-%dir %dir %{htmldir}/_rhn_proxy
+%dir %dir %{htmldir}/proxy
 %endif
 
 %changelog
