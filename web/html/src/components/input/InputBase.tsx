@@ -4,7 +4,7 @@ import { Label } from "./Label";
 import { FormGroup } from "./FormGroup";
 import { FormContext } from "./Form";
 
-type Validator = (...args: any[]) => boolean | Promise<boolean>;
+export type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
 export type Props<ValueType> = {
   /** name of the field to map in the form model.
@@ -17,7 +17,7 @@ export type Props<ValueType> = {
    * as keys and defaults as values should be passed. If a single value is passed it will be
    * set to all keys.
    */
-  defaultValue?: string | Object;
+  defaultValue?: ValueType | Object;
 
   /** Label to display for the field */
   label?: string;
