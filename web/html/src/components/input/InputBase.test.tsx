@@ -34,26 +34,22 @@ describe("InputBase", () => {
     // Only set value once
     let isFirstFire = true;
     model = {
-      foo: false,
+      foo: "foo",
     };
 
     renderWithForm(
-      <InputBase
-        name="foo"
-        invalidHint={t('Minimum 2 characters')}
-        validators={[(value => (value.length > 2))]}
-      >
+      <InputBase name="foo" invalidHint={t("Minimum 2 characters")} validators={[value => value.length > 2]}>
         {({ setValue }) => {
           if (isFirstFire) {
             // Realistically this should be with a user interaction, but we manually fire it off to see if it propagates
-            setValue("foo", true);
+            setValue("foo", "bar");
             isFirstFire = false;
           }
           return null;
         }}
       </InputBase>
     );
-    expect(model).toStrictEqual({foo: true});
+    expect(model).toStrictEqual({ foo: "bar" });
     expect(screen.queryByText(/Minimum 2 characters/)).toBeNull();
   });
 
@@ -68,8 +64,8 @@ describe("InputBase", () => {
       <InputBase
         name="username"
         label="Username"
-        invalidHint={t('Minimum 2 characters')}
-        validators={[(value => (value.length > 2))]}
+        invalidHint={t("Minimum 2 characters")}
+        validators={[value => value.length > 2]}
       >
         {({ setValue }) => {
           if (isFirstFire) {
@@ -80,7 +76,7 @@ describe("InputBase", () => {
         }}
       </InputBase>
     );
-    expect(model).toStrictEqual({username: "fo"});
+    expect(model).toStrictEqual({ username: "fo" });
     screen.findByText(/Minimum 2 characters/);
   });
 
@@ -96,10 +92,8 @@ describe("InputBase", () => {
       <InputBase
         name={["firstname", "lastname"]}
         label="User"
-        invalidHint={t('Minimum 2 characters')}
-        validators={[
-          value => Object.values(value).every(v => v.length > 2),
-        ]}
+        invalidHint={t("Minimum 2 characters")}
+        validators={[value => Object.values<typeof model>(value).every(v => v.length > 2)]}
       >
         {({ setValue }) => {
           if (isFirstFire) {
@@ -110,7 +104,7 @@ describe("InputBase", () => {
         }}
       </InputBase>
     );
-    expect(model).toStrictEqual({firstname: "John", lastname: "Hacker"});
+    expect(model).toStrictEqual({ firstname: "John", lastname: "Hacker" });
     expect(screen.queryByText(/Minimum 2 characters/)).toBeNull();
   });
 });
