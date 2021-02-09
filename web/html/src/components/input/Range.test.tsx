@@ -24,13 +24,13 @@ describe("Range", () => {
 
   test("renders with minimal props", () => {
     expect(() => {
-      renderWithForm(<Range prefix="port" />);
+      renderWithForm(<Range name="range" prefix="port" />);
     }).not.toThrow();
   });
 
   test("renders with default values", () => {
     model = {};
-    renderWithForm(<Range prefix="port" label="Port range" defaultStart="1000" defaultEnd="1100" />);
+    renderWithForm(<Range name="range" prefix="port" label="Port range" defaultStart="1000" defaultEnd="1100" />);
     const startInput = screen.getByRole("textbox", { name: "Port range start" }) as HTMLInputElement;
     expect(startInput.value).toBe("1000");
     const endInput = screen.getByRole("textbox", { name: "Port range end" }) as HTMLInputElement;
@@ -44,7 +44,7 @@ describe("Range", () => {
     };
     onChange = () => {};
 
-    renderWithForm(<Range prefix="port" label="Port range" />);
+    renderWithForm(<Range name="range" prefix="port" label="Port range" />);
     const startInput = screen.getByRole("textbox", { name: "Port range start" });
 
     clear(startInput);
@@ -64,6 +64,7 @@ describe("Range", () => {
 
     renderWithForm(
       <Range
+        name="range"
         prefix="port"
         label="Port range"
         invalidHint={t("Both values need to be positive integers")}
