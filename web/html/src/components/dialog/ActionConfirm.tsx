@@ -8,10 +8,11 @@ type Props = {
   itemName: string;
   icon: string;
   selected: any[];
-  fn: Function;
+  // TODO: This should be renamed `onConfirm` or something similar
+  fn: (type: string, selected: any[], forceState: any) => any;
   canForce: boolean;
   forceName?: string;
-  onClose?: Function;
+  onClose?: () => any;
   children?: React.ReactNode;
 };
 
