@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * Convert a tree-like model into a flat model for use with the Form and Input components.
  * The tree is converted into a list of properties according to the following rules:
@@ -9,7 +7,7 @@
  *     So {a: [{b: 12, c: 34}, {b: 56, c: 78}]} will be converted into:
  *     {a0_b: 12, a0_c: 34, a1_b: 56, a1_c: 78}
  */
-export function flattenModel(treeModel: Object): Object {
+export function flattenModel(treeModel: any): Record<string, any> {
   return Object.entries(treeModel).reduce((result, entry) => {
     const name = entry[0];
     const value = entry[1];
@@ -19,39 +17,37 @@ export function flattenModel(treeModel: Object): Object {
           if (item instanceof Object) {
             const flatValue = flattenModel(item);
             return Object.entries(flatValue).reduce((res, flatEntry) => {
-              return Object.assign({}, res, {[`${name}${idx}_${flatEntry[0]}`]: flatEntry[1]});
+              return Object.assign({}, res, { [`${name}${idx}_${flatEntry[0]}`]: flatEntry[1] });
             }, {});
           }
-          return {[`${name}${idx}`]: item};
+          return { [`${name}${idx}`]: item };
         })
         .reduce((res, item) => Object.assign({}, res, item), {});
       return Object.assign({}, result, allValues);
-
     } else if (value instanceof Object) {
       const flatValue = flattenModel(value);
       const subValues = Object.entries(flatValue).reduce((res, flatEntry) => {
-        return Object.assign({}, res, {[`${name}_${flatEntry[0]}`]: flatEntry[1]});
+        return Object.assign({}, res, { [`${name}_${flatEntry[0]}`]: flatEntry[1] });
       }, {});
       return Object.assign({}, result, subValues);
-
     }
-    return Object.assign({}, result, {[name]: value});
+    return Object.assign({}, result, { [name]: value });
   }, {});
 }
 
 /**
  * Reverse of flattenModel.
  */
-export function unflattenModel(flatModel: Object): Object {
-  let treeModel = {};
+export function unflattenModel(flatModel: Record<string, any>): any {
+  let treeModel: any = {};
 
-  const aggregate = (obj, name, value) => {
-    const pos = name.indexOf('_');
+  const aggregate = (obj: Record<string, any>, name: string, value: any) => {
+    const pos = name.indexOf("_");
     if (pos >= 0) {
       const segment = name.substring(0, pos);
       const tail = name.substring(pos + 1);
       if (obj[segment] == null) {
-        obj[segment] = {}
+        obj[segment] = {};
       }
       aggregate(obj[segment], tail, value);
     } else {
@@ -59,7 +55,7 @@ export function unflattenModel(flatModel: Object): Object {
     }
   };
 
-  const mergeArrays = (model: Object): Object => {
+  const mergeArrays = (model: any): any => {
     return Object.keys(model).reduce((result, key) => {
       const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
       const mergedValue = model[key] instanceof Object ? mergeArrays(model[key]) : model[key];
@@ -67,11 +63,11 @@ export function unflattenModel(flatModel: Object): Object {
         const name = matcher[1];
         const array = result[name] || [];
         array.push(mergedValue);
-        return Object.assign({}, result, {[name]: array});
+        return Object.assign({}, result, { [name]: array });
       }
-      return Object.assign({}, result, {[key]: mergedValue});
+      return Object.assign({}, result, { [key]: mergedValue });
     }, {});
-  }
+  };
 
   Object.keys(flatModel)
     .sort()
