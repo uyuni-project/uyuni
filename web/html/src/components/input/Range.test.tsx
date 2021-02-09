@@ -24,18 +24,16 @@ describe("Range", () => {
 
   test("renders with minimal props", () => {
     expect(() => {
-      renderWithForm(<Range prefix="port"/>);
+      renderWithForm(<Range prefix="port" />);
     }).not.toThrow();
   });
 
   test("renders with default values", () => {
     model = {};
-    renderWithForm(
-      <Range prefix="port" label="Port range" defaultStart={1000} defaultEnd={1100}/>
-    )
-    const startInput = screen.getByRole("textbox", {name: "Port range start"});
+    renderWithForm(<Range prefix="port" label="Port range" defaultStart="1000" defaultEnd="1100" />);
+    const startInput = screen.getByRole("textbox", { name: "Port range start" }) as HTMLInputElement;
     expect(startInput.value).toBe("1000");
-    const endInput = screen.getByRole("textbox", {name: "Port range end"});
+    const endInput = screen.getByRole("textbox", { name: "Port range end" }) as HTMLInputElement;
     expect(endInput.value).toBe("1100");
   });
 
@@ -68,33 +66,32 @@ describe("Range", () => {
       <Range
         prefix="port"
         label="Port range"
-        invalidHint={t('Both values need to be positive integers')}
+        invalidHint={t("Both values need to be positive integers")}
         validators={[
           value => Object.values(value).every(item => item != null),
-          value => Object.values(value).every(item =>
-            typeof item === "string" && item.match(/^[0-9]+$/)),
-          ({port_start, port_end}) => parseInt(port_start) <= parseInt(port_end),
+          value => Object.values(value).every(item => typeof item === "string" && item.match(/^[0-9]+$/)),
+          ({ port_start, port_end }) => parseInt(port_start) <= parseInt(port_end),
         ]}
       />
     );
 
-    const startInput = screen.getByRole("textbox", {name: "Port range start"});
-    const endInput = screen.getByRole("textbox", {name: "Port range end"});
+    const startInput = screen.getByRole("textbox", { name: "Port range start" });
+    const endInput = screen.getByRole("textbox", { name: "Port range end" });
 
     await type(startInput, "900");
-    expect(model).toStrictEqual({port_start: "900"});
+    expect(model).toStrictEqual({ port_start: "900" });
     screen.findByText(/Both values need to be positive integers/);
 
     await type(endInput, "800");
-    expect(model).toStrictEqual({port_start: "900", port_end: "800"});
+    expect(model).toStrictEqual({ port_start: "900", port_end: "800" });
     screen.findByText(/Both values need to be positive integers/);
 
     await type(endInput, "NaN");
-    expect(model).toStrictEqual({port_start: "900", port_end: "NaN"});
+    expect(model).toStrictEqual({ port_start: "900", port_end: "NaN" });
     screen.findByText(/Both values need to be positive integers/);
 
-    await type(endInput, "901")
-    expect(model).toStrictEqual({port_start: "900", port_end: "901"});
-    await waitForElementToBeRemoved(() => screen.queryByText(/Both values need to be positive integers/)); 
-  })
+    await type(endInput, "901");
+    expect(model).toStrictEqual({ port_start: "900", port_end: "901" });
+    await waitForElementToBeRemoved(() => screen.queryByText(/Both values need to be positive integers/));
+  });
 });
