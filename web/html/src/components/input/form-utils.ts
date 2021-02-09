@@ -1,3 +1,8 @@
+type SingleOrArray<T> = T | T[];
+interface TreeLikeModel<T = any> {
+  [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
+}
+
 /**
  * Convert a tree-like model into a flat model for use with the Form and Input components.
  * The tree is converted into a list of properties according to the following rules:
@@ -7,7 +12,7 @@
  *     So {a: [{b: 12, c: 34}, {b: 56, c: 78}]} will be converted into:
  *     {a0_b: 12, a0_c: 34, a1_b: 56, a1_c: 78}
  */
-export function flattenModel(treeModel: any): Record<string, any> {
+export function flattenModel<T>(treeModel: TreeLikeModel<T>): Record<string, T> {
   return Object.entries(treeModel).reduce((result, entry) => {
     const name = entry[0];
     const value = entry[1];
@@ -38,7 +43,7 @@ export function flattenModel(treeModel: any): Record<string, any> {
 /**
  * Reverse of flattenModel.
  */
-export function unflattenModel(flatModel: Record<string, any>): any {
+export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T> {
   let treeModel: any = {};
 
   const aggregate = (obj: Record<string, any>, name: string, value: any) => {
