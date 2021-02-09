@@ -92,7 +92,7 @@ export class Messages extends React.Component<Props> {
 export const fromServerMessage = (
     message: ServerMessageType,
     messageMap?: {
-        [key: string]: string | ((arg0: any) => React.ReactNode);
+        [key: string]: React.ReactNode;
     }
 ): MessageType | null | undefined => {
     let messageText: React.ReactNode = message.text;

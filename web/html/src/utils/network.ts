@@ -68,10 +68,9 @@ function errorMessageByStatus(status: number): Array<string> {
 }
 
 export type MapFuncType = (arg0: string, arg1: string) => string | null | undefined;
-export type jqXHR = {status: number; statusText: string; responseText: string; responseJSON: any};
 
 function responseErrorMessage(
-    jqXHR: Error | jqXHR,
+    jqXHR: Error | JQueryXHR,
     messageMapFunc: MapFuncType | null | undefined = null
 ): Array<MessageType> {
     if (jqXHR instanceof Error) {

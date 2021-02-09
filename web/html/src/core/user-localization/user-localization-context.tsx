@@ -8,7 +8,7 @@ export type userLocalizationType = {
 };
 declare var global_user_localization: userLocalizationType | undefined;
 
-const UserLocalizationContext = React.createContext<userLocalizationType | {}>({});
+const UserLocalizationContext = React.createContext<Partial<userLocalizationType>>({});
 
 const UserLocalizationProvider = ({children}: {children: React.ReactNode}) => (
     <UserLocalizationContext.Provider

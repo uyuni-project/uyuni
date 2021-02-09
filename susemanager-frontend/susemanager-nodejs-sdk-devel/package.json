@@ -24,7 +24,7 @@
     "@testing-library/user-event": "^12.6.0",
     "@types/jest": "^26.0.19",
     "@types/jquery": "3.2.0",
-    "@types/lodash": "^4.14.167",
+    "@types/lodash": "^4.14.168",
     "@types/node": "14.14.10",
     "@types/react": "^16.8.6",
     "@types/react-dom": "^16.8.6",

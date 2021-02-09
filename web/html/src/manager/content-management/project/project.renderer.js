@@ -8,7 +8,9 @@ export const renderer = (id, {project, wasFreshlyCreatedMessage} = {}) => {
   let projectJson = {};
   try{
     projectJson = JSON.parse(project);
-  }  catch(error) {}
+  }  catch(error) {
+    console.log(error);
+  }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
