@@ -30,5 +30,5 @@ export function Dialog(props) {
     });
   }, []);
 
-  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp && onClosePopUp()} {...OtherProps} />;
+  return <PopUp footer={buttons} onClosePopUp={() => onClosePopUp?.()} {...OtherProps} />;
 }

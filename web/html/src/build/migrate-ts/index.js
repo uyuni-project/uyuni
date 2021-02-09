@@ -141,7 +141,7 @@ const args = require("./args");
     // "use strict"; -> remove
     // /* eslint-disable */ -> remove
     await execAndLog(`sed -i'${tempExtension}' -e 's/"use strict";//' ${tsInputs}`);
-    await execAndLog(`sed -i'${tempExtension}' -e 's/\\/* eslint-disable *\\///' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/\\/\\* eslint-disable \\*\\///' ${tsInputs}`);
 
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
