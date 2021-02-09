@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new CentOS minion via salt-ssh
@@ -23,6 +23,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
     Then I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos6_ssh_minion"
 
+  # WORKAROUND bsc#1181847
   Scenario: Import the GPG keys for CentOS 6 Salt SSH minion
     When I import the GPG keys for "ceos6_ssh_minion"
 
