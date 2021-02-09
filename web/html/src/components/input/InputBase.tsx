@@ -4,9 +4,9 @@ import { Label } from "./Label";
 import { FormGroup } from "./FormGroup";
 import { FormContext } from "./Form";
 
-export type Validator = (...args: any[]) => boolean | Promise<boolean>;
+type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
-export type Props<ValueType> = {
+export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
@@ -17,7 +17,7 @@ export type Props<ValueType> = {
    * as keys and defaults as values should be passed. If a single value is passed it will be
    * set to all keys.
    */
-  defaultValue?: ValueType | Object;
+  defaultValue?: ValueType;
 
   /** Label to display for the field */
   label?: string;
@@ -38,7 +38,7 @@ export type Props<ValueType> = {
    *   This function takes a name and a value parameter.
    * - *onBlur*: a function to call when loosing the focus on the component.
    */
-  children: (arg0: { setValue: (name: string, value: ValueType) => void; onBlur: () => void }) => React.ReactNode;
+  children?: (arg0: { setValue: (name: string, value: ValueType) => void; onBlur: () => void }) => React.ReactNode;
 
   /** Indicates whether the field is required in the form */
   required?: boolean;
@@ -68,7 +68,7 @@ type State = {
   errors?: Array<string> | Object;
 };
 
-export class InputBase<ValueType = string> extends React.Component<Props<ValueType>, State> {
+export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -81,7 +81,7 @@ export class InputBase<ValueType = string> extends React.Component<Props<ValueTy
     onChange: undefined,
   };
 
-  constructor(props: Props<ValueType>) {
+  constructor(props: InputBaseProps<ValueType>) {
     super(props);
     this.state = {
       isValid: true,
@@ -256,7 +256,7 @@ export class InputBase<ValueType = string> extends React.Component<Props<ValueTy
           />
         )}
         <div className={this.props.divClass}>
-          {this.props.children({
+          {this.props.children?.({
             setValue: this.setValue.bind(this),
             onBlur: this.onBlur.bind(this),
           })}

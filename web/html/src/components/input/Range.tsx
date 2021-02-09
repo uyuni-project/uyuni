@@ -1,8 +1,8 @@
 import * as React from "react";
-import { InputBase, Validator } from "./InputBase";
+import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = {
+type Props = InputBaseProps & {
   /** Value placeholder to display when no value is entered */
   placeholder?: string;
 
@@ -18,42 +18,13 @@ type Props = {
 
   /** Default value for end if none is set */
   defaultEnd?: string;
-
-  /** Label to display for the field */
-  label?: string;
-
-  /** Hint string to display */
-  hint?: string;
-
-  /** CSS class to use for the label */
-  labelClass?: string;
-
-  /** CSS class to use for the <div> element wrapping the field input part */
-  divClass?: string;
-
-  /** Indicates whether the field is required in the form */
-  required?: boolean;
-
-  /** Indicates whether the field is disabled */
-  disabled?: boolean;
-
-  /** Hint to display on a validation error */
-  invalidHint?: string;
-
-  /** Function to call when the data model needs to be changed.
-   *  Takes a name and a value parameter.
-   */
-  onChange?: (name: string, value: string) => void;
-
-  /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
-  validators?: Validator[];
 };
 
 export const Range = (props: Props) => {
   const { placeholder, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase name={[`${props.prefix}_start`, `${props.prefix}_end`]} {...propsToPass}>
+    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]} >
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
