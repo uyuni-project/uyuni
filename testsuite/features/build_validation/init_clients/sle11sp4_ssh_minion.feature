@@ -35,6 +35,7 @@ Feature: Bootstrap a SLES 11 SP4 Salt SSH Minion
     And I wait until button "Search" becomes enabled
     And I remove package "sle-manager-tools-release" from highstate
 
+  # WORKAROUND bsc#1181847
   Scenario: Import the GPG keys for SLES 11 SP4 Salt SSH Minion
     When I import the GPG keys for "sle11sp4_ssh_minion"
 
