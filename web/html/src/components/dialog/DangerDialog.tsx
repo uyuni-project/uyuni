@@ -1,16 +1,8 @@
 import * as React from "react";
 import { AsyncButton, Button } from "../buttons";
-import { Dialog } from "./Dialog";
+import { Dialog, DialogProps } from "./Dialog";
 
-type Props = {
-  id: string;
-  onClosePopUp?: (...args: any[]) => any;
-  className?: string;
-  title?: string;
-  content?: React.ReactNode;
-  item?: any;
-  onConfirm: (...args: any[]) => any;
-  onConfirmAsync?: (...args: any[]) => Promise<any>;
+type Props = DialogProps & {
   submitText: string;
   submitIcon: string;
   btnClass?: string;
@@ -46,7 +38,7 @@ export function DangerDialog(props: Props) {
           title={props.submitText}
           icon={props.submitIcon}
           handler={() => {
-            props.onConfirm(props.item);
+            props.onConfirm?.(props.item);
             jQuery("#" + props.id).modal("hide");
           }}
         />

@@ -21,7 +21,21 @@ export function closeDialog(modalId: string) {
   return closeModalPromise;
 }
 
-export function Dialog(props) {
+// TODO: Define props
+export type DialogProps = {
+  id: string;
+  className?: string;
+  title?: string;
+  content?: React.ReactNode;
+  buttons?: React.ReactNode;
+  item?: any;
+  closableModal?: boolean;
+  onClosePopUp?: (...args: any[]) => any;
+  onConfirm?: (...args: any[]) => any;
+  onConfirmAsync?: (...args: any[]) => Promise<any>;
+}
+
+export function Dialog(props: DialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;
 
   React.useEffect(() => {
