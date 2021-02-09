@@ -1,48 +1,55 @@
-// @flow
-import * as React from 'react';
-import { Panel } from 'components/panels/Panel';
-import { PanelRow } from 'components/panels/PanelRow';
-import { Button } from 'components/buttons';
-import { FormContext } from './Form';
+import * as React from "react";
+import { Panel } from "components/panels/Panel";
+import { PanelRow } from "components/panels/PanelRow";
+import { Button } from "components/buttons";
+import { FormContext } from "./Form";
 
 type Props = {
   /** Id of the component */
-  id: string,
+  id: string;
+
   /** Title of the panel for the list of fields */
-  title: string,
+  title: string;
+
   /** String starting the field names in the model */
-  prefix: string,
+  prefix: string;
+
   /**
    * Callback function adding fields to the model.
    * It takes one parameter for the index of the new row.
    */
-  onAdd: (newIdx: number) => void,
+  onAdd: (newIdx: number) => void;
+
   /**
    * Callback function removing fields to the model.
    * It takes one parameter for the index of the row to delete in the model.
    */
-  onRemove: (idx: number) => void,
+  onRemove: (idx: number) => void;
+
   /**
    * A function that renders the fields of one row given it's index.
    * The index parameter should be used for the field names.
    */
-  children: (index: number) => React.Node,
+  children: (index: number) => React.ReactNode;
+
   /** Whether the fields are enabled or not. */
-  disabled: boolean,
+  disabled?: boolean;
+
   /** Icon to display for the group panel of each row.
    * If neither this nor the panelTitle parameter is defined, the row fields
    * will not be grouped into a panel. */
-  panelIcon?: (idx: number) => string,
+  panelIcon?: (idx: number) => string;
+
   /** Title to display for the group panel of each row.
    * If neither this nor the panelIcon parameter is defined, the row fields
    * will not be grouped into a panel. */
-  panelTitle?: (idx: number) => string,
+  panelTitle?: (idx: number) => string;
 };
 
 /**
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`
  */
-export function getOrderedItemsFromModel(model: Object, prefix: string): Array<number> {
+export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
   return Object.keys(model)
     .map(property => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));
@@ -50,8 +57,7 @@ export function getOrderedItemsFromModel(model: Object, prefix: string): Array<n
         return Number.parseInt(result[1]);
       }
       return -1;
-    })
-    // only return one of each matching properties
+    }) // only return one of each matching properties
     .filter((property, index, array) => property >= 0 && index === array.indexOf(property))
     .sort();
 }
@@ -107,7 +113,7 @@ export function getOrderedItemsFromModel(model: Object, prefix: string): Array<n
  * }}
  * ```
  */
-export function FormMultiInput (props: Props) {
+export function FormMultiInput(props: Props) {
   const formContext = React.useContext(FormContext);
   const items = getOrderedItemsFromModel(formContext.model, props.prefix);
   const new_index = (items.length > 0 && items[items.length - 1] + 1) || 0;
@@ -116,58 +122,50 @@ export function FormMultiInput (props: Props) {
       key={props.id}
       title={props.title}
       headingLevel="h2"
-      buttons={(
+      buttons={
         <Button
           icon="fa-plus"
-          title={t('Add')}
+          title={t("Add")}
           id={`add_${props.prefix}`}
           className="btn-default btn-sm"
           handler={() => props.onAdd(new_index)}
         />
-      )}
-    >
-      {
-        items.map(index => {
-          const removeButton = (
-            <Button
-              icon="fa-minus"
-              title={t('Remove')}
-              id={`remove_${props.prefix}${index}`}
-              className="btn-default btn-sm"
-              handler={() => props.onRemove(index)}
-              disabled={props.disabled}
-            />
-          );
-          const children = props.children(index);
-          if (props.panelTitle != null || props.panelIcon != null) {
-            const icon = props.panelIcon != null ? props.panelIcon(index) : null;
-            const title = props.panelTitle != null ? props.panelTitle(index) : null;
-            return (
-              <Panel
-                key={`${props.prefix}${index}`}
-                icon={icon}
-                title={title}
-                headingLevel="h3"
-                buttons={removeButton}
-              >
-              { children }
-              </Panel>
-            )
-          }
-          return (
-            <PanelRow key={`${props.prefix}${index}-panelrow`} className="multi-field-panelrow">
-              { children }
-              { removeButton }
-            </PanelRow>
-          );
-        })
       }
+    >
+      {items.map(index => {
+        const removeButton = (
+          <Button
+            icon="fa-minus"
+            title={t("Remove")}
+            id={`remove_${props.prefix}${index}`}
+            className="btn-default btn-sm"
+            handler={() => props.onRemove(index)}
+            disabled={props.disabled}
+          />
+        );
+        const children = props.children(index);
+        if (props.panelTitle != null || props.panelIcon != null) {
+          const icon = props.panelIcon != null ? props.panelIcon(index) : null;
+          const title = props.panelTitle != null ? props.panelTitle(index) : null;
+          return (
+            <Panel key={`${props.prefix}${index}`} icon={icon} title={title} headingLevel="h3" buttons={removeButton}>
+              {children}
+            </Panel>
+          );
+        }
+        return (
+          <PanelRow key={`${props.prefix}${index}-panelrow`} className="multi-field-panelrow">
+            {children}
+            {removeButton}
+          </PanelRow>
+        );
+      })}
     </Panel>
-  )
+  );
 }
 
 FormMultiInput.defaultProps = {
   disabled: false,
   panelIcon: undefined,
   panelTitle: undefined,
-}
+};
