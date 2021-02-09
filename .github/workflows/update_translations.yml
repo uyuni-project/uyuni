@@ -1,0 +1,31 @@
+name: Update translation files
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+ run:
+   name: Update translation files
+   runs-on: ubuntu-latest
+   steps:
+   - name: Checkout repo
+     uses: actions/checkout@v2
+
+   - name: Setup tooling
+     run: sudo apt-get install -y make git gettext intltool python3
+
+   - name: Setup git
+     run: |
+       git config --global user.name "Galaxy CI"
+       git config --global user.email "galaxy-ci@suse.de" 
+
+   - name: Align translations files
+     run: scripts/translation/update-all-translation-strings.sh
+     env:
+       ADDITIONAL_SAFE_BRANCHNAME: master
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+   - name: Push changes
+     run: git push origin HEAD

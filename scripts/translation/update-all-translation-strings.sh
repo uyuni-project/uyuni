@@ -2,7 +2,8 @@
 
 set -x
 
-SAVE_BRANCHNAMES=(master-weblate)
+SAFE_BRANCHNAMES=(master-weblate)
+SAFE_BRANCHNAMES+=($ADDITIONAL_SAFE_BRANCHNAME)
 GIT_ROOT_DIR=$(git rev-parse --show-toplevel)
 
 function update_po() {
@@ -52,17 +53,17 @@ function update_xliff() {
 
 PO_DIRS=(backend client/rhel/yum-rhn-plugin client/rhel/mgr-daemon client/rhel/spacewalk-client-tools client/tools/spacewalk-abrt web susemanager spacecmd)
 commits=0
-save=0
+safe=0
 
-for branchname in ${SAVE_BRANCHNAMES[@]}; do
+for branchname in ${SAFE_BRANCHNAMES[@]}; do
     if git branch --no-color | grep "* $branchname" >/dev/null; then
-        save=1
+        safe=1
         break
     fi
 done
 
-if [ $save -eq 0 ]; then
-    echo "Execute this script only on SAVE branches. Current branch is not declared to be save. Abort"
+if [ $safe -eq 0 ]; then
+    echo "Execute this script only on SAFE branches. Current branch is not declared to be safe. Abort"
     exit 1
 fi
 
@@ -71,7 +72,7 @@ for podir in ${PO_DIRS[@]}; do
     ret=$?
     if [ $ret -eq 1 ]; then
         echo "FAILED to update $podir" >&2
-	#exit 1
+	exit 1
     elif [ $ret -eq 2 ]; then
         commits=$((commits+1))
     fi
@@ -86,7 +87,7 @@ for xliffdir in ${XLIFF_DIRS[@]}; do
     ret=$?
     if [ $ret -eq 1 ]; then
         echo "FAILED to update $xliffdir" >&2
-	#exit 1
+	exit 1
     elif [ $ret -eq 2 ]; then
         commits=$((commits+1))
     fi
