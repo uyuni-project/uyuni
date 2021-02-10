@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -67,6 +68,7 @@ import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.RetractedErrataException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.action.MinionActionManager;
@@ -1704,6 +1706,12 @@ public class ErrataManager extends BaseManager {
 
         // compute id to errata map
         List<Errata> errataList = ErrataManager.lookupErrataByIds(errataIds, user);
+        List<Errata> retracted = errataList.stream()
+                .filter(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED)
+                .collect(toList());
+        if (!retracted.isEmpty()) {
+            throw new RetractedErrataException(retracted.stream().map(Errata::getId).collect(toList()));
+        }
 
         Map<Long, Errata> errataMap = errataList.stream()
             .collect(toMap(
