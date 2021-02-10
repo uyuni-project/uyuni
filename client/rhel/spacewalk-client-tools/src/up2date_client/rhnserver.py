@@ -32,11 +32,11 @@
 
 
 from rhn.tb import raise_with_tb
+from rhn import SSL
 from up2date_client import rpcServer
 from up2date_client import up2dateErrors
 from up2date_client import capabilities
 import sys
-import OpenSSL
 
 try: # python2
     import xmlrpclib
@@ -67,7 +67,7 @@ class _DoCallWrapper(object):
             return rpcServer.doCall(method, *args, **kwargs)
         except xmlrpclib.Fault:
             raise_with_tb(self.__exception_from_fault(sys.exc_info()[1]))
-        except OpenSSL.SSL.Error:
+        except SSL.SSL.SSLError:
             # TODO This should probably be moved to rhnlib and raise an
             # exception that subclasses OpenSSL.SSL.Error
             # TODO Is there a better way to detect cert failures?
