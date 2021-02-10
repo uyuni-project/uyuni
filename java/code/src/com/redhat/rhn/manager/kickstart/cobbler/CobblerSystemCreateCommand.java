@@ -53,6 +53,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private static Logger log = Logger.getLogger(CobblerSystemCreateCommand.class);
     private Action scheduledAction;
     private final Server server;
+    private String serverName;
+    private Long orgId;
     private String mediaPath;
     private String profileName;
     private String activationKeys;
@@ -122,6 +124,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             KickstartData ksDataIn, String mediaPathIn, String activationKeysIn) {
         super(userIn);
         this.server = serverIn;
+        this.serverName = serverIn.getName();
+        this.orgId = serverIn.getOrgId();
         this.mediaPath = mediaPathIn;
         if (ksDataIn != null) {
             profileName = ksDataIn.getCobblerObject(user).getName();
@@ -144,15 +148,18 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             KickstartData ksData) {
         super(serverIn.getCreator());
         this.server = serverIn;
+        this.serverName = serverIn.getName();
+        this.orgId = serverIn.getOrgId();
         this.mediaPath = null;
         this.profileName = cobblerProfileName;
-        String note = "Reactivation key for " + server.getName() + ".";
+        String keys = "";
+        String note = "Reactivation key for " + serverName + ".";
         ActivationKey key = ActivationKeyManager.getInstance().
                 createNewReActivationKey(UserFactory.findRandomOrgAdmin(
                         server.getOrg()), server, note);
         key.setUsageLimit(1L);
         log.debug("created reactivation key: " + key.getKey());
-        String keys = key.getKey();
+        keys = key.getKey();
         if (ksData != null) {
             for (Token token : ksData.getDefaultRegTokens()) {
                 ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
@@ -164,18 +171,52 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         this.activationKeys = keys;
     }
 
+    /**
+     * Constructor to be used to create a new system with a cobbler profile.
+     *
+     * @param userIn the user creating the system
+     * @param cobblerProfileName the name of the cobbler profile
+     * to associate with system
+     * @param ksData the kickstart data to associate the system with
+     * @param serverNameIn the name of the system to create
+     * @param orgIdIn the organization ID the system will belong to
+     */
+    public CobblerSystemCreateCommand(User userIn, String cobblerProfileName, KickstartData ksData, String serverNameIn,
+                                      Long orgIdIn) {
+        super(userIn);
+        this.server = null;
+        this.serverName = serverNameIn;
+        this.orgId = orgIdIn;
+        this.mediaPath = null;
+        this.profileName = cobblerProfileName;
+        String keys = "";
+        if (ksData != null) {
+            for (Token token : ksData.getDefaultRegTokens()) {
+                ActivationKey keyTmp = ActivationKeyFactory.lookupByToken(token);
+                if (keyTmp != null) {
+                    if (!keys.isBlank()) {
+                        keys += ",";
+                    }
+                    keys += keyTmp.getKey();
+                }
+            }
+        }
+        this.activationKeys = keys;
+    }
 
 
     /**
      * Constructor
      * @param userIn who is requesting the sync
      * @param serverIn profile we want to create in cobbler
-     * @param nameIn profile nameIn to associate with with server.
+     * @param nameIn profile name to associate with with server.
      */
     public CobblerSystemCreateCommand(User userIn, Server serverIn,
             String nameIn) {
         super(userIn);
         this.server = serverIn;
+        this.serverName = serverIn.getName();
+        this.orgId = serverIn.getOrgId();
         profileName = nameIn;
     }
 
@@ -196,11 +237,14 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     public ValidatorError store(boolean saveCobblerId) {
         Profile profile = Profile.lookupByName(getCobblerConnection(), profileName);
         // First lookup by MAC addr
-        SystemRecord rec = lookupExisting(server);
-        if (rec == null) {
-            // Next try by name
-            rec = SystemRecord.lookupByName(getCobblerConnection(user),
-                    getCobblerSystemRecordName());
+        SystemRecord rec = null;
+        if (server != null) {
+            rec = lookupExisting(server);
+            if (rec == null) {
+                // Next try by name
+                rec = SystemRecord.lookupByName(getCobblerConnection(user),
+                        getCobblerSystemRecordName());
+            }
         }
 
         // Else, lets make a new system
@@ -208,17 +252,19 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             rec = SystemRecord.create(getCobblerConnection(),
                     getCobblerSystemRecordName(), profile);
         }
-        try {
-            processNetworkInterfaces(rec, server);
-        }
-        catch (XmlRpcException e) {
-            if (e.getCause() != null && e.getCause().getMessage() != null &&
-                    e.getCause().getMessage().contains("IP address duplicated")) {
-                return new ValidatorError(
-                    "frontend.actions.systems.virt.duplicateipaddressvalue",
-                    server.getName());
+        if (server != null) {
+            try {
+                processNetworkInterfaces(rec, server);
             }
-            throw e;
+            catch (XmlRpcException e) {
+                if (e.getCause() != null && e.getCause().getMessage() != null &&
+                        e.getCause().getMessage().contains("IP address duplicated")) {
+                    return new ValidatorError(
+                            "frontend.actions.systems.virt.duplicateipaddressvalue",
+                            serverName);
+                }
+                throw e;
+            }
         }
         rec.enableNetboot(true);
         rec.setProfile(profile);
@@ -230,12 +276,14 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             rec.setIpv6Autoconfiguration(false);
         }
 
-        if (this.activationKeys == null || this.activationKeys.length() == 0) {
-            log.error("This cobbler profile does not " +
-                    "have a redhat_management_key set ");
-        }
-        else {
-            rec.setRedHatManagementKey(activationKeys);
+        if (server != null) {
+            if (this.activationKeys == null || this.activationKeys.length() == 0) {
+                log.error("This cobbler profile does not " +
+                        "have a redhat_management_key set ");
+            }
+            else {
+                rec.setRedHatManagementKey(activationKeys);
+            }
         }
         if (!StringUtils.isBlank(getKickstartHost())) {
             rec.setServer(getKickstartHost());
@@ -274,11 +322,11 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             }
         }
 
-        if (getServer().getHostname() != null) {
+        if (server != null && server.getHostname() != null) {
             rec.setHostName(getServer().getHostname());
         }
-        else if (getServer().getName() != null) {
-            rec.setHostName(getServer().getName());
+        else if (serverName != null) {
+            rec.setHostName(serverName);
         }
         rec.setKernelOptions(kernelOptions);
         rec.setKernelOptionsPost(postKernelOptions);
@@ -294,7 +342,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     e.getCause().getMessage().contains("IP address duplicated")) {
                 return new ValidatorError(
                     "frontend.actions.systems.virt.duplicateipaddressvalue",
-                    server.getName());
+                    serverName);
             }
             throw e;
         }
@@ -309,7 +357,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
          * yet, so I don't want to change something that has the potential to
          * break a lot of things.
          */
-        if (saveCobblerId) {
+        if (saveCobblerId && server != null) {
             server.setCobblerId(rec.getId());
         }
         return new CobblerSyncCommand(user).store();
@@ -320,19 +368,20 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
      * @return String name of cobbler system record
      */
     public String getCobblerSystemRecordName() {
-        return CobblerSystemCreateCommand.getCobblerSystemRecordName(this.server);
+        return CobblerSystemCreateCommand.getCobblerSystemRecordName(serverName, orgId);
     }
 
     /**
      * Get the cobbler system record name for a system
-     * @param serverIn the server to get the name from
+     * @param serverNameIn the name of the server
+     * @param orgIdIn the ID of the organization the server is in
      * @return String name of cobbler system record
      */
-    public static String getCobblerSystemRecordName(Server serverIn) {
+    public static String getCobblerSystemRecordName(String serverNameIn, Long orgIdIn) {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        String name = serverIn.getName().replace(' ', '_');
+        String name = serverNameIn.replace(' ', '_');
         name = name.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
-        return name + sep + serverIn.getOrg().getId();
+        return name + sep + orgIdIn;
     }
 
     protected void processNetworkInterfaces(SystemRecord rec,
@@ -456,5 +505,12 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
      */
     public String getComment() {
         return this.comment;
+    }
+
+    /**
+     * @return the organization Id
+     */
+    public Long getOrgId() {
+        return orgId;
     }
 }
