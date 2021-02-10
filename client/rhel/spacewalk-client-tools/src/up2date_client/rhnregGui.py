@@ -65,7 +65,7 @@ from up2date_client import up2dateUtils
 from up2date_client import config
 import OpenSSL
 from up2date_client import up2dateLog
-from rhn import rpclib
+from rhn import rpclib, SSL
 from rhn.connections import idn_puny_to_unicode
 from up2date_client import rhnreg_constants
 from up2date_client.pmPlugin import PM_PLUGIN_NAME, PM_PLUGIN_CONF
@@ -960,7 +960,7 @@ class ProvideCertificatePage:
                     errorWindow(rhnreg_constants.SSL_CERT_ERROR_MSG % (certFile, server_url))
 
                 return ERROR_WAS_HANDLED
-            except OpenSSL.SSL.Error:
+            except (OpenSSL.SSL.Error, SSL.SSL.SSLError):
                 # TODO Modify rhnlib to raise a unique exception for the not a
                 # cert file case.
                 errorWindow(_("There was an SSL error. This could be because the file you picked was not a certificate file."))

@@ -38,10 +38,7 @@ import socket
 from optparse import Option
 from optparse import OptionParser
 
-from OpenSSL import SSL
-from OpenSSL import crypto
-
-from rhn import rpclib
+from rhn import rpclib, SSL
 from rhn.i18n import sstr
 
 try: # python2
@@ -107,15 +104,18 @@ class RhnCli(object):
         except IOError:
             sys.stderr.write(sstr(_("There was some sort of I/O error: %s\n") % sys.exc_info()[1]))
             sys.exit(1)
-        except SSL.Error:
+        except SSL.SSL.SSLError as err:
+            if err.args[0] == SSL.SSL_ERROR_SYSCALL:
+                sys.stderr.write(sstr("SSL.SSL.SSLSyscallError: %s\n" % str(sys.exc_info()[1])))
+                sys.exit(2)
             sys.stderr.write(sstr(_("There was an SSL error: %s\n") % sys.exc_info()[1]))
             sys.stderr.write(sstr(_("A common cause of this error is the system time being incorrect. " \
                                "Verify that the time on this system is correct.\n")))
             sys.exit(1)
-        except (SSL.SysCallError, socket.error):
-            sys.stderr.write(sstr("OpenSSL.SSL.SysCallError: %s\n" % str(sys.exc_info()[1])))
+        except (socket.error):
+            sys.stderr.write(sstr("SSL.SSL.SSLSyscallError: %s\n" % str(sys.exc_info()[1])))
             sys.exit(2)
-        except crypto.Error:
+        except SSL.crypto.Error:
             sys.stderr.write(sstr(_("There was a SSL crypto error: %s\n") % sys.exc_info()[1]))
         except SystemExit:
             raise
