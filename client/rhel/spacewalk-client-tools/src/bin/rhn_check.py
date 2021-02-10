@@ -41,8 +41,6 @@ if not hasattr(t, 'ugettext'):
     t.ugettext = t.gettext
 _ = t.ugettext
 
-import OpenSSL
-
 # disable sgmlop module
 # it breaks rhn_check when loaded during xmlrpclib import
 sys.modules['sgmlop'] = None
@@ -141,7 +139,7 @@ class CheckCli(rhncli.RhnCli):
         except up2dateErrors.ServerCapabilityError:
             print(sys.exc_info()[1])
             sys.exit(1)
-        except OpenSSL.SSL.Error:
+        except SSL.SSL.SSLError:
             print("ERROR: SSL errors detected")
             print("%s" % sys.exc_info()[1])
             sys.exit(-1)
@@ -175,7 +173,7 @@ class CheckCli(rhncli.RhnCli):
         except up2dateErrors.ServerCapabilityError:
             print(sys.exc_info()[1])
             sys.exit(1)
-        except SSL.Error:
+        except SSL.SSL.SSLError:
             print("ERROR: SSL errors detected")
             print("%s" % sys.exc_info()[1])
             sys.exit(-1)
