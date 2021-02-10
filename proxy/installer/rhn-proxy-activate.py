@@ -200,7 +200,7 @@ def _errorHandler(pre='', post=''):
             errorString = errorString + s
         except xmlrpclib.Fault as e:
             errorCode, errorString = _getActivationError(e)
-        except SSL.SSL.Error as e:
+        except SSL.SSL.SSLError as e:
             errorCode = 13
             errorString = "ERROR: failed SSL connection - bad or expired cert?"
         except Exception as e:  # pylint: disable=E0012, W0703
@@ -284,7 +284,7 @@ def _deactivateProxy_api_v3_x(options, cfg):
             else:
                 errorString = "WARNING: upon deactivation attempt: %s" % errorString
                 sys.stderr.write("%s\n" % errorString)
-        except SSL.SSL.Error:
+        except SSL.SSL.SSLError:
             sys.stderr.write(errorString + '\n')
             sys.exit(errorCode)
         except (xmlrpclib.ProtocolError, socket.error):
@@ -316,7 +316,7 @@ def _activateProxy_api_v3_x(options, cfg):
         errorCode, errorString = _errorHandler()
         try:
             raise
-        except SSL.SSL.Error:
+        except SSL.SSL.SSLError:
             # let's force a system exit for this one.
             sys.stderr.write(errorString + '\n')
             sys.exit(errorCode)
