@@ -1,3 +1,4 @@
+- fix string conversion of action result
 - Fix requesting Release file in debian repos (bsc#1182006)
 - Removed "Software Crashes" feature
 
