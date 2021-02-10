@@ -860,6 +860,7 @@ public class ErrataFactory extends HibernateFactory {
             eo.setUpdateDate((Date)values[6]);
             eo.setIssueDate((Date)values[7]);
             eo.addPackageName((String)values[8]);
+            eo.addPackageId((Long)values[11]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
