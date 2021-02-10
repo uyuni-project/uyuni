@@ -249,7 +249,7 @@ class HTTPSProxyConnection(HTTPProxyConnection):
             raise xmlrpclib.ProtocolError(host,
                 response.status, response.reason, response.msg)
         self.sock = SSL.SSLSocket(self.sock, self.trusted_certs)
-        self.sock.init_ssl()
+        self.sock.init_ssl(self.host)
 
     def putrequest(self, method, url, skip_host=0):
         return HTTPConnection.putrequest(self, method, url, skip_host=skip_host)
