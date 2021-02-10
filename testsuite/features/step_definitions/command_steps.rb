@@ -188,6 +188,12 @@ When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   end
 end
 
+When(/^vendor change should be enabled for SP migration on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  _result, return_code = node.run("grep -- --allow-vendor-change /var/log/zypper.log")
+  raise 'Vendor change option not found in logs' unless return_code.zero?
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
