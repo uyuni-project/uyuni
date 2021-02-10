@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
@@ -44,6 +45,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             .getLogger(CobblerVirtualSystemCommand.class);
 
     private String guestName;
+    private String hostName;
 
     /**
      * Constructor
@@ -57,6 +59,24 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             String cobblerProfileName, String guestNameIn, KickstartData ksData) {
         super(serverIn, cobblerProfileName, ksData);
         guestName = guestNameIn;
+        hostName = serverIn.getName();
+    }
+
+    /**
+     * Constructor for VMs on Salt Virtual hosts
+     *
+     * @param userIn the user creating the VM
+     * @param cobblerProfileName to use
+     * @param guestNameIn the guest name to create
+     * @param ksData the kickstart data to associate system with
+     * @param hostNameIn the name of the virtual host system
+     * @param orgId the organization ID the system will belong to
+     */
+    public CobblerVirtualSystemCommand(User userIn, String cobblerProfileName, String guestNameIn, KickstartData ksData,
+                                       String hostNameIn, Long orgId) {
+        super(userIn, cobblerProfileName, ksData, guestNameIn, orgId);
+        guestName = guestNameIn;
+        hostName = hostNameIn;
     }
 
     /**
@@ -74,6 +94,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             String activationKeysIn, String guestNameIn) {
         super(userIn, serverIn, ksDataIn, mediaPathIn, activationKeysIn);
         guestName = guestNameIn;
+        hostName = serverIn.getName();
     }
 
     /**
@@ -85,6 +106,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
     public CobblerVirtualSystemCommand(User userIn, Server serverIn,
             String nameIn) {
         super(userIn, serverIn, nameIn);
+        hostName = serverIn.getName();
     }
 
     /**
@@ -92,7 +114,9 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
      */
     @Override
     public String getCobblerSystemRecordName() {
-        return super.getCobblerSystemRecordName() + ":" + guestName.replace(' ', '_');
+        String sep = ConfigDefaults.get().getCobblerNameSeparator();
+        return CobblerVirtualSystemCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
+                guestName.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
     }
 
     @Override
