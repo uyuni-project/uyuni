@@ -1,3 +1,5 @@
+- Handle SIGPIPE without user-visible Exception (bsc#1181124)
+
 -------------------------------------------------------------------
 Tue Feb 02 12:55:32 CET 2021 - jgonzalez@suse.com
 
