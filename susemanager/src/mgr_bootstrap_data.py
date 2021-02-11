@@ -409,7 +409,14 @@ PKGLIST15SP0SP1_SALT = [
 ]
 
 PKGLIST15_TRAD = [
+    "dbus-1-glib",
+    "glib2-tools",
+    "gio-branding-SLE",
+    "girepository-1_0",
     "libgudev-1_0-0",
+    "libgirepository-1_0-1",
+    "libgio-2_0-0",
+    "libgobject-2_0-0",
     "libnewt0_52",
     "libslang2",
     "newt",
@@ -417,7 +424,9 @@ PKGLIST15_TRAD = [
     "python3-cffi",
     "python3-cryptography",
     "python-dmidecode",
+    "python3-dbus-python",
     "python3-dmidecode",
+    "python3-gobject",
     "python3-libxml2-python",
     "python3-netifaces",
     "python3-newt",
@@ -440,6 +449,7 @@ PKGLIST15_TRAD = [
     "python3-spacewalk-client-tools",
     "python3-uyuni-common-libs*",
     "mgr-daemon|spacewalksd",
+    "shared-mime-info",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
     "zypp-plugin-spacewalk",
