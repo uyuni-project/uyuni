@@ -8,8 +8,7 @@ type Props = {
   itemName: string;
   icon: string;
   selected: any[];
-  // TODO: This should be renamed `onConfirm` or something similar
-  fn: (type: string, selected: any[], forceState: any) => any;
+  onConfirm: (type: string, selected: any[], forceState: any) => any;
   canForce: boolean;
   forceName?: string;
   onClose?: () => any;
@@ -94,7 +93,7 @@ export class ActionConfirm extends React.Component<Props, State> {
           </>
         }
         onConfirm={() =>
-          this.props.fn(this.props.type, this.props.selected, this.props.canForce ? { force: this.state.force } : {})
+          this.props.onConfirm(this.props.type, this.props.selected, this.props.canForce ? { force: this.state.force } : {})
         }
         onClosePopUp={() => this.closePopUp()}
         submitText={this.state.force && this.props.forceName ? this.props.forceName : this.props.name}

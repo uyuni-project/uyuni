@@ -115,7 +115,7 @@ const DeleteActionConfirm = (props) => {
       itemName={isPool ? t('Virtual Storage Pool') : t('Virtual Storage Volume')}
       icon="fa-trash"
       selected={props.selected}
-      fn={(type, items, parameters) => {
+      onConfirm={(type, items, parameters) => {
         if (isPool) {
           props.onAction(type, items.map(pool => pool.name), Object.assign({}, parameters, {purge}));
         } else {
