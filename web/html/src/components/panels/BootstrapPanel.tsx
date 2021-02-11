@@ -1,12 +1,13 @@
-import * as React from 'react';
-import { Panel } from './Panel';
+import * as React from "react";
+import { Panel } from "./Panel";
 
 type Props = {
-  title?: string,
-  icon?: string,
-  header?: string,
-  footer?: string,
-  children: React.Node,
+  title?: string;
+  icon?: string;
+  header?: string;
+  footer?: string;
+  children?: React.ReactNode;
+  buttons?: React.ReactNode;
 };
 
 function BootstrapPanel(props: Props) {
@@ -31,6 +32,4 @@ BootstrapPanel.defaultProps = {
   footer: undefined,
 };
 
-export {
-  BootstrapPanel,
-};
+export { BootstrapPanel };
