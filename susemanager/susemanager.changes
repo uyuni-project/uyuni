@@ -1,3 +1,7 @@
+- python3-dbus-python and dependencies not installed by default
+  on JeOS SLE15 images, add them to the bootstrap repository list
+  of packages for traditional (bsc#1182071)
+
 -------------------------------------------------------------------
 Fri Jan 29 16:51:52 CET 2021 - jgonzalez@suse.com
 
