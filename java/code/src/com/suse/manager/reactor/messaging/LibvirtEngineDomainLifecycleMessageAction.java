@@ -84,7 +84,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                         LOG.debug("Adding VM " + def.getName() + " with state to " + state.getLabel());
                         VirtualInstanceManager.addGuestVirtualInstance(def.getUuid().replaceAll("-", ""),
                                 def.getName(), def.getVirtualInstanceType(), state, minion, null,
-                                def.getVcpu().getMax(), def.getMaxMemory());
+                                def.getVcpu().getMax(), def.getMaxMemory() / 1024);
 
                         // Check if the defined VM will require a manual restart
                         if (def.isRequiresRestart()) {
@@ -134,7 +134,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                                     updatedDef.get().getVcpu().getMax() :
                                     vm.getNumberOfCPUs();
                             Long memory = updatedDef.isPresent() ?
-                                    updatedDef.get().getMaxMemory() :
+                                    updatedDef.get().getMaxMemory() / 1024 :
                                     vm.getTotalMemory();
                             VirtualInstanceManager.updateGuestVirtualInstanceProperties(
                                     vm, name, "updated".equals(message.getDetail()) ? vm.getState() : state,

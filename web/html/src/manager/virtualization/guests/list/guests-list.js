@@ -120,7 +120,7 @@ export function GuestsList(props: Props) {
                 columnKey="memory"
                 comparator={Utils.sortByNumber}
                 header={t('Current Memory')}
-                cell={row => `${row.memory / 1024} MiB`}
+                cell={row => `${row.memory} MiB`}
               />,
               <Column
                 columnKey="vcpus"

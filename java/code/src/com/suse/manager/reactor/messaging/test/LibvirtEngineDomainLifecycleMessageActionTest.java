@@ -244,7 +244,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
 
         assertEquals(Long.valueOf(2), matchingGuests.get(0).getVcpus());
-        assertEquals(Long.valueOf(1048576), matchingGuests.get(0).getMemory());
+        assertEquals(Long.valueOf(1024), matchingGuests.get(0).getMemory());
     }
 
     protected Optional<String> getSaltResponse(String filename, Map<String, String> placeholders) throws Exception {
