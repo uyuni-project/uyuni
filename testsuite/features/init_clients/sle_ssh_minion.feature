@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 SUSE LLC
+# Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Bootstrap a Salt host managed via salt-ssh
@@ -30,8 +30,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until I see "Highstate" text
     And I follow "Packages" in the content area
     Then I should see a "Package States" text
-    When I follow "Search" in the content area
-    And I wait until button "Search" becomes enabled
+    When I wait until button "Search" becomes enabled
     And I remove package "sle-manager-tools-release" from highstate
 
 @proxy
