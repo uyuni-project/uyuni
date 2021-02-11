@@ -8,6 +8,7 @@ on:
 jobs:
  run:
    name: Update translation files
+   if: github.repository == 'uyuni-project/uyuni'
    runs-on: ubuntu-latest
    steps:
    - name: Checkout repo
