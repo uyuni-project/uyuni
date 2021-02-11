@@ -434,13 +434,13 @@ When(/^I schedule the action chain$/) do
   refute(@action_chain_api.schedule_chain($chain_label, DateTime.now) < 0)
 end
 
-Then(/^there should be no more my action chain$/) do
-  refute_includes(@action_chain_api.list_chains, $chain_label)
-end
-
 When(/^I wait until there are no more action chains$/) do
   repeat_until_timeout(message: 'Action Chains still present') do
     break if @action_chain_api.list_chains.empty?
+    @action_chain_api.list_chains.each do |label|
+      puts "Still there: #{label}"
+    end
+    puts
     sleep 2
   end
 end
