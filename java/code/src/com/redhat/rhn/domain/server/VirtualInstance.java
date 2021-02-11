@@ -223,18 +223,18 @@ public class VirtualInstance extends BaseDomainHelper {
     }
 
     /**
-     * Returns the total memory in KB allocated to the virtual instance.
+     * Returns the total memory in MiB allocated to the virtual instance.
      *
-     * @return The total memory in KB allocated to the virtual instance.
+     * @return The total memory in MiB allocated to the virtual instance.
      */
     public Long getTotalMemory() {
         return getInfo().getTotalMemory();
     }
 
     /**
-     * Sets the total memory in KB allocated to the virtual instance.
+     * Sets the total memory in MiB allocated to the virtual instance.
      *
-     * @param memory The total memory in KB
+     * @param memory The total memory in MiB
      */
     public void setTotalMemory(Long memory) {
         initInfo().setTotalMemory(memory);

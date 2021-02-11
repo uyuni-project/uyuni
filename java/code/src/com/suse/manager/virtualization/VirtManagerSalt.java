@@ -228,7 +228,7 @@ public class VirtManagerSalt implements VirtManager {
                         Map<String, Object> vm = entry.getValue();
                         String state = vm.get("state").toString();
                         GuestProperties props = new GuestProperties(
-                                ((Double)vm.get("maxMem")).longValue(),
+                                ((Double)vm.get("maxMem")).longValue() / 1024,
                                 entry.getKey(),
                                 "shutdown".equals(state) ? "stopped" : state,
                                 vm.get("uuid").toString(),
