@@ -119,6 +119,10 @@ const args = require("./args");
     console.log("migrate object array to any array");
     await execAndLog(`sed -i'${tempExtension}' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
+    // Hash<...> -> Record<...>
+    console.log("migrate hash to record");
+    await execAndLog(`sed -i'${tempExtension}' -e 's/Hash</Record</' ${tsInputs}`);
+
     // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
@@ -135,11 +139,13 @@ const args = require("./args");
 
     // TS doesn't know what the type of this is, but we do
     // jqXHR: any -> jqXHR: JQueryXHR
+    console.log("annotate jqXHR types");
     await execAndLog(`sed -i'${tempExtension}' -e 's/jqXHR: any/jqXHR: JQueryXHR/' ${tsInputs}`);
 
     // There is no excuse to keep these around anymore
     // "use strict"; -> remove
     // /* eslint-disable */ -> remove
+    console.log("remove deprecated annotations");
     await execAndLog(`sed -i'${tempExtension}' -e 's/"use strict";//' ${tsInputs}`);
     await execAndLog(`sed -i'${tempExtension}' -e 's/\\/* eslint-disable *\\///' ${tsInputs}`);
 
