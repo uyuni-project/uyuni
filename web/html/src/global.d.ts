@@ -47,6 +47,9 @@ declare global {
 
   // Used by section-toolbar, defined in spacewalk-essentials.js
   var handleSst: Function;
+
+  /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
+  var localTime: string | undefined;
 }
 
 export {};
