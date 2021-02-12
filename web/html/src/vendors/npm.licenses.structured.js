@@ -26,7 +26,7 @@ const npmDependencies = [
   { name: "dom-helpers", license: "MIT",  version: "5.1.4" }, 
   { name: "html-dom-parser", license: "MIT",  version: "0.2.3" }, 
   { name: "html-react-parser", license: "MIT",  version: "0.10.0" }, 
-  { name: "immer", license: "MIT",  version: "3.3.0" }, 
+  { name: "immer", license: "MIT",  version: "8.0.1" }, 
   { name: "inline-style-parser", license: "MIT",  version: "0.1.1" }, 
   { name: "jexl", license: "MIT",  version: "2.2.2" }, 
   { name: "lodash", license: "MIT",  version: "4.17.20" }, 

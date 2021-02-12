@@ -3,7 +3,7 @@ import {useState} from 'react';
 import Network from 'utils/network';
 import _keyBy from "lodash/keyBy";
 import type {ChannelType} from "core/channels/type/channels.type";
-import produce from "immer";
+import produce from "utils/produce";
 
 // https://github.com/facebook/flow/issues/2221
 export const getChannelsTreeValues = (channelsTree: ChannelsTreeType): Array<ChannelType> =>

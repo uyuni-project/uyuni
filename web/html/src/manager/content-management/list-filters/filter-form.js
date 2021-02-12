@@ -12,7 +12,7 @@ import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/fi
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
 import useUserLocalization from "core/user-localization/use-user-localization";
 import {Utils} from "utils/functions";
-import produce from "immer";
+import produce from "utils/produce";
 
 type Props = {
   filter: FilterFormType,

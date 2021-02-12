@@ -1,3 +1,4 @@
+- Upgrade immer to fix CVE-2020-28477
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
 - Fix sorting in content lifecycle projects and cluster tables (bsc#1180558)
 
