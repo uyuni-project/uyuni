@@ -19,5 +19,5 @@ zypper in -y  make \
               python3-urlgrabber \
               curl
 
-zypper -n in vim less
+zypper -n in vim less gzpip
 
