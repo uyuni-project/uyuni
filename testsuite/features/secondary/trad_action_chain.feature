@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -233,7 +233,8 @@ Feature: Action chain on traditional clients
     Then I wait until there are no more action chains
     When I run "rhn_check -vvv" on "sle_client"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_client"
-    And I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions
+    And I delete the action chain
 
   Scenario: Cleanup: remove traditional client from configuration channel
     Given I am authorized as "admin" with password "admin"

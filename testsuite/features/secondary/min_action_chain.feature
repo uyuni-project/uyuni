@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
@@ -231,7 +231,7 @@ Feature: Action chains on Salt minions
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action on each action within the chain
     Then the current action chain should be empty
-    And I delete the action chain
+    When I delete the action chain
 
   Scenario: Run an action chain via XML-RPC on Salt minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
@@ -246,7 +246,8 @@ Feature: Action chains on Salt minions
     And I wait until there are no more action chains
     And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
-    And I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions
+    And I delete the action chain
 
   Scenario: Cleanup: remove Salt minion from configuration channel
     Given I am authorized as "admin" with password "admin"

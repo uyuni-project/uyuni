@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -222,7 +222,7 @@ Feature: Salt SSH action chain
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action on each action within the chain
     Then the current action chain should be empty
-    And I delete the action chain
+    When I delete the action chain
 
   Scenario: Run an action chain via XML-RPC on SSH minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
@@ -237,7 +237,8 @@ Feature: Salt SSH action chain
     Then I wait until there are no more action chains
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
-    And I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions
+    And I delete the action chain
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     Given I am authorized as "admin" with password "admin"
