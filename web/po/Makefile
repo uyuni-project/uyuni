@@ -33,9 +33,17 @@ gettextsrcdir = $(datadir)/gettext/po
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 
-GMSGFMT = /usr/bin/msgfmt
-MSGFMT = /usr/bin/msgfmt
-MSGMERGE = /usr/bin/intltool-update -x --gettext-package=$(PACKAGE) --dist
+# macOS uses readonly system directories and has different paths for external tools
+uname_s = $(shell uname -s)
+ifeq ($(uname_s),Darwin)
+	BIN = /usr/local/bin
+else
+	BIN = /usr/bin
+endif
+
+GMSGFMT = ${BIN}/msgfmt
+MSGFMT = ${BIN}/msgfmt
+MSGMERGE = ${BIN}/intltool-update -x --gettext-package=$(PACKAGE) --dist
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 
@@ -46,7 +54,7 @@ DISTFILES = POTFILES.in $(PACKAGE).pot $(POFILES) $(GMOFILES)
 POTFILES = \
 	$(shell find ../html/javascript/ -name spacewalk\*.js | sort) \
 	$(shell find ../html/javascript/ -name susemanager\*.js | sort) \
-	$(shell find ../html/src/ -type f \( -name \*.js ! -path "*/dist/*" ! -path "*/node_modules/*" \) | sort)
+	$(shell find ../html/src/ -type f \( \( -name \*.js -o -name \*.jsx -o -name \*.ts -o -name \*.tsx \) ! -path "*/dist/*" ! -path "*/node_modules/*" \) | sort)
 
 CATALOGS = $(GMOFILES)
 
@@ -81,7 +89,7 @@ POTFILES.in:
 	done >> $@
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES) POTFILES.in
-	/usr/bin/intltool-update --gettext-package=$(PACKAGE) --pot
+	${BIN}/intltool-update --gettext-package=$(PACKAGE) --pot
 	rm -f POTFILES.in
 
 install: install-exec install-data
