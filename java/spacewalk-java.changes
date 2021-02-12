@@ -1,3 +1,4 @@
+- Do not call page decorator in HEAD requests (bsc#1181228)
 - Add 'mgr_origin_server' to Salt pillar data (bsc#1180439)
 - Ensure new files are synced just after writing them (bsc#1175660)
 - enable openscap auditing for salt systems in SSM (bsc#1157711)
