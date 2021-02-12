@@ -1,3 +1,6 @@
+- Add @testing-library/react and msw, update relevant dependencies
+- Upgrade lodash to 4.17.19
+
 -------------------------------------------------------------------
 Tue Jan 12 13:48:15 CET 2021 - jgonzalez@suse.com
 
