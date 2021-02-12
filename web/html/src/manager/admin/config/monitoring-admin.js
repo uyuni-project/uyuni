@@ -30,9 +30,9 @@ const msgMap = {
   "tomcat_msg_disable":t("The Tomcat Prometheus exporter is down but the JMX configuration is enabled. " +
     "Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."),
   "taskomatic_msg_enable": t("The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. " +
-    "Click the Enable button to enable the JMX configuration of click Disable to stop the Prometheus exporter."),
+    "Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."),
   "taskomatic_msg_disable": t("The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. " +
-    "Click the Disable button to disable the JMX configuration of click Enable to start the Prometheus exporter."),
+    "Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."),
   "tomcat_msg_restart": msgRestart,
   "taskomatic_msg_restart": msgRestart,
   "self_monitoring_msg_restart": msgRestart,
