@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Feb 12 14:35:19 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
 - enable openscap auditing for salt systems in SSM (bsc#1157711)
 - Removed "Software Crashes" feature
 
