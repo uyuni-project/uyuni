@@ -1,4 +1,4 @@
-- Upgrade immer to 8.0.1
+- Upgrade immer to 8.0.1 to fix CVE-2020-28477
 
 -------------------------------------------------------------------
 Wed Jan 27 13:08:31 CET 2021 - jgonzalez@suse.com
