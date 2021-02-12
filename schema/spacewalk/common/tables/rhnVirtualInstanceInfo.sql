@@ -24,7 +24,7 @@ CREATE TABLE rhnVirtualInstanceInfo
     instance_type  NUMERIC NOT NULL
                        CONSTRAINT rhn_vii_it_fk
                            REFERENCES rhnVirtualInstanceType (id),
-    memory_size_k  NUMERIC,
+    memory_size    NUMERIC,
     vcpus          NUMERIC,
     state          NUMERIC NOT NULL
                        CONSTRAINT rhn_vii_state_fk
