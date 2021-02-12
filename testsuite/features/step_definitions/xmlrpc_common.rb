@@ -438,7 +438,7 @@ When(/^I wait until there are no more action chains$/) do
   repeat_until_timeout(message: 'Action Chains still present') do
     break if @action_chain_api.list_chains.empty?
     @action_chain_api.list_chains.each do |label|
-      puts "Still there: #{label}"
+      puts "Chain still present: #{label}"
     end
     puts
     sleep 2
@@ -476,6 +476,10 @@ end
 Then(/^I wait until there are no more scheduled actions$/) do
   repeat_until_timeout(message: 'Scheduled actions still present') do
     break if @schedule_api.list_in_progress_actions.empty?
+    @schedule_api.list_in_progress_actions.each do |action|
+      puts "Action still in progress: #{action}"
+    end
+    puts
     sleep 2
   end
 end
