@@ -1,3 +1,5 @@
+- adapt to new SSL implementation of rhnlib (bsc#1181807)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:14:22 CEST 2020 - jgonzalez@suse.com
 
