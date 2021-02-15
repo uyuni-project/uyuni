@@ -950,9 +950,6 @@ public class SaltServerActionService {
         if (!sshMinionIds.isEmpty()) {
             startSSHActionChain(actionChain, sshMinionIds, extraFilerefs);
         }
-
-        actionChain.setDispatched(true);
-        ActionChainFactory.getSession().save(actionChain);
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
@@ -2509,6 +2506,12 @@ public class SaltServerActionService {
                     retActionChainId, minionId, chunk, actionChainFailed);
 
             ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+                // We need to reload server actions since saltssh will be in
+                // the same db session from when the action was started and
+                // won't see results of non ssh minions otherwise.
+                ac.getEntries().stream()
+                        .flatMap(ace -> ace.getAction().getServerActions().stream())
+                        .forEach(HibernateFactory::reload);
                 if (ac.isDone()) {
                     ActionChainFactory.delete(ac);
                 }
