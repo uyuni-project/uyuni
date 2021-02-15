@@ -934,9 +934,6 @@ public class SaltServerActionService {
         if (!sshMinionIds.isEmpty()) {
             startSSHActionChain(actionChain, sshMinionIds, extraFilerefs);
         }
-
-        actionChain.setDispatched(true);
-        ActionChainFactory.getSession().save(actionChain);
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
