@@ -17,7 +17,7 @@ type Props = {
   title: string;
   selectedServers: Array<ServerType> | null | undefined;
   onNext: (arg0: Array<ServerType>) => void;
-  onPrev: () => void;
+  onPrev?: () => void;
   setMessages: (messages: MessageType[]) => void;
   fetchServers: () => Promise<Array<ServerType>>;
   multiple?: boolean;
@@ -103,7 +103,7 @@ const SelectServer = (props: Props) => {
               text={t("Back")}
               className="btn-default"
               icon="fa-arrow-left"
-              handler={() => props.onPrev()}
+              handler={() => props.onPrev?.()}
             />
           ) : null}
           <Button
