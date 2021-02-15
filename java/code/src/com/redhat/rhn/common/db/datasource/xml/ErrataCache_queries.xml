@@ -117,7 +117,10 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                 WHERE
                          SC.channel_id = :channel_id
                   AND    SC.server_id = S.id
-              AND    p.id in (%s)
+                  AND    p.id in (%s)
+                  AND    p.id NOT IN (SELECT EP.package_id FROM rhnErrataPackage EP INNER JOIN rhnErrata E
+                                      ON EP.errata_id = E.id
+                                      WHERE EP.package_id = p.id AND E.advisory_status = 'retracted')
                   AND    p.package_arch_id = spac.package_arch_id
                   AND    spac.server_arch_id = s.server_arch_id
                   AND    SP_EVR.id = SP.evr_id
