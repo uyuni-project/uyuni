@@ -22,6 +22,7 @@ import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toSet;
 
@@ -32,10 +33,12 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -91,8 +94,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         srcChannel = ChannelFactoryTest.createTestChannel(user, false);
         srcChannel.addPackage(pkg);
         srcChannel.addErrata(errata);
-        srcChannel = (Channel) HibernateFactory.reload(srcChannel);
-        errata = (Errata) HibernateFactory.reload(errata);
+        srcChannel = HibernateFactory.reload(srcChannel);
+        errata = HibernateFactory.reload(errata);
 
         tgtChannel = ChannelTestUtils.createBaseChannel(user);
     }
@@ -557,6 +560,39 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(1, tgtChannel.getPackageCount());
         assertEquals(0, tgtChannel.getErrataCount());
         assertContains(tgtChannel.getPackages(), olderPkg);
+    }
+
+    /**
+     * Tests that aligning a channel containing a retracted patch, the caches
+     * related to the target channel (rhnServerNeededCache and rhnChannelNewestPackage)
+     * do NOT contain the retracted packages.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testCachesAlignmentRetractedPackages() throws Exception {
+        // server has the pkg installed and is subscribed to the target channel
+        Server server = ServerFactoryTest.createTestServer(user);
+        SystemManager.subscribeServerToChannel(user, server, tgtChannel);
+        InstalledPackage installedPkg = copyPackage(pkg, empty());
+        setInstalledPackage(server, installedPkg);
+
+        // pkg2 is a part of a retracted patch
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+        pkg2.setPackageName(pkg.getPackageName());
+        PackageEvr evr = pkg.getPackageEvr();
+        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
+        Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        retracted.addPackage(pkg2);
+        srcChannel.addPackage(pkg2);
+        srcChannel.addErrata(retracted);
+
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        // after aligning the channels, the retracted package shouldn't appear in the rhnServerNeeded cache
+        DataResult needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertTrue(needingUpdates.isEmpty());
+        // nor should it be reported as the newest package in the channel
+        assertEquals(pkg.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
     private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
