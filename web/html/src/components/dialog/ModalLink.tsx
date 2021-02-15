@@ -21,13 +21,11 @@ export function ModalLink(props: Props) {
   const margin = props.text ? "" : " no-margin";
   var icon = props.icon && <i className={"fa " + props.icon + margin} />;
 
-  // TODO: Using `href="#"` is bad for accessibility and semantics, this should be a `<button>` that looks like it needs to
   return (
-    <a
+    <button
       id={props.id}
-      href="#"
       title={props.title}
-      className={props.className}
+      className={'btn-link ' + (props.className || '')}
       onClick={() => {
         if (props.onClick) props.onClick(props.item);
         showDialog(props.target);
@@ -35,6 +33,6 @@ export function ModalLink(props: Props) {
     >
       {icon}
       {props.text}
-    </a>
+    </button>
   );
 }
