@@ -174,7 +174,7 @@ Obsoletes:      python-%{name} < %{version}-%{release}
 Provides:       python2-rhn-client-tools = %{version}-%{release}
 Obsoletes:      python2-rhn-client-tools < %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
-Requires:       rhnlib >= 2.5.78
+Requires:       rhnlib >= 4.2.2
 
 %if "%{_vendor}" != "debbuild"
 Requires:       rpm-python
@@ -282,7 +282,7 @@ Requires:       python3-dmidecode
 %endif
 Requires:       python3-hwdata
 Requires:       python3-netifaces
-Requires:       python3-rhnlib >= 2.5.78
+Requires:       python3-rhnlib >= 4.2.2
 Requires:       python3-rpm
 Requires:       python3-uyuni-common-libs
 
