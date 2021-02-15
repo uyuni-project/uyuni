@@ -26,6 +26,18 @@ $ yarn tsc
 # Get a list of remaining errors that need to be resolved manually
 ```
 
+## Configuring your editor
+
+If you're using VS Code, the editor config is already included.  
+For other editors, Typescript has integration plugins for more or less all popular editors.  
+
+Usually, you will only need to specify where the Typescript SDK is, how to configure this depends on your editor:  
+```json
+{
+    "typescript.tsdk": "./web/html/src/node_modules/typescript/lib"
+}
+```
+
 ## Common problems you may encounter:
 
 ### `Argument of type 'Foo' is not assignable to parameter of type 'never'` when pushing into an empty array
