@@ -1075,6 +1075,22 @@ DATA = {
         'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
+    'SLE-15-SP3-aarch64' : {
+        'PDID' : [2142, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-ppc64le' : {
+        'PDID' : [2143, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_PPC,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-s390x' : {
+        'PDID' : [2144, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-x86_64' : {
+        'PDID' : [2145, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
     'SUMA-41-PROXY-x86_64' : {
         'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
