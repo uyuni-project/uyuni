@@ -159,7 +159,7 @@ Spacewalk Proxy components.
 Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:          Applications/Internet
 Requires:       python3
-Requires:       python3-rhnlib >= 2.5.56
+Requires:       python3-rhnlib >= 4.1.3
 Requires:       mgr-push >= 4.0.0
 Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
