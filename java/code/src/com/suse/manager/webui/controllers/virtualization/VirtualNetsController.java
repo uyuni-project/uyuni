@@ -71,6 +71,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
+        get("/manager/api/systems/details/virtualization/nets/:sid/devices",
+                withUser(this::devices));
         post("/manager/api/systems/details/virtualization/nets/:sid/start",
                 withUser(this::start));
         post("/manager/api/systems/details/virtualization/nets/:sid/stop",
@@ -116,6 +118,46 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 .collect(Collectors.toList());
 
         return json(response, networks);
+    }
+
+    /**
+     * Returns JSON data describing the host ethernet devices
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public String devices(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
+
+        List<JsonObject> allDevices = virtManager.getHostDevices(minionId);
+        Map<String, JsonObject> byName = allDevices.stream().collect(
+                Collectors.toMap(item -> item.get("name").getAsString(), Function.identity()));
+
+        List<JsonObject> netDevices = allDevices.stream()
+                .filter(item -> "net".equals(item.get("caps").getAsString()))
+                .map(item -> {
+                    item.remove("caps");
+                    // Extract infos from the parent device if possible
+                    if (item.has("device name")) {
+                        JsonObject parent = byName.get(item.get("device name").getAsString());
+                        item.remove("device name");
+                        if (parent != null) {
+                            boolean isVirtual = parent.has("physical function");
+                            item.addProperty("VF", isVirtual);
+                            if (isVirtual) {
+                                item.addProperty("PCI address", parent.get("address").getAsString());
+                            }
+                            item.addProperty("PF", parent.has("virtual functions"));
+                        }
+                    }
+                    return item;
+                })
+                .collect(Collectors.toList());
+
+        return json(response, netDevices);
     }
 
     /**
