@@ -68,7 +68,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param jade jade engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/systems/details/virtualization/net/:sid",
+        get("/manager/systems/details/virtualization/nets/:sid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
