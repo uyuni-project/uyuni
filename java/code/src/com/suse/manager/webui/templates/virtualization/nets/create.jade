@@ -1,0 +1,22 @@
+include ../../system-common.jade
+#virtualnets-create
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+script(src='/javascript/validator/validator.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('virtualization/nets/create/nets-create')
+        .then(function(module) {
+            module.renderer(
+              'virtualnets-create',
+              {
+                  serverId: "#{server.id}",
+                  actionChains: !{actionChains},
+                  timezone: "#{h.renderTimezone()}",
+                  localTime: "#{h.renderLocalTime()}",
+              }
+        )});
