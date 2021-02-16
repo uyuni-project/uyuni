@@ -7321,6 +7321,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.network_create" xml:space="preserve">
+        <source>Virtual network creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">

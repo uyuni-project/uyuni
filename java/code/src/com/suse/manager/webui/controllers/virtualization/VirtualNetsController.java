@@ -25,11 +25,13 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -79,6 +81,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 withUser(this::stop));
         post("/manager/api/systems/details/virtualization/nets/:sid/delete",
                 withUser(this::delete));
+        post("/manager/api/systems/details/virtualization/nets/:sid/create",
+                withUser(this::create));
     }
 
     /**
@@ -196,6 +200,32 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         return netStateChangeAction(request, response, user, "delete");
     }
 
+    /**
+     * Executes the POST query to create a virtual network
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String create(Request request, Response response, User user) {
+        return netAction(request, response, user, (data) -> {
+            VirtualizationNetworkCreateAction action = (VirtualizationNetworkCreateAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE);
+            action.setName(action.getActionType().getName() + ": " + String.join(",", data.getNames()));
+
+            VirtualNetworkCreateActionJson createData = (VirtualNetworkCreateActionJson)data;
+            if (createData.getNames().isEmpty()) {
+                throw new IllegalArgumentException("Network names needs to contain an element");
+            }
+
+            action.setNetworkName(createData.getNames().get(0));
+            action.setDefinition(createData.getDefinition());
+
+            return action;
+        }, VirtualNetworkCreateActionJson.class);
+    }
+
     private String netStateChangeAction(Request request, Response response, User user, String state) {
         return netAction(request, response, user, (data) -> {
             VirtualizationNetworkStateChangeAction action = (VirtualizationNetworkStateChangeAction)
@@ -218,8 +248,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                               Class<? extends VirtualNetworkBaseActionJson> jsonClass) {
         return action(request, response, user,
                 (data, key) -> {
-                    VirtualNetworkBaseActionJson poolData = (VirtualNetworkBaseActionJson)data;
-                    BaseVirtualizationNetworkAction action = actionCreator.apply(poolData);
+                    VirtualNetworkBaseActionJson netData = (VirtualNetworkBaseActionJson)data;
+                    BaseVirtualizationNetworkAction action = actionCreator.apply(netData);
                     action.setNetworkName(key);
                     return action;
                 },
