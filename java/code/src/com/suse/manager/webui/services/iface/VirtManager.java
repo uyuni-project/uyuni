@@ -86,6 +86,14 @@ public interface VirtManager {
     Map<String, JsonObject> getNetworks(String minionId);
 
     /**
+     * Query the virtual host devices that can be either passed through or used for direct networks
+     *
+     * @param minionId the minion to ask about
+     * @return a list of the host devices
+     */
+    List<JsonObject> getHostDevices(String minionId);
+
+    /**
      * Query the list of virtual storage pools defined on a salt minion.
      *
      * @param minionId the minion to ask about

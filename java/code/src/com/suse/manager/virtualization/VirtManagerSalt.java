@@ -143,6 +143,16 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    public List<JsonObject> getHostDevices(String minionId) {
+        LocalCall<List<JsonObject>> call =
+                new LocalCall<>("virt.node_devices", Optional.empty(), Optional.empty(),
+                        new TypeToken<List<JsonObject>>() { });
+        return saltApi.callSync(call, minionId).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, JsonObject> getPools(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
