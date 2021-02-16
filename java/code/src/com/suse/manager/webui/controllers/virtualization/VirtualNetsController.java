@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateCha
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
@@ -70,6 +71,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/nets/:sid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
+        get("/manager/systems/details/virtualization/nets/:sid/new",
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::createDialog)))), jade);
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
@@ -101,6 +104,23 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                     virtManager.getHypervisor(host.getMinionId()).orElse("") :
                     "");
             return extra;
+        });
+    }
+
+    /**
+     * Displays the virtual network creation page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView createDialog(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        return renderPage(request, response, user, "create", () -> {
+            Map<String, Object> data = new HashMap<>();
+            MinionController.addActionChains(user, data);
+            return data;
         });
     }
 
