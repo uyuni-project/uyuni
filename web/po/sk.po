@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-16 09:36+0000\n"
+"PO-Revision-Date: 2021-02-18 09:18+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2757,32 +2757,32 @@ msgstr "Žiadne informácie"
 #: ../html/src/manager/images/image-view.js:399
 #: ../html/src/manager/images/image-view-overview.js:296
 msgid "Critical updates available"
-msgstr ""
+msgstr "K dispozícii sú kritické aktualizácie"
 
 #: ../html/src/manager/images/image-view.js:401
 #: ../html/src/manager/images/image-view-overview.js:298
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "K dispozícii sú nekritické aktualizácie"
 
 #: ../html/src/manager/images/image-view.js:403
 #: ../html/src/manager/images/image-view-overview.js:300
 msgid "Package updates available"
-msgstr ""
+msgstr "K dispozícii sú aktualizácie balíkov"
 
 #: ../html/src/manager/images/image-view.js:405
 #: ../html/src/manager/images/image-view-overview.js:302
 msgid "Image is up to date"
-msgstr ""
+msgstr "Obraz je aktuálny"
 
 #: ../html/src/manager/images/image-view.js:414
 #: ../html/src/manager/images/image-view-overview.js:48
 msgid "Built externally"
-msgstr ""
+msgstr "Zostavené externe"
 
 #: ../html/src/manager/images/image-view.js:416
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
-msgstr ""
+msgstr "Zaradené"
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
@@ -2792,24 +2792,24 @@ msgstr "Zostavovanie"
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
-msgstr ""
+msgstr "Neznáme"
 
 #: ../html/src/manager/images/image-view.js:432
 #: ../html/src/manager/images/image-view.js:473
 #: ../html/src/manager/images/image-view-overview.js:120
 #: ../html/src/manager/images/image-view-overview.js:151
 msgid "Waiting for update ..."
-msgstr ""
+msgstr "Čaká sa na aktualizáciu ..."
 
 #: ../html/src/manager/images/image-view.js:437
 #: ../html/src/manager/images/image-view-overview.js:156
 msgid "All instances are consistent with SUSE Manager"
-msgstr ""
+msgstr "Všetky inštancie sú v súlade so SUSE Manager"
 
 #: ../html/src/manager/images/image-view.js:441
 #: ../html/src/manager/images/image-view-overview.js:160
 msgid "Outdated instances found"
-msgstr ""
+msgstr "Boli nájdené zastarané inštancie"
 
 #: ../html/src/manager/images/image-view.js:460
 #: ../html/src/manager/images/image-view-overview.js:107
@@ -2820,7 +2820,7 @@ msgstr "Klaster"
 #: ../html/src/manager/images/image-view.js:515
 #: ../html/src/manager/images/image-view-overview.js:108
 msgid "Instances"
-msgstr ""
+msgstr "Inštancie"
 
 #: ../html/src/manager/images/image-view.js:487
 #: ../html/src/manager/images/image-view-overview.js:134
@@ -2834,87 +2834,87 @@ msgstr "Beh programu"
 
 #: ../html/src/manager/images/image-view.js:555
 msgid "Revision"
-msgstr ""
+msgstr "Revízia"
 
 #: ../html/src/manager/images/image-view.js:561
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
-msgstr ""
+msgstr "Aktualizácie"
 
 #: ../html/src/manager/images/image-view.js:566
 #: ../html/src/manager/images/image-view.js:669
 msgid "Patches"
-msgstr ""
+msgstr "Opravy"
 
 #: ../html/src/manager/images/image-view.js:575
 #: ../html/src/manager/images/image-view.js:669
 msgid "Packages"
-msgstr ""
+msgstr "Balíky"
 
 #: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
-msgstr ""
+msgstr "Naposledy zmenené"
 
 #: ../html/src/manager/images/image-view.js:620
 #: ../html/src/manager/images/image-view-overview.js:427
 msgid "Are you sure you want to delete image"
-msgstr ""
+msgstr "Naozaj chcete vymazať obraz"
 
 #: ../html/src/manager/images/image-view.js:626
 msgid "Delete Selected Image(s)"
-msgstr ""
+msgstr "Vymazať vybrané obraz(y)"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete the selected image?"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybraný obraz?"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
-msgstr ""
+msgstr "Naozaj chcete vymazať vybrané obrazy? ({0} vybraných obrazov)"
 
 #: ../html/src/manager/images/image-view.js:636
 #: ../html/src/manager/images/image-view-overview.js:258
 msgid "Instance Details for '{0}'"
-msgstr ""
+msgstr "Podrobnosti inštancie pre '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 #: ../html/src/manager/images/image-view-overview.js:33
 #: ../html/src/manager/images/image-view-overview.js:35
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Go to event"
-msgstr ""
+msgstr "Prejsť na udalosť"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " je zaradený"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "Prebieha"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " prebieha"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "Úspešné"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " je úspešné"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " zlyhalo"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " Stav"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
-msgstr ""
+msgstr "Vyzdvihnuté"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
@@ -2926,11 +2926,11 @@ msgstr "Upraviť úložisko"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "Stav obrazu"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "Informácie o obraze"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
@@ -2980,27 +2980,27 @@ msgstr "Opätovne skontrolovať obraz"
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
-msgstr ""
+msgstr "Nainštalované"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
@@ -3032,11 +3032,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
-msgstr ""
+msgstr "Inštancia je v súlade so SUSE Manager"
 
 #: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
-msgstr ""
+msgstr "Inštancia je zastaraná"
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
@@ -3072,6 +3072,8 @@ msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
 msgstr ""
+"Objavte nový spôsob správy serverov, balíkov, opráv a ďalšieho "
+"prostredníctvom jedného rozhrania."
 
 #: ../html/src/manager/login/login.js:144
 msgid "Sign In"
@@ -3590,7 +3592,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:159
 msgid "Stop waiting"
-msgstr ""
+msgstr "Ukončiť čakanie"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
