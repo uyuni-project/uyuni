@@ -265,9 +265,8 @@ public class ServerFactory extends HibernateFactory {
      *
      * @param serverId the server ID
      */
-    public static void updateServerNeededCache(Long serverId) {
-        CallableMode m = ModeFactory.getCallableMode(
-                "System_queries", "update_needed_cache");
+    public static void updateServerNeededCache(long serverId) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries", "update_needed_cache");
         Map inParams = new HashMap();
         inParams.put("server_id", serverId);
 
