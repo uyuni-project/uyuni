@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Feb 16 09:51:59 CET 2021 - jgonzalez@suse.com
+
+- version 4.0.13-1
 - change SSL implementation to python ssl for better SAN and
   hostname matching support (bsc#1181807)
 
