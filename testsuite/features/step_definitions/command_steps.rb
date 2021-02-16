@@ -1377,6 +1377,26 @@ Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host
   end
 end
 
+Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code.zero?
+    sleep 3
+  end
+end
+
+Then(/^"([^"]*)" virtual network on "([^"]*)" should have "([^"]*)" IPv4 address with ([0-9]+) prefix$/) do |net, host, ip, prefix|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{net} virtual net on #{host} never got #{ip}/#{prefix} IPv4 address") do
+    output, _code = node.run("virsh net-dumpxml #{net}")
+    tree = Nokogiri::XML(output)
+    ips = tree.xpath('//ip[@family="ipv4"]')
+    break if !ips.empty? && ips[0]['address'] == ip and ips[0]['prefix'] == prefix
+    sleep 3
+  end
+end
+
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed

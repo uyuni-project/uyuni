@@ -738,6 +738,8 @@ When I refresh the "test-pool0" storage pool of this "kvm-server"
 
 ```cucumber
 When I should not see a "test-net1" virtual network on "kvm-server"
+When I should see a "test-net2" virtual network on "kvm_server"
+When "test-net2" on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 ```
 
 <a name="c" />

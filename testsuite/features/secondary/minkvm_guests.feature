@@ -342,6 +342,27 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I do not see "test-net1" text
     And I should not see a "test-net1" virtual network on "kvm_server"
 
+@virthost_kvm
+  Scenario: Create a virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I follow "Create Network"
+    And I wait until option "bridge" appears in list "type"
+    And I select "isolated" from "type"
+    And I enter "test-net2" as "name"
+    And I check "autostart"
+    And I enter "192.168.128.0" as "ipv4def_address"
+    And I enter "24" as "ipv4def_prefix"
+    And I click on "add_ipv4def_dhcpranges"
+    And I enter "192.168.128.10" as "ipv4def_dhcpranges0_start"
+    And I enter "192.168.128.20" as "ipv4def_dhcpranges0_end"
+    And I click on "Create"
+    Then I should see a "Virtual Networks" text
+    And I wait until table row for "test-net2" contains button "Stop"
+    And table row for "test-net2" should contain "running"
+    And I should see a "test-net2" virtual network on "kvm_server"
+    And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
+
 # Start provisioning scenarios
 
 @long_test
@@ -394,6 +415,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I select "15-sp2-kvm" from "cobbler_profile"
+    And I select "test-net0" from "network0_source"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
@@ -457,6 +479,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I run "virsh undefine --remove-all-storage test-vm2" on "kvm_server" without error control
     And I delete test-net0 virtual network on "kvm_server" without error control
     And I delete test-net1 virtual network on "kvm_server" without error control
+    And I delete test-net2 virtual network on "kvm_server" without error control
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
     And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
