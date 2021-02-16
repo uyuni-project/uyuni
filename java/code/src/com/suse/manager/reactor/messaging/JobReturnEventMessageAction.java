@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
@@ -140,7 +141,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                                     .flatMap(ActionChainFactory::getActionChain);
 
                     actionChain.ifPresent(ac -> {
-                        if (ac.isDispatched()) {
                             ac.getEntries().stream()
                                     .flatMap(ace -> ace.getAction().getServerActions().stream())
                                     .filter(sa -> sa.getServer().asMinionServer()
@@ -152,11 +152,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                             if (ac.isDone()) {
                                 ActionChainFactory.delete(ac);
                             }
-                        }
-                        else {
-                            LOG.warn("got response referencing action chain " + ac.getId() +
-                                    " which is not dispatched yet.");
-                        }
                     });
                 });
 
@@ -283,6 +278,12 @@ public class JobReturnEventMessageAction implements MessageAction {
                     retActionChainId, minionId, chunk, actionChainFailed);
 
             ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+                // We need to reload server actions since saltssh will be in
+                // the same db session from when the action was started and
+                // won't see results of non ssh minions otherwise.
+                ac.getEntries().stream()
+                        .flatMap(ace -> ace.getAction().getServerActions().stream())
+                        .forEach(HibernateFactory::reload);
                 if (ac.isDone()) {
                     ActionChainFactory.delete(ac);
                 }
