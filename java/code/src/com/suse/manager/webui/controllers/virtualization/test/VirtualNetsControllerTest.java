@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.virtualization.test;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -33,6 +34,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
@@ -51,6 +53,7 @@ import org.jmock.Expectations;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
@@ -214,6 +217,37 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
         assertEquals("net0", virtAction.getNetworkName());
         assertEquals("delete", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
+
+    public void testCreate() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.create(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/create",
+                        "{names: ['net0'], definition: {type: 'bridge', autostart: true, bridge: 'ovs0', " +
+                                "virtualport: {type: 'openvswitch', interfaceid: 'thevportuuid'}, " +
+                                "vlans:[{tag: 41}]}, earliest: '2021-02-17T10:09:00.000Z'}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkCreateAction virtAction = (VirtualizationNetworkCreateAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        NetworkDefinition def = virtAction.getDefinition();
+        assertEquals("bridge", def.getForwardMode());
+        assertEquals(Optional.of("ovs0"), def.getBridge());
+        assertTrue(def.isAutostart());
+        assertEquals("openvswitch", def.getVirtualPort().get().getType());
+        assertEquals(Optional.of("thevportuuid"), def.getVirtualPort().get().getInterfaceId());
+        assertEquals(41, def.getVlans().get(0).getTag());
 
         // Check the returned message
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
