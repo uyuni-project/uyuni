@@ -488,19 +488,6 @@ Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"
   assert(@rpc_api_tester.login(luser, password))
 end
 
-# power management namespace
-
-When(/^I am logged in via XML\-RPC powermgmt as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @powermanagenent_api = XMLRPCPowermanagementTest.new($server.ip)
-  @powermanagenent_api.login(luser, password)
-  @system_api = XMLRPCSystemTest.new($server.ip)
-  @system_api.login(luser, password)
-end
-
-When(/^I set power management value "([^"]*)" for "([^"]*)"$/) do |value, hkey|
-  @powermanagenent_api.set_details($client_id, { hkey => value })
-end
-
 # cveaudit namespace
 
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
