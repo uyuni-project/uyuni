@@ -373,7 +373,8 @@ RES8 = [
     "python3-chardet",
     "python3-pysocks",
     "python3-pytz",
-    "python3-setuptools"
+    "python3-setuptools",
+    "python3-distro"
 ]
 
 PKGLIST15_SALT = [
@@ -383,6 +384,7 @@ PKGLIST15_SALT = [
     "python3-Babel",
     "python3-certifi",
     "python3-chardet",
+    "python3-distro",
     "python3-idna",
     "python3-Jinja2",
     "python3-MarkupSafe",
@@ -560,6 +562,7 @@ PKGLISTUBUNTU2004 = [
     "libzmq5",
     "python3-crypto",
     "python3-dateutil",
+    "python3-distro",
     "python3-jinja2",
     "python3-markupsafe",
     "python3-msgpack",
