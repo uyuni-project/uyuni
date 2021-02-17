@@ -166,8 +166,9 @@ database.
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 %if 0%{?suse_version}
 pushd html/src
-ln -sf %{nodejs_sitelib} .
-BUILD_VALIDATION=false node build.js
+mkdir node_modules
+tar x -C node_modules -f %{nodejs_sitelib}/all_modules.tar.gz
+PATH=node_modules/webpack/bin:$PATH BUILD_VALIDATION=false node build.js
 popd
 %endif
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +"%Y%m%d%H%M%S")/" conf/rhn_web.conf
