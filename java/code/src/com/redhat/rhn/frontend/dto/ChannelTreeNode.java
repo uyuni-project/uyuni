@@ -29,7 +29,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * ChannelTreeNode
- * @version $Rev$
  */
 public class ChannelTreeNode extends BaseDto implements BaseListDto,
                                                             DepthAware,

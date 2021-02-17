@@ -26,7 +26,6 @@ import java.util.Set;
 
 /**
  * ErrataAction - Class representation of the table rhnAction.
- * @version $Rev$
  */
 public class ErrataAction extends Action {
 

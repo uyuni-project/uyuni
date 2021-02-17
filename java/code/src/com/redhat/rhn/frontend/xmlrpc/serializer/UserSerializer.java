@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * UserSerializer a serializer for the User class
- * @version $Rev$
  *
  * @xmlrpc.doc
  *      #struct_begin("user")

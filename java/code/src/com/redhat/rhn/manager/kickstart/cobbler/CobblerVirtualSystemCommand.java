@@ -33,7 +33,6 @@ import java.util.List;
 
 /**
  *
- * @version $Rev$
  */
 public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
 

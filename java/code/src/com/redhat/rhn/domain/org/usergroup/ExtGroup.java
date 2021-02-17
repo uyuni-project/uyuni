@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.org.Org;
 
 /**
  * ExtGroup
- * @version $Rev$
  */
 public abstract class ExtGroup extends BaseDomainHelper implements Comparable {
 

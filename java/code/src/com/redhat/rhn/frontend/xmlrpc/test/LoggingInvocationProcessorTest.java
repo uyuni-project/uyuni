@@ -29,7 +29,6 @@ import redstone.xmlrpc.XmlRpcInvocation;
 
 /**
  * LoggingInvocationProcessorTest
- * @version $Rev$
  */
 public class LoggingInvocationProcessorTest extends RhnBaseTestCase {
 

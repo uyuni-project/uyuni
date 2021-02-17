@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * UserExtGroupSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("externalGroup")

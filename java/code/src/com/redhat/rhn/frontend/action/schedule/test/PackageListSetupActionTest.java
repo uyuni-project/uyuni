@@ -26,7 +26,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * PackageListSetupActionTest
- * @version $Rev$
  */
 public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
 

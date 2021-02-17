@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ListSystemsAction
- * @version $Rev$
  */
 public class CustomValueAction extends RhnAction implements
         Listable<CustomDataKeyOverview> {

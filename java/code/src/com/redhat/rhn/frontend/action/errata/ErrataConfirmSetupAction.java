@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataConfirmSetupAction
- * @version $Rev$
  */
 public class ErrataConfirmSetupAction extends RhnListAction implements MaintenanceWindowsAware {
     /** {@inheritDoc} */

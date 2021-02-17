@@ -27,7 +27,6 @@ import java.io.Serializable;
 
 /**
  * PackageActionRemovalFailure
- * @version $Rev$
  */
 public class PackageActionRemovalFailure implements Serializable {
 

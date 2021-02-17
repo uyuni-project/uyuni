@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 /**
  * InvalidLocaleCodeException thrown when an invalid locale is passed in as
  * an argument.
- * @version $Rev$
  */
 public class InvalidLocaleCodeException extends FaultException {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * An web session.
- * @version $Rev$
  */
 public interface WebSession {
 

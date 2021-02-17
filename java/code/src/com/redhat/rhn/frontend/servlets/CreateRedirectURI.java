@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
  * "functor" interface or extending from some base class if other request-related functor
  * classes are added to the code base.
  *
- * @version $Rev$
  */
 public class CreateRedirectURI {
 

@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * ListControlTest
- * @version $Rev$
  */
 public class ListControlTest extends RhnBaseTestCase {
 

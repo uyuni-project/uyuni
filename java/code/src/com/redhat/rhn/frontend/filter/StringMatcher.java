@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * DefaultMatcher
- * @version $Rev$
  */
 class StringMatcher implements Matcher {
     /**

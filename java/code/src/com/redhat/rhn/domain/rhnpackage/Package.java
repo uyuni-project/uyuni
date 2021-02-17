@@ -35,7 +35,6 @@ import java.util.Set;
 
 /**
  * Package
- * @version $Rev$
  */
 public class Package extends BaseDomainHelper {
 

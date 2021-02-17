@@ -28,7 +28,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * RhnVirtualInstance supports guests of guests; however guests of guests is not
  * being implemented in the RHN 500 release.
  *
- * @version $Rev$
  */
 public class VirtualInstance extends BaseDomainHelper {
 

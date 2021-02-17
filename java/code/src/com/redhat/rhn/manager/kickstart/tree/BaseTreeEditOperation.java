@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
 
 /**
  * BaseTreeEditCommand
- * @version $Rev$
  */
 public abstract class BaseTreeEditOperation extends BasePersistOperation {
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";

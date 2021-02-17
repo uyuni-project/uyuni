@@ -47,7 +47,6 @@ import java.util.Set;
 
 /**
 * SystemDetailsHandler
-* @version $Rev$
 * @xmlrpc.namespace kickstart.profile.system
 * @xmlrpc.doc Provides methods to set various properties of a kickstart profile.
 */

@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * ServerPathSerializer: Converts a ServerPathSerializer object for representation as an
  * XMLRPC struct.
  *
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("proxy connection path details")

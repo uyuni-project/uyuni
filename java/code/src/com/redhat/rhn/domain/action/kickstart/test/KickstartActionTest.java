@@ -31,7 +31,6 @@ import java.util.Date;
 
 /**
  * KickstartActionTest
- * @version $Rev$
  */
 public class KickstartActionTest extends RhnBaseTestCase {
 

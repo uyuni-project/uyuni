@@ -30,7 +30,6 @@ import java.util.Map;
 
 /**
  * Driver for the threaded errata queue
- * @version $Rev$
  */
 public class ErrataQueueDriver implements QueueDriver {
 

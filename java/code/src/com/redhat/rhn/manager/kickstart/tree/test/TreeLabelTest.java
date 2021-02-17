@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 /**
  * TreeLabelTest
- * @version $Rev$
  */
 public class TreeLabelTest extends BaseTestCaseWithUser {
 

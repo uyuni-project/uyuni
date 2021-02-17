@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SyncErrataAction
- * @version $Rev$
  */
 public class SyncErrataAction extends RhnAction implements Listable<ErrataOverview> {
 

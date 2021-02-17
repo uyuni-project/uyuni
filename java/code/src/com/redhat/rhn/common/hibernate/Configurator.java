@@ -19,7 +19,6 @@ import org.hibernate.cfg.Configuration;
 /**
  * Simple interface for classes that can modify Hibernate's configuration
  *
- * @version $Rev$
  */
 public interface Configurator {
 

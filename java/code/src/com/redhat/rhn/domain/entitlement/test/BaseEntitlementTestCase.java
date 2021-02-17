@@ -31,7 +31,6 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 
 /**
  * BaseEntitlementTestCase
- * @version $Rev$
  */
 public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic;
 
 /**
  * NoSuchBunchTaskException
- * @version $Rev$
  */
 public class NoSuchBunchTaskException extends Exception {
 

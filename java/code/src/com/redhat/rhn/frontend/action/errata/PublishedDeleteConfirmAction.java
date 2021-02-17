@@ -19,7 +19,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 /**
  * PublishedDeleteConfirmAction
- * @version $Rev$
  */
 public class PublishedDeleteConfirmAction extends BaseDeleteErrataAction {
 

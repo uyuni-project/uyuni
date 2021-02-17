@@ -22,7 +22,6 @@ import java.util.Map;
 
 /**
  * TestHandlerTest
- * @version $Rev$
  */
 public class TestHandlerTest extends BaseHandlerTestCase {
 

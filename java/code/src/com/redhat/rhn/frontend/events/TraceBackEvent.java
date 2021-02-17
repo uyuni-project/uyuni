@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * An event representing an error generated from the web frontend
  *
- * @version $Rev$
  */
 public class TraceBackEvent extends BaseEvent implements EventMessage {
 

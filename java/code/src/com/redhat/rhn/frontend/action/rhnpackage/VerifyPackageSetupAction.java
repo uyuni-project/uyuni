@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
  * VerifyPackageSetupAction
- * @version $Rev$
  */
 public class VerifyPackageSetupAction extends BaseSystemPackagesAction {
     /**

@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * PackageNameOverviewActionTest
- * @version $Rev$
  */
 public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
 

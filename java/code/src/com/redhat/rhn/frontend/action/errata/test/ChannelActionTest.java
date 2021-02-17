@@ -40,7 +40,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * ChannelActionTest
- * @version $Rev$
  */
 public class ChannelActionTest extends RhnBaseTestCase {
 

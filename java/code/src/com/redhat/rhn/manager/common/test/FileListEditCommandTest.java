@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 /**
  * FileListEditCommandTest - test for FileListEditCommand
- * @version $Rev$
  */
 public class FileListEditCommandTest extends BaseTestCaseWithUser {
 

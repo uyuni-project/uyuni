@@ -33,7 +33,6 @@ import java.util.List;
  * namespace.
  * @xmlrpc.namespace preferences.locale
  * @xmlrpc.doc Provides methods to access and modify user locale information
- * @version $Rev$
  */
 public class PreferencesLocaleHandler extends BaseHandler {
 
@@ -131,7 +130,6 @@ public class PreferencesLocaleHandler extends BaseHandler {
 
     /**
      * TzPredicate - used to find a valid id in the list.
-     * @version $Rev$
      */
     public static class TzPredicate implements Predicate {
 
@@ -154,7 +152,6 @@ public class PreferencesLocaleHandler extends BaseHandler {
 
     /**
      * LocalePredicate - used to find a valid id in the list.
-     * @version $Rev$
      */
     public static class LocalePredicate implements Predicate {
 

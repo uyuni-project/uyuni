@@ -27,7 +27,6 @@ import java.util.Iterator;
 
 /**
  * ErrataSetupActionTest
- * @version $Rev$
  */
 public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {

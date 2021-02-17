@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * PackageNameTest
- * @version $Rev$
  */
 public class PackageNameTest extends RhnBaseTestCase {
     /**

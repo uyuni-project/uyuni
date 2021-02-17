@@ -48,7 +48,6 @@ import com.redhat.rhn.manager.audit.AuditManager;
 
 /**
  * AuditSearchAction
- * @version $Rev$
  */
 public class AuditSearchAction extends RhnAction {
 

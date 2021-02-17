@@ -18,7 +18,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * PackageComparison
- * @version $Rev$
  */
 public class PackageComparison extends BaseDto {
 

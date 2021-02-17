@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CompareRevisionAction extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev$
  */
 public class CompareRevisionAction extends BaseListAction {
 

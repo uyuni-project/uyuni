@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * AllChannelTreeSetupActionTest
- * @version $Rev$
  */
 public class AllChannelTreeActionTest extends RhnBaseTestCase {
 

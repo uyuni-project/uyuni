@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidRepoLabelException
- * @version $Rev$
  */
 public class InvalidRepoLabelException extends FaultException {
 

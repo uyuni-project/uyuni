@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
  * {@link ListRhnSetHelper} instead.
  *
  * @author paji
- * @version $Rev$
  * @see ListRhnSetHelper
  */
 public class ListSessionSetHelper extends ListSetHelper {

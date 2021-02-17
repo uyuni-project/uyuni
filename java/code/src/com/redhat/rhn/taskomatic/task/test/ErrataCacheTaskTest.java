@@ -21,7 +21,6 @@ import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * ErrataCacheTaskTest
- * @version $Rev$
  */
 public class ErrataCacheTaskTest extends RhnBaseTestCase {
 

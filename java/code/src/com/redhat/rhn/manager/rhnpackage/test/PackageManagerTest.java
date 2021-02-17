@@ -74,7 +74,6 @@ import java.util.Set;
 
 /**
  * PackageManagerTest
- * @version $Rev$
  */
 public class PackageManagerTest extends BaseTestCaseWithUser {
 

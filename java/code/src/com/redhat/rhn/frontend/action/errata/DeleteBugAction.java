@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteBugAction
- * @version $Rev$
  */
 public class DeleteBugAction extends RhnAction {
 

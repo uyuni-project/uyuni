@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * KickstartOverviewAction
- * @version $Rev$
  */
 public class KickstartOverviewAction extends RhnAction {
 

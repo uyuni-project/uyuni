@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtAuthRoleMappingAction
- * @version $Rev$
  */
 public class ExtAuthRoleMappingAction extends RhnAction implements Listable {
 

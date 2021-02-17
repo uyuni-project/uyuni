@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.html.HtmlTag;
  * 'spacewalk-content-nav' and the individual rows can be styled by
  * ul:nth-child selectors.
  *
- * @version $Rev$
  */
 
 public class DialognavRenderer extends Renderable {

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.AbstractLabelNameHelper;
 
 /**
  * CPUArch
- * @version $Rev$
  */
 public class CPUArch extends AbstractLabelNameHelper {
 

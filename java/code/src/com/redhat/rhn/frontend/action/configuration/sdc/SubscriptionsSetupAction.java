@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * SubscriptionsSetupAction
- * @version $Rev$
  */
 public class SubscriptionsSetupAction extends BaseSetListAction {
 

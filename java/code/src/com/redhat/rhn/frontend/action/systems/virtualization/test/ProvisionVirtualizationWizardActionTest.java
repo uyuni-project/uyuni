@@ -60,7 +60,6 @@ import junit.framework.AssertionFailedError;
 
 /**
  * ProvisionVirtualizationWizardActionTest
- * @version $Rev$
  */
 public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCase {
 

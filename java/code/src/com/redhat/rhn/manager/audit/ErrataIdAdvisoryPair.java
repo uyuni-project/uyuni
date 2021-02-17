@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.audit;
 /**
  * Class encapsulating an errata's id and advisory.
  *
- * @version $Rev$
  */
 public class ErrataIdAdvisoryPair {
 

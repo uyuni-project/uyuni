@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ChildChannelDTO
- * @version $Rev$
  */
 public class ChildChannelDto {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.FaultException;
  * InvalidTimeZoneException thrown when an invalid timezone is passed in as
  * an argument.  TimeZone's are invalid if it does not exist in the
  * <code>rhn_timezone</code> table.
- * @version $Rev$
  */
 public class NotSupportedException extends FaultException {
 

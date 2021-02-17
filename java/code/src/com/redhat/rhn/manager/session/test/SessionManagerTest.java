@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 /** JUnit test case for the SessionManagerTest.
- * @version $Rev$
  */
 
 public class SessionManagerTest extends RhnBaseTestCase {

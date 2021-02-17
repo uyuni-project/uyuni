@@ -30,7 +30,6 @@ import simple.http.connect.ConnectionFactory;
 
 /**
  * TaskoXmlRpcServer
- * @version $Rev$
  */
 public class TaskoXmlRpcServer {
 

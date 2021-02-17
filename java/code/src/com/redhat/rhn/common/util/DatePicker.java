@@ -58,7 +58,6 @@ import java.util.TimeZone;
  *   }
  * </pre>
  *
- * @version $Rev$
  */
 public class DatePicker {
 

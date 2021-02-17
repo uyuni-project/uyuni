@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * InvalidVirtualizationTypeException
- * @version $Rev$
  */
 public class InvalidVirtualizationTypeException extends FaultException {
 

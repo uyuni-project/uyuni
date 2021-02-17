@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ManagedSystemsList
- * @version $Rev$
  */
 public class ManagedSystemsList extends RhnListAction {
 

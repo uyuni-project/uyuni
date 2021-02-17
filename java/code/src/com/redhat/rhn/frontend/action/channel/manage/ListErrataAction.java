@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * AddErrataAction
- * @version $Rev$
  */
 public class ListErrataAction extends RhnListAction implements Listable<ErrataOverview> {
 

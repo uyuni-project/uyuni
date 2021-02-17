@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * ListRemoveGroupsAction
- * @version $Rev$
  */
 public class ListRemoveGroupsAction extends BaseListAction implements Listable {
 

@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 
 /**
  * PackageChangelogDto
- * @version $Rev$
  *
  * DTO for a specific set of package capability data returned from some data source
  * package queries.

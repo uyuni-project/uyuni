@@ -73,7 +73,6 @@ import javax.xml.transform.stream.StreamSource;
 
 /**
  * ScapManager
- * @version $Rev$
  */
 public class ScapManager extends BaseManager {
 

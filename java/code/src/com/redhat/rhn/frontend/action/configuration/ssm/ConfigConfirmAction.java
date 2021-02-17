@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * DiffConfirmAction
- * @version $Rev$
  */
 public class ConfigConfirmAction extends BaseListAction implements MaintenanceWindowsAware {
 

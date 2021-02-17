@@ -53,7 +53,6 @@ import com.redhat.rhn.frontend.context.Context;
  * Localization service class to simplify the job for producing localized
  * (translated) strings within the product.
  *
- * @version $Rev$
  */
 public class LocalizationService {
 

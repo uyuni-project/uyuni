@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.strings.nav;
 
 /**
  * Placeholder class to identify package of StringResources.
- * @version $Rev$
  */
 public class StringPackage {
     //empty

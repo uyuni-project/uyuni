@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemDetailsEditAction
- * @version $Rev$
  */
 public class SystemMigrateAction extends RhnAction {
 

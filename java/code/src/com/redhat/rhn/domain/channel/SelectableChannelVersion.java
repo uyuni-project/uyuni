@@ -22,7 +22,6 @@ import java.util.List;
 /**
  *
  * SelectableChannelVersion
- * @version $Rev$
  */
 public class SelectableChannelVersion  implements Selectable {
 

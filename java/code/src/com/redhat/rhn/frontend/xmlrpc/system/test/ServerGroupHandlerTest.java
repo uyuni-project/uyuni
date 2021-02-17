@@ -47,7 +47,6 @@ import java.util.List;
 
 /**
  * ServerGroupHandlerTest
- * @version $Rev$
  */
 public class ServerGroupHandlerTest extends BaseHandlerTestCase {
     private SaltApi saltApi = new TestSaltApi();

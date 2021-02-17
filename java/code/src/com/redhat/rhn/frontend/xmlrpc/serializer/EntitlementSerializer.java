@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * EntitlementSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  * #struct_begin("entitlement info")

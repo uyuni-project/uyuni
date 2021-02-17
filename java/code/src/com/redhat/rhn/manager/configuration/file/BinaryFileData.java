@@ -30,7 +30,6 @@ import java.io.InputStream;
 
 /**
  * BinaryFileData
- * @version $Rev$
  */
 public class BinaryFileData extends ConfigFileData {
     private InputStream contents;

@@ -21,7 +21,6 @@ import java.util.Date;
 import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
- * @version $Rev$
  */
 public class SnapshotTagDto extends BaseDto {
 

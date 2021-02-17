@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.satellite.RestartCommand;
 
 /**
  * TestRestartCommand
- * @version $Rev$
  */
 public class TestRestartCommand extends RestartCommand {
 

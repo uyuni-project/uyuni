@@ -18,7 +18,6 @@ import java.util.Set;
 
 /**
  * RhnSet
- * @version $Rev$
  */
 public interface RhnSet extends Set {
 

@@ -27,7 +27,6 @@ import java.util.Set;
 
 /**
  * ContentSourceType
- * @version $Rev$
  */
 public class ContentSource extends BaseDomainHelper implements Identifiable {
 

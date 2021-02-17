@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * NotifySetupAction
- * @version $Rev$
  */
 public class BaseErrataSetupAction extends RhnListAction {
 

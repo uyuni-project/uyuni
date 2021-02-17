@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * CPU
- * @version $Rev$
  */
 public class CPU extends BaseDomainHelper {
 

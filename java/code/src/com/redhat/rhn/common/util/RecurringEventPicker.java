@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletRequest;
  *       call picker.isDisabled() to see if it is disabled or not
  * </pre>
  *
- * @version $Rev$
  */
 public class RecurringEventPicker {
 

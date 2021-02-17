@@ -30,7 +30,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * ColumnTagTest
- * @version $Rev$
  */
 public class ColumnTagTest extends RhnBaseTestCase {
 

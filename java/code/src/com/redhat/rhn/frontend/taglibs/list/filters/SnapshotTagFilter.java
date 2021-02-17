@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  *
  * SnapshotTagFilter
- * @version $Rev$
  */
 public class SnapshotTagFilter extends BaseListFilter {
 

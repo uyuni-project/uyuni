@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * IncompatibleArchException
- * @version $Rev$
  */
 public class IncompatibleArchException extends RhnRuntimeException {
 

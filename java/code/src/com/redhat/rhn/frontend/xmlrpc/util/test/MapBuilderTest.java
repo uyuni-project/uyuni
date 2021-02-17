@@ -25,7 +25,6 @@ import java.util.Map;
 /**
  *
  * MapBuilderTest
- * @version $Rev$
  */
 public class MapBuilderTest extends RhnBaseTestCase {
     private MapBuilder builder;

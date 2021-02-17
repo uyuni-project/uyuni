@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
 
 /**
  * ChannelFactory
- * @version $Rev$
  */
 public class ChannelFactory extends HibernateFactory {
 

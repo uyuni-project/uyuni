@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DisableSelfConfirmAction
- * @version $Rev$
  */
 public class DisableSelfConfirmAction extends RhnAction {
 

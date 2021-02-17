@@ -22,7 +22,6 @@ import java.util.Set;
 
 /**
  * HtmlTag a simple class to render an html tag
- * @version $Rev$
  */
 
 public class HtmlTag extends BaseTag {

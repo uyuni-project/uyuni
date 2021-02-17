@@ -22,7 +22,6 @@ import org.quartz.JobExecutionException;
 
 /**
  * RhnJob
- * @version $Rev$
  */
 public interface RhnJob extends Job {
 

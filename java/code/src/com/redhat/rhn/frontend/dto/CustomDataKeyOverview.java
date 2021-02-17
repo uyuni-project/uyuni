@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * CustomDataKey
- * @version $Rev$
  */
 public class CustomDataKeyOverview extends BaseDto {
 

@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * on an Action object.  This is so we can localize the output from certain fields
  * as well as produce an HTML version for output on certain fields.
  *
- * @version $Rev$
  */
 public class ActionFormatter {
 

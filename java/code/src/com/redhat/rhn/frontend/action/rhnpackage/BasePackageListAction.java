@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public abstract class BasePackageListAction extends BaseListAction {
     /** {@inheritDoc} */

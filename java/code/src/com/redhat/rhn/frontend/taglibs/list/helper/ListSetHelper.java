@@ -80,7 +80,6 @@ import javax.servlet.http.HttpServletRequest;
  *   }
  * }</pre>
  * @author paji
- * @version $Rev$
  */
 abstract class ListSetHelper extends ListHelper {
     private boolean dispatched = false;

@@ -33,7 +33,6 @@ import javax.servlet.jsp.JspWriter;
 
 /**
  * SystemTimeMessageTagTest
- * @version $Rev$
  */
 public class SystemTimeMessageTagTest extends RhnBaseTestCase {
 

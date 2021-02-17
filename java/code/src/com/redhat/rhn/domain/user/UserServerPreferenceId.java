@@ -23,7 +23,6 @@ import java.io.Serializable;
 
 /**
  * UserServerPreferenceId
- * @version $Rev$
  */
 public class UserServerPreferenceId implements Serializable {
 

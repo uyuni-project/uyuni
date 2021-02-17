@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CreateSetupAction
- * @version $Rev$
  */
 public class CreateSetupAction extends RhnListAction {
 

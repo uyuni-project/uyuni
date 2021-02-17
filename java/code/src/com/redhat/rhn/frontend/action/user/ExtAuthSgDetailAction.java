@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtAuthSgDetailAction
- * @version $Rev$
  */
 public class ExtAuthSgDetailAction extends RhnAction {
 

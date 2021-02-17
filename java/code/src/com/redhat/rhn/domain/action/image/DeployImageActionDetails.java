@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.action.ActionChild;
 
 /**
  * DeployImageActionDetails - Class representation of the table rhnActionImageDeploy.
- * @version $Rev$
  */
 public class DeployImageActionDetails extends ActionChild {
 

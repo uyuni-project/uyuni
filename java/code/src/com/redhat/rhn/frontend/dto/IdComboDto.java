@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 /**
  * This describes an object with a combo id
  * that will be stored in an RhnSet.
- * @version $Rev$
  */
 public abstract class IdComboDto extends BaseDto {
 

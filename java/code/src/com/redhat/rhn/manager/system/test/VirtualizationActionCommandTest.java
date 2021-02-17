@@ -26,7 +26,6 @@ import java.util.Date;
 
 /**
  * VirtualizationActionCommandTest
- * @version $Rev$
  */
 public class VirtualizationActionCommandTest extends BaseTestCaseWithUser {
     public void testLookupActionLabel() throws Exception {

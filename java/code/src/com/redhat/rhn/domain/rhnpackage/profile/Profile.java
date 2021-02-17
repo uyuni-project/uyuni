@@ -27,7 +27,6 @@ import java.util.Set;
 
 /**
  * Profile
- * @version $Rev$
  */
 public class Profile extends BaseDomainHelper implements Identifiable {
 

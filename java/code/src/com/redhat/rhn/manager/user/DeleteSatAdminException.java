@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.user.User;
  * Exception thrown when we cannot delete a Satellite administrator. (presumably because
  * they are the last remaining)
  *
- * @version $Rev$
  */
 public class DeleteSatAdminException extends RhnRuntimeException {
 

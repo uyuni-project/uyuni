@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for system groups
  *
- * @version $Rev$
  */
 public class SystemGroupsRenderer extends  BaseFragmentRenderer {
 

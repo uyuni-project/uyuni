@@ -26,7 +26,6 @@ import org.apache.struts.action.ActionForward;
 
 /**
  * BaseErrataActionTestCase
- * @version $Rev$
  */
 public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
 

@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteUserAction
- * @version $Rev$
  */
 public class DeleteUserAction extends RhnAction {
 

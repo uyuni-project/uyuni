@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * RhnHttpServletRequest
- * @version $Rev$
  */
 public class RhnHttpServletRequest extends HttpServletRequestWrapper {
 

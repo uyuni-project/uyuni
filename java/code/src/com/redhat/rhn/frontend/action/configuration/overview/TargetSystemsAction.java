@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * TargetSystemsAction extends RhnSetAction
- * @version $Rev$
  */
 public class TargetSystemsAction extends RhnListAction {
 

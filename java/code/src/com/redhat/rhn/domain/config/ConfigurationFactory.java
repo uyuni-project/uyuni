@@ -52,7 +52,6 @@ import java.util.Optional;
  *
  * When saving config channels, config files, and config revisions: please use the
  * commitConfigBlah methods.
- * @version $Rev$
  */
 public class ConfigurationFactory extends HibernateFactory {
     private static ConfigurationFactory singleton = new ConfigurationFactory();

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteErratumAction
- * @version $Rev$
  */
 public class DeleteErratumAction extends LookupDispatchAction {
 

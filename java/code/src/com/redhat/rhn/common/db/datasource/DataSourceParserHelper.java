@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 /**
  * A contentHandler that knows how to parse the DataSource XML files.
  *
- * @version $Rev$
  */
 class DataSourceParserHelper implements ContentHandler, Serializable {
 

@@ -27,7 +27,6 @@ import java.util.Set;
 
 /**
  * ChannelAclHandler - implements ACLs associated with channel_detail.xml
- * @version $Rev$
  */
 public class ChannelAclHandler extends BaseHandler {
 

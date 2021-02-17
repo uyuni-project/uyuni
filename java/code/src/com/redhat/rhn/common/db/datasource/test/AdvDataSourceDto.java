@@ -18,7 +18,6 @@ package com.redhat.rhn.common.db.datasource.test;
 
 /**
  * AdvDataSourceDto
- * @version $Rev$
  */
 public class AdvDataSourceDto {
     private Long id;

@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CreateProfileAction
- * @version $Rev$
  */
 public class CreateProfileAction extends RhnAction {
 

@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * GlobalRevisionDeploySubmit
- * @version $Rev$
  */
 public class GlobalRevisionDeploySubmit extends BaseSetOperateOnSelectedItemsAction {
 

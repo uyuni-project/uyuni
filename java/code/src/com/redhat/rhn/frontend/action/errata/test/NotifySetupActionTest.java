@@ -32,7 +32,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * NotifySetupActionTest
- * @version $Rev$
  */
 public class NotifySetupActionTest extends RhnBaseTestCase {
 

@@ -35,7 +35,6 @@ import java.util.List;
 
 /**
 * KeysHandler
-* @version $Rev$
 * @xmlrpc.namespace kickstart.profile.keys
 * @xmlrpc.doc Provides methods to access and modify the list of activation keys
 * associated with a kickstart profile.

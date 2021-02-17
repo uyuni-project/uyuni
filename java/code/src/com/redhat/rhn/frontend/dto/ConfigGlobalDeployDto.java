@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 
 /**
  * ConfigGlobalDeployDto
- * @version $Rev$
  */
 public class ConfigGlobalDeployDto extends BaseDto {
 

@@ -51,7 +51,6 @@ import java.util.Set;
 
 /**
  * PackageFactoryTest
- * @version $Rev$
  */
 public class PackageFactoryTest extends BaseTestCaseWithUser {
 

@@ -28,7 +28,6 @@ import java.util.Collection;
  * CloneErrataAction - publish event to clone the errata into a channel
  * or a set of Channels.
  *
- * @version $Rev$
  */
 public class CloneErrataEvent implements EventDatabaseMessage {
 

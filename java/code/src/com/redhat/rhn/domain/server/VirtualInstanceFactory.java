@@ -31,7 +31,6 @@ import java.util.Set;
  * VirtualInstanceFactory provides data access operations for virtual instances.
  *
  * @see VirtualInstance
- * @version $Rev$
  */
 public class VirtualInstanceFactory extends HibernateFactory {
 

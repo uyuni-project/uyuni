@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * HardwareRefreshAction
- * @version $Rev$
  */
 public class HardwareRefreshAction extends Action {
 

@@ -20,7 +20,6 @@ import java.util.List;
  * SystemsPerChannelDto - how many systems are sub'd to this base channel? What
  * other base channels are those systems allowed to sub to? What are the
  * available child-channels for this base?
- * @version $Rev$
  */
 public class SystemsPerChannelDto extends BaseDto {
 

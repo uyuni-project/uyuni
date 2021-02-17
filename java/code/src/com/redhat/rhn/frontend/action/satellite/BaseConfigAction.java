@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 /**
  * BaseConfigAction - contains common methods for Struts Actions needing to
  * config a sat.
- * @version $Rev$
  */
 public abstract class BaseConfigAction extends RhnAction {
 

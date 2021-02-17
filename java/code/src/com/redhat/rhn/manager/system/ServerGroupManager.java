@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
 
 /**
  * ServerGroupManager
- * @version $Rev$
  */
 public class ServerGroupManager {
 

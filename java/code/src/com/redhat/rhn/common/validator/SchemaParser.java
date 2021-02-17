@@ -33,7 +33,6 @@ import java.util.Map;
  *  The <code>SchemaParser</code> class parses an XML Schema and creates
  *    <code>{@link Constraint}</code> objects from it.
  * </p>
- * @version $Rev$
  */
 public class SchemaParser {
 

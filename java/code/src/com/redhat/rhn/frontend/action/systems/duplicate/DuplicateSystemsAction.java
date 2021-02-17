@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemListAction
- * @version $Rev$
  */
 public class DuplicateSystemsAction extends RhnAction implements
         Listable<DuplicateSystemGrouping> {

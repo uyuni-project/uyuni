@@ -18,7 +18,6 @@ import EDU.oswego.cs.dl.util.concurrent.ThreadFactory;
 
 /**
  * ThreadFactory impl for Taskomatic
- * @version $Rev$
  */
 public class TaskThreadFactory implements ThreadFactory {
 

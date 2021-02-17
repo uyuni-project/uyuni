@@ -25,7 +25,6 @@ import junit.framework.AssertionFailedError;
 /**
  * A Mock implementation of our Mail interface.
  *
- * @version $Rev$
  */
 public class MockMail implements Mail {
 

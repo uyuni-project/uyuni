@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtAuthSgMappingAction
- * @version $Rev$
  */
 public class ExtAuthSgMappingAction extends RhnAction implements Listable<OrgUserExtGroup> {
 

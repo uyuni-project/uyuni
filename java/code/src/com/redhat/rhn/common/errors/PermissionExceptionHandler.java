@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PermissionExceptionHandler
- * @version $Rev$
  */
 public class PermissionExceptionHandler extends ExceptionHandler {
 

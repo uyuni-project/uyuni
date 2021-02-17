@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * CryptoKeyDto
- * @version $Rev$
  */
 public class CryptoKeyDto extends BaseDto {
 

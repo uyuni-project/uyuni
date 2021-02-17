@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 /**
  * TestConfigureSatelliteCommand - used so we dont actually write configs to disk
- * @version $Rev$
  */
 public class TestConfigureSatelliteCommand extends ConfigureSatelliteCommand {
 

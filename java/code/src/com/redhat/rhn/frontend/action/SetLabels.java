@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action;
 
 /**
  * SetLabels
- * @version $Rev$
  */
 public final class SetLabels {
     public static final String SYSTEM_ENTITLEMENTS = "system_entitlements";

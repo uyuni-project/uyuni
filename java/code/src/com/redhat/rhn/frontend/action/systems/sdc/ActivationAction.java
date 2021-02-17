@@ -39,7 +39,6 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
- * @version $Rev$
  */
 public class ActivationAction extends RhnAction {
 

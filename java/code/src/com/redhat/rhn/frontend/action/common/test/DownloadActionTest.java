@@ -32,7 +32,6 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * TinyUrlActionTest
- * @version $Rev$
  */
 public class DownloadActionTest extends RhnMockStrutsTestCase {
 

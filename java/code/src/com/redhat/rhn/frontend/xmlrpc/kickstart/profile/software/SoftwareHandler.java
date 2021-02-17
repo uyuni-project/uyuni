@@ -40,7 +40,6 @@ import java.util.Set;
  * @xmlrpc.namespace kickstart.profile.software
  * @xmlrpc.doc Provides methods to access and modify the software list
  * associated with a kickstart profile.
- * @version $Rev$
  */
 public class SoftwareHandler extends BaseHandler {
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.struts;
 
 /**
  * SelectableLabelValueBean
- * @version $Rev$
  */
 public class SelectableLabelValueBean extends SelectableAdapter {
 

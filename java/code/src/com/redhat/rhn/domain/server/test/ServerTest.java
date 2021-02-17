@@ -52,7 +52,6 @@ import java.util.Optional;
 
 /**
  * ServerTest
- * @version $Rev$
  */
 public class ServerTest extends BaseTestCaseWithUser {
 

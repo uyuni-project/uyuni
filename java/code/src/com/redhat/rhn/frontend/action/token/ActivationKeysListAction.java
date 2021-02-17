@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ActivatonKeysListAction
- * @version $Rev$
  */
 public class ActivationKeysListAction extends RhnAction {
     private static final String LIST_NAME = "activationKeys";

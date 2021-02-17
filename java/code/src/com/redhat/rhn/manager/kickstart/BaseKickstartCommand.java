@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 
 /**
  * BaseKickstartCommand - baseclass for editing a FileList class.
- * @version $Rev$
  */
 public abstract class BaseKickstartCommand implements PersistOperation {
 

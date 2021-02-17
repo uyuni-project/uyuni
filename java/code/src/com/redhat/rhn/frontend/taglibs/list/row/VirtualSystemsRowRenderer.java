@@ -19,7 +19,6 @@ import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 /**
  *
  * VirtualSystemsRowRenderer
- * @version $Rev$
  */
 public class VirtualSystemsRowRenderer extends RowRenderer {
     private static final String TREE_ROW_PARENT     = "list-row-odd";

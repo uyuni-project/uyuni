@@ -23,7 +23,6 @@ package com.redhat.rhn.frontend.html;
  * <input name="prev_filter_value" type="hidden" value="908238940"/>
  * }
  *
- * @version $Rev$
  */
 
 public class HiddenInputTag extends InputTag {

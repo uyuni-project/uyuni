@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * ReleaseChannelMapTest
- * @version $Rev$
  */
 public class ReleaseChannelMapTest extends BaseTestCaseWithUser {
 

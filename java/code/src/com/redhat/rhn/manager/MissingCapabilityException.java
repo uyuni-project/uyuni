@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 
 /**
  * MissingCapabilityException
- * @version $Rev$
  */
 public class MissingCapabilityException extends RhnRuntimeException {
 

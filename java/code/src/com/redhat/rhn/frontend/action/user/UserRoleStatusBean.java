@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.user;
 
 /**
  * UserRoleStatusBean
- * @version $Rev$
  */
 public class UserRoleStatusBean {
 

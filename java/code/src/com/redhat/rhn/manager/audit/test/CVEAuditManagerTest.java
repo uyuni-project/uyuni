@@ -63,7 +63,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 /**
  * Unit tests for {@link CVEAuditManager}.
  *
- * @version $Rev$
  */
 public class CVEAuditManagerTest extends RhnBaseTestCase {
 

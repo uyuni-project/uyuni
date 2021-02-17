@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * RollbackListTransactionsAction - Class representing TYPE_ROLLBACK_LISTTRANSACTIONS
- * @version $Rev$
  */
 public class RollbackListTransactionsAction extends Action {
 

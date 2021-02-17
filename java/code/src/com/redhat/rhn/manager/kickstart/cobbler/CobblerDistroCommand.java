@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * CobblerProfileComand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public class CobblerDistroCommand extends CobblerCommand {
 

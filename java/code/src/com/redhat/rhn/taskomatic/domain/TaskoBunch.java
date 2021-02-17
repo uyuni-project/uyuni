@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * TaskoBunch
- * @version $Rev$
  */
 public class TaskoBunch {
 

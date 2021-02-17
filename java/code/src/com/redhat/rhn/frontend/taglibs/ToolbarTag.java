@@ -65,7 +65,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *     <li>spaOff - exclude link from single page application
  *     </ul>
  * </ul>
- * @version $Rev$
  */
 public class ToolbarTag extends TagSupport {
     private String base;

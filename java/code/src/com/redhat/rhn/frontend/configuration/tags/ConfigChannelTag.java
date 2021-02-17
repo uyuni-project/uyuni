@@ -30,7 +30,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * <p>
  * {@literal <cfg:channel id="" value="" type="" size="large|small" nolink="">}
  *
- * @version $Rev$
  */
 public class ConfigChannelTag extends TagSupport {
 

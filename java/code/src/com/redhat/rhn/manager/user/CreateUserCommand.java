@@ -48,7 +48,6 @@ import com.redhat.rhn.frontend.events.NewUserEvent;
 
 /**
  * A command to create or edit users
- * @version $Rev$
  */
 public class CreateUserCommand {
 

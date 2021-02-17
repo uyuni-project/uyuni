@@ -23,7 +23,6 @@ import org.quartz.TriggerListener;
  * Taskomatic's Quartz scheduled job listener
  * This listener counts down from a maximum number
  * of jobs scheduled and then shuts down the SchedulerKernel.
- * @version $Rev$
  */
 public class SingleShotListener implements TriggerListener {
 

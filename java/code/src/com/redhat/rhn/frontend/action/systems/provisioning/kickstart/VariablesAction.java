@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditVariablesAction
- * @version $Rev$
  */
 public class VariablesAction extends KickstartVariableAction {
     private static final String NETBOOT_ENABLED = "netbootEnabled";

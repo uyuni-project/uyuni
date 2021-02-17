@@ -36,7 +36,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *     definition="/WEB-INF/dialognav.xml"
  *     renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" /&gt;
  * </pre>
- * @version $Rev$
  */
 public class NavDialogMenuTag extends TagSupport {
 

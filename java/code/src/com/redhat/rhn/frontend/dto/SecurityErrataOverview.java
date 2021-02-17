@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  *  * SecurityErrataOverview
- *   * @version $Rev$
  *    */
 public class SecurityErrataOverview extends ErrataOverview
                                     implements RowCallback {

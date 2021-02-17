@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Note
- * @version $Rev$
  */
 public class Note extends BaseDomainHelper {
 

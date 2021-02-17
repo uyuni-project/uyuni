@@ -31,7 +31,6 @@ import java.lang.reflect.Modifier;
  * A simple class that assists with method invocation.  We should just use
  * the jakarta-commons MethodUtils class, but that class can't deal with
  * static methods, so it is useless to us.
- * @version $Rev$
  */
 public class MethodUtil {
 

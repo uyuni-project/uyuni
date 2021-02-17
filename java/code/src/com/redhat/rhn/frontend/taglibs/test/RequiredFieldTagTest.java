@@ -30,7 +30,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * RequiredFieldTagTest
- * @version $Rev$
  */
 public class RequiredFieldTagTest extends RhnBaseTestCase {
     public void testRender() throws Exception {

@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Copied from: http://www.koders.com/java/fidEC98D99B347D738A2B560EA856B93ADEABCF6B4E.aspx
- * @version $Rev$
  */
 public class MD5Sum {
 

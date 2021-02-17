@@ -22,7 +22,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * DecoratorTag
- * @version $Rev$
  */
 public class DecoratorTag extends BodyTagSupport {
 

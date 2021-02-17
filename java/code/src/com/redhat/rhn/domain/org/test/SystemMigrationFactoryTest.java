@@ -29,7 +29,6 @@ import java.util.List;
 
 /**
  * SystemMigrationFactoryTest
- * @version $Rev$
  */
 public class SystemMigrationFactoryTest extends RhnBaseTestCase {
 

@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
  * Exception thrown when there is a problem looking up a
  * server group.
  *
- * @version $Rev$
  */
 public class LookupServerGroupException extends FaultException {
 

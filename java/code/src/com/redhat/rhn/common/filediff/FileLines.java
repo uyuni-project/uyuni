@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * A block of lines from a single file.
- * @version $Rev$
  */
 public class FileLines {
 

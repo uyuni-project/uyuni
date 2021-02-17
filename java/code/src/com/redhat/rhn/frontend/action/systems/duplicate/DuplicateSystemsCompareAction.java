@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DuplicateSystemsCompareAction
- * @version $Rev$
  */
 public class DuplicateSystemsCompareAction extends RhnAction implements Listable {
     public static final String KEY = "key";

@@ -47,7 +47,6 @@ import java.util.TreeMap;
  * from rhnDailySummaryQueue. Not very "daily" since it runs every
  * 30 seconds.  Need to look at RHN::DailySummaryEngine.  This task
  * queues org emails, mails queued emails, then dequeues the emails.
- * @version $Rev$
  */
 public class DailySummary extends RhnJavaJob {
 

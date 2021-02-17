@@ -28,7 +28,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * RequiredField
- * @version $Rev$
  */
 public class RequiredFieldTag extends TagSupport {
 

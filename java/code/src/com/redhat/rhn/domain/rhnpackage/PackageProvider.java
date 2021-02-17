@@ -24,7 +24,6 @@ import java.util.Set;
 
 /**
  * PackageArch
- * @version $Rev$
  */
 public class PackageProvider extends BaseDomainHelper implements
         Comparable<PackageProvider> {

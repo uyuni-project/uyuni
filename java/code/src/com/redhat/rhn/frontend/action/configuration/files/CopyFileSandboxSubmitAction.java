@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CopyFileSandboxSubmitAction
- * @version $Rev$
  */
 public class CopyFileSandboxSubmitAction extends BaseCopyFileSubmitAction {
 

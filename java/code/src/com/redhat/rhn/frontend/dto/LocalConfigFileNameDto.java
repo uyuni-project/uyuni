@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * LocalConfigFileNameDto
- * @version $Rev$
  */
 public class LocalConfigFileNameDto extends ConfigFileNameDto {
     /**

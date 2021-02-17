@@ -19,7 +19,6 @@ import java.util.Set;
 
 /**
  * ChannelActionDAO - stores channel subscription/unsubscription info for a specific system
- * @version $Rev$
  */
 public class ChannelActionDAO {
 

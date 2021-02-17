@@ -22,7 +22,6 @@ import javax.lang.model.element.ExecutableElement;
 /**
  *
  * ApiCall
- * @version $Rev$
  */
 public class ApiCall implements Comparable<ApiCall> {
 

@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author partha
  * ActivatedSystemsAction
- * @version $Rev$
  */
 public class ActivatedSystemsAction extends BaseListAction {
     private static final String ACCESS_MAP = "accessMap";

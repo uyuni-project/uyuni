@@ -22,7 +22,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class PackageFileListAction extends BasePackageListAction {
     /** {@inheritDoc} */

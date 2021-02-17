@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * AddErrataAction
- * @version $Rev$
  */
 public class ErrataCloneAction extends RhnListAction {
 

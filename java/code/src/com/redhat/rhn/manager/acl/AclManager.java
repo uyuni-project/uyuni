@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * AclManager
- * @version $Rev$
  */
 public class AclManager {
 

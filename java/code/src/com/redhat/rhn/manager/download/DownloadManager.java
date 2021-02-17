@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * Provides methods for downloading packages and files and getting urls
  * DownloadManager
- * @version $Rev$
  */
 public class DownloadManager extends BaseManager {
 

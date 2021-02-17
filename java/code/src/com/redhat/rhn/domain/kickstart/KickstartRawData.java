@@ -26,7 +26,6 @@ import org.cobbler.Profile;
 /**
  * @author paji
  * KickstartRawData
- * @version $Rev$
  */
 public class KickstartRawData extends KickstartData {
 

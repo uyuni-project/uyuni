@@ -18,7 +18,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
  * SingleSnapshotTagCreateAction
- * @version $Rev$
  */
 public class SingleSnapshotTagCreateAction extends SnapshotTagCreateAction {
 

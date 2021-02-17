@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * GlobalRevisionDeploySetup
- * @version $Rev$
  */
 public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements MaintenanceWindowsAware {
 

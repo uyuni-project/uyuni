@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * XMLRPC exception corresponding to UnknownCVEIdentifierException.
- * @version $Rev$
  */
 public class UnknownCVEIdentifierFaultException extends FaultException {
     /**

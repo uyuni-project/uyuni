@@ -22,7 +22,6 @@ import java.util.Set;
 
 /**
  * RhnSetImpl
- * @version $Rev$
  */
 public class RhnSetImpl implements RhnSet {
     private Long uid;

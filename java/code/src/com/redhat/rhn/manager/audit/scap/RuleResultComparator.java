@@ -18,7 +18,6 @@ import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 
 /**
  * RuleResultComparator
- * @version $Rev$
  */
 public class RuleResultComparator {
     private static final String PASS = "pass";

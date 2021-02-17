@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * KickstartCryptoCommandTest
- * @version $Rev$
  */
 public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
 

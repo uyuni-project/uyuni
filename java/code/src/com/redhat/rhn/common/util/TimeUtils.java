@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 
 /**
  * TimeUtils is a utility class for dealing with time.
- * @version $Rev$
  */
 public class TimeUtils {
 

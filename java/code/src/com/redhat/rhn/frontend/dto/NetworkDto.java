@@ -22,7 +22,6 @@ import java.util.Date;
 /**
  *
  * NetworkDto
- * @version $Rev$
  */
 public class NetworkDto implements Identifiable {
 

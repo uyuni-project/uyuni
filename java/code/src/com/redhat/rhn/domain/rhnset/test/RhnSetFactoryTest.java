@@ -25,7 +25,6 @@ import java.util.Set;
 
 /**
  * RhnSetFactoryTest
- * @version $Rev$
  */
 public class RhnSetFactoryTest extends RhnBaseTestCase {
 

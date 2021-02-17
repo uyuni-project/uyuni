@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * ActivationKeysTest - test for ActivationKeys lists
- * @version $Rev$
  */
 public class ActivationKeysTest extends BaseKickstartEditTestCase {
 

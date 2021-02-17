@@ -64,7 +64,6 @@ import java.util.stream.Collectors;
 /**
  * UserHandler
  * Corresponds to User.pm in old perl code.
- * @version $Rev$
  * @xmlrpc.namespace user
  * @xmlrpc.doc User namespace contains methods to access common user functions
  * available from the web user interface.

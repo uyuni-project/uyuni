@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 /**
  * KickstartFileDownloadCommandTest
- * @version $Rev$
  */
 public class KickstartFileDownloadCommandTest extends
         BaseKickstartCommandTestCase {

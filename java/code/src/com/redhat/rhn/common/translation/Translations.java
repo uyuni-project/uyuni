@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
  * TranslationFactory, simple factory class that uses ManifestFactory to
  * return translation methods
  *
- * @version $Rev$
  */
 
 public class Translations {

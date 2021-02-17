@@ -48,7 +48,6 @@ import java.util.List;
  *
  * Handles the migration of systems from one organization to another.
  *
- * @version $Rev$
  */
 public class MigrationManager extends BaseManager {
 

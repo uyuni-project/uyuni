@@ -31,7 +31,6 @@ import java.util.List;
 
 /**
  * ChannelEditorTest
- * @version $Rev$
  */
 public class ChannelEditorTest extends RhnBaseTestCase {
 

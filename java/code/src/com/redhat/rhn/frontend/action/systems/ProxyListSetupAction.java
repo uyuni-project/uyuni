@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * ProxyListSetupAction
- * @version $Rev$
  */
 public class ProxyListSetupAction  extends BaseSystemsAction {
 

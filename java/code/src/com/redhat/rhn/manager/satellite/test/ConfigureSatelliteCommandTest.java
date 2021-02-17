@@ -29,7 +29,6 @@ import java.util.TreeMap;
 
 /**
  * ConfigureSatelliteCommandTest - test for ConfigureSatelliteCommand
- * @version $Rev$
  */
 public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
 

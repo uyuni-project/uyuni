@@ -27,7 +27,6 @@ import java.util.Map;
 /**
  * Translator The class that actually does the object translations for us.
  *
- * @version $Rev$
  */
 
 public class Translator extends Translations {

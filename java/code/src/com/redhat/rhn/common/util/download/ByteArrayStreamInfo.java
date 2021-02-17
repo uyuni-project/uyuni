@@ -25,7 +25,6 @@ import java.io.InputStream;
  * ByteArrayStreamInfo
  * Used by CsvDownloadAction and DownloadFile for downloading text files
  * @author jmatthews
- * @version $Rev$
  */
 public class ByteArrayStreamInfo implements StreamInfo {
 

@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * KickstartCommandName
- * @version $Rev$
  */
 public class KickstartCommand implements Comparable {
 

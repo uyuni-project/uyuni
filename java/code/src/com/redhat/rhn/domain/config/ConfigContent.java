@@ -23,7 +23,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ConfigContent - Class representation of the table rhnConfigContent.
- * @version $Rev$
  */
 public class ConfigContent extends BaseDomainHelper {
 

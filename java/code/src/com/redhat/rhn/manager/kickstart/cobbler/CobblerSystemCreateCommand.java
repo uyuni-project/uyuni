@@ -46,7 +46,6 @@ import java.util.Map;
 /**
  *
  * Login to Cobbler's XMLRPC API and get a token
- * @version $Rev$
  */
 public class CobblerSystemCreateCommand extends CobblerCommand {
 

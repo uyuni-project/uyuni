@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * ArchTypeTest
- * @version $Rev$
  */
 public class ArchTypeTest extends RhnBaseTestCase {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
  * Example: a confirm page.
  *
  * @see com.redhat.rhn.frontend.action.common.RhnSetAction
- * @version $Rev$
  */
 public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
 

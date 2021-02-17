@@ -26,7 +26,6 @@ import java.util.Set;
 
 /**
  * IpAddressRangeTest - test for IpAddressRange
- * @version $Rev$
  */
 public class IpAddressRangeTest extends BaseTestCaseWithUser {
 

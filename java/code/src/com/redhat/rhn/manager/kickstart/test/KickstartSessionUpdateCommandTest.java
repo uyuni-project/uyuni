@@ -22,7 +22,6 @@ import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
 
 /**
  * KickstartSessionUpdateCommand
- * @version $Rev$
  */
 public class KickstartSessionUpdateCommandTest extends BaseKickstartCommandTestCase {
 

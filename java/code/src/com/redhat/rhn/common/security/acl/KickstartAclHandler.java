@@ -27,7 +27,6 @@ import java.util.Map;
 
 /**
  * KickstartAclHandler - implements ACLs associated with kickstart_detail.xml
- * @version $Rev$
  */
 public class KickstartAclHandler extends BaseHandler {
     private static final String USER = "user";

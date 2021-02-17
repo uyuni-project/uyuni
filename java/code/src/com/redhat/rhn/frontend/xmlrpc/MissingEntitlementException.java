@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * Missing Entitlement Exception
- * @version $Rev$
  */
 public class MissingEntitlementException extends FaultException  {
 

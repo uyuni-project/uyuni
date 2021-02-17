@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * FailedSystemsSetupAction
- * @version $Rev$
  */
 public class FailedSystemsSetupAction extends ActionSystemsSetupAction {
 

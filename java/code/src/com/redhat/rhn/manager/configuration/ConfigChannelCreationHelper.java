@@ -34,7 +34,6 @@ import java.io.IOException;
 
 /**
  * ConfigChannelValidator
- * @version $Rev$
  */
 public class ConfigChannelCreationHelper {
     private static final String LABEL = "cofLabel";

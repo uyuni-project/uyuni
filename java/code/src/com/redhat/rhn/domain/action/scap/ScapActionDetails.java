@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.action.ActionChild;
 
 /**
  * ScapActionDetails
- * @version $Rev$
  */
 public class ScapActionDetails extends ActionChild {
 

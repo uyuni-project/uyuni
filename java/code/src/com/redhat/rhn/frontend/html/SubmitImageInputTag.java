@@ -23,7 +23,6 @@ package com.redhat.rhn.frontend.html;
  * <input alt="txt" name="test" src="/img/button-go.gif" type="image" />
  * }
  *
- * @version $Rev$
  */
 
 public class SubmitImageInputTag extends InputTag {

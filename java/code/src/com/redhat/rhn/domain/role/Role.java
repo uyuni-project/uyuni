@@ -21,7 +21,6 @@ package com.redhat.rhn.domain.role;
  * parent of this package, com.redhat.rhn.domain.org
  *
  * DB table: RHNUSERGROUP
- * @version $Rev$
  */
 public interface Role {
 

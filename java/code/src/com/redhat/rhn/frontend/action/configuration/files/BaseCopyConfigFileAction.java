@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
  * CopyFilesCentralAction
- * @version $Rev$
  */
 public abstract class BaseCopyConfigFileAction extends BaseSetListAction {
 

@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * CancelKickstartSessionOperationTest
- * @version $Rev$
  */
 public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
 

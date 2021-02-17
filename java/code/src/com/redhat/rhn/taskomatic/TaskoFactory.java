@@ -39,7 +39,6 @@ import java.util.Map;
 
 /**
  * TaskoFactory
- * @version $Rev$
  */
 public class TaskoFactory extends HibernateFactory {
     private static TaskoFactory singleton = new TaskoFactory();

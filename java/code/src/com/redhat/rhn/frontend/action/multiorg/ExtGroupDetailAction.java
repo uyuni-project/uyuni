@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtGroupDetailAction
- * @version $Rev$
  */
 public class ExtGroupDetailAction extends RhnAction {
 

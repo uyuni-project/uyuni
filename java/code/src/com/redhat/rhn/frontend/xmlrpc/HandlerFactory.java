@@ -93,7 +93,6 @@ import java.util.Set;
 /**
  * HandlerFactory for XMLRPC Handlers.
  *
- * @version $Rev$
  */
 
 public class HandlerFactory {

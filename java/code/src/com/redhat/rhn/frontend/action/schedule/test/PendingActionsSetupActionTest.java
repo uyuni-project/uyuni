@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * PendingActionsSetupActionTest
- * @version $Rev$
  */
 public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 

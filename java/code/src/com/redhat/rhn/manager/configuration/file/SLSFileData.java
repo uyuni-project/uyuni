@@ -27,7 +27,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 /**
  * SLSFileData
- * @version $Rev$
  */
 public class SLSFileData extends ConfigFileData {
     private String contents;

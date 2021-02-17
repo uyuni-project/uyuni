@@ -32,7 +32,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * ActionSystemsSetupActionTest
- * @version $Rev$
  */
 public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
 

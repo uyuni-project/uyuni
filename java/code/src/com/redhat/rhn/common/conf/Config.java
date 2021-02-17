@@ -39,7 +39,6 @@ import java.util.TreeSet;
  * Config files are properties, with /usr/share/rhn/config-defaults/rhn.conf
  * setting defaults that can be overridden by /etc/rhn/rhn.conf.
  *
- * @version $Rev$
  */
 public class Config {
 

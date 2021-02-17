@@ -42,7 +42,6 @@ import javax.servlet.jsp.jstl.core.Config;
  * Filter for centralizing locale and charset detection
  * and processing per-request
  *
- * @version $Rev$
  */
 public class LocalizedEnvironmentFilter implements Filter {
 

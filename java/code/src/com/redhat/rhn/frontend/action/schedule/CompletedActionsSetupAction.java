@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CompletedActionsSetupAction
- * @version $Rev$
  */
 public class CompletedActionsSetupAction extends BaseScheduledListAction {
 

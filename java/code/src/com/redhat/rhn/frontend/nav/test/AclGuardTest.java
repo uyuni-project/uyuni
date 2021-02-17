@@ -32,7 +32,6 @@ import java.util.HashMap;
 
 /**
  * AclGuardTest
- * @version $Rev$
  */
 public class AclGuardTest extends RhnBaseTestCase {
 

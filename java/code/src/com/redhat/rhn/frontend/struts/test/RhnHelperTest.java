@@ -26,7 +26,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * RhnHelperTest - test our RhnHelper class
- * @version $Rev$
  */
 public class RhnHelperTest extends RhnBaseTestCase {
 

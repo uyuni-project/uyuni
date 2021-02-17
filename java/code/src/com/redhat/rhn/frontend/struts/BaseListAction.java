@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
  * generating a list with support for precondition checking, and setup for building
  * the pageList attribute on the Request.  Meant for lists without RhnSet selections.
  *
- * @version $Rev$
  */
 public abstract class BaseListAction extends RhnListAction {
 

@@ -28,7 +28,6 @@ import java.util.Set;
  * ErrataActionFormatter - Class that overrides getNotes()
  * to display Errata specific information.
  *
- * @version $Rev$
  */
 public class ErrataActionFormatter extends ActionFormatter {
 

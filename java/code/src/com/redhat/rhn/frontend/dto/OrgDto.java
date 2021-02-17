@@ -23,7 +23,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  *
  * OrgDto class represents Org lists
- * @version $Rev$
  */
 public class OrgDto extends BaseDto {
     private Long id;

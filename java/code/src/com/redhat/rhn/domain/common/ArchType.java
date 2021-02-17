@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * ArchType
- * @version $Rev$
  */
 public class ArchType extends BaseDomainHelper {
 

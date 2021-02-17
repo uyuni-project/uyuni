@@ -23,7 +23,6 @@ import java.util.Hashtable;
 /**
  * xmlrpc handler for the general up2date process
  * @xmlrpc.ignore
- * @version $Rev$
  */
 public class UnitTestHandler extends BaseHandler {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidGPGFingerprintException
- * @version $Rev$
  */
 public class InvalidGPGFingerprintException extends FaultException {
 

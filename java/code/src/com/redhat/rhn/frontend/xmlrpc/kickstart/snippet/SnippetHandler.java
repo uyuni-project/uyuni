@@ -29,7 +29,6 @@ import java.util.List;
  * KickstartSnippetHandler
  * @xmlrpc.namespace kickstart.snippet
  * @xmlrpc.doc Provides methods to create kickstart files
- * @version $Rev$
  */
 public class SnippetHandler extends BaseHandler {
 

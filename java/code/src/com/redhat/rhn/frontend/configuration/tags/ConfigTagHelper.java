@@ -26,7 +26,6 @@ import javax.servlet.jsp.PageContext;
 
 /**
  * ConfigTagHelper
- * @version $Rev$
  */
 public class ConfigTagHelper {
 

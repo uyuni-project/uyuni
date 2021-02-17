@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * XccdfRuleResultDtoSerializer
- * @version $Rev$
  * @xmlrpc.doc
  * #struct_begin("OpenSCAP XCCDF RuleResult")
  *   #prop_desc("string", "idref", "idref from XCCDF document.")

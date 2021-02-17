@@ -32,7 +32,6 @@ import redstone.xmlrpc.XmlRpcCustomSerializer;
 /**
  * A basic servlet class that registers handlers for xmlrpc calls
  *
- * @version $Rev$
  * todo pull in namespace + classes for handlers from, say, a properties file
  * todo perhaps override doGet ??
  */

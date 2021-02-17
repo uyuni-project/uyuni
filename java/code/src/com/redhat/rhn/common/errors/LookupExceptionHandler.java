@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * LookupExceptionHandler
- * @version $Rev$
  */
 public class LookupExceptionHandler extends ExceptionHandler {
 

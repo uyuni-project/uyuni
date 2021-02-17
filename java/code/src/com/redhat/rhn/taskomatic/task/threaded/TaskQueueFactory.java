@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * Provides an easy-to-use way to locate and use threaded
  * work queues. Each queue is only created once.
- * @version $Rev$
  */
 public class TaskQueueFactory {
 
@@ -107,7 +106,6 @@ public class TaskQueueFactory {
 
     /**
      * JVM shutdown hook used to clean up any remaining queues
-     * @version $Rev$
      */
     class ShutdownHook extends Thread {
 

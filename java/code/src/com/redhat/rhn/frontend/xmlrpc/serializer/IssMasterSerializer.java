@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * IssMasterSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  * #struct_begin("IssMaster info")

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ConfigInfo - Class representation of the table rhnConfigInfo.
- * @version $Rev$
  */
 public class ConfigInfo extends BaseDomainHelper {
 

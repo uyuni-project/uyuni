@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.audit;
 
 /**
  * XccdfProfile - Class representation of the table rhnXccdfProfile.
- * @version $Rev$
  */
 public class XccdfProfile {
 

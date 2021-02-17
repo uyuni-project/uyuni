@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * MigrateSystemsAction
- * @version $Rev$
  */
 public class MigrateSystemsAction extends RhnAction implements Listable {
     /**

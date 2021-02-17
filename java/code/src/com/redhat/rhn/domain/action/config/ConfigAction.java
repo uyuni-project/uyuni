@@ -30,7 +30,6 @@ import java.util.Set;
 
 /**
  * ConfigAction - Class representation of the table rhnAction.
- * @version $Rev$
  */
 public class ConfigAction extends Action {
 

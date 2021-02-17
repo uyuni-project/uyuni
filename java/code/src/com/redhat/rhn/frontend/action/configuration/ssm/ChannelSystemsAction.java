@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ChannelSystems, list of systems for a config channel in ssm.
- * @version $Rev$
  */
 public class ChannelSystemsAction extends BaseListAction {
 

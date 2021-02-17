@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DisableSelfAction
- * @version $Rev$
  */
 public class DisableSelfAction extends RhnAction {
 

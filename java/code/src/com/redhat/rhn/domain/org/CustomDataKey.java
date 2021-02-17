@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * CustomDataKey
- * @version $Rev$
  */
 public class CustomDataKey {
 

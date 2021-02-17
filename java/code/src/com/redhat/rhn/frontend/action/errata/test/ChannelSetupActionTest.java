@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * ChannelSetupActionTest
- * @version $Rev$
  */
 public class ChannelSetupActionTest extends RhnBaseTestCase {
 

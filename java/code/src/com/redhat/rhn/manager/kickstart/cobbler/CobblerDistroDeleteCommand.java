@@ -26,7 +26,6 @@ import org.cobbler.Distro;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public class CobblerDistroDeleteCommand extends CobblerDistroCommand {
 

@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * TargetSystemsAction
- * @version $Rev$
  */
 public class TargetSystemsAction extends RhnAction implements Listable {
 

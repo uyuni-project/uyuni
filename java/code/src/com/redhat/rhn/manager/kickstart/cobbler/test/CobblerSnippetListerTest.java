@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * CobblerSnippetListerTest
- * @version $Rev$
  */
 public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
     public void testPerms() throws Exception {

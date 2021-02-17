@@ -40,7 +40,6 @@ import java.util.Set;
 
 /**
  * ErrataCacheFactory
- * @version $Rev$
  */
 public class ErrataCacheManager extends HibernateFactory {
 

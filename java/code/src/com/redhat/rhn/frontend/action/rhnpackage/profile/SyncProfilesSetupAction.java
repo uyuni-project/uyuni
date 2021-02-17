@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SyncProfilesSetupAction
- * @version $Rev$
  */
 public class SyncProfilesSetupAction extends RhnAction implements Listable {
 

@@ -41,7 +41,6 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 
 /**
  * ActivationKeyFactory
- * @version $Rev$
  */
 public class ActivationKeyFactory extends HibernateFactory {
 

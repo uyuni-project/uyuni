@@ -28,7 +28,6 @@ import java.util.Set;
 
 /**
  * ChannelArchTest
- * @version $Rev$
  */
 public class ChannelArchTest extends RhnBaseTestCase {
 

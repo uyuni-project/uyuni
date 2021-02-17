@@ -25,7 +25,6 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * A class to generate Hashed Message Authentication Codes.
  *
- * @version $Rev$
  */
 public class HMAC {
 

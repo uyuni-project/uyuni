@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CreateRedirectURITest
- * @version $Rev$
  */
 /**
  * CreateRedirectURITest

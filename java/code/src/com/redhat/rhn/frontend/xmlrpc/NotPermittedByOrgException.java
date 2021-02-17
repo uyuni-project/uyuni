@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * NotPermittedByOrg
- * @version $Rev$
  */
 public class NotPermittedByOrgException extends FaultException  {
 

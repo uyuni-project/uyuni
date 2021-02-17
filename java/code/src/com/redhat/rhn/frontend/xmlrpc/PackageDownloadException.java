@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * PackageDownloadException
- * @version $Rev$
  */
 public class PackageDownloadException extends FaultException {
 

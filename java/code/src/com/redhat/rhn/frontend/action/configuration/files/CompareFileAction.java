@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CompareFileAction
- * @version $Rev$
  */
 public class CompareFileAction extends BaseListAction {
 

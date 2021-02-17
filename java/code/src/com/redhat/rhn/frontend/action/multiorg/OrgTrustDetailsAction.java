@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Overview Action for the Configuration top level.
- * @version $Rev$
  */
 public class OrgTrustDetailsAction extends RhnAction {
 

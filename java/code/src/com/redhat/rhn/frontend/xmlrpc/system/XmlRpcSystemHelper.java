@@ -38,7 +38,6 @@ import java.util.stream.Stream;
  * XmlRpcSystemHelper
  * Helper methods specific to the xml-rpc stack. This class should not be used outside of
  * the xml-rpc domain as it throws Xml-Rpc specific FaultExceptions.
- * @version $Rev$
  */
 public class XmlRpcSystemHelper {
 

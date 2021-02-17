@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BadParameterExceptionHandler
- * @version $Rev$
  */
 public class BadParameterExceptionHandler extends ExceptionHandler {
 

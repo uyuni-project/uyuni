@@ -46,7 +46,6 @@ import com.redhat.rhn.manager.configuration.file.TextFileData;
 /**
  *
  * XmlRpcConfigChannelHelper
- * @version $Rev$
  */
 public class XmlRpcConfigChannelHelper {
 

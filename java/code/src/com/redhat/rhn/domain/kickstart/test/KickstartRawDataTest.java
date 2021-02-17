@@ -36,7 +36,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * @version $Rev$
  */
 public class KickstartRawDataTest extends BaseTestCaseWithUser {
 

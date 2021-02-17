@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  * SdcHelper
- * @version $Rev$
  */
 public class SdcHelper {
 

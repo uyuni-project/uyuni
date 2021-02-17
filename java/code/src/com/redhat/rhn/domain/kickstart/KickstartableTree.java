@@ -46,7 +46,6 @@ import java.util.List;
 
 /**
  * KickstartableTree
- * @version $Rev$
  */
 public class KickstartableTree extends BaseDomainHelper {
 

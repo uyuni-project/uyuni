@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * TargetSystemsListSetup
- * @version $Rev$
  */
 public class TargetSystemsListSetup extends BaseSetListAction {
 

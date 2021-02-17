@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * CryptoTest - test
- * @version $Rev$
  */
 public class CryptoTest extends BaseTestCaseWithUser {
 

@@ -39,7 +39,6 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 
 /**
  * AffectedSystemsActionTest
- * @version $Rev$
  */
 public class AffectedSystemsActionTest extends MockObjectTestCase {
 

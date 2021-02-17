@@ -18,7 +18,6 @@ import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * BooleanWrapper
- * @version $Rev$
  */
 public class BooleanWrapper {
 

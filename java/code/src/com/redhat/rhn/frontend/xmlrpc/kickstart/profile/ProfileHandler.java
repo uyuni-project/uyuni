@@ -79,7 +79,6 @@ import java.util.Set;
 
 /**
  * ProfileHandler
- * @version $Rev$
  * @xmlrpc.namespace kickstart.profile
  * @xmlrpc.doc Provides methods to access and modify many aspects of
  * a kickstart profile.

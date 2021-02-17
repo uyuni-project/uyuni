@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.dto.SystemOverviewComparator;
 /**
  * General helper for fragment rendering
  *
- * @version $Rev$
  */
 public class RendererHelper {
 

@@ -34,7 +34,6 @@ import java.util.Set;
 
 /**
  * PackageActionDetailsTest
- * @version $Rev$
  */
 public class PackageActionDetailsTest extends RhnBaseTestCase {
 

@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 /**
  * ValidatorTest
- * @version $Rev$
  */
 public class ValidatorTest extends TestCase {
 

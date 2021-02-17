@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 /**
  *
  * ExpandableRowRenderer
- * @version $Rev$
  */
 public class ExpandableRowRenderer extends RowRenderer {
 

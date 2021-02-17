@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * AddRedHatErrataAction
- * @version $Rev$
  */
 public class AddRedHatErrataAction extends RhnListAction {
 

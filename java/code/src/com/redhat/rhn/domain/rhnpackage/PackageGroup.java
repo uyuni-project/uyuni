@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * PackageGroup
- * @version $Rev$
  */
 public class PackageGroup extends BaseDomainHelper {
 

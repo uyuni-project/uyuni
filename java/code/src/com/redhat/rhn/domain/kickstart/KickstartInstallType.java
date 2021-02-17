@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * KickstartInstallType
- * @version $Rev$
  */
 public class KickstartInstallType extends BaseDomainHelper {
 

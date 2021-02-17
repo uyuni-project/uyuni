@@ -19,7 +19,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * ToolbarTagBasicTest
- * @version $Rev$
  */
 public class ToolbarTagBasicTest extends BaseTestToolbarTag {
 

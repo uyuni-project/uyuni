@@ -44,7 +44,6 @@ import java.util.List;
 
 /**
  * ChannelFactoryTest
- * @version $Rev$
  */
 public class ChannelFactoryTest extends RhnBaseTestCase {
 

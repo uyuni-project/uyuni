@@ -23,7 +23,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
  *
  * Thrown whenever a problem occurs deleting a user.
  *
- * @version $Rev$
  */
 public class DeleteUserException extends FaultException  {
 

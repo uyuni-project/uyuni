@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 /**
  * ServerFactory - the class used to fetch and store
  * com.redhat.rhn.domain.server.RecurringAction objects from the database.
- * @version $Rev$
  */
 public class RecurringActionFactory extends HibernateFactory {
 

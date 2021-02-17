@@ -37,7 +37,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * FileListConfirmSetupActionTest, diff and deploy in sdc config
- * @version $Rev$
  */
 public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
 

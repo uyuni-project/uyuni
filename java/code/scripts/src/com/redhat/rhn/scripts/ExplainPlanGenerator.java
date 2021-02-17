@@ -43,7 +43,6 @@ import java.util.TreeSet;
  * _NOT_ run.  When the DataSource xml files get moved into the rhn-java
  * repo, that requirement will be removed.
  *
- * @version $Rev$
  */
 public class ExplainPlanGenerator {
     private String outfile;

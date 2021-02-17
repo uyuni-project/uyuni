@@ -49,7 +49,6 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 /**
  * PackagesSearchHandler
- * @version $Rev$
  * @xmlrpc.namespace packages.search
  * @xmlrpc.doc Methods to interface to package search capabilities in search server..
  */

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.action.Action;
 
 /**
  * DaemonConfigAction - Class representing ActionType.TYPE_DAEMON_CONFIG: 32
- * @version $Rev$
  */
 public class DaemonConfigAction extends Action {
 

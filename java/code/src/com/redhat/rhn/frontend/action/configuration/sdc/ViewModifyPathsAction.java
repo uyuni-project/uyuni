@@ -49,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ViewModifyCentralPathsAction
- * @version $Rev$
  */
 public class ViewModifyPathsAction extends RhnAction implements Listable {
     public static final String COPY_TO_LOCAL = "copy_to_local";

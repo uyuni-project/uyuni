@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * An interface for all views for diffs.
  * Any class that implements this one should probably also implement DiffVisitor.
- * @version $Rev$
  */
 public interface DiffWriter {
 

@@ -47,7 +47,6 @@ import java.util.List;
 
 /**
  * RecurringActionManager
- * @version $Rev$
  */
 public class RecurringActionManager {
 

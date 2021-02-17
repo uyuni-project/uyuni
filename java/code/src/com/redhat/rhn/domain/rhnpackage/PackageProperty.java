@@ -29,7 +29,6 @@ import javax.persistence.ManyToOne;
 
 /**
  * PackageProperty
- * @version $Rev$
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CloneConfirmSetupAction
- * @version $Rev$
  */
 public class CloneConfirmSetupAction extends RhnListAction {
     /** This class reuses code in the channel assignment page */

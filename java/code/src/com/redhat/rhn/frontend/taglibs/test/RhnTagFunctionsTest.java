@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * RhnTagFunctionsTest
- * @version $Rev$
  */
 public class RhnTagFunctionsTest extends RhnBaseTestCase {
 

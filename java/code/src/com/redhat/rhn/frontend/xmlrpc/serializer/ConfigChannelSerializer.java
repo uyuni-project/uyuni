@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ConfigurationChannelSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  * #struct_begin("Configuration Channel information")

@@ -24,7 +24,6 @@ import java.util.List;
 /**
  *
  * DuplicateSystemBucket
- * @version $Rev$
  */
 public class DuplicateSystemGrouping implements Expandable, Identifiable {
 

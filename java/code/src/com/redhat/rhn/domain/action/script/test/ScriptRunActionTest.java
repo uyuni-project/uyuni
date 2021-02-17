@@ -33,7 +33,6 @@ import java.util.GregorianCalendar;
 /**
  * ScriptActionTest
  * Test suite for ScriptAction and ScriptResult
- * @version $Rev$
  */
 public class ScriptRunActionTest extends RhnBaseTestCase {
 

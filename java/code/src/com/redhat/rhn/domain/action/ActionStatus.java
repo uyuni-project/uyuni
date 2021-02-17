@@ -19,7 +19,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ActionStatus
- * @version $Rev$
  */
 public class ActionStatus {
 

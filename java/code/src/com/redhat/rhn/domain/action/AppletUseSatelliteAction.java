@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * AppletUseSatelliteAction - Class representing TYPE_RHN_APPLET_USE_SATELLITE
- * @version $Rev$
  */
 public class AppletUseSatelliteAction extends Action {
 

@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * SummaryAction
- * @version $Rev$
  */
 public class SummaryAction extends BaseListAction {
 

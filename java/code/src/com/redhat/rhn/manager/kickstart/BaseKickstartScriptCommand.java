@@ -24,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * KickstartScriptCommand
- * @version $Rev$
  */
 public class BaseKickstartScriptCommand extends BaseKickstartCommand {
 

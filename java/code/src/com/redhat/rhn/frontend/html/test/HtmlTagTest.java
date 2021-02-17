@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * HtmlTagTest
- * @version $Rev$
  */
 
 public class HtmlTagTest extends RhnBaseTestCase {

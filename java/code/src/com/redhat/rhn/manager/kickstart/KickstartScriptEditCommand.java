@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 /**
  * KickstartScriptEditCommand
- * @version $Rev$
  */
 public class KickstartScriptEditCommand extends BaseKickstartScriptCommand {
 

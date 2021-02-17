@@ -35,7 +35,6 @@ import java.util.Map;
 /**
  * KickstartLocaleCommand - for editing locale-related options
  * in a kickstart.
- * @version $Rev$
  */
 public class KickstartLocaleCommand extends BaseKickstartCommand {
 

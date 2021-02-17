@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PendingActionsSetupAction class.
- * @version $Rev$
  */
 public class PendingActionsSetupAction extends BaseScheduledListAction {
 

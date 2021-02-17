@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * PackageCapability
- * @version $Rev$
  */
 public class PackageCapability extends BaseDomainHelper {
 

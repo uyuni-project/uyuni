@@ -26,7 +26,6 @@ import java.util.UUID;
 /**
  * A factory for VirtualInstance objects.
  *
- * @version $Rev$
  */
 public class VirtualInstanceManufacturer {
 

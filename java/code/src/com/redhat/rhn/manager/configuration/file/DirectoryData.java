@@ -24,7 +24,6 @@ import java.io.InputStream;
 
 /**
  * DirectoryData
- * @version $Rev$
  */
 public class DirectoryData extends ConfigFileData {
     /**

@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * Hunk - A collection of lines from a diff that represent a single
  * type of edit.
- * @version $Rev$
  */
 public abstract class Hunk {
 

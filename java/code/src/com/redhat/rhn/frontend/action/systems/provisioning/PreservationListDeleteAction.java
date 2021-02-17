@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  * PreservationListDeletionAction - for deleting FileList objects
- * @version $Rev$
  */
 public class PreservationListDeleteAction extends
                                     BaseSetOperateOnSelectedItemsAction {

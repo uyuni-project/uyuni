@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelFilesListSubmit
- * @version $Rev$
  */
 public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsAction {
     public static final String KEY_IMPORT = "addfiles.jsp.import.jspf.submit";

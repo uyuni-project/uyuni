@@ -25,7 +25,6 @@ import java.util.Map;
  *    types and Java data types to XML Schema types.
  * </p>
  *
- * @version $Rev$
  */
 public class DataConverter {
 

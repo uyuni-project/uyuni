@@ -21,7 +21,6 @@ import java.util.Date;
 /**
  * ConfigRevisionDto - Basic data about a config revision from rhnConfigRevision
  * and rhnConfigContent
- * @version $Rev$
  */
 public class ConfigRevisionDto extends BaseDto {
     private Long id;

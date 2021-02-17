@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.common.ArchType;
 
 /**
  * ServerArch
- * @version $Rev$
  */
 public class ServerArch extends AbstractLabelNameHelper {
 

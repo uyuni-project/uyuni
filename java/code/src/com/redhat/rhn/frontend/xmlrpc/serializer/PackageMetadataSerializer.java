@@ -25,7 +25,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * Converts PackageMetadata to an XMLRPC &lt;struct&gt;.
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("Package Metadata")

@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * ErrataOverviewSerializer
- * @version $Rev$
  * @xmlrpc.doc
  *     #struct_begin("errata")
  *          #prop_desc("int", "id", "Errata ID.")

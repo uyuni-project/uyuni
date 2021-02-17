@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic;
 
 /**
  * InvalidParamException
- * @version $Rev$
  */
 public class InvalidParamException extends Exception {
 

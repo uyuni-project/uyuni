@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * PageSizeDecoratorTest
- * @version $Rev$
  */
 public class PageSizeDecoratorTest extends RhnBaseTestCase {
     public void testDefaultPageSizes() {

@@ -51,7 +51,6 @@ import java.util.Set;
 
 /**
  * KickstartFactory
- * @version $Rev$
  */
 public class KickstartFactory extends HibernateFactory {
 

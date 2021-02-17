@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * GlobalConfigChannelList
- * @version $Rev$
  */
 public class GlobalConfigChannelList extends RhnListAction {
 

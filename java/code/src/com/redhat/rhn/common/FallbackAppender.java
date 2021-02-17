@@ -27,7 +27,6 @@ import org.apache.log4j.varia.FallbackErrorHandler;
  *      if an error occurs (like the user can't write to the log file)
  *      This is very helpful for user run unit tests.
  * FallbackAppender
- * @version $Rev$
  */
 public class FallbackAppender extends FileAppender {
 
