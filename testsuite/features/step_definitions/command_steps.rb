@@ -1343,9 +1343,11 @@ end
 
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
-  $server.run("spacecmd -u admin -p admin clear_caches")
+  result, code = $server.run("spacecmd -u admin -p admin clear_caches")
+  STDOUT.puts "clear caches: rc=#{code} output=#{result}"
   command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
-  $server.run(command)
+  result, code = $server.run(command)
+  STDOUT.puts "schedule package refresh: rc=#{code} output=#{result}"
 end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
@@ -1369,6 +1371,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   result, code = $server.run(command, false)
+  STDOUT.puts "list installed packages: rc=#{code} output=#{result}"
   packages.split(' ').each do |package|
     pkg = package.strip
     raise "package #{pkg} is not installed" unless result.include? pkg
@@ -1381,6 +1384,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
     result, code = $server.run(command, false)
+    STDOUT.puts "list installed packages: rc=#{code} output=#{result}"
     break if result.include? pkg
     sleep 1
   end
