@@ -25,11 +25,4 @@ function BootstrapPanel(props: Props) {
   );
 }
 
-BootstrapPanel.defaultProps = {
-  title: undefined,
-  icon: undefined,
-  header: undefined,
-  footer: undefined,
-};
-
 export { BootstrapPanel };
