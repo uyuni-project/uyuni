@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-16 09:36+0000\n"
+"PO-Revision-Date: 2021-02-18 09:18+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -327,7 +327,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1575
 #: ../src/spacecmd/softwarechannel.py:1821
 msgid "Packages"
-msgstr ""
+msgstr "Balíky"
 
 #: ../src/spacecmd/activationkey.py:992
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
