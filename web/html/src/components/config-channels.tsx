@@ -54,7 +54,6 @@ class SaltStatePopup extends React.Component<SaltStatePopupProps> {
           id="content-state"
           minLines={20}
           maxLines={40}
-          name="content"
           readOnly={true}
           mode="yaml"
           content={this.props.saltState.content}
