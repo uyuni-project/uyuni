@@ -47,7 +47,7 @@ public class CreateUserAction extends RhnAction {
     public static final String FAILURE = "failure";
     public static final String SUCCESS_INTO_ORG = "existorgsuccess";
 
-    private ActionErrors populateCommand(DynaActionForm form, CreateUserCommand command) {
+    private ActionErrors populateCommand(DynaActionForm form, CreateUserCommand command, boolean validatePassword) {
         ActionErrors errors = new ActionErrors();
 
         command.setEmail(form.getString("email"));
@@ -68,7 +68,7 @@ public class CreateUserAction extends RhnAction {
         String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);
         String passwdConfirm = (String)form.get(UserActionHelper.DESIRED_PASS_CONFIRM);
         if (passwd.equals(passwdConfirm)) {
-            command.setPassword(passwd);
+            command.setPassword(passwd, validatePassword);
         }
         else {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -124,14 +124,17 @@ public class CreateUserAction extends RhnAction {
          * in the db (even though it won't be used), we'll just validate it like a regular
          * password and allow it.
          */
+        boolean validatePassword = true;
         if (form.get("usepam") != null && ((Boolean) form.get("usepam")).booleanValue()) {
             String hash = MD5Crypt.crypt("" + System.currentTimeMillis());
             if (form.get(UserActionHelper.DESIRED_PASS) == null ||
                     form.get(UserActionHelper.DESIRED_PASS).equals("")) {
+                validatePassword = false;
                 form.set(UserActionHelper.DESIRED_PASS, hash);
             }
             if (form.get(UserActionHelper.DESIRED_PASS_CONFIRM) == null ||
                     form.get(UserActionHelper.DESIRED_PASS_CONFIRM).equals("")) {
+                validatePassword = false;
                 form.set(UserActionHelper.DESIRED_PASS_CONFIRM, hash);
             }
         }
@@ -145,7 +148,7 @@ public class CreateUserAction extends RhnAction {
 
         // Create the user and do some more validation
         CreateUserCommand command = getCommand();
-        ActionErrors errors = populateCommand(form, command);
+        ActionErrors errors = populateCommand(form, command, validatePassword);
         if (!errors.isEmpty()) {
             return returnError(mapping, request, errors);
         }
