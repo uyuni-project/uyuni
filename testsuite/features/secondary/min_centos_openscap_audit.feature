@@ -12,6 +12,7 @@ Feature: OpenSCAP audit of CentOS Salt minion
   Scenario: Install the OpenSCAP packages on the CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     When I enable repository "CentOS-Base" on this "ceos_minion"
+    And I refresh the metadata for "ceos_minion"
     And I install OpenSCAP dependencies on "ceos_minion"
     And I fix CentOS 7 OpenSCAP files on "ceos_minion"
     And I follow "Software" in the content area
