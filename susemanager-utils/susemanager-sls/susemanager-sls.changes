@@ -1,3 +1,7 @@
+- Ubuntu 18 has version of apt which does not correctly support
+  auth.conf.d directory. Detect the working version and use this feature
+  only when we have a higher version installed
+
 -------------------------------------------------------------------
 Wed Jan 27 13:11:15 CET 2021 - jgonzalez@suse.com
 
