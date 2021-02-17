@@ -1,3 +1,5 @@
+- FIX: Slow response of 'Software > Install' in Ubuntu minions (bsc#1181165)
+
 -------------------------------------------------------------------
 Tue Feb 16 10:07:07 CET 2021 - jgonzalez@suse.com
 
@@ -25,7 +27,7 @@ Thu Jan 28 11:42:47 CET 2021 - jgonzalez@suse.com
 Wed Jan 27 13:04:11 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.6-1
-- fix query using old EVR_T constructor (bsc#1181422) 
+- fix query using old EVR_T constructor (bsc#1181422)
 - Update to postgresql13 (jsc#SLE-17030)
 - Improve modular dependency resolution algorithm (bsc#1177267)
 - Display absolute timestamps for configuration files
