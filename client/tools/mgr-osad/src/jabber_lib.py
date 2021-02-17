@@ -344,7 +344,7 @@ class Runner(object):
                 log_error("Received an conflict. Restarting with new credentials.")
                 raise NeedRestart
 
-class InvalidCertError(SSL.SSL.Error):
+class InvalidCertError(SSL.SSL.SSLError):
     def __str__(self):
         return " ".join(self.args)
     __repr__ = __str__
@@ -653,16 +653,14 @@ class JabberClient(jabber.Client, object):
             raise SSLDisabledError
 
         log_debug(4, "Preparing for TLS handshake")
-        ssl = SSLSocket(self._sock, trusted_certs=self.trusted_certs)
-        ssl.ssl_verify_callback = self.ssl_verify_callback
-        ssl.init_ssl()
+        sslsock = SSLSocket(self._sock, trusted_certs=self.trusted_certs)
         # Explicitly perform the SSL handshake
         try:
-            ssl.do_handshake()
-            self.verify_peer(ssl)
-        except SSL.SSL.Error:
+            sslsock.init_ssl(server_name=self._host)
+            sslsock.do_handshake()
+        except (SSL.SSL.SSLError, SSL.CertificateError) as e:
             # Error in the SSL handshake - most likely mismatching CA cert
-            log_error("Traceback caught:")
+            log_error("Traceback caught: ", e)
             log_error(extract_traceback())
             raise_with_tb(SSLHandshakeError(), sys.exc_info()[2])
 
@@ -671,7 +669,7 @@ class JabberClient(jabber.Client, object):
 
         # Now replace the socket with the ssl object's connection
         self._non_ssl_sock = self._sock
-        self._sock = ssl._connection
+        self._sock = sslsock._connection
 
         # jabber.py has copies of _read, _write, _reader - those have to
         # be re-initialized as well
@@ -707,40 +705,6 @@ class JabberClient(jabber.Client, object):
         else:
             self._write = Sendall(self._sock).sendall
         self._reader = self._sock
-
-    def ssl_verify_callback(self, conn, cert, errnum, depth, ok):
-        log_debug(4, "Called", errnum, depth, ok)
-        if not ok:
-            log_error("SSL certificate verification failed")
-            self.write("</stream:stream>")
-            conn.close()
-            self._sock.close()
-            return ok
-
-        return ok
-
-    def verify_peer(self, ssl):
-        cert = ssl.get_peer_certificate()
-        if cert is None:
-            raise SSLVerifyError("Unable to retrieve peer cert")
-
-        subject = cert.get_subject()
-        if not hasattr(subject, 'CN'):
-            raise SSLVerifyError("Certificate has no Common Name")
-
-        common_name = subject.CN
-
-        # Add a trailing . since foo.example.com. is equal to foo.example.com
-        # This also catches non-FQDNs
-        if common_name[-1] != '.':
-            common_name = common_name + '.'
-        hdot = self._host
-        if hdot[-1] != '.':
-            hdot = hdot + '.'
-
-        if common_name != hdot and not fnmatch.fnmatchcase(hdot, common_name):
-            raise SSLVerifyError("Mismatch: peer name: %s; common name: %s" %
-                (self._host, common_name))
 
     def retrieve_roster(self):
         """Request the roster. Will register the roster callback,
@@ -1095,7 +1059,7 @@ class JabberClient(jabber.Client, object):
                 log_debug(5, "Reading %s bytes from ssl socket" % self.BLOCK_SIZE)
                 try:
                     data = self._read(self.BLOCK_SIZE)
-                except SSL.SSL.SysCallError:
+                except SSL.SSL.SSLError:
                     e = sys.exc_info()[1]
                     log_debug(5, "Closing socket")
                     self._non_ssl_sock.close()
@@ -1366,7 +1330,7 @@ class JabberClient(jabber.Client, object):
 class SSLSocket(SSL.SSLSocket):
     pass
 
-class SSLVerifyError(SSL.SSL.Error):
+class SSLVerifyError(SSL.SSL.SSLError):
     pass
 
 def generate_random_string(length=20):

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb 17 12:16:30 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.2-1
+- change SSL implementation to python ssl for better SAN and
+  hostname matching support (bsc#1181807)
+
+-------------------------------------------------------------------
 Fri Sep 18 11:29:26 CEST 2020 - jgonzalez@suse.com
 
 - version 4.2.1-1

@@ -144,7 +144,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                                     .flatMap(ActionChainFactory::getActionChain);
 
                     actionChain.ifPresent(ac -> {
-                        if (ac.isDispatched()) {
                             ac.getEntries().stream()
                                     .flatMap(ace -> ace.getAction().getServerActions().stream())
                                     .filter(sa -> sa.getServer().asMinionServer()
@@ -156,11 +155,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                             if (ac.isDone()) {
                                 ActionChainFactory.delete(ac);
                             }
-                        }
-                        else {
-                            LOG.warn("got response referencing action chain " + ac.getId() +
-                                    " which is not dispatched yet.");
-                        }
                     });
                 });
 

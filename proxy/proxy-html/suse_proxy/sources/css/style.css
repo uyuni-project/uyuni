@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Poppins'), url('/sources/fonts/Poppins-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: "Poppins", sans;
+  background-color: #0c322c;
+  color: #fafafa;
+  text-align: center;
+  margin: auto;
+  overflow: auto;
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  color: #008acf;
+}
+a:hover {
+  color: #2a6496;
+}
+#wrapper {
+  position: fixed;
+  top: 20%;
+  width: 100%;
+}
+header, section, footer {
+  margin: 30px;
+  display: block;
+}
+header {
+  font-size: 36px;
+}
+header img {
+  width: 36px;
+  vertical-align: middle;
+}
+section {
+  font-weight: bold;
+  font-size: 18px;
+}
+footer {
+  font-size: 24px;
+}
+footer img {
+  width: 72px;
+  vertical-align: middle;
+}
