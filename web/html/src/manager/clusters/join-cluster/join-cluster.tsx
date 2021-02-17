@@ -21,7 +21,7 @@ type Props = {
 };
 
 const JoinCluster = (props: Props) => {
-  const [joinConfig, setJoinConfig] = useState<FormulaValuesType | null | undefined>(null);
+  const [joinConfig, setJoinConfig] = useState<FormulaValuesType | null>(null);
   const [nodesToJoin, setNodesToJoin] = useState<Array<ServerType>>([]);
 
   const { fetchNodesToJoin, scheduleJoinNode } = useClustersApi();
