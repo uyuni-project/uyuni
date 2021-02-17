@@ -485,7 +485,7 @@ class Queue(rhnHandler):
                 rmsg = result["faultString"] + str(data)
         if type(rcode) in [type({}), type(()), type([])] \
                 or type(rcode) is not IntType:
-            rmsg = "%s [%s]" % (UnicodeType(message), UnicodeType(rcode))
+            rmsg = "%s [%s]" % (message, rcode)
             rcode = -1
         # map to db codes.
         status = self.status_for_action_type_code(action_type, rcode)
