@@ -5,7 +5,12 @@ import "./toastr.css";
 
 type OptionalParams = {
   autoHide: boolean;
+  containerId?: string;
 };
+
+type MessagesContainerProps = {
+  containerId?: string;
+}
 
 const FadeTransition = cssTransition({
   enter: "toast-enter",
@@ -34,6 +39,7 @@ export function showSuccessToastr(message: React.ReactNode, optionalParams: Opti
   const notify = msg =>
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
+      containerId: optionalParams.containerId,
     });
   show(message, notify);
 }
@@ -42,6 +48,7 @@ export function showWarningToastr(message: React.ReactNode, optionalParams: Opti
   const notify = msg =>
     toast.warning(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
+      containerId: optionalParams.containerId,
     });
   show(message, notify);
 }
@@ -50,6 +57,7 @@ export function showErrorToastr(message: React.ReactNode | Error, optionalParams
   const notify = msg =>
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
+      containerId: optionalParams.containerId,
     });
 
   if (message instanceof Error) {
@@ -64,13 +72,16 @@ export function showInfoToastr(message: React.ReactNode, optionalParams: Optiona
   const notify = msg =>
     toast.info(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
+      containerId: optionalParams.containerId,
     });
   show(message, notify);
 }
 
-export const MessagesContainer = () => {
+export const MessagesContainer = (props: MessagesContainerProps) => {
   return (
     <ToastContainer
+      containerId={props.containerId}
+      enableMultiContainer={true}
       position="top-center"
       autoClose={6000}
       hideProgressBar={true}

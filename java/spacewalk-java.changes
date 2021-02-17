@@ -1,3 +1,4 @@
+- Allow to configure request timeout (bsc#1178767)
 - FIX: Slow response of 'Software > Install' in Ubuntu minions (bsc#1181165)
 
 -------------------------------------------------------------------

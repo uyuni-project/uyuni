@@ -1,3 +1,5 @@
+- Inform user when a request timeout happens (bsc#1178767)
+- Allow to configure request timeout (bsc#1178767)
 - Usage of "edit" icon on Content Lifecycle Management
 
 -------------------------------------------------------------------
