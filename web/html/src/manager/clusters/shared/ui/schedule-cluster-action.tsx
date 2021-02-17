@@ -11,12 +11,10 @@ import { ActionChain } from "components/action-schedule";
 import { ErrorMessagesType } from "../api/use-clusters-api";
 import { MessageType } from "components/messages";
 
-declare var actionChains: Array<ActionChain>;
-
 type Props = {
   title: string;
   panel: React.ReactNode;
-  schedule: (earliest: Date, actionChain: string | null | undefined) => Promise<any>;
+  schedule: (earliest: Date, actionChain: string | null) => Promise<any>;
   onPrev?: () => void;
   setMessages: (arg0: Array<MessageType>) => void;
   scheduleButtonLabel: string;
@@ -26,7 +24,7 @@ type Props = {
 const ScheduleClusterAction = (props: Props) => {
   const { timezone, localTime } = useUserLocalization();
 
-  const [actionChain, setActionChain] = useState<ActionChain | null | undefined>(null);
+  const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [earliest, setEarliest] = useState(Utils.dateWithTimezone(localTime || ""));
   const [disableSchedule, setDisableSchedule] = useState(false);
 
