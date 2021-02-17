@@ -22,6 +22,7 @@ type Props = {
   disableDelete?: boolean,
   disableOperations?: boolean,
   collapsible?: boolean,
+  icon?: string,
   customIconClass?: string,
 };
 
@@ -55,7 +56,7 @@ const CreatorPanel = (props: Props) => {
           !props.disableEditing &&
           <ModalLink
             id={`${props.id}-modal-link`}
-            icon="fa-plus"
+            icon={props.icon ? props.icon : "fa-plus"}
             className="btn-link"
             text={props.creatingText}
             target={modalNameId}
