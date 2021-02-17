@@ -1,4 +1,9 @@
 - FIX: Slow response of 'Software > Install' in Ubuntu minions (bsc#1181165)
+
+-------------------------------------------------------------------
+Tue Feb 16 10:07:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
 - fix action chains for saltssh minions (bsc#1182200)
 
 -------------------------------------------------------------------

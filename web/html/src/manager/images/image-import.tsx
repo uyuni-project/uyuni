@@ -268,7 +268,7 @@ class ImageImport extends React.Component {
             invalidHint={
               <span>
                 Target Image Store is required.&nbsp;
-                <a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>
+                <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>
                   Create a new one
                 </a>
                 .
