@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as React from "react";
 import { Utils, Formulas } from "utils/functions";
 import { ElementDefinition, generateFormulaComponent, generateFormulaComponentForId } from "./FormulaComponentGenerator";
