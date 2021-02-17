@@ -1,3 +1,6 @@
+- Add python3-distro to RES8, SLE15, Ubuntu20.04 and Debian 10 bootstrap
+  repositories to fix bootstrapping issues (bsc#1184332)
+
 -------------------------------------------------------------------
 Mon Mar 01 13:23:23 CET 2021 - jgonzalez@suse.com
 
