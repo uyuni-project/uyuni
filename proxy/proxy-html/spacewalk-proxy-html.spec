@@ -56,12 +56,25 @@ displays, if you navigate to it using your browser.
 
 %install
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
-install -m 644 %{proxy_dir_name}/* $RPM_BUILD_ROOT%{htmldir}/
+install -d -m 755 $RPM_BUILD_ROOT%{htmldir}/sources
+install -d -m 755 %{proxy_dir_name}/sources/css $RPM_BUILD_ROOT%{htmldir}/sources/css
+install -d -m 755 %{proxy_dir_name}/sources/fonts $RPM_BUILD_ROOT%{htmldir}/sources/fonts
+install -d -m 755 %{proxy_dir_name}/sources/img $RPM_BUILD_ROOT%{htmldir}/sources/img
+cp -pR %{proxy_dir_name}/sources/css/* $RPM_BUILD_ROOT%{htmldir}/sources/css/
+cp -pR %{proxy_dir_name}/sources/fonts/* $RPM_BUILD_ROOT%{htmldir}/sources/fonts/
+cp -pR %{proxy_dir_name}/sources/img/* $RPM_BUILD_ROOT%{htmldir}/sources/img/
+cp -pR %{proxy_dir_name}/*.html $RPM_BUILD_ROOT%{htmldir}/
 
 %files
 %defattr(-,root,root)
 %dir %{htmldir}
-%config %{htmldir}/index.html
+%dir %{htmldir}/sources
+%dir %{htmldir}/sources/css
+%dir %{htmldir}/sources/fonts
+%dir %{htmldir}/sources/img
+%{htmldir}/index.html
+%{htmldir}/sources/css/*.css
+%{htmldir}/sources/fonts/*.ttf
 %{htmldir}/sources/img/*.ico
 %{htmldir}/sources/img/*.png
 %doc LICENSE
