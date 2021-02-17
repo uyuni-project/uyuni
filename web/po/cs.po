@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-16 09:36+0000\n"
+"PO-Revision-Date: 2021-02-18 09:17+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -3409,9 +3409,8 @@ msgid "Applying the packages states has been "
 msgstr "Použití stavů balíčků bylo "
 
 #: ../html/src/manager/notifications/notification-messages.js:23
-#, fuzzy
 msgid "Onboarding failed"
-msgstr "Registrace se nezdařila"
+msgstr "Vaše registrace se nezdařila"
 
 #: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
@@ -3450,9 +3449,8 @@ msgid "show details"
 msgstr "ukázat podrobnosti"
 
 #: ../html/src/manager/notifications/notification-messages.js:318
-#, fuzzy
 msgid "Retry onboarding"
-msgstr "Zkuste se přidat znovu"
+msgstr "Zkuste se registrovat znovu"
 
 #: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
@@ -3585,9 +3583,8 @@ msgid "Stop waiting"
 msgstr "Ukončit čekání"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
-#, fuzzy
 msgid "Stop waiting for all the minions to respond"
-msgstr "Ukončit čekání na odpověď všech minion klientů"
+msgstr "Ukončit čekání na odpověď všech sledujících klientů"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
@@ -3595,18 +3592,16 @@ msgstr "Najít cíle"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
-#, fuzzy
 msgid "Check which minions match the target expression"
-msgstr "Zkontrolujte, kteří minion klienti odpovídají cílovému výrazu"
+msgstr "Zkontrolujte, kteří sledující klienti odpovídají cílovému výrazu"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
 msgstr "Spustit příkaz"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
-#, fuzzy
 msgid "Run the command on the target minions"
-msgstr "Spusťte příkaz na cílových minion klientech"
+msgstr "Spusťte příkaz na cílových sledujících klientech"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
@@ -3633,14 +3628,12 @@ msgid "No target systems found"
 msgstr "Nenalezeny žádné cílové systémy"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
-#, fuzzy
 msgid "Not all minions responded on time."
-msgstr "Ne všichni sledující odpověděli včas."
+msgstr "Ne všichni sledující klienti odpověděli včas."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
-#, fuzzy
 msgid "No minions matched the target expression."
-msgstr "Cílovému výrazu neodpovídají žádní stoupenci."
+msgstr "Cílovému výrazu neodpovídají žádní sledující."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
@@ -3648,9 +3641,8 @@ msgstr "Server vrátil chybu: {0}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
-#, fuzzy
 msgid "Matching ssh-push minions..."
-msgstr "Vyhovující ssh-push minioni..."
+msgstr "Vhodní ssh-push sledující klienti..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
@@ -3857,13 +3849,12 @@ msgid "mandatory"
 msgstr "povinné"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
-#, fuzzy
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 "Žádost přerušena nebo ze serveru přijata neplatná odpověď. Zkontrolujte, zda "
-"byl váš minion správně zaveden."
+"byl váš sledující klient správně zaveden."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
@@ -3915,9 +3906,8 @@ msgid "Leave empty for no passphrase"
 msgstr "Není-li heslo, ponechte prázdné"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
-#, fuzzy
 msgid "Bootstrap Minions"
-msgstr "Zavádění systémů minionů"
+msgstr "Zavádění systémů u sledujících (minion) klientů"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
@@ -4211,7 +4201,6 @@ msgid "CPU Sockets"
 msgstr "Patice CPU"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
-#, fuzzy
 msgid "RAM (Mb)"
 msgstr "RAM (MB)"
 
@@ -4407,9 +4396,8 @@ msgid "Current Memory"
 msgstr "Aktuální paměť"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:128
-#, fuzzy
 msgid "vCPUs"
-msgstr "vCPUs"
+msgstr "virtCPU"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "Base Software Channel"
@@ -4658,9 +4646,8 @@ msgid "Adapter parent wwpn"
 msgstr "wwpn nadřazeného adaptéru"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:438
-#, fuzzy
 msgid "Adapter parent fabric wwn"
-msgstr "Látka wwn rodičovského adaptéru"
+msgstr "Struktura wwn nadřazeného adaptéru"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
@@ -4806,9 +4793,8 @@ msgid " filters"
 msgstr " filtry"
 
 #: ../html/src/manager/visualization/ui/components.js:42
-#, fuzzy
 msgid "Partition systems by given check-in time:"
-msgstr "Dělit systémy podle daného času odbavení:"
+msgstr "Dělit systémy podle daného času registrace:"
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
