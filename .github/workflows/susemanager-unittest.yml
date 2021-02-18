@@ -1,0 +1,26 @@
+name: SUSE Manager unit tests
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'susemanager/**'
+
+jobs:
+  susemanager_unit_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src /manager/susemanager-utils/testing/automation/initial-objects.sh
+
+    - name: Pylint
+      run: PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src cd /manager/susemanager; make -f Makefile.susemanager unittest_inside_docker pylint_inside_docker
