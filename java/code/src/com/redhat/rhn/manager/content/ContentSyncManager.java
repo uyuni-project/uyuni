@@ -2229,7 +2229,9 @@ public class ContentSyncManager {
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
-                return Files.isReadable(testUrlPath);
+                boolean res = Files.isReadable(testUrlPath);
+                log.debug("acceccibleUrl(" + testUrlPath.toString() + "): " + res);
+                return res;
             }
             else {
                 URI testUri = new URI(uri.getScheme(), null, uri.getHost(),
@@ -2238,6 +2240,7 @@ public class ContentSyncManager {
                 int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         user, password).getStatusLine().getStatusCode();
                 if (status == HttpURLConnection.HTTP_OK) {
+                    log.debug("acceccibleUrl: " + testUri.toString() + " returned status " + status);
                     return true;
                 }
                 else {
