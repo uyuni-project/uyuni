@@ -860,6 +860,10 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   end
   result, code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
   STDOUT.puts "I install old package: command= #{cmd} on #{host}, rc=#{code} output=#{result}"
+  if host.include? 'ubuntu'
+    result, code = node.run('dpkg -l | grep dummy')
+    STDOUT.puts "Is package really installed? rc=#{code} output=#{result}"
+  end
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
