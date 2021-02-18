@@ -1,0 +1,18 @@
+name: Labeler
+on:
+  schedule:
+  - cron: "0 * * * *"
+
+jobs:
+  label:
+
+    runs-on: [self-hosted, linux]
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-base:latest
+
+    steps:
+    - uses: paulfantom/periodic-labeler@v0.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        LABEL_MAPPINGS_FILE: .github/labeler.yml
+
