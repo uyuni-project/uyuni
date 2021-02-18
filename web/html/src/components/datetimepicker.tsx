@@ -131,10 +131,10 @@ class TimePicker extends React.Component<TimePickerProps> {
       roundingFunction: (seconds, options) => seconds,
     });
     this._input?.on("change", () => {
-      const timepickerValue = this._input?.timepicker("getTime");
+      // Do nothing
     });
     this._input?.on("timeFormatError", () => {
-      const timepickerValue = this._input?.timepicker("getTime");
+      // Do nothing
     });
     this._input?.timepicker("setTime", this.props.value);
     this._input?.on("changeTime", () => {
