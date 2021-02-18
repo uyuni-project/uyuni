@@ -622,9 +622,6 @@ export class FormulaFormContextProvider extends React.Component<
   // TODO implement componentDidUpdate
 
   render() {
-    const layout = this.state.formulaLayout;
-    const values = this.state.formulaValues;
-
     const contextValue = {
       scope: this.props.scope,
       layout: this.state.formulaLayout,
@@ -1063,7 +1060,6 @@ export class FormulaFormContextProvider extends React.Component<
 
   clearValues = clearValuesConfirmation => {
     const layout = this.state.formulaLayout;
-    const values = this.state.formulaValues;
     if (clearValuesConfirmation()) {
       let clearValues: any = {};
       if (this.props.scope === "system") {
