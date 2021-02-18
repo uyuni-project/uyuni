@@ -1,0 +1,30 @@
+name: Schema migration tests
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'schema/spacewalk/**'
+
+jobs:
+  migration_test_spacewalk:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: /manager/susemanager-utils/testing/automation/initial-objects.sh
+
+    - name: Migration test
+      run: /manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql-31to41.sh
+
+    - name: Idempotency test
+      run: . /manager/susemanager-utils/testing/automation/VERSION &&/manager/susemanager-utils/testing/docker/scripts/schema_idempotency_test_pgsql.py -v $IDEMPOTENCY_SCHEMA_BASE_VERSION
+  
