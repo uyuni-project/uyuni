@@ -1,0 +1,57 @@
+name: Backend unit tests
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend_common_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: /manager/susemanager-utils/testing/automation/initial-objects.sh
+    
+    - name: Backend common tests
+      run: PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/spacewalk-client-tools/src /manager/backend/test/docker-backend-common-tests.sh   
+
+  backend_tools_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: /manager/susemanager-utils/testing/automation/initial-objects.sh
+    
+    - name: Backend tools tests
+      run: PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/spacewalk-client-tools/src /manager/backend/test/docker-backend-tools-tests.sh   
+  
+  backend_psql_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: /manager/susemanager-utils/testing/automation/initial-objects.sh
+    
+    - name: Backend sql tests
+      run: PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/spacewalk-client-tools/src /manager/backend/test/docker-backend-pgsql-tests.sh   
+  
