@@ -1,0 +1,23 @@
+name: Space Command unit tests
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'spacecmd/**'
+
+jobs:
+  spacecmd_unit_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Python test
+      run: cd /manager/spacecmd; make -f Makefile.python __pytest
