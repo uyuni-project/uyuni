@@ -68,15 +68,8 @@ cp -pR %{proxy_dir_name}/*.html $RPM_BUILD_ROOT%{htmldir}/
 %files
 %defattr(-,root,root)
 %dir %{htmldir}
-%dir %{htmldir}/sources
-%dir %{htmldir}/sources/css
-%dir %{htmldir}/sources/fonts
-%dir %{htmldir}/sources/img
 %{htmldir}/index.html
-%{htmldir}/sources/css/*.css
-%{htmldir}/sources/fonts/*.ttf
-%{htmldir}/sources/img/*.ico
-%{htmldir}/sources/img/*.png
+%{htmldir}/sources
 %doc LICENSE
 
 %changelog
