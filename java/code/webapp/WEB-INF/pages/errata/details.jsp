@@ -25,6 +25,10 @@
                      <td>${issued}</td>
                 </tr>
                 <tr>
+                    <th><bean:message key="details.jsp.advisorystatus"/>:</th>
+                     <td>${advisoryStatus}</td>
+                </tr>
+                <tr>
                     <th><bean:message key="details.jsp.updated"/></th>
                     <td>${updated}</td>
                 </tr>
