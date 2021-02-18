@@ -1,0 +1,23 @@
+name: Test sql filenames
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'schema/spacewalk/**'
+
+jobs:
+  check_sql_filenames:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: ln -s /__w/spacewalk/spacewalk /manager
+    
+    - name: Check filenames
+      run: cd /manager && python susemanager-utils/testing/automation/test-sql-schema-filename.py
