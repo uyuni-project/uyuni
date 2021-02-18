@@ -822,6 +822,14 @@ When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
   find("input[placeholder='Filter by Result: ']").set(input)
 end
 
+When(/^I check the "([^"]*)" host in the list$/) do |host|
+  steps %(
+    When I enter "#{$node_by_host[host].hostname}" as the filtered system name
+    And I click on the filter button
+    And I check "#{$node_by_host[host].hostname}" in the list
+  )
+end
+
 Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
   steps %(
     When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name

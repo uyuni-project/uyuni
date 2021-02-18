@@ -112,7 +112,7 @@ Feature: Smoke tests for <client>
     And I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to selected subscribed systems"
-    And I check "<client>" in the list
+    And I check the "<client>" host in the list
     And I click on "Confirm & Deploy to Selected Systems"
     Then I should see a "/etc/s-mgr/config" link
     When I click on "Deploy Files to Selected Systems"
