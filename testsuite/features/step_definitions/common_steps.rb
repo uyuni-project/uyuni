@@ -262,11 +262,13 @@ end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
-  if host.include?('client') or host.include?('ceos') or host.include?('ubuntu')
-    node.run('rhn_check -vvv', true, 500, 'root')
-    client_refresh_metadata
-  elsif host.include?('minion') or host.include?('server') or host.include?('proxy') or host.include?('build_host')
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
+  elsif os_family =~ /^centos/
+    node.run('yum clean all && yum makecache', true, 600, 'root')
+  elsif os_family =~ /^ubuntu/
+    node.run('apt-get update')
   else
     raise "The host #{host} has not yet a implementation for that step"
   end
@@ -295,6 +297,8 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
   raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
 end
 
+# metadata steps
+# these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
   target = $client
