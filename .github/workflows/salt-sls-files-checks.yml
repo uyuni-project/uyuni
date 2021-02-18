@@ -1,0 +1,24 @@
+name: Check the content of Salt SLS files
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths: 'susemanager-utils/susemanager-sls/salt/**/*.sls'
+
+jobs:
+  salt_sls_files_checks:
+
+    runs-on: [self-hosted, linux]
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-base:latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: mattsb42/not-grep@master
+      with:
+        config-file: ./.github/config/file-content-checks.toml
+        # If you don't set debug, passing checks will be hidden.
+        debug: true

@@ -1,0 +1,2 @@
+[exclude]
+"susemanager-utils/susemanager-sls/salt/**/*.sls" = "module.run"
