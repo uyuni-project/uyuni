@@ -182,10 +182,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
     <sql-query name="Errata.retractedPackages">
         <![CDATA[
-        select * from
+        select pid, sid from
             (select
                     p.id pid,
-                    s.id sid
+                    s.id sid,
+                    array_agg(e.advisory_status) as status
                 from rhnserver s
                 join rhnserverchannel sc on s.id = sc.server_id
                 join rhnchannel c on c.id = sc.channel_id
@@ -195,7 +196,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 join rhnpackage p on p.id = ep.package_id
                  where p.id in (:pids) and s.id in (:sids) group by p.id, s.id
             ) sub
-        where status::text[] = Array['retracted']
+        where array_length(status, 1) = 1 and status[1] = 'retracted';
         ]]>
         <return-scalar column="pid" type="long" />
         <return-scalar column="sid" type="long" />

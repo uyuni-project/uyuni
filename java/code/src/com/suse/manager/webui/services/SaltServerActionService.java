@@ -22,7 +22,9 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -1095,19 +1097,26 @@ public class SaltServerActionService {
         List<Long> pids = packages.stream().map(p -> p.getId()).collect(toList());
 
         List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(pids, sids);
-        if (!pidsidpairs.isEmpty()) {
-            String errors = pidsidpairs.stream().map(
-                    t -> "pid: " + t.getA() + " sid: " + t.getB()
-            ).collect(joining("\n"));
-            throw new RuntimeException("Error trying to install retracted packages:\n" + errors);
-        }
+        Map<Long, List<Long>> pidsBySid = pidsidpairs.stream()
+                .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
+        action.getServerActions().forEach(sa -> {
+            List<Long> packageIds = pidsBySid.get(sa.getServerId());
+            if (packageIds != null) {
+                sa.fail("contains retracted packages: " +
+                        packageIds.stream().map(i -> i.toString()).collect(joining(",")));
+            }
+        });
+        List<MinionSummary> filteredMinions = minionSummaries.stream()
+                .filter(ms -> pidsBySid.get(ms.getServerId()) != null &&
+                        !pidsBySid.get(ms.getServerId()).isEmpty())
+                .collect(toList());
 
         List<List<String>> pkgs = action
                 .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(singletonMap(PARAM_PKGS, pkgs))), minionSummaries);
+                Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
         return ret;
     }
 

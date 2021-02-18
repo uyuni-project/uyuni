@@ -802,9 +802,9 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("pids", pids);
         params.put("sids", sids);
-        List<Long[]> results = singleton.listObjectsByNamedQuery(
+        List<Object[]> results = singleton.listObjectsByNamedQuery(
                 "Errata.retractedPackages", params);
-        return results.stream().map(r -> new Tuple2<>(r[0], r[1])).collect(Collectors.toList());
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
     /**
