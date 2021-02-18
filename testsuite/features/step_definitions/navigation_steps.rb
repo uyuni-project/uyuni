@@ -776,6 +776,10 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   end
 end
 
+When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
+  find("input[placeholder='Search package']").set(input)
+end
+
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
   find("input[placeholder='Filter by Package Name: ']").set(input)
 end
