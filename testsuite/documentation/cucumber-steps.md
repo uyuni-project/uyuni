@@ -324,8 +324,8 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I check the row with the "virgo-dummy-3456" link
-  When I check the row with the "sle_client" hostname
   When I check the row with the "suse_docker_admin" text
+  When I check the "sle_client" client
   When I check "New Test Channel" in the list
   When I uncheck "hoag-dummy-1.1-1.1" in the list
 ```

@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -760,11 +760,6 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
   step %(I check "#{text}" in the list)
 end
 
-Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  step %(I check "#{system_name}" in the list)
-end
-
 When(/^I check the first patch in the list$/) do
   step %(I check the first row in the list)
 end
@@ -798,6 +793,11 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   end
 end
 
+When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host|
+  system_name = get_system_name(host)
+  find("input[placeholder='Filter by System Name: ']").set(system_name)
+end
+
 When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
   find("input[placeholder='Search package']").set(input)
 end
@@ -822,20 +822,12 @@ When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
   find("input[placeholder='Filter by Result: ']").set(input)
 end
 
-When(/^I check the "([^"]*)" host in the list$/) do |host|
-  steps %(
-    When I enter "#{$node_by_host[host].hostname}" as the filtered system name
-    And I click on the filter button
-    And I check "#{$node_by_host[host].hostname}" in the list
-  )
+When(/^I enter the package for "([^"]*)" as the filtered package states name$/) do |host|
+  step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
 end
 
-Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
-  steps %(
-    When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
-    And I click on the filter button
-    And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
-  )
+When(/^I check the package for "([^"]*)" in the list$/) do |host|
+  step %(I check "#{PACKAGE_BY_CLIENT[host]}" in the list)
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
