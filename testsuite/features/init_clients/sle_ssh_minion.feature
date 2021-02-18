@@ -78,6 +78,8 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see a "Package States" text
     When I follow "Search" in the content area
     And I wait until button "Search" becomes enabled
+    And I enter "sle-manager-tools-release" as the filtered package states name
+    And I click on "Search" in element "search-row"
     And I remove package "sle-manager-tools-release" from highstate
 
 @proxy
