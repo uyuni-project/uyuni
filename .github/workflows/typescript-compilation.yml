@@ -1,0 +1,38 @@
+name: Typescript compilation
+
+on:
+  pull_request:
+    branches:
+      - Manager-4.1
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
+    paths:
+      - 'web/html/src/**'
+
+jobs:
+  typescript_compilation:
+    runs-on: [self-hosted, linux]
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-base:latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Use Yarn cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install dependencies
+      run: yarn --cwd susemanager-frontend install --frozen-lockfile --prefer-offline
+
+    - name: Add tsc
+      run: yarn add tsc  
+
+    - name: Compile Typescript
+      run: yarn --cwd web/html/src tsc
