@@ -1,28 +1,12 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'nokogiri'
 require 'timeout'
 
-def client_is_zypp?
-  $client.run('test -x /usr/bin/zypper', false)
-end
-
-def client_refresh_metadata
-  if client_is_zypp?
-    $client.run('zypper --non-interactive ref -s', true, 500, 'root')
-  else
-    $client.run('yum clean all', true, 600, 'root')
-    $client.run('yum makecache', true, 600, 'root')
-  end
-end
-
 def client_raw_repodata_dir(channel)
-  if client_is_zypp?
-    "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
-  else
-    "/var/cache/yum/#{channel}"
-  end
+  "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
+  # it would be "/var/cache/yum/#{channel}" for CentOS
 end
 
 def client_system_id_to_i
