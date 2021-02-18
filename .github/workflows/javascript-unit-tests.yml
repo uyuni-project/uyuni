@@ -12,7 +12,7 @@ on:
 jobs:
   javascript_unit_tests:
     runs-on: [self-hosted, linux]
-    container: registry.opensuse.org/systemsmanagement:Uyuni:Master:Docker/containers/opensuse-github-actions:15.2
+    container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-base:latest
 
     steps:
     - uses: actions/checkout@v2

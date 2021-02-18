@@ -1,0 +1,29 @@
+name: Java postgresql unit tests
+
+on:
+  push:
+    branches:
+      - Manager-4.1
+    paths:
+      - 'java/**'
+  pull_request:
+    paths:
+      - 'java/**'
+
+jobs:
+  psql_unit_tests:
+    runs-on: [self-hosted, linux]
+    container: registry.mgr.suse.de/suma-4.1-pgsql:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Workaround for having expected dirs
+      run: cp -r /__w/spacewalk/spacewalk /manager
+    
+    - name: Set up initial objects
+      run: /manager/susemanager-utils/testing/automation/initial-objects.sh
+    
+    - name: Test pgsql
+      run: /manager/java/scripts/docker-testing-pgsql.sh test-pr   
+
+  
