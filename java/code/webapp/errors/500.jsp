@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<page:applyDecorator name="layout_c">
+<page:applyDecorator name="layout_error">
 <body>
     <h1>
       <rhn:icon type="system-warn" title="500.jsp.imgAlt" />
