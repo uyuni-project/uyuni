@@ -1,4 +1,5 @@
 - Fix registration of VM created with cobbler profile on Salt minion
+- enahance schedule states XMLRPC API
 - Cleanup sessions via SQL query instead of SQL function (bsc#1180224)
 - Do not call page decorator in HEAD requests (bsc#1181228)
 - Allow to configure request timeout (bsc#1178767)

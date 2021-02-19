@@ -2673,8 +2673,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = getMockedHandler().scheduleApplyHighstate(
-                admin, testServer.getId().intValue(), scheduleDate, true);
+        List<Long> sids = new LinkedList<Long>();
+        sids.add(testServer.getId());
+
+        Long actionId = getMockedHandler().scheduleApplyHighstate(admin, sids, scheduleDate, true);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -2702,8 +2704,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw UnsupportedOperationException");
         }
         catch (UnsupportedOperationException e) {
-            assertEquals("System not managed with Salt: " + server.getId(), e.getMessage());
+            assertEquals("Some System not managed with Salt: [" + server.getId() + "]", e.getMessage());
         }
+    }
+
+    public void testScheduleApplyState() throws Exception {
+        Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        List<String> stateNames = new LinkedList<String>();
+        stateNames.add("channels");
+
+        Long actionId = getMockedHandler().scheduleApplyStates(
+                admin, testServer.getId().intValue(), stateNames, scheduleDate, false);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertNotNull(details.getStates());
+        assertEquals(stateNames, details.getMods());
+        assertFalse(details.isTest());
     }
 
     /**
