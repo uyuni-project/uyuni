@@ -55,7 +55,6 @@ const CreatorPanel = (props: Props) => {
             <ModalLink
               id={`${props.id}-modal-link`}
               icon={props.icon ? props.icon : "fa-plus"}
-              className="btn-link"
               text={props.creatingText}
               target={modalNameId}
               onClick={() => {

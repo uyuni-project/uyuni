@@ -29,9 +29,9 @@ export default function AppStreams() {
       <>
         <div className="form-group">
           <div className="col-md-offset-3 col-md-6">
-            <a href="#" onClick={enableBrowse}>
+            <button className="btn-link" onClick={enableBrowse}>
               {isLoading ? <i className="fa fa-refresh fa-spin fa-fw"/> : <i className="fa fa-search fa-fw"/>}
-              Browse available modules</a>
+              Browse available modules</button>
           </div>
         </div>
         <TextInput/>

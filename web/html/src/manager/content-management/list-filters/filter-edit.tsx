@@ -73,7 +73,6 @@ const FilterEdit = (props: FilterEditProps) => {
       <ModalLink
         id={`${props.id}-modal-link`}
         icon={props.icon}
-        className="btn-link"
         text={props.buttonText}
         target={modalNameId}
         onClick={() => {
