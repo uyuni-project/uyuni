@@ -158,6 +158,8 @@ class TestLibmodProc:
         for key, value in result['modules'].items():
             assert 'default' in value
             assert 'streams' in value
+            # Assert that streams is a list (serializable)
+            assert type(value['streams']) is list
             # Assert that there are no duplicates in stream names
             assert len(value['streams']) == len(set(value['streams']))
 
