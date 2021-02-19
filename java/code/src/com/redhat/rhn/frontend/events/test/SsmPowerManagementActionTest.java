@@ -75,7 +75,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
 
         for (Server server : servers) {
             String cobblerName = CobblerSystemCreateCommand
-                .getCobblerSystemRecordName(server);
+                .getCobblerSystemRecordName(server.getName(), server.getOrgId());
             SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
             assertContains(MockConnection.getPowerCommands(), "power_system on " +
                 systemRecord.getId());

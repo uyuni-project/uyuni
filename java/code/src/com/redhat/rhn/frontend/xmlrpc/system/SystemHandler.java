@@ -72,6 +72,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.PushClient;
@@ -7364,14 +7365,34 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
+        return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid.longValue()), earliestOccurrence, test);
+    }
+
+    /**
+     * Schedule highstate application for a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of system id of the target systems
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @return list of action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("long", "systemIds")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleApplyHighstate(User loggedInUser, List<Long> sids, Date earliestOccurrence, boolean test) {
         try {
-            // Validate the given system id
-            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-            if (!server.asMinionServer().isPresent()) {
-                throw new UnsupportedOperationException("System not managed with Salt: " + sid);
+            List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
+                    .map(m -> m.getId()).collect(Collectors.toList());
+            if (!visible.containsAll(sids)) {
+                sids.removeAll(visible);
+                throw new UnsupportedOperationException("Some System not managed with Salt: " + sids);
             }
 
-            List<Long> sids = Arrays.asList(sid.longValue());
             Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
@@ -7384,6 +7405,73 @@ public class SystemHandler extends BaseHandler {
             throw new TaskomaticApiException(e.getMessage());
         }
     }
+
+    /**
+     * Schedule state application for a given system.
+     *
+     * @param loggedInUser The current user
+     * @param sid The system id of the target system
+     * @param stateNames A list of state names to be applied
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @return action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("string", "state names")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
+            Date earliestOccurrence, boolean test) {
+        return scheduleApplyStates(loggedInUser, Arrays.asList(sid.longValue()), stateNames,
+                earliestOccurrence, test);
+    }
+
+    /**
+     * Schedule state application for a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of system id of the target systems
+     * @param stateNames A list of state names to be applied
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @return list of action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("long", "systemIds")
+     * @xmlrpc.param #array_single("string", "state names")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleApplyStates(User loggedInUser, List<Long> sids, List<String> stateNames,
+            Date earliestOccurrence, boolean test) {
+        try {
+            List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
+                    .map(m -> m.getId()).collect(Collectors.toList());
+            if (!visible.containsAll(sids)) {
+                sids.removeAll(visible);
+                throw new UnsupportedOperationException("Some System not managed with Salt: " + sids);
+            }
+
+            Action a = ActionManager.scheduleApplyStates(loggedInUser, sids, stateNames, earliestOccurrence,
+                    Optional.of(test));
+            a = ActionFactory.save(a);
+            taskomaticApi.scheduleActionExecution(a);
+            return a.getId();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
     /**
      * Update the package state of a given system(High state would be needed to actually install/remove the package)
      *

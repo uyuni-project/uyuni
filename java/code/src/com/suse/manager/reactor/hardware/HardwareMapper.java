@@ -97,6 +97,13 @@ public class HardwareMapper {
     }
 
     /**
+     * @return the value of the 'mem_total' grain
+     */
+    public long getTotalMemory() {
+        return grains.getValueAsLong("mem_total").orElse(0L);
+    }
+
+    /**
      * Store CPU information given as a {@link ValueMap}.
      *
      * @param cpuinfo Salt returns /proc/cpuinfo data
@@ -542,6 +549,23 @@ public class HardwareMapper {
     }
 
     /**
+     * Get the memory amount to set. Most of the times we don't want to update it since a better value comes from
+     * the virtual host, but for foreign hosts and systems with no memory set, take the value seen from the guest OS:
+     * it's better than no value at all.
+     */
+    private long getUpdatedGuestMemory(long memory, VirtualInstance virtualInstance) {
+        boolean isForeign = virtualInstance.getHostSystem() != null &&
+                virtualInstance.getHostSystem().hasEntitlement(EntitlementManager.FOREIGN);
+        long newMemory = memory;
+        // Only foreign system (s390 and VHM) and systems with no memory set should have updated memory
+        if (!isForeign && 0 != virtualInstance.getTotalMemory() &&
+                virtualInstance.getTotalMemory() != null) {
+            newMemory = virtualInstance.getTotalMemory();
+        }
+        return newMemory;
+    }
+
+    /**
      * Map virtualization information to the database.
      *
      * @param smbiosRecordsSystem optional DMI information about the system
@@ -664,19 +688,22 @@ public class HardwareMapper {
                             null, server, vCPUs, memory);
                 }
                 else {
+                    long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
                     String name = virtualInstance.getName();
                     virtualInstance.setUuid(virtUuid);
                     if (StringUtils.isBlank(name)) {
                         // use minion name only when the hypervisor name is unknown
                         name = server.getName();
                     }
+                    // Don't update memory with kernel-seen one
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, vCPUs, memory);
+                            virtualInstance.getHostSystem(), server, vCPUs, newMemory);
                 }
             }
             else {
                 virtualInstances.forEach(virtualInstance -> {
+                    long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
                     String name = virtualInstance.getName();
                     if (StringUtils.isBlank(name)) {
                         // use minion name only when the hypervisor name is unknown
@@ -687,9 +714,10 @@ public class HardwareMapper {
                                 " to -> " + virtType.getLabel());
                         virtualInstance.setType(virtType);
                     }
+                    // Don't update memory with kernel-seen one
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, vCPUs, memory);
+                            virtualInstance.getHostSystem(), server, vCPUs, newMemory);
                 });
             }
         }

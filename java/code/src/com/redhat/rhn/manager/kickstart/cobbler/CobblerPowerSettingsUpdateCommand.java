@@ -126,7 +126,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
                 CobblerConnection connection = getCobblerConnection();
                 Image image = createDummyImage(connection);
                 systemRecord = SystemRecord.create(connection,
-                    CobblerSystemCreateCommand.getCobblerSystemRecordName(server), image);
+                    CobblerSystemCreateCommand.getCobblerSystemRecordName(server.getName(), server.getOrgId()), image);
                 systemRecord.enableNetboot(false);
                 server.setCobblerId(systemRecord.getId());
             }

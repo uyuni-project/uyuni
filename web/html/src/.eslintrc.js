@@ -21,6 +21,7 @@ module.exports = {
   },
 
   rules: {
+    "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
     // TODO: This needs to be reworked with Typescript support in mind
     "no-use-before-define": "off",
