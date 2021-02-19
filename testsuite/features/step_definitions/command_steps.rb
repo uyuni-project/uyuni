@@ -842,7 +842,10 @@ end
 When(/^I install package tftpboot-installation on the server$/) do
   node = get_target("server")
   output, _code = node.run("find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm")
-  package = output.split("\n")[0]
+  packages = output.split("\n")
+  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+  # Reverse sort the package name to get the latest version first and install it
+  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
   node.run("rpm -i #{package}")
 end
 
