@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2020-11-21 02:26+0000\n"
-"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"PO-Revision-Date: 2021-03-07 19:20+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
 "Language: ja\n"
@@ -206,7 +206,7 @@ msgstr "アーキテクチャ `%s' はサポートされていません"
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "トークン `%s' には 1 つ以上のベースチャンネルが割り当てられています"
+msgstr "トークン `%s' には複数のベースチャンネルが割り当てられています"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
@@ -238,7 +238,7 @@ msgstr "トークン「%s」は見つかりませんでした"
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr "不一致の 　org からのトークンです"
+msgstr "不一致の org からのトークンです"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
@@ -359,10 +359,8 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 エンタイトルメントがまだ付与されて"
-"いません。\n"
-"  システムにエンタイトルメントを付与するには次の Web サイトにログインしてくだ"
-"さい。\n"
+"  このシステムは正常に登録されていますが、 サービスへのエンタイトルメントがまだ付与されていません。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログインしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
@@ -377,10 +375,8 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 利用できるエンタイトルメントがあり"
-"ませんでした。\n"
-"  システムにエンタイトルメントを付与するには次の Web サイトにログインしてくだ"
-"さい。\n"
+"  このシステムは正常に登録されていますが、 利用できるサービスエンタイトルメントがありませんでした。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログインしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
@@ -543,7 +539,7 @@ msgstr ""
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
-msgstr "データベースに使用できる記録がありません。"
+msgstr "データベースに使用できるレコードがありません。"
 
 #: ../common/rhnException.py:82
 msgid "Invalid value for entry."
@@ -627,10 +623,8 @@ msgstr ""
 "\n"
 "     ユーザーグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加は"
-"できません。\n"
-"     サーバに対してサブスクリプションを設定できる最大ユーザ数を変更する必要が"
-"ある場合は、\n"
+"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加はできません。\n"
+"     サーバに対してサブスクリプションを設定できる最大ユーザー数を変更する必要がある場合は、\n"
 "     組織の管理者にご確認ください。\n"
 "     "
 
@@ -841,9 +835,7 @@ msgstr "パスワードの最大長を超えています"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
-"このユーザに対しては読み込み専用の API アクセスのみが提供されています。アクセ"
-"スが拒否されました。"
+msgstr "このユーザに対しては読み込み専用の API アクセスのみが提供されています。アクションが拒否されました。"
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
@@ -902,8 +894,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     この SUSE Manager サーバーでは、このサーバでの Inter Server Sync の使用"
-"が許可されていません\n"
+"     この SUSE Manager サーバーでは、このサーバーでの Inter Server Sync の使用が許可されていません\n"
 "     "
 
 #: ../common/rhnException.py:209
@@ -1534,8 +1525,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
-"デバッグのみ: XML／データベース取り込みに対する最大バッチサイズ (1..%s) 。詳"
-"しくは \"man mgr-inter-sync\" をお読みください。"
+"デバッグのみ: XML／データベース取り込み処理に対する最大バッチサイズ (1..%s) 。詳しくは \"man mgr-inter-sync\" "
+"をお読みください。"
 
 #: ../satellite_tools/satsync.py:2221
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1561,8 +1552,7 @@ msgstr "既存の独自チャンネルについても同期が行なわれます
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
-msgstr ""
-"/etc/rhn/rhn.conf  内でデバッグレベルを上書き (現在 %s に設定されています) 。"
+msgstr "/etc/rhn/rhn.conf 内で設定されているデバッグレベルを上書き (現在 %s に設定されています) 。"
 
 #: ../satellite_tools/satsync.py:2232
 #, python-format
@@ -1847,7 +1837,7 @@ msgstr "  18 - rhn.conf 内の DB 接続文字列が正しくありません"
 
 #: ../satellite_tools/satsync.py:2508
 msgid "  19 - Bad arguments"
-msgstr "  19 - パラメータが正しくありません"
+msgstr "  19 - 引数が正しくありません"
 
 #: ../satellite_tools/satsync.py:2509
 msgid "  20 - Could not connect to db."
