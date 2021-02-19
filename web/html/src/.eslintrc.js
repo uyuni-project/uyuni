@@ -23,6 +23,10 @@ module.exports = {
   rules: {
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
+    // Enforce === over ==, this is a common problem in older code but we want to avoid it in new code
+    "eqeqeq": "error",
+    // TODO: Eventually we should enforce this as well
+    // "no-eq-null": "error",
     // TODO: This needs to be reworked with Typescript support in mind
     "no-use-before-define": "off",
     // See https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
