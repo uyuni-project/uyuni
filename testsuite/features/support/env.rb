@@ -18,7 +18,7 @@ require 'multi_test'
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
-$long_tests_enabled = true if ENV['LONG_TESTS']
+$long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
 puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
