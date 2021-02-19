@@ -1,3 +1,4 @@
+- Rename rhnVirtualInstanceInfo memory_size_k column
 - Fix registration of VM created with cobbler profile on Salt minion
 - enahance schedule states XMLRPC API
 - Cleanup sessions via SQL query instead of SQL function (bsc#1180224)

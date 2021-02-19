@@ -62,7 +62,7 @@ public class VirtManagerSaltTest extends TestCase {
                 .filter(info -> info.getGuestProperties() != null && info.getGuestProperties().getName().equals("vm01"))
                 .findFirst().get();
         assertEquals(2, vm1infos.getGuestProperties().getVcpus());
-        assertEquals(1048576, vm1infos.getGuestProperties().getMemorySize());
+        assertEquals(1024, vm1infos.getGuestProperties().getMemorySize());
         assertEquals("stopped", vm1infos.getGuestProperties().getState());
         assertEquals("b99a8176-4f40-498d-8e61-2f6ade654fe2", vm1infos.getGuestProperties().getUuid());
         assertEquals(VirtualInstanceManager.EVENT_TYPE_EXISTS, vm1infos.getEventType());
@@ -71,7 +71,7 @@ public class VirtManagerSaltTest extends TestCase {
                 .filter(info -> info.getGuestProperties() != null && info.getGuestProperties().getName().equals("vm02"))
                 .findFirst().get();
         assertEquals(12, vm2infos.getGuestProperties().getVcpus());
-        assertEquals(2097152L, vm2infos.getGuestProperties().getMemorySize());
+        assertEquals(2048L, vm2infos.getGuestProperties().getMemorySize());
         assertEquals("running", vm2infos.getGuestProperties().getState());
         assertEquals("98eef4f7-eb7f-4be8-859d-11658506c496", vm2infos.getGuestProperties().getUuid());
         assertEquals(VirtualInstanceManager.EVENT_TYPE_EXISTS, vm2infos.getEventType());
