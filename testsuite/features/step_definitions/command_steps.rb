@@ -858,12 +858,7 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
     cmd = "zypper --non-interactive install --oldpackage -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
   end
-  result, code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
-  STDOUT.puts "I install old package: command= #{cmd} on #{host}, rc=#{code} output=#{result}"
-  if host.include? 'ubuntu'
-    result, code = node.run('dpkg -l | grep dummy')
-    STDOUT.puts "Is package really installed? rc=#{code} output=#{result}"
-  end
+  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -1348,11 +1343,9 @@ end
 
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
-  result, code = $server.run("spacecmd -u admin -p admin clear_caches")
-  STDOUT.puts "clear caches: rc=#{code} output=#{result}"
+  $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_schedulepackagerefresh #{node}"
-  result, code = $server.run(command)
-  STDOUT.puts "schedule package refresh: rc=#{code} output=#{result}"
+  $server.run(command)
 end
 
 Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
@@ -1375,8 +1368,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
-  result, code = $server.run(command, false)
-  STDOUT.puts "list installed packages: rc=#{code} output=#{result}"
+  result, _code = $server.run(command, false)
   packages.split(' ').each do |package|
     pkg = package.strip
     raise "package #{pkg} is not installed" unless result.include? pkg
@@ -1388,8 +1380,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
-    result, code = $server.run(command, false)
-    STDOUT.puts "list installed packages: rc=#{code} output=#{result}"
+    result, _code = $server.run(command, false)
     break if result.include? pkg
     sleep 1
   end
