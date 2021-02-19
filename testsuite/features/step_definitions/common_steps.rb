@@ -547,7 +547,7 @@ Then(/^the SLE15 SP1 products should be added$/) do
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
-  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/button[contains(@class, 'showChannels')]"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
