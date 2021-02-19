@@ -14,5 +14,5 @@ zypper in -y  make \
               python3-pytest \
               python3-urlgrabber
 
-zypper -n in vim less
+zypper -n in vim less gzip
 
