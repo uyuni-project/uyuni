@@ -135,11 +135,12 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   onSelectMaintenanceWindow = (event: any) => {
-    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
+    // Here and below, `mw.id` is annotated as a number but it isn't clear whether that is truly always the case
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => parseInt(mw.id as any, 10) === parseInt(event.target.value, 10)  )[0]);
   };
 
   onFocusMaintenanceWindow = (event: any) => {
-    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => parseInt(mw.id as any, 10) === parseInt(event.target.value, 10))[0]);
   };
 
   onActionChainChanged = (selectedItem: ActionChain) => {
@@ -234,7 +235,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
               type="radio"
               name="use_date"
               value="true"
-              checked={this.state.type == "earliest"}
+              checked={this.state.type === "earliest"}
               id="schedule-by-date"
               onChange={this.onSelectEarliest}
             />

@@ -528,7 +528,7 @@ function cleanMeta(value) {
 }
 
 function checkIfEmptyValueAttrExists(value, element, formulaValues) {
-  if ((value == null || value.length == 0) && !element.$optional && (element.$ifEmpty || element.$ifEmpty === null)) {
+  if ((value == null || value.length === 0) && !element.$optional && (element.$ifEmpty || element.$ifEmpty === null)) {
     value = element.$ifEmpty;
     formulaValues[element.$id] = value;
   }
@@ -985,7 +985,7 @@ export class FormulaFormContextProvider extends React.Component<
         let value: any = null;
         let element = layout[key];
         let elementId;
-        if (prototypeParentId && elementIndex != undefined && elementIndex != null) {
+        if (prototypeParentId && typeof elementIndex !== 'undefined' && elementIndex !== null) {
           elementId = prototypeParentId + "#" + elementIndex + "#" + element.$id;
         } else {
           elementId = (layout.$id ? layout.$id + "#" : "") + element.$id;
@@ -1036,7 +1036,7 @@ export class FormulaFormContextProvider extends React.Component<
         ) {
           result["$meta$" + key] = {
             id: elementId,
-            required: key == "$key" ? true : element.$prototype["$required"],
+            required: key === "$key" ? true : element.$prototype["$required"],
             disabled: element.$prototype["$disabled"],
             name: element["$name"],
             match: element.$prototype["$match"],
@@ -1046,7 +1046,7 @@ export class FormulaFormContextProvider extends React.Component<
         } else {
           result["$meta$" + key] = {
             id: elementId,
-            required: key == "$key" ? true : element["$required"],
+            required: key === "$key" ? true : element["$required"],
             disabled: element["$disabled"],
             name: element["$name"],
             match: element["$match"],
