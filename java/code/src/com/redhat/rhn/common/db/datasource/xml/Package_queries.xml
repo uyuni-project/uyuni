@@ -792,6 +792,7 @@ SELECT P.id, P.summary, PP.name as provider
                 JOIN rhnPackageArch pa ON pa.id = p.package_arch_id
             WHERE
               sc.server_id = :sid
+              AND NOT EXISTS (SELECT 1 FROM suseServerRetractedPackagesView WHERE sid = :sid AND pid = p.id)
             GROUP BY
               p.name_id,
               pa.label,
