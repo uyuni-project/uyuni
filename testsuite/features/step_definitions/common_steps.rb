@@ -262,7 +262,7 @@ end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
-  _version, family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
   elsif os_family =~ /^centos/
