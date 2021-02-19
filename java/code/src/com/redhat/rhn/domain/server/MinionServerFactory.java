@@ -62,9 +62,9 @@ public class MinionServerFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup all Servers that belong to an org
+     * Lookup all Minion Servers that can be managed by the given user
      * @param user the user servers are visible to
-     * @return the Server found
+     * @return stream of MinionServer found
      */
     public static Stream<MinionServer> lookupVisibleToUser(User user) {
         return user.getServers().stream().flatMap(

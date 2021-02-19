@@ -695,6 +695,17 @@ Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
+Then(/^I add proxy record into hosts file on "([^"]*)" if avahi is used$/) do |host|
+  node = get_target(host)
+  if node.full_hostname.include? 'tf.local'
+    output, _code = $proxy.run("ip address show dev eth0")
+    ip = output.split("\n")[2].split[1].split('/')[0]
+    node.run("echo '#{ip} #{$proxy.full_hostname} #{$proxy.hostname}' >> /etc/hosts")
+  else
+    puts 'Record not added - avahi domain is not detected'
+  end
+end
+
 Then(/^the image should exist on "([^"]*)"$/) do |host|
   node = get_target(host)
   images, _code = node.run("ls /srv/saltboot/image/")

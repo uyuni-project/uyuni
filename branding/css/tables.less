@@ -133,14 +133,18 @@ tr.alphaResult td.sortedCol:before {
   font-family: 'FontAwesome';
 }
 
-th.ascSort a:after {
+th.ascSort a:after, th.ascSort button:after {
   content: "  \f160";
   font-family: 'FontAwesome';
 }
 
-th.descSort a:after {
+th.descSort a:after, th.descSort button:after {
   content: "  \f161";
   font-family: 'FontAwesome';
+}
+
+th button.btn-link{
+  font-weight: bold;
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {

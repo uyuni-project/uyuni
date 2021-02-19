@@ -12,7 +12,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </id>
 
         <property name="name" column="NAME" type="string" length="128"/>
-        <property name="totalMemory" column="MEMORY_SIZE_K" type="long"/>
+        <property name="totalMemory" column="memory_size" type="long"/>
         <property name="numberOfCPUs" column="VCPUS" type="integer"/>
         <property name="created" column="CREATED" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="MODIFIED" type="timestamp" insert="false" update="false"/>

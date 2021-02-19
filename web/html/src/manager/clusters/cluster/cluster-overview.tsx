@@ -249,7 +249,6 @@ const ClusterOverview = (props: Props) => {
             <ModalLink
               target="cluster-edit-dialog"
               icon="fa-plus"
-              className="btn-link"
               text={t("Edit properties")}
               title={t("Edit cluster details")}
               onClick={() => setEditModel({ name: cluster.name, description: cluster.description })}
