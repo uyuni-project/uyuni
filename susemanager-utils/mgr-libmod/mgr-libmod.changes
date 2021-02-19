@@ -1,3 +1,5 @@
+- Fix 'list_modules' JSON serialization (bsc#1182492)
+
 -------------------------------------------------------------------
 Fri Jan 22 13:08:32 CET 2021 - jgonzalez@suse.com
 
