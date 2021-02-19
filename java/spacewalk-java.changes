@@ -1,3 +1,4 @@
+- Fix user creation with pam auth and no password (bsc#1179579)
 - Rename rhnVirtualInstanceInfo memory_size_k column
 - Fix registration of VM created with cobbler profile on Salt minion
 - enahance schedule states XMLRPC API
