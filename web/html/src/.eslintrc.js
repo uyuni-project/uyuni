@@ -23,7 +23,6 @@ module.exports = {
   rules: {
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
-    // Enforce === over ==, this is a common problem in older code but we want to avoid it in new code
     "eqeqeq": "error",
     // TODO: Eventually we should enforce this as well
     // "no-eq-null": "error",
