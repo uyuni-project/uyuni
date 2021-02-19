@@ -860,6 +860,10 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   end
   result, code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
   STDOUT.puts "I install old package: command= #{cmd} on #{host}, rc=#{code} output=#{result}"
+  if host.include? 'ubuntu'
+    result, code = node.run('dpkg -l | grep dummy')
+    STDOUT.puts "Is package really installed? rc=#{code} output=#{result}"
+  end
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -895,7 +899,15 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   node = get_target(host)
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
-  if (os_version.include? '12') || (os_version.include? '15')
+  if (os_version.include? '15') && (host.include? 'proxy')
+    proxy_version = '40'
+    if os_version.include? 'SP3'
+      proxy_version = '42'
+    elsif os_version.include? 'SP2'
+      proxy_version = '41'
+    end
+    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
+  elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'
     sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
@@ -1479,4 +1491,16 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+end
+
+When(/^I set correct product for "(proxy|branch server)"$/) do |product|
+  if product.include? 'proxy'
+    prod = 'SUSE-Manager-Proxy'
+  elsif product.include? 'branch server'
+    prod = 'SUSE-Manager-Retail-Branch-Server'
+  else
+    raise 'Incorrect product used.'
+  end
+  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting correct product: #{out}"
 end
