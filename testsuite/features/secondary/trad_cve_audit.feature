@@ -48,8 +48,8 @@ Feature: CVE Audit on traditional clients
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
     And I should see a "Download CSV" link
-    And I should see a "Status" link
-    And I should see a "Name" link
+    And I should see a "Status" button
+    And I should see a "Name" button
     And I should see a "extra CVE data update" link
     Then I follow "Install a new patch on this system" on "sle_client" row
     And I should see a "Relevant Patches" text
