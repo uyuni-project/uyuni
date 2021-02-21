@@ -4,7 +4,7 @@
     <description type="system">
         <author>Admin User</author>
         <contact>noemail@example.com</contact>
-        <specification>SUSE Linux Enterprise 12 SP3 JeOS</specification>
+        <specification>SUSE Linux Enterprise 12 SP5 JeOS</specification>
     </description>
     <preferences>
         <version>6.0.0</version>
@@ -32,10 +32,10 @@
     </drivers>
 
     <repository type="rpm-md">  <!-- product -->
-        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP3/x86_64/product/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP5/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-SERVER/12-SP3/x86_64/update/"/>
+        <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-SERVER/12-SP5/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">
         <source path="http://download.suse.de/ibs/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/"/>
