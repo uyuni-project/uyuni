@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-02-18 09:18+0000\n"
+"PO-Revision-Date: 2021-03-07 06:49+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1924,7 +1924,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1476 ../src/spacecmd/system.py:1784
 #: ../src/spacecmd/system.py:4248
 msgid "Systems"
-msgstr ""
+msgstr "Systémy"
 
 #: ../src/spacecmd/group.py:151
 msgid "Remove these systems [y/N]:"
@@ -3425,7 +3425,7 @@ msgstr ""
 
 #: ../src/spacecmd/org.py:285
 msgid "None"
-msgstr ""
+msgstr "Žiadny"
 
 #: ../src/spacecmd/org.py:287
 msgid "Remove this trust [y/N]:"
@@ -5995,7 +5995,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:613
 msgid "Network"
-msgstr ""
+msgstr "Sieť"
 
 #: ../src/spacecmd/system.py:622
 #, python-format
@@ -6120,7 +6120,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:667
 msgid "Devices"
-msgstr ""
+msgstr "Zariadenia"
 
 #: ../src/spacecmd/system.py:677
 msgid "Description: None"
