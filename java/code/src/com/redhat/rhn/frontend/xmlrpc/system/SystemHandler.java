@@ -7365,7 +7365,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
-        return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid.longValue()), earliestOccurrence, test);
+        return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid), earliestOccurrence, test);
     }
 
     /**
@@ -7379,21 +7379,23 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("long", "systemIds")
+     * @xmlrpc.param #array_single("int", "systemIds")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyHighstate(User loggedInUser, List<Long> sids, Date earliestOccurrence, boolean test) {
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, boolean test) {
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
                     .map(m -> m.getId()).collect(Collectors.toList());
-            if (!visible.containsAll(sids)) {
-                sids.removeAll(visible);
-                throw new UnsupportedOperationException("Some System not managed with Salt: " + sids);
+            if (!visible.containsAll(sysids)) {
+                sysids.removeAll(visible);
+                throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
             }
 
-            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
+            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sysids, earliestOccurrence,
+                    Optional.of(test));
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
             return a.getId();
@@ -7426,7 +7428,7 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
             Date earliestOccurrence, boolean test) {
-        return scheduleApplyStates(loggedInUser, Arrays.asList(sid.longValue()), stateNames,
+        return scheduleApplyStates(loggedInUser, Arrays.asList(sid), stateNames,
                 earliestOccurrence, test);
     }
 
@@ -7442,23 +7444,24 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("long", "systemIds")
+     * @xmlrpc.param #array_single("int", "systemIds")
      * @xmlrpc.param #array_single("string", "state names")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
      * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleApplyStates(User loggedInUser, List<Long> sids, List<String> stateNames,
+    public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, boolean test) {
+        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
                     .map(m -> m.getId()).collect(Collectors.toList());
-            if (!visible.containsAll(sids)) {
-                sids.removeAll(visible);
-                throw new UnsupportedOperationException("Some System not managed with Salt: " + sids);
+            if (!visible.containsAll(sysids)) {
+                sysids.removeAll(visible);
+                throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
             }
 
-            Action a = ActionManager.scheduleApplyStates(loggedInUser, sids, stateNames, earliestOccurrence,
+            Action a = ActionManager.scheduleApplyStates(loggedInUser, sysids, stateNames, earliestOccurrence,
                     Optional.of(test));
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
