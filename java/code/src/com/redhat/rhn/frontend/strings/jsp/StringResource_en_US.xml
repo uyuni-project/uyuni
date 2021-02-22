@@ -24744,6 +24744,9 @@ given channel.</source>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
       </trans-unit>
+      <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
+        <source>Package belongs to a Retracted Patch</source>
+      </trans-unit>
       <trans-unit id="ssm.overview.states" xml:space="preserve">
         <source>States</source>
       </trans-unit>
