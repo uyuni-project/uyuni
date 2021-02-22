@@ -35,8 +35,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
@@ -190,6 +194,20 @@ public class MgrSyncUtils {
 
     /**
      * Convert network URL to file system URL.
+     *
+     * 1. URL point to localhost, return the normal URL, we have access
+     * 2. URL from updates.suse.com, return the path
+     * 3. legacy SMT mirror URL /repo/RPMMD/&lt;repo name&gt; if it exists
+     * 4. finally, return host + path as path component
+     *
+     * A mirrorlist URL with query paramater is converted to a path:
+     * - key=value => key/value
+     * - sort alphabetically
+     * - join with a /
+     * Example:
+     * http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock
+     * file://mirrorlist.centos.org/arch/x86_64/infra/stock/release/8/repo/AppStream
+     *
      * @param urlString url
      * @param name repo name
      * @return file URI
@@ -202,8 +220,21 @@ public class MgrSyncUtils {
             host = url.getHost();
             path = url.getPath();
 
+            // Case 1
             if ("localhost".equals(host)) {
                 return url.toURI();
+            }
+            String qPath = Arrays.stream(Optional.ofNullable(url.getQuery()).orElse("").split("&"))
+                    .filter(p -> p.contains("=")) // filter out possible auth tokens
+                    .map(p ->
+                        Arrays.stream(p.split("=", 2))
+                            .map(s -> URLDecoder.decode(s, StandardCharsets.UTF_8))
+                            .collect(Collectors.joining("/"))
+                    )
+                    .sorted()
+                    .collect(Collectors.joining("/"));
+            if (!qPath.isBlank()) {
+                path = new File(path, qPath).getAbsolutePath();
             }
         }
         catch (MalformedURLException | URISyntaxException e) {
@@ -211,13 +242,22 @@ public class MgrSyncUtils {
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
+        File newMirrorPath = new File(sccDataPath, host + "/" + path);
 
-        if (!OFFICIAL_UPDATE_HOSTS.contains(host) && name != null) {
+        // Case 2
+        if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
+            return new File(dataPath.getAbsolutePath(), path).toURI();
+        }
+        else if (name != null) {
+            // Case 3
             // everything after the first space are suffixes added to make things unique
             String[] parts  = name.split("\\s");
-            return new File(dataPath.getAbsolutePath() + "/repo/RPMMD/" + parts[0]).toURI();
+            File oldMirrorPath = new File(dataPath.getAbsolutePath(), "/repo/RPMMD/" + parts[0]);
+            if (oldMirrorPath.exists()) {
+                return oldMirrorPath.toURI();
+            }
         }
-
-        return new File(dataPath.getAbsolutePath() + path).toURI();
+        // Case 4
+        return newMirrorPath.toURI();
     }
 }
