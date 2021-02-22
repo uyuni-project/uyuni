@@ -1236,12 +1236,22 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
-  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
+  # Gather all the ids of package refreshes existing at SUMA
+  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh scheduled by admin' | cut -f1 -d' '", false)
+  node_refreshes = ""
+  refreshes.split(' ').each do |refresh_id|
+    next unless refresh_id.match('/[0-9]{1,4}/')
+    refresh_result, = $server.run("spacecmd -u admin -p admin schedule_details #{refresh_id}") # Filter refreshes for specific system
+    next unless refresh_result.include? node
+    node_refreshes += "^#{refresh_id}|"
+  end
+  cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
     result, code = $server.run(cmd, false)
+    sleep 1
+    next if result.include? '0    0    1'
     break if result.include? '1    0    0'
     raise 'refresh package list failed' if result.include? '0    1    0'
-    sleep 1
   end
 end
 
