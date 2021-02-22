@@ -1012,9 +1012,6 @@ public class ContentSyncManager {
      * @throws URISyntaxException in case of an error
      */
     public List<String> buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
-        if (url.contains("mirrorlist")) {
-            return Arrays.asList(url);
-        }
         URI uri = new URI(url);
         List<String> relFiles = new LinkedList<>();
         List<String> urls = new LinkedList<>();
