@@ -145,10 +145,10 @@ public class ErrataOverview extends BaseDto {
     }
     /**
      * Adds a name to packageNames list.
-     * @param id The id to add.
+     * @param idIn The id to add.
      */
-    public void addPackageId(long id) {
-        pids.add(id);
+    public void addPackageId(long idIn) {
+        pids.add(idIn);
     }
     /**
      * @return Returns the package ids.
