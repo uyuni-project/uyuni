@@ -13,7 +13,7 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>고객님의 @@PRODUCT_NAME@@ 계정이 준비되었습니다. </target>
+        <target>고객님의 @@PRODUCT_NAME@@ 계정이 준비되었습니다.</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
@@ -32,6 +32,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
+        <target>안녕하십니까?
+
+{0} {1}에 의해 고객님의 @@PRODUCT_NAME@@ 로그인이 생성되었습니다.
+이 @@PRODUCT_NAME@@ 로그인과 활성화된 @@VENDOR_NAME@@ 서브스크립션이 있다면
+ @@PRODUCT_NAME@@의 시스템 관리 기능을 이용하실 수 있습니다.
+
+  @@PRODUCT_NAME@@ 로그인: {2}
+       비밀번호: {3}
+         이메일: {4}
+
+  {5}
+
+중요: 로그인한 후 비밀번호를 변경하십시오.
+
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+{6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -63,6 +79,22 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target>안녕하십니까?
+
+고객님의 @@PRODUCT_NAME@@ 로그인이 생성되었습니다.
+이 @@PRODUCT_NAME@@ 로그인과 활성화된 @@VENDOR_NAME@@ 서브스크립션이 있다면
+ @@PRODUCT_NAME@@의 시스템 관리 기능을 이용하실 수 있습니다.
+
+  @@PRODUCT_NAME@@ 로그인: {0}
+       비밀번호: {1}
+         이메일: {2}
+
+  {3}
+
+중요: 로그인한 후 비밀번호를 변경하십시오.
+
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -104,19 +136,19 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>안녕하세요,
+        <target>안녕하십니까?
 
-{0} {1}에 의해 고객님의 Red Hat 로그인을 생성하였습니다.
-이 Red Hat 로그인과 활성화된 Red Hat 서브스크립션이 있다면
+{0} {1}에 의해 고객님의 @@PRODUCT_NAME@@ 로그인이 생성되었습니다.
+이 @@PRODUCT_NAME@@ 로그인과 활성화된 @@VENDOR_NAME@@ 서브스크립션이 있다면
  @@PRODUCT_NAME@@의 시스템 관리 기능을 이용하실 수 있습니다.
 
-  Red Hat 로그인: {2}
-      이메일 주소: {4}
+  @@PRODUCT_NAME@@ 로그인: {2}
+      이메일: {4}
 
   {5}
 
-@@PRODUCT_NAME@@를 사용해주셔서 감사합니다.
-{6} </target>
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+{6}</target>
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject" xml:space="preserve">
@@ -131,7 +163,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target>다음 @@PRODUCT_NAME@@ 사용자가 생성되었습니다: {0} ({1}, {2} &lt;{3}&gt;) </target>
+        <target>생성된 @@PRODUCT_NAME@@ 사용자: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
@@ -159,19 +191,19 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>안녕하세요,
+        <target>안녕하십니까?
 
 고객님의 계정에 새 사용자가 추가되었습니다.
 
 {0}
 
-고객님 계정에 연계된 모든 활성화된 사용자와 Red Hat 로그인 목록을 보시려면,
-다음 사이트를 방문하시기 바랍니다:
+고객님의 계정에 연결된 모든 활성 사용자와 @@PRODUCT_NAME@@ 로그인을 확인하려면,
+다음 사이트를 방문하시기 바랍니다.
 
   {1}
 
-@@PRODUCT_NAME@@를 사용해주셔서 감사합니다.
-{2} </target>
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+{2}</target>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
@@ -190,7 +222,7 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -202,11 +234,11 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
-@@PRODUCT_NAME@@는 다음과 같은 권고가 등록한 하나 
-이상의 시스템에 적용 가능하다고 판단했습니다: 
+        <target>
+@@PRODUCT_NAME@@에 따르면 다음과 같은 권장 사항이 고객님께서 등록한 하나 
+이상의 시스템에 적용 가능합니다. 
 
-이 에라타에 대한 완전한 정보는 다음 위치에서 확인할 수 있습니다:
+이 패치와 관련한 전체 정보는 다음 위치에서 확인할 수 있습니다.
      {0}
 
 {1} - {2}
@@ -221,8 +253,8 @@ Summary:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -233,51 +265,51 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-          <target>
+        <target>
 ---------------------
 영향을 받는 시스템 목록
 ---------------------
-이 에라타 권고는 아래에 나열된 시스템에 적용할 수 있습니다. 나열된 시스템에 
-이 에라타를 적용되지 않으면 해당 서버의 패키지 프로파일이 오래된 것일 수 있습니다. 
-이러한 경우 해당 시스템에 root로 'up2date -p' (RHEL 4 이하) 또는
-'rhn-profile-sync' (RHEL 5 이상)를 실행하고 소프트웨어 프로파일을 업데이트합니다.
+이 패치 권장 사항은 아래에 나열된 시스템에 적용할 수 있습니다. 나열된 시스템에 
+이 패치를 적용되지 않으면 해당 서버의 패키지 프로파일이 더 이상 사용되지 않는 것일 수 있습니다. 
+이러한 경우 해당 시스템에서 root로 'up2date -p'(RHEL 4 이하) 또는
+'rhn-profile-sync'(RHEL 5 이상)를 실행하고 소프트웨어 프로파일을 새로 고쳐야 합니다.
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target>
-'개요'에 등록된 하나의 시스템이 영향을 받음(에라타 통보가 명시적으로 
-활성화된 시스템만 표시됩니다.)
+        <target>
+'개요'에 등록된 1개의 시스템이 영향을 받습니다(패치 알림은 명시적으로 
+활성화된 시스템만 표시됨).
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target>
-'개요'에 등록된 {0} 시스템이 영향을 받음(에라타 통보가 명시적으로 
-활성화된 시스템만 표시됩니다.)
+        <target>
+'개요'에 등록된 {0}개 시스템이 영향을 받습니다(패치 알림은 명시적으로 
+활성화된 시스템만 표시됨).
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -292,21 +324,21 @@ You may address the issues outlined in this advisory in two ways:
 
      - run the Update Agent on each affected server.
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target>
-출시      아키텍처       프로파일 이름
+        <target>
+릴리스      아키텍처       프로파일 이름
 ---------- ---------- ---------------------------------------------
 {0}
 
-이 권고에서 설명된 문제는 다음의 두 가지 방법으로 해결할 수 있습니다:
+이 권장 사항에서 설명되는 문제는 다음의 두 가지 방법으로 해결할 수 있습니다.
 
-     - 다음 위치에서 사용할 수 있는 목록에서 서버 이름을 클릭하여 서버 
-이름을 선택하고 에라타 업데이트를 스케줄합니다:
+     - 다음 위치에서 사용할 수 있는 목록에서 이름을 클릭하여 서버 
+이름을 선택한 후 패치 업데이트 일정을 예약합니다.
            {1}
 
      - 영향을 받은 각 서버에서 업데이트 에이전트를 실행합니다.
@@ -314,8 +346,8 @@ You may address the issues outlined in this advisory in two ways:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -331,23 +363,23 @@ click the "Details" tab.
 {1}
 {2}
     </source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target>
+        <target>
 통지 설정 변경
 ---------------------------------
-에라타 통지 설정을 전역으로 활성화 또는 비활성화하려면 @@PRODUCT_NAME@@에 
-로그인하고 "개요"/"사용자 계정"에서 "설정" 탭으로 이동합니다.
+패치 알림 설정을 전역으로 활성화 또는 비활성화하려면 @@PRODUCT_NAME@@에 
+로그인한 후 "개요"/"사용자 계정"에서 "설정" 탭으로 이동합니다.
 
         URL: {0}
 
-또한 "시스템 목록"에서 개별 시스템을 선택하여 시스템마다 통지를활성화하거나 
-비활성화할 수 있습니다. 개별 시스템 보기에서 "상세 정보" 탭을 클릭합니다.
+또한, "시스템 목록"에서 개별 시스템을 선택하여 시스템마다 통지를 활성화/
+비활성화할 수도 있습니다. 개별 시스템 보기에서 "상세 정보" 탭을 클릭합니다.
 
 {1}
 {2}
@@ -355,7 +387,7 @@ click the "Details" tab.
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
@@ -366,7 +398,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target>{0}에 대해 매일 @@PRODUCT_NAME@@ 현황 보고   </target>
+        <target>{0}에 대한 일간 @@PRODUCT_NAME@@ 현황 보고서</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
@@ -401,23 +433,22 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>이는 {1} 중 계정 {0}의 @@PRODUCT_NAME@@ 상태 보고서입니다.
+        <target>이는 {1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
 
-다음중 하나에 해당하는 경우 이 이메일이 전송됩니다:
+다음 중 하나에 해당하는 경우 이 이메일이 전송됩니다.
 
-1.  시스템이 24 시간 이내에 @@PRODUCT_NAME@@에 연결하는데 실패합니다.
-2.  시스템이 스케줄된 작업 활동을 등록합니다.
+1.  시스템이 24시간 이내에 @@PRODUCT_NAME@@을(를) 확인하지 못합니다.
+2.  시스템이 예약된 작업 활동을 등록합니다.
 
 {2}
 {3}
 이 이메일을 비활성화하기:
 ----------------------
 
-시스템에서 이 이메일을 비활성화하려면 다음의 설정 페이지로 이동합니다. 
-https://{4}/rhn/account/UserPreferences.do
+시스템에서 이 이메일을 비활성화하려면 설정 페이지(https://{4}/rhn/account/UserPreferences.do)로 이동하십시오.
 
 
-@@PRODUCT_NAME@@을 사용해 주셔서 감사합니다.
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
 {5}
 {6}
 </target>
@@ -439,6 +470,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ 이 이메일은 귀하의 요청에 따라 {0}(으)로 전송된 자동 이메일입니다. ]
+
+{2} 로그인에 대한 @@PRODUCT_NAME@@ 비밀번호 재설정이 요청되었습니다.
+
+재설정 절차를 수행하려면, 다음을 진행하십시오.
+
+{1}
+
+비밀번호를 재설정하지 않으려면 이 이메일을 무시하십시오.
+
+재설정 절차와 관련하여 어려움이 있는 경우,
+@@PRODUCT_NAME@@ 관리자에게 문의하여 지원을 요청하십시오.
+
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -468,6 +515,24 @@ If you did not request this email be sent, please disregard this message.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ 이 이메일은 귀하의 요청에 따라 {0}(으)로 전송된 자동 이메일입니다. ]
+
+이메일 주소 {0}에 연결된 모든 @@PRODUCT_NAME@@ 로그인 목록을 요청하셨습니다.
+
+기존 로그인:
+
+{1}
+위의 @@PRODUCT_NAME@@ 로그인에 대한 비밀번호는 다음 위치에서 재설정할 수 있습니다.
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+로그인과 관련하여 계속해서 문제가 발생하는 경우에는,
+@@PRODUCT_NAME@@ 관리자에게 문의하여 추가 지원을 요청하십시오.
+이 이메일의 전송을 요청하지 않은 경우, 이 메시지를 무시해 주십시오.
+
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -488,6 +553,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target>
+[ 이 이메일은 {0}(으)로 전송된 자동 이메일입니다. ]
+
+{1} 로그인의 @@PRODUCT_NAME@@ 비밀번호가 {2}에 수행된 재설정 요청에 따라 재설정되었습니다.
+
+귀하께서 이 비밀번호 재설정을 요청하지 않은 경우, 즉시
+@@PRODUCT_NAME@@
+관리자에게 {2}(으)로 문의하여 추가적인 지원을 요청하십시오.
+
+@@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
