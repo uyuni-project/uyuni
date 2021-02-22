@@ -1,18 +1,17 @@
 name: Java postgresql unit tests
 
 on:
-  push:
+  pull_request:
     branches:
       - Manager-4.1
-    paths:
-      - 'java/**'
-  pull_request:
+      - Manager-4.1-MU-4.1.[0-9]
+      - Manager-4.1-MU-4.1.[0-9][0-9]  
     paths:
       - 'java/**'
 
 jobs:
   psql_unit_tests:
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted, linux, long-running]
     container: registry.mgr.suse.de/suma-4.1-pgsql:latest
     steps:
     - uses: actions/checkout@v2
