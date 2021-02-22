@@ -14,8 +14,14 @@
  */
 package com.suse.manager.virtualization;
 
+import com.suse.utils.Ip;
+
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.log4j.Logger;
+import org.jdom.Element;
+
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +30,8 @@ import java.util.Optional;
  * Represents the IP configuration of a virtual network
  */
 public class IpDef {
+    private static final Logger LOG = Logger.getLogger(IpDef.class);
+
     private String address;
     private Integer prefix;
 
@@ -134,5 +142,65 @@ public class IpDef {
      */
     public void setTftp(Optional<String> tftpIn) {
         tftp = tftpIn;
+    }
+
+    /**
+     * Parse IP XML node
+     * @param node the node to parse
+     * @return the parsed IP definition
+     */
+    public static Optional<IpDef> parse(Element node) {
+        IpDef def = new IpDef();
+        String address = node.getAttributeValue("address");
+
+        String prefixStr = node.getAttributeValue("prefix");
+        String netmask = node.getAttributeValue("netmask");
+        int prefix = 0;
+        if (prefixStr != null) {
+            prefix = Integer.parseInt(prefixStr);
+        }
+        else if (netmask != null) {
+            // Convert netmask into prefix
+            try {
+                prefix = Ip.netmaskToPrefix(netmask);
+            }
+            catch (UnknownHostException e) {
+                LOG.error("Invalid netmask: " + netmask);
+                return Optional.empty();
+            }
+        }
+        def.setPrefix(prefix);
+
+        // Address needs to be the network address (not the gateway one)
+        try {
+            def.setAddress(Ip.getNetworkAddress(address, prefix));
+        }
+        catch (UnknownHostException e) {
+            LOG.error("Invalid IP address: " + address);
+            return Optional.empty();
+        }
+
+        Element dhcpNode = node.getChild("dhcp");
+        if (dhcpNode != null) {
+            for (Object o : dhcpNode.getChildren("range")) {
+                Optional<Range<String>> range = Range.parse((Element)o);
+                range.ifPresent(r -> def.dhcpRanges.add(r));
+            }
+
+            for (Object o : dhcpNode.getChildren("host")) {
+                def.hosts.add(DhcpHostDef.parse((Element)o));
+            }
+
+            Element bootpNode = dhcpNode.getChild("bootp");
+            if (bootpNode != null) {
+                def.setBootpFile(Optional.ofNullable(bootpNode.getAttributeValue("file")));
+                def.setBootpServer(Optional.ofNullable(bootpNode.getAttributeValue("server")));
+            }
+        }
+        Element tftpNode = node.getChild("tftp");
+        if (tftpNode != null) {
+            def.setTftp(Optional.ofNullable(tftpNode.getAttributeValue("root")));
+        }
+        return Optional.of(def);
     }
 }

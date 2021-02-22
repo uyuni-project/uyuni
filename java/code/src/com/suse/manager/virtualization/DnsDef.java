@@ -14,8 +14,11 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a virtual network DNS definition
@@ -80,5 +83,36 @@ public class DnsDef {
      */
     public void setTxts(List<DnsTxtDef> txtsIn) {
         txts = txtsIn;
+    }
+
+    /**
+     * Parse dns XML node
+     *
+     * @param node the node to parse
+     *
+     * @return the parsed definition
+     */
+    public static Optional<DnsDef> parse(Element node) {
+        if (node == null) {
+            return Optional.empty();
+        }
+        DnsDef def = new DnsDef();
+        for (Object child : node.getChildren("forwarder")) {
+            def.forwarders.add(DnsForwarderDef.parse((Element)child));
+        }
+
+        for (Object child : node.getChildren("host")) {
+            def.hosts.add(DnsHostDef.parse((Element)child));
+        }
+
+        for (Object child : node.getChildren("srv")) {
+            def.srvs.add(DnsSrvDef.parse((Element)child));
+        }
+
+        for (Object child : node.getChildren("txt")) {
+            def.txts.add(DnsTxtDef.parse((Element)child));
+        }
+
+        return Optional.of(def);
     }
 }

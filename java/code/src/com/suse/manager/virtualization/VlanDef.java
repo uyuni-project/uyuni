@@ -16,6 +16,8 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jdom.Element;
+
 import java.util.Optional;
 
 /**
@@ -53,5 +55,18 @@ public class VlanDef {
      */
     public void setNativeMode(Optional<String> nativeModeIn) {
         nativeMode = nativeModeIn;
+    }
+
+    /**
+     * Parse tag XML node
+     *
+     * @param node the non-null node
+     * @return the parsed VlanDef
+     */
+    public static VlanDef parse(Element node) {
+        VlanDef def = new VlanDef();
+        def.setTag(Integer.parseInt(node.getAttributeValue("id")));
+        def.setNativeMode(Optional.ofNullable(node.getAttributeValue("nativeMode")));
+        return def;
     }
 }

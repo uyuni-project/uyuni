@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 /**
  * Represents a virtual network DNS TXT record definition
  */
@@ -47,5 +49,17 @@ public class DnsTxtDef {
      */
     public void setValue(String valueIn) {
         value = valueIn;
+    }
+
+    /**
+     * Parse DNS TXT XML node
+     * @param node the node to parse
+     * @return the parsed TXT definition
+     */
+    public static DnsTxtDef parse(Element node) {
+        DnsTxtDef def = new DnsTxtDef();
+        def.setName(node.getAttributeValue("name"));
+        def.setValue(node.getAttributeValue("value"));
+        return def;
     }
 }
