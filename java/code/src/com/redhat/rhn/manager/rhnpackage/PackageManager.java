@@ -361,8 +361,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Package_queries", template);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
-        Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m, PackageListItem.class);
+        return makeDataResult(params, params, pc, m, PackageListItem.class);
     }
 
     /**

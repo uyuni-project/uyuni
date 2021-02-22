@@ -545,6 +545,7 @@ ORDER BY UPPER(X.nvre)
    WHERE sp.server_id = :sid
    ORDER BY nvre
   </query>
+  <elaborator name="package_is_retracted" />
 </mode>
 
 <mode name="system_canonical_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
@@ -769,6 +770,14 @@ SELECT P.id, P.summary, PP.name as provider
  WHERE P.id IN(%s)
 </query>
 
+<!-- todo test case when status is in superposition -->
+<query name="package_is_retracted" column="package_id" params="sid">
+    SELECT
+      pid as package_id,
+      1 as retracted
+    FROM suseServerRetractedPackagesView
+    WHERE sid = :sid AND pid IN(%s)
+</query>
 
 <mode name="system_available_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
