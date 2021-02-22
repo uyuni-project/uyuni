@@ -34,16 +34,12 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see a "This system is scheduled to be migrated to" text
 
 @service_pack_migration
-  Scenario: Check the migration status for this SSH minion
+  Scenario: Check the migration is successful for this minion
     Given I am on the Systems overview page of this "ssh_spack_migrated_minion"
     When I follow "Events"
     And I follow "History"
     And I wait at most 600 seconds until event "Service Pack Migration scheduled by admin" is completed
-
-@service_pack_migration
-  Scenario: Check the migration is successful for this SSH minion
-    Given I am on the Systems overview page of this "ssh_spack_migrated_minion"
-    When I follow "Details" in the content area
+    And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
     And vendor change should be enabled for SP migration on "ssh_spack_migrated_minion"
 
@@ -97,6 +93,13 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ssh_minion" hostname
+
+@service_pack_migration
+@ssh_minion
+  Scenario: Install the latest Salt on this minion
+    When I enable repositories before installing Salt on this "ssh_spack_migrated_minion"
+    And I install Salt packages from "ssh_spack_migrated_minion"
+    And I disable repositories after installing Salt on this "ssh_spack_migrated_minion"
 
 @ssh_minion
   Scenario: Subscribe the SSH-managed SLES minion to a base channel
