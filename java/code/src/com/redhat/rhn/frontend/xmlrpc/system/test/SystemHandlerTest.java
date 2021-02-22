@@ -2673,8 +2673,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        List<Long> sids = new LinkedList<Long>();
-        sids.add(testServer.getId());
+        List<Integer> sids = new LinkedList<>();
+        sids.add(testServer.getId().intValue());
 
         Long actionId = getMockedHandler().scheduleApplyHighstate(admin, sids, scheduleDate, true);
         assertNotNull(actionId);
