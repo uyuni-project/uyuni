@@ -450,12 +450,13 @@ SELECT P.id AS ID,
        PN.name as package_name,
        P.summary,
        PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS nvrea,
-       PP.name AS provider
+       PP.name AS provider,
+       CP.is_retracted as retracted
   FROM rhnPackage P inner join
-           rhnPackageArch PA on P.package_arch_id = PA.id inner join
+       rhnPackageArch PA on P.package_arch_id = PA.id inner join
        rhnPackageName PN on P.name_id = PN.id inner join
        rhnPackageEVR PE on P.evr_id = PE.id  inner join
-       rhnChannelPackage CP on P.id = CP.package_id left join
+       suseChannelPackageRetractedStatusView CP on P.id = CP.package_id left join
        rhnPackageKeyAssociation assoc on assoc.package_id = P.id left join
        rhnPackageKey KEY on KEY.id = assoc.key_id left join
        rhnPackageProvider PP on KEY.provider_id = PP.id

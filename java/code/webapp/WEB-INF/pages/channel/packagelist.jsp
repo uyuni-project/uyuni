@@ -31,8 +31,10 @@
                            headerkey="download.jsp.package"
                            sortattr="nvrea"
                                         defaultsort="asc">
-
                         <a href="/rhn/software/packages/Details.do?pid=${current.id}">${current.nvrea}</a>
+                        <c:if test="${current.retracted}">
+                            <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
+                        </c:if>
                 </rl:column>
 
 
