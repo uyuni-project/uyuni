@@ -1,3 +1,5 @@
+- Add reactivation key support to bootstrap script (bsc#1181580)
+
 -------------------------------------------------------------------
 Wed Jan 27 13:02:05 CET 2021 - jgonzalez@suse.com
 
