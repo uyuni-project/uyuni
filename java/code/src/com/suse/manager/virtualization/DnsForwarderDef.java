@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.Optional;
 
 /**
@@ -49,5 +51,18 @@ public class DnsForwarderDef {
      */
     public void setAddress(Optional<String> addressIn) {
         address = addressIn;
+    }
+
+    /**
+     * Parse dns forwarder node
+     *
+     * @param node the node to parse
+     * @return the parsed forwarder definition
+     */
+    public static DnsForwarderDef parse(Element node) {
+        DnsForwarderDef def = new DnsForwarderDef();
+        def.setAddress(Optional.ofNullable(node.getAttributeValue("addr")));
+        def.setDomain(Optional.ofNullable(node.getAttributeValue("domain")));
+        return def;
     }
 }

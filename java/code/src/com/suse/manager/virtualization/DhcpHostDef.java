@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.Optional;
 
 public class DhcpHostDef {
@@ -76,6 +78,20 @@ public class DhcpHostDef {
      */
     public void setName(Optional<String> nameIn) {
         name = nameIn;
+    }
+
+    /**
+     * Parse DHCP host XML node
+     * @param node node to parse
+     * @return the parsed DHCP host definition
+     */
+    public static DhcpHostDef parse(Element node) {
+        DhcpHostDef def = new DhcpHostDef();
+        def.setIp(node.getAttributeValue("ip"));
+        def.setId(Optional.ofNullable(node.getAttributeValue("id")));
+        def.setMac(Optional.ofNullable(node.getAttributeValue("mac")));
+        def.setName(Optional.ofNullable(node.getAttributeValue("name")));
+        return def;
     }
 }
 

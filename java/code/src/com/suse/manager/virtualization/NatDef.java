@@ -14,6 +14,8 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.Optional;
 
 /**
@@ -49,5 +51,21 @@ public class NatDef {
      */
     public void setPort(Optional<Range<Integer>> portIn) {
         port = portIn;
+    }
+
+    /**
+     * Parse the nat element of the network XML definition
+     *
+     * @param node the XML node
+     * @return the created Nat definition
+     */
+    public static NatDef parseNat(Element node) {
+        NatDef def = null;
+        if (node != null) {
+            def = new NatDef();
+            def.setPort(Range.parse(node.getChild("port"), Integer::parseInt));
+            def.setAddress(Range.parse(node.getChild("address")));
+        }
+        return def;
     }
 }

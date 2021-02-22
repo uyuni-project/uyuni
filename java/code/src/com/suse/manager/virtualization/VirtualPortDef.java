@@ -16,12 +16,18 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.log4j.Logger;
+import org.jdom.Attribute;
+import org.jdom.Element;
+
 import java.util.Optional;
 
 /**
  * Represents the virtual network virtualport configuration
  */
 public class VirtualPortDef {
+    private static final Logger LOG = Logger.getLogger(VirtualPortDef.class);
+
     private String type;
 
     @SerializedName("profileid")
@@ -138,5 +144,36 @@ public class VirtualPortDef {
      */
     public void setInstanceId(Optional<String> instanceIdIn) {
         instanceId = instanceIdIn;
+    }
+
+    /**
+     * Extract information from virtualport JDOM XML Node
+     *
+     * @param node the node to parse
+     *
+     * @return the virtual port definition
+     */
+    public static Optional<VirtualPortDef> parse(Element node) {
+        if (node == null) {
+            return Optional.empty();
+        }
+        VirtualPortDef def = new VirtualPortDef();
+        def.setType(node.getAttributeValue("type"));
+        Element parametersNode = node.getChild("parameters");
+        if (parametersNode != null) {
+            for (Object attribute : parametersNode.getAttributes()) {
+                Attribute attr = (Attribute)attribute;
+                switch (attr.getName()) {
+                    case "interfaceid":     def.setInterfaceId(Optional.of(attr.getValue())); break;
+                    case "instanceid":      def.setInstanceId(Optional.of(attr.getValue())); break;
+                    case "managerid":       def.setManagerId(Optional.of(attr.getValue())); break;
+                    case "profileid":       def.setProfileId(Optional.of(attr.getValue())); break;
+                    case "typeid":          def.setTypeId(Optional.of(attr.getValue())); break;
+                    case "typeidversion":   def.setTypeIdVersion(Optional.of(attr.getValue())); break;
+                    default:                LOG.error("Unexpected virtual port attribute: " + attr.getName());
+                }
+            }
+        }
+        return Optional.of(def);
     }
 }

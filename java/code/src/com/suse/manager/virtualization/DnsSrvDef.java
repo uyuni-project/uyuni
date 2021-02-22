@@ -14,7 +14,10 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Represents a virtual network DNS SRV record definition
@@ -124,5 +127,26 @@ public class DnsSrvDef {
      */
     public void setWeight(Optional<Integer> weightIn) {
         weight = weightIn;
+    }
+
+    /**
+     * Parse a DNS srv XML node
+     *
+     * @param node the node to parse
+     * @return the parsed srv definition
+     */
+    public static DnsSrvDef parse(Element node) {
+        DnsSrvDef def = new DnsSrvDef();
+        def.setName(node.getAttributeValue("service"));
+        def.setProtocol(node.getAttributeValue("protocol"));
+
+        Function<String, Optional<Integer>> asInt = str -> Optional.ofNullable(str).map(Integer::parseInt);
+
+        def.setDomain(Optional.ofNullable(node.getAttributeValue("domain")));
+        def.setTarget(Optional.ofNullable(node.getAttributeValue("target")));
+        def.setPort(asInt.apply(node.getAttributeValue("port")));
+        def.setPriority(asInt.apply(node.getAttributeValue("priority")));
+        def.setWeight(asInt.apply(node.getAttributeValue("weight")));
+        return def;
     }
 }
