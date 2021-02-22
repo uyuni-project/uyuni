@@ -1093,7 +1093,7 @@ ORDER BY CE.errata_id, C.name
 
 <query name="errata_overview" params="user_id">
 SELECT  E.id, E.advisory, E.advisory_name, E.advisory_type, E.advisory_status,
-        E.update_date, E.synopsis as advisory_synopsis,
+        E.update_date, E.synopsis as advisory_synopsis, E.issue_date,
     (SELECT  COUNT(DISTINCT S.id)
        FROM  rhnServerNeededErrataCache SNEC, rhnServer S, rhnUserServerPerms USP
       WHERE  USP.user_id = :user_id

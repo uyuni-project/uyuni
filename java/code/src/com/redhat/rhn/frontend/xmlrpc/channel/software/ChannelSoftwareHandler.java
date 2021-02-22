@@ -1816,9 +1816,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #struct_end()
      *    #array_end()
      */
-    public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel)
+    public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, "", "");
+        return listErrata(loggedInUser, channelLabel, (Date) null);
     }
 
     /**

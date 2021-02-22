@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @xmlrpc.doc
  *     #struct_begin("errata")
  *          #prop_desc("int", "id", "Errata ID.")
+ *          #prop_desc("string", "issue_date", "Date erratum was updated.")
  *          #prop_desc("string", "date", "Date erratum was created.")
  *          #prop_desc("string", "update_date", "Date erratum was updated.")
  *          #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
