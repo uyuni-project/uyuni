@@ -12,10 +12,24 @@ export type JsonResult<T> = {
     data: T;
 };
 
+/**
+ * There are some cases where network requests with empty data are accidentally made as follows:
+ *  Network.post("url", "application/json", ...);
+ * This is a bug and should instead be:
+ *  Network.post("url", undefined, "application/json", ...);
+ * 
+ * This type disallows assigning common MIME types to the data type so we can avoid the bug without
+ * changing the network layer logic (which would require a lot of testing and create regressions).
+ * 
+ * See: https://stackoverflow.com/a/51445345/1470607
+ */
+type CommonMimeTypes = "application/json" | "application/xml";
+type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
+
 function request(
     url: string,
     type: "GET" | "POST" | "DELETE" | "PUT",
-    headers,
+    headers: Record<string, string>,
     data: any,
     /** NB! The default contentType for jQuery.ajax() is 'application/x-www-form-urlencoded; charset=UTF-8' */
     contentType?: string,
@@ -38,15 +52,15 @@ function request(
     return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
+function post<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function del(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
+function del<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function put(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
+function put<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
@@ -68,7 +82,7 @@ function errorMessageByStatus(status: number): Array<string> {
     }
 }
 
-export type MapFuncType = (arg0: string, arg1: string) => string | null | undefined;
+export type MapFuncType = (status: string, message: string) => string | null | undefined;
 
 function responseErrorMessage(
     jqXHR: Error | JQueryXHR,

@@ -43,7 +43,7 @@ type Props = {
   additionalFilters?: Array<React.ReactNode>;
 };
 
-export function CustomDataHandler(props: Props): React.ReactNode {
+export function CustomDataHandler(props: Props) {
   const { ...allProps } = props;
   return (
     <TableDataHandler {...allProps}>
