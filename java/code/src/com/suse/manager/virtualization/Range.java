@@ -14,22 +14,31 @@
  */
 package com.suse.manager.virtualization;
 
-public class Range<T> {
-    private T start;
-    private T end;
+import org.jdom.Element;
 
+import java.util.Optional;
+import java.util.function.Function;
+
+public class Range<T> {
+    private final T start;
+    private final T end;
+
+    /**
+     * Construct a range object.
+     *
+     * @param startIn the start value of the range
+     * @param endIn the end value of the range
+     *
+     */
+    public Range(T startIn, T endIn) {
+        this.start = startIn;
+        this.end = endIn;
+    }
     /**
      * @return start value of the range
      */
     public T getStart() {
         return start;
-    }
-
-    /**
-     * @param startIn start value of the range
-     */
-    public void setStart(T startIn) {
-        start = startIn;
     }
 
     /**
@@ -40,9 +49,33 @@ public class Range<T> {
     }
 
     /**
-     * @param endIn end value of the range
+     * Parse a range XML node
+     *
+     * @param node the node to parse
+     *
+     * @return the Range definition
      */
-    public void setEnd(T endIn) {
-        end = endIn;
+    public static Optional<Range<String>> parse(Element node) {
+        return parse(node, Function.identity());
+    }
+
+    /**
+     * Parse a range XML node
+     *
+     * @param node the node to parse
+     * @param converter function converting the string representation to the destination type
+     * @param <T> The type of the range to create
+     *
+     * @return the Range definition
+     */
+    public static <T> Optional<Range<T>> parse(Element node, Function<String, T> converter) {
+        if (node == null) {
+            return Optional.empty();
+        }
+        Range<T> def = new Range<T>(
+            converter.apply(node.getAttributeValue("start")),
+            converter.apply(node.getAttributeValue("end"))
+        );
+        return Optional.of(def);
     }
 }

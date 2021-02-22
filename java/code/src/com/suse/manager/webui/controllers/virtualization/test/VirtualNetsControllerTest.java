@@ -253,4 +253,39 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
+
+    public void testCreateNat() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.create(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/create",
+                        "{names: ['net0'], definition: {type: 'nat', autostart: false, " +
+                                "nat: {address: {start: '192.168.10.3', end: '192.168.10.4'}, " +
+                                "port: {start: '1234', end: '1235'}}, ipv4: {address: '192.168.10.0', prefix: 24}}, " +
+                                "earliest: '2021-02-17T10:09:00.000Z'}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkCreateAction virtAction = (VirtualizationNetworkCreateAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        NetworkDefinition def = virtAction.getDefinition();
+        assertEquals("nat", def.getForwardMode());
+        assertEquals(Optional.empty(), def.getBridge());
+        assertFalse(def.isAutostart());
+        assertEquals("192.168.10.3", def.getNat().orElseThrow().getAddress().orElseThrow().getStart());
+        assertEquals("192.168.10.4", def.getNat().orElseThrow().getAddress().orElseThrow().getEnd());
+        assertEquals(Integer.valueOf(1234), def.getNat().get().getPort().orElseThrow().getStart());
+        assertEquals(Integer.valueOf(1235), def.getNat().get().getPort().orElseThrow().getEnd());
+        assertEquals("192.168.10.0", def.getIpv4().orElseThrow().getAddress());
+        assertEquals(Integer.valueOf(24), def.getIpv4().orElseThrow().getPrefix());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
 }

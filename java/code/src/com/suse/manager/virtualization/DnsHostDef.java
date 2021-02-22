@@ -14,11 +14,14 @@
  */
 package com.suse.manager.virtualization;
 
+import org.jdom.Element;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DnsHostDef {
     private String address;
-    private List<String> names;
+    private List<String> names = new ArrayList<>();
 
     /**
      * @return value of address
@@ -46,5 +49,19 @@ public class DnsHostDef {
      */
     public void setNames(List<String> namesIn) {
         names = namesIn;
+    }
+
+    /**
+     * Parse DNS host node
+     * @param node the node to parse
+     * @return the parsed host definition
+     */
+    public static DnsHostDef parse(Element node) {
+        DnsHostDef def = new DnsHostDef();
+        def.setAddress(node.getAttributeValue("ip"));
+        for (Object child : node.getChildren("hostname")) {
+            def.names.add(((Element)child).getTextTrim());
+        }
+        return def;
     }
 }
