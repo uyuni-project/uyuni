@@ -667,11 +667,11 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Salt on this "([^"]*)"$/) do |host|
-  step %(I enable repository "tools_additional_repo" on this "#{host}")
+  step %(I enable repository "tools_additional_repo" on this "#{host}" without error control)
 end
 
 When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |host|
-  step %(I disable repository "tools_additional_repo" on this "#{host}")
+  step %(I disable repository "tools_additional_repo" on this "#{host}" without error control)
 end
 
 # minion bootstrap steps
