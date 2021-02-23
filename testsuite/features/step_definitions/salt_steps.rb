@@ -659,6 +659,14 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   end
 end
 
+When(/^I enable repositories before installing Salt on this "([^"]*)"$/) do |host|
+  step %(I enable repository "tools_additional_repo" on this "#{host}" without error control)
+end
+
+When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |host|
+  step %(I disable repository "tools_additional_repo" on this "#{host}" without error control)
+end
+
 # minion bootstrap steps
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)

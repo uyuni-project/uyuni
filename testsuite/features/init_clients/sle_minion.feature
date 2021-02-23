@@ -56,17 +56,19 @@ Feature: Bootstrap a Salt minion via the GUI
     Then I should see a "This system is scheduled to be migrated to" text
 
 @service_pack_migration
-  Scenario: Check the migration status for this minion
+  Scenario: Check the migration is successful for this minion
     Given I am on the Systems overview page of this "sle_spack_migrated_minion"
     When I follow "Events"
     And I follow "History"
     And I wait at most 600 seconds until event "Service Pack Migration scheduled by admin" is completed
+    And I follow "Details" in the content area
+    Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
 
 @service_pack_migration
-  Scenario: Check the migration is successful for this minion
-    Given I am on the Systems overview page of this "sle_spack_migrated_minion"
-    When I follow "Details" in the content area
-    Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
+  Scenario: Install the latest Salt on this minion
+    When I enable repositories before installing Salt on this "sle_spack_migrated_minion"
+    And I install Salt packages from "sle_spack_migrated_minion"
+    And I disable repositories after installing Salt on this "sle_spack_migrated_minion"
 
   Scenario: Subscribe the SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
