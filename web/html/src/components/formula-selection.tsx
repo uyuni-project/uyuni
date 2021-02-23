@@ -4,6 +4,7 @@ import Network from "../utils/network";
 import { Button, AsyncButton } from "../components/buttons";
 import { Utils } from "utils/functions";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
@@ -60,7 +61,7 @@ class FormulaSelection extends React.Component<Props, State> {
       data.formulas.forEach(function(e) {
         e.selected = data.selected.indexOf(e.name) >= 0;
         const group = e.group || "groupless";
-        if (groupDict[group] == undefined) groupDict[group] = [];
+        if (DEPRECATED_unsafeEquals(groupDict[group], undefined)) groupDict[group] = [];
         groupDict[group].push(e);
         formulaDict[e.name] = e;
       });
@@ -147,6 +148,7 @@ class FormulaSelection extends React.Component<Props, State> {
       );
       groups.groupless.forEach(function(this: FormulaSelection, formula) {
         list.push(
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
             href="#"
             onClick={this.onListItemClick}
@@ -171,6 +173,7 @@ class FormulaSelection extends React.Component<Props, State> {
       const group = groups[group_name];
       const group_state = this.getGroupItemState(group);
       list.push(
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a
           href="#"
           onClick={this.onGroupItemClick}
@@ -186,6 +189,7 @@ class FormulaSelection extends React.Component<Props, State> {
       );
       group.forEach(function(this: FormulaSelection, formula) {
         list.push(
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
             href="#"
             onClick={this.onListItemClick}
@@ -210,7 +214,9 @@ class FormulaSelection extends React.Component<Props, State> {
 
   onListItemClick(e) {
     e.preventDefault();
-    const formula = this.state.formulas[e.target.href == undefined ? e.target.parentElement.id : e.target.id];
+    const formula = this.state.formulas[
+      DEPRECATED_unsafeEquals(e.target.href, undefined) ? e.target.parentElement.id : e.target.id
+    ];
 
     if (e.target.id.startsWith("info_button_")) {
       /**
@@ -330,7 +336,7 @@ class FormulaSelection extends React.Component<Props, State> {
 }
 
 function get(value, def) {
-  if (value == undefined) return def;
+  if (DEPRECATED_unsafeEquals(value, undefined)) return def;
   return value;
 }
 
