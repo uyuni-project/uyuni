@@ -18,6 +18,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rpm.SourceRpm;
@@ -105,7 +106,7 @@ public class Package extends BaseDomainHelper {
      * @return true if the package is part of a retracted patch
      */
     public Boolean isPartOfRetractedPatch() {
-        return errata.stream().anyMatch(e -> "retracted".equals(e.getAdvisoryStatus()));
+        return errata.stream().anyMatch(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
     }
 
     /**
