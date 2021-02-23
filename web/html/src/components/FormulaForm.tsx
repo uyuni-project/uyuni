@@ -11,6 +11,7 @@ import {
   get,
 } from "./formulas/FormulaComponentGenerator";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
@@ -112,7 +113,7 @@ class FormulaForm extends React.Component<Props, State> {
         });
       else {
         if (
-          data.formula_list.filter(formula => formula != "caasp-management-settings" && formula == data.formula_name)
+          data.formula_list.filter(formula => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name))
             .length > 1
         ) {
           this.state.warnings.push(

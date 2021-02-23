@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type PaginationBlockProps = {
   currentPage: number;
@@ -15,20 +16,20 @@ const PaginationBlock = (props: PaginationBlockProps) => {
     lastPage > 1 ? (
       <div className="spacewalk-list-pagination">
         <div className="spacewalk-list-pagination-btns btn-group">
-          <PaginationButton onClick={() => onPageChange(1)} disabled={currentPage == 1} text={t("First")} />
+          <PaginationButton onClick={() => onPageChange(1)} disabled={DEPRECATED_unsafeEquals(currentPage, 1)} text={t("First")} />
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage == 1}
+            disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
             text={t("Prev")}
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage == lastPage}
+            disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
             text={t("Next")}
           />
           <PaginationButton
             onClick={() => onPageChange(lastPage)}
-            disabled={currentPage == lastPage}
+            disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
             text={t("Last")}
           />
         </div>

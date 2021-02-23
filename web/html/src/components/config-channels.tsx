@@ -7,13 +7,14 @@ import { PopUp } from "../components/popup";
 import { Messages, MessageType } from "../components/messages";
 import { Utils as MessagesUtils } from "../components/messages";
 import Network from "../utils/network";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type Instance = JQuery & {};
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
 
 declare global {
   interface JQuery {
-      sortable: Sortable;
+    sortable: Sortable;
   }
 }
 
@@ -152,7 +153,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   applySaltState() {
     if (this.state.changed.size > 0) {
       const response = window.confirm(t("There are unsaved changes. Do you want to proceed?"));
-      if (response == false) {
+      if (DEPRECATED_unsafeEquals(response, false)) {
         return null;
       }
     }
@@ -234,7 +235,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
   addChanged(original, key, selected) {
     const currentChannel = this.state.changed.get(key);
-    if (currentChannel != undefined && selected == currentChannel.original.assigned) {
+    if (!DEPRECATED_unsafeEquals(currentChannel, undefined) && DEPRECATED_unsafeEquals(selected, currentChannel.original.assigned)) {
       this.state.changed.delete(key);
     } else {
       this.state.changed.set(key, {
@@ -298,6 +299,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         >
           <td>
             {channelIcon(currentChannel)}
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a
               href="#"
               data-toggle="modal"
@@ -588,13 +590,18 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
   getElements() {
     const sortedItems = this.state.items.sort((a, b) =>
-      a.position == undefined ? 1 : b.position == undefined ? -1 : a.position - b.position
+      DEPRECATED_unsafeEquals(a.position, undefined)
+        ? 1
+        : DEPRECATED_unsafeEquals(b.position, undefined)
+        ? -1
+        : a.position - b.position
     );
 
     return sortedItems.map(i => {
       // TODO: Provide a callback as prop for optional mapping and generify this default implementation
       const icon = channelIcon(i);
       return (
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a href="#" className="list-group-item" key={i.label} data-id={i.label}>
           <i className="fa fa-sort" />
           {icon}
