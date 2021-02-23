@@ -1435,7 +1435,7 @@ SELECT E.id, E.advisory, E.synopsis
   <query params="cid, ocid">
 SELECT
     DISTINCT e.id, e.advisory_name, e.advisory, e.advisory_type, e.advisory_status,
-             e.synopsis as advisory_synopsis, e.update_date
+             e.synopsis as advisory_synopsis, e.update_date, e.issue_date
 FROM
 (
     SELECT
