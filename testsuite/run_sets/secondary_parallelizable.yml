@@ -74,5 +74,6 @@
 - features/secondary/trad_check_patches_install.feature
 - features/secondary/trad_sp_migration.feature
 - features/secondary/trad_check_registration.feature
+- features/secondary/srv_push_package.feature
 
 ## Parallelizable Secondary features END ##
