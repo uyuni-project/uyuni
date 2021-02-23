@@ -281,7 +281,7 @@ class ProductsPageWrapper extends React.Component {
         ? t("The product catalog is still refreshing, please wait.")
         : this.state.selectedItems.length === 0
         ? t("Select some product first.")
-        : null;
+        : undefined;
       const addProductButton =
         this.state.sccSyncRunning || this.state.selectedItems.length === 0 || this.state.addingProducts ? (
           <Button
@@ -963,8 +963,8 @@ class CheckListItem extends React.Component<CheckListItemProps> {
           className="btn btn-default btn-sm"
           id="resyncProduct"
           defaultType="btn-default"
-          disabled={isReadonly || isResyncActionInProgress || isResyncProductScheduled ? "disabled" : ""}
-          action={!isReadonly ? this.resyncProduct : null}
+          disabled={isReadonly || isResyncActionInProgress || isResyncProductScheduled}
+          action={!isReadonly ? this.resyncProduct : undefined}
           icon={isResyncProductScheduled ? "fa-clock-o " : "fa-refresh " + conditionalResyncStyleClass}
           title={conditionalResyncTitle}
         />
