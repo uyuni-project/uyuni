@@ -1,3 +1,5 @@
+- Get rid of validator global variable
+
 -------------------------------------------------------------------
 Thu Feb 25 12:10:18 CET 2021 - jgonzalez@suse.com
 
