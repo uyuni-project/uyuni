@@ -1,3 +1,4 @@
+- Remove validator.js from jade templates
 - Homogenizes style in filter buttons, facilitating testability
 - improve fromdir with better mapping of URL to local files
 

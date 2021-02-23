@@ -1,3 +1,5 @@
+- Move validator dependency from susemanager-frontend-libs package
+
 -------------------------------------------------------------------
 Thu Feb 25 12:11:15 CET 2021 - jgonzalez@suse.com
 
