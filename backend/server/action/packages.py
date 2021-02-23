@@ -85,6 +85,11 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
         raise InvalidAction("Packages scheduled in action %s for server %s could not be found." %
                             (actionId, serverId))
 
+    retracted = {p['name'] for p in packagesIn if 'retracted' in p and p['retracted']}
+    if retracted:
+        # Do not install retracted packages
+        raise InvalidAction("packages.update: Action contains retracted packages %s" % retracted)
+
     packages = []
     for package in packagesIn:
         # Fix the epoch
@@ -250,7 +255,11 @@ _packageStatement_update = """
         pe.epoch as epoch,
         pe.version as version,
         pe.release as release,
-        pa.label as arch
+        pa.label as arch,
+        (select 1 from rhnErrata e
+                  join rhnErrataPackage ep on e.id = ep.errata_id
+                  where ep.package_id = p.id
+                  and e.advisory_status = 'retracted') as retracted
     from rhnActionPackage ap
 left join rhnPackageArch pa
      on ap.package_arch_id = pa.id,
@@ -275,7 +284,8 @@ left join rhnPackageArch pa
         null as version,
         null as release,
         null as epoch,
-        pa.label as arch
+        pa.label as arch,
+        0 as retracted
    from rhnActionPackage ap
 left join rhnPackageArch pa
      on ap.package_arch_id = pa.id,
