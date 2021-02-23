@@ -5,6 +5,7 @@ import { ComboboxItem } from "./combobox";
 import { Utils } from "../utils/functions";
 import Network from "utils/network";
 import { Loading } from "components/utils/Loading";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 export type MaintenanceWindow = {
   id: number;
@@ -135,12 +136,11 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   onSelectMaintenanceWindow = (event: any) => {
-    // Here and below, `mw.id` is annotated as a number but it isn't clear whether that is truly always the case
-    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => parseInt(mw.id as any, 10) === parseInt(event.target.value, 10)  )[0]);
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => DEPRECATED_unsafeEquals(mw.id, event.target.value))[0]);
   };
 
   onFocusMaintenanceWindow = (event: any) => {
-    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => parseInt(mw.id as any, 10) === parseInt(event.target.value, 10))[0]);
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => DEPRECATED_unsafeEquals(mw.id, event.target.value))[0]);
   };
 
   onActionChainChanged = (selectedItem: ActionChain) => {
