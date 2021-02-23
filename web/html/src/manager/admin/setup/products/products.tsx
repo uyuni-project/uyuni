@@ -21,11 +21,11 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 declare global {
   interface Window {
     // See java/build/classes/com/suse/manager/webui/templates/products/show.jade
-    issMaster_flag_from_backend: any;
-    refreshNeeded_flag_from_backend: any;
-    refreshRunning_flag_from_backend: any;
-    scc_refresh_file_locked_status: any;
-    noToolsChannelSubscription_flag_from_backend: any;
+    issMaster_flag_from_backend?: any;
+    refreshNeeded_flag_from_backend?: any;
+    refreshRunning_flag_from_backend?: any;
+    scc_refresh_file_locked_status?: any;
+    noToolsChannelSubscription_flag_from_backend?: any;
   }
 }
 
