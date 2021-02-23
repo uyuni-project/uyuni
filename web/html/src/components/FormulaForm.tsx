@@ -113,8 +113,9 @@ class FormulaForm extends React.Component<Props, State> {
         });
       else {
         if (
-          data.formula_list.filter(formula => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name))
-            .length > 1
+          data.formula_list.filter(
+            formula => formula !== "caasp-management-settings" && DEPRECATED_unsafeEquals(formula, data.formula_name)
+          ).length > 1
         ) {
           this.state.warnings.push(
             t(
@@ -276,7 +277,7 @@ class FormulaForm extends React.Component<Props, State> {
                 </div>
                 <div className="action-button-wrapper">
                   <FormulaFormContext.Consumer>
-                    {({ validate, clearValues }: { validate: any; clearValues: any; }) => (
+                    {({ validate, clearValues }: { validate: any; clearValues: any }) => (
                       <div className="btn-group">
                         <Button
                           id="save-btn"
