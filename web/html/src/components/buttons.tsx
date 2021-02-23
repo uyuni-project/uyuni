@@ -50,7 +50,7 @@ type AsyncProps = BaseProps & {
    * The function is required and must return a Promise object or 'false'.
    * @return {Promise} The asynchronous action.
    */
-  action: (...args: any[]) => (Promise<any> | false | void),
+  action?: (...args: any[]) => (Promise<any> | false | void),
 
   /**
    * One of Bootstrap button type classes (e.g. 'btn-success', 'btn-primary').
@@ -85,7 +85,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
     this.setState({
       value: "waiting",
     });
-    const future = this.props.action();
+    const future = this.props.action?.();
     if (!future) {
       this.setState({
         value: "initial",
