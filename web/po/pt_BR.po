@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2020-12-08 00:26+0000\n"
-"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
+"PO-Revision-Date: 2021-03-07 04:47+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "web/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -430,7 +430,7 @@ msgstr "Sobrenome"
 #: ../html/src/components/input/FormMultiInput.stories.js:118
 #: ../html/src/manager/login/login.js:125
 msgid "Login"
-msgstr ""
+msgstr "Acesso"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
@@ -474,12 +474,12 @@ msgstr "Experto"
 
 #: ../html/src/components/input/Range.stories.js:34
 msgid "Port range"
-msgstr ""
+msgstr "Alcance da porta"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Ambos os valores precisam ser inteiros positivos"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
@@ -559,14 +559,16 @@ msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr ""
+"Os dias são limitados a 28 para ter uma programação recorrente disponível "
+"para todos os meses"
 
 #: ../html/src/components/picker/recurring-event-picker.js:370
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "Formato de quartzo personalizado:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:373
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "ex. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:205
