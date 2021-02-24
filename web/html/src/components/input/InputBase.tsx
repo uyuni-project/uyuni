@@ -259,8 +259,10 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
 
-    const errors = this.state.errors && Array.isArray(this.state.errors) ? this.state.errors : [this.state.errors];
-    if (errors) {
+    const errors = Array.isArray(this.state.errors) ?
+      this.state.errors :
+      this.state.errors ? [this.state.errors] : [];
+    if (errors.length > 0) {
       errors.forEach(error => this.pushHint(hints, error));
     } else {
       this.pushHint(hints, invalidHint);
