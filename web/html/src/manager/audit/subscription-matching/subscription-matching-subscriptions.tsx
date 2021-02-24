@@ -1,16 +1,17 @@
-/* eslint-disable */
-"use strict";
+import * as React from "react";
+import { ToolTip, CsvLink, humanReadablePolicy } from "./subscription-matching-util";
+import { WarningIcon } from "./subscription-matching-util";
+import { Table } from "components/table/Table";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-import * as React from 'react';
-import { ToolTip, CsvLink, humanReadablePolicy } from './subscription-matching-util';
-import { WarningIcon } from './subscription-matching-util';
-import { Table } from 'components/table/Table';
-import { Column } from 'components/table/Column';
-import { SearchField } from 'components/table/SearchField';
-import { Highlight } from 'components/table/Highlight';
-import { Utils } from 'utils/functions';
+type SubscriptionsProps = {
+  subscriptions: any[];
+};
 
-class Subscriptions extends React.Component {
+class Subscriptions extends React.Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
     var result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
@@ -25,9 +26,9 @@ class Subscriptions extends React.Component {
     const aTotal = aRaw["totalQuantity"];
     const bMatched = bRaw["matchedQuantity"];
     const bTotal = bRaw["totalQuantity"];
-    const aValue =  aMatched / aTotal;
+    const aValue = aMatched / aTotal;
     const bValue = bMatched / bTotal;
-    result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    result = aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
@@ -38,82 +39,78 @@ class Subscriptions extends React.Component {
     return true;
   };
 
-  buildRows = (subscriptions) => {
-    return Object.keys(subscriptions).map((id) => subscriptions[id]);
+  buildRows = subscriptions => {
+    return Object.keys(subscriptions).map(id => subscriptions[id]);
   };
 
   render() {
-    let body = null;
+    let body: React.ReactNode = null;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
-            identifier={(row) => row.id}
-            cssClassFunction={(row) => moment(row.endDate).isBefore(moment()) || moment(row.startDate).isAfter(moment()) ? "text-muted" : null }
+            identifier={row => row.id}
+            cssClassFunction={row =>
+              moment(row.endDate).isBefore(moment()) || moment(row.startDate).isAfter(moment()) ? "text-muted" : null
+            }
             initialSortColumnKey="partNumber"
-            initialItemsPerPage={userPrefPageSize}
+            initialItemsPerPage={window.userPrefPageSize}
             searchField={
-                <SearchField filter={this.searchData}
-                    criteria={""}
-                    placeholder={t("Filter by description")} />
-            }>
+              <SearchField filter={this.searchData} criteria={""} placeholder={t("Filter by description")} />
+            }
+          >
             <Column
               columnKey="partNumber"
               comparator={Utils.sortByText}
               header={t("Part number")}
-              cell={ (row) => row.partNumber }
+              cell={row => row.partNumber}
             />
             <Column
               columnKey="description"
               comparator={Utils.sortByText}
               header={t("Description")}
-              cell={ (row) => row.description }
+              cell={row => row.description}
             />
             <Column
               columnKey="policy"
               comparator={this.sortByPolicy}
               header={t("Policy")}
-              cell={ (row) => humanReadablePolicy(row.policy) }
+              cell={row => humanReadablePolicy(row.policy)}
             />
             <Column
               columnKey="quantity"
               comparator={this.sortByQuantity}
               header={t("Matched/Total")}
-              cell={ (row) => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
+              cell={row => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} />}
             />
             <Column
               columnKey="startDate"
               comparator={Utils.sortByText}
               header={t("Start date")}
-              cell={ (row) =>
-                  <ToolTip content={moment(row.startDate).fromNow()}
-                    title={moment(row.startDate).format("LL")} />
-              }
+              cell={row => (
+                <ToolTip content={moment(row.startDate).fromNow()} title={moment(row.startDate).format("LL")} />
+              )}
             />
             <Column
               columnKey="endDate"
               comparator={Utils.sortByText}
               header={t("End date")}
-              cell={ (row) =>
-                  <span>
-                    <ToolTip content={moment(row.endDate).fromNow()}
-                      title={moment(row.endDate).format("LL")} />
-                    {
-                      moment(row.endDate).isBefore(moment().add(6, "months")) &&
-                        moment(row.endDate).isAfter(moment()) ?
-                      <WarningIcon iconOnRight={true} /> : null
-                    }
-                  </span>
-              }
+              cell={row => (
+                <span>
+                  <ToolTip content={moment(row.endDate).fromNow()} title={moment(row.endDate).format("LL")} />
+                  {moment(row.endDate).isBefore(moment().add(6, "months")) && moment(row.endDate).isAfter(moment()) ? (
+                    <WarningIcon iconOnRight={true} />
+                  ) : null}
+                </span>
+              )}
             />
           </Table>
           <CsvLink name="subscription_report.csv" />
         </div>
       );
-    }
-    else {
-      body = <p>{t("No subscriptions found.")}</p>
+    } else {
+      body = <p>{t("No subscriptions found.")}</p>;
     }
 
     return (
@@ -125,23 +122,21 @@ class Subscriptions extends React.Component {
   }
 }
 
-const QuantityCell = (props) => {
+const QuantityCell = props => {
   const matched = props.matched;
   const total = props.total;
   const content = matched + "/" + total;
 
-  if (matched == total) {
+  if (DEPRECATED_unsafeEquals(matched, total)) {
     return (
-        <span>
-          <strong>{content}</strong>
-          &nbsp;
-          <i className="fa fa-exclamation-triangle text-warning"></i>
-        </span>
-        );
+      <span>
+        <strong>{content}</strong>
+        &nbsp;
+        <i className="fa fa-exclamation-triangle text-warning"></i>
+      </span>
+    );
   }
   return <span>{content}</span>;
 };
 
-export {
-  Subscriptions,
-};
+export { Subscriptions };

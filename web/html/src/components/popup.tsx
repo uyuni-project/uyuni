@@ -12,12 +12,14 @@ type Props = {
   hideHeader?: boolean;
   closableModal?: boolean;
   /** A callback function with no parameters */
-  onClosePopUp: () => any;
+  onClosePopUp?: () => any;
 }
 
 export class PopUp extends React.Component<Props> {
   componentDidMount() {
-    jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+    if (this.props.onClosePopUp) {
+      jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+    }
   }
 
   close() {
