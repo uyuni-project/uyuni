@@ -791,9 +791,9 @@ public class ErrataFactory extends HibernateFactory {
 
     /**
      * Takes a set of packages that should be installed on a set of systems and checks whether there are
-     * and packages that are retracted. A packages counts as retracted for a server if the server has only channels
-     * assigned in which the package is part of a retracted patch. If a server has the same package retracted in one
-     * channel but not retracted in another it counts as not retracted.
+     * and packages that are retracted. A packages counts as retracted for a server if it is contained
+     * in any retracted errata of a channel assigned to the system.
+     *
      * @param pids package ids
      * @param sids server ids
      * @return pairs of package and server ids of packages that are retracted for a given server.
