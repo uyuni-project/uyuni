@@ -365,7 +365,7 @@ class RepoMDView(object):
         self.repomd = repomd
 
     def get_file(self):
-        repomd_file = open(self.repomd.filename)
+        repomd_file = open(self.repomd.filename, "rb")
         return repomd_file
 
 
