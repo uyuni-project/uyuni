@@ -1,3 +1,4 @@
+- Provide migration for rhnActionImageBuild
 - Rename rhnVirtualInstanceInfo memory_size_k column
 - Drop "pxt_session_cleanup" function (bsc#1180224)
 
