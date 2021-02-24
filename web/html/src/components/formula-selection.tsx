@@ -118,7 +118,7 @@ class FormulaSelection extends React.Component<Props, State> {
 
   getListIcon(state) {
     if (!state) return "fa fa-lg fa-square-o";
-    else if (state === 1) return "fa fa-lg fa-check-square-o";
+    else if (DEPRECATED_unsafeEquals(state, 1)) return "fa fa-lg fa-check-square-o";
     else return "fa fa-lg fa-minus-square-o";
   }
 
