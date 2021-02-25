@@ -1,3 +1,5 @@
+- Homogenizes style in filter buttons, facilitating testability
+
 -------------------------------------------------------------------
 Thu Feb 25 12:06:49 CET 2021 - jgonzalez@suse.com
 
