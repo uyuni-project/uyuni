@@ -47,7 +47,11 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
       })
       .catch(response => {
         this.setState({
-          error: DEPRECATED_unsafeEquals(response.status, 401) ? "authentication" : response.status >= 500 ? "general" : null,
+          error: DEPRECATED_unsafeEquals(response.status, 401)
+            ? "authentication"
+            : response.status >= 500
+            ? "general"
+            : null,
         });
       });
   };
@@ -149,7 +153,9 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         [stateName]: {
           loadState: () => this.state[stateName],
           saveState: state => {
-            this.state[stateName] = state;
+            this.setState({
+              [stateName]: state
+            });
           },
         },
       });
@@ -172,31 +178,13 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
           <StatePersistedContext.Provider value={subscriptionContextValues["subscriptionTableState"]}>
-            <Subscriptions
-              subscriptions={data.subscriptions}
-              saveState={state => {
-                /**
-                 * TODO: This is a bug and is probably not what was intended
-                 * Do not assign to state fields directly, use `setState()` instead
-                 */
-                this.state["subscriptionTableState"] = state;
-              }}
-              loadState={() => this.state["subscriptionTableState"]}
-            />
+            <Subscriptions subscriptions={data.subscriptions} />
           </StatePersistedContext.Provider>,
           <StatePersistedContext.Provider value={subscriptionContextValues["unmatchedProductTableState"]}>
             <UnmatchedProducts
               products={data.products}
               unmatchedProductIds={data.unmatchedProductIds}
               systems={data.systems}
-              saveState={state => {
-                /**
-                 * TODO: This is a bug and is probably not what was intended
-                 * Do not assign to state fields directly, use `setState()` instead
-                 */
-                this.state["unmatchedProductTableState"] = state;
-              }}
-              loadState={() => this.state["unmatchedProductTableState"]}
             />
           </StatePersistedContext.Provider>,
           <StatePersistedContext.Provider value={subscriptionContextValues["pinnedMatchesState"]}>
@@ -206,30 +194,10 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
               systems={data.systems}
               subscriptions={data.subscriptions}
               onPinChanged={this.props.onPinChanged}
-              saveState={state => {
-                /**
-                 * TODO: This is a bug and is probably not what was intended
-                 * Do not assign to state fields directly, use `setState()` instead
-                 */
-                this.state["pinnedMatchesState"] = state;
-              }}
-              loadState={() => this.state["pinnedMatchesState"]}
             />
           </StatePersistedContext.Provider>,
           <StatePersistedContext.Provider value={subscriptionContextValues["messageTableState"]}>
-            <Messages
-              messages={data.messages}
-              systems={data.systems}
-              subscriptions={data.subscriptions}
-              saveState={state => {
-                /**
-                 * TODO: This is a bug and is probably not what was intended
-                 * Do not assign to state fields directly, use `setState()` instead
-                 */
-                this.state["messageTableState"] = state;
-              }}
-              loadState={() => this.state["messageTableState"]}
-            />
+            <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />
           </StatePersistedContext.Provider>,
         ]}
         initialActiveTabHash={this.state.activeTabHash}
