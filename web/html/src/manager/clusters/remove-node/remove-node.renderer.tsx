@@ -3,28 +3,35 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { RolesProvider } from "core/auth/roles-context";
 import { UserLocalizationProvider } from "core/user-localization/user-localization-context";
 import { MessagesContainer } from "components/toastr/toastr";
-
-import AddCluster from "./add-cluster";
+import RemoveNode from "./remove-node";
 import { ServerMessageType } from "components/messages";
 
 type RendererProps = {
-  contentAdd?: string;
+  cluster?: string;
+  nodes?: string;
   flashMessage?: ServerMessageType;
-};
+}
 
-export const renderer = (id: string, { contentAdd, flashMessage }: RendererProps = {}) => {
-  let providersJson: any = {};
+export const renderer = (id: string, { cluster, nodes, flashMessage }: RendererProps = {}) => {
+  let clusterObj: any = {};
   try {
-    providersJson = JSON.parse(contentAdd || "");
+    clusterObj = JSON.parse(cluster || "");
+  } catch (error) {
+    console.log(error);
+  }
+
+  let nodesObj: any = {};
+  try {
+    nodesObj = JSON.parse(nodes || "");
   } catch (error) {
     console.log(error);
   }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
-      <MessagesContainer/>
       <UserLocalizationProvider>
-        <AddCluster providers={providersJson} />
+        <MessagesContainer />
+        <RemoveNode cluster={clusterObj} nodes={nodesObj} flashMessage={flashMessage} />
       </UserLocalizationProvider>
     </RolesProvider>,
     document.getElementById(id)
