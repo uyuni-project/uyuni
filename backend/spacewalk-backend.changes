@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
 - Open repomd files as binary (bsc#1173893)
 - Rename rhnVirtualInstanceInfo memory_size_k column
 
