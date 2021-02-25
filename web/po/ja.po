@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-01-13 00:38+0000\n"
-"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"PO-Revision-Date: 2021-03-07 11:59+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -475,12 +475,12 @@ msgstr "熟練者"
 #: ../html/src/components/input/Range.stories.js:34
 #, fuzzy
 msgid "Port range"
-msgstr "ポート範囲: 1 - 65535"
+msgstr "ポート範囲"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "両方の値は正の整数である必要があります"
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
@@ -1272,7 +1272,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
-msgstr "マッチングデータは通常、夜間のタスクスケジュールとして実行されます ( "
+msgstr "マッチングデータの計算は通常、夜間のタスクスケジュールとして実行されます ( "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
 msgid "change the task schedule from the administration page"
@@ -1353,9 +1353,7 @@ msgstr "メッセージ"
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
-msgstr ""
-"サブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定"
-"の関連づけを提案させることができます。 "
+msgstr "システムへのサブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定の関連づけを提案させることができます。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:76
 msgid ""
@@ -2418,10 +2416,8 @@ msgid ""
 "find the page you are looking for, and if you find the document be sure to "
 "update your bookmark."
 msgstr ""
-"ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページ"
-"が移動していることがあります。このような場合は、上部 (もしくは左) のナビゲー"
-"ションバーをお使いのうえ、必要なページを検索してブックマークを更新してくださ"
-"い。"
+"ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページが移動していることがあります。このような場合は、上部 (もしくは左) "
+"のナビゲーションバーをお使いのうえ、必要なページを検索して、ドキュメントが見つかった場合は、ブックマークを更新してください。"
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
