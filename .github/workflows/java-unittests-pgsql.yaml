@@ -24,5 +24,3 @@ jobs:
     
     - name: Test pgsql
       run: /manager/java/scripts/docker-testing-pgsql.sh test-pr   
-
-  
