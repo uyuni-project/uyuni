@@ -48,7 +48,7 @@ const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) =>
 const renderSourceEntry = source => {
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
-      <div className={`text-success ${styles.attached}`} href="#">
+      <div className={`text-success ${styles.attached}`}>
         <i className="fa fa-plus" />
         <b>{source.name}</b>
       </div>
