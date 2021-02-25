@@ -28,17 +28,12 @@ FROM (
                       cp.channel_id,
                       p.name_id,
                       p.package_arch_id
-                 from rhnPackageEVR       pe,
-                      rhnPackage          p,
-                      rhnChannelPackage   cp
+                 from rhnPackageEVR                           pe,
+                      rhnPackage                              p,
+                      suseChannelPackageRetractedStatusView   cp
                 where p.evr_id = pe.id
                   and cp.package_id = p.id
-                  and p.id NOT IN 
-                      (SELECT EP.package_id
-                         FROM rhnErrataPackage EP INNER JOIN rhnErrata E
-                                                          ON EP.errata_id = E.id
-                        WHERE EP.package_id = p.id
-                          AND E.advisory_status = 'retracted')
+                  and cp.is_retracted = 0
                 group by cp.channel_id, p.name_id, p.package_arch_id) m,
               rhnPackageEVR       pe,
               rhnPackage          p,
