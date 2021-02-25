@@ -1,20 +1,19 @@
-//@flow
-import * as React from 'react';
-import {Text} from "components/input/Text";
-import {Select} from "components/input/Select";
-import {Form} from "components/input/Form";
+import * as React from "react";
+import { Text } from "components/input/Text";
+import { Select } from "components/input/Select";
+import { Form } from "components/input/Form";
 
-import type {ProjectEnvironmentType} from '../../../type/project.type.js';
+import { ProjectEnvironmentType } from "../../../type/project.type";
 
 type Props = {
-  environment: ProjectEnvironmentType,
-  errors: Object,
-  environments: Array<ProjectEnvironmentType>,
-  onChange: Function,
-  editing?: boolean
-}
+  environment: ProjectEnvironmentType;
+  errors: any;
+  environments: Array<ProjectEnvironmentType>;
+  onChange: Function;
+  editing?: boolean;
+};
 
-const EnvironmentForm = (props: Props) =>
+const EnvironmentForm = (props: Props) => (
   <Form
     model={props.environment}
     errors={props.errors}
@@ -27,7 +26,6 @@ const EnvironmentForm = (props: Props) =>
         <Text
           required
           name="name"
-          // ref={nameInputRef}
           label={t("Name")}
           labelClass="col-md-3"
           divClass="col-md-8"
@@ -45,14 +43,9 @@ const EnvironmentForm = (props: Props) =>
         />
       </div>
       <div className="row">
-        <Text
-          name="description"
-          label={t("Description")}
-          labelClass="col-md-3"
-          divClass="col-md-8"/>
+        <Text name="description" label={t("Description")} labelClass="col-md-3" divClass="col-md-8" />
       </div>
-      {
-        !props.editing &&
+      {!props.editing && (
         <div className="row">
           <Select
             name="predecessorLabel"
@@ -65,8 +58,9 @@ const EnvironmentForm = (props: Props) =>
             getOptionLabel={option => option.name}
           />
         </div>
-      }
+      )}
     </React.Fragment>
   </Form>
+);
 
 export default EnvironmentForm;
