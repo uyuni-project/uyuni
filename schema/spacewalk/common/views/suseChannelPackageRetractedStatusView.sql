@@ -3,6 +3,7 @@
 -- given package is part of a retracted patch in the channel.
 --
 
+CREATE VIEW suseChannelPackageRetractedStatusView AS
 SELECT
    cp.channel_id,
    cp.package_id,
