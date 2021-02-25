@@ -282,9 +282,8 @@ class ThreadedDownloader:
         try:
             self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
         except ValueError:
-            initCFG(comp)
             raise ValueError("Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS)
-        else:
+        finally:
             initCFG(comp)
         if self.threads < 1:
             raise ValueError("Invalid number of threads: %d" % self.threads)
