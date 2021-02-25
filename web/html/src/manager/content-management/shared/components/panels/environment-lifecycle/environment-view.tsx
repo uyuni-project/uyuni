@@ -42,10 +42,6 @@ const EnvironmentView = React.memo((props: Props) => {
         <dt className="col-xs-3">{t("Description")}:</dt>
         <dd className="col-xs-9">{props.environment.description}</dd>
       </dl>
-      {/*<dl className="row">*/}
-      {/*<dt className="col-xs-3">Registered Systems:</dt>*/}
-      {/*<dd className="col-xs-9">{0}</dd>*/}
-      {/*</dl>*/}
       <dl className="row">
         <dt className="col-xs-3">{t("Version")}:</dt>
         <dd className="col-xs-9">
