@@ -221,7 +221,8 @@ Summary:
 {4} {5} {6}
 {7}
 ------------------------------------------------------------------------------
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -233,7 +234,7 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target state="translated">
+        <target state="translated">
 @@PRODUCT_NAME@@ は以下のアドバイザリーが、登録した 1 つまたは複数のシステムに
 適用可能であると判断しました。
 
@@ -252,8 +253,8 @@ Summary:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -263,7 +264,8 @@ this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
-    </source> <target state="translated">
+    </source>
+        <target state="translated">
 ---------------------
 影響を受けるシステムのリスト
 ---------------------
@@ -276,37 +278,39 @@ as root on the system in question to refresh your software profile.
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source> <target state="translated">
+    </source>
+        <target state="translated">
 '概要' で登録された 1 つのシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
-          <target state="translated">
+        <target state="translated">
 '概要' で登録された {0} 個のシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -320,13 +324,14 @@ You may address the issues outlined in this advisory in two ways:
            {1}
 
      - run the Update Agent on each affected server.
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
           </context-group>
-          <target state="translated">
+        <target state="translated">
 リリース    アーキテクチャー       プロファイル名
 ---------- ---------- ---------------------------------------------
 {0}
@@ -342,8 +347,8 @@ You may address the issues outlined in this advisory in two ways:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -358,14 +363,15 @@ click the "Details" tab.
 
 {1}
 {2}
-    </source> <context-group name="ctx">
+    </source>
+        <context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
           </context-group>
-          <target state="translated">
+        <target state="translated">
 通知設定の変更
 ---------------------------------
 パッチアラート設定をグローバルで有効または無効にするには、@@PRODUCT_NAME@@ にログインし、
@@ -373,7 +379,7 @@ click the "Details" tab.
 
         URL: {0}
 
-また、"システムリスト" から個々のシステム選択してシステムごとに通知を有効または
+また、"システムリスト" から個々のシステムを選択してシステムごとに通知を有効または
 無効にすることもできます。この場合は、個々のシステムビューから、
 "詳細" タブをクリックします。
 
@@ -383,7 +389,7 @@ click the "Details" tab.
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
@@ -441,7 +447,7 @@ Thank you for using @@PRODUCT_NAME@@.
 この電子メールの無効化について:
 ----------------------
 
-システムに対する電子メールを無効化する方法については、以下のページをお読みください:
+システムに対する電子メールを無効化する方法については、以下の個人設定ページをお読みください:
 https://{4}/rhn/account/UserPreferences.do
 
 
