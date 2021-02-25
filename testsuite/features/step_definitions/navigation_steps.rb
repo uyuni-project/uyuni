@@ -822,7 +822,7 @@ When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
   find("input[placeholder='Filter by Result: ']").set(input)
 end
 
-When(/^I enter the package for "([^"]*)" as the filtered package states name$/) do |host|
+When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
   step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
 end
 
