@@ -31,12 +31,8 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -216,19 +212,18 @@ public class MgrSyncUtils {
         String host = "";
         String path = "/";
         try {
-            URL url = new URL(urlString);
-            host = url.getHost();
-            path = url.getPath();
+            URI uri = new URI(urlString);
+            host = uri.getHost();
+            path = uri.getPath();
 
             // Case 1
             if ("localhost".equals(host)) {
-                return url.toURI();
+                return uri;
             }
-            String qPath = Arrays.stream(Optional.ofNullable(url.getQuery()).orElse("").split("&"))
+            String qPath = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
                     .filter(p -> p.contains("=")) // filter out possible auth tokens
                     .map(p ->
                         Arrays.stream(p.split("=", 2))
-                            .map(s -> URLDecoder.decode(s, StandardCharsets.UTF_8))
                             .collect(Collectors.joining("/"))
                     )
                     .sorted()
@@ -237,7 +232,7 @@ public class MgrSyncUtils {
                 path = new File(path, qPath).getAbsolutePath();
             }
         }
-        catch (MalformedURLException | URISyntaxException e) {
+        catch (URISyntaxException e) {
             log.warn("Unable to parse URL: " + urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
