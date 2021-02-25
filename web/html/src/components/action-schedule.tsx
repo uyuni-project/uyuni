@@ -196,10 +196,8 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   renderDatePicker = () => {
-    // TODO: Remove this workaround when DateTimePicker gets migrated
-    const UntypedDateTimePicker: any = DateTimePicker;
     return (
-      <UntypedDateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
+      <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
     );
   };
 

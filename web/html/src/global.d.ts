@@ -29,7 +29,6 @@ declare global {
       };
     };
 
-    // Table data handler
     userPrefPageSize?: number;
   }
 
