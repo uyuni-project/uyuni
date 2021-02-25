@@ -56,7 +56,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         String name = "SLE-Module-Basesystem15-SP3-x86_64";
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
-        URI expected = new URI(String.format("file:%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
+        URI expected = new URI(String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         assertContains(opath.toString(), expected.toString());
     }
 
@@ -66,7 +66,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         String name = "SLE-Module-Basesystem15-SP3-x86_64";
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
-        URI expected = new URI(String.format("file:%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
+        URI expected = new URI(String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
         assertContains(opath.toString(), expected.toString());
     }
 
@@ -76,7 +76,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         String name = "ubuntu-2004-amd64-main-amd64";
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
-        URI expected = new URI(String.format("file:%s/archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64", fromdir));
+        URI expected = new URI(String.format("file://%s/archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64", fromdir));
         assertContains(opath.toString(), expected.toString());
     }
 
@@ -86,8 +86,19 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         String name = "centos-7-appstream-x86_64";
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
-        URI expected = new URI(String.format("file:%s/mirrorlist.centos.org/arch/x86_64/infra/stock/release/8/repo/AppStream", fromdir));
+        URI expected = new URI(String.format("file://%s/mirrorlist.centos.org/arch/x86_64/infra/stock/release/8/repo/AppStream", fromdir));
         assertContains(opath.toString(), expected.toString());
+    }
+
+    public void testurlToFSPathMirrorlistNormalize() throws Exception {
+
+        String url = "http://mirrorlist.centos.org/../?release=8&arch=x86_64&repo=AppStream&infra=stock&..=..&x=%2E%2E";
+        String name = "centos-7-appstream-x86_64";
+
+        URI opath = MgrSyncUtils.urlToFSPath(url, name);
+        URI expected = new URI(String.format("file://%s", fromdir));
+        assertContains(opath.toString(), expected.toString());
+        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
     }
 
     public void testurlToFSPathLegacy() throws Exception {
@@ -97,7 +108,42 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         String name = "SLE-12-GA-Desktop-NVIDIA-Driver";
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
-        URI expected = new URI(String.format("file:%s/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver", fromdir));
+        URI expected = new URI(String.format("file://%s/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver", fromdir));
         assertContains(opath.toString(), expected.toString());
+    }
+
+    public void testurlToFSPathLegacyNormalize() throws Exception {
+        Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
+        new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
+        String url = "https://download.nvidia.com/suse/sle12sp4";
+        String name = "../../../etc/passwd SLE-12-GA-Desktop-NVIDIA-Driver";
+
+        URI opath = MgrSyncUtils.urlToFSPath(url, name);
+        URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
+        assertContains(opath.toString(), expected.toString());
+    }
+
+    public void testurlToFSPathLegacyQuoteNormalize() throws Exception {
+        Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
+        new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
+        String url = "https://download.nvidia.com/suse/sle12sp4";
+        String name = "%2F%2E%2E%2Fetc/passwd SLE-12-GA-Desktop-NVIDIA-Driver";
+
+        URI opath = MgrSyncUtils.urlToFSPath(url, name);
+        URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
+        assertContains(opath.toString(), expected.toString());
+        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
+    }
+
+    public void testurlToFSPathLegacyQuoteNormalize2() throws Exception {
+        Files.createDirectories(new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/").toPath());
+        new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
+        String url = "https://download.nvidia.com/suse/sle12sp4%2F%2E%2E%2F%2E%2E%2F%2E%2E%2F%2E%2E%2F%2E%2E/etc/passwd";
+        String name = "SLE-12-GA-Desktop-NVIDIA-Driver";
+
+        URI opath = MgrSyncUtils.urlToFSPath(url, name);
+        URI expected = new URI(String.format("file://%s", fromdir));
+        assertContains(opath.toString(), expected.toString());
+        assertFalse("Decoding error: " + opath.toString(), opath.toString().contains("%"));
     }
 }
