@@ -1,41 +1,38 @@
-// @flow
-import * as React from 'react';
+import * as React from "react";
 import produce from "utils/produce";
 
-import type {ProjectPropertiesType} from '../../../type/project.type.js';
-import {getVersionMessage} from "./properties.utils";
-import {ModalLink} from "components/dialog/ModalLink";
-import {Dialog} from "components/dialog/Dialog";
+import { ProjectPropertiesType } from "../../../type/project.type";
+import { getVersionMessage } from "./properties.utils";
+import { ModalLink } from "components/dialog/ModalLink";
+import { Dialog } from "components/dialog/Dialog";
 import BuildVersion from "../build/build-version";
 
 type Props = {
-  properties: ProjectPropertiesType,
-}
+  properties: ProjectPropertiesType;
+};
 
 const NUMBER_HISTORY_ENTRIES = 5;
 
-const PropertiesHistoryEntries = (props) =>
+const PropertiesHistoryEntries = props => (
   <ul className="list-unstyled">
-    {
-      props.entries.map((history, index) => {
-        const versionMessage = getVersionMessage(history)
-        return (
-          <li key={`historyentries_${props.id}_${index}`}>
-            {
-              index === 0
-                ? versionMessage
-                : <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} collapsed={true} />
-            }
-          </li>
-        )
-      })
-    }
+    {props.entries.map((history, index) => {
+      const versionMessage = getVersionMessage(history);
+      return (
+        <li key={`historyentries_${props.id}_${index}`}>
+          {index === 0 ? (
+            versionMessage
+          ) : (
+            <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} collapsed={true} />
+          )}
+        </li>
+      );
+    })}
   </ul>
+);
 
 const PropertiesView = (props: Props) => {
-
   let propertiesToShow = produce(props.properties, draftProperties => {
-    draftProperties.historyEntries.sort((a, b) => b.version - a.version)
+    draftProperties.historyEntries.sort((a, b) => b.version - a.version);
   });
 
   return (
@@ -49,7 +46,7 @@ const PropertiesView = (props: Props) => {
           <dt className="col-xs-2">{t("Label:")}</dt>
           <dd className="col-xs-6">{propertiesToShow.label}</dd>
         </dl>
-                <dl className="row">
+        <dl className="row">
           <dt className="col-xs-2">{t("Description")}</dt>
           <dd className="col-xs-10">{propertiesToShow.description}</dd>
         </dl>
@@ -58,10 +55,10 @@ const PropertiesView = (props: Props) => {
           <dd className="col-xs-10">
             <PropertiesHistoryEntries
               id="resume"
-              entries={propertiesToShow.historyEntries.slice(0,NUMBER_HISTORY_ENTRIES)} />
+              entries={propertiesToShow.historyEntries.slice(0, NUMBER_HISTORY_ENTRIES)}
+            />
 
-            {
-              propertiesToShow.historyEntries.length > NUMBER_HISTORY_ENTRIES &&
+            {propertiesToShow.historyEntries.length > NUMBER_HISTORY_ENTRIES && (
               <>
                 <ModalLink
                   id={`properties-longlist-modal-button`}
@@ -70,21 +67,16 @@ const PropertiesView = (props: Props) => {
                 />
                 <Dialog
                   id="properties-longlist-modal-content"
-                  content={
-                    <PropertiesHistoryEntries
-                      id="longlist"
-                      entries={propertiesToShow.historyEntries} />
-                  }
+                  content={<PropertiesHistoryEntries id="longlist" entries={propertiesToShow.historyEntries} />}
                   title={t("Versions history")}
                 />
               </>
-            }
+            )}
           </dd>
         </dl>
       </React.Fragment>
     </div>
   );
 };
-
 
 export default PropertiesView;
