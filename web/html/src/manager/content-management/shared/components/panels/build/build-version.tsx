@@ -1,23 +1,24 @@
-//@flow
-
-import * as React from 'react';
+import * as React from "react";
 import styles from "./build.css";
 
 type Props = {
-  id: string,
-  text: string,
-  collapsed?: boolean
-}
+  id: string;
+  text: string;
+  collapsed?: boolean;
+};
 
-const BuildVersion = ({id, text, collapsed} : Props) => {
+const BuildVersion = ({ id, text, collapsed }: Props) => {
   return (
     <div>
       <dd className="collapsible-content">
-        <div data-toggle="collapse" href={`#historyentry_${id}`}
-            className={`${styles.version_collapse_line} pointer accordion-toggle collapsed`}>
+        <div
+          data-toggle="collapse"
+          data-target={`#historyentry_${id}`}
+          className={`${styles.version_collapse_line} pointer accordion-toggle collapsed`}
+        >
           <i className="fa fa-chevron-down show-on-collapsed fa-small" />
           <i className="fa fa-chevron-right hide-on-collapsed fa-small" />
-          <span>{text.split('\n')[0]}</span>
+          <span>{text.split("\n")[0]}</span>
         </div>
         <div className="collapse" id={`historyentry_${id}`}>
           <pre>{text}</pre>
@@ -30,7 +31,7 @@ const BuildVersion = ({id, text, collapsed} : Props) => {
 BuildVersion.defaultProps = {
   id: undefined,
   text: undefined,
-  collapsed: true
+  collapsed: true,
 };
 
 export default BuildVersion;
