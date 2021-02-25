@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,6 +33,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -210,7 +214,7 @@ public class MgrSyncUtils {
      */
     public static URI urlToFSPath(String urlString, String name) {
         String host = "";
-        String path = "/";
+        String path = File.separator;
         try {
             URI uri = new URI(urlString);
             host = uri.getHost();
@@ -224,12 +228,12 @@ public class MgrSyncUtils {
                     .filter(p -> p.contains("=")) // filter out possible auth tokens
                     .map(p ->
                         Arrays.stream(p.split("=", 2))
-                            .collect(Collectors.joining("/"))
+                            .collect(Collectors.joining(File.separator))
                     )
                     .sorted()
-                    .collect(Collectors.joining("/"));
+                    .collect(Collectors.joining(File.separator));
             if (!qPath.isBlank()) {
-                path = new File(path, qPath).getAbsolutePath();
+                path = Paths.get(path, qPath).toString();
             }
         }
         catch (URISyntaxException e) {
@@ -237,22 +241,29 @@ public class MgrSyncUtils {
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
-        File newMirrorPath = new File(sccDataPath, host + "/" + path);
+        // Case 4
+        File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
 
         // Case 2
         if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
-            return new File(dataPath.getAbsolutePath(), path).toURI();
+            mirrorPath = new File(dataPath.getAbsolutePath(), path);
         }
         else if (name != null) {
             // Case 3
             // everything after the first space are suffixes added to make things unique
-            String[] parts  = name.split("\\s");
-            File oldMirrorPath = new File(dataPath.getAbsolutePath(), "/repo/RPMMD/" + parts[0]);
-            if (oldMirrorPath.exists()) {
-                return oldMirrorPath.toURI();
+            String[] parts  = URLDecoder.decode(name, StandardCharsets.UTF_8).split("[\\s//]");
+            if (!(parts[0].isBlank() || parts[0].equals(".."))) {
+                File oldMirrorPath = Paths.get(dataPath.getAbsolutePath(), "repo", "RPMMD", parts[0]).toFile();
+                if (oldMirrorPath.exists()) {
+                    mirrorPath = oldMirrorPath;
+                }
             }
         }
-        // Case 4
-        return newMirrorPath.toURI();
+        Path cleanPath = mirrorPath.toPath().normalize();
+        if (!cleanPath.startsWith(sccDataPath)) {
+            log.error("Resulting path outside of configured directory " + dataPath + ": " + urlString);
+            cleanPath = dataPath.toPath();
+        }
+        return cleanPath.toUri().normalize();
     }
 }
