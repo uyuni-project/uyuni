@@ -1,10 +1,7 @@
-/* global moment */
 import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import { Utils } from "utils/functions";
-
-declare var Loggerhead: any;
 
 export function mapFilterFormToRequest(
   filterForm: FilterFormType,
