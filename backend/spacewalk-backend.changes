@@ -1,3 +1,6 @@
+- deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)
+- Fixing improper exception handling causing another exception in ThreadedDownloader
+
 -------------------------------------------------------------------
 Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com
 
