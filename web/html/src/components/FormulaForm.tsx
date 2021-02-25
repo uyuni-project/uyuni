@@ -44,7 +44,7 @@ type Props = {
   /** current active scope (system or group) */
   scope: "system" | "group";
 
-  messageTexts: any;
+  messageTexts: Record<string, any>;
 };
 
 type State = {
@@ -192,6 +192,11 @@ class FormulaForm extends React.Component<Props, State> {
     if (!this.props.messageTexts[msg] && defaultMessageTexts[msg]) {
       return t(defaultMessageTexts[msg]);
     }
+    /**
+     * TODO: There is a bug here, in some uses messageTexts can also contain elements,
+     * a-la in group-formula.renderer.tsx. This case is not accounted for and needs
+     * separate consideration.
+     */
     return this.props.messageTexts[msg] ? t(this.props.messageTexts[msg]) : msg;
   };
 
