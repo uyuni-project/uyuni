@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -72,6 +73,9 @@ public class PackageDtoSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("id", pack.getId());
         helper.add("arch_label", pack.getArchLabel());
         helper.add("last_modified_date", pack.getLastModified());
+        if (pack.getRetracted() != null) {
+            helper.add("retracted", pack.getRetracted());
+        }
 
         // Deprecated and should eventually be removed, were returning this
         // for some time although it was undocumented. All other occurrences of
