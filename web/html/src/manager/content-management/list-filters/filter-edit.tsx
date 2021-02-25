@@ -38,8 +38,8 @@ type FilterEditProps = {
   icon: string;
   buttonText: string;
   onChange: Function;
-  openFilterId: number;
-  projectLabel: string;
+  openFilterId?: number;
+  projectLabel?: string;
   editing?: boolean;
 };
 
@@ -130,7 +130,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   handler={() => {
                     cancelAction();
                     if (!_isEmpty(props.projectLabel)) {
-                      redirectToProject(props.projectLabel);
+                      redirectToProject(props.projectLabel!);
                     } else {
                       closeDialog(modalNameId);
                     }
@@ -149,7 +149,7 @@ const FilterEdit = (props: FilterEditProps) => {
                         onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", item.id)
                           .then(updatedListOfFilters => {
                             if (!_isEmpty(props.projectLabel)) {
-                              redirectToProject(props.projectLabel);
+                              redirectToProject(props.projectLabel!);
                             } else {
                               closeDialog(modalNameId);
                               showSuccessToastr(t("Filter updated successfully"));
@@ -164,7 +164,7 @@ const FilterEdit = (props: FilterEditProps) => {
                         onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "create")
                           .then(updatedListOfFilters => {
                             if (!_isEmpty(props.projectLabel)) {
-                              redirectToProject(props.projectLabel);
+                              redirectToProject(props.projectLabel!);
                             } else {
                               closeDialog(modalNameId);
                               showSuccessToastr(t("Filter created successfully"));

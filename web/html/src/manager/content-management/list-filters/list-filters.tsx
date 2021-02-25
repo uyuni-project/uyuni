@@ -13,12 +13,13 @@ import { mapResponseToFilterForm } from "./filter.utils";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
+import { ServerMessageType } from "components/messages";
 
 type Props = {
   filters: Array<FilterServerType>;
-  openFilterId: number;
-  projectLabel: string;
-  flashMessage: string;
+  openFilterId?: number;
+  projectLabel?: string;
+  flashMessage?: ServerMessageType;
 };
 
 const ListFilters = (props: Props) => {
