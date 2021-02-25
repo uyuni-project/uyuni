@@ -5,7 +5,7 @@ type SearchFieldProps = {
   criteria?: string;
 
   /** Place holder value to display when nothing has been input */
-  placeholder: string;
+  placeholder?: string;
 
   /** function called when a search is performed.
    * This is usually passed by the search panel parent component.

@@ -58,7 +58,7 @@ export type InputBaseProps<ValueType = string> = {
   disabled?: boolean;
 
   /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
-  validators?: Validator[];
+  validators?: Validator | Validator[];
 
   /** Hint to display on a validation error */
   invalidHint?: React.ReactNode;

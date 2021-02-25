@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type Props = {
-  isError: boolean;
+  isError?: boolean;
   children: React.ReactNode;
 
   /** CSS class name to apply to the component */
