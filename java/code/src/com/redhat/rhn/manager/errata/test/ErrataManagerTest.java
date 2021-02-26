@@ -1634,6 +1634,29 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(chan.getPackages().contains(errataPackage));
     }
 
+    /**
+     * Test that the advisory status gets populated when listing all errata
+     * @throws Exception
+     */
+    public void testListRetractedErrata() throws Exception {
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        patch.addChannel(channel);
+        ErrataFactory.save(patch);
+
+        Errata retractedPatch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        retractedPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        retractedPatch.addChannel(channel);
+        ErrataFactory.save(retractedPatch);
+
+        DataResult<ErrataOverview> patches = ErrataManager.allErrata(user);
+        Map<Long, ErrataOverview> patchesMap = patches.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertEquals(2, patches.size());
+        assertEquals(AdvisoryStatus.FINAL, patchesMap.get(patch.getId()).getAdvisoryStatus());
+        assertEquals(AdvisoryStatus.RETRACTED, patchesMap.get(retractedPatch.getId()).getAdvisoryStatus());
+    }
+
     private static Package copyPackage(Package fromPkg, User user, Channel channel, String version) throws Exception {
         Package olderPkg = createTestPackage(user, channel, fromPkg.getPackageArch().getLabel());
         PackageEvr packageEvr = fromPkg.getPackageEvr();
