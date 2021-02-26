@@ -82,11 +82,11 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
      * @throws Exception
      */
     public void testSystemPackageList() throws Exception {
-        // create a null-org erratum with a package and add it to the channel
-        Errata vendorErratum = ErrataFactoryTest.createTestErrata(null);
-        vendorErratum.addPackage(oldPkg);
-        vendorErratum.addChannel(channel);
-        ErrataFactory.save(vendorErratum);
+        // create a null-org patch with a package and add it to the channel
+        Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
+        vendorPatch.addPackage(oldPkg);
+        vendorPatch.addChannel(channel);
+        ErrataFactory.save(vendorPatch);
 
         channel.addPackage(oldPkg);
 
@@ -95,9 +95,9 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ccc.setUser(user);
         Channel clonedChannel = ccc.create();
 
-        // set the erratum in original to retracted
-        vendorErratum.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorErratum);
+        // set the patch in original to retracted
+        vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        ErrataFactory.save(vendorPatch);
 
         // install the package & subcribe the system to the original cnl (with retracted errata)
         installPackageOnServer(oldPkg, server);
@@ -109,7 +109,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         PackageListItem pkg = assertSingleAndGet(pkgs);
         assertTrue(pkg.isRetracted());
 
-        // now let's subscribe the system to the cloned channel, where the erratum is not retracted
+        // now let's subscribe the system to the cloned channel, where the patch is not retracted
         SystemManager.unsubscribeServerFromChannel(server, channel);
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
         pkgs = PackageManager.systemPackageList(server.getId(), null);
@@ -119,11 +119,11 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     }
 
     public void testSystemAvailablePackages() throws Exception {
-        // create a null-org erratum with a newest package and add it to the channel
-        Errata vendorErratum = ErrataFactoryTest.createTestErrata(null);
-        vendorErratum.addPackage(newestPkg);
-        vendorErratum.addChannel(channel);
-        ErrataFactory.save(vendorErratum);
+        // create a null-org patch with a newest package and add it to the channel
+        Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
+        vendorPatch.addPackage(newestPkg);
+        vendorPatch.addChannel(channel);
+        ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
         channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
@@ -133,9 +133,9 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ccc.setUser(user);
         Channel clonedChannel = ccc.create();
 
-        // set the erratum in original to retracted
-        vendorErratum.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorErratum);
+        // set the patch in original to retracted
+        vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        ErrataFactory.save(vendorPatch);
 
         // subscribe the system to the channel with the retracted patch
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
@@ -152,10 +152,10 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     }
 
     public void testListPackagesInChannelForList() throws Exception {
-        Errata vendorErratum = ErrataFactoryTest.createTestErrata(null);
-        vendorErratum.addPackage(newerPkg);
-        vendorErratum.addChannel(channel);
-        ErrataFactory.save(vendorErratum);
+        Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
+        vendorPatch.addPackage(newerPkg);
+        vendorPatch.addChannel(channel);
+        ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
         channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
@@ -165,9 +165,9 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ccc.setUser(user);
         Channel clonedChannel = ccc.create();
 
-        // set the erratum in original to retracted
-        vendorErratum.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorErratum);
+        // set the patch in original to retracted
+        vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        ErrataFactory.save(vendorPatch);
 
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
