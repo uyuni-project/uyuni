@@ -203,6 +203,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         Map<Long, PackageDto> pkgsOriginalMap = ChannelManager.listAllPackages(channel).stream()
                 .collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertEquals(3, pkgsOriginalMap.size());
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
         assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
@@ -210,6 +211,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         Map<Long, PackageDto> pkgsCloneMap = ChannelManager.listAllPackages(clonedChannel).stream()
                 .collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertEquals(3, pkgsCloneMap.size());
         assertFalse(pkgsCloneMap.get(oldPkg.getId()).getRetracted());
         assertFalse(pkgsCloneMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsCloneMap.get(newestPkg.getId()).getRetracted());
