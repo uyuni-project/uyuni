@@ -34,6 +34,7 @@ export const Text = (props: Props) => {
             className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
             type={type || "text"}
             name={props.name}
+            id={props.name}
             value={fieldValue}
             onChange={onChange}
             disabled={props.disabled}
