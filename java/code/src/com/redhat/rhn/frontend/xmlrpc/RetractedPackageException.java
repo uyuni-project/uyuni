@@ -33,8 +33,7 @@ public class RetractedPackageException extends FaultException  {
      * @param pkgIds The retracted package ids.
      */
     public RetractedPackageException(List<Long> pkgIds) {
-        //TODO: find free error id
-        super(2300, "retractedPackage" , LocalizationService.getInstance().
+        super(2303, "retractedPackage" , LocalizationService.getInstance().
                 getMessage("api.package.retractedpackage",
                         pkgIds.stream().map(Object::toString).collect(Collectors.joining(","))));
     }
@@ -45,7 +44,7 @@ public class RetractedPackageException extends FaultException  {
      * @param cause the cause
      */
     public RetractedPackageException(List<Long> pkgIds, Throwable cause) {
-        super(2300, "retractedPackage" , LocalizationService.getInstance().
+        super(2303, "retractedPackage" , LocalizationService.getInstance().
                 getMessage("api.package.retractedpackage",
                         pkgIds.stream().map(Object::toString).collect(Collectors.joining(","))),
                 cause);

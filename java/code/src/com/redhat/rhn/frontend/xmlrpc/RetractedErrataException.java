@@ -33,8 +33,7 @@ public class RetractedErrataException extends FaultException  {
      * @param errataIds The retracted errata ids.
      */
     public RetractedErrataException(List<Long> errataIds) {
-        //TODO: find free error id
-        super(2300, "retractedErrata" , LocalizationService.getInstance().
+        super(2602, "retractedErrata" , LocalizationService.getInstance().
                 getMessage("api.errata.retractederrata",
                         errataIds.stream().map(Object::toString).collect(Collectors.joining(","))));
     }
@@ -45,7 +44,7 @@ public class RetractedErrataException extends FaultException  {
      * @param cause the cause
      */
     public RetractedErrataException(List<Long> errataIds, Throwable cause) {
-        super(2300, "retractedErrata" , LocalizationService.getInstance().
+        super(2602, "retractedErrata" , LocalizationService.getInstance().
                 getMessage("api.errata.retractederrata",
                         errataIds.stream().map(Object::toString).collect(Collectors.joining(","))),
                 cause);
