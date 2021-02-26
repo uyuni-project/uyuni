@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -39,6 +40,8 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test various logic related to the retracted packages
@@ -146,6 +149,39 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
         pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
         assertEquals(newestPkg.getId(),pkg.getPackageId());
+    }
+
+    public void testListPackagesInChannelForList() throws Exception {
+        Errata vendorErratum = ErrataFactoryTest.createTestErrata(null);
+        vendorErratum.addPackage(newerPkg);
+        vendorErratum.addChannel(channel);
+        ErrataFactory.save(vendorErratum);
+
+        // channel has all 3 packages
+        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+
+        // clone the channel
+        CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
+        ccc.setUser(user);
+        Channel clonedChannel = ccc.create();
+
+        // set the erratum in original to retracted
+        vendorErratum.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        ErrataFactory.save(vendorErratum);
+
+        // only the "newerPkg" is retracted in the original channel
+        DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
+        Map<Long, PackageOverview> pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).isRetracted());
+        assertTrue(pkgsOriginalMap.get(newerPkg.getId()).isRetracted());
+        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).isRetracted());
+
+        // no package retracted in the cloned channel
+        pkgsOriginal = PackageManager.listPackagesInChannelForList(clonedChannel.getId());
+        pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).isRetracted());
+        assertFalse(pkgsOriginalMap.get(newerPkg.getId()).isRetracted());
+        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).isRetracted());
     }
 
     private <T> T assertSingleAndGet(Collection<T> items) {
