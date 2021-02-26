@@ -1466,7 +1466,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     ContentSource cs = bestAuth.getContentSource();
                     assertNotNull(cs);
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
-                    assertContains(cs.getSourceUrl(), "file:" + fromdir.toString() + "/SUSE/");
+                    assertContains(cs.getSourceUrl(), "file://" + fromdir.toString() + "/SUSE/");
                 });
             slewe.getRepositories().stream()
             .filter(pr -> pr.isMandatory())
@@ -1477,10 +1477,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
                 if (pr.getChannelName().toLowerCase().contains("nvidia")) {
-                    assertContains(cs.getSourceUrl(), "file:" + fromdir.toString() + "/repo/RPMMD/");
+                    assertContains(cs.getSourceUrl(), "file://" + fromdir.toString() + "/repo/RPMMD/");
                 }
                 else {
-                    assertContains(cs.getSourceUrl(), "file:" + fromdir.toString() + "/SUSE/");
+                    assertContains(cs.getSourceUrl(), "file://" + fromdir.toString() + "/SUSE/");
                 }
             });
         }
