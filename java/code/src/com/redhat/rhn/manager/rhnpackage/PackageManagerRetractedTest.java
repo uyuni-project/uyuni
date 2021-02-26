@@ -60,7 +60,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        server = ServerFactoryTest.createTestServer(user);
+        server = ServerFactoryTest.createTestServer(user, true);
 
         List<Package> generatedPackages = createSubsequentPackages();
         oldPkg = generatedPackages.get(0);
@@ -216,6 +216,38 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertFalse(pkgsCloneMap.get(newerPkg.getId()).getRetracted());
         assertFalse(pkgsCloneMap.get(newestPkg.getId()).getRetracted());
     }
+
+    public void testPotentialSystemsForPackage() throws Exception {
+        Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
+        vendorPatch.addPackage(newestPkg);
+        vendorPatch.addChannel(channel);
+        ErrataFactory.save(vendorPatch);
+
+        // channel has all 3 packages
+        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+
+        // clone the channel
+        CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
+        ccc.setUser(user);
+        Channel clonedChannel = ccc.create();
+
+        // set the patch in original to retracted
+        vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        installPackageOnServer(oldPkg, server);
+        SystemManager.subscribeServerToChannel(user, server, channel);
+
+        // list the possible package updates when subscribed to the original
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
+        assertTrue(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()).isEmpty()); // newest is retracted
+
+        // list the possible package updates when subscribed to the clone
+        SystemManager.unsubscribeServerFromChannel(server, channel);
+        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()));
+    }
+
 
     private <T> T assertSingleAndGet(Collection<T> items) {
         assertEquals(1, items.size());
