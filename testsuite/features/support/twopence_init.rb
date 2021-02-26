@@ -41,6 +41,9 @@ if $build_validation
   $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
   $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
   $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
+  $sle12sp5_client = twopence_init("ssh:#{ENV['SLE12SP5_CLIENT']}") if ENV['SLE12SP5_CLIENT']
+  $sle12sp5_minion = twopence_init("ssh:#{ENV['SLE12SP5_MINION']}") if ENV['SLE12SP5_MINION']
+  $sle12sp5_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP5_SSHMINION']}") if ENV['SLE12SP5_SSHMINION']
   $sle15_client = twopence_init("ssh:#{ENV['SLE15_CLIENT']}") if ENV['SLE15_CLIENT']
   $sle15_minion = twopence_init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
   $sle15_ssh_minion = twopence_init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
@@ -71,8 +74,8 @@ if $build_validation
   $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
   $sle12sp4_buildhost = twopence_init("ssh:#{ENV['SLE12SP4_BUILDHOST']}") if ENV['SLE12SP4_BUILDHOST']
   $sle12sp4_terminal = twopence_init("ssh:#{ENV['SLE12SP4_TERMINAL']}") if ENV['SLE12SP4_TERMINAL']
-  $sle15sp2_buildhost = twopence_init("ssh:#{ENV['SLE15SP2_BUILDHOST']}") if ENV['SLE15SP2_BUILDHOST']
-  $sle15sp2_terminal = twopence_init("ssh:#{ENV['SLE15SP2_TERMINAL']}") if ENV['SLE15SP2_TERMINAL']
+  $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
+  $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   # As we share core features for all the environments, we share also those vm twopence objects
   $client = $sle12sp4_client
   $minion = $sle12sp4_minion
@@ -81,6 +84,7 @@ if $build_validation
   $ubuntu_minion = $ubuntu1804_minion
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
+             $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
              $sle15_client, $sle15_minion, $sle15_ssh_minion,
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
@@ -93,7 +97,7 @@ if $build_validation
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp4_buildhost, $sle12sp4_terminal,
-             $sle15sp2_buildhost, $sle15sp2_terminal,
+             $sle15sp3_buildhost, $sle15sp3_terminal,
              $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
 else
   # Define twopence objects for QA environment
@@ -248,6 +252,9 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp4_client'           => $sle12sp4_client,
                   'sle12sp4_minion'           => $sle12sp4_minion,
                   'sle12sp4_ssh_minion'       => $sle12sp4_ssh_minion,
+                  'sle12sp5_client'           => $sle12sp5_client,
+                  'sle12sp5_minion'           => $sle12sp5_minion,
+                  'sle12sp5_ssh_minion'       => $sle12sp5_ssh_minion,
                   'sle15_client'              => $sle15_client,
                   'sle15_minion'              => $sle15_minion,
                   'sle15_ssh_minion'          => $sle15_ssh_minion,
@@ -278,5 +285,5 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle11sp3_terminal'         => $sle11sp3_terminal,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
-                  'sle15sp2_buildhost'        => $sle15sp2_buildhost,
-                  'sle15sp2_terminal'         => $sle15sp2_terminal }
+                  'sle15sp3_buildhost'        => $sle15sp3_buildhost,
+                  'sle15sp3_terminal'         => $sle15sp3_terminal }
