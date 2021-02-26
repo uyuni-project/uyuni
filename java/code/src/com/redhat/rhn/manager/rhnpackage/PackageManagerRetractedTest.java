@@ -31,8 +31,10 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -97,7 +99,6 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorPatch);
 
         // install the package & subcribe the system to the original cnl (with retracted errata)
         installPackageOnServer(oldPkg, server);
@@ -135,7 +136,6 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorPatch);
 
         // subscribe the system to the channel with the retracted patch
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
@@ -167,7 +167,6 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        ErrataFactory.save(vendorPatch);
 
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
@@ -182,6 +181,38 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         assertFalse(pkgsOriginalMap.get(oldPkg.getId()).isRetracted());
         assertFalse(pkgsOriginalMap.get(newerPkg.getId()).isRetracted());
         assertFalse(pkgsOriginalMap.get(newestPkg.getId()).isRetracted());
+    }
+
+    // todo also date mutations?
+    public void testChannelListAllPackages() throws Exception {
+        Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
+        vendorPatch.addPackage(newerPkg);
+        vendorPatch.addChannel(channel);
+        ErrataFactory.save(vendorPatch);
+
+        // channel has all 3 packages
+        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+
+        // clone the channel
+        CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
+        ccc.setUser(user);
+        Channel clonedChannel = ccc.create();
+
+        // set the patch in original to retracted
+        vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        Map<Long, PackageDto> pkgsOriginalMap = ChannelManager.listAllPackages(channel).stream()
+                .collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
+        assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
+        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
+
+
+        Map<Long, PackageDto> pkgsCloneMap = ChannelManager.listAllPackages(clonedChannel).stream()
+                .collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertFalse(pkgsCloneMap.get(oldPkg.getId()).getRetracted());
+        assertFalse(pkgsCloneMap.get(newerPkg.getId()).getRetracted());
+        assertFalse(pkgsCloneMap.get(newestPkg.getId()).getRetracted());
     }
 
     private <T> T assertSingleAndGet(Collection<T> items) {

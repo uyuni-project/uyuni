@@ -1209,15 +1209,13 @@ SELECT P.id AS id,
       TO_CHAR(P.last_modified, 'YYYY-MM-DD HH24:MI:SS') AS last_modified,
       CV.checksum as checksum,
       CV.checksum_type as checksum_type,
-      (E.advisory_status = 'retracted') as retracted
+      (CP.is_retracted = 1) as retracted
 FROM
-      rhnChannelPackage CP join rhnPackage P on CP.package_id = P.id
+      suseChannelPackageRetractedStatusView CP join rhnPackage P on CP.package_id = P.id
       join rhnPackageName PN on P.name_id = PN.id
       join rhnPackageEVR PE on P.evr_id = PE.id
       join rhnPackageArch PA on PA.id = P.package_arch_id
       join rhnChecksumView CV on P.checksum_id = CV.id
-      left join rhnErrataPackage EP on EP.package_id = CP.package_id
-      left join rhnErrata E on EP.errata_id = E.id
 WHERE CP.channel_id = :cid
 ORDER BY UPPER(PN.name), P.id
   </query>
