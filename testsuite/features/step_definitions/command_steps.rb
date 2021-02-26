@@ -304,7 +304,8 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", false)
+      break if code.zero?
       sleep 10
     end
   rescue StandardError => e
