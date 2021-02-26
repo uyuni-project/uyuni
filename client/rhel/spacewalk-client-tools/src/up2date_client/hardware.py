@@ -940,20 +940,16 @@ def get_smbios():
     """ Returns dictionary with values we are interested for.
         For historical reason it is in format, which use HAL.
     """
-    _initialize_dmi_data()
-    if not _dmi_available:
-        return {}
-    else:
-        return {
-            'smbios.system.uuid': dmi_system_uuid(),
-            'smbios.bios.vendor': dmi_vendor(),
-            'smbios.system.serial': get_dmi_data('/dmidecode/SystemInfo/SerialNumber'),
-            'smbios.system.manufacturer': get_dmi_data('/dmidecode/SystemInfo/Manufacturer'),
-            'smbios.system.product': get_dmi_data('/dmidecode/SystemInfo/ProductName'),
-            'smbios.system.skunumber': get_dmi_data('/dmidecode/SystemInfo/SKUnumber'),
-            'smbios.system.family': get_dmi_data('/dmidecode/SystemInfo/Family'),
-            'smbios.system.version': get_dmi_data('/dmidecode/SystemInfo/Version'),
-        }
+    return {
+        'smbios.system.uuid': dmi_system_uuid(),
+        'smbios.bios.vendor': dmi_vendor(),
+        'smbios.system.serial': get_dmi_data('/dmidecode/SystemInfo/SerialNumber'),
+        'smbios.system.manufacturer': get_dmi_data('/dmidecode/SystemInfo/Manufacturer'),
+        'smbios.system.product': get_dmi_data('/dmidecode/SystemInfo/ProductName'),
+        'smbios.system.skunumber': get_dmi_data('/dmidecode/SystemInfo/SKUnumber'),
+        'smbios.system.family': get_dmi_data('/dmidecode/SystemInfo/Family'),
+        'smbios.system.version': get_dmi_data('/dmidecode/SystemInfo/Version'),
+    }
 
 def get_sysinfo():
     s = rhnserver.RhnServer()
