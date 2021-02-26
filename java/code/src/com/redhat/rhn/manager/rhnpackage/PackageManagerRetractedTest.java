@@ -37,6 +37,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -102,8 +103,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // verify the package is retracted
         DataResult<PackageListItem> pkgs = PackageManager.systemPackageList(server.getId(), null);
         pkgs.elaborate();
-        assertEquals(1, pkgs.size());
-        PackageListItem pkg = pkgs.stream().findFirst().get();
+        PackageListItem pkg = assertSingleAndGet(pkgs);
         assertTrue(pkg.isRetracted());
 
         // now let's subscribe the system to the cloned channel, where the erratum is not retracted
@@ -111,9 +111,46 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, server, clonedChannel);
         pkgs = PackageManager.systemPackageList(server.getId(), null);
         pkgs.elaborate();
-        assertEquals(1, pkgs.size());
-        pkg = pkgs.stream().findFirst().get();
+        pkg = assertSingleAndGet(pkgs);
         assertFalse(pkg.isRetracted()); // the package is now NOT retracted for this server!
+    }
+
+    public void testSystemAvailablePackages() throws Exception {
+        // create a null-org erratum with a newest package and add it to the channel
+        Errata vendorErratum = ErrataFactoryTest.createTestErrata(null);
+        vendorErratum.addPackage(newestPkg);
+        vendorErratum.addChannel(channel);
+        ErrataFactory.save(vendorErratum);
+
+        // channel has all 3 packages
+        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+
+        // clone the channel
+        CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
+        ccc.setUser(user);
+        Channel clonedChannel = ccc.create();
+
+        // set the erratum in original to retracted
+        vendorErratum.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        ErrataFactory.save(vendorErratum);
+
+        // subscribe the system to the channel with the retracted patch
+        // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
+        SystemManager.subscribeServerToChannel(user, server, channel);
+        PackageListItem pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
+        assertEquals(newerPkg.getId(),pkg.getPackageId());
+
+        // now subscribe to the clone, where the patch is not retracted
+        // the newest package should be "newestPkg" now
+        SystemManager.unsubscribeServerFromChannel(server, channel);
+        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
+        pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
+        assertEquals(newestPkg.getId(),pkg.getPackageId());
+    }
+
+    private <T> T assertSingleAndGet(Collection<T> items) {
+        assertEquals(1, items.size());
+        return items.iterator().next();
     }
 
     // todo move to utils
