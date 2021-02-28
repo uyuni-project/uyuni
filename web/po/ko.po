@@ -13,27 +13,29 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-03-07 02:35+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
-msgstr ""
+msgstr "남음"
 
 #: ../html/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
-msgstr ""
+msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 사용하십시오."
 
 #: ../html/src/components/action-schedule.js:53
 msgid "new action chain"
-msgstr ""
+msgstr "새 작업 체인"
 
 #: ../html/src/components/action-schedule.js:196
 msgid ""
@@ -41,38 +43,40 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
+"선택한 시스템에 여러 유지보수 일정이 있습니다. 날짜 또는 유지보수 기간을 기준으로 예약하려면 세트 단위의 시스템이 최대 1개의 유지보수 "
+"일정을 사용하는지 확인하십시오."
 
 #: ../html/src/components/action-schedule.js:203
 msgid "No upcoming maintenance windows"
-msgstr ""
+msgstr "향후 유지보수 기간 없음"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Earliest:"
-msgstr ""
+msgstr "가장 빠른 날짜:"
 
 #: ../html/src/components/action-schedule.js:248
 msgid "Maintenance Window:"
-msgstr ""
+msgstr "유지보수 기간:"
 
 #: ../html/src/components/action-schedule.js:273
 msgid "Add to:"
-msgstr ""
+msgstr "추가 위치:"
 
 #: ../html/src/components/action-schedule.js:289
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "스케줄러를 로드하는 중..."
 
 #: ../html/src/components/config-channels.js:22
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "상태 구성 채널"
 
 #: ../html/src/components/config-channels.js:25
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "일반 구성 채널"
 
 #: ../html/src/components/config-channels.js:50
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "구성 채널: {0}"
 
 #: ../html/src/components/config-channels.js:54
 #: ../html/src/manager/images/image-profiles.js:160
@@ -87,32 +91,32 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 msgid "Edit"
-msgstr ""
+msgstr "편집"
 
 #: ../html/src/components/config-channels.js:55
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "구성 채널 편집"
 
 #: ../html/src/components/config-channels.js:107
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "저장되지 않은 변경 사항이 있습니다. 계속하시겠습니까?"
 
 #: ../html/src/components/config-channels.js:145
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "상태 할당이 저장되었습니다."
 
 #: ../html/src/components/config-channels.js:154
 msgid "An error occurred on save."
-msgstr ""
+msgstr "저장하는 동안 오류가 발생했습니다."
 
 #: ../html/src/components/config-channels.js:277
 #: ../html/src/manager/minion/packages/package-states.js:271
 msgid "No current changes."
-msgstr ""
+msgstr "현재 변경 사항이 없습니다."
 
 #: ../html/src/components/config-channels.js:278
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
+msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
 #: ../html/src/components/config-channels.js:337
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:51
@@ -129,7 +133,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "뒤로"
 
 #: ../html/src/components/config-channels.js:338
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
@@ -137,36 +141,36 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
-msgstr ""
+msgstr "확인"
 
 #: ../html/src/components/config-channels.js:345
 #: ../html/src/manager/maintenance/details/schedule-details.js:181
 #: ../html/src/manager/maintenance/details/schedule-details.js:188
 msgid "Save Changes"
-msgstr ""
+msgstr "변경사항 저장"
 
 #: ../html/src/components/config-channels.js:351
 msgid "Apply"
-msgstr ""
+msgstr "적용"
 
 #: ../html/src/components/config-channels.js:356
 msgid "Reorder"
-msgstr ""
+msgstr "다시 정렬"
 
 #: ../html/src/components/config-channels.js:368
 #: ../html/src/components/config-channels.js:372
 msgid "Changes"
-msgstr ""
+msgstr "변경 사항"
 
 #: ../html/src/components/config-channels.js:370
 msgid "1 Change"
-msgstr ""
+msgstr "1개 변경"
 
 #: ../html/src/components/config-channels.js:379
 #: ../html/src/components/config-channels.js:408
 #: ../html/src/manager/minion/packages/package-states.js:240
 msgid "Search"
-msgstr ""
+msgstr "검색"
 
 #: ../html/src/components/config-channels.js:385
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
@@ -178,48 +182,48 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr ""
+msgstr "시스템"
 
 #: ../html/src/components/config-channels.js:395
 msgid "Configuration Channels"
-msgstr ""
+msgstr "구성 채널"
 
 #: ../html/src/components/config-channels.js:405
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "구성 채널에서 검색"
 
 #: ../html/src/components/config-channels.js:419
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr ""
+msgstr "끌어서 구성 채널의 순위를 수정하십시오."
 
 #: ../html/src/components/config-channels.js:420
 msgid "There are no states assigned."
-msgstr ""
+msgstr "상태가 지정되지 않았습니다."
 
 #: ../html/src/components/config-channels.js:427
 msgid "Channel Name"
-msgstr ""
+msgstr "채널 이름"
 
 #: ../html/src/components/config-channels.js:428
 msgid "Channel Label"
-msgstr ""
+msgstr "채널 레이블"
 
 #: ../html/src/components/config-channels.js:429
 msgid "Assign"
-msgstr ""
+msgstr "할당"
 
 #: ../html/src/components/config-channels.js:451
 #: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
-msgstr ""
+msgstr "표시할 항목이 없습니다."
 
 #: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
-msgstr ""
+msgstr "{0} {1}을(를) 수행하시겠습니까 "
 
 #: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
+msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 
 #: ../html/src/components/dialog/DangerDialog.js:44
 #: ../html/src/components/dialog/DangerDialog.js:45
@@ -238,7 +242,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: ../html/src/components/dialog/DeleteDialog.js:23
 #: ../html/src/components/panels/CreatorPanel.js:99
@@ -268,51 +272,51 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #: ../html/src/components/dialog/dialog.stories.js:19
 msgid "Delete project"
-msgstr ""
+msgstr "프로젝트 삭제"
 
 #: ../html/src/components/dialog/dialog.stories.js:22
 msgid "Are you sure you want to delete project "
-msgstr ""
+msgstr "프로젝트를 삭제하시겠습니까 "
 
 #: ../html/src/components/FormulaForm.js:17
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
 
 #: ../html/src/components/FormulaForm.js:79
 msgid ""
 "Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
 "on each system!"
-msgstr ""
+msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{0}\"에 대한 1개의 수식만 사용할 수 있습니다!"
 
 #: ../html/src/components/FormulaForm.js:107
 #: ../html/src/manager/clusters/cluster/cluster-config.js:50
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:61
 msgid "Please input required fields: {0}"
-msgstr ""
+msgstr "필수 필드 입력: {0}"
 
 #: ../html/src/components/FormulaForm.js:110
 #: ../html/src/manager/clusters/cluster/cluster-config.js:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.js:64
 msgid "Invalid format of fields: {0}"
-msgstr ""
+msgstr "잘못된 필드 유형: {0}"
 
 #: ../html/src/components/FormulaForm.js:157
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
-msgstr ""
+msgstr "이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습니다."
 
 #: ../html/src/components/formulas/EditGroup.js:266
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
+msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formula-selection.js:128
 msgid " No group"
-msgstr ""
+msgstr " 그룹 없음"
 
 #: ../html/src/components/formula-selection.js:228
 msgid ""
@@ -320,6 +324,8 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
+"이 페이지에서 이 그룹/시스템에 대한 Salt 수식을 선택한 후 그룹 및 시스템 수준에서 구성할 수 있습니다. 이를 통해 소프트웨어를 "
+"자동으로 설치 및 구성할 수 있습니다."
 
 #: ../html/src/components/formula-selection.js:234
 #: ../html/src/components/panels/CreatorPanel.js:124
@@ -328,25 +334,25 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:147
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #: ../html/src/components/formula-selection.js:242
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 msgid "Formulas"
-msgstr ""
+msgstr "수식"
 
 #: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
-msgstr ""
+msgstr "새 비밀번호 생성"
 
 #: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
-msgstr ""
+msgstr "비밀번호 표시/숨기기"
 
 #: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "섹션 표시 여부 전환"
 
 #: ../html/src/components/input/Check.stories.js:31
 #: ../html/src/components/input/DateTime.stories.js:35
@@ -363,33 +369,33 @@ msgstr ""
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 msgid "Submit"
-msgstr ""
+msgstr "제출"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
-msgstr ""
+msgstr "시간"
 
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "추가"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:82
 msgid "Remove"
-msgstr ""
+msgstr "제거"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 #: ../html/src/components/input/FormMultiInput.stories.js:94
 #: ../html/src/components/input/FormMultiInput.stories.js:151
 msgid "Users"
-msgstr ""
+msgstr "사용자"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "이름"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
@@ -401,27 +407,27 @@ msgstr ""
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "2자 이상"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "성"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:118
 #: ../html/src/manager/login/login.js:125
 msgid "Login"
-msgstr ""
+msgstr "로그인"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "비밀번호"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
-msgstr ""
+msgstr "4자 이상"
 
 #: ../html/src/components/input/Radio.stories.js:26
 #: ../html/src/components/input/Radio.stories.js:55
@@ -429,53 +435,53 @@ msgstr ""
 #: ../html/src/components/input/Radio.stories.js:116
 #: ../html/src/components/input/Select.stories.js:27
 msgid "Level"
-msgstr ""
+msgstr "레벨"
 
 #: ../html/src/components/input/Radio.stories.js:31
 #: ../html/src/components/input/Radio.stories.js:61
 #: ../html/src/components/input/Radio.stories.js:91
 #: ../html/src/components/input/Radio.stories.js:122
 msgid "Beginner"
-msgstr ""
+msgstr "초급자"
 
 #: ../html/src/components/input/Radio.stories.js:32
 #: ../html/src/components/input/Radio.stories.js:62
 #: ../html/src/components/input/Radio.stories.js:92
 #: ../html/src/components/input/Radio.stories.js:123
 msgid "Normal"
-msgstr ""
+msgstr "일반"
 
 #: ../html/src/components/input/Radio.stories.js:33
 #: ../html/src/components/input/Radio.stories.js:63
 #: ../html/src/components/input/Radio.stories.js:93
 #: ../html/src/components/input/Radio.stories.js:124
 msgid "Expert"
-msgstr ""
+msgstr "전문가"
 
 #: ../html/src/components/input/Range.stories.js:34
 msgid "Port range"
-msgstr ""
+msgstr "포트 범위"
 
 #: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "두 값 모두 양의 정수여야 합니다."
 
 #: ../html/src/components/input/Select.stories.js:62
 msgid "Flavor"
-msgstr ""
+msgstr "특징"
 
 #: ../html/src/components/input/Select.stories.js:64
 msgid "Start typing..."
-msgstr ""
+msgstr "입력 시작..."
 
 #: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
-msgstr ""
+msgstr "특징 없음"
 
 #: ../html/src/components/pagination.js:14
 msgid "First"
-msgstr ""
+msgstr "첫 번째"
 
 #: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:357
@@ -487,92 +493,92 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
-msgstr ""
+msgstr "다음"
 
 #: ../html/src/components/pagination.js:54
 msgid "Page"
-msgstr ""
+msgstr "페이지"
 
 #: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:362
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
-msgstr ""
+msgstr "/"
 
 #: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
-msgstr ""
+msgstr "{0} / {1}페이지"
 
 #: ../html/src/components/picker/recurring-event-picker.js:303
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:85
 #: ../html/src/manager/maintenance/list/schedule-list.js:37
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
-msgstr ""
+msgstr "일정 이름"
 
 #: ../html/src/components/picker/recurring-event-picker.js:307
 msgid "Select a Schedule"
-msgstr ""
+msgstr "일정 선택"
 
 #: ../html/src/components/picker/recurring-event-picker.js:314
 msgid "Hourly:"
-msgstr ""
+msgstr "매시간:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:320
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "이 작업은 매시간 지정된 분에 실행됩니다."
 
 #: ../html/src/components/picker/recurring-event-picker.js:326
 msgid "Daily:"
-msgstr ""
+msgstr "매일:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:335
 msgid "Weekly:"
-msgstr ""
+msgstr "매주:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:351
 msgid "Monthly:"
-msgstr ""
+msgstr "매월:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:364
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
-msgstr ""
+msgstr "모든 달에 반복 일정을 사용할 수 있도록 일수는 28일로 제한됩니다."
 
 #: ../html/src/components/picker/recurring-event-picker.js:370
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/picker/recurring-event-picker.js:373
 msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
+msgstr "예: \"0 15 2 ? * 7\""
 
 #: ../html/src/components/systems.js:45
 #: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Security Advisory"
-msgstr ""
+msgstr "보안 자문"
 
 #: ../html/src/components/systems.js:58
 msgid "System Locked"
-msgstr ""
+msgstr "시스템 잠김"
 
 #: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
-msgstr ""
+msgstr "항목 {0} - {1} / {2}"
 
 #: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
-msgstr ""
+msgstr "({0}개 선택됨)"
 
 #: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
-msgstr ""
+msgstr "모두 선택"
 
 #: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
@@ -581,59 +587,59 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
-msgstr ""
+msgstr "로드하는 중..."
 
 #: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
-msgstr ""
+msgstr "페이지당 항목 수"
 
 #: ../html/src/components/tree/tree.js:117
 msgid "Invalid data"
-msgstr ""
+msgstr "유효하지 않은 데이터"
 
 #: ../html/src/components/tree/tree.js:125
 msgid "No data"
-msgstr ""
+msgstr "데이터 없음"
 
 #: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
-msgstr ""
+msgstr "도움말"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:18
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "구성 변경 사항을 적용하려면 다시 시작해야 합니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "An internal error has occured. See the server logs for details."
-msgstr ""
+msgstr "내부 오류가 발생했습니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "모니터링을 활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "일부 모니터링 서비스를 활성화하지 못했습니다. 일부 서비스가 아직 비활성화 상태입니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "모니터링을 비활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
-msgstr ""
+msgstr "일부 모니터링 서비스를 비활성화하지 못했습니다. 일부 서비스가 아직 활성화 상태입니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "모니터링이 활성화되었습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "모니터링이 비활성화되었습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:28
 msgid ""
@@ -641,6 +647,8 @@ msgid ""
 "Click the Enable button to enable the JMX configuration or click Disable to "
 "stop the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 "
+"활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:30
 msgid ""
@@ -648,6 +656,8 @@ msgid ""
 "Click the Disable button to disable the JMX configuration or click Enable to "
 "start the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 "
+"비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:32
 msgid ""
@@ -655,6 +665,8 @@ msgid ""
 "disabled. Click the Enable button to enable the JMX configuration of click "
 "Disable to stop the Prometheus exporter."
 msgstr ""
+"Taskomatic Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 "
+"활성화하거나 비활성화를 클릭하여 Prometheus 내보내기를 중지하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:34
 msgid ""
@@ -662,198 +674,202 @@ msgid ""
 "enabled. Click the Disable button to disable the JMX configuration of click "
 "Enable to start the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 "
+"비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "모니터링 상태가 변경되지 않았습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:40
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat(Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic(Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "PostgreSQL 데이터베이스"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:48
 msgid "Server self monitoring"
-msgstr ""
+msgstr "서버 자체 모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:57
 #: ../html/src/manager/admin/config/monitoring-admin.js:59
 msgid "Enabled"
-msgstr ""
+msgstr "활성화됨"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:65
 #: ../html/src/manager/admin/config/monitoring-admin.js:67
 msgid "Disabled"
-msgstr ""
+msgstr "비활성화됨"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "The server uses "
-msgstr ""
+msgstr "서버에서 사용되는 항목: "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "Prometheus"
-msgstr ""
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "Refer to the "
-msgstr ""
+msgstr "참조 항목: "
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "documentation"
-msgstr ""
+msgstr "문서"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:171
 #: ../html/src/manager/admin/config/monitoring-admin.js:180
 #: ../html/src/manager/admin/config/monitoring-admin.js:189
 #: ../html/src/manager/admin/config/monitoring-admin.js:202
 msgid "Enable"
-msgstr ""
+msgstr "활성화"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:173
 #: ../html/src/manager/admin/config/monitoring-admin.js:182
 #: ../html/src/manager/admin/config/monitoring-admin.js:191
 #: ../html/src/manager/admin/config/monitoring-admin.js:207
 msgid "Disable"
-msgstr ""
+msgstr "비활성화"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:219
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr ""
+msgstr "SUSE Manager 구성 - 모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:225
 msgid "Setup your SUSE Manager server monitoring."
-msgstr ""
+msgstr "SUSE Manager 서버 모니터링을 설정하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
-msgstr ""
+msgstr "일반"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "부트스트랩 스크립트"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
-msgstr ""
+msgstr "조직"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:233
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
-msgstr ""
+msgstr "다시 시작"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "베어 메탈 시스템"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:236
 #: ../html/src/manager/admin/config/monitoring-admin.js:241
 #: ../html/src/manager/admin/config/monitoring-admin.js:253
 msgid "Monitoring"
-msgstr ""
+msgstr "모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:264
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
-msgstr ""
+msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요합니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:114
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
-msgstr ""
+msgstr "사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요한 제품이 표시되지 않습니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:156
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "제품 카탈로그 새로 고침이 실행 중입니다..."
 
 #: ../html/src/manager/admin/setup/products/products.js:226
 msgid "Setup Wizard"
-msgstr ""
+msgstr "설치 마법사"
 
 #: ../html/src/manager/admin/setup/products/products.js:244
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
-msgstr ""
+msgstr "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.js:251
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "제품 카탈로그를 아직 새로 고치는 중입니다. 기다려 주십시오."
 
 #: ../html/src/manager/admin/setup/products/products.js:253
 msgid "Select some product first."
-msgstr ""
+msgstr "우선 일부 제품을 선택하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.js:262
 #: ../html/src/manager/admin/setup/products/products.js:269
 msgid "Add products"
-msgstr ""
+msgstr "제품 추가"
 
 #: ../html/src/manager/admin/setup/products/products.js:286
 msgid "Clear products selection"
-msgstr ""
+msgstr "제품 선택 지우기"
 
 #: ../html/src/manager/admin/setup/products/products.js:326
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까?"
 
 #: ../html/src/manager/admin/setup/products/products.js:327
 msgid ""
 "The products displayed on this list are directly linked to "
 "your                   Organization credentials (Mirror credentials) as well "
 "as your SUSE subscriptions."
-msgstr ""
+msgstr "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:329
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct                   Organization credentials in the previous wizard "
 "step."
-msgstr ""
+msgstr "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.js:338
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
+"이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마스터에서만 제품을 관리할 수 "
+"있습니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:351
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
-msgstr ""
+msgstr "이전"
 
 #: ../html/src/manager/admin/setup/products/products.js:401
 msgid "Filter by architecture"
-msgstr ""
+msgstr "아키텍처를 기준으로 필터링"
 
 #: ../html/src/manager/admin/setup/products/products.js:488
 msgid "Filter by product Description"
-msgstr ""
+msgstr "제품 설명을 기준으로 필터링"
 
 #: ../html/src/manager/admin/setup/products/products.js:538
 msgid "Product Description"
-msgstr ""
+msgstr "제품 설명"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
@@ -861,39 +877,39 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
-msgstr ""
+msgstr "아키텍처"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 msgid "Arch"
-msgstr ""
+msgstr "아키텍처"
 
 #: ../html/src/manager/admin/setup/products/products.js:540
 msgid "Channels"
-msgstr ""
+msgstr "채널"
 
 #: ../html/src/manager/admin/setup/products/products.js:704
 msgid " channels sync failed"
-msgstr ""
+msgstr " 채널을 동기화하지 못함"
 
 #: ../html/src/manager/admin/setup/products/products.js:710
 msgid " channels sync in progress"
-msgstr ""
+msgstr " 채널 동기화 진행 중"
 
 #: ../html/src/manager/admin/setup/products/products.js:716
 msgid " channels synced"
-msgstr ""
+msgstr " 채널 동기화됨"
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
+msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:734
 msgid "Select this product"
-msgstr ""
+msgstr "이 제품 선택"
 
 #: ../html/src/manager/admin/setup/products/products.js:744
 msgid "This product is mirrored."
-msgstr ""
+msgstr "이 제품은 미러링되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.js:770
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
@@ -901,7 +917,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
-msgstr ""
+msgstr "권장"
 
 #: ../html/src/manager/admin/setup/products/products.js:784
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
@@ -909,59 +925,59 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
-msgstr ""
+msgstr "권장에 포함"
 
 #: ../html/src/manager/admin/setup/products/products.js:824
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "SCC 제품 카탈로그 새로 고침 진행 중"
 
 #: ../html/src/manager/admin/setup/products/products.js:828
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "채널 제품 재동기화 예약"
 
 #: ../html/src/manager/admin/setup/products/products.js:832
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "채널 제품 재동기화 예약됨"
 
 #: ../html/src/manager/admin/setup/products/products.js:836
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "채널 제품 재동기화 예약"
 
 #: ../html/src/manager/admin/setup/products/products.js:875
 msgid "Show product's channels"
-msgstr ""
+msgstr "제품 채널 표시"
 
 #: ../html/src/manager/admin/setup/products/products.js:899
 msgid "Product Channels - "
-msgstr ""
+msgstr "제품 채널 - "
 
 #: ../html/src/manager/admin/setup/products/products.js:904
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "필수 채널"
 
 #: ../html/src/manager/admin/setup/products/products.js:909
 msgid "Optional Channels"
-msgstr ""
+msgstr "선택 사항 채널"
 
 #: ../html/src/manager/admin/setup/products/products.js:931
 msgid "not synced"
-msgstr ""
+msgstr "동기화되지 않음"
 
 #: ../html/src/manager/admin/setup/products/products.js:933
 msgid "sync in progress"
-msgstr ""
+msgstr "동기화 진행 중"
 
 #: ../html/src/manager/admin/setup/products/products.js:935
 msgid "synced"
-msgstr ""
+msgstr "동기화됨"
 
 #: ../html/src/manager/admin/setup/products/products.js:937
 msgid "sync failed"
-msgstr ""
+msgstr "동기화 실패"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:213
@@ -971,20 +987,20 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
-msgstr ""
+msgstr "새로 고침"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "잠시만 기다려 주십시오. 이 작업에는 몇 분이 걸릴 수 있습니다."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
-msgstr ""
+msgstr "완료됨"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "작업 실패: 서버에서 빈 회신"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view.js:600
@@ -994,57 +1010,57 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
-msgstr ""
+msgstr "세부 사항"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:86
 msgid " running"
-msgstr ""
+msgstr " 실행 중"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:87
 msgid " finished"
-msgstr ""
+msgstr " 완료됨"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:88
 msgid " failed"
-msgstr ""
+msgstr " 실패"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:89
 msgid " interrupted"
-msgstr ""
+msgstr " 중단됨"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:90
 msgid " ready to run"
-msgstr ""
+msgstr " 실행 준비 됨"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:91
 msgid " skipped"
-msgstr ""
+msgstr " 건너뜀"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:107
 msgid "Task Engine Status"
-msgstr ""
+msgstr "작업 엔진 상태"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:115
 msgid "Last Execution Times"
-msgstr ""
+msgstr "마지막 실행 시간"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:116
 msgid "Runtime Status"
-msgstr ""
+msgstr "런타임 상태"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:128
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
-msgstr ""
+msgstr "서버가 실행 중이거나 최근 5분 동안 다음 작업의 실행을 완료했습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "데이터 새로 고침: 매 "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:129
 msgid " seconds"
-msgstr ""
+msgstr " 초"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:139
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:228
@@ -1053,27 +1069,27 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.js:72
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
-msgstr ""
+msgstr "이름을 기준으로 필터링"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:144
 msgid "Task Id"
-msgstr ""
+msgstr "작업 ID"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:150
 msgid "Task Name"
-msgstr ""
+msgstr "작업 이름"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:156
 msgid "Start Time"
-msgstr ""
+msgstr "시작 시간"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:162
 msgid "End Time"
-msgstr ""
+msgstr "종료 시간"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:168
 msgid "Elapsed Time"
-msgstr ""
+msgstr "경과 시간"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:174
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:234
@@ -1082,22 +1098,22 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
 msgid "Status"
-msgstr ""
+msgstr "상태"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:180
 msgid "Data"
-msgstr ""
+msgstr "데이터"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:192
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
+msgstr "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1105,23 +1121,23 @@ msgstr ""
 #: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:164
 msgid "CVE Audit"
-msgstr ""
+msgstr "CVE 감사"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:170
 msgid "CVE"
-msgstr ""
+msgstr "CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:213
 msgid "Audit Servers"
-msgstr ""
+msgstr "감사 서버"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:214
 msgid "Audit Images"
-msgstr ""
+msgstr "감사 이미지"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:245
@@ -1142,7 +1158,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:262
 #: ../html/src/manager/images/image-profiles.js:147
@@ -1156,214 +1172,214 @@ msgstr ""
 #: ../html/src/manager/virtualization/ListTab.js:263
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
-msgstr ""
+msgstr "동작"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
 msgid "Edit Virtual Host Managers"
-msgstr ""
+msgstr "가상 호스트 관리자 편집"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
 msgid "Subscription Matching"
-msgstr ""
+msgstr "구독 일치"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Subscriptions"
-msgstr ""
+msgstr "구독"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
 msgid "Unmatched Products"
-msgstr ""
+msgstr "일치하지 않는 제품"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Pins "
-msgstr ""
+msgstr "핀 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Messages "
-msgstr ""
+msgstr "메시지 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
-msgstr ""
+msgstr "데이터 상태 일치"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
-msgstr ""
+msgstr "일치하는 실행을 시작할 수 없습니다. SUSE Manager 관리자에게 문의하여 작업 스케줄러가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
 msgid "No match data is currently available."
-msgstr ""
+msgstr "현재 일치 데이터를 사용할 수 없습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "아래 버튼을 클릭하여 첫 번째 실행을 트리거할 수도 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
 msgid "Matching data is currently being recomputed, it was started {0}."
-msgstr ""
+msgstr "현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {0}에 시작되었습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
-msgstr ""
+msgstr "마지막 일치 데이터는 {0}에 계산되었으며, 이제 아래 버튼을 클릭하여 새 실행을 트리거할 수 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
+msgstr "일치 데이터는 작업 일정을 통해 계산되며, 기본값은 야간(사용자는 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "관리 페이지에서 작업 일정을 변경할 수 있음"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
 msgid "). "
-msgstr ""
+msgstr "입니다). "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
 msgid "Refresh matching data"
-msgstr ""
+msgstr "일치 데이터 새로 고침"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:20
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "지원되지 않는 파트 번호 감지됨"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
+msgstr "물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
+msgstr "가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "시스템에 알 수 없는 소켓이 있으며, 16으로 간주됩니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
-msgstr ""
+msgstr "번들에 파트 번호가 동일한 구독이 2개 있음 - 하나로 병합"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
-msgstr ""
+msgstr "파트 번호(및 기타 속성)가 동일한 구독 2개가 병합됨 - 시작/종료 날짜를 나타낼 수 있음"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
+msgstr "구독이 병합되어 고정 일치가 조정됨"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
 msgid "Subscription IDs"
-msgstr ""
+msgstr "구독 ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:67
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "아래 경고 및 정보 메시지를 검토하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:77
 msgid "Message"
-msgstr ""
+msgstr "메시지"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:83
 msgid "Additional information"
-msgstr ""
+msgstr "추가 정보"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:93
 msgid "No messages from the last match run."
-msgstr ""
+msgstr "마지막 일치 실행에서 제공된 메시지가 없습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:98
 msgid "Messages"
-msgstr ""
+msgstr "메시지"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:74
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
-msgstr ""
+msgstr "시스템에 구독을 고정하여 일치 알고리즘에 특정 연결을 제안할 수 있습니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:76
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
-msgstr ""
+msgstr "다음 일치 시도 시, 알고리즘은 사용자가 지정한 시스템에 구독을 적용한 결과를 제공합니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:78
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
-msgstr ""
+msgstr "알고리즘이 특정 고정을 유지할 수 없다고 판단할 수 있으며, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
-msgstr ""
+msgstr "이는 구독 가용성 및 적용 가능성 규칙에 따라 다르고, 해당 경우에는 충족되지 않음으로 표시됩니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:104
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:76
 msgid "Policy"
-msgstr ""
+msgstr "정책"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:139
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:140
 msgid "Add a Pin"
-msgstr ""
+msgstr "핀 추가"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:159
 msgid "pending next run"
-msgstr ""
+msgstr "다음 실행 대기 중"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
 msgid "not satisfied"
-msgstr ""
+msgstr "충족되지 않음"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:213
 msgid "Available Systems"
-msgstr ""
+msgstr "사용할 수 있는 시스템"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:214
 msgid "Step 1/2: select the system to pin from the table below."
-msgstr ""
+msgstr "단계 1/2: 테이블에서 고정할 시스템을 아래에서 선택하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:234
 msgid "Socket/IFL count"
-msgstr ""
+msgstr "소켓/IFL 개수"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
 msgid "Products"
-msgstr ""
+msgstr "제품"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
 msgid "Select"
-msgstr ""
+msgstr "선택"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:261
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "선택한 시스템에서 사용할 수 있는 구독"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:262
 msgid "Step 2/2: pick a subscription for system "
-msgstr ""
+msgstr "단계 2/2: 시스템의 구독 선택 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:270
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "시스템 선택으로 돌아가기"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:314
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:64
 msgid "Part number"
-msgstr ""
+msgstr "파트 번호"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
@@ -1375,118 +1391,118 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
 msgid "Description"
-msgstr ""
+msgstr "설명"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:97
 msgid "End date"
-msgstr ""
+msgstr "종료 날짜"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:337
 msgid "Save Pin"
-msgstr ""
+msgstr "핀 저장"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:343
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
-msgstr ""
+msgstr "직접 또는 가상 게스트에 설치된 모든 제품을 고려할 때 이 시스템과 일치하는 구독을 찾지 못했습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:59
 msgid "Filter by description"
-msgstr ""
+msgstr "설명을 기준으로 필터링"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:82
 msgid "Matched/Total"
-msgstr ""
+msgstr "일치함/총"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:88
 msgid "Start date"
-msgstr ""
+msgstr "시작 날짜"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:116
 msgid "No subscriptions found."
-msgstr ""
+msgstr "구독을 찾을 수 없습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:121
 msgid "Your subscriptions"
-msgstr ""
+msgstr "구독"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:58
 msgid "Product name"
-msgstr ""
+msgstr "제품 이름"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:64
 msgid "Unmatched system count"
-msgstr ""
+msgstr "일치하지 않는 시스템 개수"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:70
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:71
 msgid "Show system list"
-msgstr ""
+msgstr "시스템 목록 표시"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:90
 msgid "No unmatching products are found."
-msgstr ""
+msgstr "일치하는 제품을 찾지 못했습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:140
 msgid "System name"
-msgstr ""
+msgstr "시스템 이름"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:145
 msgid "Unmatched systems"
-msgstr ""
+msgstr "일치하지 않는 시스템"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:39
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:44
 msgid "Add Cluster"
-msgstr ""
+msgstr "클러스터 추가"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:53
 msgid "Select management node"
-msgstr ""
+msgstr "관리 노드 선택"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:62
 #: ../html/src/manager/clusters/cluster/cluster.js:103
 msgid "Provider Settings"
-msgstr ""
+msgstr "공급자 설정"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:77
 msgid "Provider:"
-msgstr ""
+msgstr "공급자:"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:81
 msgid "Management Node:"
-msgstr ""
+msgstr "관리 노드:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:45
 msgid "Add cluster"
-msgstr ""
+msgstr "클러스터 추가"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:69
 msgid "Name:"
-msgstr ""
+msgstr "이름:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
-msgstr ""
+msgstr "레이블:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
-msgstr ""
+msgstr "설명:"
 
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:21
 msgid "Available cluster providers"
-msgstr ""
+msgstr "사용할 수 있는 클러스터 공급자"
 
 #: ../html/src/manager/clusters/cluster/cluster-config.js:59
 msgid "Settings saved successfully"
-msgstr ""
+msgstr "설정 저장됨"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 msgid "Action has been "
-msgstr ""
+msgstr "작업이 "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 #: ../html/src/manager/images/image-build.js:178
@@ -1494,85 +1510,85 @@ msgstr ""
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
-msgstr ""
+msgstr "예약됨"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
-msgstr ""
+msgstr "작업이 작업 체인에 추가되었습니다. "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:22
 msgid "Cluster "
-msgstr ""
+msgstr "클러스터 "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:74
 #: ../html/src/manager/clusters/cluster/cluster.js:85
 msgid "Delete cluster"
-msgstr ""
+msgstr "클러스터 삭제"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:75
 msgid "Delete Cluster"
-msgstr ""
+msgstr "클러스터 삭제"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "Are you sure you want to delete cluster?"
-msgstr ""
+msgstr "클러스터를 삭제하시겠습니까?"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
+msgstr "이 작업을 수행해도 클러스터가 쳬기되지 않습니다. Uyuni에서만 제거됩니다."
 
 #: ../html/src/manager/clusters/cluster/cluster.js:98
 #: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.js:61
 msgid "Overview"
-msgstr ""
+msgstr "개요"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:32
 #: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:87
 msgid "System group refresh action scheduled successfully"
-msgstr ""
+msgstr "시스템 그룹 새로 고침 작업 예약됨"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:112
 msgid "Cluster properties updated successfully"
-msgstr ""
+msgstr "클러스터 속성 업데이트됨"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:185
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:241
 msgid "Edit cluster details"
-msgstr ""
+msgstr "클러스터 세부 사항 편집"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:198
 msgid "Join node"
-msgstr ""
+msgstr "노드 조인"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:207
 #: ../html/src/manager/clusters/remove-node/remove-node.js:47
 msgid "Remove node"
-msgstr ""
+msgstr "노드 제거"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:221
 msgid "Upgrade cluster"
-msgstr ""
+msgstr "클러스터 업그레이드"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:228
 msgid "Refresh system group"
-msgstr ""
+msgstr "시스템 그룹 새로 고침"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:235
 msgid "Cluster Properties"
-msgstr ""
+msgstr "클러스터 속성"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:240
 msgid "Edit properties"
-msgstr ""
+msgstr "속성 편집"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:248
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
@@ -1586,90 +1602,90 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
-msgstr ""
+msgstr "레이블"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:260
 msgid "Cluster provider"
-msgstr ""
+msgstr "클러스터 공급자"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:264
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:108
 msgid "Management node"
-msgstr ""
+msgstr "관리 노드"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:268
 msgid "System group"
-msgstr ""
+msgstr "시스템 그룹"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:285
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:80
 #: ../html/src/manager/clusters/shared/ui/select-server.js:114
 #: ../html/src/manager/content-management/list-projects/list-projects.js:83
 msgid "Filter by any value"
-msgstr ""
+msgstr "값을 기준으로 필터링"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:303
 msgid "Node Hostname"
-msgstr ""
+msgstr "노드 호스트 이름"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:310
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
-msgstr ""
+msgstr "(없음)"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:38
 msgid "Join "
-msgstr ""
+msgstr "조인 "
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:41
 msgid "NOTE: before joining a new node, make sure that the node has:"
-msgstr ""
+msgstr "참고: 새 노드를 조인하기 전 노드에 다음이 있는지 확인:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:43
 msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
-msgstr ""
+msgstr "CaaSP(Container as a Service Platform) 채널 할당됨 - 또는 CaaSP 채널의 모든 하위 채널"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:44
 msgid ""
 "The management node can access the node as root via ssh without password"
-msgstr ""
+msgstr "관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 있습니다."
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:51
 msgid "Select system to join"
-msgstr ""
+msgstr "조인할 시스템 선택"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:59
 msgid "New node configuration"
-msgstr ""
+msgstr "새 노드 구성"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:72
 msgid "Schedule join node"
-msgstr ""
+msgstr "노드 조인 예약"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:76
 #: ../html/src/manager/clusters/remove-node/remove-node.js:63
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
 msgid "Cluster:"
-msgstr ""
+msgstr "클러스터:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:80
 msgid "Node to join:"
-msgstr ""
+msgstr "조인할 노드:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:88
 msgid "Join"
-msgstr ""
+msgstr "조인"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
 msgid "Add an existing cluster"
-msgstr ""
+msgstr "기존 클러스터 추가"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:70
 msgid "Clusters"
-msgstr ""
+msgstr "클러스터"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:99
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
@@ -1680,51 +1696,51 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
-msgstr ""
+msgstr "유형"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:40
 msgid "Remove nodes"
-msgstr ""
+msgstr "노드 제거"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:59
 msgid "Schedule remove node"
-msgstr ""
+msgstr "노드 제거 예약"
 
 #: ../html/src/manager/clusters/remove-node/remove-node.js:67
 msgid "Nodes to remove:"
-msgstr ""
+msgstr "제거할 노드:"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
 msgid "Upgrade "
-msgstr ""
+msgstr "업그레이드 "
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:48
 msgid "Configuration override"
-msgstr ""
+msgstr "구성 재정의"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:60
 msgid "Schedule upgrade cluster"
-msgstr ""
+msgstr "클러스터 업그레이드 예약"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
 msgid "Upgrade"
-msgstr ""
+msgstr "업그레이드"
 
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
 msgid "Upgrade plan"
-msgstr ""
+msgstr "업그레이드 계획"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
-msgstr ""
+msgstr "이 작업을 수행할 권한이 없습니다."
 
 #: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
-msgstr ""
+msgstr "새 컨텐트 라이프싸이클 프로젝트 생성"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
-msgstr ""
+msgstr "프로젝트 만들기"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.js:367
@@ -1739,89 +1755,89 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
-msgstr ""
+msgstr "만들기"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:31
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:24
 msgid "Module"
-msgstr ""
+msgstr "모듈"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:36
 msgid "Select a module..."
-msgstr ""
+msgstr "모듈을 선택하십시오..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:37
 msgid "No modules available"
-msgstr ""
+msgstr "사용할 수 있는 모듈 없음"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:43
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:148
 msgid "Stream"
-msgstr ""
+msgstr "스트림"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:48
 msgid "Select a stream..."
-msgstr ""
+msgstr "스트림을 선택하십시오..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:49
 msgid "No streams available"
-msgstr ""
+msgstr "사용할 수 있는 스트림 없음"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:34
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
-msgstr ""
+msgstr "채널"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
 msgid "Module Name"
-msgstr ""
+msgstr "모듈 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:23
 msgid "Updating the filter..."
-msgstr ""
+msgstr "필터를 업데이트하는 중..."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:74
 msgid "Filter Details"
-msgstr ""
+msgstr "필터 세부사항"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:75
 msgid "Create a new filter"
-msgstr ""
+msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:119
 msgid "Filter deleted successfully"
-msgstr ""
+msgstr "필터 삭제됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:151
 msgid "Check the required fields below"
-msgstr ""
+msgstr "아래에서 필수 필드를 확인하십시오."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:160
 msgid "Filter updated successfully"
-msgstr ""
+msgstr "필터 업데이트됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.js:175
 msgid "Filter created successfully"
-msgstr ""
+msgstr "필터 생성됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:65
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
-msgstr ""
+msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:72
 msgid "Filter Name"
-msgstr ""
+msgstr "필터 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:82
 msgid "Filter Type"
-msgstr ""
+msgstr "필터 유형"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:96
 msgid "Matcher"
-msgstr ""
+msgstr "선택기"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:111
 #: ../html/src/manager/content-management/list-filters/filter-form.js:123
@@ -1830,12 +1846,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
-msgstr ""
+msgstr "패키지 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:130
 #: ../html/src/manager/content-management/list-filters/filter-form.js:168
 msgid "Epoch"
-msgstr ""
+msgstr "에포크"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:135
 #: ../html/src/manager/content-management/list-filters/filter-form.js:173
@@ -1845,106 +1861,106 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
 #: ../html/src/manager/images/image-view.js:549
 msgid "Version"
-msgstr ""
+msgstr "버전"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:142
 #: ../html/src/manager/content-management/list-filters/filter-form.js:180
 msgid "Release"
-msgstr ""
+msgstr "릴리스"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:192
 msgid "Advisory name"
-msgstr ""
+msgstr "자문 이름"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:206
 msgid "Bug Fix Advisory"
-msgstr ""
+msgstr "버그 수정 자문"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:207
 msgid "Product Enhancement Advisory"
-msgstr ""
+msgstr "제품 향상 자문"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:209
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
-msgstr ""
+msgstr "자문 유형"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:218
 msgid "Issued"
-msgstr ""
+msgstr "발급됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:230
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
-msgstr ""
+msgstr "개요"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:243
 msgid "Reboot Required"
-msgstr ""
+msgstr "재부팅 필요"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:244
 msgid "Package Manager Restart Required"
-msgstr ""
+msgstr "패키지 관리자를 다시 시작해야 함"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:247
 msgid "Advisory Keywords"
-msgstr ""
+msgstr "자문 키워드"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:277
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
-msgstr ""
+msgstr "거부"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:278
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
-msgstr ""
+msgstr "허용"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.js:280
 msgid "Rule"
-msgstr ""
+msgstr "규칙"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:63
 msgid "Content Lifecycle Filters"
-msgstr ""
+msgstr "컨텐트 라이프싸이클 필터"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.js:84
 msgid "Projects in use"
-msgstr ""
+msgstr "사용 중 프로젝트"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:65
 msgid "Create a new content lifecycle project"
-msgstr ""
+msgstr "새 컨텐트 라이프싸이클 프로젝트 만들기"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:66
 msgid "Create Project"
-msgstr ""
+msgstr "프로젝트 만들기"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:74
 msgid "Content Lifecycle Projects"
-msgstr ""
+msgstr "컨텐트 라이프싸이클 프로젝트"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.js:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
-msgstr ""
+msgstr "환경 라이프싸이클"
 
 #: ../html/src/manager/content-management/project/project.js:54
 msgid "The project you are looking for does not exist or has been deleted"
-msgstr ""
+msgstr "찾고 있는 프로젝트가 없거나 삭제되었습니다."
 
 #: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
-msgstr ""
+msgstr "컨텐트 라이프싸이클 프로젝트 - {0}"
 
 #: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
-msgstr ""
+msgstr "프로젝트 삭제"
 
 #: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
-msgstr ""
+msgstr "프로젝트를 삭제하시겠습니까"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:70
 #: ../html/src/manager/login/use-login-api.js:54
@@ -1955,125 +1971,125 @@ msgstr ""
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
-msgstr ""
+msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다. 다시 시도하십시오."
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:16
 msgid "Package"
-msgstr ""
+msgstr "패키지"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:20
 msgid "Patch"
-msgstr ""
+msgstr "패치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:31
 msgid "contains"
-msgstr ""
+msgstr "포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:32
 msgid "containing"
-msgstr ""
+msgstr "포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:36
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:81
 msgid "matches"
-msgstr ""
+msgstr "일치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:37
 msgid "regular expression matches package name"
-msgstr ""
+msgstr "정규식이 패키지 이름과 일치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:41
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:71
 msgid "equals"
-msgstr ""
+msgstr "같은"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:42
 msgid "contains package name equals"
-msgstr ""
+msgstr "이름이 다음과 같은 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:46
 msgid "version lower than"
-msgstr ""
+msgstr "다음 미만 버전"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:47
 msgid "contains package with epoch/version/release lower than"
-msgstr ""
+msgstr "다음 미만의 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:51
 msgid "version lower or equal than"
-msgstr ""
+msgstr "다음 이하 버전"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:52
 msgid "contains package with epoch/version/release lower or equal than"
-msgstr ""
+msgstr "다음 이하의 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:56
 msgid "version equal"
-msgstr ""
+msgstr "다음과 같은 버전"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:57
 msgid "contains package with epoch/version/release equal than"
-msgstr ""
+msgstr "다음과 같은 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:61
 msgid "version greater or equal than"
-msgstr ""
+msgstr "다음 이상 버전"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:62
 msgid "contains package with epoch/version/release greater or equal than"
-msgstr ""
+msgstr "다음 이상의 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:67
 msgid "contains package with epoch/version/release greater than"
-msgstr ""
+msgstr "다음을 초과하는 에포크/버전/릴리스의 패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:72
 msgid "equal"
-msgstr ""
+msgstr "같음"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:76
 msgid "later or equal"
-msgstr ""
+msgstr "이상"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:77
 msgid "later or equal than"
-msgstr ""
+msgstr "다음 이상"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:82
 msgid "matches regular expression"
-msgstr ""
+msgstr "정규식 일치"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:96
 msgid "NEVRA"
-msgstr ""
+msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
-msgstr ""
+msgstr "자문 이름"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
-msgstr ""
+msgstr "키워드"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:126
 msgid "Issue date"
-msgstr ""
+msgstr "발급 날짜"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:132
 msgid "Contains Package Name"
-msgstr ""
+msgstr "패키지 이름 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:138
 msgid "Contains Package"
-msgstr ""
+msgstr "패키지 포함"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
-msgstr ""
+msgstr "모듈 활성화"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
 msgid "Build ({0})"
-msgstr ""
+msgstr "빌드({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
@@ -2083,243 +2099,243 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.js:375
 #: ../html/src/manager/images/image-view-overview.js:457
 msgid "Build"
-msgstr ""
+msgstr "빌드"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
 msgid "Build Project"
-msgstr ""
+msgstr "프로젝트 빌드"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
 msgid "Building project.."
-msgstr ""
+msgstr "프로젝트를 빌드하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
 msgid "Version Message"
-msgstr ""
+msgstr "버전 메시지"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
 msgid "Version {0} history"
-msgstr ""
+msgstr "버전 {0} 기록"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
 msgid "Version {0} successfully built into {1}"
-msgstr ""
+msgstr "{0} 버전이 {1}(으)로 빌드됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
 msgid "Insert before"
-msgstr ""
+msgstr "다음 앞에 삽입"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
 msgid "Add Environment"
-msgstr ""
+msgstr "환경 추가"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
 msgid "Environment created successfully"
-msgstr ""
+msgstr "환경 생성됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
 msgid "Creating the environment..."
-msgstr ""
+msgstr "환경을 생성하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
 msgid "No environments created"
-msgstr ""
+msgstr "환경이 생성되지 않음"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:107
 msgid "Environment updated successfully"
-msgstr ""
+msgstr "환경 업데이트됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:123
 msgid "Environment {0} deleted successfully"
-msgstr ""
+msgstr "{0} 환경 삭제됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
 msgid "New"
-msgstr ""
+msgstr "새로 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
 msgid "Cloning channels"
-msgstr ""
+msgstr "채널 복제"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
 msgid "Generating repositories data"
-msgstr ""
+msgstr "저장소 데이터 생성"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
 #: ../html/src/manager/images/image-view.js:420
 msgid "Built"
-msgstr ""
+msgstr "빌드됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view.js:422
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Failed"
-msgstr ""
+msgstr "실패"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:85
 msgid "not built"
-msgstr ""
+msgstr "빌드되지 않음"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
-msgstr ""
+msgstr "빌드된 시간"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
-msgstr ""
+msgstr "{0} 필터 편집"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Filters"
-msgstr ""
+msgstr "필터"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
 msgid "Attach/Detach Filters"
-msgstr ""
+msgstr "필터 연결/분리"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
 msgid "Filter edited successfully"
-msgstr ""
+msgstr "필터 편집됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
-msgstr ""
+msgstr "AppStreams"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
-msgstr ""
+msgstr "활성화된 모듈 스트림"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
-msgstr ""
+msgstr "필터링"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
-msgstr ""
+msgstr "거부를 사용하여 이전에 제외한 경우에도 전체 소스에서 선택"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
 msgid "Loading global filters..."
-msgstr ""
+msgstr "전역 필터를 로드하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
 msgid "Updating project filters..."
-msgstr ""
+msgstr "프로젝트 필터를 업데이트하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
 msgid "Create New Filter"
-msgstr ""
+msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
-msgstr ""
+msgstr "진행 중인 환경 빌드를 승격하거나 충돌하는 버전 없음"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:59
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
 msgid "Promote"
-msgstr ""
+msgstr "승격"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
 msgid "Promoting project.."
-msgstr ""
+msgstr "프로젝트를 승격하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
 msgid "Target environment"
-msgstr ""
+msgstr "대상 환경"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:96
 msgid "Promote version {0} into {1}"
-msgstr ""
+msgstr "버전을 {0}에서 {1}(으)로 승격"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:111
 msgid "Promote environment"
-msgstr ""
+msgstr "환경 승격"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:119
 msgid "Version {0} successfully promoted into {1}"
-msgstr ""
+msgstr "{0} 버전이 {0}(으)로 승격됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
 msgid "Project Properties"
-msgstr ""
+msgstr "프로젝트 속성"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
 msgid "(draft - not built) - Check the changes below"
-msgstr ""
+msgstr "(초안 - 빌드되지 않음) - 아래에서 변경 사항 확인"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
 msgid "Edit Properties"
-msgstr ""
+msgstr "속성 편집"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:67
 msgid "Project properties updated successfully"
-msgstr ""
+msgstr "프로젝트 속성 업데이트됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:86
 msgid "Editing properties.."
-msgstr ""
+msgstr "속성을 편집하는 중..."
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
 msgid "Versions history:"
-msgstr ""
+msgstr "버전 기록:"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
 msgid "show more"
-msgstr ""
+msgstr "자세히 표시"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
 msgid "Versions history"
-msgstr ""
+msgstr "버전 기록"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
 msgid "New Base Channel"
-msgstr ""
+msgstr "새 기본 채널"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:100
 msgid "Choose the channel to be elected as the new base channel"
-msgstr ""
+msgstr "새 기본 채널로 선택할 채널 선택"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:109
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:472
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
-msgstr ""
+msgstr "하위 채널"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
 msgid "Clear Search"
-msgstr ""
+msgstr "검색 지우기"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
 msgid "no child channels"
-msgstr ""
+msgstr "하위 채널 없음"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
 msgid "This channel is recommended"
-msgstr ""
+msgstr "이 채널이 권장됩니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
 msgid "Sources"
-msgstr ""
+msgstr "소스"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
 msgid "Sources edited successfully"
-msgstr ""
+msgstr "소스 편집됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
 #: ../html/src/manager/images/image-build.js:221
 msgid "Software Channels"
-msgstr ""
+msgstr "소프트웨어 채널"
 
 #: ../html/src/manager/errors/not-found.js:11
 msgid "Page Not Found"
-msgstr ""
+msgstr "페이지를 찾을 수 없음"
 
 #: ../html/src/manager/errors/not-found.js:16
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization. The address you are copying may also be outdated."
-msgstr ""
+msgstr "이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오. 복사한 주소가 오래되었을 수도 있습니다."
 
 #: ../html/src/manager/errors/not-found.js:25
 msgid ""
@@ -2328,157 +2344,159 @@ msgid ""
 "find the page you are looking for, and if you find the document be sure to "
 "update your bookmark."
 msgstr ""
+"책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 "
+"사용하여 찾고 있는 페이지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
-msgstr ""
+msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
 msgid "Formula saved. Apply the "
-msgstr ""
+msgstr "수식이 저장되었습니다. 다음을 적용: "
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
 msgid "Invalid target type."
-msgstr ""
+msgstr "잘못된 대상 유형입니다."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
-msgstr ""
+msgstr "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 선택한 후 다음을 적용: "
 
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "알 수 없는 오류가 발생했습니다."
 
 #: ../html/src/manager/images/image-build.js:28
 msgid "The image build has been scheduled."
-msgstr ""
+msgstr "이미지 빌드가 예약되었습니다."
 
 #: ../html/src/manager/images/image-build.js:29
 #: ../html/src/manager/images/image-import.js:24
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
 "scheduler is running."
-msgstr ""
+msgstr "작업을 예약하는 동안 오류가 발생했습니다. 작업 스케줄러가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/images/image-build.js:177
 msgid "Building the image has been "
-msgstr ""
+msgstr "이미지 빌드가 "
 
 #: ../html/src/manager/images/image-build.js:207
 msgid "No profile selected"
-msgstr ""
+msgstr "프로파일을 선택하지 않음"
 
 #: ../html/src/manager/images/image-build.js:212
 #: ../html/src/manager/images/image-profile-edit.js:382
 msgid "Image Type"
-msgstr ""
+msgstr "이미지 유형"
 
 #: ../html/src/manager/images/image-build.js:214
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
-msgstr ""
+msgstr "경로"
 
 #: ../html/src/manager/images/image-build.js:271
 #: ../html/src/manager/images/image-import.js:266
 msgid "Build Host"
-msgstr ""
+msgstr "호스트 빌드"
 
 #: ../html/src/manager/images/image-import.js:20
 msgid "Image store not found"
-msgstr ""
+msgstr "이미지를 찾을 수 없음"
 
 #: ../html/src/manager/images/image-import.js:22
 msgid "The image import has been scheduled."
-msgstr ""
+msgstr "이미지 가져오기가 예약되었습니다."
 
 #: ../html/src/manager/images/image-import.js:231
 #: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
-msgstr ""
+msgstr "이 키에 할당된 채널이 없습니다."
 
 #: ../html/src/manager/images/image-import.js:235
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation Key"
-msgstr ""
+msgstr "활성화 키"
 
 #: ../html/src/manager/images/image-import.js:244
 msgid "Import Image"
-msgstr ""
+msgstr "이미지 가져오기"
 
 #: ../html/src/manager/images/image-import.js:249
 msgid "You can import Container images only using this feature."
-msgstr ""
+msgstr "이 기능을 사용해서만 컨테이너 이미지를 가져올 수 있습니다."
 
 #: ../html/src/manager/images/image-import.js:254
 msgid "Image Store"
-msgstr ""
+msgstr "이미지 저장소"
 
 #: ../html/src/manager/images/image-import.js:262
 msgid "Image name"
-msgstr ""
+msgstr "이미지 이름"
 
 #: ../html/src/manager/images/image-import.js:262
 msgid "Image name is required."
-msgstr ""
+msgstr "이미지 이름은 필수입니다."
 
 #: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
-msgstr ""
+msgstr "이미지 버전"
 
 #: ../html/src/manager/images/image-import.js:264
 msgid "Image version is required."
-msgstr ""
+msgstr "이미지 버전은 필수입니다."
 
 #: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
-msgstr ""
+msgstr "가져오기"
 
 #: ../html/src/manager/images/image-import.js:275
 #: ../html/src/manager/images/image-profile-edit.js:362
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
-msgstr ""
+msgstr "필드 지우기"
 
 #: ../html/src/manager/images/image-profile-edit.js:256
 msgid "Target Image Store"
-msgstr ""
+msgstr "대상 이미지 저장소"
 
 #: ../html/src/manager/images/image-profile-edit.js:276
 msgid "Config URL"
-msgstr ""
+msgstr "구성 URL"
 
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation key is required for kiwi images."
-msgstr ""
+msgstr "kiwi 이미지에는 활성화 키가 필수입니다."
 
 #: ../html/src/manager/images/image-profile-edit.js:334
 msgid "Remove entry"
-msgstr ""
+msgstr "항목 제거"
 
 #: ../html/src/manager/images/image-profile-edit.js:342
 msgid "Custom Info Values"
-msgstr ""
+msgstr "사용자 정의 정보 값"
 
 #: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Create additional custom info keys"
-msgstr ""
+msgstr "추가 사용자 정의 정보 키 만들기"
 
 #: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
@@ -2486,161 +2504,161 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Edit Image Profile: '"
-msgstr ""
+msgstr "이미지 프로파일 편집: '"
 
 #: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Create Image Profile"
-msgstr ""
+msgstr "이미지 프로파일 만들기"
 
 #: ../html/src/manager/images/image-profile-edit.js:381
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
-msgstr ""
+msgstr "레이블은 필수이며 고유 문자열이고 콜론(:)을 포함할 수 없습니다."
 
 #: ../html/src/manager/images/image-profiles.js:21
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.js:22
 msgid "Kiwi"
-msgstr ""
+msgstr "Kiwi"
 
 #: ../html/src/manager/images/image-profiles.js:26
 msgid "Image profile cannot be found."
-msgstr ""
+msgstr "이미지 프로파일을 찾을 수 없습니다."
 
 #: ../html/src/manager/images/image-profiles.js:27
 msgid "Image profile has been deleted."
-msgstr ""
+msgstr "이미지 프로파일이 삭제되었습니다."
 
 #: ../html/src/manager/images/image-profiles.js:28
 msgid "Image profiles have been deleted."
-msgstr ""
+msgstr "이미지 프로파일이 삭제되었습니다."
 
 #: ../html/src/manager/images/image-profiles.js:107
 #: ../html/src/manager/images/image-stores.js:110
 #: ../html/src/manager/images/image-view.js:317
 msgid "Delete selected"
-msgstr ""
+msgstr "선택 항목 삭제"
 
 #: ../html/src/manager/images/image-profiles.js:117
 msgid "Image Profiles"
-msgstr ""
+msgstr "이미지 프로파일"
 
 #: ../html/src/manager/images/image-profiles.js:141
 msgid "Build Type"
-msgstr ""
+msgstr "빌드 유형"
 
 #: ../html/src/manager/images/image-profiles.js:180
 #: ../html/src/manager/systems/delete-system-confirm.js:12
 msgid "Delete Profile"
-msgstr ""
+msgstr "프로파일 삭제"
 
 #: ../html/src/manager/images/image-profiles.js:181
 msgid "Are you sure you want to delete profile"
-msgstr ""
+msgstr "프로파일을 삭제하시겠습니까"
 
 #: ../html/src/manager/images/image-profiles.js:187
 msgid "Delete Selected Profile(s)"
-msgstr ""
+msgstr "선택한 프로파일 삭제"
 
 #: ../html/src/manager/images/image-profiles.js:190
 msgid "Are you sure you want to delete the selected profile?"
-msgstr ""
+msgstr "선택한 프로파일을 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-profiles.js:190
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
-msgstr ""
+msgstr "선택한 프로파일을 삭제하시겠습니까?({0}개 프로파일 선택됨)"
 
 #: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
-msgstr ""
+msgstr "사용자 이름"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Edit Image Store: '"
-msgstr ""
+msgstr "이미지 저장소 편집: '"
 
 #: ../html/src/manager/images/image-store-edit.js:178
 msgid "Create Image Store"
-msgstr ""
+msgstr "이미지 저장소 만들기"
 
 #: ../html/src/manager/images/image-store-edit.js:187
 msgid "Store Type"
-msgstr ""
+msgstr "저장소 유형"
 
 #: ../html/src/manager/images/image-store-edit.js:193
 msgid "Label is required and must be unique."
-msgstr ""
+msgstr "레이블은 필수이며 고유해야 합니다."
 
 #: ../html/src/manager/images/image-store-edit.js:194
 msgid "Store URI"
-msgstr ""
+msgstr "저장소 URI"
 
 #: ../html/src/manager/images/image-stores.js:21
 msgid "Image store cannot be found."
-msgstr ""
+msgstr "이미지 저장소를 찾을 수 없습니다."
 
 #: ../html/src/manager/images/image-stores.js:22
 msgid "Image store has been deleted."
-msgstr ""
+msgstr "이미지 저장소가 삭제되었습니다."
 
 #: ../html/src/manager/images/image-stores.js:23
 msgid "Image stores have been deleted."
-msgstr ""
+msgstr "이미지 저장소가 삭제되었습니다."
 
 #: ../html/src/manager/images/image-stores.js:120
 msgid "Image Stores"
-msgstr ""
+msgstr "이미지 저장소"
 
 #: ../html/src/manager/images/image-stores.js:176
 msgid "Delete Store"
-msgstr ""
+msgstr "저장소 삭제"
 
 #: ../html/src/manager/images/image-stores.js:177
 msgid "Are you sure you want to delete store"
-msgstr ""
+msgstr "저장소를 삭제하시겠습니까"
 
 #: ../html/src/manager/images/image-stores.js:183
 msgid "Delete Selected Store(s)"
-msgstr ""
+msgstr "선택한 저장소 삭제"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete the selected store?"
-msgstr ""
+msgstr "선택한 저장소를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr ""
+msgstr "선택한 저장소를 삭제하시겠습니까?({0}개 저장소 선택됨)"
 
 #: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
-msgstr ""
+msgstr "삭제되었습니다."
 
 #: ../html/src/manager/images/image-view.js:294
 msgid "Image inspect has been scheduled."
-msgstr ""
+msgstr "이미지 검사가 예약되었습니다."
 
 #: ../html/src/manager/images/image-view.js:307
 msgid "Image build has been scheduled."
-msgstr ""
+msgstr "이미지 빌드가 예약되었습니다."
 
 #: ../html/src/manager/images/image-view.js:321
 #: ../html/src/manager/images/image-view.js:619
 #: ../html/src/manager/images/image-view-overview.js:426
 msgid "Delete Image"
-msgstr ""
+msgstr "이미지 삭제"
 
 #: ../html/src/manager/images/image-view.js:334
 msgid "Images"
-msgstr ""
+msgstr "이미지"
 
 #: ../html/src/manager/images/image-view.js:397
 #: ../html/src/manager/images/image-view.js:439
@@ -2651,348 +2669,348 @@ msgstr ""
 #: ../html/src/manager/images/image-view-runtime.js:44
 #: ../html/src/manager/images/image-view-runtime.js:79
 msgid "No information"
-msgstr ""
+msgstr "정보 없음"
 
 #: ../html/src/manager/images/image-view.js:399
 #: ../html/src/manager/images/image-view-overview.js:296
 msgid "Critical updates available"
-msgstr ""
+msgstr "중요 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view.js:401
 #: ../html/src/manager/images/image-view-overview.js:298
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "중요하지 않은 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view.js:403
 #: ../html/src/manager/images/image-view-overview.js:300
 msgid "Package updates available"
-msgstr ""
+msgstr "패키지 업데이트를 사용할 수 있음"
 
 #: ../html/src/manager/images/image-view.js:405
 #: ../html/src/manager/images/image-view-overview.js:302
 msgid "Image is up to date"
-msgstr ""
+msgstr "이미지가 최신임"
 
 #: ../html/src/manager/images/image-view.js:414
 #: ../html/src/manager/images/image-view-overview.js:48
 msgid "Built externally"
-msgstr ""
+msgstr "외부에서 빌드됨"
 
 #: ../html/src/manager/images/image-view.js:416
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
-msgstr ""
+msgstr "큐에 추가됨"
 
 #: ../html/src/manager/images/image-view.js:418
 msgid "Building"
-msgstr ""
+msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
-msgstr ""
+msgstr "알 수 없음"
 
 #: ../html/src/manager/images/image-view.js:432
 #: ../html/src/manager/images/image-view.js:473
 #: ../html/src/manager/images/image-view-overview.js:120
 #: ../html/src/manager/images/image-view-overview.js:151
 msgid "Waiting for update ..."
-msgstr ""
+msgstr "업데이트를 기다리는 중..."
 
 #: ../html/src/manager/images/image-view.js:437
 #: ../html/src/manager/images/image-view-overview.js:156
 msgid "All instances are consistent with SUSE Manager"
-msgstr ""
+msgstr "모든 인스턴스가 SUSE Manager와 일치"
 
 #: ../html/src/manager/images/image-view.js:441
 #: ../html/src/manager/images/image-view-overview.js:160
 msgid "Outdated instances found"
-msgstr ""
+msgstr "오래된 인스턴스가 발견됨"
 
 #: ../html/src/manager/images/image-view.js:460
 #: ../html/src/manager/images/image-view-overview.js:107
 msgid "Cluster"
-msgstr ""
+msgstr "클러스터"
 
 #: ../html/src/manager/images/image-view.js:461
 #: ../html/src/manager/images/image-view.js:515
 #: ../html/src/manager/images/image-view-overview.js:108
 msgid "Instances"
-msgstr ""
+msgstr "인스턴스"
 
 #: ../html/src/manager/images/image-view.js:487
 #: ../html/src/manager/images/image-view-overview.js:134
 msgid "View cluster summary"
-msgstr ""
+msgstr "클러스터 요약 보기"
 
 #: ../html/src/manager/images/image-view.js:508
 #: ../html/src/manager/images/image-view.js:670
 msgid "Runtime"
-msgstr ""
+msgstr "런타임"
 
 #: ../html/src/manager/images/image-view.js:555
 msgid "Revision"
-msgstr ""
+msgstr "리비전"
 
 #: ../html/src/manager/images/image-view.js:561
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
-msgstr ""
+msgstr "업데이트"
 
 #: ../html/src/manager/images/image-view.js:566
 #: ../html/src/manager/images/image-view.js:669
 msgid "Patches"
-msgstr ""
+msgstr "패치"
 
 #: ../html/src/manager/images/image-view.js:575
 #: ../html/src/manager/images/image-view.js:669
 msgid "Packages"
-msgstr ""
+msgstr "패키지"
 
 #: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
-msgstr ""
+msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/manager/images/image-view.js:620
 #: ../html/src/manager/images/image-view-overview.js:427
 msgid "Are you sure you want to delete image"
-msgstr ""
+msgstr "이미지를 삭제하시겠습니까"
 
 #: ../html/src/manager/images/image-view.js:626
 msgid "Delete Selected Image(s)"
-msgstr ""
+msgstr "선택한 이미지 삭제"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete the selected image?"
-msgstr ""
+msgstr "선택한 이미지를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
-msgstr ""
+msgstr "선택한 이미지를 삭제하시겠습니까?({0}개 이미지 선택됨)"
 
 #: ../html/src/manager/images/image-view.js:636
 #: ../html/src/manager/images/image-view-overview.js:258
 msgid "Instance Details for '{0}'"
-msgstr ""
+msgstr "'{0}'용 인스턴스 세부 사항"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 #: ../html/src/manager/images/image-view-overview.js:33
 #: ../html/src/manager/images/image-view-overview.js:35
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid "Go to event"
-msgstr ""
+msgstr "이벤트로 이동"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
-msgstr ""
+msgstr " 이(가) 큐에 추가됨"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
-msgstr ""
+msgstr "진행 중"
 
 #: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
-msgstr ""
+msgstr " 진행 중"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
-msgstr ""
+msgstr "성공"
 
 #: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
-msgstr ""
+msgstr " 성공"
 
 #: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
-msgstr ""
+msgstr " 실패"
 
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
-msgstr ""
+msgstr " 상태"
 
 #: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
-msgstr ""
+msgstr "선택됨"
 
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
-msgstr ""
+msgstr "프로파일 편집"
 
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
-msgstr ""
+msgstr "저장소 편집"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
-msgstr ""
+msgstr "이미지 상태"
 
 #: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
-msgstr ""
+msgstr "이미지 정보"
 
 #: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
-msgstr ""
+msgstr "빌드 상태"
 
 #: ../html/src/manager/images/image-view-overview.js:381
 #: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
-msgstr ""
+msgstr "검사"
 
 #: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
-msgstr ""
+msgstr "다시 빌드"
 
 #: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
-msgstr ""
+msgstr "빌드 일정 조정"
 
 #: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
-msgstr ""
+msgstr "다시 검사"
 
 #: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "검사 다시 예약"
 
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
-msgstr ""
+msgstr "사용자 정의 이미지 정보"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
-msgstr ""
+msgstr "빌드 예약"
 
 #: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
-msgstr ""
+msgstr "이미지 다시 빌드"
 
 #: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
-msgstr ""
+msgstr "검사 예약"
 
 #: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
-msgstr ""
+msgstr "이미지 다시 검사"
 
 #: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
-msgstr ""
+msgstr "설치됨"
 
 #: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "fa fa-refresh fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "fa fa-archive fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
-msgstr ""
+msgstr "보안 자문"
 
 #: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "버그 수정 자문"
 
 #: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "제품 향상 자문"
 
 #: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
-msgstr ""
+msgstr "재부팅 필요"
 
 #: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
-msgstr ""
+msgstr "패키지 관리 스택에 영향을 줌"
 
 #: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
-msgstr ""
+msgstr "자문"
 
 #: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
-msgstr ""
+msgstr "업데이트됨"
 
 #: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
-msgstr ""
+msgstr "인스턴스가 SUSE Manager와 일치"
 
 #: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
-msgstr ""
+msgstr "인스턴스가 오래됨"
 
 #: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
-msgstr ""
+msgstr "클러스터가 SUSE Manager와 일치"
 
 #: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "클러스터가 오래됨"
 
 #: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
-msgstr ""
+msgstr "Pod"
 
 #: ../html/src/manager/images/image-view-runtime.js:96
 msgid "Namespace"
-msgstr ""
+msgstr "네임스페이스"
 
 #: ../html/src/manager/login/login.js:45
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
+msgstr "스키마를 업데이트해야 합니다. 최신 버그 수정을 수신하고 잠재적인 문제를 방지하려면 최대한 빨리 스키마를 업데이트하십시오."
 
 #: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
-msgstr ""
+msgstr "로그인 중..."
 
 #: ../html/src/manager/login/login.js:103
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
-msgstr ""
+msgstr "서버, 패키지, 패치 등을 단일 인터페이스에서 관리하기 위한 새로운 방법을 알아보십시오."
 
 #: ../html/src/manager/login/login.js:144
 msgid "Sign In"
-msgstr ""
+msgstr "로그인"
 
 #: ../html/src/manager/login/use-login-api.js:14
 msgid "Either the password or username is incorrect."
-msgstr ""
+msgstr "비밀번호 또는 사용자 이름이 잘못됨"
 
 #: ../html/src/manager/login/use-login-api.js:15
 msgid "Your account has been deactivated."
-msgstr ""
+msgstr "계정이 비활성화되었습니다."
 
 #: ../html/src/manager/login/use-login-api.js:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
+msgstr "이 사용자에는 API 액세스에 대한 읽기 권한만 있습니다. WebUI 로그인이 거부되었습니다."
 
 #: ../html/src/manager/login/use-login-api.js:28
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
+msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:34
 #: ../html/src/manager/maintenance/list/calendar-list.js:100
 msgid "Delete maintenance calendar"
-msgstr ""
+msgstr "유지보수 달력 삭제"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:37
 #: ../html/src/manager/maintenance/details/schedule-details.js:51
@@ -3001,94 +3019,94 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "선택한 항목을 삭제하시겠습니까?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:38
 #: ../html/src/manager/maintenance/details/schedule-details.js:52
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
-msgstr ""
+msgstr "이 작업을 수행하면 할당된 모든 시스템에서 현재 일정이 제거됩니다."
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:39
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:163
 #: ../html/src/manager/maintenance/list/calendar-list.js:105
 msgid "Cancel affected actions?"
-msgstr ""
+msgstr "영향을 받는 작업을 취소하시겠습니까?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:65
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:115
 #: ../html/src/manager/maintenance/list/calendar-list.js:52
 msgid "Calendar Name"
-msgstr ""
+msgstr "달력 이름"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:66
 #: ../html/src/manager/maintenance/list/calendar-list.js:59
 msgid "Used by Schedule"
-msgstr ""
+msgstr "일정에서 사용됨"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:68
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #: ../html/src/manager/maintenance/details/calendar-details.js:72
 msgid "Calendar Details"
-msgstr ""
+msgstr "달력 세부 사항"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:48
 #: ../html/src/manager/maintenance/list/schedule-list.js:86
 msgid "Delete maintenance schedule"
-msgstr ""
+msgstr "유지보수 일정 삭제"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:66
 #: ../html/src/manager/maintenance/details/schedule-details.js:169
 msgid "Assigned Systems"
-msgstr ""
+msgstr "할당된 시스템"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:99
 msgid "Schedule name"
-msgstr ""
+msgstr "일정 이름"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:100
 msgid "Assigned calendar"
-msgstr ""
+msgstr "할당된 달력"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 msgid "Schedule type"
-msgstr ""
+msgstr "일정 유형"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:90
 msgid "Single"
-msgstr ""
+msgstr "단일"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:101
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:91
 msgid "Multi"
-msgstr ""
+msgstr "다중"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:106
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
-msgstr ""
+msgstr "일정 세부 사항"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
-msgstr ""
+msgstr "향후 유지보수 기간"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:124
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
-msgstr ""
+msgstr "시작"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:125
 msgid "End"
-msgstr ""
+msgstr "종료"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:155
 msgid "Maintenance schedule has been assigned to {0} system(s)"
-msgstr ""
+msgstr "유지보수 일정이 {0}개 시스템에 할당되었습니다."
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:173
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:118
@@ -3096,51 +3114,51 @@ msgstr ""
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:144
 msgid "Cancel affected actions"
-msgstr ""
+msgstr "영향을 받는 작업 취소"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:197
 msgid "Search systems"
-msgstr ""
+msgstr "검색 시스템"
 
 #: ../html/src/manager/maintenance/details/schedule-details.js:212
 msgid "Current Schedule"
-msgstr ""
+msgstr "현재 일정"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:109
 msgid "Url '{0}' is invalid"
-msgstr ""
+msgstr "'{0}' URL이 잘못됨"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:122
 msgid "Calendar data"
-msgstr ""
+msgstr "달력 날짜"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:128
 msgid "Enter Url to ical file"
-msgstr ""
+msgstr "ical 파일의 URL 입력"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:139
 msgid "Attach file"
-msgstr ""
+msgstr "파일 첨부"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:145
 msgid "Remove file"
-msgstr ""
+msgstr "파일 제거"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:154
 msgid "Refresh data from url"
-msgstr ""
+msgstr "URL에서 제공된 데이터 새로 고침"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:158
 msgid "Confirm calendar refresh"
-msgstr ""
+msgstr "달력 새로 고침 확인"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:161
 msgid "Refreshing the calendar will reschedule all affected actions."
-msgstr ""
+msgstr "달력을 새로 고치면 영향을 받는 모든 작업의 일정이 조정됩니다."
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:162
 msgid "Confirm if you want to proceed."
-msgstr ""
+msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
@@ -3148,155 +3166,155 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
-msgstr ""
+msgstr "일정"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:111
 #: ../html/src/manager/maintenance/list/schedule-list.js:44
 msgid "Calendar"
-msgstr ""
+msgstr "달력"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Maintenance"
-msgstr ""
+msgstr "유지보수"
 
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:100
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:105
 msgid "Add Calendar"
-msgstr ""
+msgstr "달력 추가"
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:48
 msgid "No calendars created. Use Create to add a calendar."
-msgstr ""
+msgstr "달력이 생성되지 않았습니다. 달력을 추가하려면 생성을 사용하십시오."
 
 #: ../html/src/manager/maintenance/list/calendar-list.js:104
 msgid "This will unassign all schedules from this calendar."
-msgstr ""
+msgstr "이 작업을 수행하면 이 달력에서 모든 일정의 할당이 해제됩니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:31
 msgid "Create a new maintenance schedule"
-msgstr ""
+msgstr "새 유지보수 일정 만들기"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Schedules"
-msgstr ""
+msgstr "일정"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Calendars"
-msgstr ""
+msgstr "달력"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.js:44
 msgid "schedule"
-msgstr ""
+msgstr "일정"
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:33
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
+msgstr "일정이 생성되지 않았습니다. 일정을 추가하려면 생성을 사용하십시오."
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:90
 msgid "This will remove the schedule from all the systems assigned to it."
-msgstr ""
+msgstr "이 작업을 수행하면 할당된 모든 시스템에서 일정이 제거됩니다."
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:104
 msgid "successfully"
-msgstr ""
+msgstr "성공"
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:128
 msgid "Error when deleting the "
-msgstr ""
+msgstr "다음 삭제 중 오류 발생: "
 
 #: ../html/src/manager/maintenance/maintenance-windows.js:143
 msgid "Calendar successfully refreshed"
-msgstr ""
+msgstr "달력 새로 고침"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
 msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
-msgstr ""
+msgstr "새 유지보수 기간에 해당하는 경우를 제외하고 이 시스템에 대해 대기 중인 모든 유지보수 전용 작업이 취소됩니다."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "계속하시겠습니까?"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:43
 msgid "Maintenance schedule has been cleared"
-msgstr ""
+msgstr "유지보수 일정 제거됨"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
 msgid "Clear All"
-msgstr ""
+msgstr "모두 지우기"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:91
 msgid "fa-times"
-msgstr ""
+msgstr "fa-times"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
 msgid "Assign All"
-msgstr ""
+msgstr "모두 할당"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:102
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:109
 msgid "fa-edit"
-msgstr ""
+msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
 msgid "None - clear schedule"
-msgstr ""
+msgstr "없음 - 일정 지우기"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
-msgstr ""
+msgstr "유지보수 일정"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:22
 msgid "Assign a maintenance schedule to {0} system(s)"
-msgstr ""
+msgstr "유지보수 일정을 {0}개 시스템에 할당"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.js:23
 msgid ""
 "Assigning a schedule will replace any prior assignments in all of the "
 "systems in the set."
-msgstr ""
+msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할당이 대체됩니다."
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:29
 msgid "Applying the config channels has been "
-msgstr ""
+msgstr "구성 채널 적용이 "
 
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 msgid "Configuration"
-msgstr ""
+msgstr "구성"
 
 #: ../html/src/manager/minion/packages/package-states.js:272
 msgid "No package states."
-msgstr ""
+msgstr "패키지 상태가 없습니다."
 
 #: ../html/src/manager/minion/packages/package-states.js:291
 msgid "Latest"
-msgstr ""
+msgstr "최신"
 
 #: ../html/src/manager/minion/packages/package-states.js:292
 msgid "Any"
-msgstr ""
+msgstr "임의"
 
 #: ../html/src/manager/minion/packages/package-states.js:299
 msgid "Undo"
-msgstr ""
+msgstr "실행 취소"
 
 #: ../html/src/manager/minion/packages/package-states.js:310
 msgid "Unmanaged"
-msgstr ""
+msgstr "관리되지 않음"
 
 #: ../html/src/manager/minion/packages/package-states.js:312
 msgid "Removed"
-msgstr ""
+msgstr "제거됨"
 
 #: ../html/src/manager/minion/packages/package-states.js:328
 msgid "Package States"
-msgstr ""
+msgstr "패키지 상태"
 
 #: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.js:171
@@ -3304,595 +3322,595 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr ""
+msgstr "시/도"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:45
 msgid "Package states have been saved."
-msgstr ""
+msgstr "패키지 상태가 저장되었습니다."
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:60
 msgid "Applying the packages states has been "
-msgstr ""
+msgstr "패키지 상태 적용이 "
 
 #: ../html/src/manager/notifications/notification-messages.js:23
 msgid "Onboarding failed"
-msgstr ""
+msgstr "온보딩 실패"
 
 #: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
-msgstr ""
+msgstr "채널 동기화 실패"
 
 #: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
-msgstr ""
+msgstr "채널 동기화 완료됨"
 
 #: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
-msgstr ""
+msgstr "부트스트랩 저장소 생성 실패"
 
 #: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
-msgstr ""
+msgstr "상태 적용 실패"
 
 #: ../html/src/manager/notifications/notification-messages.js:112
 msgid "Filter by type"
-msgstr ""
+msgstr "유형을 기준으로 필터링"
 
 #: ../html/src/manager/notifications/notification-messages.js:211
 msgid "Info"
-msgstr ""
+msgstr "정보"
 
 #: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
-msgstr ""
+msgstr "경고"
 
 #: ../html/src/manager/notifications/notification-messages.js:217
 msgid "Error"
-msgstr ""
+msgstr "오류"
 
 #: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
-msgstr ""
+msgstr "세부 사항 표시"
 
 #: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
-msgstr ""
+msgstr "온보딩 다시 시도"
 
 #: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
-msgstr ""
+msgstr "저장소 동기화 다시 시도"
 
 #: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
-msgstr ""
+msgstr "읽지 않은 메시지"
 
 #: ../html/src/manager/notifications/notification-messages.js:339
 msgid "All Messages"
-msgstr ""
+msgstr "모든 메시지"
 
 #: ../html/src/manager/notifications/notification-messages.js:358
 msgid "Delete selected messages"
-msgstr ""
+msgstr "선택한 메시지 삭제"
 
 #: ../html/src/manager/notifications/notification-messages.js:362
 msgid "Mark selected as read"
-msgstr ""
+msgstr "선택 항목을 읽음으로 표시"
 
 #: ../html/src/manager/notifications/notification-messages.js:374
 #: ../html/src/manager/notifications/notification-messages.js:456
 msgid "Notification Messages"
-msgstr ""
+msgstr "알림 메시지"
 
 #: ../html/src/manager/notifications/notification-messages.js:379
 msgid "The server has collected the following notification messages."
-msgstr ""
+msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
 #: ../html/src/manager/notifications/notification-messages.js:398
 msgid "Filter by summary"
-msgstr ""
+msgstr "요약을 기준으로 필터링"
 
 #: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
-msgstr ""
+msgstr "심각도"
 
 #: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
-msgstr ""
+msgstr "요약"
 
 #: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
-msgstr ""
+msgstr "생성됨"
 
 #: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
-msgstr ""
+msgstr "작업"
 
 #: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
-msgstr ""
+msgstr "읽기|삭제"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Unread"
-msgstr ""
+msgstr "읽지 않음으로 플래그 지정"
 
 #: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Read"
-msgstr ""
+msgstr "읽음으로 플래그 지정"
 
 #: ../html/src/manager/notifications/notification-messages.js:441
 msgid "Delete Notification"
-msgstr ""
+msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications.js:36
 #: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
+msgstr "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/notifications/notifications.js:49
 #: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
-msgstr ""
+msgstr "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/notifications/notifications.js:95
 msgid ""
 "Session expired, please reload the page to receive notifications in real-"
 "time."
-msgstr ""
+msgstr "세션이 만료되었습니다. 페이지를 다시 로드하여 실시간으로 알림을 수신하십시오."
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
-msgstr ""
+msgstr "인증 오류입니다. 페이지를 다시 로드하거나 로그아웃한 후 다시 로그인하십시오."
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.js:29
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
-msgstr ""
+msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:48
 #: ../html/src/manager/salt/keys/key-management.js:55
 msgid "pending"
-msgstr ""
+msgstr "대기 중"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:55
 msgid "timed out"
-msgstr ""
+msgstr "시간 초과됨"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- hide error -"
-msgstr ""
+msgstr "- 오류 숨기기 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- show error -"
-msgstr ""
+msgstr "- 오류 표시 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- hide response -"
-msgstr ""
+msgstr "- 응답 숨기기 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- show response -"
-msgstr ""
+msgstr "- 응답 표시 -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:159
 msgid "Stop waiting"
-msgstr ""
+msgstr "대기 중지"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
-msgstr ""
+msgstr "응답할 모든 minion에 대한 대기 중지"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
-msgstr ""
+msgstr "대상 찾기"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:166
 #: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
-msgstr ""
+msgstr "대상 식과 일치하는 minion 확인"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
-msgstr ""
+msgstr "명령 실행"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
-msgstr ""
+msgstr "대상 minion에서 명령 실행"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
-msgstr ""
+msgstr "원격 명령"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:190
 msgid "Type the command here"
-msgstr ""
+msgstr "여기에 명령 입력"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:193
 msgid "Type the minion_id pattern to target here"
-msgstr ""
+msgstr "여기에 대상 minion_id 패턴 입력"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:205
 msgid "Target systems"
-msgstr ""
+msgstr "대상 시스템"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems previewed"
-msgstr ""
+msgstr "미리 본 대상 시스템 없음"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems found"
-msgstr ""
+msgstr "대상 시스템을 찾지 못함"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
-msgstr ""
+msgstr "일부 minion이 정시에 응답하지 않았습니다."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
-msgstr ""
+msgstr "대상 식과 일치하는 minion이 없습니다."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
-msgstr ""
+msgstr "서버에서 오류가 반환됨: {0}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:487
 #: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
-msgstr ""
+msgstr "ssh-push minion을 일치시키는 중..."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
-msgstr ""
+msgstr "세션이 만료되었습니다. 시스템에서 명령을 실행하려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
-msgstr ""
+msgstr "수식 카탈로그"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
-msgstr ""
+msgstr "수식 이름을 기준으로 필터링"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
-msgstr ""
+msgstr "수식"
 
 #: ../html/src/manager/salt/keys/key-management.js:33
 msgid "Accept"
-msgstr ""
+msgstr "수락"
 
 #: ../html/src/manager/salt/keys/key-management.js:51
 msgid "accepted"
-msgstr ""
+msgstr "수락됨"
 
 #: ../html/src/manager/salt/keys/key-management.js:59
 msgid "rejected"
-msgstr ""
+msgstr "거절됨"
 
 #: ../html/src/manager/salt/keys/key-management.js:63
 msgid "denied"
-msgstr ""
+msgstr "거부됨"
 
 #: ../html/src/manager/salt/keys/key-management.js:159
 msgid "Fingerprint"
-msgstr ""
+msgstr "지문"
 
 #: ../html/src/manager/shared/menu/menu.js:168
 msgid "Clear Menu"
-msgstr ""
+msgstr "메뉴 지우기"
 
 #: ../html/src/manager/shared/menu/menu.js:170
 msgid "Filter menu"
-msgstr ""
+msgstr "필터 메뉴"
 
 #: ../html/src/manager/shared/menu/menu.js:205
 #: ../html/src/manager/shared/menu/menu.js:208
 msgid "Uyuni homepage"
-msgstr ""
+msgstr "Uyuni 홈페이지"
 
 #: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.js:212
 #: ../html/src/manager/shared/menu/menu.js:215
 msgid "SUSE Manager homepage"
-msgstr ""
+msgstr "SUSE Manager 홈페이지"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "SUSE"
-msgstr ""
+msgstr "SUSE"
 
 #: ../html/src/manager/shared/menu/menu.js:213
 msgid "Manager"
-msgstr ""
+msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.js:30
 msgid "Highstate for {0}"
-msgstr ""
+msgstr "{0}에 대한 Highstate"
 
 #: ../html/src/manager/state/display-highstate.js:125
 msgid "There are no applicable systems."
-msgstr ""
+msgstr "해당 시스템이 없습니다."
 
 #: ../html/src/manager/state/highstate.js:50
 msgid "Action has been successfully added to the "
-msgstr ""
+msgstr "작업이 다음에 추가됨: "
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "Applying the highstate has been "
-msgstr ""
+msgstr "highstate 적용이 "
 
 #: ../html/src/manager/state/highstate.js:51
 msgid "scheduled."
-msgstr ""
+msgstr "예약되었습니다."
 
 #: ../html/src/manager/state/highstate.js:95
 msgid "Apply Highstate"
-msgstr ""
+msgstr "Highstate 적용"
 
 #: ../html/src/manager/state/highstate.js:107
 msgid "Create Recurring"
-msgstr ""
+msgstr "반복 생성"
 
 #: ../html/src/manager/state/recurring-states-details.js:43
 msgid "Execution time"
-msgstr ""
+msgstr "실행 시간"
 
 #: ../html/src/manager/state/recurring-states-details.js:97
 msgid "State:"
-msgstr ""
+msgstr "상태:"
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 #: ../html/src/manager/state/recurring-states-list.js:75
 msgid "Active"
-msgstr ""
+msgstr "활성"
 
 #: ../html/src/manager/state/recurring-states-details.js:98
 msgid "Inactive"
-msgstr ""
+msgstr "비활성"
 
 #: ../html/src/manager/state/recurring-states-details.js:102
 msgid "Test"
-msgstr ""
+msgstr "테스트"
 
 #: ../html/src/manager/state/recurring-states-details.js:103
 msgid "True"
-msgstr ""
+msgstr "참"
 
 #: ../html/src/manager/state/recurring-states-details.js:107
 msgid "Target type"
-msgstr ""
+msgstr "대상 유형"
 
 #: ../html/src/manager/state/recurring-states-details.js:112
 msgid "Organization name"
-msgstr ""
+msgstr "조직 이름"
 
 #: ../html/src/manager/state/recurring-states-details.js:117
 msgid "Created by"
-msgstr ""
+msgstr "생성자"
 
 #: ../html/src/manager/state/recurring-states-details.js:121
 msgid "Created at"
-msgstr ""
+msgstr "생성 시간"
 
 #: ../html/src/manager/state/recurring-states-details.js:126
 msgid "Quartz format string"
-msgstr ""
+msgstr "Quartz 형식 문자열"
 
 #: ../html/src/manager/state/recurring-states-details.js:174
 #: ../html/src/manager/state/recurring-states-list.js:136
 msgid "Delete Recurring State Schedule"
-msgstr ""
+msgstr "반복 상태 일정 삭제"
 
 #: ../html/src/manager/state/recurring-states-details.js:175
 msgid "Are you sure you want to delete this schedule?"
-msgstr ""
+msgstr "이 일정을 삭제하시겠습니까?"
 
 #: ../html/src/manager/state/recurring-states-edit.js:98
 msgid "Test mode"
-msgstr ""
+msgstr "테스트 모드"
 
 #: ../html/src/manager/state/recurring-states.js:115
 msgid "Schedule successfully"
-msgstr ""
+msgstr "예약 성공"
 
 #: ../html/src/manager/state/recurring-states.js:140
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
+msgstr "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
-msgstr ""
+msgstr "반복 상태"
 
 #: ../html/src/manager/state/recurring-states-list.js:71
 msgid "No schedules created."
-msgstr ""
+msgstr "일정이 생성되지 않았습니다."
 
 #: ../html/src/manager/state/recurring-states-list.js:95
 msgid "Frequency"
-msgstr ""
+msgstr "빈도"
 
 #: ../html/src/manager/state/recurring-states-list.js:102
 msgid "Target Type"
-msgstr ""
+msgstr "대상 유형"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "기본 채널을 찾을 수 없거나 인증되지 않았습니다."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "하위 채널을 찾을 수 없거나 인증되지 않았습니다."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
-msgstr ""
+msgstr "유효하지 않은 채널 ID"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
-msgstr ""
+msgstr "SUSE Manager 기본값"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
-msgstr ""
+msgstr "하위 채널:"
 
 #: ../html/src/manager/systems/activation-key/child-channels.js:140
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
-msgstr ""
+msgstr "필수"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
-msgstr ""
+msgstr "서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바르게 부트스트랩되었는지 확인하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
-msgstr ""
+msgstr "호스트를 부트스트랩했습니다! 시스템이 표시되어야 하는 위치:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "systems"
-msgstr ""
+msgstr "시스템"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "shortly"
-msgstr ""
+msgstr "곧"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
 msgid "Your system is bootstrapping: waiting for a response.."
-msgstr ""
+msgstr "시스템을 부트스트랩하는 중: 응답을 기다리는 중..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
 msgid "Loading SSH Private Key.."
-msgstr ""
+msgstr "SSH 개인 키를 로드하는 중..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
-msgstr ""
+msgstr "부트스트랩"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "예: ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
 msgid "SSH Private Key"
-msgstr ""
+msgstr "SSH 개인 키"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:220
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
-msgstr ""
+msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차 후에 삭제됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
 msgid "SSH Private Key Passphrase"
-msgstr ""
+msgstr "SSH 개인 키 비밀번호"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:227
 msgid "Leave empty for no passphrase"
-msgstr ""
+msgstr "비밀번호가 없는 경우 비워두십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
-msgstr ""
+msgstr "부트스트랩 Minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
-msgstr ""
+msgstr "SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {0}은(는) 시스템을 원격으로 준비하며 등록을 수행합니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "예: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
-msgstr ""
+msgstr "포트 범위: 1 - 65535"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
 msgid "None"
-msgstr ""
+msgstr "없음"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
-msgstr ""
+msgstr "프록시"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:311
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
-msgstr ""
+msgstr "프록시의 호스트 이름이 완전하지 않습니다. 이로 인해 채널에 액세스할 때 문제가 발생할 수 있습니다."
 
 #: ../html/src/manager/systems/delete-system.js:16
 msgid "Cleanup timed out. Please check if the machine is reachable."
-msgstr ""
+msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는지 확인하십시오."
 
 #: ../html/src/manager/systems/delete-system.js:17
 msgid "No result found in state apply response."
-msgstr ""
+msgstr "상태 적용 응답에서 결과를 찾을 수 없습니다."
 
 #: ../html/src/manager/systems/delete-system.js:84
 msgid "An error occurred during cleanup"
-msgstr ""
+msgstr "정리 중 오류 발생"
 
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.js:25
 msgid "Confirm Deletion"
-msgstr ""
+msgstr "삭제 확인"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
+msgstr "Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
 msgid "Could not determine system default channel."
-msgstr ""
+msgstr "시스템 기본 채널을 결정할 수 없습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
 msgid "Channel change is invalid."
-msgstr ""
+msgstr "채널 변경이 잘못되었습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
 msgid "Selected base is not compatible with system."
-msgstr ""
+msgstr "선택한 기본이 시스템과 호환되지 않습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:36
 msgid "No base channel change found."
-msgstr ""
+msgstr "기본 채널 변경 사항을 찾을 수 없습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
 msgid "No Change"
-msgstr ""
+msgstr "변경 사항 없음"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:453
 msgid "Subscribe"
-msgstr ""
+msgstr "가입"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:42
 msgid "Unsubsribe"
-msgstr ""
+msgstr "가입 취소"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:141
 msgid "System Default Base Channel"
-msgstr ""
+msgstr "시스템 기본값 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
-msgstr ""
+msgstr "기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:149
 msgid ""
@@ -3902,128 +3920,130 @@ msgid ""
 "version and processor type. Systems will be unsubscribed from all channels, "
 "and subscribed to their new base channels. "
 msgstr ""
+"채널 관리자는 시스템이 가입한 기본 채널을 변경할 수 있습니다. 유효한 채널은 조직이 생성한 채널 또는 운영 체제 버전 및 프로세서 "
+"유형에 대한 기본 SUSE 기본 채널입니다. 시스템은 모든 채널에서 가입이 취소되며 새 기본 채널에 가입합니다. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:151
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
-msgstr ""
+msgstr "이 작업은 시스템에서 사용할 수 있는 패키지 및 패치에 커다란 영향을 주며 유의하여 사용해야 합니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:166
 msgid "Current base Channel"
-msgstr ""
+msgstr "현재 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:173
 msgid "Systems"
-msgstr ""
+msgstr "시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:181
 msgid "Desired base Channel"
-msgstr ""
+msgstr "올바른 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:197
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
-msgstr ""
+msgstr "SUSE 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:203
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
-msgstr ""
+msgstr "사용자 정의 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:215
 msgid "Systems subscribed to"
-msgstr ""
+msgstr "시스템 가입 대상"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:389
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:566
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:579
 msgid "(Couldn't determine new base channel)"
-msgstr ""
+msgstr "(새 기본 채널을 결정할 수 없음)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:405
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:589
 msgid "system(s) to subscribe"
-msgstr ""
+msgstr "가입할 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:413
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:596
 msgid "system(s) incompatible"
-msgstr ""
+msgstr "호환되지 않는 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:446
 msgid "No change"
-msgstr ""
+msgstr "변경 사항 없음"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:460
 msgid "Unsubscribe"
-msgstr ""
+msgstr "가입 취소"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:476
 msgid "Below is a list of channels in your organization. "
-msgstr ""
+msgstr "조직의 채널 목록은 아래와 같습니다. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
+msgstr "채널을 변경하려면 해당 채널에 대해 아무 작업도 하지 않음을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
-msgstr ""
+msgstr "선택한 시스템을 채널에 가입시키려면 해당 채널에 대하여 가입됨을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:480
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
-msgstr ""
+msgstr "선택한 시스템의 채널 가입을 취소하려면 해당 채널에 대하여 가입 취소됨을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:487
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:634
 msgid "Systems to subscribe to"
-msgstr ""
+msgstr "가입할 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:574
 msgid "(None)"
-msgstr ""
+msgstr "(없음)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:581
 msgid " (system default)"
-msgstr ""
+msgstr " (시스템 기본값)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:619
 msgid "Channel Changes Overview"
-msgstr ""
+msgstr "채널 변경 사항 개요"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:662
 msgid "Channel Changes Actions"
-msgstr ""
+msgstr "채널 변경 사항 작업"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:687
 msgid "Scheduled"
-msgstr ""
+msgstr "예약됨"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:689
 msgid "Unknown error. Could not schedule channel change"
-msgstr ""
+msgstr "알 수 없는 오류가 발생했습니다. 채널 변경을 예약하지 못했습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:819
 msgid "Some changes scheduled successfully."
-msgstr ""
+msgstr "일부 변경이 예약되었습니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:946
 msgid "Channel changes scheduled."
-msgstr ""
+msgstr "채널 변경이 예약되었습니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
-msgstr ""
+msgstr "(없음, 서비스 비활성화)"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
-msgstr ""
+msgstr "채널 변경이 "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
@@ -4031,6 +4051,8 @@ msgid ""
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
+"시스템이 가입한 기본 소프트웨어 채널 시스템을 변경할 수 있습니다. 모든 소프트웨어 채널에서 시스템의 가입이 취소되고 새 기본 소프트웨어 "
+"채널에 가입합니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
@@ -4038,468 +4060,470 @@ msgid ""
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
+"이 시스템은 아래에 선택한 채널에 가입되었습니다(있는 경우). 비활성화된 확인란은 채널에 수동으로 가입 또는 가입 취소할 수 없음을 "
+"나타냅니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
 msgid "No child channels available."
-msgstr ""
+msgstr "사용할 수 있는 하위 채널이 없습니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
-msgstr ""
+msgstr "소프트웨어 채널 변경 확인"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
-msgstr ""
+msgstr "이 가상 호스트 관리자에 대한 데이터 새로 고침이 트리거되었습니다."
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
 msgid "Properties"
-msgstr ""
+msgstr "속성"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
 msgid "Nodes"
-msgstr ""
+msgstr "노드"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
 msgid "OS"
-msgstr ""
+msgstr "OS"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
 msgid "CPU Arch"
-msgstr ""
+msgstr "CPU 아키텍처"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
 msgid "CPU Sockets"
-msgstr ""
+msgstr "CPU 소켓"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
 msgid "RAM (Mb)"
-msgstr ""
+msgstr "RAM(Mb)"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
 msgid "Refresh Data"
-msgstr ""
+msgstr "데이터 새로 고침"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
 msgid "Refresh data from this Virtual Host Manager"
-msgstr ""
+msgstr "이 가상 호스트 관리자에서 제공되는 데이터 새로 고침"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
 msgid "Delete Virtual Host Manager"
-msgstr ""
+msgstr "가상 호스트 관리자 삭제"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
-msgstr ""
+msgstr "이 가상 호스트 관리자를 삭제하시겠습니까?"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
-msgstr ""
+msgstr "조직"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
 msgid "Gatherer module"
-msgstr ""
+msgstr "Gatherer 모듈"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:249
 msgid "Current Context"
-msgstr ""
+msgstr "현재 컨텍스트"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:264
 msgid "Kubeconfig file"
-msgstr ""
+msgstr "Kubeconfig 파일"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
-msgstr ""
+msgstr "파일 기반"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
 msgid "VMWare-based"
-msgstr ""
+msgstr "VMWare 기반"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
 msgid "Kubernetes Cluster"
-msgstr ""
+msgstr "Kubernetes 클러스터"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
 msgid "Amazon EC2"
-msgstr ""
+msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
 msgid "Google Compute Engine"
-msgstr ""
+msgstr "Google Compute Engine"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
 msgid "Azure"
-msgstr ""
+msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
 msgid "Nutanix AHV"
-msgstr ""
+msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
-msgstr ""
+msgstr "가상 호스트 관리자"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
-msgstr ""
+msgstr "{0}에 추가"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
-msgstr ""
+msgstr "가상 호스트 관리자"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
-msgstr ""
+msgstr "가상 호스트 관리자 추가"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
 msgid "No Virtual Host Managers."
-msgstr ""
+msgstr "가상 호스트 관리자가 없습니다."
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:175
 msgid "Toggle full size"
-msgstr ""
+msgstr "전체 크기 전환"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
 msgid "Something went wrong, connection is closed"
-msgstr ""
+msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
 
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:85
 msgid "Create Virtual Machine"
-msgstr ""
+msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
-msgstr ""
+msgstr "다음 문자를 포함할 수 없음: /\\"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
-msgstr ""
+msgstr "하이퍼바이저"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
-msgstr ""
+msgstr "가상 머신 유형"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:170
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
 msgid "Maximum Memory (MiB)"
-msgstr ""
+msgstr "최대 메모리(MiB)"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:172
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:181
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
 msgid "A positive integer is required"
-msgstr ""
+msgstr "양수 필요"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:179
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
-msgstr ""
+msgstr "가상 CPU 수"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:208
 msgid "Auto-installation Profile"
-msgstr ""
+msgstr "자동 설치 프로파일"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:221
 msgid "Kernel options"
-msgstr ""
+msgstr "커널 옵션"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
-msgstr ""
+msgstr "그래픽"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
-msgstr ""
+msgstr "시작/다시 시작"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
-msgstr ""
+msgstr "중지"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
-msgstr ""
+msgstr "강제 종료"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Reset"
-msgstr ""
+msgstr "재설정"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
-msgstr ""
+msgstr "일시 중지"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:47
 msgid "Synchronize Guests List"
-msgstr ""
+msgstr "게스트 목록 동기화"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:48
 msgid "Synchronize"
-msgstr ""
+msgstr "동기화"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Hosted Virtual Systems"
-msgstr ""
+msgstr "호스팅된 가상 시스템"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:69
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
-msgstr ""
+msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Guest"
-msgstr ""
+msgstr "게스트"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:93
 msgid "Unregistered System"
-msgstr ""
+msgstr "미등록 시스템"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:122
 msgid "Current Memory"
-msgstr ""
+msgstr "현재 메모리"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:128
 msgid "vCPUs"
-msgstr ""
+msgstr "vCPU"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "Base Software Channel"
-msgstr ""
+msgstr "기본 소프트웨어 채널"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:159
 msgid "paused"
-msgstr ""
+msgstr "일시 중지됨"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:168
 msgid "Graphical Console"
-msgstr ""
+msgstr "그래픽 콘솔"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
 msgid "Device type"
-msgstr ""
+msgstr "장치 유형"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
 msgid "Disk"
-msgstr ""
+msgstr "디스크"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
 msgid "CDROM"
-msgstr ""
+msgstr "CDROM"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
 msgid "Floppy"
-msgstr ""
+msgstr "플로피"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
 msgid "Bus"
-msgstr ""
+msgstr "버스"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
 msgid "File"
-msgstr ""
+msgstr "파일"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
 #: ../html/src/manager/virtualization/pools/pool-properties.js:488
 msgid "Format"
-msgstr ""
+msgstr "형식"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
 msgid "Disks"
-msgstr ""
+msgstr "디스크"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
-msgstr ""
+msgstr "소스 저장소 풀"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
 msgid "Source Volume"
-msgstr ""
+msgstr "소스 볼륨"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
 msgid "Disk size (GiB)"
-msgstr ""
+msgstr "디스크 크기(GiB)"
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
-msgstr ""
+msgstr "소스 템플릿 이미지 URL"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
-msgstr ""
+msgstr "네트워크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
 msgid "MAC address"
-msgstr ""
+msgstr "MAC 주소"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
 msgid "Leave blank to generate a MAC address"
-msgstr ""
+msgstr "MAC 주소를 생성하려면 공백 유지"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
-msgstr ""
+msgstr "네트워크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
-msgstr ""
+msgstr "필드 지우기"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
-msgstr ""
+msgstr "libvirt python 모듈을 설치하십시오."
 
 #: ../html/src/manager/virtualization/ListTab.js:143
 msgid "{0} selected"
-msgstr ""
+msgstr "{0}개 선택됨"
 
 #: ../html/src/manager/virtualization/ListTab.js:246
 msgid "Action Status"
-msgstr ""
+msgstr "작업 상태"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
-msgstr ""
+msgstr "가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:39
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
-msgstr ""
+msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:61
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
-msgstr ""
+msgstr "자동 시작"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:69
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
-msgstr ""
+msgstr "영구"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:78
 msgid "Bridge"
-msgstr ""
+msgstr "브리지"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
-msgstr ""
+msgstr "가상 저장소 풀 생성"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Delete the pool, including the contained volumes. "
-msgstr ""
+msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:140
 msgid "Cannot be undone"
-msgstr ""
+msgstr "실행을 취소할 수 없음"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:273
 msgid "Edit Pool"
-msgstr ""
+msgstr "풀 편집"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 msgid "Location"
-msgstr ""
+msgstr "위치"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "Usage"
-msgstr ""
+msgstr "사용"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:357
 msgid "Create Pool"
-msgstr ""
+msgstr "풀 생성"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:363
 msgid "Virtual Storage Pools and Volumes"
-msgstr ""
+msgstr "가상 저장소 풀 및 볼륨"
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:364
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
-msgstr ""
+msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
-msgstr ""
+msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
-msgstr ""
+msgstr "파티션 구분자"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "No"
-msgstr ""
+msgstr "아니요"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
-msgstr ""
+msgstr "호스트 이름"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
 msgid "Port"
-msgstr ""
+msgstr "포트"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:248
 msgid "Pool Type"
-msgstr ""
+msgstr "풀 유형"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
-msgstr ""
+msgstr "가상 호스트 부팅 중 시작"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
-msgstr ""
+msgstr "소스"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
 msgid "Hosts"
-msgstr ""
+msgstr "호스트"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:315
 msgid "Devices"
-msgstr ""
+msgstr "장치"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:348
 msgid "Initiator IQN"
-msgstr ""
+msgstr "이니시에이터 IQN"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:359
 msgid "Adapter type"
-msgstr ""
+msgstr "어댑터 유형"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:379
 msgid "Adapter name"
-msgstr ""
+msgstr "어댑터 이름"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:388
 msgid "Adapter parent PCI address"
-msgstr ""
+msgstr "어댑터 상위 PCI 주소"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:392
 #: ../html/src/manager/virtualization/pools/pool-properties.js:403
 msgid "PCI address formatted like 0000:00:00.0"
-msgstr ""
+msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:399
 msgid "Adapter parent address unique ID"
-msgstr ""
+msgstr "어댑터 상위 주소 고유 ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:410
 msgid "Adapter parent name"
-msgstr ""
+msgstr "어댑터 상위 이름"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:418
 msgid "Adapter parent wwnn"
-msgstr ""
+msgstr "어댑터 상위 wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:421
 #: ../html/src/manager/virtualization/pools/pool-properties.js:431
@@ -4507,169 +4531,169 @@ msgstr ""
 #: ../html/src/manager/virtualization/pools/pool-properties.js:452
 #: ../html/src/manager/virtualization/pools/pool-properties.js:463
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr ""
+msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:428
 msgid "Adapter parent wwpn"
-msgstr ""
+msgstr "어댑터 상위 wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:438
 msgid "Adapter parent fabric wwn"
-msgstr ""
+msgstr "어댑터 상위 패브릭 wwn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:448
 msgid "Adapter wwnn"
-msgstr ""
+msgstr "어댑터 wwnn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:459
 msgid "Adapter wwpn"
-msgstr ""
+msgstr "어댑터 wwpn"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:470
 msgid "Manage vHBA deletion"
-msgstr ""
+msgstr "vHBA 감지 관리"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:479
 msgid "Source name"
-msgstr ""
+msgstr "소스 이름"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:505
 msgid "Passphrase"
-msgstr ""
+msgstr "비밀번호"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:517
 msgid "Target"
-msgstr ""
+msgstr "대상"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:530
 msgid "Owner UID"
-msgstr ""
+msgstr "소유자 UID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:534
 msgid "UID is a numeric value"
-msgstr ""
+msgstr "UID는 숫자 값입니다."
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:538
 msgid "Group ID"
-msgstr ""
+msgstr "그룹 ID"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:542
 #: ../html/src/manager/virtualization/pools/pool-properties.js:551
 msgid "GID is a numeric value"
-msgstr ""
+msgstr "GID는 숫자 값입니다."
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:546
 msgid "Permission mode"
-msgstr ""
+msgstr "권한 모드"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:547
 msgid "target directory permissions in octal form, like 0775"
-msgstr ""
+msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:556
 msgid "SELinux label"
-msgstr ""
+msgstr "SELinux 레이블"
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
-msgstr ""
+msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
 #: ../html/src/manager/visualization/data-tree.js:167
 msgid "Add/remove system from SSM"
-msgstr ""
+msgstr "SSM에서 시스템 추가/제거"
 
 #: ../html/src/manager/visualization/data-tree.js:201
 msgid "  security advisories"
-msgstr ""
+msgstr "  보안 자문"
 
 #: ../html/src/manager/visualization/data-tree.js:207
 msgid "  bug fix advisories"
-msgstr ""
+msgstr "  버그 수정 자문"
 
 #: ../html/src/manager/visualization/data-tree.js:214
 msgid "  product enhancement advisories"
-msgstr ""
+msgstr "  제품 향상 자문"
 
 #: ../html/src/manager/visualization/data-tree.js:254
 msgid "Add children to SSM"
-msgstr ""
+msgstr "SSM에 하위 추가"
 
 #: ../html/src/manager/visualization/hierarchy.js:54
 msgid "Filtering"
-msgstr ""
+msgstr "필터링"
 
 #: ../html/src/manager/visualization/hierarchy.js:63
 msgid "Partitioning"
-msgstr ""
+msgstr "파티셔닝"
 
 #: ../html/src/manager/visualization/hierarchy.js:84
 msgid "Show systems with:"
-msgstr ""
+msgstr "다음과 함께 표시:"
 
 #: ../html/src/manager/visualization/hierarchy.js:109
 msgid "security advisories"
-msgstr ""
+msgstr "보안 자문"
 
 #: ../html/src/manager/visualization/hierarchy.js:110
 msgid "bug fix advisories"
-msgstr ""
+msgstr "버그 수정 자문"
 
 #: ../html/src/manager/visualization/hierarchy.js:111
 msgid "product enhancement advisories"
-msgstr ""
+msgstr "제품 향상 자문"
 
 #. System name filter
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "Filter by system name"
-msgstr ""
+msgstr "시스템 이름을 기준으로 필터링"
 
 #: ../html/src/manager/visualization/hierarchy.js:115
 msgid "e.g., client.nue.sles"
-msgstr ""
+msgstr "예: client.nue.sles"
 
 #. Base channel filter
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "Filter by system base channel"
-msgstr ""
+msgstr "시스템 기본 채널을 기분으로 필터링"
 
 #: ../html/src/manager/visualization/hierarchy.js:121
 msgid "e.g., SLE12"
-msgstr ""
+msgstr "예: SLE12"
 
 #. Installed products filter
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "Filter by system installed products"
-msgstr ""
+msgstr "시스템 설치 제품을 기준으로 필터링"
 
 #: ../html/src/manager/visualization/hierarchy.js:127
 msgid "e.g., SLES"
-msgstr ""
+msgstr "예: SLES"
 
 #: ../html/src/manager/visualization/hierarchy.js:165
 msgid "Partition systems based on whether there are patches for them:"
-msgstr ""
+msgstr "패치 존재 여부에 따른 시스템 파티션:"
 
 #: ../html/src/manager/visualization/hierarchy.js:204
 msgid "There was an error fetching data from the server."
-msgstr ""
+msgstr "서버에서 데이터를 가져오는 동안 오류가 발생했습니다."
 
 #: ../html/src/manager/visualization/hierarchy.js:240
 msgid " filters"
-msgstr ""
+msgstr " 필터"
 
 #: ../html/src/manager/visualization/ui/components.js:42
 msgid "Partition systems by given check-in time:"
-msgstr ""
+msgstr "지정된 체크인 시간을 기준으로 시스템 파티션:"
 
 #: ../html/src/manager/visualization/ui/components.js:142
 msgid "Add a grouping level"
-msgstr ""
+msgstr "그룹 수준 추가"
 
 #: ../html/src/manager/visualization/ui/components.js:187
 msgid "Select a system group"
-msgstr ""
+msgstr "시스템 그룹 선택"
 
 #: ../html/src/manager/visualization/ui/components.js:241
 msgid "Split into groups"
-msgstr ""
+msgstr "그룹으로 분할"
