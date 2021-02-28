@@ -20,16 +20,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2018-03-16 11:02+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/spacewalk/"
-"language/ko/)\n"
+"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -203,6 +203,9 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"GPLv2 약관에 따라 라이선스됨."
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
@@ -214,7 +217,7 @@ msgstr "보다 자세한 정보는 /var/log/up2date 를 참조하시기 바랍�
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -224,7 +227,7 @@ msgstr "저작권  2006--2014  Red Hat, Inc. 저작권법에 의해 보호받습
 #: ../src/up2date_client/rhnreg_constants.py:24
 #, python-brace-format
 msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
+msgstr "{PRODUCT_NAME} URL을 입력하십시오."
 
 #: ../src/up2date_client/rhnreg_constants.py:25
 #, python-brace-format
@@ -233,15 +236,17 @@ msgid ""
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
+"{PRODUCT_NAME} 서버의 위치 및 SSL 인증서를 입력하십시오. SSL 인증서는 https를 통해 연결하는 경우에만 "
+"필요합니다(권장)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
 msgid "{PRODUCT_NAME} URL:"
-msgstr ""
+msgstr "{PRODUCT_NAME} URL:"
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid "SSL certificate:"
-msgstr ""
+msgstr "SSL 인증서:"
 
 #: ../src/up2date_client/rhnreg_constants.py:31
 #, fuzzy, python-brace-format
@@ -252,7 +257,7 @@ msgstr "로그인 계정을 입력해 주십시오."
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
-msgstr ""
+msgstr "https를 사용하는 경우에는 유효한 SSL 인증서의 위치를 입력해야 합니다."
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:36
@@ -360,7 +365,7 @@ msgstr ""
 msgid ""
 "Stay in compliance with your subscription agreement and manage subscriptions "
 "for systems connected to your account."
-msgstr ""
+msgstr "구독 계약을 준수하고 계정에 연결된 시스템의 구독을 관리하십시오."
 
 #: ../src/up2date_client/rhnreg_constants.py:73
 #, fuzzy
@@ -408,7 +413,7 @@ msgstr "나중에 등록합니다."
 #: ../src/up2date_client/rhnreg_constants.py:87
 #, python-brace-format
 msgid "{PRODUCT_NAME} Account"
-msgstr ""
+msgstr "{PRODUCT_NAME} 계정"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
 #, fuzzy, python-format, python-brace-format
@@ -422,7 +427,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:89
 #, python-brace-format
 msgid "{PRODUCT_NAME} Login:"
-msgstr ""
+msgstr "{PRODUCT_NAME} 로그인:"
 
 #: ../src/up2date_client/rhnreg_constants.py:90
 #: ../src/up2date_client/tui.py:139
@@ -571,6 +576,13 @@ msgid ""
 "technologies please consult this Knowledge Base Article: https://access."
 "redhat.com/kb/docs/DOC-45563"
 msgstr ""
+"이 시스템은 Red Hat 구독 관리를 사용하여 이미 등록되었습니다.\n"
+"\n"
+"Red Hat Satellite 또는 Red Hat Satellite Proxy 기술을 사용하여 시스템을 다시 등록하는 중입니다. Red "
+"Hat은 고객이 한 번만 등록할 것을 권장합니다.\n"
+"\n"
+"RHN Classic/Red Hat Satellite 등록 및 기술에 대한 자세한 정보는 다음 Knowledge Base 자료 참조:\n"
+"https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:145
@@ -597,7 +609,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:153
 #, python-brace-format
 msgid "Sending Profile to {PRODUCT_NAME}"
-msgstr ""
+msgstr "{PRODUCT_NAME}(으)로 프로파일 전송 중"
 
 #. Finish Window
 #: ../src/up2date_client/rhnreg_constants.py:156
@@ -652,7 +664,7 @@ msgstr "소프트웨어 채널 등록:"
 
 #: ../src/up2date_client/rhnreg_constants.py:175
 msgid "This system will receive updates from the following software channels:"
-msgstr ""
+msgstr "이 시스템이 업데이트를 수신할 소프트웨어 채널:"
 
 #: ../src/up2date_client/rhnreg_constants.py:177
 #, fuzzy, python-brace-format
@@ -712,10 +724,14 @@ msgid ""
 "subscribe this system to software channels via the software > software "
 "channels tab."
 msgstr ""
+"이 시스템은 소프트웨어 채널에 가입할 수 없습니다. 보안 및 지원을 유지하기 위해 시스템이 소프트웨어 업데이트를 수신하지 않습니다. 이 "
+"문제에 대해서는 {PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독을 수행한 후에는 "
+"{PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보고 소프트웨어 > 소프트웨어 채널 탭에서 이 시스템에 가입하여 "
+"소프트웨어 채널에 가입할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
-msgstr ""
+msgstr "서비스 수준:"
 
 #: ../src/up2date_client/rhnreg_constants.py:200
 #, python-brace-format
@@ -724,6 +740,8 @@ msgid ""
 "you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
 "types associated with this system:"
 msgstr ""
+"시스템에 연결된 {PRODUCT_NAME} 시스템 유형에 따라, 다른 혜택이 제공됩니다. 이 시스템에 연결된 {PRODUCT_NAME} "
+"시스템 유형:"
 
 #: ../src/up2date_client/rhnreg_constants.py:204
 #, fuzzy, python-brace-format
@@ -780,6 +798,10 @@ msgid ""
 "account, you may browse to this system's profile in the {PRODUCT_NAME} web "
 "interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
 msgstr ""
+"이 시스템을 {PRODUCT_NAME} 시스템 유형에 연결할 수 없습니다. 보안 및 지원을 유지하기 위해 시스템이 소프트웨어 업데이트를 "
+"수신하지 않습니다. 이 문제에 대해서는 {PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독을 수행한 후에는 "
+"{PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보고 프로파일을 삭제하며 이 시스템을 {PRODUCT_NAME}에 "
+"다시 연결할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
 #, python-format, python-brace-format
@@ -793,6 +815,11 @@ msgid ""
 "the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
 "Universal Default activation key: %s"
 msgstr ""
+"범용 기본 활성화 키 감지됨\n"
+"계정에서 범용 기본 활성화 키가 감지되었습니다. 즉, {PRODUCT_NAME} 서버 또는 {PRODUCT_NAME} 프록시에 시스템을 "
+"연결하기 위한 속성 집합(소프트웨어 채널 구독, 패키지 설치, 시스템 그룹 구성원 등)이 설치 번호가 아닌 활성화 키로 결정되었습니다. "
+"활성화 키에 대한 자세한 내용은 {PRODUCT_NAME} 참조 안내서도 참조하십시오.\n"
+"범용 기본 활성화 키:"
 
 #. Error Messages.
 #: ../src/up2date_client/rhnreg_constants.py:243
@@ -881,6 +908,9 @@ msgid ""
 "can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
 "rhn, and ensure sslCACert points to it."
 msgstr ""
+"/etc/sysconfig/rhn/up2date에서 sslCACert 및 serverURL의 값을 확인하십시오. serverURL에서 "
+"https가 아닌 http를 사용하도록 설정하거나 {PRODUCT_NAME}에서 SSL 인증서를 다운로드하여 /usr/share/rhn에 "
+"넣은 후 sslCACert가 이를 가리키는지 확인할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:278
 #, fuzzy, python-brace-format
@@ -952,7 +982,7 @@ msgstr "다음"
 
 #: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"
-msgstr "이전"
+msgstr "뒤로"
 
 #: ../src/up2date_client/rhnreg_constants.py:309
 msgid "Cancel"
@@ -1077,7 +1107,7 @@ msgstr "프로파일을 생성하는 동안 오류가 발생했습니다. "
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
+msgstr "시스템을 등록하고 프로파일 정보를 전송하는 중입니다. 기다려 주십시오."
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
@@ -1144,6 +1174,8 @@ msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"%s을(를) 열 수 없습니다.\n"
+"%s이(가) 활성화되지 않았습니다.\n"
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
@@ -1198,7 +1230,7 @@ msgstr "패키지"
 
 #: ../src/up2date_client/rhnregGui.py:1214
 msgid "Arch"
-msgstr "Arch"
+msgstr "아키텍처"
 
 #: ../src/up2date_client/rhnregGui.py:1221
 msgid "Building a list of RPM packages installed on your system.  Please wait."
@@ -1384,6 +1416,9 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic은 지원되지 않습니다.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:199
 msgid "The installation number is invalid"
@@ -1574,91 +1609,91 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:98
 msgid "name of channel you want to (un)subscribe"
-msgstr ""
+msgstr "가입(취소)할 채널 이름"
 
 #: ../src/bin/spacewalk-channel.py:100
 msgid "subscribe to channel"
-msgstr ""
+msgstr "채널 가입"
 
 #: ../src/bin/spacewalk-channel.py:102
 msgid "unsubscribe from channel"
-msgstr ""
+msgstr "채널 가입 취소"
 
 #: ../src/bin/spacewalk-channel.py:104
 msgid "list channels"
-msgstr ""
+msgstr "채널 목록"
 
 #: ../src/bin/spacewalk-channel.py:106
 msgid "show base channel of a system"
-msgstr ""
+msgstr "시스템의 기본 채널 표시"
 
 #: ../src/bin/spacewalk-channel.py:108
 msgid "list all available child channels"
-msgstr ""
+msgstr "사용할 수 있는 모든 하위 채널 나열"
 
 #: ../src/bin/spacewalk-channel.py:110
 msgid "verbose output"
-msgstr ""
+msgstr "세부 출력"
 
 #: ../src/bin/spacewalk-channel.py:112
 msgid "your user name"
-msgstr ""
+msgstr "사용자 이름"
 
 #: ../src/bin/spacewalk-channel.py:114
 msgid "your password"
-msgstr ""
+msgstr "비밀번호"
 
 #: ../src/bin/spacewalk-channel.py:121
 msgid "ERROR: these arguments make no sense in this context (try --help)"
-msgstr ""
+msgstr "오류: 이러한 인수는 이러한 맥락에서 사용할 수 없음(--help 시도)"
 
 #: ../src/bin/spacewalk-channel.py:163
 msgid "ERROR: you have to specify at least one channel"
-msgstr ""
+msgstr "오류: 채널을 1개 이상 지정해야 함"
 
 #: ../src/bin/spacewalk-channel.py:169
 msgid "ERROR: this action does not require channel"
-msgstr ""
+msgstr "오류: 이 작업에는 채널이 필요하지 않음"
 
 #: ../src/bin/spacewalk-channel.py:176
 #, python-format
 msgid "Channel(s): %s successfully added"
-msgstr ""
+msgstr "채널: %s 추가됨"
 
 #: ../src/bin/spacewalk-channel.py:178
 #, python-format
 msgid "Error during adding channel(s) %s"
-msgstr ""
+msgstr "%s 채널을 추가하는 중 오류"
 
 #: ../src/bin/spacewalk-channel.py:185
 #, python-format
 msgid "Channel(s): %s successfully removed"
-msgstr ""
+msgstr "채널: %s 제거됨"
 
 #: ../src/bin/spacewalk-channel.py:187
 #, python-format
 msgid "Error during removal of channel(s) %s"
-msgstr ""
+msgstr "%s 채널 제거 중 오류"
 
 #: ../src/bin/spacewalk-channel.py:194
 msgid "This system is not associated with any channel."
-msgstr ""
+msgstr "이 시스템은 채널과 연결할 수 없습니다."
 
 #: ../src/bin/spacewalk-channel.py:196
 msgid "Unable to locate SystemId file. Is this system registered?"
-msgstr ""
+msgstr "SystemId 파일을 찾을 수 없습니다. 시스템에 등록되었습니까?"
 
 #: ../src/bin/spacewalk-channel.py:229
 msgid "ERROR: you may want to specify --add, --remove or --list"
-msgstr ""
+msgstr "오류: --add, --remove 또는 --list를 지정할 수 있음"
 
 #: ../src/bin/spacewalk-channel.py:234
 msgid "ERROR: must be root to execute\n"
-msgstr ""
+msgstr "오류: 루트로 실행해야 함\n"
 
 #: ../src/bin/spacewalk-channel.py:239
 msgid "User interrupted process."
-msgstr ""
+msgstr "사용자가 프로세스를 중단했습니다."
 
 #: ../data/gui.glade.h:1
 #, fuzzy
@@ -1728,7 +1763,7 @@ msgstr "RHN에 연결해야 하는 이유는? ..."
 #: ../data/rh_register.glade.h:7
 msgid ""
 "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
+msgstr "Red Hat Satellite 또는 Red Hat Satellite Proxy로 등록"
 
 #: ../data/rh_register.glade.h:8
 msgid "Location:"
@@ -1833,19 +1868,19 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:32
 msgid "• A network connection"
-msgstr ""
+msgstr "• 네트워크 연결"
 
 #: ../data/rh_register.glade.h:33
 msgid "• Your account login"
-msgstr ""
+msgstr "• 계정 로그인"
 
 #: ../data/rh_register.glade.h:34
 msgid "Your account login"
-msgstr ""
+msgstr "계정 로그인"
 
 #: ../data/rh_register.glade.h:35
 msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
+msgstr "• Red Hat Satellite 또는 Red Hat Satellite Proxy의 주소"
 
 #: ../data/rh_register.glade.h:36
 msgid "_Why Should I Register?"
@@ -2092,10 +2127,14 @@ msgid ""
 "data communicated between this system and Spacewalk (including your login "
 "and password) is secure."
 msgstr ""
+"<b>%s</b>와(과) 호환되는 보안 인증서를 이 시스템에서 찾을 수 없습니다.\n"
+"\n"
+"이 시스템과 Spacewalk(로그인 및 비밀번호 포함) 사이에서 통신되는 데이터가 안전한지 확인하려면 SSL 기술을 사용하는 보안 "
+"인증서가 필요합니다."
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
-msgstr ""
+msgstr "Spacewalk와 통신하기 위한 <b>_SSL 인증서</b> 있음:"
 
 #: ../data/rh_register.glade.h:89
 msgid "Certificate _Location:"
@@ -2121,7 +2160,7 @@ msgstr "시스템에 소프트웨어 업데이트가 설정되지 않았습니�
 msgid ""
 "You won't be able to receive software updates, including security updates, "
 "for this system."
-msgstr ""
+msgstr "보안 업데이트를 포함하여 이 시스템의 소프트웨어 업데이트를 수신할 수 없습니다."
 
 #: ../data/rh_register.glade.h:94
 msgid "Proxy Configuration"
@@ -2255,7 +2294,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:127
 msgid "<b>Spacewalk Location:</b>"
-msgstr ""
+msgstr "<b>Spacewalk 위치:</b>"
 
 #: ../data/rh_register.glade.h:128
 msgid "<b>Login:</b>"
@@ -2283,7 +2322,7 @@ msgstr "시스템이 이미 RHN 인증서 기반 기술을 사용하여 RHN에 �
 msgid ""
 "Your system is being registered again using RHN Classic technology. Red Hat "
 "recommends that customers only register once."
-msgstr ""
+msgstr "RHN Classic 기술을 사용하여 시스템을 다시 등록하는 중입니다. Red Hat은 고객이 1회만 등록할 것을 권장합니다."
 
 #: ../data/rh_register.glade.h:135
 msgid ""
@@ -2440,7 +2479,7 @@ msgstr ""
 
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Uyuni/SUSE Manager"
-msgstr ""
+msgstr "Spacewalk/Uyuni/SUSE Manager에 등록"
 
 #, fuzzy
 #~ msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
