@@ -131,7 +131,7 @@ export function FormMultiInput(props: Props) {
       buttons={
         <Button
           icon="fa-plus"
-          title={t("Add")}
+          title={t(`Add ${props.title}`)}
           id={`add_${props.prefix}`}
           className="btn-default btn-sm"
           handler={() => props.onAdd(new_index)}
