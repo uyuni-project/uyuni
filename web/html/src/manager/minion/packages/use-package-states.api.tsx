@@ -1,83 +1,81 @@
-//@flow
-import Network from 'utils/network';
-import * as React from 'react';
-import {useState} from "react";
-import {Utils as MessagesUtils} from "components/messages";
-import type {
-  ChangesMapObject,
-  Package,
-} from "./package.type";
+import Network from "utils/network";
+import * as React from "react";
+import { useState } from "react";
+import { MessageType, Utils as MessagesUtils } from "components/messages";
+import { ChangesMapObject, Package } from "./package.type";
 import * as packageHelpers from "./package-utils";
 
 type ActionType =
-  | {type: "Save", serverId: string, changed: ChangesMapObject}
-  | {type: "Apply", serverId: string}
-  | {type: "GetServerPackages", serverId: string}
-  | {type: "Search", serverId: string, filter: string}
+  | { type: "Save"; serverId: string; changed: ChangesMapObject }
+  | { type: "Apply"; serverId: string }
+  | { type: "GetServerPackages"; serverId: string }
+  | { type: "Search"; serverId: string; filter: string };
 
 const usePackageStatesApi = () => {
-  const [messages, setMessages] = useState("");
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [packageStates, setPackageStates] = useState<Array<Package>>([]);
   const [searchResults, setSearchResults] = useState<Array<Package>>([]);
 
   function onActionPackageStatesApi(action: ActionType): Promise<any> {
     switch (action.type) {
-      case 'Save': {
-        const toSave = [];
+      case "Save": {
+        const toSave: any[] = [];
         const changed = action.changed;
         for (const state in changed) {
-          if (changed.hasOwnProperty(state) && typeof changed[state].value === 'object') {
+          if (changed.hasOwnProperty(state) && typeof changed[state].value === "object") {
             toSave.push(changed[state].value);
           } else {
-            console.log("Cannot save empty object.")
+            console.log("Cannot save empty object.");
           }
         }
         return Network.post(
           "/rhn/manager/api/states/packages/save",
           JSON.stringify({
             sid: action.serverId,
-            packageStates: toSave
+            packageStates: toSave,
           }),
           "application/json"
-        ).promise
-          .then((data: Array<Package>) => {
-              updateAfterSave(data, changed);
-              setMessages(MessagesUtils.info(t('Package states have been saved.')));
-            }
-          )
+        ).promise.then((data: Array<Package>) => {
+          updateAfterSave(data, changed);
+          setMessages(MessagesUtils.info(t("Package states have been saved.")));
+        });
       }
-      case 'Apply': {
+      case "Apply": {
         return Network.post(
           "/rhn/manager/api/states/apply",
           JSON.stringify({
             id: action.serverId,
             type: "SERVER",
-            states: ["packages"]
+            states: ["packages"],
           }),
           "application/json"
-        ).promise
-          .then((data) => {
-            setMessages(MessagesUtils.info(<span>{t("Applying the packages states has been ")}
-              <a href={"/rhn/systems/details/history/Event.do?sid=" + action.serverId + "&aid=" + data}>{t("scheduled")}</a>
-              </span>));
-          });
+        ).promise.then(data => {
+          setMessages(
+            MessagesUtils.info(
+              <span>
+                {t("Applying the packages states has been ")}
+                <a href={"/rhn/systems/details/history/Event.do?sid=" + action.serverId + "&aid=" + data}>
+                  {t("scheduled")}
+                </a>
+              </span>
+            )
+          );
+        });
       }
-      case 'GetServerPackages': {
-        return Network.get(
-          "/rhn/manager/api/states/packages?sid=" + action.serverId
-        ).promise
-          .then((data: Array<Package>) => {
+      case "GetServerPackages": {
+        return Network.get("/rhn/manager/api/states/packages?sid=" + action.serverId).promise.then(
+          (data: Array<Package>) => {
             updateAfterServerGetPackages(data);
-          });
+          }
+        );
       }
-      case 'Search': {
+      case "Search": {
         return Network.get(
           "/rhn/manager/api/states/packages/match?sid=" + action.serverId + "&target=" + action.filter
-        ).promise
-          .then((data: Array<Package>) => {
-            updateAfterSearch(data);
-            return null;
-          })
+        ).promise.then((data: Array<Package>) => {
+          updateAfterSearch(data);
+          return null;
+        });
       }
       default:
         return Promise.reject();
@@ -85,7 +83,7 @@ const usePackageStatesApi = () => {
   }
 
   function updateAfterSearch(serverSearchResults: Array<Package>): void {
-    const newSearchResults = serverSearchResults.map((state) => {
+    const newSearchResults = serverSearchResults.map(state => {
       state.packageStateId = packageHelpers.normalizePackageState(state.packageStateId);
       state.versionConstraintId = packageHelpers.normalizePackageVersionConstraint(state.versionConstraintId);
       return state;
@@ -107,24 +105,25 @@ const usePackageStatesApi = () => {
       state.packageStateId = packageHelpers.normalizePackageState(state.packageStateId);
       return state;
     });
-    const newSearchResults =
-      searchResults.map<Package>((state: Package) => {
-        const key = packageHelpers.packageStateKey(state);
-        const tempchanged = changed[key];
-        if (tempchanged !== undefined && typeof tempchanged.value === 'object') {
-          return tempchanged.value;
-        } else {
-          return state;
-        }
-      });
+    const newSearchResults = searchResults.map<Package>((state: Package) => {
+      const key = packageHelpers.packageStateKey(state);
+      const tempchanged = changed[key];
+      if (tempchanged !== undefined && typeof tempchanged.value === "object") {
+        return tempchanged.value;
+      } else {
+        return state;
+      }
+    });
     setPackageStates(newPackageStates);
     setSearchResults(newSearchResults);
   }
 
   return {
-    messages: messages, packageStates, searchResults, onActionPackageStatesApi
-  }
-
+    messages: messages,
+    packageStates,
+    searchResults,
+    onActionPackageStatesApi,
+  };
 };
 
 export default usePackageStatesApi;
