@@ -2226,7 +2226,9 @@ public class ContentSyncManager {
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
-                return Files.isReadable(testUrlPath);
+                boolean readable = Files.isReadable(testUrlPath);
+                log.debug(String.format("Test file URL %s: readable %s", testUrlPath, readable));
+                return readable;
             }
             else {
                 URI testUri = new URI(uri.getScheme(), null, uri.getHost(),
