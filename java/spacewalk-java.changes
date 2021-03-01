@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 01 13:20:45 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.29-1
 - Cleanup sessions via SQL query instead of SQL function (bsc#1180224)
 - Rebuild and improve rendering of error pages 404 and 500 pages (bsc#1181228)
 - Fix user creation with pam auth and no password (bsc#1179579)
