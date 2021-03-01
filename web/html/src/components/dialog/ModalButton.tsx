@@ -8,7 +8,7 @@ type Props = {
   id?: string;
   className?: string;
   title?: string;
-  text: React.ReactNode;
+  text?: React.ReactNode;
   icon?: string;
   disabled?: boolean;
   item?: any;

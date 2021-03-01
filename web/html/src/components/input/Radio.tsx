@@ -7,7 +7,7 @@ import styles from "./Radio.css";
 
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<{ label: string; value: string }>;
+  items: Array<{ label: React.ReactNode; value: string }>;
 
   /** Show the choices in a line or not */
   inline?: boolean;

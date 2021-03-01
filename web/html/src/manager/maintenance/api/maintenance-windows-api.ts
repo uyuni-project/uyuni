@@ -1,12 +1,10 @@
 import Network from "utils/network";
 
-export type MaintenanceWindowType = "schedule" | "calendar";
-
 /* Returns a list of maintenance schedules or calendars.
  * type == "schedule" for schedules
  * type == "calendar" for calendars
  */
-function list(type: MaintenanceWindowType) {
+function list(type: "schedule" | "calendar") {
   const endpoint = "/rhn/manager/api/maintenance/" + type + "/list";
   return Network.get(endpoint, "application/json").promise.then(schedules => schedules);
 }
@@ -21,7 +19,7 @@ function calendarNames() {
  * type == "schedule" for schedules
  * type == "calendar" for calendars
  */
-function details(id: string, type: MaintenanceWindowType) {
+function details(id: string, type: "schedule" | "calendar") {
   const endpoint = "/rhn/manager/api/maintenance/" + type + "/" + id + "/details";
   return Network.get(endpoint, "application/json").promise.then(details => details);
 }
