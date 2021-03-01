@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 01 13:23:00 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.23-1
 - Replace CRLF in ssh priv key when bootstrapping (bsc#1182685)
 - Upgrade immer to fix CVE-2020-28477
 - Default to preferred items per page in content lifecycle lists (bsc#1180558)
