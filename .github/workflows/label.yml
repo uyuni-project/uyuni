@@ -1,7 +1,8 @@
 name: Labeler
 on:
-  schedule:
-  - cron: "0 * * * *"
+  workflow _dispatch
+#  schedule:
+#  - cron: "0 * * * *"
 
 jobs:
   label:
