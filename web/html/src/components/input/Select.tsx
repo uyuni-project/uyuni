@@ -95,7 +95,7 @@ export function Select(props: Props) {
           <ReactSelect
             className={inputClass ? ` ${inputClass}` : ""}
             name={props.name}
-            id={props.name}
+            inputId={props.name}
             isDisabled={props.disabled}
             defaultValue={defaultValue}
             value={valueOption}
