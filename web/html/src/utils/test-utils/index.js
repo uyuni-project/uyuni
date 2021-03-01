@@ -8,6 +8,9 @@ import userEvent from "@testing-library/user-event";
 // See https://testing-library.com/docs/react-testing-library/api/
 export * from "@testing-library/react";
 
+// react-select testing utilities: https://github.com/romgain/react-select-event#api
+export * from "react-select-event";
+
 // @testing-library/user-event has messed up exports, just manually reexport everything
 export const {
   click,
