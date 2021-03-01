@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import * as React from "react";
 
 type Props = {
@@ -6,7 +5,7 @@ type Props = {
   id: string;
   /** The css className for the 'modal-dialog' div */
   className?: string;
-  title?: string;
+  title?: React.ReactNode;
   /** The body of the popup */
   content?: React.ReactNode;
   footer?: React.ReactNode;
