@@ -1,3 +1,5 @@
+- Fix: increase password length in the database (bsc#1182687)
+
 -------------------------------------------------------------------
 Mon Mar 01 13:24:24 CET 2021 - jgonzalez@suse.com
 
