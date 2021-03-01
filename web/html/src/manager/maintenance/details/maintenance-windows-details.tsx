@@ -7,16 +7,6 @@ import { TopPanel } from "components/panels/TopPanel";
 import MaintenanceScheduleDetails from "./schedule-details";
 import MaintenanceCalendarDetails from "./calendar-details";
 
-// See java/code/src/com/suse/manager/webui/templates/schedule/maintenance-windows.jade
-declare global {
-  interface Window {
-    timezone?: any;
-    localTime?: any;
-    type?: any;
-    isAdmin?: any;
-  }
-}
-
 type MaintenanceDetailsProps = {
   type: "schedule" | "calendar";
   data: any;

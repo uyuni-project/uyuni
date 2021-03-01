@@ -4,8 +4,8 @@ import { Panel } from "./Panel";
 type Props = {
   title?: string;
   icon?: string;
-  header?: string;
-  footer?: string;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
   children?: React.ReactNode;
   buttons?: React.ReactNode;
 };
