@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 01 13:23:45 CET 2021 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Speed up the RPM build
 - Upgrade immer to 8.0.1 to fix CVE-2020-28477
 - Add @testing-library/react and msw, update relevant dependencies
