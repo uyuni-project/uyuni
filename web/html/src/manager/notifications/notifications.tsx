@@ -1,6 +1,5 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type Props = {};
 
@@ -89,19 +88,6 @@ class Notifications extends React.Component<Props, State> {
         ) : null}
       </a>
     );
-  }
-}
-
-// override the existing errorMessageByStatus from utils/network.js
-function errorMessageByStatus(status) {
-  if (DEPRECATED_unsafeEquals(status, 401)) {
-    return [t("Session expired, please reload the page to receive notifications in real-time.")];
-  } else if (DEPRECATED_unsafeEquals(status, 403)) {
-    return [t("Authorization error, please reload the page or try to logout/login again.")];
-  } else if (status >= 500) {
-    return [t("Server error, please check log files.")];
-  } else {
-    return [];
   }
 }
 
