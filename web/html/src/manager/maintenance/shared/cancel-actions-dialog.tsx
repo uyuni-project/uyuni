@@ -1,12 +1,10 @@
-// @flow
+import * as React from "react";
 
-import * as React from 'react';
-
-import {DangerDialog} from "components/dialog/DangerDialog";
+import { DangerDialog } from "components/dialog/DangerDialog";
 
 type Props = {
-  id: string,
-  onConfirmAsync: () => Promise<any>
+  id: string;
+  onConfirmAsync: () => Promise<any>;
 };
 
 export default function CancelActionsDialog(props: Props) {
@@ -20,7 +18,11 @@ export default function CancelActionsDialog(props: Props) {
       btnClass="btn-success"
       content={
         <>
-          <p>{t("Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows.")}</p>
+          <p>
+            {t(
+              "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
+            )}
+          </p>
           <p>{t("Are you sure you want to proceed?")}</p>
         </>
       }
