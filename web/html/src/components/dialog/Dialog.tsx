@@ -25,7 +25,7 @@ export function closeDialog(modalId: string) {
 export type DialogProps = {
   id: string;
   className?: string;
-  title?: string;
+  title?: React.ReactNode;
   content?: React.ReactNode;
   buttons?: React.ReactNode;
   item?: any;
