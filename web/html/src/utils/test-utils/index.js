@@ -35,6 +35,8 @@ export const type = async (elementOrPromiseOfElement, text, options) => {
   return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
 }
 
+export * from "./forms";
+
 const server = setupServer();
 
 /** Mock a GET request to `url` with a successful JSON response containing `response` */
