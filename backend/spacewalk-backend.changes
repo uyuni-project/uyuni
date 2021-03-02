@@ -1,3 +1,4 @@
+- Fix for UnicodeDecodeError in satellite-sync: Opening RPM file in binary mode (bsc#1181274)
 - Open repomd files as binary (bsc#1173893)
 
 -------------------------------------------------------------------
