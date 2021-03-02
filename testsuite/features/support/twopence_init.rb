@@ -53,6 +53,9 @@ if $build_validation
   $sle15sp2_client = twopence_init("ssh:#{ENV['SLE15SP2_CLIENT']}") if ENV['SLE15SP2_CLIENT']
   $sle15sp2_minion = twopence_init("ssh:#{ENV['SLE15SP2_MINION']}") if ENV['SLE15SP2_MINION']
   $sle15sp2_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP2_SSHMINION']}") if ENV['SLE15SP2_SSHMINION']
+  $sle15sp3_client = twopence_init("ssh:#{ENV['SLE15SP3_CLIENT']}") if ENV['SLE15SP3_CLIENT']
+  $sle15sp3_minion = twopence_init("ssh:#{ENV['SLE15SP3_MINION']}") if ENV['SLE15SP3_MINION']
+  $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
   $ceos6_client = twopence_init("ssh:#{ENV['CENTOS6_CLIENT']}") if ENV['CENTOS6_CLIENT']
   $ceos6_minion = twopence_init("ssh:#{ENV['CENTOS6_MINION']}") if ENV['CENTOS6_MINION']
   $ceos6_ssh_minion = twopence_init("ssh:#{ENV['CENTOS6_SSHMINION']}") if ENV['CENTOS6_SSHMINION']
@@ -85,6 +88,7 @@ if $build_validation
              $sle15_client, $sle15_minion, $sle15_ssh_minion,
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
+             $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
              $ceos6_client, $ceos6_minion, $ceos6_ssh_minion,
              $ceos7_client, $ceos7_minion, $ceos7_ssh_minion,
              $ceos8_minion, $ceos8_ssh_minion,
@@ -93,6 +97,7 @@ if $build_validation
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp4_buildhost, $sle12sp4_terminal,
+             $sle15sp2_buildhost, $sle15sp2_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
              $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
 else
@@ -218,6 +223,7 @@ if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
+
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
@@ -253,6 +259,9 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp2_client'           => $sle15sp2_client,
                   'sle15sp2_minion'           => $sle15sp2_minion,
                   'sle15sp2_ssh_minion'       => $sle15sp2_ssh_minion,
+                  'sle15sp3_client'           => $sle15sp3_client,
+                  'sle15sp3_minion'           => $sle15sp3_minion,
+                  'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
                   'ceos6_client'              => $ceos6_client,
                   'ceos6_minion'              => $ceos6_minion,
                   'ceos6_ssh_minion'          => $ceos6_ssh_minion,
@@ -271,5 +280,7 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle11sp3_terminal'         => $sle11sp3_terminal,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
+                  'sle15sp2_buildhost'        => $sle15sp2_buildhost,
+                  'sle15sp2_terminal'         => $sle15sp2_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'sle15sp3_terminal'         => $sle15sp3_terminal }
