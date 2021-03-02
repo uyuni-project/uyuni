@@ -97,7 +97,6 @@ if $build_validation
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp4_buildhost, $sle12sp4_terminal,
-             $sle15sp2_buildhost, $sle15sp2_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
              $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
 else
@@ -223,7 +222,6 @@ if ENV['SCC_CREDENTIALS']
   scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
-
 $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
@@ -280,7 +278,5 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle11sp3_terminal'         => $sle11sp3_terminal,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
-                  'sle15sp2_buildhost'        => $sle15sp2_buildhost,
-                  'sle15sp2_terminal'         => $sle15sp2_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'sle15sp3_terminal'         => $sle15sp3_terminal }
