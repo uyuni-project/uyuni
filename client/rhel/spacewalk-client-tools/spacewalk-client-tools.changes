@@ -1,3 +1,5 @@
+- log an error when product detection failed (bsc#1182339)
+
 -------------------------------------------------------------------
 Thu Feb 25 12:05:05 CET 2021 - jgonzalez@suse.com
 

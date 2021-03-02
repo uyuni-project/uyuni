@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,12 +31,16 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
@@ -190,34 +194,76 @@ public class MgrSyncUtils {
 
     /**
      * Convert network URL to file system URL.
+     *
+     * 1. URL point to localhost, return the normal URL, we have access
+     * 2. URL from updates.suse.com, return the path
+     * 3. legacy SMT mirror URL /repo/RPMMD/&lt;repo name&gt; if it exists
+     * 4. finally, return host + path as path component
+     *
+     * A mirrorlist URL with query paramater is converted to a path:
+     * - key=value => key/value
+     * - sort alphabetically
+     * - join with a /
+     * Example:
+     * http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock
+     * file://mirrorlist.centos.org/arch/x86_64/infra/stock/release/8/repo/AppStream
+     *
      * @param urlString url
      * @param name repo name
      * @return file URI
      */
     public static URI urlToFSPath(String urlString, String name) {
         String host = "";
-        String path = "/";
+        String path = File.separator;
         try {
-            URL url = new URL(urlString);
-            host = url.getHost();
-            path = url.getPath();
+            URI uri = new URI(urlString);
+            host = uri.getHost();
+            path = uri.getPath();
 
+            // Case 1
             if ("localhost".equals(host)) {
-                return url.toURI();
+                return uri;
+            }
+            String qPath = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
+                    .filter(p -> p.contains("=")) // filter out possible auth tokens
+                    .map(p ->
+                        Arrays.stream(p.split("=", 2))
+                            .collect(Collectors.joining(File.separator))
+                    )
+                    .sorted()
+                    .collect(Collectors.joining(File.separator));
+            if (!qPath.isBlank()) {
+                path = Paths.get(path, qPath).toString();
             }
         }
-        catch (MalformedURLException | URISyntaxException e) {
+        catch (URISyntaxException e) {
             log.warn("Unable to parse URL: " + urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
+        // Case 4
+        File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
 
-        if (!OFFICIAL_UPDATE_HOSTS.contains(host) && name != null) {
-            // everything after the first space are suffixes added to make things unique
-            String[] parts  = name.split("\\s");
-            return new File(dataPath.getAbsolutePath() + "/repo/RPMMD/" + parts[0]).toURI();
+        // Case 2
+        if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
+            mirrorPath = new File(dataPath.getAbsolutePath(), path);
         }
-
-        return new File(dataPath.getAbsolutePath() + path).toURI();
+        else if (name != null) {
+            // Case 3
+            // everything after the first space are suffixes added to make things unique
+            String[] parts  = URLDecoder.decode(name, StandardCharsets.UTF_8).split("[\\s//]");
+            if (!(parts[0].isBlank() || parts[0].equals(".."))) {
+                File oldMirrorPath = Paths.get(dataPath.getAbsolutePath(), "repo", "RPMMD", parts[0]).toFile();
+                if (oldMirrorPath.exists()) {
+                    mirrorPath = oldMirrorPath;
+                }
+            }
+        }
+        Path cleanPath = mirrorPath.toPath().normalize();
+        if (!cleanPath.startsWith(sccDataPath)) {
+            log.error("Resulting path outside of configured directory " + dataPath + ": " + urlString);
+            cleanPath = dataPath.toPath();
+        }
+        return cleanPath.toUri().normalize();
     }
 }
