@@ -1,3 +1,4 @@
+- Log shell command output on failure when checking known_hosts file permissions
 - improve fromdir with better mapping of URL to local files
 - Homogenizes style in filter buttons, facilitating testability
 - Fix user creation with pam auth and no password (bsc#1179579)
