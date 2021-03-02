@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 14:23+0000\n"
+"POT-Creation-Date: 2021-03-02 15:33+0000\n"
 "PO-Revision-Date: 2020-12-08 00:26+0000\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -112,8 +112,10 @@ msgstr "Canal de configuração: {0}"
 #: ../html/src/manager/images/image-stores.js:157
 #: ../html/src/manager/images/image-view-overview.js:207
 #: ../html/src/manager/images/image-view-overview.js:215
-#: ../html/src/manager/maintenance/list/calendar-list.js:82
-#: ../html/src/manager/maintenance/list/schedule-list.js:68
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-list.js:119
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
@@ -156,9 +158,9 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.js:683
 #: ../html/src/manager/images/image-view.js:685
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:27
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:29
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:44
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.js:140
 #: ../html/src/manager/state/recurring-states-details.js:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
@@ -168,16 +170,16 @@ msgid "Back"
 msgstr "Voltar"
 
 #: ../html/src/components/config-channels.tsx:401
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:167
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
 msgstr "Confirmar"
 
 #: ../html/src/components/config-channels.tsx:409
-#: ../html/src/manager/maintenance/details/schedule-details.js:181
-#: ../html/src/manager/maintenance/details/schedule-details.js:188
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:171
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
 msgid "Save Changes"
 msgstr "Salvar Mudanças"
 
@@ -209,7 +211,7 @@ msgstr "Buscar"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:47
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.js:206
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -289,10 +291,10 @@ msgstr "Cancelar"
 #: ../html/src/manager/images/image-view.js:316
 #: ../html/src/manager/images/image-view.js:320
 #: ../html/src/manager/images/image-view.js:607
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:42
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:45
-#: ../html/src/manager/maintenance/list/calendar-list.js:89
-#: ../html/src/manager/maintenance/list/schedule-list.js:75
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:87
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.js:35
 #: ../html/src/manager/state/recurring-states-details.js:154
 #: ../html/src/manager/state/recurring-states-details.js:156
@@ -538,8 +540,8 @@ msgid "Page {0} of {1}"
 msgstr "Página {0} de {1}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:85
-#: ../html/src/manager/maintenance/list/schedule-list.js:37
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
 msgstr "Nome da programação"
@@ -876,8 +878,8 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view-patches.js:81
 #: ../html/src/manager/images/image-view.js:600
-#: ../html/src/manager/maintenance/list/calendar-list.js:75
-#: ../html/src/manager/maintenance/list/schedule-list.js:61
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
@@ -1213,8 +1215,8 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.js:147
 #: ../html/src/manager/images/image-stores.js:152
 #: ../html/src/manager/images/image-view.js:595
-#: ../html/src/manager/maintenance/list/calendar-list.js:70
-#: ../html/src/manager/maintenance/list/schedule-list.js:56
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.js:178
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
@@ -1694,7 +1696,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.js:669
-#: ../html/src/manager/maintenance/details/schedule-details.js:61
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
 msgid "Overview"
 msgstr ""
 
@@ -1760,7 +1762,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.js:144
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/images/image-view.js:538
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:88
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
@@ -1815,8 +1817,8 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.js:111
 #: ../html/src/manager/images/image-store-edit.js:170
 #: ../html/src/manager/images/image-stores.js:114
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:30
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.js:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
@@ -2580,7 +2582,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
@@ -3092,274 +3094,278 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:34
-#: ../html/src/manager/maintenance/list/calendar-list.js:100
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:33
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:99
 msgid "Delete maintenance calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:37
-#: ../html/src/manager/maintenance/details/schedule-details.js:51
-#: ../html/src/manager/maintenance/list/calendar-list.js:103
-#: ../html/src/manager/maintenance/list/schedule-list.js:89
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:36
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:49
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:102
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:38
-#: ../html/src/manager/maintenance/details/schedule-details.js:52
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:37
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:50
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:39
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:163
-#: ../html/src/manager/maintenance/list/calendar-list.js:105
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:38
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:65
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:115
-#: ../html/src/manager/maintenance/list/calendar-list.js:52
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:66
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:66
-#: ../html/src/manager/maintenance/list/calendar-list.js:59
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:67
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:52
 msgid "Used by Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:68
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:69
 msgid "Url"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.js:72
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:73
 msgid "Calendar Details"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:48
-#: ../html/src/manager/maintenance/list/schedule-list.js:86
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:66
-#: ../html/src/manager/maintenance/details/schedule-details.js:169
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:60
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:159
 msgid "Assigned Systems"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:99
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:89
 msgid "Schedule name"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:100
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:90
 msgid "Assigned calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:101
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
 msgid "Schedule type"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:101
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:90
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:101
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:106
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:118
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:103
 msgid "Upcoming Maintenance Windows"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:124
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:109
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:125
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:110
 msgid "End"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:155
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:144
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:173
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:118
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:95
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:144
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:163
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
 msgid "Cancel affected actions"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:197
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Search systems"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.js:212
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:202
 msgid "Current Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:109
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:114
 msgid "Url '{0}' is invalid"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:122
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:134
 msgid "Calendar data"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:128
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Enter Url to ical file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:139
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:156
 msgid "Attach file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:145
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:162
 msgid "Remove file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:154
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:172
 msgid "Refresh data from url"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:158
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:177
 msgid "Confirm calendar refresh"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:161
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:180
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.js:162
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:181
 msgid "Confirm if you want to proceed."
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:131
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:111
-#: ../html/src/manager/maintenance/list/schedule-list.js:44
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:136
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:37
 msgid "Calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
 msgid "Maintenance"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:100
-#: ../html/src/manager/maintenance/edit/schedule-edit.js:105
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:120
+#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:128
 msgid "Add Calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/calendar-list.js:48
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:45
 msgid "No calendars created. Use Create to add a calendar."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/calendar-list.js:104
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:103
 msgid "This will unassign all schedules from this calendar."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:31
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 msgid "Create a new maintenance schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
 msgid "Schedules"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
 msgid "Calendars"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:44
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/schedule-list.js:33
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:30
 msgid "No schedules created. Use Create to add a schedule."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/schedule-list.js:90
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.js:104
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:113
 msgid "successfully"
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.js:128
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:138
 msgid "Error when deleting the "
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.js:143
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:147
 msgid "Calendar successfully refreshed"
 msgstr ""
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
 msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
 msgstr ""
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:43
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:37
 msgid "Maintenance schedule has been cleared"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
+msgid "Maintenance schedule has been assigned"
+msgstr ""
+
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:91
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:81
 msgid "fa-times"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:91
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:99
 msgid "Assign All"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:102
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:109
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:92
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:100
 msgid "fa-edit"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
+#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:122
 #, fuzzy
 msgid "None - clear schedule"
 msgstr "Selecionar uma agenda"
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.js:18
+#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:16
 msgid "Maintenance Schedules"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.js:22
+#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:20
 msgid "Assign a maintenance schedule to {0} system(s)"
 msgstr ""
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.js:23
+#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
 msgid ""
 "Assigning a schedule will replace any prior assignments in all of the "
 "systems in the set."
