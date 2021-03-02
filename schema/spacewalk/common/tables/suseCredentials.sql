@@ -26,7 +26,7 @@ CREATE TABLE suseCredentials
                  REFERENCES suseCredentialsType (id),
     url      VARCHAR(256),
     username VARCHAR(64) NOT NULL,
-    password VARCHAR(64) NOT NULL,
+    password VARCHAR(4096) NOT NULL,
     created  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
     modified TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 )
