@@ -1,6 +1,6 @@
 name: Labeler
 on:
-  workflow _dispatch
+  workflow_dispatch
 #  schedule:
 #  - cron: "0 * * * *"
 
