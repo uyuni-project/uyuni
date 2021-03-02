@@ -1,3 +1,4 @@
+- improve fromdir with better mapping of URL to local files
 - Homogenizes style in filter buttons, facilitating testability
 - Fix user creation with pam auth and no password (bsc#1179579)
 - Do not call page decorator in HEAD requests (bsc#1181228)
