@@ -101,9 +101,12 @@ public abstract class AbstractMinionBootstrapper {
     /**
      * Check if salt is able to store ssh-key.
      * The ownership gets lost when a user manually changes the file.
+     *
      * @return boolean about salt having correct file ownership
+     * @throws IOException if running the ownership check command fails on IO
+     * @throws CommandExecutionException if the ownership check command returns failure
      */
-    private boolean hasCorrectSSHFileOwnership() {
+    private boolean hasCorrectSSHFileOwnership() throws IOException, CommandExecutionException {
         File dotSSHDir = new File(SALT_SSH_DIR_PATH);
         //Directory gets created the first time a bootstrap happens - its absence is fine.
         if (!dotSSHDir.exists()) {
@@ -111,25 +114,36 @@ public abstract class AbstractMinionBootstrapper {
         }
 
         File knownHostsFile = new File(SALT_SSH_DIR_PATH + "/known_hosts");
-        try {
-            Process prc = Runtime.getRuntime().exec("sudo /usr/bin/ls -la " + knownHostsFile.getPath());
-            InputStream inStream = prc.getInputStream();
-            StringBuilder sb = new StringBuilder();
-            int character;
-            while ((character = inStream.read()) != -1) {
-                sb.append((char) character);
-            }
-            String commandOutput = sb.toString();
-            LOG.debug("Salt SSH Dir test output: " + commandOutput);
+        String cmd = "sudo /usr/bin/ls -la " + knownHostsFile.getPath();
+        Process prc = Runtime.getRuntime().exec(cmd);
 
-            boolean ownerCanReadWrite  = ("rw").equals(commandOutput.substring(1, 3));
-            boolean userAndGroupSet    = commandOutput.contains("salt salt");
+        try {
+            if (prc.waitFor() != 0) {
+                throw new CommandExecutionException("Error running command: " + cmd, prc);
+            }
+        }
+        catch (InterruptedException e) {
+            LOG.warn(e);
+        }
+
+        InputStream inStream = prc.getInputStream();
+        StringBuilder sb = new StringBuilder();
+        int character;
+        while ((character = inStream.read()) != -1) {
+            sb.append((char) character);
+        }
+        String commandOutput = sb.toString();
+        LOG.debug("Salt SSH Dir test output: " + commandOutput);
+
+        try {
+            boolean ownerCanReadWrite = ("rw").equals(commandOutput.substring(1, 3));
+            boolean userAndGroupSet = commandOutput.contains("salt salt");
 
             LOG.debug("User can read/write: " + ownerCanReadWrite + " user and group correct: " + userAndGroupSet);
             return userAndGroupSet && ownerCanReadWrite;
         }
-        catch (IOException | StringIndexOutOfBoundsException e) {
-            return false;
+        catch (StringIndexOutOfBoundsException e) {
+            throw new CommandExecutionException("Unexpected output from command: " + cmd, prc);
         }
     }
 
@@ -147,11 +161,18 @@ public abstract class AbstractMinionBootstrapper {
         String contactMethod = ContactMethodUtil.getContactMethod(
                 params.getFirstActivationKey(), defaultContactMethod);
 
-        if (!hasCorrectSSHFileOwnership()) {
-            String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
-                                     "Please check permissions.";
-            LOG.error("Error during bootstrap: " + responseMessage);
-            return new BootstrapResult(false, Optional.of(contactMethod), responseMessage.split("\\r?\\n"));
+        try {
+            if (!hasCorrectSSHFileOwnership()) {
+                String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
+                        "Please check permissions.";
+                LOG.error("Error during bootstrap: " + responseMessage);
+                return new BootstrapResult(false, Optional.of(contactMethod), responseMessage.split("\\r?\\n"));
+            }
+        }
+        catch (CommandExecutionException | IOException e) {
+            LOG.error(e);
+            return new BootstrapResult(false, Optional.of(contactMethod), "Error when checking permissions on '" +
+                    SALT_SSH_DIR_PATH + "/known_hosts'. Please check server logs for more information.");
         }
 
         try {
