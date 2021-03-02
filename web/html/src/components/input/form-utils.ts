@@ -1,4 +1,5 @@
 import _isNil from "lodash/isNil";
+import validator from 'validator';
 
 type SingleOrArray<T> = T | T[];
 interface TreeLikeModel<T = any> {
@@ -51,6 +52,19 @@ export function stripBlankValues<T>(flatModel: Record<string, T>): Record<string
       return entry[1] !== "";
     }
     return !_isNil(entry[1]);
+  }));
+}
+
+/** Parse string values to integers where possible */
+export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, T> {
+  return Object.fromEntries(Object.entries(flatModel).map(entry => {
+    if (typeof entry[1] === "string" && (validator.isFloat(entry[1]) || validator.isInt(entry[1]))) {
+      const floatValue = Number.parseFloat(entry[1]);
+      if (!Number.isNaN(floatValue)) {
+        return [entry[0], floatValue];
+      }
+    }
+    return entry;
   }));
 }
 
