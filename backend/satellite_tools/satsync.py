@@ -1910,7 +1910,7 @@ class Syncer:
         if self.mountpoint:
             rpmFile = rpmsPath(package_id, self.mountpoint, sources)
             try:
-                stream = open(rpmFile)
+                stream = open(rpmFile, "rb")
             except IOError:
                 e = sys.exc_info()[1]
                 if e.errno != 2:  # No such file or directory
