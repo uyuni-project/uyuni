@@ -1,3 +1,5 @@
+- Fix for UnicodeDecodeError in satellite-sync: Opening RPM file in binary mode (bsc#1181274)
+
 -------------------------------------------------------------------
 Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com
 
