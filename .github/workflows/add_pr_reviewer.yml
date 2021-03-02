@@ -55,7 +55,13 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         reviewers: "lkotek,srbarrios,ktsamis,Bischoff,calancha"
     - name: "Send Review Request to QA Squad"
-      if: steps.review_step.outputs.review == 'true' && github.actor != 'atighineanu' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'lkotek' && github.actor != 'srbarrios' && github.actor != 'calancha'
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'maximenoel8'
+      uses: kunihiko-t/review-request-action@v0.1.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        reviewers: "lkotek,srbarrios,ktsamis,Bischoff,calancha"
+    - name: "Send Review Request to QA Squad"
+      if: steps.review_step.outputs.review == 'true' && github.actor == 'maximenoel8' && github.actor != 'atighineanu' && github.actor != 'ktsamis' && github.actor != 'Bischoff' && github.actor != 'lkotek' && github.actor != 'srbarrios' && github.actor != 'calancha'
       uses: kunihiko-t/review-request-action@v0.1.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
