@@ -1,3 +1,4 @@
+- Log shell command output on failure when checking known_hosts file permissions
 - Speed up pages to compare or add packages to channels (bsc#1178767)
 - improve fromdir with better mapping of URL to local files
 
