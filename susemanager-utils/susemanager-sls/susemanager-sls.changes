@@ -1,3 +1,5 @@
+- handle GPG keys when bootstrapping ssh minions (bsc#1181847)
+
 -------------------------------------------------------------------
 Mon Mar 01 13:24:57 CET 2021 - jgonzalez@suse.com
 
