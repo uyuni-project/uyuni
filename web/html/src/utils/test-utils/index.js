@@ -23,7 +23,7 @@ export const {
   specialChars,
 } = userEvent;
 
-export const type = async (element, text, options) => {
+export const type = async (elementOrPromiseOfElement, text, options) => {
   const mergedOptions = Object.assign({
     /**
      * @testing-library/user-event's `type()` is inconsistent without a delay
@@ -31,7 +31,7 @@ export const type = async (element, text, options) => {
      */
     delay: Number.MIN_VALUE
   }, options);
-  await userEvent.type(element, text, mergedOptions);
+  await userEvent.type(await elementOrPromiseOfElement, text, mergedOptions);
   return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
 }
 
