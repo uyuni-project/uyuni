@@ -34,7 +34,6 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 /**
  * ErrataActionTest
- * @version $Rev$
  */
 public class ErrataActionTest extends RhnPostMockStrutsTestCase {
     public void testEmptySelection() throws Exception {

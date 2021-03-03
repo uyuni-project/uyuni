@@ -25,7 +25,6 @@ import java.util.List;
  * Simple implementation of XPath-like selectors
  * without XPath
  *
- * @version $Rev$
  */
 public class XPathLite {
 

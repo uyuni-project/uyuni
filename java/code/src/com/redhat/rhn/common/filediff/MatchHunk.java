@@ -17,7 +17,6 @@ package com.redhat.rhn.common.filediff;
 
 /**
  * This represents a hunk of text that is labeled as the same when diffing files.
- * @version $Rev$
  */
 public class MatchHunk extends Hunk {
 

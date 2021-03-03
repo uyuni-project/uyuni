@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * PackageArch
- * @version $Rev$
  */
 public class PackageKey extends BaseDomainHelper implements Comparable<PackageKey> {
 

@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * RenderGuardCompositeTest
- * @version $Rev$
  */
 public class RenderGuardCompositeTest extends RhnBaseTestCase {
 

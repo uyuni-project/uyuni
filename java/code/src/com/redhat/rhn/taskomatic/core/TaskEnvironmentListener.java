@@ -27,7 +27,6 @@ import java.util.Map;
 
 /**
  * Insures that the basic runtime environment is in a sane state
- * @version $Rev$
  */
 public class TaskEnvironmentListener implements TriggerListener {
 

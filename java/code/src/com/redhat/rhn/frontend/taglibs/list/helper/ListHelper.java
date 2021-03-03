@@ -61,7 +61,6 @@ import javax.servlet.http.HttpServletRequest;
  *   }
  * }</pre>
  * @author paji
- * @version $Rev$
  */
 public class ListHelper {
 

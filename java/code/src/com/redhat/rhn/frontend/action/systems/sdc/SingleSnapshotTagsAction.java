@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SingleSnapshotTagsAction
- * @version $Rev$
  */
 public class SingleSnapshotTagsAction extends SnapshotBaseAction {
 

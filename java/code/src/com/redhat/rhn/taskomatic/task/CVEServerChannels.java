@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.audit.CVEAuditManager;
  * Trigger the population of the suseCVEServerChannels table, which is
  * necessary for running CVE audit queries.
  *
- * @version $Rev$
  */
 public class CVEServerChannels extends RhnJavaJob {
 

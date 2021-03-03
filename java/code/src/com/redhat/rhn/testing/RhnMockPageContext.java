@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 
 /**
  * RhnMockPageContext
- * @version $Rev$
  */
 public class RhnMockPageContext extends MockPageContext {
 

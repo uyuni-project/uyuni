@@ -23,7 +23,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * SimpleSerializer
- * @version $Rev$
  */
 public class SerializerHelper {
     private Writer output = new StringWriter();

@@ -25,7 +25,6 @@ import javax.servlet.http.HttpSession;
 /**
  * general tag helper for common functionality shared between tags
  * TagHelper
- * @version $Rev$
  */
 public class TagHelper {
 

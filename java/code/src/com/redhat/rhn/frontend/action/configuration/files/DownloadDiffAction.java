@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DownloadDiffAction
- * @version $Rev$
  */
 public class DownloadDiffAction extends RhnAction {
 

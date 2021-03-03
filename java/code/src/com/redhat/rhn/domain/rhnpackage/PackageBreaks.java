@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * PackagePreDepends
- * @version $Rev$
  */
 @Entity
 @Table(name = "rhnPackageBreaks")

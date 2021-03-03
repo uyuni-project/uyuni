@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.taglibs;
 
 /**
  * WarningTag
- * @version $Rev$
  */
 public class WarningTag extends ToolTipTag {
 

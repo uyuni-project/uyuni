@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * Wraps a HttpServletResponse and uses a CachingOutputStream
  * to intercept all generated content
  *
- * @version $Rev$
  */
 public class CachingResponseWrapper extends HttpServletResponseWrapper {
 

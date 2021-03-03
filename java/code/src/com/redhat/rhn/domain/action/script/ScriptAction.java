@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.action.ActionFormatter;
 
 /**
  * ScriptAction
- * @version $Rev$
  */
 public class ScriptAction extends Action {
 

@@ -22,7 +22,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * KickstartScriptEditAction
- * @version $Rev$
  */
 public class KickstartScriptEditAction extends BaseKickstartScriptAction {
 

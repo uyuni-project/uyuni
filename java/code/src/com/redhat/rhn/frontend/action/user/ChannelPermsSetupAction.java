@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AddressesAction Setup the Addresses on the Request so
  * the AddressTag will be able to render
- * @version $Rev$
  */
 public class ChannelPermsSetupAction extends RhnListAction {
 

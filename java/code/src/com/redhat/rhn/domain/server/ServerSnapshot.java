@@ -49,7 +49,6 @@ import java.util.stream.Collectors;
 /**
  *
  * ServerSnapshot
- * @version $Rev$
  */
 public class ServerSnapshot extends BaseDomainHelper {
 

@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * DeleteSystemFromActionOperation - deletes a system from an action
- * @version $Rev$
  */
 public class CancelKickstartSessionOperation
     extends BaseSystemOperation {

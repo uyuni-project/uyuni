@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * ClearRunHistory
- * @version $Rev$
  */
 public class ClearLogHistory extends RhnJavaJob {
 

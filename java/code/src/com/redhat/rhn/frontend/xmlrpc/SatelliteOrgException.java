@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * SatelliteOrgException
- * @version $Rev$
  */
 public class SatelliteOrgException extends FaultException  {
 

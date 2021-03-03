@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * XmlRpcActivationKeysHelper
- * @version $Rev$
  */
 public class XmlRpcActivationKeysHelper {
 

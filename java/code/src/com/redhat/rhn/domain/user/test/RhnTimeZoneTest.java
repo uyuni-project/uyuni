@@ -21,7 +21,6 @@ import java.util.TimeZone;
 
 /**
  * TimeZoneTest
- * @version $Rev$
  */
 public class RhnTimeZoneTest extends RhnBaseTestCase {
    private RhnTimeZone tz;

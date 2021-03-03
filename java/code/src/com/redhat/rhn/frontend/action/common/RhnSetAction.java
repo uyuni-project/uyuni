@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
  * We cannot introduce a common base class because RhnSetAction and RhnAction fall into
  * different inheritance hierarchies.
  *
- * @version $Rev$
  * @see com.redhat.rhn.frontend.struts.RhnAction
  */
 public abstract class RhnSetAction extends RhnListDispatchAction {

@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * KickstartCommandName
- * @version $Rev$
  * This is a read only table so method access will be private
  */
 public class KickstartCommandName {

@@ -18,7 +18,6 @@ import org.quartz.JobExecutionContext;
 
 /**
  * SynchProbeState
- * @version $Rev$
  */
 public class SynchProbeState extends RhnJavaJob {
 

@@ -23,7 +23,6 @@ import java.io.Serializable;
 
 /**
  * ActionType
- * @version $Rev$
  */
 public class ActionArchType extends BaseDomainHelper implements Serializable {
 

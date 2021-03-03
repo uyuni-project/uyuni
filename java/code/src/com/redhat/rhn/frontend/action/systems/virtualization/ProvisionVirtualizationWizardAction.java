@@ -50,7 +50,6 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
 /**
  * ProvisionVirtualizationWizardAction extends ScheduleKickstartWizardAction
- * @version $Rev$
  */
 public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizardAction {
 

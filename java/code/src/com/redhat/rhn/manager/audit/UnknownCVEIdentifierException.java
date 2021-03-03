@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.audit;
 /**
  * The Class UnknownCVEIdentifierException.
  *
- * @version $Rev$
  */
 public class UnknownCVEIdentifierException extends Exception {
 }

@@ -19,7 +19,6 @@ package com.redhat.rhn.frontend.html;
 /**
  * InputTag a simple class to render a an input tag
  *
- * @version $Rev$
  */
 
 public class InputTag extends HtmlTag {

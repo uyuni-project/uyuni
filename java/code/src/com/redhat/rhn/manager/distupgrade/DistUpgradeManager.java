@@ -73,7 +73,6 @@ import static com.suse.utils.Lists.listOfListComparator;
 /**
  * Business logic for performing distribution upgrades.
  *
- * @version $Rev$
  */
 public class DistUpgradeManager extends BaseManager {
 

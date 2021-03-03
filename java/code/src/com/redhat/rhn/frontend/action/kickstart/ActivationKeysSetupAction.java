@@ -25,7 +25,6 @@ import java.util.Iterator;
 
 /**
  * ActivationKeysSetupAction.
- * @version $Rev$
  */
 public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
 

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for tasks
  *
- * @version $Rev$
  */
 public class TasksRenderer extends BaseFragmentRenderer {
 

@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * ChannelOverview
- * @version $Rev$
  */
 public class ChannelOverview extends BaseDto implements Comparable {
     private Long id;

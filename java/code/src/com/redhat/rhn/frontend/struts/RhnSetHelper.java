@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * RhnSetHelper
- * @version $Rev$
  */
 public class RhnSetHelper {
 

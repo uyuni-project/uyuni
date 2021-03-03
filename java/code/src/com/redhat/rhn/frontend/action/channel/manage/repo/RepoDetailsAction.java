@@ -67,7 +67,6 @@ import org.apache.log4j.Logger;
 
 /**
  * CobblerSnippetDetailsAction
- * @version $Rev$
  */
 public class RepoDetailsAction extends RhnAction {
 

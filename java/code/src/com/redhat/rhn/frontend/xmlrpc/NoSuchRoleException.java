@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * NoSuchRoleException
- * @version $Rev$
  */
 public class NoSuchRoleException extends FaultException {
     /**

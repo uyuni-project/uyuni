@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * ConfigActionTest
- * @version $Rev$
  */
 public class ConfigActionTest extends RhnBaseTestCase {
 

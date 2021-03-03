@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ServletExportHandler - util for taking an ExportWriter and writing it
  * out to a HttpServletResponse.
- * @version $Rev$
  */
 public class ServletExportHandler {
 

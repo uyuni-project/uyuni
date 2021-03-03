@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * BaseEvent - basic superclass that holds common event members.
  *
- * @version $Rev$
  */
 public abstract class BaseEvent {
 

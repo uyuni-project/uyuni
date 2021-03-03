@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.kickstart.crypto;
 
 /**
  * GpgCryptoKey
- * @version $Rev$
  */
 public class GpgCryptoKey extends CryptoKey {
     /**

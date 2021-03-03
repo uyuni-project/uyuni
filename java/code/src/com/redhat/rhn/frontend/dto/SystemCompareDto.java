@@ -39,7 +39,6 @@ import java.util.Set;
 
 /**
  * SystemCompareDto
- * @version $Rev$
  */
 public class SystemCompareDto {
 
@@ -417,7 +416,6 @@ public class SystemCompareDto {
      * An item object to represent
      * value/ id/ and similarity
      * Item
-     * @version $Rev$
      */
     public static class Item {
         private String value;

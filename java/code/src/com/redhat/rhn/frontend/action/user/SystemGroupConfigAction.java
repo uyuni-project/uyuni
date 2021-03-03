@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemGroupConfigAction
- * @version $Rev$
  */
 public class SystemGroupConfigAction extends RhnAction {
 

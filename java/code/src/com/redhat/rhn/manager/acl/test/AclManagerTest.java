@@ -23,7 +23,6 @@ import com.mockobjects.servlet.MockHttpServletRequest;
 
 /**
  * AclManagerTest
- * @version $Rev$
  */
 public class AclManagerTest extends RhnBaseTestCase {
 

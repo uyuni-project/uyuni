@@ -21,7 +21,6 @@ import java.util.List;
  * Expandable
  * Mainly used to work with the new List tag
  * To use a tree like behaviour
- * @version $Rev$
  */
 public interface Expandable {
     /**

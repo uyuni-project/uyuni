@@ -23,7 +23,6 @@ import java.util.Set;
 
 /**
  * OrgUserExtGroup
- * @version $Rev$
  */
 public class OrgUserExtGroup extends ExtGroup {
 

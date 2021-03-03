@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelTreeRelevantSetupAction
- * @version $Rev$
  */
 public class PopularChannelTreeAction extends BaseChannelTreeAction {
 

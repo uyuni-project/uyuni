@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * PackageRequires
- * @version $Rev$
  */
 @Entity
 @Table(name = "rhnPackageObsoletes")

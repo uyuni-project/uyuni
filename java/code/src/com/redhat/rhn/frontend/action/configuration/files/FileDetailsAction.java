@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * FileDetailsAction
- * @version $Rev$
  */
 public class FileDetailsAction extends RhnAction {
 

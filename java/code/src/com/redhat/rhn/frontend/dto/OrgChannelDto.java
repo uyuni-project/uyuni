@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * DTO for a com.redhat.rhn.domain.ActivationKey
- * @version $Rev$
  */
 public class OrgChannelDto extends BaseDto {
 

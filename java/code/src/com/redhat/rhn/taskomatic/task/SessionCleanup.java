@@ -28,7 +28,6 @@ import java.util.Map;
  * SessionCleanup
  * Deletes expired rows from the PXTSessions table to keep it from
  * growing too large.
- * @version $Rev$
  */
 public class SessionCleanup extends RhnJavaJob {
 

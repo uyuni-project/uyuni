@@ -21,7 +21,6 @@ import java.net.URL;
 /**
  * A factory that returns the correct type of finder.
  *
- * @version $Rev$
  */
 public class FinderFactory {
 

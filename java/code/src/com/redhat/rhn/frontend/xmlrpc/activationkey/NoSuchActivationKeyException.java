@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 /**
  * Activation key referenced does not exist.
  *
- * @version $Rev$
  */
 public class NoSuchActivationKeyException extends FaultException {
 

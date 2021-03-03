@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChildChannelAction
- * @version $Rev$
  */
 public class ChildChannelAction extends RhnAction {
 

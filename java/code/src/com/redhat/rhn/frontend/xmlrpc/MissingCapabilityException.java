@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.server.Server;
 
 /**
  * MissingCapabilityException
- * @version $Rev$
  */
 public class MissingCapabilityException extends FaultException {
 

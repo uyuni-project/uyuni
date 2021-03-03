@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * SnippetHandlerTest
- * @version $Rev$
  */
 public class SnippetHandlerTest extends BaseHandlerTestCase {
 

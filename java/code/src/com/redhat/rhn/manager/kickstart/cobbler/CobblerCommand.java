@@ -42,7 +42,6 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * CobblerCommand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public abstract class CobblerCommand {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.satellite.ConfigureBootstrapCommand;
 
 /**
  * TestConfigureBootstrapCommand
- * @version $Rev$
  */
 public class TestConfigureBootstrapCommand extends ConfigureBootstrapCommand {
 

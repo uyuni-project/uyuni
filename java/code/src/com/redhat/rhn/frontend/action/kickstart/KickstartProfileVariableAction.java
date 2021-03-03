@@ -27,7 +27,6 @@ import org.cobbler.Profile;
 /**
  *
  * KickstartProfileVariableAction
- * @version $Rev$
  */
 public class KickstartProfileVariableAction extends KickstartVariableAction {
 

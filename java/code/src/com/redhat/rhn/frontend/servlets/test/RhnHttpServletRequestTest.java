@@ -23,7 +23,6 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 
 /**
  * RhnHttpServletRequestTest
- * @version $Rev$
  */
 public class RhnHttpServletRequestTest extends MockObjectTestCase {
     private RhnMockHttpServletRequest mockRequest;

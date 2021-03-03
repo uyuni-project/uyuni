@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * SandboxCleanupTest
- * @version $Rev$
  */
 public class SandboxCleanupTest extends RhnBaseTestCase {
 

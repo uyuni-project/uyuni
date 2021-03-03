@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * FilePreservationDto
- * @version $Rev$
  */
 public class FilePreservationDto extends BaseDto {
     private Long id;

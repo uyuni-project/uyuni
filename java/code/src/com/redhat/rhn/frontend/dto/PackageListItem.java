@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * PackageListItem
- * @version $Rev$
  */
 public class PackageListItem extends IdComboDto {
     private List elabIdCombo;

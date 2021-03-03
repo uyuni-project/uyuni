@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * LocalAddFileAction, sdc add config file action.
- * @version $Rev$
  */
 public class LocalAddFileAction extends BaseAddFilesAction {
 

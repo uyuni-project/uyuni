@@ -27,7 +27,6 @@ import java.util.Iterator;
 /**
  * KickstartPreservationListAction
  * - simple class to list the rhnFileList entries for an org.
- * @version $Rev$
  */
 public class KickstartPreservationListSetupAction extends BaseKickstartListSetupAction {
 

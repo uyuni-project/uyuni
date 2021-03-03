@@ -62,7 +62,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseSubscribeAction
- * @version $Rev$
  */
 public class BaseSubscribeAction extends RhnLookupDispatchAction {
 

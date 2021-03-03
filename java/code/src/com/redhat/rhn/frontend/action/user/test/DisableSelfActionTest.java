@@ -22,7 +22,6 @@ import org.apache.struts.action.ActionForward;
 
 /**
  * DisableSelfActionTest
- * @version $Rev$
  */
 public class DisableSelfActionTest extends RhnBaseTestCase {
 

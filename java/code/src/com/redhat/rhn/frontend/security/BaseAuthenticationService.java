@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * BaseAuthenticationService
- * @version $Rev$
  */
 public abstract class BaseAuthenticationService implements AuthenticationService {
 

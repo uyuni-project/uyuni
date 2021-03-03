@@ -38,7 +38,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * RuleDetailsAction
- * @version $Rev$
  */
 
 public class RuleDetailsAction extends RhnAction implements Listable {

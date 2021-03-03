@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @see PxtSessionDelegate
  * @see com.redhat.rhn.frontend.struts.RequestContext
- * @version $Rev$
  */
 public class PxtSessionDelegateImpl implements PxtSessionDelegate {
 

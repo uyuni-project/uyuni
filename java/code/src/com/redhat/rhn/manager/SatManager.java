@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * OrgManager - Manages MultiOrg tasks
- * @version $Rev$
  */
 public class SatManager extends BaseManager {
     private static final SatManager MANAGER = new SatManager();

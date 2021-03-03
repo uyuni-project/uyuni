@@ -36,7 +36,6 @@ import java.io.IOException;
 
 /**
  * ConfigFileCreationHelper
- * @version $Rev$
  */
 public class ConfigFileBuilder {
     private static final ConfigFileBuilder HELPER =

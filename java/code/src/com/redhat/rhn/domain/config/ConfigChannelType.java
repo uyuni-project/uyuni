@@ -24,7 +24,6 @@ import java.util.TreeMap;
 
 /**
  * ConfigChannelType - Class representation of the table rhnConfigChannelType.
- * @version $Rev$
  */
 public class ConfigChannelType extends BaseDomainHelper {
 

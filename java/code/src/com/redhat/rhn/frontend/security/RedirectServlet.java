@@ -58,7 +58,6 @@ import javax.servlet.http.HttpServletResponse;
  * filters, ensuring that the PXT session is created. RedirectServlet will then handle
  * redirecting the request back to the originally requested perl page.
  *
- * @version $Rev$
  */
 public class RedirectServlet extends HttpServlet {
 

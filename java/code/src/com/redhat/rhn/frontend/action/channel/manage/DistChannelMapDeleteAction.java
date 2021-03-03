@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DistChannelMapDeleteAction
- * @version $Rev$
  */
 public class DistChannelMapDeleteAction extends RhnAction {
 

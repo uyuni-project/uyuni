@@ -20,7 +20,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 /**
  *
  * InvalidChannelParameter
- * @version $Rev$
  */
 public class InvalidChannelParameter extends RhnRuntimeException  {
 

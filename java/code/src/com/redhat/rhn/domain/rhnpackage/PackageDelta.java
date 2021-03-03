@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * PackageDelta
- * @version $Rev$
  */
 public class PackageDelta extends BaseDomainHelper {
 

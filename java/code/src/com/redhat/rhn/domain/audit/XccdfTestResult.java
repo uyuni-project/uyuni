@@ -33,7 +33,6 @@ import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 
 /**
  * XccdfTestResult - Class representation of the table rhnXccdfTestResult.
- * @version $Rev$
  */
 public class XccdfTestResult {
 

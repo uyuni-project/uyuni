@@ -43,7 +43,6 @@ import java.util.regex.Pattern;
 
 /**
  * A simple class that assists with String manipulation
- * @version $Rev$
  */
 public class StringUtil {
 

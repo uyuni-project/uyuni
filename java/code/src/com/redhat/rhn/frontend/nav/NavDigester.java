@@ -21,7 +21,6 @@ import java.net.URL;
 
 /**
  * Helper class to parse a sitenav.xml file, returning the tree
- * @version $Rev$
  */
 public class NavDigester {
     // no contruction, please

@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SnapshotUnservablePackagesAction
- * @version $Rev$
  */
 public class SnapshotUnservablePackagesAction extends SnapshotBaseAction {
 

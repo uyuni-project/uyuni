@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * TreeEditCommandTest
- * @version $Rev$
  */
 public class TreeEditOperationTest extends TreeOperationTestBase {
 

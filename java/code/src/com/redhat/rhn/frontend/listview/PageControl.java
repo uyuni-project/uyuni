@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
  * PageControl is a means of controlling how much data the user
  * sees in a list at a time. It also provides the filtering and indexing
  * mechanisms of ListControl
- * @version $Rev$
  */
 public class PageControl extends ListControl {
     private int start;

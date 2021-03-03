@@ -157,7 +157,6 @@ public class ForceRecreationListType implements UserCollectionType {
     /**
      *
      * ForceRecreationList
-     * @version $Rev$
      */
     private static class ForceRecreationList extends PersistentList {
 

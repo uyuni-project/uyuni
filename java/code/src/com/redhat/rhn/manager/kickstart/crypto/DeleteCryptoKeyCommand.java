@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * DeleteCryptoKeyCommand
- * @version $Rev$
  */
 public class DeleteCryptoKeyCommand extends BaseCryptoKeyCommand {
 

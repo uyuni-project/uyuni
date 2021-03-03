@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 /**
  *
  * ServerGroupFactory
- * @version $Rev$
  */
 public class ServerGroupFactory extends HibernateFactory {
 

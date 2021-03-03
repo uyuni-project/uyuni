@@ -33,7 +33,6 @@ import java.util.Comparator;
  * Usefull if you have a Collection of Beans that you
  * want to sort based on a specific property.
  *
- * @version $Rev$
  */
 public class DynamicComparator implements Comparator  {
 

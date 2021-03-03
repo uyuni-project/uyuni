@@ -22,7 +22,6 @@ import org.hibernate.HibernateException;
 /**
  * BaseTransactionCommand - simple baseclass to hold logic for handling tx
  *
- * @version $Rev$
  */
 public class BaseTransactionCommand {
 

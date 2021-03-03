@@ -29,7 +29,6 @@ import java.util.Set;
 
 /**
  * KickstartActivationKeysCommand
- * @version $Rev$
  */
 public class KickstartActivationKeysCommand extends BaseKickstartCommand {
 

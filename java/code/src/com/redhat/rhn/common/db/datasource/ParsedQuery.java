@@ -21,7 +21,6 @@ import java.util.List;
  * query it parses. The ParsedQuery is used by ModeFactory when creating new
  * Mode objects and the elaborators and queries contained therein.
  *
- * @version $Rev$
  */
 public interface ParsedQuery {
 

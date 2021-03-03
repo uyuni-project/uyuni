@@ -25,7 +25,6 @@ import org.hibernate.Session;
  * SessionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.session.Session objects from the
  * database.
- * @version $Rev$
  */
 public class WebSessionFactory extends HibernateFactory {
 

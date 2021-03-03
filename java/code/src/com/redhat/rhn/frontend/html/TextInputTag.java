@@ -23,7 +23,6 @@ package com.redhat.rhn.frontend.html;
  * <input type="text" name="foo" size="15" value=""/>
  * }
  *
- * @version $Rev$
  */
 
 public class TextInputTag extends InputTag {

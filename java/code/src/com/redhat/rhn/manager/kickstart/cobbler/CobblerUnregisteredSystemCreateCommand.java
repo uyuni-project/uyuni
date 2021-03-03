@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.user.User;
  * Create a cobbler system record for a bare metal system (via XMLRPC) that is
  * not (yet) registered with spacewalk.
  *
- * @version $Rev$
  */
 public class CobblerUnregisteredSystemCreateCommand extends
         CobblerSystemCreateCommand {

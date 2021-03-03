@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * SandboxCleanup
- * @version $Rev$
  */
 public class SandboxCleanup extends RhnJavaJob {
 

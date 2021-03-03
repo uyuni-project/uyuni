@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.org.Org;
 
 /**
  * CryptoKeyCommand
- * @version $Rev$
  */
 public class CreateCryptoKeyCommand extends BaseCryptoKeyCommand {
 

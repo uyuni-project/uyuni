@@ -29,7 +29,6 @@ import javax.servlet.jsp.PageContext;
  * RhnTagFunctions - class to encapsulate the set of static methods that
  * a JSP can interact with.  See rhn-taglib.tld for list of {@literal <function>}
  * definitions
- * @version $Rev$
  */
 public class RhnTagFunctions {
 

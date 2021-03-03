@@ -38,7 +38,6 @@ import java.util.Date;
 
 /**
  * TaskoQuartzHelper
- * @version $Rev$
  */
 public class TaskoQuartzHelper {
 

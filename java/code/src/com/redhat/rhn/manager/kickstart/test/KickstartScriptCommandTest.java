@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.kickstart.KickstartScriptEditCommand;
 
 /**
  * KickstartScriptTest
- * @version $Rev$
  */
 public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
 

@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.Server;
 /**
  * Organization Not Trusted Exception
  *
- * @version $Rev$
  */
 public class OrgNotInTrustException extends FaultException  {
 

@@ -21,7 +21,6 @@ import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * DTO for a com.redhat.rhn.domain.ActivationKey
- * @version $Rev$
  */
 public class ActivationKeyDto extends BaseDto {
 

@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * RowCallback is called for each row found in the ResultSet of an
  * elaborator query.
- * @version $Rev$
  * @see com.redhat.rhn.common.db.datasource.CachedStatement
  */
 public interface RowCallback {

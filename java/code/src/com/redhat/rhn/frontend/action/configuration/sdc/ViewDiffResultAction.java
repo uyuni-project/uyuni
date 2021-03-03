@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ViewDiffResultAction
- * @version $Rev$
  */
 public class ViewDiffResultAction extends RhnAction {
     public static final String REVISION_BEAN = "revisionBean";

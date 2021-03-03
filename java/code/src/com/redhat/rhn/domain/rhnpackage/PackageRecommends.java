@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * PackageRecommends
- * @version $Rev$
  */
 @Entity
 @Table(name = "rhnPackageRecommends")

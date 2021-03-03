@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * FailedActionsSetupActionTest
- * @version $Rev$
  */
 public class FailedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 

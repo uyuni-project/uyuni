@@ -32,7 +32,6 @@ import java.util.Map;
 /**
  * DumpNavTree is a utility that will read the given sitenav xml file and dump
  * its contents to stdout in text format.
- * @version $Rev$
  */
 public class DumpNavTree {
     private NavTreeIndex treeIndex;

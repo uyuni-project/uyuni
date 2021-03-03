@@ -19,7 +19,6 @@ import java.util.Map;
 
 /**
  * Renderable - base class for rendering
- * @version $Rev$
  */
 public abstract class Renderable {
     private RenderGuard guard;

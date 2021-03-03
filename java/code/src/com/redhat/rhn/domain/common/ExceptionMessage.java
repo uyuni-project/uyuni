@@ -25,7 +25,6 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * RhnException
- * @version $Rev$
  */
 public class ExceptionMessage {
     private Long id;

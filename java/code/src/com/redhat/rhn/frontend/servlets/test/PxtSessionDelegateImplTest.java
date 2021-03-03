@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegateImpl;
 
 /**
  * PxtSessionDelegateImplTest
- * @version $Rev$
  */
 public class PxtSessionDelegateImplTest extends MockObjectTestCase {
 

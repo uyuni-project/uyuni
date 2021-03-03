@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 /**
  * Tests for {@link CVEAuditSystem}.
  *
- * @version $Rev$
  */
 public class CVEAuditSystemTest extends TestCase {
 

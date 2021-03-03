@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * NotifyAction
- * @version $Rev$
  */
 public class NotifyAction extends RhnAction {
 

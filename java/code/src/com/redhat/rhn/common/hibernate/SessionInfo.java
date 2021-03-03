@@ -20,7 +20,6 @@ import org.hibernate.Transaction;
 /**
  * Holds metadata around a thread's Hibernate session usage
  *
- * @version $Rev$
  */
 class SessionInfo {
 

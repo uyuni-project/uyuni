@@ -23,10 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 
-/**
- * @version $Rev$
- */
-
 public class SystemRecord extends CobblerObject {
     private static final String HOSTNAME = "hostname";
     private static final String NAME_SERVERS = "name_servers";

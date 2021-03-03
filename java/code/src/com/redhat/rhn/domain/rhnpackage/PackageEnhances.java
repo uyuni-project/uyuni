@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * PackageEnhances
- * @version $Rev$
  */
 @Entity
 @Table(name = "rhnPackageEnhances")

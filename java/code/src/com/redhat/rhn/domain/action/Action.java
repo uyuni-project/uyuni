@@ -34,7 +34,6 @@ import java.util.Set;
 
 /**
  * Action - Class representation of the table rhnAction.
- * @version $Rev$
  */
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
 

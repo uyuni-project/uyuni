@@ -19,7 +19,6 @@ import java.util.LinkedHashMap;
 
 /**
  * AuditDto
- * @version $Rev$
  */
 public class AuditDto extends BaseDto {
     private Long id;

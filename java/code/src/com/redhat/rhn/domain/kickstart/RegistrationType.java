@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.kickstart;
 
 /**
  * RegistrationType
- * @version $Rev$
  */
 public enum RegistrationType {
     REACTIVATION("reactivation"),

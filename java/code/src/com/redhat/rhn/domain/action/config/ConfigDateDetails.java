@@ -21,7 +21,6 @@ import java.util.Date;
 /**
  * ConfigDateDetails - Class representation of the table rhnActionConfigDate.
  *
- * @version $Rev$
  */
 public class ConfigDateDetails extends ActionChild {
 

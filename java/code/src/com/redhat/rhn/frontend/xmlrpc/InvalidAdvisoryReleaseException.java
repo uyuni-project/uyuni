@@ -22,7 +22,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 /**
  * Invalid Advisory Release Exception
  *
- * @version $Rev$
  */
 public class InvalidAdvisoryReleaseException extends FaultException  {
 

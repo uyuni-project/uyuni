@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * A simple class that assists with Servlet-related activities
- * @version $Rev$
  */
 public class ServletUtils {
     /** utility class */

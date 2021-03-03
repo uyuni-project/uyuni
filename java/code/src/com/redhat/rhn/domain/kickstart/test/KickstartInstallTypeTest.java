@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * KickstartInstallTypeTest
- * @version $Rev$
  */
 public class KickstartInstallTypeTest extends RhnBaseTestCase {
 

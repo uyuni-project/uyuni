@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * KickstartTreeSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

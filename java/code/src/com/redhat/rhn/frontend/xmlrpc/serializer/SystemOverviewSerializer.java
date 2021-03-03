@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * SystemOverviewSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

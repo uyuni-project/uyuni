@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 /**
  * JUnit test case for the KickstartLister class.
- * @version $Rev$
  */
 
 public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {

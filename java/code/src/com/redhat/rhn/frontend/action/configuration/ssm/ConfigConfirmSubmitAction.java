@@ -56,7 +56,6 @@ import org.apache.log4j.Logger;
 
 /**
  * DiffConfirmSubmitAction
- * @version $Rev$
  */
 public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
 

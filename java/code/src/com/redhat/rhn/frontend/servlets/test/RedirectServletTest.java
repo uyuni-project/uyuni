@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RedirectServletTest
- * @version $Rev$
  */
 public class RedirectServletTest extends MockObjectTestCase {
 

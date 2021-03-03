@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * ChannelListAction,  for configuration in sdc
- * @version $Rev$
  */
 public class ChannelListAction extends BaseSetListAction {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * Represents the amount of ram on a particular server.
- * @version $Rev$
  */
 public class Ram extends BaseDomainHelper {
 

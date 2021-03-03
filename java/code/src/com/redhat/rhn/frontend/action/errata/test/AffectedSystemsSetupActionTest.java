@@ -25,7 +25,6 @@ import java.util.Iterator;
 
 /**
  * AffectedSystemsSetupActionTest
- * @version $Rev$
  */
 public class AffectedSystemsSetupActionTest extends RhnMockStrutsTestCase {
 

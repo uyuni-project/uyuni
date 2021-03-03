@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * ISS Master we're trying to create already exists
  *
- * @version $Rev$
  */
 public class IssDuplicateMasterException extends FaultException {
 

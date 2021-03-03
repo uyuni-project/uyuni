@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * NoSuchOrgException
- * @version $Rev$
  */
 public class NoSuchOrgException extends FaultException  {
 

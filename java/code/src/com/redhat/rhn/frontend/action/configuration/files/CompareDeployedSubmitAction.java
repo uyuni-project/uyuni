@@ -49,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CompareDeployedSubmitAction
- * @version $Rev$
  */
 public class CompareDeployedSubmitAction extends RhnSetAction {
 

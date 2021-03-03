@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RankChannels, for ssm configuration management
- * @version $Rev$
  */
 public class RankChannels extends BaseRankChannels {
     public static final String PRIORITY = "priority";

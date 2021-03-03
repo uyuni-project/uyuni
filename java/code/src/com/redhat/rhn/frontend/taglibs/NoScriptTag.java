@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * NoScriptTag
- * @version $Rev$
  */
 public class NoScriptTag extends TagSupport {
 

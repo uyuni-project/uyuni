@@ -20,7 +20,6 @@ import java.util.List;
 /**
  * Allows us to filter lists whose data is a ConfigFileDto.
  * ConfigFileFilter
- * @version $Rev$
  */
 public class ConfigFileFilter extends BaseConfigFilter {
     private List fields;

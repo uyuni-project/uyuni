@@ -48,7 +48,6 @@ import java.util.TreeSet;
 
 /**
  * KickstartEditCommand - Command class for loading and editing a Kickstart Profile.
- * @version $Rev$
  */
 public class KickstartEditCommand extends BaseKickstartCommand {
 

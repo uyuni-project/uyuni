@@ -24,7 +24,6 @@ import java.util.Map;
  * ActionAclHandler contains ACL methods related to com.redhat.rhn.domain.action.Action
  * objects.
  *
- * @version $Rev$
  */
 public class ActionAclHandler implements AclHandler {
 

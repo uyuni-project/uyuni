@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * SecurityErrataListRelevantAction
- * @version $Rev$
  */
 public class SecurityErrataListRelevantAction extends ErrataListRelevantAction {
 

@@ -39,7 +39,6 @@ import java.util.Set;
 
 /**
  * Token
- * @version $Rev$
  */
 public class Token implements Identifiable {
 

@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CreateAction
- * @version $Rev$
  */
 public class CreateAction extends RhnSetAction {
 

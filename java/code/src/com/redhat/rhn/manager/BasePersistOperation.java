@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * BasePersistOperation
- * @version $Rev$
  */
 public abstract class BasePersistOperation implements PersistOperation {
 

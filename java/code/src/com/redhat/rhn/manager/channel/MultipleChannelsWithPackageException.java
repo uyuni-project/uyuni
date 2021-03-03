@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * MultipleChannelsWithPackageException
- * @version $Rev$
  */
 public class MultipleChannelsWithPackageException extends RhnRuntimeException {
 

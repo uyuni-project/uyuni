@@ -23,7 +23,6 @@ import javax.servlet.jsp.JspWriter;
  * a J2EE JspWriter which throws an IOException for EVERY
  * method.  This class should be used to test exception
  * handling code in your taglibs.
- * @version $Rev$
  */
 public class RhnMockExceptionJspWriter extends JspWriter {
 

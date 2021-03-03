@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * InvalidOperationException
- * @version $Rev$
  */
 public class InvalidOperationException extends FaultException {
 

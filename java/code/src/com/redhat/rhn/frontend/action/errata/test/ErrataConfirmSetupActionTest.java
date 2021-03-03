@@ -32,7 +32,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 /**
  * ErrataConfirmSetupActionTest - test ErrataConfirmSetupAction setting
  * up the information in the request for the pageview
- * @version $Rev$
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 

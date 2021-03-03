@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * BugErrataListAllAction
- * @version $Rev$
  */
 public class BugErrataListAllAction extends ErrataListAllAction {
 

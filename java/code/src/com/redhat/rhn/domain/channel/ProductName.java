@@ -23,7 +23,6 @@ import java.util.Date;
 /**
  *
  * ProductName
- * @version $Rev$
  */
 public class ProductName {
     private Long id;

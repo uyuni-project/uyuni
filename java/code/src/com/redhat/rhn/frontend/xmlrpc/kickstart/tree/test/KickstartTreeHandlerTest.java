@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * KickstartHandlerTest
- * @version $Rev$
  */
 public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
 

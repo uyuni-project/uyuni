@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DisabledListSetupAction
- * @version $Rev$
  */
 public class DisabledListSetupAction extends RhnAction {
     public static final String DISPATCH = "dispatch";

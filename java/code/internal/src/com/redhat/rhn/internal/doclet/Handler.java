@@ -20,7 +20,6 @@ import java.util.List;
 /**
  *
  * Handler
- * @version $Rev$
  */
 public class Handler implements Comparable<Handler> {
 

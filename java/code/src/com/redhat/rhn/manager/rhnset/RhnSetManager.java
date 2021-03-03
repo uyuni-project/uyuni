@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.BaseManager;
  * RhnSetManager
  * offers management methods for RhnSet objects giving you the ability
  * to create, delete, update, and find them.
- * @version $Rev$
  */
 public class RhnSetManager extends BaseManager {
 

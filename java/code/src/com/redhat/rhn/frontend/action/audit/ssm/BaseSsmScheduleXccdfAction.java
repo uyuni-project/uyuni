@@ -30,7 +30,6 @@ import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * SSM OpenSCAP XCCDF scanning.
- * @version $Rev$
  */
 public abstract class BaseSsmScheduleXccdfAction
         extends RhnAction implements Listable {

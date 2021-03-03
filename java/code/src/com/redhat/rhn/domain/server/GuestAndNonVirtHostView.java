@@ -24,7 +24,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  *
  * @see VirtualInstanceFactory
  *
- * @version $Rev$
  */
 public class GuestAndNonVirtHostView {
 

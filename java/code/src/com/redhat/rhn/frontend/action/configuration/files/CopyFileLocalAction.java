@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 /**
  * CopyFileLocalAction
  * Setup Action for copying files to local config channels
- * @version $Rev$
  */
 public class CopyFileLocalAction extends BaseCopyConfigFileAction {
 

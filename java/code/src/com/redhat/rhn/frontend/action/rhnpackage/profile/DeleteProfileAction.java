@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
  * It is used when deleting the profile from the system details page
  * (i.e. rhn/systems/details/packages/profiles/DeleteProfile.do) as well as
  * from the stored profiles page (i.e. rhn/profiles/Delete.do).
- * @version $Rev$
  */
 public class DeleteProfileAction extends RhnAction {
 

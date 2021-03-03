@@ -17,7 +17,6 @@ package com.redhat.rhn.common.db.datasource;
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
  *
- * @version $Rev$
  */
 public interface Mode {
 

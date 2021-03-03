@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseEditAction
- * @version $Rev$
  */
 public abstract class BaseEditAction extends RhnAction {
 

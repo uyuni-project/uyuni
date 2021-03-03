@@ -23,7 +23,6 @@ import java.util.Set;
 
 /**
  * RhnSetTest
- * @version $Rev$
  */
 public class RhnSetTest extends RhnBaseTestCase {
     private static final String[] TEST_ELEMS = {"100", "150", "300", "175", "35"};

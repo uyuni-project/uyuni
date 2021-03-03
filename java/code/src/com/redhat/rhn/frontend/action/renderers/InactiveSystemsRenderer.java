@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for inactive systems
  *
- * @version $Rev$
  */
 public class InactiveSystemsRenderer extends BaseFragmentRenderer {
 

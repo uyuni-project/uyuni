@@ -27,7 +27,6 @@ import org.cobbler.Distro;
 /**
  *
  * KickstartProfileVariableAction
- * @version $Rev$
  */
 public class KickstartTreeVariableAction extends KickstartVariableAction {
 

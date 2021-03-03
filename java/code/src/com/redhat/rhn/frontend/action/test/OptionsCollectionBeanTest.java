@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 
 /**
  * OptionsCollectionBean
- * @version $Rev$
  */
 public class OptionsCollectionBeanTest extends TestCase {
 

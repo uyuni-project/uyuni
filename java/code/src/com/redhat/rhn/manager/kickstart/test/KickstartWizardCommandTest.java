@@ -33,7 +33,6 @@ import java.util.List;
 
 /**
  * KickstartWizardCommandTest
- * @version $Rev$
  */
 public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
 

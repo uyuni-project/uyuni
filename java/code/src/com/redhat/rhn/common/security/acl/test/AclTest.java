@@ -32,7 +32,6 @@ import java.util.TreeSet;
 /*
  * Test for {@link Acl}
  *
- * @version $Rev$
  */
 public class AclTest extends RhnBaseTestCase {
 

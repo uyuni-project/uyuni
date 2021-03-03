@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * BaseListDto
- * @version $Rev$
  */
 public interface BaseListDto {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * NoSuchSnapshotTagException
- * @version $Rev$
  */
 public class NoSuchSnapshotTagException extends FaultException {
 

@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class ChannelPackagesRemoveAction extends RhnAction {
 

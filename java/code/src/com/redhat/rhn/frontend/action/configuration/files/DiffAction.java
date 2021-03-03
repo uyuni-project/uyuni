@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DiffAction - For displaying file diffs.
- * @version $Rev$
  */
 public class DiffAction extends RhnAction {
 

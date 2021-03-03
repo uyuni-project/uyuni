@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 
 /**
  * ErrataCacheTask
- * @version $Rev$
  */
 public class ErrataCacheTask extends RhnQueueJob {
 

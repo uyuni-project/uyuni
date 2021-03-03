@@ -31,7 +31,6 @@ import java.util.Map;
 
 /**
  * SystemAclHandlerTest
- * @version $Rev$
  */
 public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     private Server srvr;

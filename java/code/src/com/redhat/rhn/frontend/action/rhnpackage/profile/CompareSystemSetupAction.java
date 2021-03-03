@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CompareSystemSetupAction
- * @version $Rev$
  */
 public class CompareSystemSetupAction extends RhnAction {
 

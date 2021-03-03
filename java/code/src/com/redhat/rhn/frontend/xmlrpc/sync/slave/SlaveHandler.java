@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.IssDuplicateSlaveException;
 /**
  * SlaveHandler
  *
- * @version $Rev$
  *
  * @xmlrpc.namespace sync.slave
  * @xmlrpc.doc Contains methods to set up information about allowed-"slaves", for use

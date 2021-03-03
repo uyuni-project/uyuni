@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * ScriptRunAction
- * @version $Rev$
  */
 public class ScriptRunAction extends ScriptAction {
 

@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * ValidatorTest - Test that the ValidatorService functions properly
- * @version $Rev$
  */
 public class ValidatorServiceTest extends RhnBaseTestCase {
 

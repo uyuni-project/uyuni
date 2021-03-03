@@ -29,7 +29,6 @@ import java.io.InputStream;
 
 /**
  * TestFileData
- * @version $Rev$
  */
 public class TextFileData extends ConfigFileData {
     private String contents;

@@ -26,7 +26,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * CompletedSystemsSetupActionTest
- * @version $Rev$
  */
 public class CompletedSystemsSetupActionTest extends RhnBaseTestCase {
     private CompletedSystemsSetupAction action;

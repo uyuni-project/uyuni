@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * AddErrataAction
- * @version $Rev$
  */
 public class AddErrataAction extends RhnListAction {
 

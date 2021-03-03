@@ -24,7 +24,6 @@ package com.redhat.rhn.frontend.filter;
  * if a given DTO had a condition x match on column X,
  * else match on column Y.
  * Matcher
- * @version $Rev$
  */
 public interface Matcher {
     /**

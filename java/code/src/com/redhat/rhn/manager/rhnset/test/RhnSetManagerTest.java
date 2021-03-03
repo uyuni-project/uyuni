@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * RhnManagerTest
- * @version $Rev$
  */
 public class RhnSetManagerTest extends RhnBaseTestCase {
 

@@ -25,7 +25,6 @@ import java.io.Serializable;
 
 /**
  * UserGroupMembers
- * @version $Rev$
  */
 public class UserGroupMembers extends BaseDomainHelper implements Serializable {
 

@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * FileDetailsAction
- * @version $Rev$
  */
 public class DeleteRevisionAction extends RhnAction {
 

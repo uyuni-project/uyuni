@@ -22,7 +22,6 @@ import java.util.Set;
 
 /**
  * ScriptAction
- * @version $Rev$
  */
 public class ScriptActionDetails extends ActionChild {
 

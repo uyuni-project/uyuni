@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
- * @version $Rev$
  */
 public class XccdfRuleResultDto extends BaseDto {
 

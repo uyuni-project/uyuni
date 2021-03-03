@@ -25,7 +25,6 @@ import org.apache.struts.action.ActionErrors;
 
 /**
  * RhnHelperTest - test our RhnHelper class
- * @version $Rev$
  */
 public class RhnValidationHelperTest extends RhnBaseTestCase {
 

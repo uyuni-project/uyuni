@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for pending actions
  *
- * @version $Rev$
  */
 public class PendingActionsRenderer extends BaseFragmentRenderer {
 

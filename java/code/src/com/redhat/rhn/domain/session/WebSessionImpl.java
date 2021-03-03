@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.session.SessionManager;
 
 /**
  * A web session
- * @version $Rev$
  */
 public class WebSessionImpl implements WebSession {
     private Long id;

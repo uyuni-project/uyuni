@@ -28,7 +28,6 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 
 /**
  * AccessTest
- * @version $Rev$
  */
 public class AclFactoryTest extends RhnBaseTestCase {
 

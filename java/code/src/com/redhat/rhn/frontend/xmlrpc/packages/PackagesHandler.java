@@ -49,7 +49,6 @@ import java.util.Map;
 
 /**
  * PackagesHandler
- * @version $Rev$
  * @xmlrpc.namespace packages
  * @xmlrpc.doc Methods to retrieve information about the Packages contained
  * within this server.

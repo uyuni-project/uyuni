@@ -24,7 +24,6 @@ import java.util.Iterator;
 
 /**
  * CustomInfoHandlerTest
- * @version $Rev$
  */
 public class CustomInfoHandlerTest extends BaseHandlerTestCase {
 

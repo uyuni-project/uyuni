@@ -23,7 +23,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * Class Role that reflects the DB representation of RHNUSERGROUP
  * DB table: RHNUSERGROUP
- * @version $Rev$
  */
 public class RoleImpl extends BaseDomainHelper implements Role {
 

@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.config;
 
 /**
  * ActivationScheduleDeployAction - Class representing TYPE_ACTIVATION_SCHEDULE_PKG_INSTALL
- * @version $Rev$
  */
 public class ActivationScheduleDeployAction extends ConfigAction {
 

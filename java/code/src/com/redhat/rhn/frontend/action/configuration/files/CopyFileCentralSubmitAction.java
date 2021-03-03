@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CopyFileCentralSubmitAction
- * @version $Rev$
  */
 public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
 

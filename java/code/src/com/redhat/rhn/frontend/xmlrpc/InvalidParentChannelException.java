@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidParentChannelException
- * @version $Rev$
  */
 public class InvalidParentChannelException extends FaultException {
 

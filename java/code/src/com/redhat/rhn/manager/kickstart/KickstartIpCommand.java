@@ -25,7 +25,6 @@ import java.util.Set;
 
 /**
  * KickstartIpCommand
- * @version $Rev$
  */
 
 public class KickstartIpCommand extends BaseKickstartCommand {

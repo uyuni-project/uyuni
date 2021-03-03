@@ -25,7 +25,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
  * would be a DataResult in which results have a parent/child relationship. We may
  * wish to preserve the parent of any child not filtered out. ListFilter allows
  * us to define such custom logic as necessary.
- * @version $Rev$
  */
 public interface ResultsFilter {
 

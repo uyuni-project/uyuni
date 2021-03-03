@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * ServerFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.Server objects from the database.
- * @version $Rev$
  */
 public class ServerNoteFactory extends HibernateFactory {
 

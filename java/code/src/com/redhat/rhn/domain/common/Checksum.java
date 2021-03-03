@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 /**
  * Checksum
  * Class for checksums of files, packages and erratas.
- * @version $Rev$
  */
 public class Checksum extends BaseDomainHelper {
 

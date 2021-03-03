@@ -31,7 +31,6 @@ import java.util.StringJoiner;
 
 /**
  * TreeCreateCommand
- * @version $Rev$
  */
 public class TreeCreateOperation extends BaseTreeEditOperation {
 

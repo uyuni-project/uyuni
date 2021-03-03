@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * RhnHttpServletResponse
- * @version $Rev$
  */
 public class RhnHttpServletResponse extends HttpServletResponseWrapper {
 

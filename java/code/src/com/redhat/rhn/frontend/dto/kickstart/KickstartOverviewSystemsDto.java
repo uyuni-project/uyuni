@@ -22,7 +22,6 @@ import java.sql.Timestamp;
 
 /**
  * KickstartOverviewSystemsDto
- * @version $Rev$
  */
 public class KickstartOverviewSystemsDto extends BaseDto {
     private String label;

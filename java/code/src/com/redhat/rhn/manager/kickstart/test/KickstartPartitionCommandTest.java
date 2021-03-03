@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 /**
  * KickstartPartitionCommandTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 

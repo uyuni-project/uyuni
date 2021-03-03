@@ -32,7 +32,6 @@ import java.util.Locale;
  * corresponding keys in the XML resources file used by
  * LocalizationService.
  *
- * @version $Rev$
  */
 
 public class XmlMessageResources extends MessageResources  {

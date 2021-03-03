@@ -37,7 +37,6 @@ import org.hibernate.Session;
 
 /**
  * PackageActionRemovalFailureTest
- * @version $Rev$
  */
 public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
 

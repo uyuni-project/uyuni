@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * OrgIdWrapper, Used for queries that simply return an org_id.
- * @version $Rev$
  */
 public class OrgIdWrapper {
 

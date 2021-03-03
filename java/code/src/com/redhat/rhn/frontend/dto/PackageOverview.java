@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * PackageOverview
- * @version $Rev$
  */
 public class PackageOverview extends BaseDto {
 

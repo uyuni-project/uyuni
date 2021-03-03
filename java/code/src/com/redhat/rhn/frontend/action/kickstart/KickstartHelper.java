@@ -53,7 +53,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartHelper - helper class for KS UI processing
- * @version $Rev$
  */
 public class KickstartHelper {
 

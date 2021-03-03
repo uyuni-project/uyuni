@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CompletedSystemsAction
- * @version $Rev$
  */
 public class CompletedSystemsAction extends RhnListAction {
 

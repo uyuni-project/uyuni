@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * MissingErrataAttribute
- * @version $Rev$
  */
 public class MissingErrataAttributeException extends FaultException {
 

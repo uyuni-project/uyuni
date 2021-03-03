@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 
 /**
  * LogoutAction
- * @version $Rev$
  */
 public class LogoutAction extends RhnAction {
 

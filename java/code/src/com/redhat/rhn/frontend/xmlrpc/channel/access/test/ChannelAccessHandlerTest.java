@@ -24,7 +24,6 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 /**
  * ChannelAccessHandlerTest
- * @version $Rev$
  */
 public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
 

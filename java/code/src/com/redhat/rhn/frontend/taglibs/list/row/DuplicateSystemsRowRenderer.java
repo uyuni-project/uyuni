@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
 
 /**
  * DuplicateSystemsRowRenderer
- * @version $Rev$
  */
 public class DuplicateSystemsRowRenderer extends ExpandableRowRenderer {
     /**

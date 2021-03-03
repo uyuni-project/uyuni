@@ -24,7 +24,6 @@ import java.util.Date;
 
 /**
  * ScriptResult
- * @version $Rev$
  */
 public class ScriptResult implements Serializable {
 

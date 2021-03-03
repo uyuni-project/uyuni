@@ -43,7 +43,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 
 /**
  * DocSearchSetupAction
- * @version $Rev$
  */
 public class DocSearchSetupAction extends BaseSearchAction {
     private static Logger log = Logger.getLogger(DocSearchSetupAction.class);

@@ -22,7 +22,6 @@ import com.redhat.rhn.FaultException;
  * is attempting to remove server group access permissions from a Satellite or
  * Organization administrator.
  *
- * @version $Rev$
  */
 public class ServerGroupAccessChangeException extends FaultException  {
 

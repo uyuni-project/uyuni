@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * ServerSerializer: Converts a Server object for representation as an XMLRPC struct.
  * Includes full server details, which may be more data than some calls would like.
- * @version $Rev$
  *
  *
  * @xmlrpc.doc

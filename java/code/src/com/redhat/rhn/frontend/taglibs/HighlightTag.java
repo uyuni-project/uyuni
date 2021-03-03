@@ -59,7 +59,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  * of a tag and if so, skip the matching text, but that will have to wait for a future
  * version.
  *
- * @version $Rev$
  */
 public class HighlightTag extends BodyTagSupport {
 

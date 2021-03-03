@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * TreeDeleteOperation to delete a KickstartableTree
- * @version $Rev$
  */
 public class TreeDeleteOperation extends BaseTreeEditOperation {
 

@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class ChannelPackageMenuAction extends RhnAction {
 

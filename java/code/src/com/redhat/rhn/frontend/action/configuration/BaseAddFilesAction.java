@@ -38,7 +38,6 @@ import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 
 /**
  * BaseAddFilesAction
- * @version $Rev$
  */
 public abstract class BaseAddFilesAction extends RhnAction {
 

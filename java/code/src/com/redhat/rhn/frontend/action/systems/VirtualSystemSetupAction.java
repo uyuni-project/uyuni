@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * VirtualSystemsListSetupAction
- * @version $Rev$
  */
 public class VirtualSystemSetupAction extends RhnAction
         implements Listable<VirtualSystemOverview> {

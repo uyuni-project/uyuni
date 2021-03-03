@@ -43,7 +43,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * TaskoJob
- * @version $Rev$
  */
 public class TaskoJob implements Job {
 

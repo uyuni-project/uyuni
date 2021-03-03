@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * CompareDeployedAction extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev$
  */
 public class CompareDeployedAction extends BaseSetListAction {
 

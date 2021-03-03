@@ -79,7 +79,6 @@ import java.util.TreeSet;
 
 /**
  * KickstartDataTest
- * @version $Rev$
  */
 public class KickstartDataTest extends BaseTestCaseWithUser {
 

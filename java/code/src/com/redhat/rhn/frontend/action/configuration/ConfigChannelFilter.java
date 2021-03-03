@@ -20,7 +20,6 @@ import java.util.List;
 /**
  *
  * ConfigChannelFilter
- * @version $Rev$
  */
 public class ConfigChannelFilter extends BaseConfigFilter {
     private List fields;

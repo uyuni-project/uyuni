@@ -22,7 +22,6 @@ import java.util.Date;
 
 /**
  * PackageCapabilityTest
- * @version $Rev$
  */
 public class PackageCapabilityTest extends RhnBaseTestCase {
 

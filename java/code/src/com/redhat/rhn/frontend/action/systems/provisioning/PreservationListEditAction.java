@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.common.EditFileListCommand;
 /**
  *
  * PreservationListEditAction -
- * @version $Rev$
  */
 public class PreservationListEditAction extends
         BasePreservationListEditAction {

@@ -22,7 +22,6 @@ import java.util.Date;
 
 /**
  * ProvisionStateTest
- * @version $Rev$
  */
 public class ProvisionStateTest extends RhnBaseTestCase {
 

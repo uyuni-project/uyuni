@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * AddCustomErrataAction
- * @version $Rev$
  */
 public class AddCustomErrataAction extends RhnListAction {
 

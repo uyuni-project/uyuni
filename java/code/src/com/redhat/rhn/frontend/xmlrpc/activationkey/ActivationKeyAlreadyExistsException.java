@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 /**
  * Activation key being created already exists.
  *
- * @version $Rev$
  */
 public class ActivationKeyAlreadyExistsException extends FaultException {
 

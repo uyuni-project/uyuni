@@ -30,7 +30,6 @@ import org.hibernate.Transaction;
  * I wanted this to contain a list of errata ids and do multiple
  * clones per event, but I couldn't get it to recall the list of ids
  * once the message got popped back off
- * @version $Rev$
  */
 public class NewCloneErrataEvent implements EventDatabaseMessage {
 

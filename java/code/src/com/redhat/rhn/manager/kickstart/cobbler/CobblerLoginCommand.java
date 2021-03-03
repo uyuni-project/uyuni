@@ -28,7 +28,6 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  *
  * Login to Cobbler's XMLRPC API and get a token
- * @version $Rev$
  */
 public class CobblerLoginCommand {
 

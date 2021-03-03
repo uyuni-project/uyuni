@@ -27,7 +27,6 @@ import java.sql.Types;
 
 /**
  * TokenFactory
- * @version $Rev$
  */
 public class ChecksumFactory extends HibernateFactory {
 

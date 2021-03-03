@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * HighlightTagTest
- * @version $Rev$
  */
 public class HighlightTagTest extends RhnBaseTestCase {
 

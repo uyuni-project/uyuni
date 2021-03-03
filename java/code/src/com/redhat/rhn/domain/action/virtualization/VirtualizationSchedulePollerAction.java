@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.action.Action;
  * VirtualizationSchedulePollerAction - Class representing
  * TYPE_VIRTUALIZATION_SCHEDULE_POLLER
  *
- * @version $Rev$
  */
 public class VirtualizationSchedulePollerAction extends Action {
 

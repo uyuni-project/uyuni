@@ -23,7 +23,6 @@ import javax.servlet.jsp.JspException;
 
 /**
  * ExpandableDecorator
- * @version $Rev$
  */
 public class ExpansionDecorator extends BaseListDecorator {
 

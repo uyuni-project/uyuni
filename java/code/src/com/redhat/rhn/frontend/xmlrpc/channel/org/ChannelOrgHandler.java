@@ -40,7 +40,6 @@ import java.util.Set;
 
 /**
  * ChannelOrgHandler
- * @version $Rev$
  * @xmlrpc.namespace channel.org
  * @xmlrpc.doc Provides methods to retrieve and alter organization trust
  * relationships for a channel.

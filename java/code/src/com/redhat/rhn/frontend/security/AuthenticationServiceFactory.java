@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
  * AuthenticationService implementations can easily be plugged in.
  *
  * @see AuthenticationService
- * @version $Rev$
  */
 public class AuthenticationServiceFactory {
 

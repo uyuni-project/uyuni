@@ -26,7 +26,6 @@ package com.redhat.rhn.common.security.acl;
  *     public boolean aclXXXX(Object context, String parameters[])
  * </pre>
  *
- * @version $Rev$
  * @see Acl
  */
 public interface AclHandler {

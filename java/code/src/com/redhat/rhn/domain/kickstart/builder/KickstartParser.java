@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * KickstartParser: Parses a kickstart file into the appropriate sections of lines.
  *
- * @version $Rev$
  */
 public class KickstartParser {
 

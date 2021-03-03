@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author paji
  * BaseListAction
- * @version $Rev$
  */
 public abstract class BaseListAction extends RhnAction {
     private static final String LIST_NAME = "list";

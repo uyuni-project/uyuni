@@ -22,7 +22,6 @@ import java.util.TimeZone;
 
 /**
  * ContextTest to test the static access to the Context object
- * @version $Rev$
  */
 public class ContextTest extends RhnBaseTestCase {
 

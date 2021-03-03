@@ -55,7 +55,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * AdvancedModeDetailsAction
- * @version $Rev$
  */
 public class AdvancedModeDetailsAction extends RhnAction {
     private static final String KSTREES_PARAM = "kstrees";

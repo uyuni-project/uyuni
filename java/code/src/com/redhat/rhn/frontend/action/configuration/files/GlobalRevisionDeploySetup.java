@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * GlobalRevisionDeploySetup
- * @version $Rev$
  */
 public class GlobalRevisionDeploySetup extends BaseSetListAction {
 

@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * SoftwareHandlerTest
- * @version $Rev$
  */
 public class SoftwareHandlerTest extends BaseHandlerTestCase {
 

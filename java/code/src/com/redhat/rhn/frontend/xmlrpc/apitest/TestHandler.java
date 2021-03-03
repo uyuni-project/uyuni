@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * TestHandler, this class is for internal use and will remain undocumented.
- * @version $Rev$
  * @xmlrpc.ignore
  */
 public class TestHandler extends BaseHandler {

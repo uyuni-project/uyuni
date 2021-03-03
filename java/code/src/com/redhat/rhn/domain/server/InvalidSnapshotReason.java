@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 /**
  *
  * InvalidSnapshotReason
- * @version $Rev$
  */
 public class InvalidSnapshotReason extends BaseDomainHelper {
 

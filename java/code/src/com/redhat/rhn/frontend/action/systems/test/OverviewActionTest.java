@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * OverviewActionTest
- * @version $Rev$
  */
 public class OverviewActionTest extends RhnMockStrutsTestCase {
 

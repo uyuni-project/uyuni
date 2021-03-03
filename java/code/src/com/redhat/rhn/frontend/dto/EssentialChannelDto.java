@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.channel.Channel;
 
 /**
  * EssentialChannelDto
- * @version $Rev$
  */
 public class EssentialChannelDto extends BaseDto {
 

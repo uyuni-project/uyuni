@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * VirtualInstanceInfo
- * @version $Rev$
  */
 public class VirtualInstanceInfo extends BaseDomainHelper {
 

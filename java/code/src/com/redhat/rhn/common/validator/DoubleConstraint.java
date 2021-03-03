@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
  *  The <code>Constraint</code> class represents a single data constraint,
  *    including the data type, allowed values, and required ranges.
  * </p>
- * @version $Rev$
  */
 public class DoubleConstraint extends RequiredIfConstraint {
 

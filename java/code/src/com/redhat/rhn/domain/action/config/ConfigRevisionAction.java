@@ -23,7 +23,6 @@ import java.util.Date;
 /**
  * ConfigRevisionAction - Class representation of the table rhnActionConfigRevision.
  *
- * @version $Rev$
  */
 public class ConfigRevisionAction extends ActionChild {
 

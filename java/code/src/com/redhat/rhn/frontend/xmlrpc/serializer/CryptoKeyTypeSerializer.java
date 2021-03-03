@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * CryptoKeyTypeSerializer: Converts a CryptoKeyType object for representation
  * as an XMLRPC struct.
- * @version $Rev$
  *
  */
 public class CryptoKeyTypeSerializer extends RhnXmlRpcCustomSerializer {

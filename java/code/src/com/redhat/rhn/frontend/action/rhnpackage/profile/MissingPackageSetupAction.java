@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * MissingPackageSetupAction
- * @version $Rev$
  */
 public class MissingPackageSetupAction extends RhnAction implements Listable {
 

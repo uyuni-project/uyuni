@@ -21,7 +21,6 @@ import java.util.Set;
 
 /**
  * TaskoTemplate
- * @version $Rev$
  */
 public class TaskoTemplate {
     private Long id;

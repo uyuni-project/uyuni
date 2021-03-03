@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * CertificateUpdateAction - Class representing TYPE_CLIENTCERT_UPDATE_CLIENT_CERT
- * @version $Rev$
  */
 public class CertificateUpdateAction extends Action {
 

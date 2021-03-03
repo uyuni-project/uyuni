@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * TreeFilterTest
- * @version $Rev$
  */
 public class TreeFilterTest extends RhnBaseTestCase {
 

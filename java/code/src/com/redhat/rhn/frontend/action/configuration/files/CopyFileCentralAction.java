@@ -28,7 +28,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * CopyFileCentralAction
- * @version $Rev$
  */
 public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
 

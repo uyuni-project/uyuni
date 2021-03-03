@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SSMDeleteSystemsConfirm
- * @version $Rev$
  */
 public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
     /**

@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * KickstartScriptCreateCommand - Command for creating a new KickstartScript object
  * associated with specified KickstartData.
- * @version $Rev$
  */
 public class KickstartScriptCreateCommand extends BaseKickstartScriptCommand {
 

@@ -32,7 +32,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * <pre>
  * &lt;rhn:icon type="$type" title="$title"/&gt;
  * </pre>
- * @version $Rev$
  */
 public class IconTag extends TagSupport {
 

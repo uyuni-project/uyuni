@@ -34,7 +34,6 @@ import java.util.List;
 
 /**
  * ProfileFactoryTest
- * @version $Rev$
  */
 public class ProfileFactoryTest  extends RhnBaseTestCase {
 

@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * CloneErrataSubmitAction
  *
- * @version $Rev$
  */
 public class CloneErrataAction extends RhnAction implements Listable {
 

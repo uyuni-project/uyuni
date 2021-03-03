@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtGroupDeleteAction
- * @version $Rev$
  */
 public class ExtGroupDeleteAction extends RhnAction {
 

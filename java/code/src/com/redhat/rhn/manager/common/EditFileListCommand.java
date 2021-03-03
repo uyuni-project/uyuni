@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * EditFileListCommand - Command for editing an existing FileList
- * @version $Rev$
  */
 public class EditFileListCommand extends BaseFileListEditCommand {
 

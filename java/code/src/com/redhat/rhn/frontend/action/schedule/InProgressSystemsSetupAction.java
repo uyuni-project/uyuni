@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * InProgressSystemsSetupAction
- * @version $Rev$
  */
 public class InProgressSystemsSetupAction extends ActionSystemsSetupAction {
 
