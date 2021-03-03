@@ -4902,10 +4902,6 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         <source>Patches Management</source>
         <target>Gestion des errata</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">Aucun errata publié</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">Errata publiés</target>

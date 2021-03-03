@@ -4779,10 +4779,6 @@ administrador de la organización en la sección "Roles" de la pestaña
         <source>Patches Management</source>
         <target>Gestión de parches</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">Ninguna errata publicada</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">Erratas publicada</target>
