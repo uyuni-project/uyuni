@@ -95,8 +95,10 @@ def process(original_file, translation_file):
         logging.info(f' These (id,new_source_value) -> {to_update}, will be updated in the {translation_file} ')
         update_trans_units(translation_body_element, trans_trans_units, to_update)
     else:
-        logging.info("Something went wrong, this should not have happend!")
-
+        logging.info((
+            "Something went wrong, this should not have happend! Count of original units: "
+            "%d, count of translation units: %d." % (len(orig_trans_units), len(trans_trans_units))))
+        raise Exception("Mismatching orig/trans lengths")
     for t in list(translation_body_element.findall('d:trans-unit', ns)):
         if not t.get('{http://www.w3.org/XML/1998/namespace}space'):
             t.set('xml:space', 'preserve')
