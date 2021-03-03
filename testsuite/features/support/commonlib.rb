@@ -66,8 +66,8 @@ def compute_image_name
 end
 
 # If we for example
-#  - start a reposync in reposync/srv_sync_channels.feature.
-#  - then kill it in reposync/srv_abort_all_sync.feature
+#  - start a reposync in reposync/srv_sync_channels.feature
+#  - then kill it in reposync/srv_wait_for_reposync.feature
 #  - then restart it later on in init_clients/sle_minion.feature
 # then the channel will be in an inconsistent state.
 #
