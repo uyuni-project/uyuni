@@ -91,7 +91,8 @@ export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T
   const mergeArrays = (model: any): any => {
     return Object.keys(model).reduce((result, key) => {
       const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
-      const mergedValue = model[key] instanceof Object ? mergeArrays(model[key]) : model[key];
+      const mergedValue = typeof model[key] === "object" && !Array.isArray(model[key]) ?
+        mergeArrays(model[key]) : model[key];
       if (matcher) {
         const name = matcher[1];
         const array = result[name] || [];

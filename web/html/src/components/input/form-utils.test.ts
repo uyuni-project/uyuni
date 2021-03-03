@@ -72,6 +72,7 @@ describe("Test unflattenModel", () => {
       target_path: "/foo/bar",
       target_permission_owner: 123,
       target_permission_group: 456,
+      array: ["one", "two"],
     };
 
     expect(unflattenModel(flat)).toEqual({
@@ -83,6 +84,7 @@ describe("Test unflattenModel", () => {
           group: 456,
         },
       },
+      array: ["one", "two"],
     });
   });
 
