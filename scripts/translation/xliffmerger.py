@@ -64,18 +64,20 @@ def process(original_file, translation_file):
     logging.debug(f'{trans_units_ids} trans_units in Ids translation file {translation_file}')
 
     # Delete the ones which are in translation file but not in original
-    logging.info("########## DELETING ORPHAN TRANS_UNITS ##########")
     to_remove = set(trans_units_ids).difference(set(org_trans_units_ids))
-    logging.info(f'Trans-units with these Ids : {to_remove}, will be deleted from the {translation_file}')
-    delete_trans_units(translation_body_element, trans_trans_units, to_remove)
-    logging.info("-------------------------------------------------\n")
+    if to_remove:
+      logging.info("########## DELETING ORPHAN TRANS_UNITS ##########")
+      logging.info(f'Trans-units with these Ids : {to_remove}, will be deleted from the {translation_file}')
+      delete_trans_units(translation_body_element, trans_trans_units, to_remove)
+      logging.info("-------------------------------------------------\n")
 
     # Add the ones which are not in translation file but exist in original
-    logging.info("########## ADDING MISSING TRANS_UNITS ##########")
     to_add = set(org_trans_units_ids).difference(set(trans_units_ids))
-    logging.info(f'Trans-units with these Ids : {to_add}, will be added to the {translation_file}')
-    add_trans_units(translation_body_element, orig_trans_units, to_add)
-    logging.info("-------------------------------------------------\n")
+    if to_add:
+      logging.info("########## ADDING MISSING TRANS_UNITS ##########")
+      logging.info(f'Trans-units with these Ids : {to_add}, will be added to the {translation_file}')
+      add_trans_units(translation_body_element, orig_trans_units, to_add)
+      logging.info("-------------------------------------------------\n")
 
     # Update() those trans_units where source has been changed but id remained same. We will be updating source text and
     # add the 'needs-adaptation' state attribute
