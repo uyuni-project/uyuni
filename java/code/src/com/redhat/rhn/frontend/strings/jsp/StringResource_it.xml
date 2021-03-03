@@ -176,13 +176,6 @@
         </context-group>
         <target>Nessun sistema.</target>
       </trans-unit>
-      <trans-unit id="nocrashes.message" xml:space="preserve">
-        <source>No software crashes.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview</context>
-        </context-group>
-        <target>Nessun crash software.</target>
-      </trans-unit>
       <trans-unit id="none.message" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
@@ -420,13 +413,6 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.jsp.title.crash" xml:space="preserve">
-          <source>We're sorry, but the software crash could not be found.</source>
-        <target>Siamo spiacenti, impossibile trovare il crash software.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Lookup error page</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
         <target>Siamo spiacenti, impossibile trovare l'oggetto dei dati necessari.</target>
@@ -573,13 +559,6 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.jsp.reason1.crash" xml:space="preserve">
-          <source>The software crash requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>Il crash software richiesto è inesistente.  Ciò molto probabilmente è dovuto alla visualizzazione di questa pagina attraverso i segnalibri o altri mezzi non-hyperlink.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Lookup error page</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="lookup.default.reason1" xml:space="preserve">
           <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <target>L'oggetto dei dati necessari non è esistente.  Ciò molto probabilmente è dovuto alla visualizzazione di questa pagina attraverso i segnalibri o altri mezzi non-hyperlink.</target>
@@ -660,13 +639,6 @@
       <trans-unit id="lookup.jsp.reason2.system" xml:space="preserve">
           <source>You do not have permission to view this system.</source>
         <target>Non siete in possesso del permesso necessario per visualizzare questo sistema.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Lookup error page</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="lookup.jsp.reason2.crash" xml:space="preserve">
-          <source>You do not have permission to view this software crash.</source>
-        <target>Non hai i permessi per visualizzare questo crash software.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1035,7 +1007,7 @@
         <target>Se avete inserito questo indirizzo all'interno del vostro browser, controllate lo spelling        ed il carattere delle lettere. L'indirizzo copiato potrebbe essere scaduto.</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
-        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
+        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1043,9 +1015,10 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
-        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
+        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1053,6 +1026,7 @@
               page may have moved
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -4479,16 +4453,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>Configurazione organizzazione</target>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
-        <source>Below you configure your organization to use staging content, errata e-mail notifications, software crash reporting (Crash file upload limit is a non negative number, zero means no limit) and SCAP settings.</source>
+        <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
-        <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications, software crash reporting and SCAP settings are configured.</source>
+        <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
@@ -4536,27 +4512,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="org-config.crash-reporting.jsp" xml:space="preserve">
-        <source>Enable Software Crash Reporting</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Abilita la notifica del crash software</target>
-      </trans-unit>
-      <trans-unit id="org-config.crashfile-upload.jsp" xml:space="preserve">
-        <source>Enable Upload Of Crash Files</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Abilita il Caricamento dei file crash</target>
-      </trans-unit>
-      <trans-unit id="org-config.crashfile-sizelimit.jsp" xml:space="preserve">
-        <source>Crash File Upload Size Limit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Limite dimensione caricamento del file crash</target>
       </trans-unit>
       <trans-unit id="org-config.sizelimit-hint.jsp" xml:space="preserve">
         <source>Enter the limit size in bytes. Zero means no limit.</source>
@@ -6392,13 +6347,6 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
         <target>Entitlement</target>
-      </trans-unit>
-      <trans-unit id="systemlist.jsp.crashes" xml:space="preserve">
-        <source>Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/SystemList</context>
-        </context-group>
-        <target>Crash</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.nosystems" xml:space="preserve">
         <source>No Systems</source>
@@ -23379,13 +23327,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="exportcolumn.crash" xml:space="preserve">
-          <source>Scratch</source>
-        <target>Annulla</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="exportcolumn.component" xml:space="preserve">
           <source>Component</source>
         <target>Componente</target>
@@ -23396,13 +23337,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
       <trans-unit id="exportcolumn.modified" xml:space="preserve">
           <source>Modified</source>
         <target>Modificato</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.count" xml:space="preserve">
-          <source>Crash Count</source>
-        <target>Conteggio crash</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -23431,41 +23365,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
       <trans-unit id="exportcolumn.uuid" xml:space="preserve">
           <source>UUID</source>
         <target>UUID</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.totalCrashCount" xml:space="preserve">
-          <source>Total Crash Count</source>
-        <target>Conteggio crash totale</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.lastCrashReport" xml:space="preserve">
-          <source>Last Crash Occurrence</source>
-        <target>Verifica ultimo crash </target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.crashCount" xml:space="preserve">
-          <source>Crash Count</source>
-        <target>Conteggio crash</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.crashComponent" xml:space="preserve">
-          <source>Crash Component</source>
-        <target>Componente del crash</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="exportcolumn.lastReport" xml:space="preserve">
-          <source>Last Crash Occurrence</source>
-        <target>Verifica ultimo crash </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -24182,266 +24081,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         </context-group>
         <target>Attiva rhn-applet per l'utilizzo di @@PRODUCT_NAME@@"</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.crashes.application" xml:space="preserve">
-        <source>Application Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-        <target>Crash applicazione</target>
-      </trans-unit>
-      <trans-unit id="sdc.details.overview.crashes.nodata" xml:space="preserve">
-        <source>No crash data has been reported for this system yet.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-        <target>Non è stato riportato ancora alcun dato relativo al crash.</target>
-      </trans-unit>
-      <trans-unit id="sdc.details.overview.crashes.lastreport" xml:space="preserve">
-        <source>Last Report:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-        <target>Ultima notifica:</target>
-      </trans-unit>
-      <trans-unit id="sdc.details.overview.crashes.uniquecrashcount" xml:space="preserve">
-        <source>Unique Crash Count:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-        <target>Conteggio crash unico:</target>
-      </trans-unit>
-      <trans-unit id="sdc.details.overview.crashes.totalcrashcount" xml:space="preserve">
-        <source>Total Crash Count:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/Overview.do</context>
-        </context-group>
-        <target>Conteggio crash totale:</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.totalcrashcount" xml:space="preserve">
-        <source>Total Crash Count</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/softwarecrashesoverview.do</context>
-        </context-group>
-        <target>Conteggio crash totale</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.affectedsystemscount" xml:space="preserve">
-        <source>Affected Systems Count</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
-        </context-group>
-        <target>Conteggio sistemi interessati</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.lastoccurence" xml:space="preserve">
-        <source>Last Crash Occurrence</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
-        </context-group>
-        <target>Verifica ultimo crash </target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.crashcount" xml:space="preserve">
-        <source>Crash Count</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Conteggio crash</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.nevra" xml:space="preserve">
-        <source>Package</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Pacchetto</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.crash" xml:space="preserve">
-        <source>Crash</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Crash</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Crash software</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.component" xml:space="preserve">
-        <source>Component</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Componente</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.delete.button" xml:space="preserve">
-        <source>Delete Crash(es)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
-        </context-group>
-        <target>Cancella i crash</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.summary" xml:space="preserve">
-        <source>Software crashes reported for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
-        </context-group>
-        <target>Crash software riportati per questo sistema.</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.nocrashes" xml:space="preserve">
-        <source>There are no software crashes reported for this system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
-        </context-group>
-        <target>Non è presente alcun crash software per questo sistema.</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.nocrashfiles" xml:space="preserve">
-        <source>There are no crash files associated with this software crash.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
-        </context-group>
-        <target>Non è presente alcun file crash associato a questo crash software.</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.details" xml:space="preserve">
-        <source>Software Crash Details</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
-        </context-group>
-        <target>Informazioni crash software</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.details.summary" xml:space="preserve">
-        <source>Below are the Software Crash details.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Di seguito sono riportate le informazioni relative al crash software.</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.delete" xml:space="preserve">
-        <source>Delete Software Crash</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Cancella il crash software</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.delete.summary" xml:space="preserve">
-        <source>The Software Crash will be deleted.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDelete.do</context>
-        </context-group>
-        <target>Il crash software sarà cancellato.</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.path" xml:space="preserve">
-        <source>Path</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Percorso</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.uuid" xml:space="preserve">
-        <source>Crash UUID</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview.do</context>
-        </context-group>
-        <target>UUID crash</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.analyzer" xml:space="preserve">
-        <source>Analyzer</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Analizzatore</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.cmdline" xml:space="preserve">
-        <source>Command Line</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Linea di comando</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.executable" xml:space="preserve">
-        <source>Executable</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Eseguibile</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.kernel" xml:space="preserve">
-        <source>Kernel</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Kernel</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.reason" xml:space="preserve">
-        <source>Reason</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Motivo</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.username" xml:space="preserve">
-        <source>Username</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Nome utente</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.storagepath" xml:space="preserve">
-        <source>Storage Path</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Percorso storage</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.filename" xml:space="preserve">
-        <source>Filename</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Nome del file</target>
-      </trans-unit>
-      <trans-unit id="crashes.jsp.filesize" xml:space="preserve">
-        <source>File Size</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Dimensione file</target>
-      </trans-unit>
-      <trans-unit id="toolbar.create.crashnote" xml:space="preserve">
-        <source>Create Crash Note</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Crea nota del crash</target>
-      </trans-unit>
-      <trans-unit id="details.crashnotes.nonotes" xml:space="preserve">
-        <source>No Crash Notes were entered for this Software Crash.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Non è presente alcuna nota del crash per questo crash software.</target>
-      </trans-unit>
-      <trans-unit id="details.crashnotes.createnote" xml:space="preserve">
-        <source>Create a new note.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Crea nuova nota.</target>
-      </trans-unit>
-      <trans-unit id="details.crashnotes.delete.confirm" xml:space="preserve">
-        <source>Are you certain you wish to delete this software crash note?</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/DeleteCrashNote.do</context>
-        </context-group>
-        <target>Sei sicuro di voler cancellare questa nota del crash software?</target>
-      </trans-unit>
-      <trans-unit id="crashfiles.jsp.header" xml:space="preserve">
-        <source>Crash Files</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>File del crash</target>
-      </trans-unit>
       <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
         <source>Migrate System Between Organizations</source>
         <context-group name="ctx">
@@ -24956,10 +24595,11 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         <target>Indirizzo IPv6:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
-        <source>FQDNs:</source>
+        <source>Primary FQDN:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id" xml:space="preserve">
         <source>Machine ID:</source>
