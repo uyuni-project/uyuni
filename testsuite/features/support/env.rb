@@ -286,6 +286,14 @@ Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
 end
 
+Before('@build_validation') do
+  skip_this_scenario unless $build_validation
+end
+
+Before('@continuous_integration') do
+  skip_this_scenario if $build_validation
+end
+
 Before('@skip_for_ubuntu') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'ubuntu'
 end
