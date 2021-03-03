@@ -1,3 +1,4 @@
+- handle GPG keys when bootstrapping ssh minions (bsc#1181847)
 - Ubuntu 18 has version of apt which does not correctly support
   auth.conf.d directory. Detect the working version and use this feature
   only when we have a higher version installed
