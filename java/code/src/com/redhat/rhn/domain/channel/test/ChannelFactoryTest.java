@@ -486,4 +486,47 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user2.getId()));
         assertFalse(ChannelFactory.isAccessibleByUser(c.getLabel(), user3.getId()));
     }
+
+    /**
+     * Test "ChannelFactory.findAllByUserOrderByChild"
+     * @throws Exception
+     */
+    public void testFindAllByUserOrderByChild() throws Exception {
+        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");
+
+        Channel parent3 = ChannelFactoryTest.createTestChannel(user1);
+        parent3.setLabel("b_parent3");
+        ChannelFactory.save(parent3);
+
+        Channel parent2 = ChannelFactoryTest.createTestChannel(user2);
+        parent2.setLabel("b_parent2");
+        ChannelFactory.save(parent2);
+
+        Channel parent1 = ChannelFactoryTest.createTestChannel(user1);
+        parent1.setLabel("b_parent1");
+        ChannelFactory.save(parent1);
+
+        Channel child1 = ChannelFactoryTest.createTestChannel(user1);
+        child1.setLabel("a_child1");
+        child1.setParentChannel(parent1);
+        ChannelFactory.save(child1);
+
+        Channel base1 = ChannelFactoryTest.createTestChannel(user1);
+        base1.setLabel("z_base1");
+        base1.setOrg(null);
+        ChannelFactory.save(base1);
+
+        Channel base2 = ChannelFactoryTest.createTestChannel(user2);
+        base2.setLabel("z_base2");
+        base2.setOrg(null);
+        ChannelFactory.save(base2);
+
+        List<Channel> channels = ChannelFactory.findAllByUserOrderByChild(user1);
+        assertEquals(4, channels.size());
+        assertEquals("z_base1", channels.get(0).getLabel());
+        assertEquals("b_parent1", channels.get(1).getLabel());
+        assertEquals("a_child1", channels.get(2).getLabel());
+        assertEquals("b_parent3", channels.get(3).getLabel());
+    }
 }
