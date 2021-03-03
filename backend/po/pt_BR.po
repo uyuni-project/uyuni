@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2020-11-22 17:26+0000\n"
-"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
+"PO-Revision-Date: 2021-03-07 06:51+0000\n"
+"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -69,7 +69,7 @@ msgstr "O servidor \"%s\" não está ativado para o ISS."
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr "Par system_id / action_id inválido."
+msgstr "Par system_id/action_id inválido."
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -89,7 +89,7 @@ msgstr "Esse ID de servidor não existe mais"
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr "Tipo de valor de ação inválido%s (%s)"
+msgstr "Tipo de valor de ação inválido %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:464
 #, python-format
