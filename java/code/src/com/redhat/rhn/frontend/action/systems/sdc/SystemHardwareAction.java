@@ -14,30 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
-
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
@@ -50,6 +33,24 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
@@ -83,10 +84,10 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute(SID, sid);
 
         if (isSubmitted(form)) {
-            if (ctx.hasParam("update_interface")) {
+            if (ctx.hasParam("update_networking_properties")) {
                 server.setPrimaryInterfaceWithName(form.get("primaryInterface").toString());
-                createSuccessMessage(request, "message.interfaceSet",
-                        form.get("primaryInterface").toString());
+                server.setPrimaryFQDNWithName(form.get("primaryFQDN").toString());
+                createSuccessMessage(request, "message.interfaceSet", null);
             }
             else {
                 Action a = ActionManager.scheduleHardwareRefreshAction(user, server, now);
@@ -129,6 +130,11 @@ public class SystemHardwareAction extends RhnAction {
         }
         if (server.getActiveNetworkInterfaces() != null) {
             request.setAttribute("networkInterfaces", getNetworkInterfaces(server));
+        }
+        ServerFQDN fqdn = server.findPrimaryFqdn();
+        if (fqdn != null) {
+            daForm.set("primaryFQDN", fqdn.getName());
+            request.setAttribute("primaryFQDN", fqdn.getName());
         }
         request.setAttribute("system", server);
         if (cpu != null) {

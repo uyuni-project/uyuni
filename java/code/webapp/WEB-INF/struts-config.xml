@@ -887,6 +887,7 @@
                <form-property name="sid" type="java.lang.Long"/>
                <form-property name="submitted" type="java.lang.Boolean"/>
                              <form-property name="primaryInterface" type="java.lang.String"/>
+                             <form-property name="primaryFQDN" type="java.lang.String"/>
     </form-bean>
 
     <form-bean name="systemDetailsForm"
