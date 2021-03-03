@@ -2,9 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Feature: SCC user credentials in the Setup Wizard
-The purpose of this feature is not the same that the feature in core, 
-this feature aimes to test the manipulation of scc credentials while 
-the other in core aimes to setup scc credentials.
+  As a systems administrator
+  In order to access to SUSE Customer Service
+  I want to create, edit, and delete the credentials of the organization
 
 @no_mirror
   Scenario: Enter some invalid organization credentials
