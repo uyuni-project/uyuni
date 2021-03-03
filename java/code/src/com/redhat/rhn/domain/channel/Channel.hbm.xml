@@ -145,6 +145,41 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         -->
     </class>
 
+    <sql-query name="Channel.findAllByUserOrderByChild">
+        <![CDATA[
+    SELECT {channel.*}
+    FROM rhnChannel {channel}
+        LEFT OUTER JOIN rhnChannel parent ON channel.parent_channel = parent.id
+        LEFT OUTER JOIN rhnChannelCloned channel_1_ ON channel.id = channel_1_.id
+    WHERE EXISTS (
+        SELECT 1
+        FROM suseChannelUserRoleView scur
+        WHERE scur.channel_id = channel.id
+        AND scur.user_id = :userId
+        AND scur.deny_reason IS NULL
+    )
+    AND (
+        channel.parent_channel IS NULL
+        OR (
+            channel.parent_channel IS NOT NULL
+            AND EXISTS (
+                SELECT 1
+                FROM suseChannelUserRoleView scur
+                WHERE scur.channel_id = channel.parent_channel
+                AND scur.user_id = :userId
+                AND scur.deny_reason IS NULL
+            )
+        )
+    )
+    ORDER BY
+        channel.org_id NULLS FIRST,
+        COALESCE(parent.label, channel.label),
+        channel.parent_channel NULLS FIRST,
+        channel.label
+        ]]>
+        <return alias="channel" class="com.redhat.rhn.domain.channel.Channel" />
+    </sql-query>
+
     <query name="Channel.findRedHatBaseChannels">
         <![CDATA[
                 from com.redhat.rhn.domain.channel.Channel as c where c.org is null

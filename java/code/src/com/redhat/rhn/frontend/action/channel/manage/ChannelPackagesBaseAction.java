@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.user.UserManager;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ChannelPackagesBaseAction
@@ -32,25 +32,9 @@ public class ChannelPackagesBaseAction extends RhnAction {
     protected final String listName = "packageList";
 
     protected List<SelectableChannel> findChannels(User user, Long selectedChan) {
-        //Add Red Hat Base Channels, and custom base channels
-        List<SelectableChannel> chanList = new ArrayList<SelectableChannel>();
-        for (Channel chanTmp : ChannelFactory.listRedHatBaseChannels()) {
-            if (canAccessChannel(user, chanTmp)) {
-                chanList.add(setSelected(chanTmp, selectedChan));
-                for (Channel chanChild : chanTmp.getAccessibleChildrenFor(user)) {
-                    chanList.add(setSelected(chanChild, selectedChan));
-                }
-            }
-        }
-        for (Channel chanTmp : ChannelFactory.listCustomBaseChannels(user)) {
-            if (canAccessChannel(user, chanTmp)) {
-                chanList.add(setSelected(chanTmp, selectedChan));
-                for (Channel chanChild : chanTmp.getAccessibleChildrenFor(user)) {
-                    chanList.add(setSelected(chanChild, selectedChan));
-                }
-            }
-        }
-        return chanList;
+        return ChannelFactory.findAllByUserOrderByChild(user).stream()
+                .map(c -> setSelected(c, selectedChan))
+                .collect(Collectors.toList());
     }
 
     protected boolean canAccessChannel(User user, Channel channel) {
