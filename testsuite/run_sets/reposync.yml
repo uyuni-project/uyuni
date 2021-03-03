@@ -12,7 +12,7 @@
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_enable_sync_products.feature
-- features/reposync/srv_abort_all_sync.feature
+- features/reposync/srv_wait_for_reposync.feature
 - features/reposync/srv_check_reposync.feature
 
 ## Channels and Product synchronization features END ###
