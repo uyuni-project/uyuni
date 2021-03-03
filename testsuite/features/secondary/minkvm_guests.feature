@@ -6,7 +6,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Bootstrap KVM virtual host
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "kvm_server" as "hostname"
@@ -32,7 +32,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Enable the virtualization host formula for KVM
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Virtualization" text
@@ -42,7 +41,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Parametrize the KVM virtualization host
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "NAT" in virtual network mode field
@@ -54,7 +52,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Apply the KVM virtualization host formula via the highstate
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
@@ -62,8 +59,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Prepare a KVM test virtual machine and list it
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I delete default virtual network on "kvm_server"
+    When I follow "Virtualization" in the content area
+    And I delete default virtual network on "kvm_server"
     And I create test-net0 virtual network on "kvm_server"
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
@@ -73,36 +70,36 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Start a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Start" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
 @virthost_kvm
   Scenario: Show the VNC graphical console for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Graphical Console" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Graphical Console" in row "test-vm"
     And I switch to last opened window
     Then I wait until I see the VNC graphical console
 
 @virthost_kvm
   Scenario: Suspend a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I wait until table row for "test-vm" contains button "Suspend"
+    When I follow "Virtualization" in the content area
+    And I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
     And I click on "Suspend" in "Suspend Guest" modal
     Then I should see "test-vm" virtual machine paused on "kvm_server"
 
 @virthost_kvm
   Scenario: Resume a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I wait until table row for "test-vm" contains button "Resume"
+    When I follow "Virtualization" in the content area
+    And I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
 @virthost_kvm
   Scenario: Shutdown a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I wait until table row for "test-vm" contains button "Stop"
+    When I follow "Virtualization" in the content area
+    And I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "kvm_server" is started
     And I click on "Stop" in row "test-vm"
     And I click on "Stop" in "Stop Guest" modal
@@ -110,8 +107,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Edit a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
@@ -134,8 +131,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Add a network interface to a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
@@ -145,8 +142,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a network interface from a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_network1"
     And I click on "Update"
@@ -155,8 +152,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Add a disk and a cdrom to a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
     And I click on "add_disk"
@@ -169,8 +166,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a disk from a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Edit" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_disk2"
     And I click on "Update"
@@ -179,15 +176,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Delete" in row "test-vm"
+    When I follow "Virtualization" in the content area
+    And I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "kvm_server"
 
 @virthost_kvm
   Scenario: Create a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I follow "Create Guest"
+    When I follow "Virtualization" in the content area
+    And I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
@@ -203,15 +200,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Graphical Console" in row "test-vm2"
+    When I follow "Virtualization" in the content area
+    And I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     Then I wait until I see the spice graphical console
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
-    When I click on "Delete" in row "test-vm2"
+    When I follow "Virtualization" in the content area
+    And I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
