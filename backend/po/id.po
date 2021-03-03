@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 15:54+0000\n"
+"POT-Creation-Date: 2021-03-03 17:54+0000\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -19,10 +19,178 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, fuzzy, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "token otentikasi proksi tidak lengkap: %s"
+
+#: ../server/apacheAuth.py:84
+#, fuzzy, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
+
+#: ../server/apacheAuth.py:119
+#, fuzzy
+msgid "declined proxy authentication"
+msgstr "otentikasi proxy yang ditolak"
+
+#: ../server/rhnChannel.py:1999
+#, fuzzy, python-format
+msgid ""
+"Your account does not have access to any channels matching "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr ""
+"Akun Anda tidak memiliki akses ke saluran apa pun yang cocok "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+
+#: ../server/rhnChannel.py:2014
+#, fuzzy, python-format
+msgid "Insufficient subscription permissions for release (%s, %s"
+msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
+
+#. Various messages that can be reused
+#.
+#. bretm 02/07/2007 -- when we have better old-client documentation, probably
+#. will be safe to get rid of all this crap
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
+#, fuzzy
+msgid "System Registered but Inactive"
+msgstr "Sistem Terdaftar tetapi Tidak Aktif"
+
+#: ../server/rhnChannel.py:2279
+#, fuzzy, python-format
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it could not be subscribed to a base channel.\n"
+"Please contact your organization administrator for assistance.\n"
+msgstr ""
+"Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
+"Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
+"karena tidak dapat di subscribe ke base channel.\n"
+"Hubungi administrator organisasi Anda untuk mendapatkan bantuan."
+
+#: ../server/rhnChannel.py:2286
+#, fuzzy, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but is not yet entitled\n"
+"  to service.  To entitle this system to service, login to the web site at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+"Sistem ini telah berhasil didaftarkan, namun belum\n"
+"  layanan.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
+"di:\n"
+"\n"
+"%(entitlement_url)s (Dalam Bahasa Inggris)"
+
+#: ../server/rhnChannel.py:2294
+#, fuzzy, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but no service entitlements\n"
+"  were available.  To entitle this system to service, login to the web site "
+"at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+"Sistem ini telah berhasil didaftarkan, tetapi tidak ada hak layanan\n"
+"  tersedia.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
+"di:\n"
+"\n"
+"%(entitlement_url)s (Dalam Bahasa Inggris)"
+
+#: ../server/apacheRequest.py:59
+#, fuzzy, python-format
+msgid "Invalid request received (%s)."
+msgstr "Permintaan tidak valid diterima (%s)."
+
+#: ../server/apacheRequest.py:120
+#, fuzzy, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"PESAN PENTING BERIKUT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, fuzzy, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Saat menjalankan '%s': tertangkap\n"
+"%s : %s (Dalam Bahasa Inggris)"
+
+#: ../server/apacheRequest.py:606
+#, fuzzy, python-format
+msgid "Invalid URI %s"
+msgstr "URI “%s” Tidak Sah"
+
+#: ../server/rhnServer/server_class.py:97
+#, fuzzy, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arsitektur '%s' tidak didukung"
+
+#: ../server/rhnServer/server_token.py:78
+#, fuzzy, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
+
+#: ../server/rhnServer/server_token.py:80
+#, fuzzy
+msgid "Conflicting base channels"
+msgstr "Saluran dasar yang bertentangan"
+
+#: ../server/rhnServer/server_token.py:190
+#, fuzzy, python-format
+msgid "Failed to add server to group %s"
+msgstr "Gagal menambahkan server ke grup %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, fuzzy, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Jumlah penggunaan maksimum dari %s tercapai"
+
+#: ../server/rhnServer/server_token.py:744
+#, fuzzy
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
+"didukung"
+
+#: ../server/rhnServer/server_token.py:811
+#, fuzzy, python-format
+msgid "Could not find token '%s'"
+msgstr "Tidak dapat menemukan token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+#, fuzzy
+msgid "Tokens from mismatching orgs"
+msgstr "Token dari organisasi yang tidak cocok"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+#, fuzzy
+msgid "Kickstart session mismatch"
+msgstr "Ketidakcocokan sesi kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+#, fuzzy
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Penumpukan token pendaftaran ulang tidak didukung"
+
+#: ../server/configFilesHandler.py:129
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/app/packages.py:192
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -95,6 +263,17 @@ msgstr "username harus setidaknya %d karakter panjang"
 msgid "Cannot register usernames ending with %s"
 msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
 
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, fuzzy, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Paket RPM %s tidak valid diminta"
+
+#: ../server/rhnPackage.py:112
+#, fuzzy
+msgid "Package not found"
+msgstr "Paket tidak ditemukan"
+
 #: ../server/rhnHandler.py:62
 #, fuzzy
 msgid "Please run rhn_register as root on this client"
@@ -139,21 +318,6 @@ msgstr ""
 "               Silakan hubungi administrator Organisasi Anda untuk bantuan "
 "lebih lanjut."
 
-#: ../server/handlers/sat/auth.py:45
-#, fuzzy
-msgid "ISS is disabled on this server."
-msgstr "ISS dinonaktifkan di server ini."
-
-#: ../server/handlers/sat/auth.py:50
-#, fuzzy, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
-
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Pasangan system_id/action_id tidak valid."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, fuzzy, python-format
 msgid "Expected a package name, not: %s"
@@ -173,22 +337,6 @@ msgstr "Tipe nilai tindakan %s (%s) tidak valid"
 #, fuzzy, python-format
 msgid "Action %s does not belong to server %s"
 msgstr "Tindakan %s bukan milik server %s"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-#, fuzzy
-msgid "Invalid session key"
-msgstr "Kunci sesi tidak valid"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-#, fuzzy
-msgid "This server ID no longer exists"
-msgstr "ID server ini tidak ada lagi"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 #, fuzzy
@@ -238,193 +386,56 @@ msgstr "Mengharapkan kamus sebagai argumen produk"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nilai '%s' tidak valid untuk %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Pasangan system_id/action_id tidak valid."
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+#, fuzzy
+msgid "Invalid session key"
+msgstr "Kunci sesi tidak valid"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+#, fuzzy
+msgid "This server ID no longer exists"
+msgstr "ID server ini tidak ada lagi"
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, fuzzy, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Nilai %s (%s) tidak valid"
+
+#: ../server/handlers/sat/auth.py:45
+#, fuzzy
+msgid "ISS is disabled on this server."
+msgstr "ISS dinonaktifkan di server ini."
+
+#: ../server/handlers/sat/auth.py:50
+#, fuzzy, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
 
 #: ../server/handlers/applet/applet.py:78
 #, fuzzy, python-brace-format
 msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr "Sistem Anda tidak ditemukan dalam rhn database"
 
-#: ../server/apacheAuth.py:66
+#: ../common/rhnTB.py:205
 #, fuzzy, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "token otentikasi proksi tidak lengkap: %s"
+msgid "ERROR: %s %s: %s"
+msgstr "GALAT: %s %s: %s"
 
-#: ../server/apacheAuth.py:84
+#: ../common/rhnTB.py:207
 #, fuzzy, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
-
-#: ../server/apacheAuth.py:119
-#, fuzzy
-msgid "declined proxy authentication"
-msgstr "otentikasi proxy yang ditolak"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, fuzzy, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Paket RPM %s tidak valid diminta"
-
-#: ../server/rhnPackage.py:112
-#, fuzzy
-msgid "Package not found"
-msgstr "Paket tidak ditemukan"
-
-#: ../server/rhnServer/server_token.py:78
-#, fuzzy, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
-
-#: ../server/rhnServer/server_token.py:80
-#, fuzzy
-msgid "Conflicting base channels"
-msgstr "Saluran dasar yang bertentangan"
-
-#: ../server/rhnServer/server_token.py:190
-#, fuzzy, python-format
-msgid "Failed to add server to group %s"
-msgstr "Gagal menambahkan server ke grup %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, fuzzy, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Jumlah penggunaan maksimum dari %s tercapai"
-
-#: ../server/rhnServer/server_token.py:744
-#, fuzzy
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
-"didukung"
-
-#: ../server/rhnServer/server_token.py:811
-#, fuzzy, python-format
-msgid "Could not find token '%s'"
-msgstr "Tidak dapat menemukan token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-#, fuzzy
-msgid "Tokens from mismatching orgs"
-msgstr "Token dari organisasi yang tidak cocok"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-#, fuzzy
-msgid "Kickstart session mismatch"
-msgstr "Ketidakcocokan sesi kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-#, fuzzy
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Penumpukan token pendaftaran ulang tidak didukung"
-
-#: ../server/rhnServer/server_class.py:97
-#, fuzzy, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arsitektur '%s' tidak didukung"
-
-#: ../server/apacheRequest.py:59
-#, fuzzy, python-format
-msgid "Invalid request received (%s)."
-msgstr "Permintaan tidak valid diterima (%s)."
-
-#: ../server/apacheRequest.py:120
-#, fuzzy, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"PESAN PENTING BERIKUT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, fuzzy, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Saat menjalankan '%s': tertangkap\n"
-"%s : %s (Dalam Bahasa Inggris)"
-
-#: ../server/apacheRequest.py:606
-#, fuzzy, python-format
-msgid "Invalid URI %s"
-msgstr "URI “%s” Tidak Sah"
-
-#: ../server/rhnChannel.py:1999
-#, fuzzy, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Akun Anda tidak memiliki akses ke saluran apa pun yang cocok "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-
-#: ../server/rhnChannel.py:2014
-#, fuzzy, python-format
-msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
-
-#. Various messages that can be reused
-#.
-#. bretm 02/07/2007 -- when we have better old-client documentation, probably
-#. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
-#, fuzzy
-msgid "System Registered but Inactive"
-msgstr "Sistem Terdaftar tetapi Tidak Aktif"
-
-#: ../server/rhnChannel.py:2279
-#, fuzzy, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it could not be subscribed to a base channel.\n"
-"Please contact your organization administrator for assistance.\n"
-msgstr ""
-"Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
-"Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
-"karena tidak dapat di subscribe ke base channel.\n"
-"Hubungi administrator organisasi Anda untuk mendapatkan bantuan."
-
-#: ../server/rhnChannel.py:2286
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but is not yet entitled\n"
-"  to service.  To entitle this system to service, login to the web site at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
-"Sistem ini telah berhasil didaftarkan, namun belum\n"
-"  layanan.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
-"di:\n"
-"\n"
-"%(entitlement_url)s (Dalam Bahasa Inggris)"
-
-#: ../server/rhnChannel.py:2294
-#, fuzzy, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
-"Sistem ini telah berhasil didaftarkan, tetapi tidak ada hak layanan\n"
-"  tersedia.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
-"di:\n"
-"\n"
-"%(entitlement_url)s (Dalam Bahasa Inggris)"
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1145,37 +1156,6 @@ msgstr "Galat Info Kelas: %s"
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
-#: ../common/rhnTB.py:205
-#, fuzzy, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "GALAT: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, fuzzy, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, fuzzy, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "format dari %s harus setidaknya YYYYMMDD."
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:121
-#, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
-
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, fuzzy, python-format
 msgid ""
@@ -1197,6 +1177,21 @@ msgstr ""
 "\"%s\" tidak dapat dibuka\n"
 "dan/atau tertulis kepada:\n"
 "%s"
+
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
+#: ../satellite_tools/reposync.py:121
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
@@ -2087,6 +2082,12 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, fuzzy, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr "format dari %s harus setidaknya YYYYMMDD."
 
 #: ../satellite_tools/messages.py:26
 #, fuzzy, python-format

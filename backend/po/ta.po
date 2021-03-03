@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 15:54+0000\n"
+"POT-Creation-Date: 2021-03-03 17:54+0000\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
@@ -20,10 +20,149 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr ""
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr ""
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr ""
+
+#: ../server/rhnChannel.py:1999
+#, python-format
+msgid ""
+"Your account does not have access to any channels matching "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr ""
+
+#: ../server/rhnChannel.py:2014
+#, python-format
+msgid "Insufficient subscription permissions for release (%s, %s"
+msgstr ""
+
+#. Various messages that can be reused
+#.
+#. bretm 02/07/2007 -- when we have better old-client documentation, probably
+#. will be safe to get rid of all this crap
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
+msgid "System Registered but Inactive"
+msgstr ""
+
+#: ../server/rhnChannel.py:2279
+#, python-format
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it could not be subscribed to a base channel.\n"
+"Please contact your organization administrator for assistance.\n"
+msgstr ""
+
+#: ../server/rhnChannel.py:2286
+#, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but is not yet entitled\n"
+"  to service.  To entitle this system to service, login to the web site at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+
+#: ../server/rhnChannel.py:2294
+#, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but no service entitlements\n"
+"  were available.  To entitle this system to service, login to the web site "
+"at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr ""
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr ""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr ""
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr ""
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr ""
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr ""
+
+#: ../server/configFilesHandler.py:129
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/handlers/app/packages.py:192
 #, python-format
 msgid ""
 "\n"
@@ -91,6 +230,16 @@ msgstr ""
 msgid "Cannot register usernames ending with %s"
 msgstr ""
 
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr ""
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr ""
+
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
 msgstr ""
@@ -127,19 +276,6 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr ""
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr ""
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -158,19 +294,6 @@ msgstr ""
 #: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:196
@@ -212,9 +335,35 @@ msgstr ""
 msgid "Invalid value '%s' for %s (%s)"
 msgstr ""
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr ""
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
+msgstr ""
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr ""
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
 msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
@@ -222,152 +371,14 @@ msgstr ""
 msgid "Your system was not found in the {PRODUCT_NAME} database"
 msgstr ""
 
-#: ../server/apacheAuth.py:66
+#: ../common/rhnTB.py:205
 #, python-format
-msgid "incomplete proxy authentication token: %s"
+msgid "ERROR: %s %s: %s"
 msgstr ""
 
-#: ../server/apacheAuth.py:84
+#: ../common/rhnTB.py:207
 #, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr ""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr ""
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr ""
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr ""
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr ""
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr ""
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr ""
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr ""
-
-#: ../server/rhnChannel.py:1999
-#, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-
-#: ../server/rhnChannel.py:2014
-#, python-format
-msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
-
-#. Various messages that can be reused
-#.
-#. bretm 02/07/2007 -- when we have better old-client documentation, probably
-#. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
-msgid "System Registered but Inactive"
-msgstr ""
-
-#: ../server/rhnChannel.py:2279
-#, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it could not be subscribed to a base channel.\n"
-"Please contact your organization administrator for assistance.\n"
-msgstr ""
-
-#: ../server/rhnChannel.py:2286
-#, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but is not yet entitled\n"
-"  to service.  To entitle this system to service, login to the web site at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
-
-#: ../server/rhnChannel.py:2294
-#, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
-"\n"
-"  %(entitlement_url)s\n"
+msgid "TRACEBACK: %s"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
@@ -925,35 +936,6 @@ msgstr ""
 msgid "Explanation: %s"
 msgstr ""
 
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr ""
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr ""
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -968,6 +950,19 @@ msgid ""
 "\"%s\" could not be opened\n"
 "and/or written to:\n"
 "%s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
@@ -1703,6 +1698,12 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2523
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
+msgstr ""
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr ""
 
 #: ../satellite_tools/messages.py:26
