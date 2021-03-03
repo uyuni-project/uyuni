@@ -9272,6 +9272,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="maintenance.action.assign.error.systemnotfound">
         <source>Some of the specified servers cannot be found</source>
       </trans-unit>
+      <trans-unit id="bootstrap.minion.error.noperm">
+        <source>Cannot read/write '{0}'. Please check permissions.</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.permcmdexec">
+        <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt">
+        <source>Error during applying the bootstrap state, message: {0}</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

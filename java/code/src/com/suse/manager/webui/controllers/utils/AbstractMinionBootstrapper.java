@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers.utils;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -57,6 +58,7 @@ public abstract class AbstractMinionBootstrapper {
     private static final int KEY_LENGTH_LIMIT = 1_000_000;
 
     private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     /**
      * Constructor
@@ -162,13 +164,14 @@ public abstract class AbstractMinionBootstrapper {
                 String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                         "Please check permissions.";
                 LOG.error("Error during bootstrap: " + responseMessage);
-                return new BootstrapResult(false, Optional.of(contactMethod), responseMessage.split("\\r?\\n"));
+                return new BootstrapResult(false, Optional.of(contactMethod),
+                        LOC.getMessage("bootstrap.minion.error.noperm", SALT_SSH_DIR_PATH + "/known_hosts"));
             }
         }
         catch (CommandExecutionException | IOException e) {
             LOG.error(e);
-            return new BootstrapResult(false, Optional.of(contactMethod), "Error when checking permissions on '" +
-                    SALT_SSH_DIR_PATH + "/known_hosts'. Please check server logs for more information.");
+            return new BootstrapResult(false, Optional.of(contactMethod),
+                    LOC.getMessage("bootstrap.minion.error.permcmdexec", SALT_SSH_DIR_PATH + "/known_hosts"));
         }
 
         try {
@@ -199,12 +202,10 @@ public abstract class AbstractMinionBootstrapper {
         catch (SaltException e) {
             LOG.error("Exception during bootstrap: " + e.getMessage(), e);
             return new BootstrapResult(false, Optional.empty(),
-                    "Error during applying the bootstrap" +
-                    " state, message: " + e.getMessage());
+                    LOC.getMessage("bootstrap.minion.error.salt", e.getMessage()));
         }
         catch (Exception e) {
-            return new BootstrapResult(false, Optional.empty(),
-                    e.getMessage());
+            return new BootstrapResult(false, Optional.empty(), e.getMessage());
         }
     }
 
