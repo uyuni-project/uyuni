@@ -4901,10 +4901,6 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <source>Patches Management</source>
         <target>Gestione Errata</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">Nessun Errata pubblicato</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">Errata pubblicato</target>

@@ -4584,10 +4584,6 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-      <target state="needs-adaptation" />
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
       <target state="needs-adaptation" />

@@ -4951,10 +4951,6 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
         <target>パッチ管理</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="translated">パッチはありません</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="translated">パッチ</target>

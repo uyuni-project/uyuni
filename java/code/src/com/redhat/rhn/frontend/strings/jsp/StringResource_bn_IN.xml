@@ -4696,10 +4696,6 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
         <target>ত্রুটি-বিচ্যুতি পরিচালনা</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">কোনো প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য</target>

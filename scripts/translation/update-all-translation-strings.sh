@@ -40,13 +40,16 @@ function update_xliff() {
         return 1;
     fi
     $GIT_ROOT_DIR/scripts/translation/xliffmerger.py $GIT_ROOT_DIR/$XLIFF_DIR
-    for change in `git diff --numstat | awk '{print $1}'`; do
-        if [ $change -gt 1 ]; then
-            git add -u
-            git commit -m "update strings for translations in $XLIFF_DIR"
-            return 2
-        fi
-    done
+    if [ $? -ne 0 ]; then
+        echo "xliffmerger returned a fault code"
+        return 1
+    fi
+    MODIFIED=`git status --short --porcelain --untracked-files=no | wc -l`
+    if [ $MODIFIED -gt 0 ]; then
+        git add -u
+        git commit -m "update strings for translations in $XLIFF_DIR"
+        return 2
+    fi
     git reset --hard
     return 0
 }

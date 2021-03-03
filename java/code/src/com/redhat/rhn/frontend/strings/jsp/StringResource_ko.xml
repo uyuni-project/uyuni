@@ -4835,10 +4835,6 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches Management</source>
         <target>에라타 관리</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">발표된 에라타가 없습니다.</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">발표된 에라타</target>

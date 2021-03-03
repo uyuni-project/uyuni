@@ -4902,10 +4902,6 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         <source>Patches Management</source>
         <target>Errata-Management</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
-        <source>No Patches</source>
-        <target state="needs-adaptation">Keine veröffentlichten Errata</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <target state="needs-adaptation">Veröffentlichte Errata</target>
