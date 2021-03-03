@@ -19,6 +19,5 @@
     missingok
     notifempty
     rotate 30
-    size 4096k
     su wwwrun www
 }
