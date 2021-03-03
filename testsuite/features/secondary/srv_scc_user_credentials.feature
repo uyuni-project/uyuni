@@ -1,10 +1,10 @@
-# Copyright 2017-2021 SUSE LLC
+# Copyright 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: SCC user credentials in the Setup Wizard
-The purpose of this feature is not the same that the feature in core, 
-this feature aimes to test the manipulation of scc credentials while 
-the other in core aimes to setup scc credentials.
+  As a systems administrator
+  In order to manage organization's access to SUSE Customer Service
+  I want to create, edit, and delete its credentials
 
 @no_mirror
   Scenario: Enter some invalid organization credentials
