@@ -1,3 +1,4 @@
+- adapt logging for testing accessability of URLs (bsc#1182817)
 - add warning about missing salt feature for virtual networks
 - add virtual network create action
 
