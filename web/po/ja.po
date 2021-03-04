@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 10:38+0000\n"
+"POT-Creation-Date: 2021-03-04 12:27+0000\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -208,8 +208,8 @@ msgstr "検索"
 
 #: ../html/src/components/config-channels.tsx:462
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:47
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
@@ -1143,9 +1143,9 @@ msgid " seconds"
 msgstr " 秒"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:139
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:228
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:135
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
@@ -1172,8 +1172,8 @@ msgid "Elapsed Time"
 msgstr "経過時間"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:174
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:234
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:123
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
@@ -1190,7 +1190,7 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "現時点では、サーバ内で動作しているタスクはありません。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
@@ -1198,31 +1198,31 @@ msgstr ""
 "してください。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.ts:64
+#: ../html/src/utils/network.ts:65
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:164
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:171
 msgid "CVE Audit"
 msgstr "CVE 監査"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:170
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:178
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:213
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:233
 msgid "Audit Servers"
 msgstr "監査サーバ"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:214
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:240
 msgid "Audit Images"
 msgstr "監査イメージ"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:245
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:151
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
@@ -1242,7 +1242,7 @@ msgstr "監査イメージ"
 msgid "Name"
 msgstr "名前"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:262
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
 #: ../html/src/manager/images/image-profiles.js:147
 #: ../html/src/manager/images/image-stores.js:152
 #: ../html/src/manager/images/image-view.js:595
@@ -1256,11 +1256,11 @@ msgstr "名前"
 msgid "Actions"
 msgstr "動作"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:50
 msgid "Match data status"
 msgstr "マッチングデータの状態"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:78
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
@@ -1268,19 +1268,19 @@ msgstr ""
 "マッチング処理を開始できません。 SUSE Manager の管理者に連絡して、タスクスケ"
 "ジューラが動作しているかどうかをご確認ください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:87
 msgid "No match data is currently available."
 msgstr "利用可能なマッチングデータはありません。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:89
 msgid "You can also trigger a first run now by clicking the button below."
 msgstr "下記のボタンを押すことで、初回の起動を行なうことができます。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "Matching data is currently being recomputed, it was started {0}."
 msgstr "マッチングデータは現在計算中です。 {0} に開始しています。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:105
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
@@ -1288,43 +1288,43 @@ msgstr ""
 "直近のマッチングデータは {0} に計算されていますが、下記のボタンを押すことで新"
 "たに実行することもできます。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:114
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
 msgstr "マッチングデータは通常、夜間のタスクスケジュールとして実行されます ( "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:116
 msgid "change the task schedule from the administration page"
 msgstr "管理ページからタスクスケジュールを変更できます"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:118
 msgid "). "
 msgstr ") 。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:143
 msgid "Refresh matching data"
 msgstr "マッチングデータの更新"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:20
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:21
 msgid "Unsupported part number detected"
 msgstr "サポート対象外のパーツ番号が検出されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:25
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 "物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータ"
 "をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:29
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr "仮想化ゲストは未知のホストです。物理システムであるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:33
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "システムのソケット数が未知です。 16 個あるものとして処理します"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:37
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
@@ -1332,7 +1332,7 @@ msgstr ""
 "同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つに"
 "まとめられます"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1340,35 +1340,40 @@ msgstr ""
 "同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめ"
 "ました - 開始／終了日をご確認ください"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:47
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "サブスクリプションをまとめたことにより、ピンマッチも調整されました"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:49
 msgid "Subscription IDs"
 msgstr "サブスクリプション ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:67
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:77
 msgid "Please review warning and information messages below."
 msgstr "下記の警告および情報メッセージをご確認ください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:77
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:83
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:88
 msgid "Additional information"
 msgstr "追加情報"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:97
 msgid "No messages from the last match run."
 msgstr "直近のマッチ実行でのメッセージはありません。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:98
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:102
 msgid "Messages"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:74
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
+#, fuzzy
+msgid "Pins"
+msgstr "ピン "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
@@ -1376,7 +1381,7 @@ msgstr ""
 "サブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定"
 "の関連づけを提案させることができます。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:76
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:93
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
@@ -1384,14 +1389,14 @@ msgstr ""
 "次回のマッチング処理の動作でアルゴリズムは、指定したシステムにサブスクリプ"
 "ションを適用する結果を生成しようとします。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:78
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:96
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
 msgstr ""
 "なお、アルゴリズム側では特定のピンを無視するよう判断する場合があります。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
@@ -1399,64 +1404,92 @@ msgstr ""
 "これはサブスクリプションが利用できるかどうかと、適用ルールに従って決まりま"
 "す。この場合、満たされていないものとして表示されます。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:104
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:76
-msgid "Policy"
-msgstr "ポリシー"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:139
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:140
-msgid "Add a Pin"
-msgstr "ピンの追加"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:159
-msgid "pending next run"
-msgstr "次回の実行まで待機しています"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
-msgid "not satisfied"
-msgstr "満たされていません"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:213
-msgid "Available Systems"
-msgstr "利用可能なシステム"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:214
-msgid "Step 1/2: select the system to pin from the table below."
-msgstr "ステップ 1/2: 下記の表で、ピンを設定するシステムを選択してください。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:234
-msgid "Socket/IFL count"
-msgstr "ソケット/IFL カウント"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
-msgid "Products"
-msgstr "製品"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
-msgid "Select"
-msgstr "選択"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:261
-msgid "Available Subscriptions for the Selected System"
-msgstr "選択したシステムで利用可能なサブスクリプション"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:262
-msgid "Step 2/2: pick a subscription for system "
-msgstr "ステップ 2/2: システムに対するサブスクリプションの選択 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:270
-msgid "Back to sytem selection"
-msgstr "システム選択に戻る"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:314
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:64
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:142
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:373
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:66
 msgid "Part number"
 msgstr "パーツ番号"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
+#, fuzzy
+msgid "Subscription"
+msgstr "サブスクリプション"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:125
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:375
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:78
+msgid "Policy"
+msgstr "ポリシー"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:131
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:378
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:98
+msgid "End date"
+msgstr "終了日"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
+#, fuzzy
+msgid "Delete Pin"
+msgstr "プロファイルの削除"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
+msgid "No pins defined. You can create one with the button below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:179
+msgid "Add a Pin"
+msgstr "ピンの追加"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:195
+msgid "pending next run"
+msgstr "次回の実行まで待機しています"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
+#, fuzzy
+msgid "satisfied"
+msgstr "満たされていません"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
+msgid "not satisfied"
+msgstr "満たされていません"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:270
+msgid "Available Systems"
+msgstr "利用可能なシステム"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:271
+msgid "Step 1/2: select the system to pin from the table below."
+msgstr "ステップ 1/2: 下記の表で、ピンを設定するシステムを選択してください。"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:290
+msgid "Socket/IFL count"
+msgstr "ソケット/IFL カウント"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:295
+msgid "Products"
+msgstr "製品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:305
+msgid "Select"
+msgstr "選択"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:318
+msgid "Available Subscriptions for the Selected System"
+msgstr "選択したシステムで利用可能なサブスクリプション"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:320
+msgid "Step 2/2: pick a subscription for system "
+msgstr "ステップ 2/2: システムに対するサブスクリプションの選択 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:330
+msgid "Back to sytem selection"
+msgstr "システム選択に戻る"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:374
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:72
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
@@ -1467,16 +1500,11 @@ msgstr "パーツ番号"
 msgid "Description"
 msgstr "説明"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:97
-msgid "End date"
-msgstr "終了日"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:337
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:389
 msgid "Save Pin"
 msgstr "ピンの保存"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:343
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:401
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
@@ -1484,73 +1512,96 @@ msgstr ""
 "直接もしくは仮想化ゲストにインストールされている全ての製品を考慮しても、この"
 "システムに該当するサブスクリプションは見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:59
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:60
 msgid "Filter by description"
 msgstr "説明でフィルタ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:82
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:84
 msgid "Matched/Total"
 msgstr "該当するもの／合計"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:88
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:90
 msgid "Start date"
 msgstr "開始日"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:116
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:113
 msgid "No subscriptions found."
 msgstr "サブスクリプションが見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:121
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:118
 msgid "Your subscriptions"
 msgstr "お使いのサブスクリプション"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:58
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "製品名"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:64
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:67
 msgid "Unmatched system count"
 msgstr "一致しないシステム数"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:70
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:71
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:74
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:75
 msgid "Show system list"
 msgstr "システム一覧の表示"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:90
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 msgid "Unmatched Products"
 msgstr "該当のない製品"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:140
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
 msgstr "システム名"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:145
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:156
 msgid "Unmatched systems"
 msgstr "一致しないシステム"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
+msgid "Download CSV"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
+msgid "Physical deployment only"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
+#, fuzzy
+msgid "Unlimited Virtual Machines"
+msgstr "仮想マシンの作成"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
+#, fuzzy
+msgid "1-2 Sockets or 1-2 Virtual Machines"
+msgstr "仮想マシンの作成"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
+#, fuzzy
+msgid "Per-instance"
+msgstr "インスタンス"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
 msgstr "仮想ホストマネージャの編集"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
 msgstr "サブスクリプションマッチング"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
 msgstr "サブスクリプション"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
 msgid "Pins "
 msgstr "ピン "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
 msgid "Messages "
 msgstr "メッセージ "
 
@@ -2093,7 +2144,7 @@ msgstr "プロジェクトの削除"
 msgid "Are you sure you want to delete project"
 msgstr "プロジェクトを削除してよろしいですか"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:69
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:74
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -3763,7 +3814,7 @@ msgstr ""
 "再読み込みしてください。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:60
+#: ../html/src/utils/network.ts:61
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
@@ -4911,15 +4962,15 @@ msgstr "システムグループの選択"
 msgid "Split into groups"
 msgstr "グループに分割"
 
-#: ../html/src/utils/network.ts:58
+#: ../html/src/utils/network.ts:59
 msgid "Session expired, please reload the page."
 msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
 
-#: ../html/src/utils/network.ts:62
+#: ../html/src/utils/network.ts:63
 msgid "Resource not found."
 msgstr "リソースが見つかりませんでした。"
 
-#: ../html/src/utils/network.ts:66
+#: ../html/src/utils/network.ts:67
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
 

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 10:38+0000\n"
+"POT-Creation-Date: 2021-03-04 12:27+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -201,8 +201,8 @@ msgstr "搜索"
 
 #: ../html/src/components/config-channels.tsx:462
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:47
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
@@ -1118,9 +1118,9 @@ msgid " seconds"
 msgstr " 秒刷新"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:139
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:228
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:135
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
@@ -1147,8 +1147,8 @@ msgid "Elapsed Time"
 msgstr "已用时间"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:174
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:234
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:123
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
@@ -1165,37 +1165,37 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.ts:64
+#: ../html/src/utils/network.ts:65
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:164
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:171
 msgid "CVE Audit"
 msgstr "CVE 审计"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:170
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:178
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:213
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:233
 msgid "Audit Servers"
 msgstr "审计服务器"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:214
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:240
 msgid "Audit Images"
 msgstr "审计映像"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:245
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:151
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
@@ -1215,7 +1215,7 @@ msgstr "审计映像"
 msgid "Name"
 msgstr "名称"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.js:262
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
 #: ../html/src/manager/images/image-profiles.js:147
 #: ../html/src/manager/images/image-stores.js:152
 #: ../html/src/manager/images/image-view.js:595
@@ -1229,11 +1229,11 @@ msgstr "名称"
 msgid "Actions"
 msgstr "操作"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:50
 msgid "Match data status"
 msgstr "匹配数据状态"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:62
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:78
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
@@ -1241,65 +1241,65 @@ msgstr ""
 "无法启动匹配运行。请联系您的 SUSE Manager 管理员以确保任务日程安排程序正在运"
 "行。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:68
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:87
 msgid "No match data is currently available."
 msgstr "当前没有可用的匹配数据。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:69
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:89
 msgid "You can also trigger a first run now by clicking the button below."
 msgstr "您也可以单击以下按钮立即触发首次运行。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:75
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "Matching data is currently being recomputed, it was started {0}."
 msgstr "当前正在重新计算匹配数据，开始时间为 {0}。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:78
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:105
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
 msgstr "在 {0} 已计算出最新成功的匹配数据，您可以单击以下按钮触发新的运行。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:83
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:114
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
 msgstr "默认将在夜间通过任务日程安排计算匹配数据（可以 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:84
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:116
 msgid "change the task schedule from the administration page"
 msgstr "通过管理页更改任务日程安排"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:85
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:118
 msgid "). "
 msgstr "）。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:107
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:143
 msgid "Refresh matching data"
 msgstr "刷新匹配数据"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:20
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:21
 msgid "Unsupported part number detected"
 msgstr "检测到不支持的部件号"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:24
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:25
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
 msgstr "物理系统已报告为虚拟 Guest，请检查硬件数据"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:28
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:29
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr "虚拟 Guest 包含未知主机，将假定它是物理系统"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:33
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "系统包含未知数量的插槽，将假定为 16 个"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:37
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
 msgstr "某个捆绑包中包含两个具有相同部件号的订阅 - 已合并成一个订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
@@ -1307,116 +1307,149 @@ msgstr ""
 "已将两个具有相同部件号（和其他属性）的订阅合并到一起 - 开始/结束日期可能会指"
 "示此状态"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:44
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:47
 msgid "Pinned match adjusted due to merged subscriptions"
 msgstr "由于合并了订阅而调整了关联的匹配项"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:45
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:49
 msgid "Subscription IDs"
 msgstr "订阅 ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:67
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:77
 msgid "Please review warning and information messages below."
 msgstr "请查看下面的警告和信息消息。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:77
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Message"
 msgstr "消息"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:83
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:88
 msgid "Additional information"
 msgstr "其他信息"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:93
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:97
 msgid "No messages from the last match run."
 msgstr "上次匹配运行未返回任何消息。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:98
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:102
 msgid "Messages"
 msgstr "消息"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:74
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
+#, fuzzy
+msgid "Pins"
+msgstr "关联 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
 msgstr "可将订阅关联到系统，以向匹配算法建议特定的关联。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:76
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:93
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
 msgstr "下一次尝试匹配时，算法将尝试生成一条可向指定的系统应用该订阅的结果。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:78
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:96
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
 msgstr "请注意，根据订阅的可用性和适用性规则，算法可能会判定 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:79
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
 msgstr "无法遵循特定的关联，在这种情况下，该关联会显示为 \"不符合\"。 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:104
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:76
-msgid "Policy"
-msgstr "策略"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:139
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:140
-msgid "Add a Pin"
-msgstr "添加关联"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:159
-msgid "pending next run"
-msgstr "等待下一次运行"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:164
-msgid "not satisfied"
-msgstr "不符合"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:213
-msgid "Available Systems"
-msgstr "可用系统"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:214
-msgid "Step 1/2: select the system to pin from the table below."
-msgstr "步骤 1/2：从下表中选择要关联的系统。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:234
-msgid "Socket/IFL count"
-msgstr "插槽/IFL 计数"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:239
-msgid "Products"
-msgstr "产品"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
-msgid "Select"
-msgstr "选择"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:261
-msgid "Available Subscriptions for the Selected System"
-msgstr "选定系统的可用订阅"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:262
-msgid "Step 2/2: pick a subscription for system "
-msgstr "步骤 2/2：选取系统的订阅 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:270
-msgid "Back to sytem selection"
-msgstr "返回系统选择页"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:314
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:64
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:113
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:142
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:373
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:66
 msgid "Part number"
 msgstr "部件号"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
+#, fuzzy
+msgid "Subscription"
+msgstr "订阅"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:125
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:375
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:78
+msgid "Policy"
+msgstr "策略"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:131
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:378
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:98
+msgid "End date"
+msgstr "结束日期"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
+#, fuzzy
+msgid "Delete Pin"
+msgstr "删除配置文件"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
+msgid "No pins defined. You can create one with the button below."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:179
+msgid "Add a Pin"
+msgstr "添加关联"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:195
+msgid "pending next run"
+msgstr "等待下一次运行"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
+#, fuzzy
+msgid "satisfied"
+msgstr "不符合"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
+msgid "not satisfied"
+msgstr "不符合"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:270
+msgid "Available Systems"
+msgstr "可用系统"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:271
+msgid "Step 1/2: select the system to pin from the table below."
+msgstr "步骤 1/2：从下表中选择要关联的系统。"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:290
+msgid "Socket/IFL count"
+msgstr "插槽/IFL 计数"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:295
+msgid "Products"
+msgstr "产品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:305
+msgid "Select"
+msgstr "选择"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:318
+msgid "Available Subscriptions for the Selected System"
+msgstr "选定系统的可用订阅"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:320
+msgid "Step 2/2: pick a subscription for system "
+msgstr "步骤 2/2：选取系统的订阅 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:330
+msgid "Back to sytem selection"
+msgstr "返回系统选择页"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:374
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:72
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
@@ -1427,88 +1460,106 @@ msgstr "部件号"
 msgid "Description"
 msgstr "说明"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:97
-msgid "End date"
-msgstr "结束日期"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:337
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:389
 msgid "Save Pin"
 msgstr "保存关联"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:343
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:401
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
 msgstr "找不到与此系统匹配的订阅，将假定直接或者在虚拟 Guest 中安装所有产品。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:59
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:60
 msgid "Filter by description"
 msgstr "按说明过滤"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:82
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:84
 msgid "Matched/Total"
 msgstr "匹配数/总计"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:88
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:90
 msgid "Start date"
 msgstr "开始日期"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:116
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:113
 msgid "No subscriptions found."
 msgstr "找不到订阅。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:121
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:118
 msgid "Your subscriptions"
 msgstr "您的订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:58
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "产品名称"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:64
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:67
 msgid "Unmatched system count"
 msgstr "不匹配的系统计数"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:70
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:71
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:74
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:75
 msgid "Show system list"
 msgstr "显示系统列表"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:90
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "找不到不匹配的产品。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 msgid "Unmatched Products"
 msgstr "不匹配的产品"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:140
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
 msgstr "系统名称"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:145
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:156
 msgid "Unmatched systems"
 msgstr "不匹配的系统"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
+msgid "Download CSV"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
+msgid "Physical deployment only"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
+#, fuzzy
+msgid "Unlimited Virtual Machines"
+msgstr "创建虚拟机"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
+#, fuzzy
+msgid "1-2 Sockets or 1-2 Virtual Machines"
+msgstr "创建虚拟机"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
+#, fuzzy
+msgid "Per-instance"
+msgstr "实例"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
 msgstr "编辑虚拟主机管理器"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
 msgstr "订阅匹配"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
 msgstr "订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
 msgid "Pins "
 msgstr "关联 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
 msgid "Messages "
 msgstr "消息 "
 
@@ -2043,7 +2094,7 @@ msgstr "删除项目"
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:69
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:74
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -3668,7 +3719,7 @@ msgid "Session expired, please reload the page to run command on systems."
 msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:60
+#: ../html/src/utils/network.ts:61
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr "授权错误，请重新装载页面或重试注销/登录。"
@@ -4785,15 +4836,15 @@ msgstr "选择系统组"
 msgid "Split into groups"
 msgstr "分割成组"
 
-#: ../html/src/utils/network.ts:58
+#: ../html/src/utils/network.ts:59
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
 
-#: ../html/src/utils/network.ts:62
+#: ../html/src/utils/network.ts:63
 msgid "Resource not found."
 msgstr "未找到资源。"
 
-#: ../html/src/utils/network.ts:66
+#: ../html/src/utils/network.ts:67
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
