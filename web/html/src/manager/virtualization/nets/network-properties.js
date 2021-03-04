@@ -3,6 +3,7 @@
 import type { ActionChain } from 'components/action-schedule';
 
 import * as React from 'react';
+import _isNil from "lodash/isNil";
 import Validation from 'components/validation';
 import { Loading } from 'components/utils/Loading';
 import { Form } from 'components/input/Form';
@@ -46,8 +47,71 @@ type Props = {
 
 function clearFields(initialModel, setModel) {
   if (initialModel) {
-    // Flatten the model for the form
-    let flattened = flattenModel(initialModel);
+    let definition = initialModel;
+
+    // Convert some int properties to string since validators only work with strings
+    // TODO Remove once https://github.com/uyuni-project/uyuni/issues/3391 is completed
+    const intToString = (value: Object, key: string) => {
+      if (!_isNil((value || {})[key]) && typeof value[key] === "number") {
+        value[key] = value[key].toString();
+      }
+    };
+
+    (definition.srv || []).forEach(srv => {
+      intToString(srv, "port");
+      intToString(srv, "priority");
+      intToString(srv, "weight");
+    });
+
+    (definition.vlans || []).forEach(vlan => intToString(vlan, "tag"));
+
+    // rename the ipv[46] to ipv[46]def
+    // TODO Remove once https://github.com/uyuni-project/uyuni/issues/3392 is completed
+    ["ipv4", "ipv6"].forEach(prop => {
+      if (definition[prop] != null) {
+        intToString(definition[prop], "prefix");
+        definition[`${prop}def`] = definition[prop];
+        delete definition[prop];
+      }
+    });
+
+    // Compute the selection fields from the model
+    // TODO Remove once https://github.com/uyuni-project/uyuni/issues/3392 is completed
+    definition['ipv6-enabled'] = !_isNil(definition.ipv6def);
+    if (!_isNil(definition.pf)) {
+      definition['interface-selection-type'] = 'pf';
+    } else if ((Array.isArray(definition.interfaces) && definition.interfaces.length > 0) || !_isNil(definition.vf)) {
+      definition['interface-selection-type'] = 'vf';
+    }
+    if ((definition.virtualport || {}).type === "802.1qbh") {
+      definition['virtualport-params-type'] = _isNil(definition.virtualport.profileid) ? 'vsi': 'profileid';
+    }
+
+    // Merge the DNS host names into coma-separated string
+    if (!_isNil((definition.dns || {}).hosts)) {
+      definition.dns.hosts = definition.dns.hosts.map(host => ({
+        address: host.address,
+        names: Array.isArray(host.names) ? host.names.join() : host.names,
+      }))
+    }
+
+    // Since the flattenModel would flatten these arrays while they should stay as arrays for the Select component
+    // merge the vf and interfaces into coma-separated string and split them after the flattening
+    ["vf", "interfaces"].forEach(key => {
+      if (Array.isArray(definition[key])) {
+        definition[key] = definition[key].join(",");
+      }
+    });
+
+    let flattened = flattenModel(definition);
+
+    // Now getting vf and interfaces back to array for multi-valued Select component
+    ["vf", "interfaces"].forEach(key => {
+      if (!_isNil(flattened[key]) && typeof flattened[key] === "string" && flattened[key] !== "") {
+        flattened[key] = flattened[key].split(",");
+      }
+    });
+
     setModel(flattened);
   } else {
     setModel({});
