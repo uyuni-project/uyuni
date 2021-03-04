@@ -106,10 +106,7 @@ def initLOG(log_file="stderr", level=0):
 
         try:
             os.makedirs(log_path)
-            if os.getuid() == 0:
-                os.chown(log_path, apache_uid, 0)
-            else:
-                os.chown(log_path, apache_uid, apache_gid)
+            os.chown(log_path, apache_uid, apache_gid)
         except:
             log_stderr("ERROR: unable to create log file path %s" % log_path,
                        sys.exc_info()[:2])

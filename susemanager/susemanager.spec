@@ -267,6 +267,10 @@ if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
     chmod 600 /SWAPFILE
 fi
 
+%if !0%{?suse_version}
+sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
+%endif
+
 %posttrans
 # make sure our database will use correct encoding
 . /etc/sysconfig/postgresql
