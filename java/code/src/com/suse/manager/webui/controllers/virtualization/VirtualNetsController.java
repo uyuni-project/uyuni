@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateCha
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;
@@ -38,6 +39,8 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.JsonObject;
+
+import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +51,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -86,6 +90,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 withUser(this::delete));
         post("/manager/api/systems/details/virtualization/nets/:sid/create",
                 withUser(this::create));
+        get("/manager/api/systems/details/virtualization/nets/:sid/net/:name",
+                withUser(this::getNetwork));
     }
 
     /**
@@ -247,6 +253,27 @@ public class VirtualNetsController extends AbstractVirtualizationController {
 
             return action;
         }, VirtualNetworkCreateActionJson.class);
+    }
+
+    /**
+     * Executes the GET query to extract the network definition
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON-formatted capabilities
+     */
+    public String getNetwork(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+                Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get network definition of Salt system")).getMinionId();
+
+        String netName = request.params("name");
+        NetworkDefinition definition = virtManager.getNetworkDefinition(minionId, netName)
+                .orElseThrow(NotFoundException::new);
+
+        response.type("application/json");
+        return GSON.toJson(definition);
     }
 
     private String netStateChangeAction(Request request, Response response, User user, String state) {
