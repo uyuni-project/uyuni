@@ -1,4 +1,5 @@
 import * as React from "react";
+import _cloneDeep from "lodash/cloneDeep";
 import {
   render,
   waitForElementToBeRemoved,
@@ -394,6 +395,323 @@ describe("Rendering", () => {
     await select(screen.getByLabelText(/^Virtual Functions/), "eth8");
     await type(screen.getByLabelText(/^VLAN tag/), "24");
 
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+});
+
+describe("Network properties loading", () => {
+
+  function makeNetworkData(data) {
+    const empty = {
+      type: null,
+      autostart: false,
+      bridge: null,
+      mtu: null,
+      nat: null,
+      ipv4: null,
+      ipv6: null,
+      domain: null,
+      dns: null,
+      interfaces: [],
+      vf: [],
+      pf: null,
+      virtualport: null,
+      vlantrunk: null,
+      vlans: [],
+      name: null,
+      uuid: null,
+    };
+    return Object.assign(empty, _cloneDeep(data));
+  };
+
+  test("Render minimal NAT network", async done => {
+    const net = {
+      type: "nat",
+      autostart: true,
+      bridge: "virbr2",
+      mtu: 7000,
+      name: "private0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      ipv4: {
+        address: "192.168.10.0",
+        prefix: 24,
+      }
+    };
+
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["nat"]);
+    expect(screen.getByLabelText("Start during virtual host boot").checked).toBeTruthy();
+    expect(screen.getByLabelText(/^Bridge/).value).toStrictEqual("virbr2");
+    expect(screen.getByLabelText(/^Maximum Transmission Unit/).value).toStrictEqual("7000");
+    expect(screen.getByRole("textbox", {name: "IPv4 Network address"}).value).toStrictEqual("192.168.10.0");
+    expect(screen.getByRole("textbox", {name: "IPv4 Network address prefix"}).value).toStrictEqual("24");
+    expect(screen.getByLabelText("Enable IPv6").checked).toBeFalsy();
+
+    // Check that the form is valid
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+
+  test("Render network with all addressing fields", async done => {
+    const net = {
+      type: "open",
+      bridge: "virbr2",
+      name: "open0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      domain: "tf.local",
+      ipv4: {
+        address: "192.168.10.0",
+        prefix: 24,
+        dhcpranges: [
+          {start: "192.168.10.10", end: "192.168.10.20"},
+          {start: "192.168.10.110", end: "192.168.10.120"},
+        ],
+        hosts: [
+          {mac: "2A:C3:A7:A6:01:00", name: "dev-srv", ip: "192.168.10.2"},
+          {mac: "2A:C3:A7:A6:01:01", ip: "192.168.10.3"},
+        ],
+        bootpfile: "pxelinux.0",
+        bootpserver: "192.168.10.2",
+        tftp: "/path/to/tftproot"
+      },
+      ipv6: {
+        address: "2001:db8:ac10:fd01::",
+        prefix: 64,
+        dhcpranges: [
+          {start: "2001:db8:ac10:fd01::10", end: "2001:db8:ac10:fd01::20"},
+        ],
+        hosts: [
+          {id: "0:3:0:1:0:16:3e:11:22:33", name: "peter.xyz", ip: "2001:db8:ac10:fd01::2"},
+        ],
+      },
+      dns: {
+        hosts: [
+          {address: "192.168.10.1", names: ["host", "gateway"]},
+        ],
+        srvs: [
+          {
+            name: "srv1",
+            protocol: "tcp",
+            domain: 'test-domain-name.com',
+            target: 'test.example.com',
+            port: 1111,
+            priority: 11,
+            weight: 111,
+          },
+          {
+            name: "srv2",
+            protocol: "udp",
+          },
+        ],
+        txts: [{name: "example", value: "foo"}, {name: "bar", value: "other value"}],
+        forwarders: [
+          {address: "8.8.4.4"},
+          {address: "192.168.1.1", domain: "example.com"},
+          {domain: "acme.com"},
+        ],
+      },
+    };
+
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["open"]);
+    expect(screen.getByLabelText("Start during virtual host boot").checked).toBeFalsy();
+    expect(screen.getByLabelText(/^Bridge/).value).toStrictEqual("virbr2");
+    expect(screen.getByLabelText(/^Maximum Transmission Unit/).value).toStrictEqual("");
+    expect(screen.getByLabelText(/^Domain name/).value).toStrictEqual("tf.local");
+
+    // IPv4 fields checks
+    expect(screen.getByRole("textbox", {name: "IPv4 Network address"}).value)
+      .toStrictEqual("192.168.10.0");
+    expect(screen.getByRole("textbox", {name: "IPv4 Network address prefix"}).value)
+      .toStrictEqual("24");
+    expect(screen.getByTitle("DHCP address range 0 start").value).toStrictEqual("192.168.10.10");
+    expect(screen.getByTitle("DHCP address range 0 end").value).toStrictEqual("192.168.10.20");
+    expect(screen.getByTitle("DHCP address range 1 start").value).toStrictEqual("192.168.10.110");
+    expect(screen.getByTitle("DHCP address range 1 end").value).toStrictEqual("192.168.10.120");
+    expect(screen.getByTitle("DHCP host 0 address").value).toStrictEqual("192.168.10.2");
+    expect(screen.getByTitle("DHCP host 0 MAC address").value).toStrictEqual("2A:C3:A7:A6:01:00");
+    expect(screen.getByTitle("DHCP host 0 name").value).toStrictEqual("dev-srv");
+    expect(screen.getByTitle("DHCP host 1 address").value).toStrictEqual("192.168.10.3");
+    expect(screen.getByTitle("DHCP host 1 MAC address").value).toStrictEqual("2A:C3:A7:A6:01:01");
+    expect(screen.getByLabelText(/^BOOTP image file/).value).toStrictEqual("pxelinux.0");
+    expect(screen.getByLabelText(/^BOOTP server/).value).toStrictEqual("192.168.10.2");
+    expect(screen.getByLabelText(/^TFTP root path/).value).toStrictEqual("/path/to/tftproot");
+
+    // IPv6 fields checks
+    expect(screen.getByLabelText("Enable IPv6").checked).toBeTruthy();
+    expect(screen.getByRole("textbox", {name: "IPv6 Network address"}).value)
+      .toStrictEqual("2001:db8:ac10:fd01::");
+    expect(screen.getByRole("textbox", {name: "IPv6 Network address prefix"}).value)
+      .toStrictEqual("64");
+    expect(screen.getByTitle("DHCPv6 address range 0 start").value)
+      .toStrictEqual("2001:db8:ac10:fd01::10");
+    expect(screen.getByTitle("DHCPv6 address range 0 end").value)
+      .toStrictEqual("2001:db8:ac10:fd01::20");
+    expect(screen.getByTitle("DHCPv6 host 0 address").value)
+      .toStrictEqual("2001:db8:ac10:fd01::2");
+    expect(screen.getByTitle("DHCPv6 host 0 DUID").value)
+      .toStrictEqual("0:3:0:1:0:16:3e:11:22:33");
+    expect(screen.getByTitle("DHCPv6 host 0 name").value)
+      .toStrictEqual("peter.xyz");
+
+    // DNS fields checks
+    expect(screen.getByTitle("DNS forwarder 0 domain name").value).toStrictEqual("");
+    expect(screen.getByTitle("DNS forwarder 0 address").value).toStrictEqual("8.8.4.4");
+    expect(screen.getByTitle("DNS forwarder 1 domain name").value).toStrictEqual("example.com");
+    expect(screen.getByTitle("DNS forwarder 1 address").value).toStrictEqual("192.168.1.1");
+    expect(screen.getByTitle("DNS forwarder 2 domain name").value).toStrictEqual("acme.com");
+    expect(screen.getByTitle("DNS forwarder 2 address").value).toStrictEqual("");
+    expect(screen.getByTitle("DNS host 0 names").value).toStrictEqual("host,gateway");
+    expect(screen.getByTitle("DNS host 0 address").value).toStrictEqual("192.168.10.1");
+    expect(screen.getByTitle("DNS SRV record 0 service").value).toStrictEqual("srv1");
+    expect(fieldValuesByName("dns_srvs0_protocol")).toStrictEqual(["tcp"]);
+    expect(screen.getByTitle("DNS SRV record 0 domain name").value).toStrictEqual("test-domain-name.com");
+    expect(screen.getByTitle("DNS SRV record 0 target hostname").value).toStrictEqual("test.example.com");
+    expect(screen.getByTitle("DNS SRV record 0 port").value).toStrictEqual("1111");
+    expect(screen.getByTitle("DNS SRV record 0 priority").value).toStrictEqual("11");
+    expect(screen.getByTitle("DNS SRV record 1 service").value).toStrictEqual("srv2");
+    expect(fieldValuesByName("dns_srvs1_protocol")).toStrictEqual(["udp"]);
+    expect(screen.getByTitle("DNS TXT record 0 name").value).toStrictEqual("example");
+    expect(screen.getByTitle("DNS TXT record 0 value").value).toStrictEqual("foo");
+    expect(screen.getByTitle("DNS TXT record 1 name").value).toStrictEqual("bar");
+    expect(screen.getByTitle("DNS TXT record 1 value").value).toStrictEqual("other value");
+
+    // Check that the form is valid
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+
+  test("Render openVSwitch network", async done => {
+    const net = {
+      type: "bridge",
+      autostart: true,
+      bridge: "ovsbr0",
+      name: "ovs0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      virtualport: {type: "openvswitch", interfaceid: "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f"},
+      vlantrunk: true,
+      vlans: [
+        {tag: 42, "native": "untagged"},
+        {tag: 47},
+      ],
+    };
+
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["bridge"]);
+    expect(screen.getByLabelText(/^Bridge/).value).toStrictEqual("ovsbr0");
+    expect(fieldValuesByName("virtualport_type")).toStrictEqual(["openvswitch"]);
+    expect(screen.getByLabelText(/^Interface id/).value)
+      .toStrictEqual("09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
+    expect(screen.getByLabelText("VLAN tags trunking").checked).toBeTruthy();
+    expect(screen.getByTitle("VLAN 0 tag").value).toStrictEqual("42");
+    expect(fieldValuesByName("vlans0_native")).toStrictEqual(["untagged"]);
+    expect(screen.getByTitle("VLAN 1 tag").value).toStrictEqual("47");
+    expect(fieldValuesByName("vlans1_native")).toStrictEqual([""]);
+
+    // Check that the form is valid
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+
+  test("Render macvtap passthrough network with interfaces", async done => {
+    const net = {
+      type: "macvtap",
+      macvtapmode: "passthrough",
+      name: "passthrough0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      virtualport: {type: "802.1qbh", profileid: "testprofile"},
+      interfaces: ["eth7", "eth8"],
+    };
+
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["macvtap"]);
+    expect(fieldValuesByName("macvtapmode")).toStrictEqual(["passthrough"]);
+    expect(fieldValuesByName("virtualport_type")).toStrictEqual(["802.1qbh"]);
+    expect(screen.getByLabelText("By profile id").checked).toBeTruthy();
+    expect(screen.getByLabelText(/^Profile id/).value)
+      .toStrictEqual("testprofile");
+    expect(screen.getByLabelText("By interfaces").checked).toBeTruthy();
+    expect(fieldValuesByName("interfaces")).toStrictEqual(["eth7", "eth8"]);
+
+    // Check that the form is valid
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+
+  test("Render macvtap private network with physical function", async done => {
+    const net = {
+      type: "macvtap",
+      macvtapmode: "private",
+      name: "private0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      virtualport: {
+        type: "802.1qbh",
+        managerid: "mgrid",
+        typeid: "testtype",
+        typeidversion: "testversion",
+        instanceid: "09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f",
+      },
+      pf: "eth0",
+    };
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["macvtap"]);
+    expect(fieldValuesByName("macvtapmode")).toStrictEqual(["private"]);
+    expect(fieldValuesByName("virtualport_type")).toStrictEqual(["802.1qbh"]);
+    expect(screen.getByLabelText("Virtual Station Interface (VSI) parameters").checked).toBeTruthy();
+    expect(screen.getByLabelText(/^VSI manager id/).value).toStrictEqual("mgrid");
+    expect(screen.getByLabelText(/^VSI type id:/).value).toStrictEqual("testtype");
+    expect(screen.getByLabelText(/^VSI type id version:/).value).toStrictEqual("testversion");
+    expect(screen.getByLabelText(/^VSI instance id/).value)
+      .toStrictEqual("09b11c53-8b5c-4eeb-8f00-d84eaa0aaa4f");
+    expect(screen.getByLabelText("By physical function").checked).toBeTruthy();
+    expect(fieldValuesByName("pf")).toStrictEqual(["eth0"]);
+
+    // Check that the form is valid
+    expect(screen.getByText("Submit").disabled).toBeFalsy();
+    click(screen.getByText("Submit"));
+  });
+
+  test("Render hostdev network with virtual functions", async done => {
+    const net = {
+      type: "hostdev",
+      name: "host0",
+      uuid: "1ff4eea5-5902-4c4f-a359-29c8521c9b31",
+      vf: ["0000:3d:02.3", "0000:3d:02.2"],
+      vlans: [{tag: 24}],
+    };
+
+    onSubmit = ({definition}) => {
+      expect(definition).toStrictEqual(net);
+      done();
+    }
+    await renderWithNetwork(makeNetworkData(net));
+    expect(fieldValuesByName("type")).toStrictEqual(["hostdev"]);
+    expect(screen.getByLabelText("By virtual functions").checked).toBeTruthy();
+    expect(fieldValuesByName("vf")).toStrictEqual(["0000:3d:02.3", "0000:3d:02.2"]);
+    expect(screen.getByLabelText(/^VLAN tag/).value).toStrictEqual("24");
+
+    // Check that the form is valid
     expect(screen.getByText("Submit").disabled).toBeFalsy();
     click(screen.getByText("Submit"));
   });
