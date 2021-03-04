@@ -65,7 +65,7 @@ import spark.Spark;
 public abstract class AbstractVirtualizationController {
     private static final Logger LOG = Logger.getLogger(AbstractVirtualizationController.class);
 
-    private static final Gson GSON = new GsonBuilder()
+    protected static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())

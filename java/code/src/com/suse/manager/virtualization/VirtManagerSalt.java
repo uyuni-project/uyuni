@@ -141,6 +141,25 @@ public class VirtManagerSalt implements VirtManager {
                 .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
     }
 
+    @Override
+    public Optional<NetworkDefinition> getNetworkDefinition(String minionId, String netName) {
+        Map<String, JsonObject> infos = getNetworks(minionId);
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("name", netName);
+        LocalCall<String> call =
+                new LocalCall<>("virt.network_get_xml", Optional.empty(), Optional.of(args),
+                        new TypeToken<String>() { });
+
+        Optional<String> result = saltApi.callSync(call, minionId);
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
+            NetworkDefinition network = NetworkDefinition.parse(xml);
+            if (network != null) {
+                network.setAutostart(infos.get(netName).get("autostart").getAsInt() == 1);
+            }
+            return network;
+        });
+    }
+
     /**
      * {@inheritDoc}
      */
