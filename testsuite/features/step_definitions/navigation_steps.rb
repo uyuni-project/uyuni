@@ -349,6 +349,7 @@ end
 #
 
 Given(/^I am not authorized$/) do
+  page.reset!
   visit Capybara.app_host
   raise "Button 'Sign In' not visible" unless find_button('Sign In').visible?
 end
