@@ -10,6 +10,7 @@
 
 - features/core/first_settings.feature
 - features/core/srv_organization_credentials.feature
+- features/core/srv_admin_preferences.feature
 
 # initialize SUSE Manager server
 - features/core/srv_channels_add.feature
