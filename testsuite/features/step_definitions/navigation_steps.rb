@@ -131,6 +131,10 @@ When(/^I switch to last opened window$/) do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
 
+When(/^I close the last opened window$/) do
+  page.driver.browser.close
+end
+
 #
 # Check a checkbox of the given id
 #

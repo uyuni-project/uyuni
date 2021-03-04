@@ -109,12 +109,12 @@ After do |scenario|
 end
 
 # Reset the page if it's running the first scenario of a feature
-$first_scenario = true # This will be set every time we run a new feature
+$first_scenario = true
 Before do
-  if $first_scenario
-    page.reset!
-    $first_scenario = false
-  end
+  next unless $first_scenario
+
+  page.reset!
+  $first_scenario = false
 end
 
 AfterStep do
