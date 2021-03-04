@@ -1,4 +1,5 @@
 - Add new SLS files files to operate Ansible control node
+- add virtual network edit action
 
 -------------------------------------------------------------------
 Fri Apr 16 13:35:25 CEST 2021 - jgonzalez@suse.com

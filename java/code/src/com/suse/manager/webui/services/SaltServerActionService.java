@@ -2156,6 +2156,7 @@ public class SaltServerActionService {
                                 }
                                 pillar.put("dns", dns);
                             });
+                            pillar.put("action_type", def.getUuid().isPresent() ? "defined" : "running");
 
                             return State.apply(
                                     Collections.singletonList("virt.network-create"),

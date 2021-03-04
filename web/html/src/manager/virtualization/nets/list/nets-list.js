@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { Column } from 'components/table/Column';
 import { Utils } from 'utils/functions';
-import { AsyncButton } from 'components/buttons';
+import { LinkButton, AsyncButton } from 'components/buttons';
 import { Utils as MessagesUtils } from 'components/messages';
 import { Utils as ListUtils } from '../../list.utils';
 import { ListTab } from '../../ListTab';
@@ -96,6 +96,14 @@ export function NetsList(props: Props) {
                   )
                 }
                 { row.active && createModalButton('stop', modalsData, row) }
+                { props.allow_changing && (
+                  <LinkButton
+                    title={t('Edit')}
+                    className="btn-default btn-sm"
+                    icon="fa-edit"
+                    href={`/rhn/manager/systems/details/virtualization/nets/${props.serverId}/edit/${row.name}`}
+                  />
+                )}
                 { createModalButton('delete', modalsData, row) }
                 </div>
               );

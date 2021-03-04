@@ -7327,6 +7327,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.network_update" xml:space="preserve">
+        <source>Virtual network update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">
