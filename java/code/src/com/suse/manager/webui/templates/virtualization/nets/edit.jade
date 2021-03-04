@@ -1,0 +1,22 @@
+include ../../system-common.jade
+#virtualnets-edit
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('virtualization/nets/edit/nets-edit')
+        .then(function(module) {
+            module.renderer(
+              'virtualnets-edit',
+              {
+                  serverId: "#{server.id}",
+                  actionChains: !{actionChains},
+                  timezone: "#{h.renderTimezone()}",
+                  localTime: "#{h.renderLocalTime()}",
+                  netName: "#{netName}",
+              }
+        )});

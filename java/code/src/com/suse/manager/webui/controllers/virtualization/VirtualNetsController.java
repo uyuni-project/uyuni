@@ -77,6 +77,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
         get("/manager/systems/details/virtualization/nets/:sid/new",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::createDialog)))), jade);
+        get("/manager/systems/details/virtualization/nets/:sid/edit/:name",
+                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::editDialog)))), jade);
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
@@ -90,6 +92,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 withUser(this::delete));
         post("/manager/api/systems/details/virtualization/nets/:sid/create",
                 withUser(this::create));
+        post("/manager/api/systems/details/virtualization/nets/:sid/edit",
+                withUser(this::edit));
         get("/manager/api/systems/details/virtualization/nets/:sid/net/:name",
                 withUser(this::getNetwork));
     }
@@ -128,6 +132,26 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         Server host = getServer(request, user);
         return renderPage(request, response, user, "create", () -> {
             Map<String, Object> data = new HashMap<>();
+            MinionController.addActionChains(user, data);
+            return data;
+        });
+    }
+
+    /**
+     * Displays the virtual network editing page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView editDialog(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
+
+        return renderPage(request, response, user, "edit", () -> {
+            Map<String, Object> data = new HashMap<>();
+            data.put("netName", request.params("name"));
             MinionController.addActionChains(user, data);
             return data;
         });
@@ -238,10 +262,28 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @return JSON list of created action IDs
      */
     public String create(Request request, Response response, User user) {
+        return createOrUpdate(request, response, user, null);
+    }
+
+    /**
+     * Executes the POST query to edit a virtual network
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String edit(Request request, Response response, User user) {
+        String actionName = LocalizationService.getInstance().getMessage("virt.network_update");
+        return createOrUpdate(request, response, user, actionName);
+    }
+
+    private String createOrUpdate(Request request, Response response, User user, String actionName) {
         return netAction(request, response, user, (data) -> {
             VirtualizationNetworkCreateAction action = (VirtualizationNetworkCreateAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE);
-            action.setName(action.getActionType().getName() + ": " + String.join(",", data.getNames()));
+            String displayName = actionName != null ? actionName : action.getActionType().getName();
+            action.setName(displayName + ": " + String.join(",", data.getNames()));
 
             VirtualNetworkCreateActionJson createData = (VirtualNetworkCreateActionJson)data;
             if (createData.getNames().isEmpty()) {
