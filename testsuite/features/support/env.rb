@@ -105,6 +105,7 @@ After do |scenario|
       debug_server_on_realtime_failure
     end
   end
+  page.instance_variable_set(:@touched, false)
 end
 
 AfterStep do
