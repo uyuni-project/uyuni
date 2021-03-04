@@ -17,6 +17,7 @@ package com.suse.manager.virtualization.test;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -58,6 +59,11 @@ public class TestVirtManager implements VirtManager {
 
     @Override
     public Map<String, JsonObject> getNetworks(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<NetworkDefinition> getNetworkDefinition(String minionId, String netName) {
         throw new UnsupportedOperationException();
     }
 

@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.iface;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
@@ -84,6 +85,15 @@ public interface VirtManager {
      * @return a list of the network names
      */
     Map<String, JsonObject> getNetworks(String minionId);
+
+    /**
+     * Query virtual network definition
+     *
+     * @param minionId the host minion ID
+     * @param netName the domain name to look for
+     * @return the XML definition or an empty Optional
+     */
+    Optional<NetworkDefinition> getNetworkDefinition(String minionId, String netName);
 
     /**
      * Query the virtual host devices that can be either passed through or used for direct networks
