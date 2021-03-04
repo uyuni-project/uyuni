@@ -59,9 +59,9 @@ import platform
 
 if platform.processor() not in ['s390', 's390x', 'aarch64']:
     import dmidecode
-    _dmi_not_available = 0
+    _dmi_available = True
 else:
-    _dmi_not_available = 1
+    _dmi_available = False
 
 from up2date_client import up2dateLog
 
@@ -93,7 +93,7 @@ except ImportError:
 _dmi_data           = None
 
 def dmi_warnings():
-    if _dmi_not_available:
+    if not _dmi_available:
         return None
 
     if not hasattr(dmidecode, 'get_warnings'):
@@ -102,16 +102,16 @@ def dmi_warnings():
     return dmidecode.get_warnings()
 
 dmi_warn = dmi_warnings()
-if dmi_warn and not _dmi_not_available:
+if dmi_warn and _dmi_available:
     dmidecode.clear_warnings()
     log = up2dateLog.initLog()
     log.log_debug("Warnings collected during dmidecode import: %s" % dmi_warn)
 
 def _initialize_dmi_data():
     """ Initialize _dmi_data unless it already exist and returns it """
-    global _dmi_data, _dmi_not_available
+    global _dmi_data, _dmi_available
     if _dmi_data is None:
-        if _dmi_not_available:
+        if not _dmi_available:
             # do not try to initialize it again and again if not available
             return None
         else :
@@ -127,7 +127,7 @@ def _initialize_dmi_data():
                     log.log_debug("dmidecode warnings: %s" % dmi_warn)
             except:
                 # DMI decode FAIL, this can happend e.g in PV guest
-                _dmi_not_available = 1
+                _dmi_available = False
                 dmi_warn = dmi_warnings()
                 if dmi_warn:
                     dmidecode.clear_warnings()
@@ -135,14 +135,53 @@ def _initialize_dmi_data():
             _dmi_data = data.xpathNewContext()
     return _dmi_data
 
+def _get_dmi_data_from_sysfs(path):
+    """ Get the DMI data from sysfs
+    """
+    dmi_dir = "/sys/devices/virtual/dmi/id"
+    # mapping between DMI XML path and the corresponding filename in the DMI in sysfs
+    xmlpath_to_filename = {
+	    "/dmidecode/SystemInfo/SystemUUID[not(@unavailable='1')]": "product_uuid",
+	    "/dmidecode/SystemInfo/SystemUUID": "product_uuid",
+	    "/dmidecode/BIOSinfo/Vendor": "bios_vendor",
+	    "/dmidecode/BIOSinfo/Version": "bios_version",
+	    "/dmidecode/BIOSinfo/ReleaseDate": "bios_date",
+	    "/dmidecode/SystemInfo/ProductName": "product_name",
+	    "/dmidecode/SystemInfo/Version": "product_version",
+	    "/dmidecode/SystemInfo/SerialNumber": "product_serial",
+	    "/dmidecode/BaseBoardInfo/Manufacturer": "board_vendor",
+	    "/dmidecode/BaseBoardInfo/SerialNumber": "board_serial",
+	    "/dmidecode/ChassisInfo/SerialNumber": "chassis_serial",
+	    "/dmidecode/ChassisInfo/AssetTag": "chassis_asset_tag",
+	    "/dmidecode/SystemInfo/Manufacturer": "sys_vendor",
+	    "/dmidecode/SystemInfo/SKUnumber": "product_sku",
+	    "/dmidecode/SystemInfo/Family": "product_family"
+	    }
+
+    try:
+        dmi_path = os.path.join(dmi_dir, xmlpath_to_filename[path])
+        with open(dmi_path) as dmi_file:
+            return dmi_file.read().strip()
+    except KeyError:
+        log = up2dateLog.initLog()
+        log.log_debug("No mapping for DMI XML path: %s\n" % path)
+    except Exception as e:
+        log = up2dateLog.initLog()
+        log.log_debug("Cannot read DMI value from sysfs: %s. Exception: %s\n" % (path, e))
+
+    return ""
+
 def get_dmi_data(path):
     """ Fetch DMI data from given section using given path.
         If data could not be retrieved, returns empty string.
         General method and should not be used outside of this module.
+
+        Tries to use python-dmidecode, falls back to reading data
+        from sysfs, if necessary.
     """
     dmi_data = _initialize_dmi_data()
     if dmi_data is None:
-        return ''
+        return _get_dmi_data_from_sysfs(path)
     data = dmi_data.xpathEval(path)
     if data != []:
         return data[0].content
@@ -900,24 +939,17 @@ def get_hal_system_and_smbios():
 def get_smbios():
     """ Returns dictionary with values we are interested for.
         For historical reason it is in format, which use HAL.
-        Currently in dictionary are keys:
-        smbios.system.uuid, smbios.bios.vendor, smbios.system.serial,
-        smbios.system.manufacturer.
     """
-    _initialize_dmi_data()
-    if _dmi_not_available:
-        return {}
-    else:
-        return {
-            'smbios.system.uuid': dmi_system_uuid(),
-            'smbios.bios.vendor': dmi_vendor(),
-            'smbios.system.serial': get_dmi_data('/dmidecode/SystemInfo/SerialNumber'),
-            'smbios.system.manufacturer': get_dmi_data('/dmidecode/SystemInfo/Manufacturer'),
-            'smbios.system.product': get_dmi_data('/dmidecode/SystemInfo/ProductName'),
-            'smbios.system.skunumber': get_dmi_data('/dmidecode/SystemInfo/SKUnumber'),
-            'smbios.system.family': get_dmi_data('/dmidecode/SystemInfo/Family'),
-            'smbios.system.version': get_dmi_data('/dmidecode/SystemInfo/Version'),
-        }
+    return {
+        'smbios.system.uuid': dmi_system_uuid(),
+        'smbios.bios.vendor': dmi_vendor(),
+        'smbios.system.serial': get_dmi_data('/dmidecode/SystemInfo/SerialNumber'),
+        'smbios.system.manufacturer': get_dmi_data('/dmidecode/SystemInfo/Manufacturer'),
+        'smbios.system.product': get_dmi_data('/dmidecode/SystemInfo/ProductName'),
+        'smbios.system.skunumber': get_dmi_data('/dmidecode/SystemInfo/SKUnumber'),
+        'smbios.system.family': get_dmi_data('/dmidecode/SystemInfo/Family'),
+        'smbios.system.version': get_dmi_data('/dmidecode/SystemInfo/Version'),
+    }
 
 def get_sysinfo():
     s = rhnserver.RhnServer()
