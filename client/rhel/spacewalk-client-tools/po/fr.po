@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 14:23+0000\n"
+"POT-Creation-Date: 2021-03-04 08:14+0000\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/spacewalk/"
@@ -82,39 +82,39 @@ msgstr "Vous devez démarrer rhn_register en tant que superutilisateur (root)."
 msgid "There was some sort of I/O error: %s"
 msgstr "Une erreur d'E/S s'est produite : %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "Erreur lors de la lecture des informations sur la CPU :"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "Erreur lors de la lecture des informations sur la mémoire du système :"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "Erreur lors de la lecture des informations de mise en réseau :"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr ""
 "Erreur lors de la lecture des informations concernant la méthode "
 "d'installation :"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "Erreur lors de la lecture des informations sur l'interface réseau :"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "Erreur lors de la lecture des informations de mise en réseau :"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "Erreur lors de la lecture des informations sur la mémoire du système :"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "Erreur lors de la lecture des informations sur la CPU :"

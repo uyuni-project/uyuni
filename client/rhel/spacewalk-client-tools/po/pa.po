@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 14:23+0000\n"
+"POT-Creation-Date: 2021-03-04 08:14+0000\n"
 "PO-Revision-Date: 2018-03-16 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Panjabi (Punjabi) (http://www.transifex.com/projects/p/"
@@ -74,37 +74,37 @@ msgstr "ਤੁਹਾਨੂੰ rhn_register ਨੂੰ ਪਰਬੰਧਕ (root) �
 msgid "There was some sort of I/O error: %s"
 msgstr "ਕੁਝ I/O ਦੇ ਕ੍ਰਮ ਵਿੱਚ ਗਲਤੀ: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "cpu ਜਾਣਕਾਰੀ ਪਰਾਪਤ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "ਸਿਸਟਮ ਮੈਮੋਰੀ ਜਾਣਕਾਰੀ ਨੂੰ ਪੜ੍ਹਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "ਨੈੱਟਵਰਕ ਜਾਣਕਾਰੀ ਨੂੰ ਰਜਿਸਟਰ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "ਇੰਸਟਾਲੇਸ਼ਨ ਢੰਗ ਪਰਾਪਤ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "ਨਿੱਜੀ ਜਾਣਕਾਰੀ ਨੂੰ ਰਜਿਸਟਰ ਕਰਨ ਵਿੱਚ ਮੁਸ਼ਕਿਲ:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "ਨੈੱਟਵਰਕ ਜਾਣਕਾਰੀ ਨੂੰ ਰਜਿਸਟਰ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "ਸਿਸਟਮ ਮੈਮੋਰੀ ਜਾਣਕਾਰੀ ਨੂੰ ਪੜ੍ਹਨ ਵਿੱਚ ਸਮੱਸਿਆ:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "cpu ਜਾਣਕਾਰੀ ਪਰਾਪਤ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ:"

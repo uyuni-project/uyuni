@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 14:23+0000\n"
+"POT-Creation-Date: 2021-03-04 08:14+0000\n"
 "PO-Revision-Date: 2021-01-05 19:38+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -67,35 +67,35 @@ msgstr "Program rhn_register musíte spustit jako root."
 msgid "There was some sort of I/O error: %s"
 msgstr "Došlo k I/O chybě: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "Chyba při čtení informací o cpu:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "Chyba při čtení informací o systémové paměti:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "Chyba při čtení informací o síti:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "Chyba při čtení informací o metodě instalace:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "Chyba při čtení informací o síťových rozhraních:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 msgid "Error reading network FQDNs information:"
 msgstr "Chyba čtení informací o FQDN sítě:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 msgid "Error reading system info:"
 msgstr "Chyba čtení informací o systému:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 msgid "Error reading machine info:"
 msgstr "Chyba čtení informací o počítači:"
 
