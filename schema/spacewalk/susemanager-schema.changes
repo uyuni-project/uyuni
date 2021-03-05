@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Mar 05 15:44:38 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
 - Add 'is_primary' column to rhnServerFqdn table
 - Fix: increase password length in the database (bsc#1182687)
 
