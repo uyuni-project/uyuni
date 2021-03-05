@@ -103,6 +103,16 @@ After do |scenario|
       debug_server_on_realtime_failure
     end
   end
+  page.instance_variable_set(:@touched, false)
+end
+
+# Reset the page if it's running the first scenario of a feature
+$first_scenario = true
+Before do
+  next unless $first_scenario
+
+  page.reset!
+  $first_scenario = false
 end
 
 AfterStep do
