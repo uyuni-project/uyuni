@@ -111,6 +111,7 @@ export function Select(props: Props) {
             isClearable={isClearable}
             styles={bootstrapStyles}
             isMulti={props.isMulti}
+            aria-label={props.title}
           />
         );
       }}

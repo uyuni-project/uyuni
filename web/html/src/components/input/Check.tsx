@@ -36,6 +36,7 @@ export function Check(props: Props) {
                 onChange={setChecked}
                 onBlur={onBlur}
                 disabled={props.disabled}
+                title={props.title}
               />
               <span>{label}</span>
             </label>

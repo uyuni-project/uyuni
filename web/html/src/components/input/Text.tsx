@@ -40,6 +40,7 @@ export const Text = (props: Props) => {
             onBlur={onBlur}
             placeholder={placeholder}
             maxLength={maxLength}
+            title={props.title}
           />
         );
       }}
