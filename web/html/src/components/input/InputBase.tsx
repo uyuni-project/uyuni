@@ -24,6 +24,12 @@ export type InputBaseProps<ValueType = string> = {
   /** Label to display for the field */
   label?: string;
 
+  /** title of the field */
+  title?: string;
+
+  /** Hide the label even if the label property is defined */
+  hideLabel?: boolean;
+
   /** Hint string to display */
   hint?: React.ReactNode;
 

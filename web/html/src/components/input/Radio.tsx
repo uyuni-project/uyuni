@@ -47,6 +47,7 @@ export function Radio(props: Props) {
                 <input
                   type="radio"
                   name={props.name}
+                  title={`${props.title} ${value}`}
                   value={value}
                   checked={fieldValue === value}
                   className={inputClass}
@@ -75,6 +76,7 @@ export function Radio(props: Props) {
                   disabled={!isOpenOption}
                   value={isOpenOption ? fieldValue : ""}
                   onChange={event => onChange(event.target.name, event.target.value)}
+                  title={t(`${props.title} other`)}
                 />
               </div>
             )}

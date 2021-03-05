@@ -43,7 +43,7 @@ export const Range = (props: Props) => {
               onBlur={onBlur}
               placeholder={placeholder}
               aria-label={t(`${props.label || ""} start`)}
-              title={t(`${props.label || ""} start`)}
+              title={t(`${props.title || ""} start`)}
             />
             <span className="input-group-addon">-</span>
             <input
@@ -56,7 +56,7 @@ export const Range = (props: Props) => {
               onBlur={onBlur}
               placeholder={placeholder}
               aria-label={t(`${props.label || ""} end`)}
-              title={t(`${props.label || ""} end`)}
+              title={t(`${props.title || ""} end`)}
             />
           </div>
         );
