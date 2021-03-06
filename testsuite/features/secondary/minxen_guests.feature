@@ -195,6 +195,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     And I wait until I see the VNC graphical console
+    And I close the last opened window
 
 @virthost_xen
   Scenario: Create a Xen fully virtualized guest
@@ -220,6 +221,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Graphical Console" in row "test-vm3"
     And I switch to last opened window
     And I wait until I see the spice graphical console
+    And I close the last opened window
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
