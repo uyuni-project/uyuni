@@ -6,7 +6,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Bootstrap KVM virtual host
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "kvm_server" as "hostname"
@@ -31,6 +31,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Enable the virtualization host formula for KVM
+    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Virtualization" text
@@ -40,6 +41,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Parametrize the KVM virtualization host
+    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "NAT" in virtual network mode field
@@ -51,6 +53,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Apply the KVM virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "kvm_server"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
@@ -58,8 +61,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Prepare a KVM test virtual machine and list it
-    When I follow "Virtualization" in the content area
-    And I delete default virtual network on "kvm_server"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I delete default virtual network on "kvm_server"
     And I create test-net0 virtual network on "kvm_server"
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
@@ -69,36 +72,36 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Start a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Start" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
 @virthost_kvm
   Scenario: Show the VNC graphical console for KVM
-    When I follow "Virtualization" in the content area
-    And I click on "Graphical Console" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Graphical Console" in row "test-vm"
     And I switch to last opened window
     Then I wait until I see the VNC graphical console
 
 @virthost_kvm
   Scenario: Suspend a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Suspend"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
     And I click on "Suspend" in "Suspend Guest" modal
     Then I should see "test-vm" virtual machine paused on "kvm_server"
 
 @virthost_kvm
   Scenario: Resume a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Resume"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
 @virthost_kvm
   Scenario: Shutdown a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Stop"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "kvm_server" is started
     And I click on "Stop" in row "test-vm"
     And I click on "Stop" in "Stop Guest" modal
@@ -106,8 +109,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Edit a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
@@ -130,8 +133,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Add a network interface to a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
@@ -141,8 +144,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a network interface from a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_network1"
     And I click on "Update"
@@ -151,8 +154,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Add a disk and a cdrom to a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
     And I click on "add_disk"
@@ -165,8 +168,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Attach an image to a cdrom on a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
     And I wait until I do not see "Loading..." text
     And I enter "/tmp/test-image.iso" as "disk2_source_file"
@@ -176,8 +179,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a disk from a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_disk2"
     And I click on "Update"
@@ -186,17 +189,17 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Delete" in row "test-vm"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "kvm_server"
 
 @virthost_kvm
   Scenario: Create a KVM virtual machine
-    When I follow "Virtualization" in the content area
+    Given I am on the "Virtualization" page of this "kvm_server"
     And I create empty "/var/lib/libvirt/images/test-pool0/disk1.qcow2" qcow2 disk file on "kvm_server"
     And I refresh the "test-pool0" storage pool of this "kvm_server"
-    And I follow "Create Guest"
+    When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
@@ -216,51 +219,51 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
-    When I follow "Virtualization" in the content area
-    And I click on "Graphical Console" in row "test-vm2"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     Then I wait until I see the spice graphical console
 
 @virthost_kvm
   Scenario: Show the virtual storage pools and volumes for KVM
-    When I follow "Virtualization" in the content area
-    And I refresh the "test-pool0" storage pool of this "kvm_server"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I refresh the "test-pool0" storage pool of this "kvm_server"
     And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system" text
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Delete" in row "test-vm2"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
 @virthost_kvm
   Scenario: Refresh a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I click on "Refresh" in tree item "test-pool0"
     And I wait until the tree item "test-pool0" has no sub-list
 
 @virthost_kvm
   Scenario: Stop a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I click on "Stop" in tree item "test-pool0"
     And I wait until the tree item "test-pool0" contains "inactive" text
 
 @virthost_kvm
   Scenario: Start a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I click on "Start" in tree item "test-pool0"
     And I wait until the tree item "test-pool0" contains "running" text
 
 @virthost_kvm
   Scenario: Delete a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I click on "Delete" in tree item "test-pool0"
     And I check "purge"
     And I click on "Delete" in "Delete Virtual Storage Pool" modal
@@ -269,8 +272,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Create a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I follow "Create Pool"
     And I wait until option "dir" appears in list "type"
     And I select "dir" from "type"
@@ -285,8 +288,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Edit a virtual storage pool for KVM
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I click on "Edit Pool" in tree item "test-pool1"
     And I wait until I see "General" text
     And I enter "0711" as "target_mode"
@@ -298,8 +301,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Delete a virtual volume
-    When I follow "Virtualization" in the content area
-    And I follow "Storage"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
     And I open the sub-list of the product "tmp"
     And I click on "Delete" in tree item "test-net0.xml"
     And I click on "Delete" in "Delete Virtual Storage Volume" modal
@@ -307,15 +310,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: List virtual networks
-    When I follow "Virtualization" in the content area
-    And I follow "Networks"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
     Then I wait until I see "test-net0" text
     And I should see a "test-net1" text
 
 @virthost_kvm
   Scenario: Stop virtual network
-    When I follow "Virtualization" in the content area
-    And I follow "Networks"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
     Then table row for "test-net1" should contain "running"
     When I click on "Stop" in row "test-net1"
     And I click on "Stop" in "Stop Network" modal
@@ -324,16 +327,16 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
 @virthost_kvm
   Scenario: Start virtual network
-    When I follow "Virtualization" in the content area
-    And I follow "Networks"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
     And I click on "Start" in row "test-net1"
     Then I wait until table row for "test-net1" contains button "Stop"
     And table row for "test-net1" should contain "running"
 
 @virthost_kvm
   Scenario: Delete virtual network
-    When I follow "Virtualization" in the content area
-    And I follow "Networks"
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
     And I click on "Delete" in row "test-net1"
     And I click on "Delete" in "Delete Network" modal
     Then I wait until I do not see "test-net1" text
@@ -345,9 +348,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
 @scc_credentials
   Scenario: Create auto installation distribution
-    When I install package tftpboot-installation on the server
+    Given I am authorized
+    And I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP2-x86_64" to be installed on "server"
-    And I follow the left menu "Systems > Autoinstallation > Distributions"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP2-TFTP" as "label"
     And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
@@ -362,7 +366,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
 @scc_credentials
   Scenario: Create auto installation profile
-    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    Given I am authorized
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/Autoyast File"
     When I enter "15-sp2-kvm" as "kickstartLabel"
     And I select "SLE-15-SP2-TFTP" from "kstreeId"
@@ -408,8 +413,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
-    When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "15-sp2-kvm"
+    Given I am authorized
+    And I follow the left menu "Systems > Autoinstallation > Profiles"
+    When I follow "15-sp2-kvm"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp2-kvm" text
@@ -418,6 +424,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
+    Given I am authorized
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "SLE-15-SP2-TFTP"
     And I follow "Delete Distribution"
