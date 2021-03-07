@@ -1,19 +1,27 @@
 #!/usr/bin/python3
 
+# Requires https://pypi.org/project/python-libarchive/ being installed
+
 from argparse import ArgumentParser
 from configparser import ConfigParser
 from itertools import chain
+from os import remove
 from os.path import dirname, expanduser, realpath
 from re import match
 from sys import exit
+import libarchive
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
 PRJ = 'systemsmanagement:Uyuni:Master'
+STABLE_PRJ = 'systemsmanagement:Uyuni:Stable'
+JAVA_API = {'package': 'spacewalk-java',
+            'path': 'spacewalk-java/conf/rhn_java.conf', 'variable': 'java.apiversion'}
 PACKAGES = ['patterns-uyuni', 'uyuni-docs_en',
             'release-notes-uyuni', 'release-notes-uyuni-proxy']
 PRODUCTS = ['Uyuni-Server', 'Uyuni-Proxy']
+
 CONFIG = '%s/../web/conf/rhn_web.conf' % dirname(realpath(__file__))
 
 
@@ -25,7 +33,7 @@ def get_webui_version(conf):
         return config.get('section', 'web.version.uyuni')
 
 
-def obs_get_file(args, file_path):
+def obs_get_file(args, file_path, raw=False):
     url = "{0}/source/{1}".format(args.apiurl, file_path)
     user = args.user
     password = args.password
@@ -39,6 +47,8 @@ def obs_get_file(args, file_path):
     charset = resource.headers.get_content_charset()
     if charset is None:
         charset = 'utf-8'
+    if raw:
+        return resource.read()
     return resource.read().decode(charset)
 
 
@@ -50,10 +60,39 @@ def obs_get_package_ver(args, project, package):
             return version.group(1)
 
 
+def obs_get_package_source(args, project, package, nsource):
+    if nsource is None:
+        nsource = ''
+    file_path = "{0}/{1}/{1}.spec".format(project, package)
+    for line in obs_get_file(args, file_path).split('\n'):
+        source = match('^Source{}:\s*(.+)$'.format(nsource), line)
+        if source:
+            return source.group(1)
+
+
 def obs_get_product_ver(args, project, product):
     file_path = "{0}/000product/{1}.product".format(project, product)
     root = ET.fromstring(obs_get_file(args, file_path))
     return root.find("./products/product/[name='%s']/version" % product).text
+
+
+def spacewalk_java_api_ver(args, project, java_api):
+    source = match('^(.+).tar.gz', obs_get_package_source(args,
+                                                          project, java_api['package'], 0)).group(1)
+    file_path = "{0}/{1}/{2}.obscpio".format(
+        project, java_api['package'], source)
+    file_local_path = '/tmp/' + source + '.cpio'
+    with open(file_local_path, 'wb') as cfile:
+        cfile.write(obs_get_file(args, file_path, True))
+    try:
+        with libarchive.SeekableArchive(file_local_path) as cfile:
+            for line in cfile.read(java_api['path']).decode("utf-8").split('\n'):
+                api_version = match(
+                    '^\s*{}\s*=\s*(.+)$'.format(java_api['variable']), line)
+                if api_version:
+                    return api_version.group(1)
+    finally:
+        remove(file_local_path)
 
 
 def parse_arguments():
@@ -93,12 +132,17 @@ def print_error(msg):
     print("[\033[01m\033[31mERROR\033[0m] %s" % msg)
 
 
+def print_warning(msg):
+    print("[\033[01m\033[33mWARN \033[0m] %s" % msg)
+
+
 args = parse_arguments()
 webui_version = get_webui_version(CONFIG)
 print_info("WebUI version from the config file is '%s'" % webui_version)
 
 error = False
 
+# Check package versions are aligned with the WebUI
 for package in PACKAGES:
     package_ver = obs_get_package_ver(args, PRJ, package)
     if package_ver == webui_version:
@@ -107,12 +151,26 @@ for package in PACKAGES:
         print_error("{} version ({}) is WRONG".format(package, package_ver))
         error = True
 
+# Check if product versions are aligned with the WebUI
 for product in PRODUCTS:
     product_ver = obs_get_product_ver(args, PRJ, product)
     if product_ver == webui_version:
-        print_ok("Product definition {} version ({}) is OK".format(product, product_ver))
+        print_ok("Product definition {} version ({}) is OK".format(
+            product, product_ver))
     else:
-        print_error("Product definition {} version ({}) is WRONG".format(product, product_ver))
+        print_error("Product definition {} version ({}) is WRONG".format(
+            product, product_ver))
         error = True
+
+# Check if the spacewalk-java API changed since the last release
+api_stable_ver = spacewalk_java_api_ver(args, PRJ, JAVA_API)
+api_master_ver = spacewalk_java_api_ver(args, STABLE_PRJ, JAVA_API)
+if api_master_ver == api_stable_ver:
+    print_ok(
+        "spacewalk-java API did not change ({} vs {})".format(api_master_ver, api_stable_ver))
+else:
+    print_warning(
+        "spacewalk-java API ver changed ({} vs {})!  Make sure it's mentioned on the release notes!".format(api_master_ver, api_stable_ver))
+    error = True
 
 exit(error)
