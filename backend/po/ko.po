@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-03-07 09:40+0000\n"
+"PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>"
 "\n"
@@ -1209,7 +1209,6 @@ msgid "   ------- %s PARSE/IMPORT ERROR -------"
 msgstr "   ------- %s 구문 분석기/가져오기 오류 -------"
 
 #: ../satellite_tools/satsync.py:608
-#, fuzzy
 msgid "   ---------------------------------------"
 msgstr "   ---------------------------------------"
 
