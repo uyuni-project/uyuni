@@ -6,7 +6,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Bootstrap Xen virtual host
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "xen_server" as "hostname"
@@ -32,6 +32,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Enable the virtualization host formula for Xen
+    Given I am on the Systems overview page of this "xen_server"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Virtualization" text
@@ -41,6 +42,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Parametrize the Xen virtualization host
+    Given I am on the Systems overview page of this "xen_server"
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "Xen" from "hypervisor"
@@ -53,6 +55,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Apply the Xen virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "xen_server"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
@@ -60,8 +63,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it
-    When I follow "Virtualization" in the content area
-    And I delete default virtual network on "xen_server"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I delete default virtual network on "xen_server"
     And I create test-net0 virtual network on "xen_server"
     And I create test-net1 virtual network on "xen_server"
     And I delete default virtual storage pool on "xen_server"
@@ -71,29 +74,29 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Start a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Start" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "xen_server"
 
 @virthost_xen
   Scenario: Suspend a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Suspend"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
     And I click on "Suspend" in "Suspend Guest" modal
     Then I should see "test-vm" virtual machine paused on "xen_server"
 
 @virthost_xen
   Scenario: Resume a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Resume"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "xen_server"
 
 @virthost_xen
   Scenario: Shutdown a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I wait until table row for "test-vm" contains button "Stop"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "xen_server" is started
     And I click on "Stop" in row "test-vm"
     And I click on "Stop" in "Stop Guest" modal
@@ -101,8 +104,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Edit a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     Then I should see "512" in field "memory"
     And I should see "1" in field "vcpu"
@@ -123,8 +126,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Add a network interface to a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
@@ -134,8 +137,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Delete a network interface from a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_network1"
     And I click on "Update"
@@ -144,8 +147,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Add a disk and a cdrom to a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
     And I select "test-pool0" from "disk1_source_pool"
@@ -159,8 +162,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Delete a disk from a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Edit" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     # The libvirt disk order is not the same than for KVM
     And I click on "remove_disk1"
@@ -170,15 +173,15 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Delete a Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Delete" in row "test-vm"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "xen_server"
 
 @virthost_xen
   Scenario: Create a Xen paravirtualized guest
-    When I follow "Virtualization" in the content area
-    And I follow "Create Guest"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "512" as "memory"
@@ -195,15 +198,15 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Show the VNC graphical console for Xen
-    When I follow "Virtualization" in the content area
-    And I click on "Graphical Console" in row "test-vm2"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     And I wait until I see the VNC graphical console
 
 @virthost_xen
   Scenario: Create a Xen fully virtualized guest
-    When I follow "Virtualization" in the content area
-    And I follow "Create Guest"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm3" as "name"
     And I select "Fully Virtualized" from "osType"
@@ -221,15 +224,15 @@ Feature: Be able to manage XEN virtual machines via the GUI
 
 @virthost_xen
   Scenario: Show the Spice graphical console for Xen
-    When I follow "Virtualization" in the content area
-    And I click on "Graphical Console" in row "test-vm3"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Graphical Console" in row "test-vm3"
     And I switch to last opened window
     And I wait until I see the spice graphical console
 
 @virthost_xen
   Scenario: delete a running Xen virtual machine
-    When I follow "Virtualization" in the content area
-    And I click on "Delete" in row "test-vm3"
+    Given I am on the "Virtualization" page of this "xen_server"
+    When I click on "Delete" in row "test-vm3"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm3" virtual machine on "xen_server"
 
