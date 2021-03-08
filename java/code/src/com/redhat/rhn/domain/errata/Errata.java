@@ -68,6 +68,24 @@ public interface Errata {
     void setAdvisoryType(String advisoryTypeIn);
 
     /**
+     * Getter for advisoryStatus
+     * @return String to get
+     */
+    public AdvisoryStatus getAdvisoryStatus();
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn);
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn);
+
+    /**
      * Getter for product
      * @return String to get
     */
