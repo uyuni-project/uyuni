@@ -119,7 +119,6 @@ describe("Rendering", () => {
   });
 
   test("Create network with all addressing fields", async done => {
-    jest.setTimeout(30000);
     onSubmit = ({definition}) => {
       expect(definition).toStrictEqual({
         type: "open",

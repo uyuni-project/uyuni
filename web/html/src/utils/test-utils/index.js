@@ -11,6 +11,8 @@ export * from "@testing-library/react";
 // react-select testing utilities: https://github.com/romgain/react-select-event#api
 export * from "react-select-event";
 
+export * from "./timer";
+
 // @testing-library/user-event has messed up exports, just manually reexport everything
 export const {
   click,
@@ -26,15 +28,21 @@ export const {
   specialChars,
 } = userEvent;
 
-export const type = async (elementOrPromiseOfElement, text, options) => {
-  const mergedOptions = Object.assign({
-    /**
-     * @testing-library/user-event's `type()` is inconsistent without a delay
-     * Since delay is inserted between each keystroke, we use Number.MIN_VALUE to avoid test timeouts
-     */
-    delay: Number.MIN_VALUE
-  }, options);
-  await userEvent.type(await elementOrPromiseOfElement, text, mergedOptions);
+/**
+ * This is a usable alternative for @testing-library/user-event's `type()`.
+ * The library;s `type()` is non-deterministic without a delay and prohibitively
+ * slow even if you use Number.MIN_VALUE as the delay value.
+ * Instead we use the `paste()` method which inserts the full text in one go and
+ * pretend there is no difference.
+ */
+export const type = async (elementOrPromiseOfElement, text) => {
+  const target = await elementOrPromiseOfElement;
+  // await userEvent.type(target, text, mergedOptions);
+  userEvent.paste(target, text, undefined);
+  /**
+   * `window.requestAnimationFrame` mandatory to ensure we don't proceed until
+   * the UI has updated, expect non-deterministic results without this.
+   */
   return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
 }
 
