@@ -67,6 +67,9 @@
                         <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
                     </c:if>
 
+                    <c:if test="${current.advisoryStatus.metadataValue == 'retracted'}">
+                        <rhn:icon type="errata-retracted" title="errata.jsp.retracted-tooltip" />
+                    </c:if>
                 </rl:column>
 
                  <rl:column sortable="true"
