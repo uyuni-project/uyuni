@@ -400,7 +400,7 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
 <mode name="potential_systems_for_package" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, pid, user_id">
 SELECT  S.id, S.name, 1 as selectable
-  FROM  rhnPackage P, rhnChannelPackage CP, rhnServerChannel SC, rhnServer S, rhnServerArch SA, rhnArchType AT
+  FROM  rhnPackage P, suseChannelPackageRetractedStatusView CP, rhnServerChannel SC, rhnServer S, rhnServerArch SA, rhnArchType AT
  WHERE  S.org_id = :org_id
    AND  SC.server_id = S.id
    AND  SA.id = S.server_arch_id
@@ -408,6 +408,7 @@ SELECT  S.id, S.name, 1 as selectable
    AND  SC.channel_id = CP.channel_id
    AND  CP.package_id = :pid
    AND  CP.package_id = P.id
+   AND  CP.is_retracted = 0
    AND  COALESCE((SELECT MAX(PE.evr)
            FROM rhnServerPackage SP, rhnPackageEvr PE
           WHERE SP.name_id = P.name_id
