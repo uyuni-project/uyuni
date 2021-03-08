@@ -365,6 +365,21 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
+@virthost_kvm
+  Scenario: Edit a virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I click on "Stop" in row "test-net2"
+    And I click on "Stop" in "Stop Network" modal
+    Then I wait until table row for "test-net2" contains button "Start"
+    When I click on "Edit" in row "test-net2"
+    And I wait until option "bridge" appears in list "type"
+    And I enter "192.168.130.0" as "ipv4def_address"
+    And I click on "remove_ipv4def_dhcpranges0"
+    And I click on "Update"
+    Then I should see a "Virtual Networks" text
+    And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
+
 # Start provisioning scenarios
 
 @long_test
