@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -41,11 +42,12 @@ public class Errata extends BaseDomainHelper implements Selectable {
     private static Logger log = Logger.getLogger(Errata.class);
     protected Set<Package> packages;
 
-    private Set<Channel> channels = new HashSet();
+    private Set<Channel> channels = new HashSet<>();
     private Set<Cve> cves = new HashSet<Cve>();
     private Long id;
     private String advisory;
     private String advisoryType;
+    private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
     private String product;
     private String description;
     private String synopsis;
@@ -89,7 +91,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     public void addChannel(Channel channelIn) {
         log.debug("addChannel called: " + channelIn.getLabel());
         if (this.channels == null) {
-            this.channels = new HashSet();
+            this.channels = new HashSet<>();
         }
         channels.add(channelIn);
     }
@@ -162,6 +164,31 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     public void setAdvisoryType(String advisoryTypeIn) {
         this.advisoryType = advisoryTypeIn;
+    }
+
+    /**
+     * Getter for advisoryStatus
+     * @return String to get
+     */
+    public AdvisoryStatus getAdvisoryStatus() {
+        return this.advisoryStatus;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
     }
 
     /**
