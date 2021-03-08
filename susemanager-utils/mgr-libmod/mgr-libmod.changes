@@ -1,3 +1,5 @@
+- Support multiple stream versions for RHEL repos (bsc#1183038)
+
 -------------------------------------------------------------------
 Mon Mar 01 13:16:19 CET 2021 - jgonzalez@suse.com
 
