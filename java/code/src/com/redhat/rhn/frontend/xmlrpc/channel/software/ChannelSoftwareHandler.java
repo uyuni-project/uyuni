@@ -359,67 +359,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param endDate last modified end date (as a string)
      * @return all packages in the channel, regardless of version between the
      * given dates.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate, dateTime.iso8601 endDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of package version,
-     * between the given dates.
-     * Example Date:  '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.param #param("string", "endDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *              $PackageDtoSerializer
-     *      #array_end()
-     */
-    @Deprecated
-    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
-            String startDate, String endDate) throws NoSuchChannelException {
-
-        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-        return ChannelManager.listAllPackages(channel, startDate, endDate);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version whose last
-     * modified date is greater than given date.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @return all packages in the channel, regardless of version whose last
-     * modified date is greater than given date.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of version whose last
-     * modified date is greater than given date. Example Date: '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *              $PackageDtoSerializer
-     *      #array_end()
-     */
-    @Deprecated
-    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
-            String startDate) throws NoSuchChannelException {
-        return listAllPackages(loggedInUser, channelLabel, startDate, null);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version, between the
-     * given dates.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @param endDate last modified end date (as a string)
-     * @return all packages in the channel, regardless of version between the
-     * given dates.
      * @throws NoSuchChannelException thrown if there is the channel is not
      * found.
      * @deprecated being replaced by listAllPackages(string sessionKey,

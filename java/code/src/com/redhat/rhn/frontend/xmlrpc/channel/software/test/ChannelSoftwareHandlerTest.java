@@ -1157,23 +1157,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -5);
 
-        String startDateStr = "2004-08-20 08:00:00";
-        String endDateStr = "3004-08-20 08:00:00";
-
-        List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel(),
-                startDateStr);
-        assertTrue(list.size() == 1);
-
-        list = handler.listAllPackages(admin, chan.getLabel(), startDateStr,
-                endDateStr);
-        assertTrue(list.size() == 1);
-
-        list = handler.listAllPackages(admin, chan.getLabel());
+        List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel());
         assertTrue(list.size() == 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = sdf.parse(startDateStr);
-        Date endDate = sdf.parse(endDateStr);
+        Date startDate = sdf.parse("2004-08-20 08:00:00");
+        Date endDate = sdf.parse("3004-08-20 08:00:00");
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate);
         assertTrue(list.size() == 1);
