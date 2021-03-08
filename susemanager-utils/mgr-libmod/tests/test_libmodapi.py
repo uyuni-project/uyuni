@@ -103,6 +103,22 @@ class TestLibmodProc:
         selected = next(s for s in result['selected'] if s['name'] == 'perl')
         assert '5.24' == selected['stream']
 
+    def test_multiple_versions(self):
+        '''
+        Test enabling a module with multiple versions included
+        '''
+        self.libmodapi.set_repodata(open("tests/data/module_packages_rhel.json", "r").read()).run()
+        result = self.libmodapi._result['module_packages']
+
+        # Assert that the correct name, stream, version and contexts (NSVC) are selected
+        expected = {
+            ('postgresql', '12', 8010120191120141335, 'e4e244f9'),
+            ('postgresql', '12', 8030020201207110000, '229f0a1c')
+        }
+        selected = {(s['name'], s['stream'], s['version'], s['context']) for s in result['selected']}
+        assert 2 == len(selected)
+        assert expected == selected
+
     def test_conflicting_streams(self):
         try:
             self.libmodapi.set_repodata(open("tests/data/conflicting_streams.json", "r").read()).run()
@@ -122,6 +138,16 @@ class TestLibmodProc:
         # Assert that all the modules are selected successfully
         assert 46 == len(result['selected'])
 
+    def test_all_modules_rhel(self):
+        '''
+        Test enabling all modules in a RHEL repository that contains multiple versions of each module
+        '''
+        self.libmodapi.set_repodata(open("tests/data/all_modules_rhel.json", "r").read()).run()
+        result = self.libmodapi._result['module_packages']
+
+        # Assert that all the modules & versions are selected successfully
+        assert 189 == len(result['selected'])
+
     def test_default_stream(self):
         self.libmodapi.set_repodata(open("tests/data/default_stream.json", "r").read()).run()
         result = self.libmodapi._result['module_packages']
@@ -134,6 +160,7 @@ class TestLibmodProc:
         self.libmodapi.set_repodata(open("tests/data/perl_dependencies.json", "r").read()).run()
         result = self.libmodapi._result['module_packages']
 
+        # Assert that the default Perl stream is selected
         selected = next(s for s in result['selected'] if s['name'] == 'perl')
         assert '5.26' == selected['stream']
 
@@ -146,6 +173,56 @@ class TestLibmodProc:
         assert 'a50016cf' == selected['context']
         selected = next(s for s in result['selected'] if s['name'] == 'perl-App-cpanminus')
         assert '63feaccd' == selected['context']
+
+    def test_perl_dependencies_rhel(self):
+        '''
+        Test perl modules in a RHEL repository that contains multiple versions of each module
+        '''
+        self.libmodapi.set_repodata(open("tests/data/perl_dependencies_rhel.json", "r").read()).run()
+        result = self.libmodapi._result['module_packages']
+
+        # Assert that the default Perl stream is selected
+        selected = [s for s in result['selected'] if s['name'] == 'perl']
+        assert 1 == len(selected)
+        assert '5.26' == selected[0]['stream']
+
+        # Assert that all versions with correct contexts are selected
+        # perl-DBI
+        expected = {
+            ('1.641', 8010020190322130042, '16b3ab4d'),
+            ('1.641', 820190116185335, 'fbe42456'),
+            ('1.641', 8030020200505125553, '1e4bbb35')
+        }
+        selected = {(s['stream'], s['version'], s['context']) for s in result['selected'] if s['name'] == 'perl-DBI'}
+        assert expected == selected
+
+        #perl-DBD-Pg
+        expected = {
+            ('3.7', 820181214121102, '6fcea174'),
+            ('3.7', 8010020190322121805, '0d1d6681'),
+            ('3.7', 8030020200313075823, '56fce90f'),
+            ('3.7', 8010120191115065723, 'c5869bed')
+        }
+        selected = {(s['stream'], s['version'], s['context']) for s in result['selected'] if s['name'] == 'perl-DBD-Pg'}
+        assert expected == selected
+
+        #perl-DBD-MySQL
+        expected = {
+            ('4.046', 8030020200511061544, '3a70019f'),
+            ('4.046', 820181214121012, '6bc6cad6'),
+            ('4.046', 8010020190322121447, '073fa5fe')
+        }
+        selected = {(s['stream'], s['version'], s['context']) for s in result['selected'] if s['name'] == 'perl-DBD-MySQL'}
+        assert expected == selected
+
+        #perl-App-cpanminus
+        expected = {
+            ('1.7044', 820181214184336, 'e5ce1481'),
+            ('1.7044', 8010020190322100642, 'a9207fc6'),
+            ('1.7044', 8030020200313075600, '09acf126')
+        }
+        selected = {(s['stream'], s['version'], s['context']) for s in result['selected'] if s['name'] == 'perl-App-cpanminus'}
+        assert expected == selected
 
     def test_not_found(self):
         try:

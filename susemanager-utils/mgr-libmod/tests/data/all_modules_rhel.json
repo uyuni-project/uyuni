@@ -1,0 +1,190 @@
+{
+	"function": "module_packages",
+	"paths": ["tests/data/sample-modules-rhel.yaml.gz"],
+	"streams": [
+                {
+                    "name": "virt",
+                    "stream": "rhel"
+                },
+                {
+                    "name": "varnish",
+                    "stream": "6"
+                },
+                {
+                    "name": "swig",
+                    "stream": "3.0"
+                },
+                {
+                    "name": "subversion",
+                    "stream": "1.10"
+                },
+                {
+                    "name": "squid",
+                    "stream": "4"
+                },
+                {
+                    "name": "scala",
+                    "stream": "2.10"
+                },
+                {
+                    "name": "satellite-5-client",
+                    "stream": "1.0"
+                },
+                {
+                    "name": "rust-toolset",
+                    "stream": "rhel8"
+                },
+                {
+                    "name": "ruby",
+                    "stream": "2.5"
+                },
+                {
+                    "name": "rhn-tools",
+                    "stream": "1.0"
+                },
+                {
+                    "name": "redis",
+                    "stream": "5"
+                },
+                {
+                    "name": "python36",
+                    "stream": "3.6"
+                },
+                {
+                    "name": "python27",
+                    "stream": "2.7"
+                },
+                {
+                    "name": "postgresql",
+                    "stream": "10"
+                },
+                {
+                    "name": "pki-deps",
+                    "stream": "10.6"
+                },
+                {
+                    "name": "pki-core",
+                    "stream": "10.6"
+                },
+                {
+                    "name": "php",
+                    "stream": "7.2"
+                },
+                {
+                    "name": "perl-YAML",
+                    "stream": "1.24"
+                },
+                {
+                    "name": "perl-FCGI",
+                    "stream": "0.78"
+                },
+                {
+                    "name": "perl-DBI",
+                    "stream": "1.641"
+                },
+                {
+                    "name": "perl-DBD-SQLite",
+                    "stream": "1.58"
+                },
+                {
+                    "name": "perl-DBD-Pg",
+                    "stream": "3.7"
+                },
+                {
+                    "name": "perl-DBD-MySQL",
+                    "stream": "4.046"
+                },
+                {
+                    "name": "perl-App-cpanminus",
+                    "stream": "1.7044"
+                },
+                {
+                    "name": "perl",
+                    "stream": "5.26"
+                },
+                {
+                    "name": "parfait",
+                    "stream": "0.5"
+                },
+                {
+                    "name": "nodejs",
+                    "stream": "10"
+                },
+                {
+                    "name": "nginx",
+                    "stream": "1.14"
+                },
+                {
+                    "name": "mysql",
+                    "stream": "8.0"
+                },
+                {
+                    "name": "mod_auth_openidc",
+                    "stream": "2.3"
+                },
+                {
+                    "name": "mercurial",
+                    "stream": "4.8"
+                },
+                {
+                    "name": "maven",
+                    "stream": "3.5"
+                },
+                {
+                    "name": "mariadb",
+                    "stream": "10.3"
+                },
+                {
+                    "name": "mailman",
+                    "stream": "2.1"
+                },
+                {
+                    "name": "llvm-toolset",
+                    "stream": "rhel8"
+                },
+                {
+                    "name": "libselinux-python",
+                    "stream": "2.8"
+                },
+                {
+                    "name": "javapackages-runtime",
+                    "stream": "201801"
+                },
+                {
+                    "name": "inkscape",
+                    "stream": "0.92.3"
+                },
+                {
+                    "name": "idm",
+                    "stream": "client"
+                },
+                {
+                    "name": "httpd",
+                    "stream": "2.4"
+                },
+                {
+                    "name": "go-toolset",
+                    "stream": "rhel8"
+                },
+                {
+                    "name": "gimp",
+                    "stream": "2.8"
+                },
+                {
+                    "name": "freeradius",
+                    "stream": "3.0"
+                },
+                {
+                    "name": "container-tools",
+                    "stream": "rhel8"
+                },
+                {
+                    "name": "ant",
+                    "stream": "1.10"
+                },
+                {
+                    "name": "389-ds",
+                    "stream": "1.4"
+                }
+	]
+}
