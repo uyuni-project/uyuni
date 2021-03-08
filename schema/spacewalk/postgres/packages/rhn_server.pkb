@@ -692,7 +692,9 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 			         ON sc_sc.channel_id = ce.channel_id
 		       WHERE sc_sc.server_id = server_id_in) x
              ON x.channel_id = sc.channel_id AND x.package_id = cp.package_id
-          where sp.server_id = server_id_in);
+	   left join rhnErrata e on x.errata_id = e.id
+          where sp.server_id = server_id_in
+            and (x.errata_id IS NULL or e.advisory_status != 'retracted')); -- packages which are part of a retracted errata should not be installed
 	end$$ language plpgsql;
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_server')+1) ) where name = 'search_path';
