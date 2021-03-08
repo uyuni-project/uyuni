@@ -134,6 +134,10 @@ my $start_schema = $schema_version;
 (my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
 
 print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
+if ($start_schema eq $target_schema) {
+    warn "Your database schema already matches the schema package version [$target_schema].\n";
+    exit;
+}
 
 my $foundtarget = 0;
 my $retried = 0;
