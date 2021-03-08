@@ -743,37 +743,6 @@ public class ActivationKeyHandler extends BaseHandler {
     }
 
     /**
-     * Add packages to an activation key using package name only.
-     *
-     * @param loggedInUser The current user
-     * @param key The activation key to act upon
-     * @param packageNames List of package names to be added to this activation key
-     * @return 1 on success, exception thrown otherwise.
-     * @deprecated being replaced by addPackages(string sessionKey, string key,
-     * array[packages])
-     * @since 10.2
-     *
-     * @xmlrpc.doc Add packages to an activation key using package name only.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #array_single("string", "packageName")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int addPackageNames(User loggedInUser, String key, List packageNames) {
-
-        ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        ActivationKey activationKey = lookupKey(key, loggedInUser);
-
-        for (Iterator it = packageNames.iterator(); it.hasNext();) {
-            String name = (String)it.next();
-            PackageName packageName = PackageFactory.lookupOrCreatePackageByName(name);
-            manager.addPackage(activationKey, packageName, null);
-        }
-        return 1;
-    }
-
-    /**
      * Remove package names from an activation key.
      *
      * @param loggedInUser The current user
