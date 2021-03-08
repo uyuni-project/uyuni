@@ -14,6 +14,21 @@ perform_db_schema_upgrade() {
     fi
 }
 
+check_schema_version() {
+    MIN_JAVA_SCHEMA=$( egrep -m1 "^java.min_schema_version[[:space:]]*=" /usr/share/rhn/config-defaults/rhn_java.conf | sed 's/^java.min_schema_version[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+    CMP=$(echo "select evr_t_compare(X.evr, evr_t('0', '$MIN_JAVA_SCHEMA', '0', 'rpm')) from (select PE.evr from rhnVersionInfo vi join rhnPackageEVR pe on vi.evr_id = pe.id) X;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
+    if [ $CMP -lt 0 ]; then
+        echo "Incompatible database schema version detected! Minimal schema version required by Java: $MIN_JAVA_SCHEMA"
+        exit 1
+    fi
+    MIN_BACK_SCHEMA=$( egrep -m1 "^min_schema_version[[:space:]]*=" /usr/share/rhn/config-defaults/rhn_server_xmlrpc.conf | sed 's/^min_schema_version[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+    CMP=$(echo "select evr_t_compare(X.evr, evr_t('0', '$MIN_BACK_SCHEMA', '0', 'rpm')) from (select PE.evr from rhnVersionInfo vi join rhnPackageEVR pe on vi.evr_id = pe.id) X;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
+    if [ $CMP -lt 0 ]; then
+        echo "Incompatible database schema version detected! Minimal schema version required by Backend: $MIN_BACK_SCHEMA"
+        exit 1
+    fi
+}
+
 check_database() {
     RETRIES=10;
     source /etc/os-release
@@ -27,6 +42,7 @@ check_database() {
                 exit 1
             fi
             perform_db_schema_upgrade
+            check_schema_version
             exit 0 # db is running
         fi
 
