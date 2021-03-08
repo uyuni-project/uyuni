@@ -4336,6 +4336,36 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
+        <source>Status</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
+        <source>Final</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
+        <source>Stable</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
+        <source>Testing</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
+        <source>Retracted</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="details.jsp.bugnumber" xml:space="preserve">
         <source>Bug# {0}</source>
         <context-group name="ctx">
