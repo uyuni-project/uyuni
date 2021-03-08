@@ -27,8 +27,9 @@ __rhnexport__ = ['update']
 def update(serverId, actionId, dry_run=0):
     log_debug(3)
     statement = """
-        select r1.errata_id, r2.allow_vendor_change
+        select r1.errata_id, r2.allow_vendor_change, e.advisory_status
         from rhnactionerrataupdate r1
+        join rhnErrata e on r1.errata_id = e.id
         left join rhnactionpackagedetails r2 on r1.action_id = r2.action_id
         where r1.action_id = :action_id
     """
@@ -40,6 +41,10 @@ def update(serverId, actionId, dry_run=0):
         raise InvalidAction("errata.update: Unknown action id "
                             "%s for server %s" % (actionId, serverId))
 
+    retracted = [x['errata_id'] for x in ret if x['advisory_status'] == 'retracted']
+    if retracted:
+        # Do not install retracted patches
+        raise InvalidAction("errata.update: Action contains retracted errata %s" % retracted)
     if ret[0]['allow_vendor_change'] is None or ret[0]['allow_vendor_change'] is False:
         return [x['errata_id'] for x in ret]
 
