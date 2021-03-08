@@ -1,5 +1,7 @@
 declare global {
   interface Window {
+    // See java/code/webapp/WEB-INF/includes/leftnav.jsp
+    JSONMenu: any[];
     _IS_UYUNI: boolean;
 
     // CSRF loopback
