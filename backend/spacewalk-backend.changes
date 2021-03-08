@@ -1,3 +1,6 @@
+- Fail traditional errata and package actions when they act on retracted items
+- Add advisory_status to reposync and ISS
+
 -------------------------------------------------------------------
 Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com
 
