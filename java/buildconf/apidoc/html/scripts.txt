@@ -92,7 +92,7 @@ MANAGER_LOGIN = "username"<br />
 MANAGER_PASSWORD = "password"<br />
 <br />
 # You might need to set to set other options depending on your<br />
-# server SSL configuartion and your local SSL configuration<br />
+# server SSL configuration and your local SSL configuration<br />
 context = ssl.create_default_context()<br />
 client = ServerProxy(MANAGER_URL, context=context)<br />
 key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)<br />
