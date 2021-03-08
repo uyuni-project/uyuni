@@ -72,6 +72,7 @@ public class PackageSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("arch_label", pack.getPackageArch().getLabel());
         helper.add("last_modified", pack.getLastModified());
         helper.add("path", pack.getPath());
+        helper.add("part_of_retracted_patch", pack.isPartOfRetractedPatch());
 
         String provider = LocalizationService.getInstance().getMessage(
                 "channel.jsp.gpgunknown");
