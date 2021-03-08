@@ -63,6 +63,7 @@ public class PackageDto extends BaseDto {
     private Blob filelistXml;
     private String cookie;
     private Map<String, String> extraTags;
+    private Boolean retracted;
 
 
     // Pre-existing queries returning this as a string.
@@ -621,4 +622,19 @@ public class PackageDto extends BaseDto {
     public void setExtraTags(Map<String, String> extraTagsIn) {
         this.extraTags = extraTagsIn;
     }
+
+    /**
+     * @return retracted
+     */
+    public Boolean getRetracted() {
+        return retracted;
+    }
+
+    /**
+     * @param retractedIn to set
+     */
+    public void setRetracted(Boolean retractedIn) {
+        this.retracted = retractedIn;
+    }
+
 }
