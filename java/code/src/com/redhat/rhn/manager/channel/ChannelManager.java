@@ -1137,40 +1137,6 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * Returns list of packages in channel
-     * @param channel channel whose packages are sought
-     * @param startDate package start date
-     * @param endDate package end date
-     * @return list of packages in channel
-     * @deprecated The only thing to use this is
-     * ChannelSoftwareHandler.listAllPackagesByDate which is itself depricated
-     */
-    @Deprecated
-    public static List<Map<String, Object>> listAllPackagesByDate(Channel channel,
-            String startDate,
-        String endDate) {
-
-        String mode = "all_packages_in_channel_by_date";
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cid", channel.getId());
-
-        if (!StringUtils.isEmpty(startDate)) {
-            params.put("start_date_str", startDate);
-            mode = "all_packages_in_channel_after_by_date";
-        }
-
-        if (!StringUtils.isEmpty(endDate)) {
-            params.put("end_date_str", endDate);
-            mode = "all_packages_in_channel_between_by_date";
-        }
-
-        SelectMode m = ModeFactory.getMode(
-                "Package_queries", mode);
-
-        return m.execute(params);
-    }
-
-    /**
      * Get the id of latest packages equal in the passed in Channel and name
      *
      * @param channelId to lookup package against
