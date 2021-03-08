@@ -3,7 +3,7 @@
 
 Feature: Wait for reposync activity to finish
 
-@regular_ci
+@continuous_integration
   Scenario: Delete scheduled reposyncs
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
