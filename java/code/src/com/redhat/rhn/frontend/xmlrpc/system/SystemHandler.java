@@ -1533,7 +1533,23 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-        return SystemManager.installedPackages(server.getId(), true);
+        DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
+        packageListItems.elaborate();
+        List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
+            Map<String, Object> item = new HashMap<>();
+            item.put("name", pi.getName());
+            item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
+            item.put("version", pi.getVersion());
+            item.put("release", pi.getRelease());
+            item.put("arch", Optional.ofNullable(pi.getArch())
+                    .orElseGet(() -> LocalizationService.getInstance().getMessage("Unknown")));
+            Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> {
+                item.put("installtime", it);
+            });
+            item.put("retracted", pi.isRetracted());
+            return item;
+        }).collect(toList());
+        return maps;
     }
 
     /**
