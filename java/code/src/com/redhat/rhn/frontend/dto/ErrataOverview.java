@@ -22,7 +22,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ErrataOverview
@@ -42,7 +44,8 @@ public class ErrataOverview extends BaseDto {
     private Integer affectedSystemCount;
     private String advisoryLastUpdated;
     private List cves = new ArrayList();
-    private List packageNames = new ArrayList();
+    private List<String> packageNames = new ArrayList<>();
+    private List<Long> pids = new ArrayList<>();
     private List actionId;
     private List status;
     private Long associatedSystemId;
@@ -138,6 +141,30 @@ public class ErrataOverview extends BaseDto {
      */
     public List getPackageNames() {
         return packageNames;
+    }
+    /**
+     * Adds a name to packageNames list.
+     * @param idIn The id to add.
+     */
+    public void addPackageId(long idIn) {
+        pids.add(idIn);
+    }
+    /**
+     * @return Returns the package ids.
+     */
+    public List<Long> getPackageIds() {
+        return pids;
+    }
+
+    /**
+     * @return Package names by ids.
+     */
+    public Map<Long, String> getPackageInfo() {
+        Map<Long, String> m = new HashMap<>();
+        for (int i = 0; i < packageNames.size(); i++) {
+            m.put(pids.get(i), packageNames.get(i));
+        }
+        return m;
     }
     /**
      * @param p The packageNames to set.
