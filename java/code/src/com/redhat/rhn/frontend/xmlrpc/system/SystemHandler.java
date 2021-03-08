@@ -1446,7 +1446,7 @@ public class SystemHandler extends BaseHandler {
                         null, loggedInUser.getOrg());
 
                 // build the hash to return
-                if (pkg != null) {
+                if (pkg != null && !pkg.isPartOfRetractedPatch()) {
                     Map<String, Object> pkgMap = new HashMap<String, Object>();
                     pkgMap.put("id", pkg.getId());
                     pkgMap.put("name", pkg.getPackageName().getName());
