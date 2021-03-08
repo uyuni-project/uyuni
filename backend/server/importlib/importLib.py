@@ -610,6 +610,7 @@ class Erratum(Information):
         'advisory_name'     : StringType,
         'advisory_rel'      : IntType,
         'advisory_type'     : StringType,
+        'advisory_status'   : StringType,
         'product'           : StringType,
         'description'       : StringType,
         'synopsis'          : StringType,

@@ -670,6 +670,7 @@ class RepoSyncTest(unittest.TestCase):
                           'packages': [True],
                           'files': [],
                           'advisory_type': 'Security Advisory',
+                          'advisory_status': 'final',
                           'issue_date': timestamp1,
                           'notes': '',
                           'org_id': 1,

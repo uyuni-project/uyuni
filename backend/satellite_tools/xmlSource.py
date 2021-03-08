@@ -962,6 +962,7 @@ class ErratumItem(BaseItem):
         'rhn-erratum-advisory-name': 'advisory_name',
         'rhn-erratum-advisory-rel': 'advisory_rel',
         'rhn-erratum-advisory-type': 'advisory_type',
+        'rhn-erratum-advisory-status': 'advisory_status',
         'rhn-erratum-product': 'product',
         'rhn-erratum-description': 'description',
         'rhn-erratum-synopsis': 'synopsis',
