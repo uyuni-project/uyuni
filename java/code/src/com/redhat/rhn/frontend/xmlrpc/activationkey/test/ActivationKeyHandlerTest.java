@@ -308,13 +308,13 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
                 buildList(group.getId().intValue()));
 
         PackageName newName = PackageNameTest.createTestPackageName();
-        keyHandler.addPackageNames(admin, newKey, buildList(newName.getName()));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName.getName())));
 
         PackageName newName2 = PackageNameTest.createTestPackageName();
-        keyHandler.addPackageNames(admin, newKey, buildList(newName2.getName()));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName2.getName())));
 
         PackageName newName3 = PackageNameTest.createTestPackageName();
-        keyHandler.addPackageNames(admin, newKey, buildList(newName3.getName()));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName3.getName())));
 
         ActivationKey key = keyHandler.getDetails(admin, newKey);
         Writer output = new StringWriter();
@@ -575,7 +575,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getPackages().size());
 
         PackageName newName = PackageNameTest.createTestPackageName();
-        keyHandler.addPackageNames(admin, newKey, buildList(newName.getName()));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName.getName())));
         assertEquals(1, activationKey.getPackages().size());
     }
 
@@ -587,7 +587,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, activationKey.getPackages().size());
 
         PackageName newName = PackageNameTest.createTestPackageName();
-        keyHandler.addPackageNames(admin, newKey, buildList(newName.getName()));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName.getName())));
         assertEquals(1, activationKey.getPackages().size());
 
         keyHandler.removePackageNames(admin, newKey, buildList(newName.getName()));
@@ -712,7 +712,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
                                                             lookupByKey(newKey, admin);
         assertEquals(0, activationKey.getPackages().size());
 
-        keyHandler.addPackageNames(admin, newKey, buildList("notarealpackage"));
+        keyHandler.addPackages(admin, newKey, List.of(Map.of("name", "notarealpackage")));
         // if the package name didn't exist, it should be added...
         assertEquals(1, activationKey.getPackages().size());
     }
