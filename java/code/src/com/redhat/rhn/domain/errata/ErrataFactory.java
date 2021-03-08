@@ -1078,12 +1078,13 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.setRebootSuggested((Boolean)values[7]);
-            eo.setRestartSuggested((Boolean)values[8]);
-            eo.setSeverityid((Integer)values[9]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.setRebootSuggested((Boolean)values[8]);
+            eo.setRestartSuggested((Boolean)values[9]);
+            eo.setSeverityid((Integer)values[10]);
             errata.add(eo);
         }
 
@@ -1124,10 +1125,11 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.addPackageName((String)values[7]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.addPackageName((String)values[8]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
@@ -1180,12 +1182,13 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.addPackageName((String)values[7]);
-            eo.setRebootSuggested((Boolean)values[8]);
-            eo.setRestartSuggested((Boolean)values[9]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.addPackageName((String)values[8]);
+            eo.setRebootSuggested((Boolean)values[9]);
+            eo.setRestartSuggested((Boolean)values[10]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
