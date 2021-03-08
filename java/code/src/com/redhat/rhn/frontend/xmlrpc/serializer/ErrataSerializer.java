@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *          #prop_desc("int", "id", "Errata Id")
  *          #prop_desc("string", "date", "Date erratum was created.")
  *          #prop_desc("string", "advisory_type", "Type of the advisory.")
+ *          #prop_desc("string", "advisory_status", "Status of the advisory.")
  *          #prop_desc("string", "advisory_name", "Name of the advisory.")
  *          #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
  *     #struct_end()
@@ -65,6 +66,7 @@ public class ErrataSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("advisory_synopsis", errata.getSynopsis());
         helper.add("advisory_name", errata.getAdvisoryName());
         helper.add("advisory_type", errata.getAdvisoryType());
+        helper.add("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
         helper.writeTo(output);
     }
 }
