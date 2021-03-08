@@ -47,13 +47,16 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -126,6 +129,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
+import com.redhat.rhn.frontend.xmlrpc.RetractedPackageException;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
@@ -3138,12 +3142,12 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-    public Object[] getRelevantErrata(User loggedInUser, Integer sid) {
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer sid) {
 
         Server server = lookupServer(loggedInUser, sid);
         DataResult<ErrataOverview> dr = SystemManager.relevantErrata(
                 loggedInUser, server.getId());
-        return dr.toArray();
+        return dr;
     }
 
     /**
@@ -3171,7 +3175,7 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-    public Object[] getRelevantErrataByType(User loggedInUser, Integer serverId,
+    public List<ErrataOverview> getRelevantErrataByType(User loggedInUser, Integer serverId,
             String advisoryType) throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
@@ -3179,7 +3183,7 @@ public class SystemHandler extends BaseHandler {
         DataResult<ErrataOverview> dr = SystemManager.relevantErrataByType(loggedInUser,
                 server.getId(), advisoryType);
 
-        return dr.toArray();
+        return dr;
     }
 
     /**
