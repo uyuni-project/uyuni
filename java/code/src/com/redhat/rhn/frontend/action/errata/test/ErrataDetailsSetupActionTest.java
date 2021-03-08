@@ -50,5 +50,6 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
         assertNotNull(sah.getRequest().getAttribute("fixed"));
         assertNotNull(sah.getRequest().getAttribute("cve"));
         assertNotNull(sah.getRequest().getAttribute("keywords"));
+        assertNotNull(sah.getRequest().getAttribute("advisoryStatus"));
     }
 }
