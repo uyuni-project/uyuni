@@ -113,7 +113,8 @@ public class PackageHelper {
                       Translator.date2String(pkg.getBuildTime()));
         addEntry(pkgMap, "last_modified_date",
                       Translator.date2String(pkg.getLastModified()));
-
+        addEntry(pkgMap, "part_of_retracted_patch",
+                    pkg.isPartOfRetractedPatch());
         Long sz = pkg.getPackageSize();
         addEntry(pkgMap, "size", (sz == null) ? "" : String.valueOf(sz));
 
