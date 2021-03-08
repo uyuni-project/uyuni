@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2021 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -98,6 +99,7 @@ public class PublishErrataHelper {
 
         setUniqueAdvisoryCloneName(original, clone);
         clone.setAdvisoryType(original.getAdvisoryType());
+        clone.setAdvisoryStatus(original.getAdvisoryStatus());
         clone.setProduct(original.getProduct());
         clone.setDescription(original.getDescription());
         clone.setSynopsis(original.getSynopsis());
