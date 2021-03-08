@@ -58,6 +58,7 @@ public class PackageListItem extends IdComboDto {
     private String locked = null; // Assuming package is free to operate by default.
     private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
                             // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
+    private boolean retracted;
 
     /**
      * Set locked status.
@@ -108,6 +109,28 @@ public class PackageListItem extends IdComboDto {
      */
     public String getPending() {
         return this.pending;
+    }
+
+    /**
+     * Gets the retracted.
+     *
+     * @return retracted
+     */
+    public boolean isRetracted() {
+        return retracted;
+    }
+
+    /**
+     * Sets the retracted.
+     *
+     * @param retractedIn the retracted
+     */
+    public void setRetracted(boolean retractedIn) {
+        retracted = retractedIn;
+    }
+
+    public void setRetracted(Integer retractedIn) {
+        retracted = retractedIn == 1;
     }
 
     /**
