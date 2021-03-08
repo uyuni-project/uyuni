@@ -173,6 +173,7 @@ SELECT DISTINCT E.id, E.update_date,
                                  AND USP.server_id = :sid)
    AND SNEC.server_id = :sid
    AND SNEC.errata_id = E.id
+   AND E.advisory_status != 'retracted'
 ORDER BY E.update_date DESC, E.id
   </query>
   <elaborator name="relevant_elab" />
