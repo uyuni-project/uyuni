@@ -25,13 +25,14 @@ SELECT * FROM
          SELECT  p.name_id name_id, max(pe.evr) evr, pe.id evr_id,
                  pa.label as arch_label, pa.id as arch_id
            FROM  rhnPackageEVR PE, rhnPackage P,
-                 rhnChannelPackage CP, rhnServerChannel SC,
+                 suseChannelPackageRetractedStatusView CP, rhnServerChannel SC,
                  rhnPackageArch PA
           WHERE  sc.server_id = :sid
             AND  sc.channel_id = cp.channel_id
             AND  cp.package_id = p.id
             AND  p.evr_id = pe.id
             AND  p.package_arch_id = pa.id
+            AND  CP.is_retracted = 0
        GROUP BY  p.name_id, pa.label, pa.id, pe.id
 ) avl
        left join rhnpackagename pn on pn.id = avl.name_id
