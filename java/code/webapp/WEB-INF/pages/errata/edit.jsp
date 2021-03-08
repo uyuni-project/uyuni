@@ -100,6 +100,14 @@
                     </html:select>
                 </div>
             </div>
+            <div class="form-group" id="errata_status">
+                <label class="col-lg-3 control-label">
+                    <bean:message key="details.jsp.advisorystatus"/>
+                </label>
+                <div class="col-lg-6">
+                    <html:text property="advisoryStatus" size="30" maxlength="64" styleClass="form-control" disabled="true"/>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.product"/>

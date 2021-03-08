@@ -265,6 +265,7 @@
             <form-property name="refersTo" type="java.lang.String"/>
             <form-property name="notes" type="java.lang.String"/>
             <form-property name="advisorySeverity" type="java.lang.Integer"/>
+            <form-property name="advisoryStatus" type="java.lang.String"/>
             <form-property name="no_paren_scrub" type="java.lang.String"
                            initial="topic, description, solution, notes"/>
         </form-bean>

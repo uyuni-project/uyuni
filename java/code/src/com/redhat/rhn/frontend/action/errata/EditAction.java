@@ -111,6 +111,8 @@ public class EditAction extends LookupDispatchAction {
         form.set("notes", errata.getNotes());
         form.set("keywords", keywordDisplay);
         form.set("advisorySeverityLabels", ErrataManager.advisorySeverityLabels());
+        form.set("advisoryStatus", LocalizationService.getInstance()
+                .getMessage("details.jsp.advisorystatus." + errata.getAdvisoryStatus().getMetadataValue()));
         if (errata.getSeverity() != null) {
             form.set("advisorySeverity", errata.getSeverity().getRank());
         }
