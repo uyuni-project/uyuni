@@ -253,7 +253,8 @@ class MLLibmodAPI:
 
         # Return the solution with highest score (most selections with default streams)
         solutions.sort(key=lambda s: s[1], reverse=True)
-        return solutions[0][0]
+        # Flatten version lists
+        return [i for l in solutions[0][0] for i in l]
 
     # API functions
     def _function__list_modules(self) -> Dict[str, Dict]:
