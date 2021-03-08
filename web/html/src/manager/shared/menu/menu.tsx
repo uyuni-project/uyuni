@@ -102,10 +102,6 @@ class Element extends React.Component<ElementProps> {
     return element.submenu ? this.getUrl(element.submenu[0]) : element.primaryUrl;
   };
 
-  getCompleteUrlLabel = element => {
-    return element.submenu ? element.label + " > " + this.getCompleteUrlLabel(element.submenu[0]) : element.label;
-  };
-
   render() {
     const element = this.props.element;
     return this.isVisible(element, this.props.searchString) || this.state.visiblityForcedByParent ? (
@@ -121,7 +117,6 @@ class Element extends React.Component<ElementProps> {
           url={this.getUrl(element)}
           label={element.label}
           target={element.target}
-          completeUrlLabel={this.getCompleteUrlLabel(element)}
           handleClick={this.isLeaf(element) ? null : this.toggleView}
           isOpen={this.state.open}
           isSearchActive={this.props.searchString}
