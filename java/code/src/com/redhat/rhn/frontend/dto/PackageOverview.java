@@ -37,6 +37,7 @@ public class PackageOverview extends BaseDto {
     private String version;
     private String epoch;
     private String release;
+    private boolean retracted;
 
 
     /**
@@ -219,5 +220,32 @@ public class PackageOverview extends BaseDto {
      */
     public void setRelease(String releaseIn) {
         this.release = releaseIn;
+    }
+
+    /**
+     * Gets the retracted.
+     *
+     * @return retracted
+     */
+    public boolean isRetracted() {
+        return retracted;
+    }
+
+    /**
+     * Sets the retracted.
+     *
+     * @param retractedIn the retracted
+     */
+    public void setRetracted(boolean retractedIn) {
+        retracted = retractedIn;
+    }
+
+    /**
+     * Sets the retracted.
+     *
+     * @param retractedIn the retracted
+     */
+    public void setRetracted(Integer retractedIn) {
+        retracted = retractedIn == 1;
     }
 }
