@@ -1388,10 +1388,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         ErrataCacheManager.insertNeededErrataCache(
                 s.getId(), e.getId(), p.getId());
 
-        Object[] array = handler.getRelevantErrata(admin,
+        List<ErrataOverview> list = handler.getRelevantErrata(admin,
                 s.getId().intValue());
-        assertEquals(array.length, 1);
-        ErrataOverview errata = (ErrataOverview) array[0];
+        assertEquals(list.size(), 1);
+        ErrataOverview errata = list.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
     }
 
@@ -1401,10 +1401,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int numErrata = SystemManager.relevantErrataByType(admin, server.getId(),
         "Bug Fix Advisory").size();
 
-        Object[] result = handler.getRelevantErrataByType(admin,
+        List<ErrataOverview> result = handler.getRelevantErrataByType(admin,
                 server.getId().intValue(), "Bug Fix Advisory");
 
-        int numErrata2 = result.length;
+        int numErrata2 = result.size();
 
         assertEquals(numErrata, numErrata2);
     }
