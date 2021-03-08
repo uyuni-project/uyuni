@@ -743,44 +743,6 @@ public class ActivationKeyHandler extends BaseHandler {
     }
 
     /**
-     * Remove package names from an activation key.
-     *
-     * @param loggedInUser The current user
-     * @param key The activation key to act upon
-     * @param packageNames List of package names to be removed from this activation key
-     * @return 1 on success, exception thrown otherwise
-     * @deprecated being replaced by removePackages(string sessionKey, string key,
-     * array[packages])
-     * @since 10.2
-     *
-     * @xmlrpc.doc Remove package names from an activation key.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #array_single("string", "packageName")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int removePackageNames(User loggedInUser, String key, List packageNames) {
-
-        ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        ActivationKey activationKey = lookupKey(key, loggedInUser);
-
-        for (Iterator it = packageNames.iterator(); it.hasNext();) {
-            String name = (String)it.next();
-
-            PackageName packageName = null;
-            try {
-                packageName = PackageManager.lookupPackageName(name);
-            }
-            catch (LookupException e) {
-                throw new InvalidPackageException(packageName.getName(), e);
-            }
-            manager.removePackage(activationKey, packageName, null);
-        }
-        return 1;
-    }
-
-    /**
      * Add packages to an activation key.
      *
      * @param loggedInUser The current user

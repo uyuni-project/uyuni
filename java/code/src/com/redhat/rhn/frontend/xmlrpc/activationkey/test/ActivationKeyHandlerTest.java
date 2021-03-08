@@ -590,7 +590,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         keyHandler.addPackages(admin, newKey, List.of(Map.of("name", newName.getName())));
         assertEquals(1, activationKey.getPackages().size());
 
-        keyHandler.removePackageNames(admin, newKey, buildList(newName.getName()));
+        keyHandler.removePackages(admin, newKey, List.of(Map.of("name", newName.getName())));
         assertEquals(0, activationKey.getPackages().size());
     }
 
