@@ -3644,6 +3644,32 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
+            List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
+                PackageName packageName = PackageFactory.lookupPackageName(packageMap.get("name_id"));
+                PackageEvr evr = PackageEvrFactory.lookupPackageEvrById(packageMap.get("evr_id"));
+                PackageArch arch = PackageFactory.lookupPackageArchById(packageMap.get("arch_id"));
+
+                return PackageFactory.lookupByNevra(
+                        loggedInUser.getOrg(),
+                        packageName.getName(),
+                        evr.getVersion(),
+                        evr.getRelease(),
+                        evr.getEpoch(),
+                        arch
+                ).stream();
+            }).collect(toList());
+
+            List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
+                    packages.stream().map(p -> p.getId()).collect(toList()),
+                    sids.stream().map(s -> s.longValue()).collect(toList())
+            );
+            if (!pidsidpairs.isEmpty()) {
+                throw new RetractedPackageException(pidsidpairs.stream().map(t -> t.getA()).collect(toList()));
+            }
+        }
+
+
         for (Integer sid : sids) {
             Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                     loggedInUser);
@@ -3914,9 +3940,8 @@ public class SystemHandler extends BaseHandler {
     public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false);
+        return schedulePackageInstallByNevra(loggedInUser, sids,
+                packageNevraList, earliestOccurrence, false);
     }
 
     /**
@@ -3984,12 +4009,8 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false)[0];
+        return schedulePackageInstallByNevra(loggedInUser, Collections.singletonList(sid),
+                packageNevraList, earliestOccurrence, false)[0];
     }
 
     /**
@@ -4024,12 +4045,8 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid, List<Map<String,
             String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, allowModules)[0];
+        return schedulePackageInstallByNevra(loggedInUser, Collections.singletonList(sid),
+                packageNevraList, earliestOccurrence, allowModules)[0];
     }
 
     /**
