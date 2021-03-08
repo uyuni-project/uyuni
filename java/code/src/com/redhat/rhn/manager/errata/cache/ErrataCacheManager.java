@@ -22,6 +22,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -315,6 +316,11 @@ public class ErrataCacheManager extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_id", cid);
         if (eid != null) {
+            Errata errata = ErrataFactory.lookupById(eid);
+            if (errata.getAdvisoryStatus().equals(AdvisoryStatus.RETRACTED)) {
+                log.debug("updateCacheForChannelErrata skip adding retracted errata: " + eid);
+                return;
+            }
             params.put("errata_id", eid);
             WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
                     "insert_new_cache_entries_by_errata");
