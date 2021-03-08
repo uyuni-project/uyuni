@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
@@ -60,6 +61,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -785,6 +787,24 @@ public class ErrataFactory extends HibernateFactory {
         return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
                 .setParameter("errata_id", errataId)
                 .setParameter("filename", filename).uniqueResultOptional();
+    }
+
+    /**
+     * Takes a set of packages that should be installed on a set of systems and checks whether there are
+     * and packages that are retracted. A packages counts as retracted for a server if it is contained
+     * in any retracted errata of a channel assigned to the system.
+     *
+     * @param pids package ids
+     * @param sids server ids
+     * @return pairs of package and server ids of packages that are retracted for a given server.
+     */
+    public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pids", pids);
+        params.put("sids", sids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery(
+                "Errata.retractedPackages", params);
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
     /**

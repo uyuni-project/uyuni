@@ -22,6 +22,9 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -87,6 +90,7 @@ import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -96,6 +100,12 @@ import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -1074,12 +1084,39 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> packagesUpdateAction(
             List<MinionSummary> minionSummaries, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        List<Package> packages = action.getDetails().stream().flatMap(details -> {
+            PackageName packageName = details.getPackageName();
+            PackageEvr evr = details.getEvr();
+            PackageArch arch = details.getArch();
+            return PackageFactory.lookupByNevra(action.getOrg(), packageName.getName(), evr.getVersion(),
+                    evr.getRelease(), evr.getEpoch(), arch).stream();
+        }).collect(toList());
+
+        List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
+        List<Long> pids = packages.stream().map(p -> p.getId()).collect(toList());
+
+        List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(pids, sids);
+        Map<Long, List<Long>> pidsBySid = pidsidpairs.stream()
+                .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
+        action.getServerActions().forEach(sa -> {
+            List<Long> packageIds = pidsBySid.get(sa.getServerId());
+            if (packageIds != null) {
+                sa.fail("contains retracted packages: " +
+                        packageIds.stream().map(i -> i.toString()).collect(joining(",")));
+            }
+        });
+        List<MinionSummary> filteredMinions = minionSummaries.stream()
+                .filter(ms -> pidsBySid.get(ms.getServerId()) != null &&
+                        !pidsBySid.get(ms.getServerId()).isEmpty())
+                .collect(toList());
+
         List<List<String>> pkgs = action
                 .getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(singletonMap(PARAM_PKGS, pkgs))), minionSummaries);
+                Optional.of(singletonMap(PARAM_PKGS, pkgs))), filteredMinions);
         return ret;
     }
 
