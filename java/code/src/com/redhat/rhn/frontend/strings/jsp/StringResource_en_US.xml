@@ -25087,6 +25087,12 @@ given channel.</source>
       <trans-unit id="errata.jsp.restart-tooltip">
         <source>Affects package management stack</source>
       </trans-unit>
+      <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
+        <source>Retracted Patch</source>
+      </trans-unit>
+      <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
+        <source>Package belongs to a Retracted Patch</source>
+      </trans-unit>
       <trans-unit id="ssm.overview.states">
         <source>States</source>
       </trans-unit>
