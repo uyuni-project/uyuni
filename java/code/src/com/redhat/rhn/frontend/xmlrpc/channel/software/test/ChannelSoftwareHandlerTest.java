@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -1008,6 +1009,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
         errataInfo.put("description", TestUtils.randomString());
@@ -1046,6 +1048,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("advisory_type", "Bug Fix Advisory");
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
@@ -1094,6 +1097,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
         errataInfo.put("description", TestUtils.randomString());
