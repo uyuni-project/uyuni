@@ -903,11 +903,13 @@ SELECT  pn.id as name_id, lookup_evr((full_list.evr).epoch, (full_list.evr).vers
   FROM  (
          SELECT  p.name_id name_id, max(pe.evr) evr
            FROM  rhnPackageEVR PE, rhnPackage P,
-                 rhnChannelPackage CP, rhnServerChannel SC
+                  suseChannelPackageRetractedStatusView CP,
+                  rhnServerChannel SC
           WHERE  sc.server_id = :sid
             AND  sc.channel_id = cp.channel_id
             AND  cp.package_id = p.id
             AND  p.evr_id = pe.id
+            AND  CP.is_retracted = 0
        GROUP BY  p.name_id
        ) full_list,
        rhnPackageName pn
