@@ -1,0 +1,10 @@
+{
+	"function": "module_packages",
+	"paths": ["tests/data/sample-modules-rhel.yaml.gz"],
+	"streams": [
+		{
+			"name": "postgresql",
+			"stream": "12"
+		}
+	]
+}

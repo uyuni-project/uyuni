@@ -1,0 +1,18 @@
+{
+	"function": "module_packages",
+	"paths": ["tests/data/sample-modules-rhel.yaml.gz"],
+	"streams": [
+		{
+			"name": "perl-App-cpanminus"
+		},
+		{
+			"name": "perl-DBD-MySQL"
+		},
+		{
+			"name": "perl-DBD-Pg"
+		},
+		{
+			"name": "perl-DBI"
+		}
+	]
+}
