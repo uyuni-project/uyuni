@@ -16,7 +16,9 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+
 
 /**
  * PackageListSetupAction
@@ -29,6 +31,8 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
      * @return List of installed packages
      */
     protected DataResult getDataResult(Server server) {
-        return PackageManager.systemPackageList(server.getId(), null);
+        DataResult<PackageListItem> result = PackageManager.systemPackageList(server.getId(), null);
+        result.elaborate();
+        return result;
     }
 }
