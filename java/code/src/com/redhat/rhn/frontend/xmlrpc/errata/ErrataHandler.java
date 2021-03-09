@@ -306,8 +306,6 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "advisory_type", "Type of advisory (one of the
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
-     *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
-     *                  following: 'final', 'testing' or 'retracted'")
      *          #prop("string", "product")
      *          #prop("dateTime.iso8601", "issue_date")
      *          #prop("dateTime.iso8601", "update_date")
@@ -349,7 +347,6 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
-        validKeys.add("advisory_status");
         validKeys.add("product");
         validKeys.add("issue_date");
         validKeys.add("update_date");
@@ -442,12 +439,6 @@ public class ErrataHandler extends BaseHandler {
                 throw new InvalidParameterException("Invalid advisory type");
             }
             errata.setAdvisoryType((String)details.get("advisory_type"));
-        }
-        if (details.containsKey("advisory_status")) {
-            String status = (String)details.get("advisory_status");
-            AdvisoryStatus advisoryStatus = AdvisoryStatus.fromMetadata(status)
-                    .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
-            errata.setAdvisoryStatus(advisoryStatus);
         }
         if (details.containsKey("product")) {
             if (StringUtils.isBlank((String)details.get("product"))) {
