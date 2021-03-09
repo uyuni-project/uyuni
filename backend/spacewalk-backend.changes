@@ -1,3 +1,5 @@
+- Avoid race condition due multiple reposync import threads (bsc#1183151)
+
 -------------------------------------------------------------------
 Fri Mar 05 15:41:07 CET 2021 - jgonzalez@suse.com
 
