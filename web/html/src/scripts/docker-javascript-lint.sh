@@ -2,12 +2,12 @@
 set -euxo pipefail
 
 zypper --non-interactive install git
-npm install -g flow-bin@0.107.0
 
 cd /manager/web/html/src
 
 yarn install
 yarn build
+yarn flow stop
 yarn lint
 yarn test
 echo "Javascript linting ran successfully"

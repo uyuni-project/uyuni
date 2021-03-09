@@ -16,7 +16,8 @@
     "lint": "eslint . -f codeframe",
     "test": "BABEL_ENV=test jest",
     "test:watch": "BABEL_ENV=test jest --watch",
-    "storybook": "start-storybook -s ./.storybook/public"
+    "storybook": "start-storybook -s ./.storybook/public",
+    "flow": "flow"
   },
   "engines": {
     "node": ">=10.0.0",
