@@ -642,31 +642,6 @@ public class UserHandlerTest extends BaseHandlerTestCase {
         }
     }
 
-    public void testNullLoggedInTime() {
-        assertNull(admin.getLastLoggedIn());
-        try {
-            handler.getLoggedInTime(admin, admin.getLogin());
-            fail("should have thrown a UserNeverLoggedInException");
-        }
-        catch (UserNeverLoggedInException unlie) {
-            // expected exception
-        }
-    }
-
-    // NOTE: This test will fail if you've never logged into the satellite
-    // you're testing against.
-    public void testLoggedInTime() throws Exception {
-        String login = "newbie" + TestUtils.randomString();
-        String password = "redhat";
-        handler.create(admin, login, password, "Bill",
-                "And Ted", "iron.maiden@rufus.com");
-        User newbie = UserManager.loginUser(login, password);
-        assertNotNull(newbie.getLastLoggedIn());
-        Date d = handler.getLoggedInTime(admin, newbie.getLogin());
-        assertNotNull(d);
-        assertEquals(newbie.getLastLoggedIn(), d);
-    }
-
     public void testRemoveDefaultSystemGroup() throws Exception {
         ServerGroupTestUtils.createManaged(regular);
         Object[] groups = handler.listAssignedSystemGroups(

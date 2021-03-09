@@ -907,35 +907,6 @@ public class UserHandler extends BaseHandler {
     }
 
     /**
-     * Returns the last logged in time of the given user.
-     * @param loggedInUser The current user
-     * in user.
-     * @param login The login of the user.
-     * @return last logged in time
-     * @throws UserNeverLoggedInException if the given user has never logged in.
-     * @deprecated Never returned usable value.
-     *
-     * @xmlrpc.doc Returns the time user last logged in.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype #param("dateTime.iso8601", "date")
-     */
-    @Deprecated
-    public Date getLoggedInTime(User loggedInUser, String login)
-        throws UserNeverLoggedInException {
-
-        User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
-                    loggedInUser, login);
-        Date d = target.getLastLoggedIn();
-        if (d != null) {
-            return d;
-        }
-        throw new UserNeverLoggedInException();
-    }
-
-
-
-    /**
      * remove system group association from a user
      * @param loggedInUser The current user
      * @param login the user's login that we want to remove the association from
