@@ -112,6 +112,8 @@ Requires:       postfix
 # mgr-setup want to call mksubvolume
 Requires:       reprepro
 Requires:       snapper
+# mgr-setup calls dig
+Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
