@@ -1294,7 +1294,9 @@ class RepoSync(object):
                         try:
                             os.rmdir(os.path.dirname(stage_path))
                         except OSError as exc:
-                            if exc.errno == errno.ENOTEMPTY:
+                            # skip if directory is not empty or has been removed by
+                            # some of the other threads in the meanwhile
+                            if exc.errno in (errno.ENOTEMPTY, errno.ENOENT):
                                 pass
                             else:
                                 raise exc
