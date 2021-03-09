@@ -2375,6 +2375,45 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
+     * Align the metadata of a channel to another channel.
+     *
+     * @param loggedInUser the user
+     * @param channelFromLabel the label of the source channel
+     * @param channelToLabel the label of the target channel
+     * @param metadataType the metadata type
+     *
+     * @return 1 when the channel metadata has been aligned
+     * @throws PermissionCheckFailureException when user does not have access to the target channel
+     *
+     * @xmlrpc.doc Align the metadata of a channel to another channel.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelFromLabel", "the label of the source channel")
+     * @xmlrpc.param #param_desc("string", "channelToLabel", "the label of the target channel")
+     * @xmlrpc.param #param_desc("string", "metadataType", "the metadata type. Only 'modules' supported currently.")
+     * @xmlrpc.returntype #param_desc("int", "result code", "1 when metadata has been aligned, 0 otherwise")
+     */
+    public int alignMetadata(User loggedInUser, String channelFromLabel, String channelToLabel, String metadataType) {
+        Channel channelFrom = lookupChannelByLabel(loggedInUser, channelFromLabel);
+        Channel channelTo = lookupChannelByLabel(loggedInUser, channelToLabel);
+
+        if (!UserManager.verifyChannelAdmin(loggedInUser, channelTo)) {
+            throw new PermissionCheckFailureException();
+        }
+
+        if (!metadataType.equals("modules")) {
+            throw new InvalidParameterException("Only 'modules' metadata is currently supported.");
+        }
+
+        if (channelFrom.isModular()) {
+            log.info("Aligning modular metadata of " + channelTo + " to " + channelFrom);
+            channelTo.cloneModulesFrom(channelFrom);
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
      * Regenerate the errata cache for all the systems subscribed to a particular channel
      * @param loggedInUser The current user
      * @param channelLabel the channel label
