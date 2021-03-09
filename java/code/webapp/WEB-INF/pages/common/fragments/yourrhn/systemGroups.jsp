@@ -14,22 +14,6 @@
                  hidepagenums="true"
                  emptykey="yourrhn.jsp.systemgroups.none">
 
-                <rl:column headerkey="grouplist.jsp.status">
-                <a class="js-spa" href="/rhn/groups/ListErrata.do?sgid=${current.id}">
-                                <c:choose>
-                                        <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
-                                        <rhn:icon type="system-crit" title="grouplist.jsp.security" />
-                                        </c:when>
-                                        <c:when test="${current.mostSevereErrata == 'Bug Fix Advisory' or current.mostSevereErrata == 'Product Enhancement Advisory' or current.mostSevereErrata == 'Outdated Packages'}">
-                                        <rhn:icon type="system-warn" title="grouplist.jsp.updates" />
-                                </c:when>
-                                        <c:otherwise>
-                                        <rhn:icon type="system-ok" title="grouplist.jsp.noerrata" />
-                                        </c:otherwise>
-                                        </c:choose>
-                                </a>
-                </rl:column>
-
                         <rl:column headerkey="yourrhn.jsp.systemgroups">
                 <a class="js-spa" href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
                 <c:out value="${current.name}"/></a>

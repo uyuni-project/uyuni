@@ -47,51 +47,7 @@ ORDER BY UPPER(NAME)
     ) x
     ORDER BY UPPER(NAME)
   </query>
-  <elaborator name="most_severe_errata" />
 </mode>
-<query name="most_severe_errata" params="">
-    WITH groupAdvisoryTypes AS NOT MATERIALIZED (
-        SELECT sgm.server_group_id, e.advisory_type
-          FROM rhnServerNeededCache snpc
-              INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id
-              INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
-              LEFT JOIN rhnErrata e ON e.id = snpc.errata_id
-          WHERE sfv.label = 'ftr_system_grouping'
-    )
-    SELECT rhnServerGroup.id,
-        CASE (
-            SELECT EXISTS (SELECT 1
-                FROM groupAdvisoryTypes gat
-                    WHERE gat.server_group_id = rhnServerGroup.id
-                    AND gat.advisory_type = 'Security Advisory')
-        )
-        WHEN TRUE THEN 'Security Advisory'
-        ELSE CASE (
-            SELECT EXISTS (SELECT 1
-                FROM groupAdvisoryTypes gat
-                    WHERE gat.server_group_id = rhnServerGroup.id
-                    AND gat.advisory_type = 'Bug Fix Advisory')
-        )
-        WHEN TRUE THEN 'Bug Fix Advisory'
-        ELSE CASE (
-            SELECT EXISTS (SELECT 1
-                FROM groupAdvisoryTypes gat
-                    WHERE gat.server_group_id = rhnServerGroup.id
-                    AND gat.advisory_type = 'Product Enhancement Advisory')
-        )
-        WHEN TRUE THEN 'Product Enhancement Advisory'
-        ELSE CASE (
-            SELECT EXISTS (SELECT 1
-                FROM groupAdvisoryTypes gat
-                    WHERE gat.server_group_id = rhnServerGroup.id
-                    AND gat.advisory_type IS NULL)
-        )
-        WHEN TRUE THEN 'Outdated Packages'
-        ELSE NULL
-        END END END END AS most_severe_errata
-    FROM rhnServerGroup
-    WHERE rhnServerGroup.id IN (%s)
-</query>
 <mode name="is_visible">
         <query  params="sgid, user_id">
                 SELECT 1
@@ -107,7 +63,6 @@ ORDER BY UPPER(NAME)
 <mode name="visible_to_user" class="com.redhat.rhn.frontend.dto.SystemGroupOverview">
   <query name="visible_to_user_ids" />
   <elaborator name="visible_to_user_overview_fast" />
-  <elaborator name="most_severe_errata" />
 </mode>
 
 <mode name="managed_system_groups_by_system">

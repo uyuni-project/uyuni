@@ -27,23 +27,6 @@
   <rl:decorator name="PageSizeDecorator" />
 
   <rl:selectablecolumn value="${current.id}" selected="${current.selected}" disabled="${not current.selectable}" />
-  
-  <!--Updates Column -->
-  <rl:column sortable="false" bound="false" headerkey="grouplist.jsp.status" styleclass="center" headerclass="thin-column">
-
-    <a href="/rhn/groups/ListErrata.do?sgid=${current.id}" class="js-spa">
-    <c:choose>
-      <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
-        <rhn:icon type="system-crit" title="grouplist.jsp.security" />
-      </c:when>
-      <c:when test="${current.mostSevereErrata == 'Bug Fix Advisory' or current.mostSevereErrata == 'Product Enhancement Advisory' or current.mostSevereErrata == 'Outdated Packages'}">
-        <rhn:icon type="system-warn" title="grouplist.jsp.updates" />
-      </c:when>
-      <c:otherwise>
-        <rhn:icon type="system-ok" title="grouplist.jsp.noerrata" />
-      </c:otherwise>
-    </c:choose>
-  </rl:column>
 
   <!--Name Column -->
   <rl:column sortable="true" bound="false" headerkey="grouplist.jsp.name" sortattr="name">

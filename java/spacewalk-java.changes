@@ -1,3 +1,4 @@
+- Remove "Updates" column from system groups table (bsc#1182132)
 - add virtual network create action
 
 -------------------------------------------------------------------
