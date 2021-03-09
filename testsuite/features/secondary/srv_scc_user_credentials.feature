@@ -1,4 +1,4 @@
-# Copyright 2021 SUSE LLC
+# Copyright 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: SCC user credentials in the Setup Wizard
