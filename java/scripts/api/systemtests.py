@@ -46,7 +46,7 @@ class SystemTests(RhnTestCase):
     #    errata_ids = []
     #    for e in errata:
     #        errata_ids.append(e['id'])
-    #    client.system.applyErrata(self.session_key, SERVER_ID, errata_ids)
+    #    client.system.scheduleApplyErrata(self.session_key, SERVER_ID, errata_ids)
 
     def test_schedule_package_install(self):
         installable = client.system.listLatestInstallablePackages(

@@ -1671,7 +1671,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List errataIds = new LinkedList();
         errataIds.add(irrelevantErrata.getId().intValue());
         try {
-            handler.applyErrata(admin, server.getId().intValue(),
+            handler.scheduleApplyErrata(admin, server.getId().intValue(),
                     errataIds);
             fail();
         }

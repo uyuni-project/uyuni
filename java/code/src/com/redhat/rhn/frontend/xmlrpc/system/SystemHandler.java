@@ -3352,28 +3352,6 @@ public class SystemHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param sid ID of the server
      * @param errataIds List of errata IDs to apply (as Integers)
-     * @return 1 if successful, exception thrown otherwise
-     * @deprecated being replaced by system.scheduleApplyErrata(string sessionKey,
-     * int serverId, array[int errataId])
-     *
-     * @xmlrpc.doc Schedules an action to apply errata updates to a system.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param  #array_single("int", "errataId")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int applyErrata(User loggedInUser, Integer sid,
-            List<Integer> errataIds) {
-        scheduleApplyErrata(loggedInUser, sid, errataIds, false);
-        return 1;
-    }
-
-    /**
-     * Schedules an action to apply errata updates to a system.
-     * @param loggedInUser The current user
-     * @param sid ID of the server
-     * @param errataIds List of errata IDs to apply (as Integers)
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
      *
