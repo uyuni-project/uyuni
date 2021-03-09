@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * PackageNVREAFilter
- * @version $Rev$
  */
 public class PackageNVREAFilter extends BaseListFilter {
 

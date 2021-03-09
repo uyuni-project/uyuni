@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.common.CreateFileListCommand;
 /**
  *
  * PreservationListCreateAction - for creating FileList objects
- * @version $Rev$
  */
 public class PreservationListCreateAction extends
         BasePreservationListEditAction {

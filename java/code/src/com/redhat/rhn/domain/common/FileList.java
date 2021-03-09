@@ -25,7 +25,6 @@ import java.util.LinkedList;
 
 /**
  * FileList
- * @version $Rev$
  */
 public class FileList extends BaseDomainHelper implements Identifiable {
 

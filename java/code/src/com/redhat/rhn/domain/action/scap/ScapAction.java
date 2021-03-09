@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * ScapAction - Class representing TYPE_SCAP_*.
- * @version $Rev$
  */
 public class ScapAction extends Action {
 

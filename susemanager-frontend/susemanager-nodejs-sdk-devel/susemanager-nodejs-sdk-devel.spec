@@ -24,7 +24,7 @@ AutoReqProv: no
 %global debug_package %{nil}
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.2.5
+Version:        4.2.7
 Release:        1%{?dist}
 
 License:        Apache-2.0 and BSD-2-Clause and BSD-3-Clause and MIT and CC-BY-3.0 and ISC and SUSE-Public-Domain and WTFPL
@@ -56,17 +56,23 @@ mkdir -p %{buildroot}%{_bindir}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
 
 chmod +x %{buildroot}%{nodejs_sitelib}/webpack/bin/*
-ln -sf %{nodejs_sitelib}/webpack/bin/webpack.js %{buildroot}%{_bindir}/webpack
+ln -sf ./webpack.js %{buildroot}/%{nodejs_sitelib}/webpack/bin/webpack
 
 find %{buildroot}%{nodejs_sitelib} -name "*~" -delete
 find %{buildroot}%{nodejs_sitelib} -name ".*" -type d -exec rm -rf {} +
 find %{buildroot}%{nodejs_sitelib} -name ".*" -delete
 %fdupes %{buildroot}%{nodejs_sitelib}
 
+# Compress all the node modules to reduce the huge number of files to package
+pushd %{buildroot}%{nodejs_sitelib}
+tar czf ../all_modules.tar.gz *
+tar tf ../all_modules.tar.gz | cut -d '/' -f1 | sort | uniq | while read -r MODULE; do rm -rf $MODULE; done
+mv ../all_modules.tar.gz .
+popd
+
 %files
 %defattr(-,root,root,-)
 %dir %{nodejs_modulesdir}
 %{nodejs_sitelib}/*
-%{_bindir}/*
 
 %changelog

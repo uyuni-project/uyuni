@@ -41,7 +41,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemPendingEventsAction
- * @version $Rev$
  */
 public class SystemPendingEventsAction extends RhnAction {
 

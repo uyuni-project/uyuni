@@ -62,7 +62,6 @@ import static java.util.Collections.singleton;
 /**
  *
  * TargetSystemsConfirmAction
- * @version $Rev$
  */
 public class TargetSystemsConfirmAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 

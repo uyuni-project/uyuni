@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RhnUnpagedListActionTest
- * @version $Rev$
  */
 public class RhnUnpagedListActionTest extends RhnBaseTestCase {
     /**

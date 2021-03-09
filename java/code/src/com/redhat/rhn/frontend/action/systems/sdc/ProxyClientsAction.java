@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ProxyClientsAction
- * @version $Rev$
  */
 public class ProxyClientsAction extends BaseSystemsAction {
 

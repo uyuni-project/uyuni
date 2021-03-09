@@ -23,7 +23,6 @@ import java.util.List;
 /**
  * RestartCommand - simple Command class to restart a Sat.  User must
  * be ORG_ADMIN to use this Command.
- * @version $Rev$
  */
 public class RestartCommand extends BaseConfigureCommand
     implements SatelliteConfigurator {

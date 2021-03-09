@@ -23,7 +23,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemPendingEventsAction
- * @version $Rev$
  */
 public class SystemPendingEventDto extends SystemEventDto implements Serializable {
 

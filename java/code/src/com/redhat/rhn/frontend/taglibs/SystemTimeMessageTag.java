@@ -28,7 +28,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * SystemTimeMessageTag
- * @version $Rev$
  */
 public class SystemTimeMessageTag extends TagSupport {
 

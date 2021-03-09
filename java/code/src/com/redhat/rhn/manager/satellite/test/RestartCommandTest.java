@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 /**
  * ConfigureSatelliteCommandTest - test for ConfigureSatelliteCommand
- * @version $Rev$
  */
 public class RestartCommandTest extends BaseTestCaseWithUser {
 
@@ -40,7 +39,6 @@ public class RestartCommandTest extends BaseTestCaseWithUser {
 
     /**
      * TestExecutor -
-     * @version $Rev$
     */
     public class TestExecutor implements Executor {
 

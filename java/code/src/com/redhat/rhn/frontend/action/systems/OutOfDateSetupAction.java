@@ -23,7 +23,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * OutOfDateSetupAction
- * @version $Rev$
  */
 public class OutOfDateSetupAction extends BaseSystemsAction {
 

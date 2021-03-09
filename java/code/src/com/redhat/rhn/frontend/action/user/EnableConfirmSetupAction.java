@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EnableConfirmSetupAction
- * @version $Rev$
  */
 public class EnableConfirmSetupAction extends RhnListAction {
 

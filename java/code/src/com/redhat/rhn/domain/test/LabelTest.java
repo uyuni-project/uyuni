@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * LabelTest
- * @version $Rev$
  */
 public class LabelTest extends TestCase {
 

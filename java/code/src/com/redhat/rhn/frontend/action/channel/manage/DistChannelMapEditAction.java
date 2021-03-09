@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DistChannelMapEditAction
- * @version $Rev$
  */
 public class DistChannelMapEditAction extends RhnAction {
 

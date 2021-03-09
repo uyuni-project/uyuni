@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * FailedActionsSetupAction
- * @version $Rev$
  */
 public class FailedActionsSetupAction extends BaseScheduledListAction {
 

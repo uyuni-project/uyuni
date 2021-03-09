@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 /**
  * ProfilePackageOverviewDto class represents a package associated with a stored profile.
  *
- * @version $Rev$
  */
 public class ProfilePackageOverviewDto {
 

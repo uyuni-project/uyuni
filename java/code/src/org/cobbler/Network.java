@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * Network
- * @version $Rev$
  */
 public class Network {
     private final String name;

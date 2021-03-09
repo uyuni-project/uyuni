@@ -20,7 +20,6 @@ import com.mockobjects.servlet.MockBodyContent;
  * RhnMockBodyContent
  * Extends MockBodyContent and adds the ability to set
  * the BodyContent to a String.
- * @version $Rev$
  */
 public class RhnMockBodyContent extends MockBodyContent {
 

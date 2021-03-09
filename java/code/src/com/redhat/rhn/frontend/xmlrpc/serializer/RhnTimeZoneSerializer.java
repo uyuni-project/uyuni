@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * RhnTimeZoneSerializer will serialize an RhnTimeZone object to XMLRPC
  * syntax.
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

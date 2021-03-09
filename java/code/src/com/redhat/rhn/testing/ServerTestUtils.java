@@ -53,7 +53,6 @@ import java.util.Set;
 
 /**
  * SystemTestUtils
- * @version $Rev$
  */
 public class ServerTestUtils {
 

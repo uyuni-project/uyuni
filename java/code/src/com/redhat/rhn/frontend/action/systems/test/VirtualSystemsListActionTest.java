@@ -18,7 +18,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * VirtualSystemsListActionTest
- * @version $Rev$
  */
 public class VirtualSystemsListActionTest extends RhnMockStrutsTestCase {
 

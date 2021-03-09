@@ -157,7 +157,6 @@ import java.util.TreeSet;
  *      }
  *  }
  *  </pre>
- * @version $Rev$
  */
 public class Acl {
 

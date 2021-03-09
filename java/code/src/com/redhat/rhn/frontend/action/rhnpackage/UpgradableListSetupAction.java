@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
  * UpgradableListSetupAction
- * @version $Rev$
  */
 public class UpgradableListSetupAction extends BaseSystemPackagesAction {
     @Override

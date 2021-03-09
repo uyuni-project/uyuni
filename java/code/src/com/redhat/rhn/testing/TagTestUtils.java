@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.Tag;
 /**
  * A class that allows us to easily test jsp tags.
  *
- * @version $Rev$
  */
 public class TagTestUtils {
     // static class

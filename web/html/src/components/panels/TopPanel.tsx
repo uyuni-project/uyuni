@@ -6,7 +6,7 @@ type Props = {
   button?: React.ReactNode;
   title: string;
   icon?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function TopPanel(props: Props) {

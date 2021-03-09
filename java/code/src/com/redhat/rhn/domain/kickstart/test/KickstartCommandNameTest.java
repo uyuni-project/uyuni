@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * KickstartCommandNameTest
- * @version $Rev$
  */
 public class KickstartCommandNameTest extends BaseTestCaseWithUser {
 

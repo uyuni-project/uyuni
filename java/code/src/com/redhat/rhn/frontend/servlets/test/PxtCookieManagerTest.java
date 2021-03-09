@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * PxtCookieManagerTest
- * @version $Rev$
  */
 public class PxtCookieManagerTest extends MockObjectTestCase {
 

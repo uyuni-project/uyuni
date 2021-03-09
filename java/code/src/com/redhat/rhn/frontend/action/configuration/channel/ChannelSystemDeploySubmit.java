@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelSystemDeploySubmit
- * @version $Rev$
  */
 public class ChannelSystemDeploySubmit extends BaseSetOperateOnSelectedItemsAction {
 

@@ -33,7 +33,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ConfigRevisionSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  * #struct_begin("Configuration Revision information")

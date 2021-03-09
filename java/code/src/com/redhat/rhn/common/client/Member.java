@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * Structure representing internal data of a ClientCertificate.
- * @version $Rev$
  */
 public class Member {
 

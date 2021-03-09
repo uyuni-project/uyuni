@@ -21,7 +21,6 @@ import com.redhat.rhn.FaultException;
  * Invalid Arguments Exception - This exception may be thrown when the user has
  * provided invalid arguments.
  *
- * @version $Rev$
  */
 public class InvalidArgsException extends FaultException  {
 

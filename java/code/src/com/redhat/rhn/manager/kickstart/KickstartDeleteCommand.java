@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * BaseKickstartDeleteCommand
- * @version $Rev$
  */
 public class KickstartDeleteCommand extends KickstartEditCommand {
 

@@ -27,7 +27,6 @@ import java.util.Optional;
 
 /**
  * PackageEvrFactory
- * @version $Rev$
  */
 public class PackageEvrFactory {
 

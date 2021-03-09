@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * InvalidErrataException
- * @version $Rev$
  */
 public class InvalidErrataException extends FaultException {
 

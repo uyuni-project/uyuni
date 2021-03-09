@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * SDCCopy2ChannelsAction
- * @version $Rev$
  */
 public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
     /**

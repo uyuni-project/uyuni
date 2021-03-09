@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:43:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.11-1
+- Get rid of validator global variable
+
+-------------------------------------------------------------------
+Thu Feb 25 12:10:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- Replace CRLF in ssh priv key when bootstrapping (bsc#1182685)
+- Inform user when a request timeout happens (bsc#1178767)
+- Allow to configure request timeout (bsc#1178767)
+- Usage of "edit" icon on Content Lifecycle Management
+
+-------------------------------------------------------------------
 Fri Feb 12 14:32:18 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.9-1

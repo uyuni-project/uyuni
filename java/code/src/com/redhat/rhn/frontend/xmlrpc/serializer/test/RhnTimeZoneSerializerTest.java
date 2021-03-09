@@ -27,7 +27,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * RhnTimeZoneSerializerTest
- * @version $Rev$
  */
 public class RhnTimeZoneSerializerTest extends TestCase {
 

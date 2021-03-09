@@ -55,7 +55,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelDeployConfirmAction
- * @version $Rev$
  */
 public class ChannelDeployConfirmAction extends RhnAction implements MaintenanceWindowsAware {
 

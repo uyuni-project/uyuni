@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
  * An AuthenticationService is a service that encapsulates authentication logic in coarse-
  * grained operations. Note that this service does not handle logins.
  *
- * @version $Rev$
  */
 public interface AuthenticationService {
 

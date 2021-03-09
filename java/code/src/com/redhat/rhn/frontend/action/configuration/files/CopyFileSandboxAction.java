@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * CopyFileSandboxAction
- * @version $Rev$
  */
 public class CopyFileSandboxAction extends BaseCopyConfigFileAction {
 

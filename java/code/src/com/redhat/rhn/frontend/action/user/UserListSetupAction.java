@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserListSetupAction
- * @version $Rev$
  */
 public class UserListSetupAction extends RhnAction implements Listable {
 

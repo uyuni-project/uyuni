@@ -27,7 +27,6 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 /**
  * ErrataConfirmActionTest - test that ErrataConfirmAction correctly
  * schedules the Actions associated with the Errata
- * @version $Rev$
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 

@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * RankChannelsAction
- * @version $Rev$
  */
 public class RankChannelsAction  extends RhnAction {
     protected static final String POSSIBLE_CHANNELS = "possibleChannels";

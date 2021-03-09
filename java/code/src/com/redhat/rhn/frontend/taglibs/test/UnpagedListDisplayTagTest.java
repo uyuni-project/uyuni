@@ -35,7 +35,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * UnpagedListDisplayTagTest
- * @version $Rev$
  */
 public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private UnpagedListDisplayTag ldt;

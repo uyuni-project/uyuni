@@ -19,7 +19,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * ValidationMessage
- * @version $Rev$
  */
 public abstract class ValidationMessage {
     private String key;

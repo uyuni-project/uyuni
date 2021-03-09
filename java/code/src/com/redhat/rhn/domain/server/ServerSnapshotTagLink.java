@@ -24,7 +24,6 @@ import java.io.Serializable;
 /**
  *
  * ServerSnapshot
- * @version $Rev$
  */
 public class ServerSnapshotTagLink extends BaseDomainHelper implements Serializable {
 

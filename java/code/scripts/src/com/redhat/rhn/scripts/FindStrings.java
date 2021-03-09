@@ -23,7 +23,6 @@ import org.apache.bcel.classfile.JavaClass;
 /**
  * A program to find hard-coded strings in java class files
  *
- * @version $Rev$
  */
 class FindStrings {
 

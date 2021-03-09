@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * AddGroupsAction
- * @version $Rev$
  */
 public class AddGroupsAction extends RhnAction implements Listable {
 

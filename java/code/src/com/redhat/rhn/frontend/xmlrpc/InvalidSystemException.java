@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Invalid System Exception
  *
- * @version $Rev$
  */
 public class InvalidSystemException extends FaultException  {
 

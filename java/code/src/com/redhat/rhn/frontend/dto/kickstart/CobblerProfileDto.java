@@ -23,7 +23,6 @@ import org.cobbler.Profile;
 /**
  * DTO to  represent a cobbler only profile
  * @author paji
- * @version $Rev$
  */
 public class CobblerProfileDto extends KickstartDto {
     private String selectionKey;

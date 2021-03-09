@@ -41,7 +41,6 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 /**
  *
  * RepositoriesAction
- * @version $Rev$
  */
 public class RepositoriesAction extends RhnAction implements Listable {
 

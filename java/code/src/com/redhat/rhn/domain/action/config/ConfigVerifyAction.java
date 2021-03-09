@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 
 /**
  * ConfigVerifyAction - Class representing TYPE_CONFIGFILES_VERIFY
- * @version $Rev$
  */
 public class ConfigVerifyAction extends ConfigAction {
 

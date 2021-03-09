@@ -18,7 +18,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * ArchivedActionsSetupTest
- * @version $Rev$
  */
 public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 

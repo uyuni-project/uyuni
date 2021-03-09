@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * ServerArchTest
- * @version $Rev$
  */
 public class ServerArchTest extends RhnBaseTestCase {
 

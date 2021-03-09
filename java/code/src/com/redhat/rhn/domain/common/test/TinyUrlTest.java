@@ -24,7 +24,6 @@ import java.util.TimeZone;
 
 /**
  * TinyUrlTest
- * @version $Rev$
  */
 public class TinyUrlTest extends RhnBaseTestCase {
 

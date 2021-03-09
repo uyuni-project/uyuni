@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:42:30 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.11-1
+- Allow setting a primary FQDN per system, either via WebUI or XMLRPC-API
+- Speed up pages to compare or add packages to channels (bsc#1178767)
+- Remove validator.js from jade templates
+- Homogenizes style in filter buttons, facilitating testability
+- improve fromdir with better mapping of URL to local files
+
+-------------------------------------------------------------------
+Thu Feb 25 12:06:49 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- Rebuild and improve rendering of error pages 404 and 500 pages (bsc#1181228)
+- Fix user creation with pam auth and no password (bsc#1179579)
+- Rename rhnVirtualInstanceInfo memory_size_k column
+- Fix registration of VM created with cobbler profile on Salt minion
+- enahance schedule states XMLRPC API
+- Cleanup sessions via SQL query instead of SQL function (bsc#1180224)
+- Do not call page decorator in HEAD requests (bsc#1181228)
+- Allow to configure request timeout (bsc#1178767)
+- FIX: Slow response of 'Software > Install' in Ubuntu minions (bsc#1181165)
+
+-------------------------------------------------------------------
+Tue Feb 16 10:07:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- fix action chains for saltssh minions (bsc#1182200)
+
+-------------------------------------------------------------------
 Fri Feb 12 14:29:28 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.8-1
@@ -19,7 +49,7 @@ Thu Jan 28 11:42:47 CET 2021 - jgonzalez@suse.com
 Wed Jan 27 13:04:11 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.6-1
-- fix query using old EVR_T constructor (bsc#1181422) 
+- fix query using old EVR_T constructor (bsc#1181422)
 - Update to postgresql13 (jsc#SLE-17030)
 - Improve modular dependency resolution algorithm (bsc#1177267)
 - Display absolute timestamps for configuration files

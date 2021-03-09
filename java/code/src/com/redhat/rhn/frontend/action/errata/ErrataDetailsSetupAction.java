@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DetailsSetupAction
- * @version $Rev$
  */
 public class ErrataDetailsSetupAction extends RhnAction {
     /** {@inheritDoc} */

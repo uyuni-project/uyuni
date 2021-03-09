@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * ChannelFilesImportSetup
- * @version $Rev$
  */
 public class ChannelFilesImportSetup extends BaseSetListAction {
 

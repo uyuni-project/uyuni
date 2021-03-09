@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ExtGroupDeleteAction
- * @version $Rev$
  */
 public class ExtAuthSgDeleteAction extends RhnAction {
 

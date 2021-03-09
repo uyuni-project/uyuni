@@ -19,7 +19,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 /**
  * An exception thrown when a user attempts to cancel action which is in PICKED UP state.
  *
- * @version $Rev$
  */
 public class ActionIsPickedUpException extends RhnRuntimeException {
     /**

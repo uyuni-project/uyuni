@@ -659,6 +659,14 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   end
 end
 
+When(/^I enable repositories before installing Salt on this "([^"]*)"$/) do |host|
+  step %(I enable repository "tools_additional_repo" on this "#{host}" without error control)
+end
+
+When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |host|
+  step %(I disable repository "tools_additional_repo" on this "#{host}" without error control)
+end
+
 # minion bootstrap steps
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
@@ -683,6 +691,9 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   end
   node.run('rm -Rf /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt', false)
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
+  if host.include? 'proxy'
+    step %(I disable the repositories "proxy_module_pool_repo proxy_product_pool_repo proxy_product_update_repo" on this "#{host}" without error control)
+  end
 end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |file, host|

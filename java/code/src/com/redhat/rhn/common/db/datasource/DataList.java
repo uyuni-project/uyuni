@@ -37,7 +37,6 @@ import java.util.Map;
  * whereas DataResult contained start, end, and total size data expecting UI
  * to deal directly with these methods rather than just those of a list.
  * @param <E> the type of the objects to be used in this list.
- * @version $Rev$
  */
 public class DataList<E> extends ArrayList<E> {
     /**

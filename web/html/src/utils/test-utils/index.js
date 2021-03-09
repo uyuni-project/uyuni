@@ -12,8 +12,6 @@ export * from "@testing-library/react";
 export const {
   click,
   dblClick,
-  // We provide our own `type()` below
-  type: rawType,
   upload,
   clear,
   selectOptions,
@@ -25,12 +23,16 @@ export const {
   specialChars,
 } = userEvent;
 
-/** @testing-library/user-event's `type()` is inconsistent without a delay */
-export const type = async (element, text, options) => {
+export const type = async (elementOrPromiseOfElement, text, options) => {
   const mergedOptions = Object.assign({
-    delay: 10
+    /**
+     * @testing-library/user-event's `type()` is inconsistent without a delay
+     * Since delay is inserted between each keystroke, we use Number.MIN_VALUE to avoid test timeouts
+     */
+    delay: Number.MIN_VALUE
   }, options);
-  return rawType(element, text, mergedOptions);
+  await userEvent.type(await elementOrPromiseOfElement, text, mergedOptions);
+  return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
 }
 
 const server = setupServer();

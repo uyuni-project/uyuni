@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.Label;
 
 /**
  * VirtualInstanceState
- * @version $Rev$
  */
 public class VirtualInstanceState extends Label {
 

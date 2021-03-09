@@ -38,7 +38,6 @@ import java.util.Vector;
 
 /**
  * PermissionExceptionHandlerTest
- * @version $Rev$
  */
 public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 

@@ -33,7 +33,6 @@ import java.util.TimeZone;
 
 /**
  * ErrataConfirmActionTest
- * @version $Rev$
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 

@@ -19,7 +19,6 @@ import com.redhat.rhn.frontend.action.systems.SystemListAction;
 
 /**
  * SystemListActionTest
- * @version $Rev$
  */
 public class SystemListActionTest extends BaseSystemListActionTestCase {
 

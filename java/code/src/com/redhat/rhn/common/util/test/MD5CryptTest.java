@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * MD5CryptTest
- * @version $Rev$
  */
 public class MD5CryptTest extends RhnBaseTestCase {
 

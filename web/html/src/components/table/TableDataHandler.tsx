@@ -176,7 +176,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.data !== prevProps.data) {
-      this.setState({ provider: this.getProvider() }, this.getData);
+      this.setState({ provider: this.getProvider() }, () => this.getData());
     }
   }
 
@@ -189,7 +189,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   UNSAFE_componentWillMount() {
     if (this.context && this.context.loadState) {
       if (this.context.loadState()) {
-        this.setState(this.context.loadState(), this.getData);
+        this.setState(this.context.loadState(), () => this.getData());
       }
     }
   }
@@ -201,15 +201,15 @@ export class TableDataHandler extends React.Component<Props, State> {
   };
 
   onSearch = (criteria?: string): void => {
-    this.setState({ currentPage: 1, criteria: criteria }, this.getData);
+    this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
   };
 
   onItemsPerPageChange = (itemsPerPage: number): void => {
-    this.setState({ itemsPerPage: itemsPerPage }, this.getData);
+    this.setState({ itemsPerPage: itemsPerPage }, () => this.getData());
   };
 
   onPageChange = (page: number): void => {
-    this.setState({ currentPage: page }, this.getData);
+    this.setState({ currentPage: page }, () => this.getData());
   };
 
   onSortChange = (sortColumnKey: string | null, sortDirection: number): void => {
@@ -218,7 +218,7 @@ export class TableDataHandler extends React.Component<Props, State> {
         sortColumnKey: sortColumnKey,
         sortDirection: sortDirection,
       },
-      this.getData
+      () => this.getData()
     );
   };
 

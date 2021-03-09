@@ -30,7 +30,6 @@ import java.util.Vector;
 
 /**
  * Test for {@link TraceBackEvent}.
- * @version $Rev$
  */
 
 public class TraceBackEventTest extends RhnBaseTestCase {

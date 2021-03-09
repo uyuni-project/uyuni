@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackageDependenciesAction
- * @version $Rev$
  */
 public class PackageDependenciesAction extends RhnAction {
 

@@ -1,43 +1,14 @@
 import * as React from "react";
 import { DateTimePicker } from "../datetimepicker";
-import { InputBase } from "./InputBase";
+import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = {
+type Props = InputBaseProps & {
   /** Time zone for the displayed time */
   timezone?: string;
 
   /** name of the field to map in the form model */
   name: string;
-
-  /** Default value if none is set */
-  defaultValue?: string;
-
-  /** Label to display for the field */
-  label?: string;
-
-  /** Hint string to display */
-  hint?: string;
-
-  /** CSS class to use for the label */
-  labelClass?: string;
-
-  /** CSS class to use for the <div> element wrapping the field input part */
-  divClass?: string;
-
-  /** Indicates whether the field is required in the form */
-  required?: boolean;
-
-  /** Indicates whether the field is disabled */
-  disabled?: boolean;
-
-  /** Hint to display on a validation error */
-  invalidHint?: string;
-
-  /** Function to call when the data model needs to be changed.
-   *  Takes a name and a value parameter.
-   */
-  onChange?: (name: string, value: string) => void;
 };
 
 export function DateTime(props: Props) {

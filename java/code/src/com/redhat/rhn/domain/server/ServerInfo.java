@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * ServerInfo - Class representation of the table rhnServerInfo
- * @version $Rev$
  */
 public class ServerInfo {
 

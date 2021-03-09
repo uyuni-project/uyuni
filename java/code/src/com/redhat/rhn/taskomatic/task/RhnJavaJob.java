@@ -34,7 +34,6 @@ import java.util.Arrays;
 
 /**
  * RhnJavaJob
- * @version $Rev$
  */
 public abstract class RhnJavaJob implements RhnJob {
 

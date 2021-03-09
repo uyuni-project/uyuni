@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.kickstart;
 
 /**
  * KickstartGuestActionDetails - java representation of the rhnActionKickstart table
- * @version $Rev$
  */
 public class KickstartGuestActionDetails extends BaseKickstartActionDetails {
 

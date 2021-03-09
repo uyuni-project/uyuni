@@ -22,7 +22,6 @@ import java.util.Locale;
 
 /**
  * Test for {@link XmlMessages}.
- * @version $Rev$
  */
 public class MessagesTest extends RhnBaseTestCase {
     private String getMessage;

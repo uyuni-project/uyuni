@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.nav;
 
 /**
  * DepthGuard, a RenderGuard that watches for depth
- * @version $Rev$
  */
 
 public class DepthGuard implements RenderGuard {

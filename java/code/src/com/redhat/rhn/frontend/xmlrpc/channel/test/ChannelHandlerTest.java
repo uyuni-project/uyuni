@@ -36,7 +36,6 @@ import java.util.Set;
 
 /**
  * ChannelHandlerTest
- * @version $Rev$
  */
 public class ChannelHandlerTest extends BaseHandlerTestCase {
 

@@ -876,7 +876,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
-        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
+        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -886,7 +886,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
-        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
+        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -21407,7 +21407,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
-        <source>FQDNs:</source>
+        <source>Primary FQDN:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>

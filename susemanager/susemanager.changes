@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:43:37 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- Feat: make mgr-create-bootstrap-repo log to another directory and logrotate it
+
+-------------------------------------------------------------------
+Thu Feb 25 12:10:50 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Add python3-distro to RES8, SLE15, Ubuntu20.04 and Debian 10 bootstrap
+  repositories to fix bootstrapping issues
+
+-------------------------------------------------------------------
 Fri Feb 12 14:32:42 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.7-1

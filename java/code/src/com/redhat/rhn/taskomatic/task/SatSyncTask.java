@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * SatSyncTask
- * @version $Rev$
  */
 public class SatSyncTask extends RhnJavaJob {
 

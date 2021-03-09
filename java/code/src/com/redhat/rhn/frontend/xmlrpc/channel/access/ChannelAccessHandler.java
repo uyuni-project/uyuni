@@ -28,7 +28,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * ChannelAccessHandler
- * @version $Rev$
  * @xmlrpc.namespace channel.access
  * @xmlrpc.doc Provides methods to retrieve and alter channel access restrictions.
  */

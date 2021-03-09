@@ -11,6 +11,7 @@
         <property name="name" column="name" type="string" length="253" />
         <property name="created" column="created" type="timestamp" insert="false" update="false" />
         <property name="modified" column="modified" type="timestamp" insert="false" update="false" />
+        <property name="primary" column="is_primary" type="yes_no" />
 
         <many-to-one name="server" class="com.redhat.rhn.domain.server.Server" not-null="true" column="server_id" />
     </class>

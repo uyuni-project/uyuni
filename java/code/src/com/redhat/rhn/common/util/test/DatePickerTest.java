@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 
 /**
  * DatePickerTest
- * @version $Rev$
  */
 public class DatePickerTest extends TestCase {
 

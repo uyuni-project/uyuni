@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.audit;
 /**
  * Class encapsulating a channel's id, name and label.
  *
- * @version $Rev$
  */
 public class ChannelIdNameLabelTriple {
 

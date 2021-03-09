@@ -494,7 +494,7 @@ class VirtualizationEventHandler:
                 rvi.confirmed         as confirmed,
                 rvii.name             as name,
                 rvit.label            as instance_type,
-                rvii.memory_size_k    as memory_size_k,
+                rvii.memory_size      as memory_size,
                 rvii.instance_id      as instance_id,
                 rvii.vcpus            as vcpus,
                 rvis.label            as state
@@ -562,7 +562,7 @@ class VirtualizationEventHandler:
                 (instance_id,
                  name,
                  vcpus,
-                 memory_size_k,
+                 memory_size,
                  instance_type,
                  state)
             SELECT
@@ -644,8 +644,8 @@ class VirtualizationEventHandler:
             bindings['vcpus'] = properties[PropertyType.VCPUS]
 
         if PropertyType.MEMORY in properties and \
-           existing_row['memory_size_k'] != properties[PropertyType.MEMORY]:
-            new_values_array.append('memory_size_k=:memory')
+           existing_row['memory_size'] != properties[PropertyType.MEMORY]:
+            new_values_array.append('memory_size=:memory')
             bindings['memory'] = properties[PropertyType.MEMORY]
 
         if PropertyType.TYPE in properties and \

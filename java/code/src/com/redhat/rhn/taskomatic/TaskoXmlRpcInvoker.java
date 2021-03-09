@@ -31,7 +31,6 @@ import simple.http.Response;
 
 /**
  * TaskoXmlRpcInvoker
- * @version $Rev$
  */
 public class TaskoXmlRpcInvoker implements ProtocolHandler {
 

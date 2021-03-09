@@ -22,3 +22,9 @@ Feature: Verify the minion registration
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
+
+  Scenario: Check that Update Properties button works
+    Given I am on the Systems overview page of this "sle_minion"
+    And I follow "Hardware"
+    And I click on "Update Properties"
+    Then I should see a "Networking properties updated." text

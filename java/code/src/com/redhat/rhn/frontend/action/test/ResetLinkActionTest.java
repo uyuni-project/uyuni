@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 /**
  * ResetLinkActionTest
- * @version $Rev$
  */
 public class ResetLinkActionTest extends BaseTestCaseWithUser {
 

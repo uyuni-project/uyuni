@@ -30,7 +30,6 @@ import java.util.Optional;
 
 /**
  * CreateChannelCommand - command to clone a channel.
- * @version $Rev$
  */
 public class CloneChannelCommand extends CreateChannelCommand {
 

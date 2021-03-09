@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  *
  * KickstartProfileFilter
- * @version $Rev$
  */
 public class KickstartProfileFilter extends BaseListFilter {
 

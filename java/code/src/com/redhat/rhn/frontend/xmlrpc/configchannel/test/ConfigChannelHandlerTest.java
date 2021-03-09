@@ -59,7 +59,6 @@ import java.util.Set;
 
 /**
  * ConfigChannelHandlerTest
- * @version $Rev$
  */
 public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     private ConfigChannelHandler handler = new ConfigChannelHandler();

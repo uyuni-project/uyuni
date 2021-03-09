@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * InProgressSystemsActionTest
- * @version $Rev$
  */
 public class InProgressSystemsActionTest extends RhnBaseTestCase {
 

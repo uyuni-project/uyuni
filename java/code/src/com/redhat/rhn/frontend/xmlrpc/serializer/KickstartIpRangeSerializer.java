@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * KickstartIpRangeSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *   #struct_begin("Kickstart Ip Range")

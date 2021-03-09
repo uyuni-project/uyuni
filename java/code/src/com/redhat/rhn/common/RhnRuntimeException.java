@@ -24,7 +24,6 @@ package com.redhat.rhn.common;
  * Custom, unchecked exceptions should extend RhnRuntimeException so that we can provide
  * generic error handling, reporting, logging, etc.
  *
- * @version $Rev$
  */
 public class RhnRuntimeException extends RuntimeException {
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.kickstart.crypto;
 
 /**
  * SslCryptoKey
- * @version $Rev$
  */
 public class SslCryptoKey extends CryptoKey {
     /**

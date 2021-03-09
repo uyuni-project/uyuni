@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Dmi
- * @version $Rev$
  */
 public class Dmi extends BaseDomainHelper {
 
@@ -200,7 +199,6 @@ public class Dmi extends BaseDomainHelper {
 
     /**
      * Bios class
-     * @version $Rev$
      */
     public static class Bios {
 

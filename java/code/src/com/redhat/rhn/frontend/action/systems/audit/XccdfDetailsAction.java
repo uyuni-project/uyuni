@@ -39,7 +39,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * XccdfDetailsAction
- * @version $Rev$
  */
 
 public class XccdfDetailsAction extends RhnAction implements Listable {

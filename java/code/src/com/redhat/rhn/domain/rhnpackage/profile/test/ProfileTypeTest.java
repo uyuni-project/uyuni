@@ -22,7 +22,6 @@ import org.hibernate.Session;
 
 /**
  * ProfileTypeTest
- * @version $Rev$
  */
 public class ProfileTypeTest extends RhnBaseTestCase {
 

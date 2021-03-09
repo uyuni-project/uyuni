@@ -19,7 +19,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
  * DownloadException
- * @version $Rev$
  */
 public class DownloadException extends RhnRuntimeException {
 

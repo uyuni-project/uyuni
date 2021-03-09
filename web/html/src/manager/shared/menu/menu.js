@@ -1,6 +1,7 @@
 /* eslint-disable */
 "use strict";
 import SpaRenderer from "../../../core/spa/spa-renderer";
+import { MessagesContainer } from 'components/toastr/toastr';
 import escapeHtml from 'html-react-parser';
 
 import * as React from 'react';
@@ -237,4 +238,11 @@ class Breadcrumb extends React.Component {
 SpaRenderer.renderGlobalReact(
   <Breadcrumb />,
   document.getElementById('breadcrumb')
+);
+
+SpaRenderer.renderGlobalReact(
+  <>
+    <MessagesContainer containerId='global'/>
+  </>,
+  document.getElementById('messages-container')
 );

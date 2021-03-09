@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.Server;
 
 /**
  * ConfigFileNameAssociation -- Represents DB table, rhnActionConfigFileName
- * @version $Rev$
  */
 public class ConfigFileNameAssociation extends ActionChild {
 

@@ -262,11 +262,13 @@ end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
-  if host.include?('client') or host.include?('ceos') or host.include?('ubuntu')
-    node.run('rhn_check -vvv', true, 500, 'root')
-    client_refresh_metadata
-  elsif host.include?('minion') or host.include?('server') or host.include?('proxy') or host.include?('build_host')
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
+  elsif os_family =~ /^centos/
+    node.run('yum clean all && yum makecache', true, 600, 'root')
+  elsif os_family =~ /^ubuntu/
+    node.run('apt-get update')
   else
     raise "The host #{host} has not yet a implementation for that step"
   end
@@ -295,6 +297,8 @@ Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) 
   raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
 end
 
+# metadata steps
+# these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
   raise 'Invalid target.' unless host == 'sle_client'
   target = $client
@@ -543,7 +547,7 @@ Then(/^the SLE15 SP1 products should be added$/) do
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
-  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/button[contains(@class, 'showChannels')]"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
@@ -689,6 +693,17 @@ end
 Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
+end
+
+Then(/^I add proxy record into hosts file on "([^"]*)" if avahi is used$/) do |host|
+  node = get_target(host)
+  if node.full_hostname.include? 'tf.local'
+    output, _code = $proxy.run("ip address show dev eth0")
+    ip = output.split("\n")[2].split[1].split('/')[0]
+    node.run("echo '#{ip} #{$proxy.full_hostname} #{$proxy.hostname}' >> /etc/hosts")
+  else
+    puts 'Record not added - avahi domain is not detected'
+  end
 end
 
 Then(/^the image should exist on "([^"]*)"$/) do |host|

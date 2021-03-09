@@ -19,7 +19,6 @@ import java.util.Date;
 
 /**
  * TaskoTask
- * @version $Rev$
  */
 public class TaskoTask {
 

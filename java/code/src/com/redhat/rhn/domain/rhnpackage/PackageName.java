@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * PackageName
- * @version $Rev$
  */
 public class PackageName implements Comparable<PackageName> {
 

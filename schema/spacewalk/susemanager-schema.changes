@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:44:38 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- Add 'is_primary' column to rhnServerFqdn table
+- Fix: increase password length in the database (bsc#1182687)
+
+-------------------------------------------------------------------
+Thu Feb 25 12:12:06 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Provide migration for rhnActionImageBuild
+- Rename rhnVirtualInstanceInfo memory_size_k column
+- Drop "pxt_session_cleanup" function (bsc#1180224)
+
+-------------------------------------------------------------------
 Fri Feb 12 14:35:19 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.7-1

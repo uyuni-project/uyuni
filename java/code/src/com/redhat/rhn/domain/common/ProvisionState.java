@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ProvisionState
- * @version $Rev$
  */
 public class ProvisionState extends BaseDomainHelper {
 

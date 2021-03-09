@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * OwnedErrata
- * @version $Rev$
  */
 public class OwnedErrata extends ErrataOverview {
 

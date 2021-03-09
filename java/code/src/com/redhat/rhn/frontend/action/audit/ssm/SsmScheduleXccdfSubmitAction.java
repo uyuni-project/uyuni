@@ -31,7 +31,6 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 
 /**
  * SSM OpenSCAP XCCDF scanning.
- * @version $Rev$
  */
 public class SsmScheduleXccdfSubmitAction extends BaseSsmScheduleXccdfAction {
 

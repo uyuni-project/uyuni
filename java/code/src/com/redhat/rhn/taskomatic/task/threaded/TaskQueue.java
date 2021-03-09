@@ -26,7 +26,6 @@ import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 /**
  * Generic threaded queue suitable for use wherever Taskomatic
  * tasks need to process a number of work items in parallel.
- * @version $Rev$
  */
 public class TaskQueue {
 

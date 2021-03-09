@@ -27,7 +27,6 @@ import java.util.Date;
 /**
  *
  * ShortSystemInfoSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

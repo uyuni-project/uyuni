@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * BaseConfigureCommand - abstract class to contain some logic for
  * configuring a Spacewalk.
- * @version $Rev$
  */
 public abstract class BaseConfigureCommand {
 

@@ -37,7 +37,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.9
+Version:        4.2.11
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -193,8 +193,9 @@ database.
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 pushd html/src
-ln -sf %{nodejs_sitelib} .
-BUILD_VALIDATION=false node build.js
+mkdir node_modules
+tar x -C node_modules -f %{nodejs_sitelib}/all_modules.tar.gz
+PATH=node_modules/webpack/bin:$PATH BUILD_VALIDATION=false node build.js
 popd
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 

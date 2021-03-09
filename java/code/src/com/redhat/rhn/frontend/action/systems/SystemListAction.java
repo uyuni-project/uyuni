@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * SystemListAction
- * @version $Rev$
  */
 public class SystemListAction extends BaseSystemListAction {
 

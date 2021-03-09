@@ -24,7 +24,6 @@ import java.io.Serializable;
 /**
  * ConfigDateFileAction - Class representation of the table rhnActionConfigDateFile.
  *
- * @version $Rev$
  */
 public class ConfigDateFileAction extends ActionChild implements Serializable {
 

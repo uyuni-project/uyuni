@@ -50,7 +50,6 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
  *         "Advisories of erratas that patch the specified vulnerability")
  * #struct_end()
  *
- * @version $Rev$
  */
 public class CVEAuditServerSerializer extends RhnXmlRpcCustomSerializer {
 

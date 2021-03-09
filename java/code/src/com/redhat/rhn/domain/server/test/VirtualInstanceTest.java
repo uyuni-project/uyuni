@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * VirtualInstanceTest
- * @version $Rev$
  */
 public class VirtualInstanceTest extends RhnBaseTestCase {
 

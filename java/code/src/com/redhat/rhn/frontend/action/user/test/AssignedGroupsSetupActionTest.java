@@ -21,7 +21,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * AssignedGroupsSetupActionTest
- * @version $Rev$
  */
 public class AssignedGroupsSetupActionTest extends RhnMockStrutsTestCase {
 

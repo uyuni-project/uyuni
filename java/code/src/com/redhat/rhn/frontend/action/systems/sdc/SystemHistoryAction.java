@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemHistoryAction
- * @version $Rev$
  */
 public class SystemHistoryAction extends RhnAction implements Listable<SystemEventDto> {
 

@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * NoteSerializer: Converts a Note object for representation as an XMLRPC struct.
- * @version $Rev$
  *
  * @xmlrpc.doc
  * #struct_begin("note details")

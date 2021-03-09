@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.BaseManager;
 
 /**
  * CobblerSnippetLister
- * @version $Rev$
  */
 public class RepoLister extends BaseManager {
 

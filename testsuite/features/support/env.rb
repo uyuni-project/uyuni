@@ -18,12 +18,9 @@ require 'multi_test'
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
-$long_tests_enabled = true if ENV['LONG_TESTS']
+$long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
 puts "Executing long running tests" if $long_tests_enabled
-$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION']
-# To disable SP migration, comment the previous line, uncoment the next one
-# and adjust testsuite/run_sets/init_clients.yml
-# $service_pack_migration_enabled = false
+$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION'] == 'true'
 puts "Executing service pack migrations" if $service_pack_migration_enabled
 
 # maximal wait before giving up
@@ -287,6 +284,14 @@ end
 
 Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
+end
+
+Before('@build_validation') do
+  skip_this_scenario unless $build_validation
+end
+
+Before('@continuous_integration') do
+  skip_this_scenario if $build_validation
 end
 
 Before('@skip_for_ubuntu') do |scenario|

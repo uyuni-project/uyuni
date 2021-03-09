@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * Capability
- * @version $Rev$
  */
 public class Capability {
     private Long id;

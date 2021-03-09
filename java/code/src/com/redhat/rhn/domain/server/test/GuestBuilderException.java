@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.server.test;
 
 /**
  * GuestBuilderException
- * @version $Rev$
  */
 public class GuestBuilderException extends Exception {
 

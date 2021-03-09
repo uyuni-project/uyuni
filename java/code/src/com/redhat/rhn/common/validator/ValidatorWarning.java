@@ -21,7 +21,6 @@ package com.redhat.rhn.common.validator;
  *  The <code>ValidatorWarning</code> class represents an warning while
  *  validating an object.
  * </p>
- * @version $Rev$
  */
 public class ValidatorWarning extends ValidationMessage {
 

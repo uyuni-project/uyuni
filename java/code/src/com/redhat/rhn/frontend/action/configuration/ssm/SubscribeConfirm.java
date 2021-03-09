@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SubscribeConfirmSetup, for ssm config subscribe.
- * @version $Rev$
  */
 public class SubscribeConfirm extends RhnAction {
     public static final String REPLACE = "replace";

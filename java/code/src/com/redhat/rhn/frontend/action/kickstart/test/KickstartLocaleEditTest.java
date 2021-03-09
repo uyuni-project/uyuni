@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * KickstartDetailsEditTest
- * @version $Rev$
  */
 public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
 

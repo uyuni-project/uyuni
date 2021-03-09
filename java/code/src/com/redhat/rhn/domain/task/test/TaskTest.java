@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * TaskTest
- * @version $Rev$
  */
 public class TaskTest extends RhnBaseTestCase {
 

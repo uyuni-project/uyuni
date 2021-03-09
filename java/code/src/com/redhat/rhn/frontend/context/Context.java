@@ -25,7 +25,6 @@ import java.util.TimeZone;
  * decorations starting with Locale.  This class allows global
  * static access to the current running Thread's Context object.
  * If one isn't found an Exception is thrown.
- * @version $Rev$
  */
 public class Context {
 

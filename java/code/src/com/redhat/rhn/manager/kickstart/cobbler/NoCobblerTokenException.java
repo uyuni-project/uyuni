@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 /**
  *
  * Exception when we didnt setup our token with cobbler.
- * @version $Rev$
  */
 public class NoCobblerTokenException extends RuntimeException {
 

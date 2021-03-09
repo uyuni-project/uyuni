@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * Class representing a navigation tree node (aka tab)
- * @version $Rev$
  */
 
 public class NavNode {

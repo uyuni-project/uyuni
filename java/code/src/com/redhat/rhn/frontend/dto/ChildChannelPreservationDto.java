@@ -20,7 +20,6 @@ import java.util.Map;
 
 /**
  * ChildChannelPreservationDto
- * @version $Rev$
  */
 public class ChildChannelPreservationDto {
 

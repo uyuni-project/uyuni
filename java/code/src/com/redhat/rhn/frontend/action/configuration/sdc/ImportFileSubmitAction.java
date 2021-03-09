@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ImportFileSubmitAction,  sdc add config file action
- * @version $Rev$
  */
 public class ImportFileSubmitAction extends RhnSetAction {
 

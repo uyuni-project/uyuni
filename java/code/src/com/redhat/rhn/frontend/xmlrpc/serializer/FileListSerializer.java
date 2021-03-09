@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * FileListSerializer: Converts a FileList object for representation
  * as an XMLRPC struct.
- * @version $Rev$
  *
  * @xmlrpc.doc
  *   #struct_begin("file list")

@@ -25,7 +25,6 @@ import java.io.Writer;
 /**
  *
  * ChannelInfoSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("channelInfo")

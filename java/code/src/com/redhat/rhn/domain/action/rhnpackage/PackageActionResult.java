@@ -24,7 +24,6 @@ import java.io.Serializable;
 
 /**
  * PackageActionResult
- * @version $Rev$
  */
 public class PackageActionResult extends BaseDomainHelper implements Serializable {
 

@@ -20,7 +20,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
- * @version $Rev$
  */
 public class Bug {
 

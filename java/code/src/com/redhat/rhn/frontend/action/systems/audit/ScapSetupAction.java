@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * ScapSetupAction
- * @version $Rev$
  */
 
 public abstract class ScapSetupAction extends RhnAction {

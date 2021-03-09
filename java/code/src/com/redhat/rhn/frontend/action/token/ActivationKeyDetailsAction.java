@@ -54,7 +54,6 @@ import org.apache.struts.action.DynaActionForm;
 
 /**
  * ActivationKeyDetailsAction
- * @version $Rev$
  */
 public class ActivationKeyDetailsAction extends RhnAction {
     private static final String DESCRIPTION = "description";

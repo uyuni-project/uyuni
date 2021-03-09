@@ -28,7 +28,6 @@ import java.util.Date;
 
 /**
  * LocationTest
- * @version $Rev$
  */
 public class LocationTest extends RhnBaseTestCase {
 

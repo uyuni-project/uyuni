@@ -35,7 +35,6 @@ import java.util.Set;
 
 /**
  * PackageActionTest
- * @version $Rev$
  */
 public class PackageActionTest extends RhnBaseTestCase {
     private static Logger log = Logger.getLogger(PackageActionTest.class);

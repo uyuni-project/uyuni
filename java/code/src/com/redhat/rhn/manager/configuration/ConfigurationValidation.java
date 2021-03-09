@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
  *
  * Holds methods for validating a variety of configuration-related fields/values
  *
- * @version $Rev$
  */
 public class ConfigurationValidation {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DisableUserSetupAction
- * @version $Rev$
  */
 public class DisableUserSetupAction extends RhnAction {
 

@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SyncSystemsSetupAction
- * @version $Rev$
  */
 public class SyncSystemsSetupAction extends RhnAction implements Listable<PackageMetadata> {
 

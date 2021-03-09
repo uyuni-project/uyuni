@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * Package
- * @version $Rev$
  */
 public class PackageSource extends BaseDomainHelper {
 

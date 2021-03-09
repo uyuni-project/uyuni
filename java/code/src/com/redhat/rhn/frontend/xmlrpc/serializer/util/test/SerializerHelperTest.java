@@ -25,7 +25,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * SimpleSerializerTest
- * @version $Rev$
  */
 public class SerializerHelperTest extends TestCase {
 

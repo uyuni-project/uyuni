@@ -41,7 +41,6 @@ import java.util.List;
 
 /**
  * KickstartHandlerTest
- * @version $Rev$
  */
 public class KickstartHandlerTest extends BaseHandlerTestCase {
 

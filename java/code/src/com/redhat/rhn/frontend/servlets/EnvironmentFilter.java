@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EnvironmentFilter
- * @version $Rev$
  */
 public class EnvironmentFilter implements Filter {
 

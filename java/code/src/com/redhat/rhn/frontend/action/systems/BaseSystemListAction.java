@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * BaseSystemListAction
- * @version $Rev$
  */
 public abstract class BaseSystemListAction extends RhnSetAction {
 

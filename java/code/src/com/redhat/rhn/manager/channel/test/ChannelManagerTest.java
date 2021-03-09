@@ -88,7 +88,6 @@ import java.util.Set;
 
 /**
  * ChannelManagerTest
- * @version $Rev$
  */
 @SuppressWarnings("deprecation")
 public class ChannelManagerTest extends BaseTestCaseWithUser {

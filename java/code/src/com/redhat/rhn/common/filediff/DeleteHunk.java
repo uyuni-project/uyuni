@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * This represents a hunk of text that is only present in the first (left) file
  * when diffing files.
- * @version $Rev$
  */
 public class DeleteHunk extends Hunk {
 

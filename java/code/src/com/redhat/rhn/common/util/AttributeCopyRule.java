@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
 /**
  * AttributeCopyRule, a simple Digester rule to copy attributes and
  * invoke them on set(name, value) on the top object on the stack
- * @version $Rev$
  */
 
 public class AttributeCopyRule extends Rule {

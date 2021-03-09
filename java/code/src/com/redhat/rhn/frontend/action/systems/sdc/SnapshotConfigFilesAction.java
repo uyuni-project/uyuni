@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * SnapshotConfigFilesAction
- * @version $Rev$
  */
 public class SnapshotConfigFilesAction extends SnapshotBaseAction {
 

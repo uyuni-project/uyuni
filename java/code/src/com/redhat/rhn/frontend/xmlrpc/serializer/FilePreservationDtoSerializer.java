@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * FilePreservationDtoSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *   #struct_begin("file preservation")

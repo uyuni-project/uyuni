@@ -47,7 +47,6 @@ import java.util.Vector;
  * of the XML tag and the values being contained within the value of the
  * {@literal <msg>} tag itself.   Message substitution is supported.
  *
- * @version $Rev$
  */
 public final class XmlResourceBundle extends java.util.ResourceBundle {
 

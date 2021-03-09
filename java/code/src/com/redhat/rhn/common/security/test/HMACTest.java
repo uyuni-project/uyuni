@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 /*
  * Test for HMAC
  *
- * @version $Rev$
  */
 public class HMACTest extends RhnBaseTestCase {
 

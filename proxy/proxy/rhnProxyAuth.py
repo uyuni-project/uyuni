@@ -283,9 +283,9 @@ problems, isn't running, or the token is somehow corrupt.
                 token = None
                 time.sleep(.25)
                 continue
-            except SSL.SSL.Error as e:
+            except SSL.SSL.SSLError as e:
                 token = None
-                error = ['rhn.SSL.SSL.Error', repr(e), str(e)]
+                error = ['rhn.SSL.SSL.SSLError', repr(e), str(e)]
                 log_error(error)
                 Traceback(mail=0)
                 time.sleep(.25)
@@ -330,7 +330,7 @@ problems, isn't running, or the token is somehow corrupt.
                     raise rhnFault(1000,
                                 _("SUSE Manager Proxy error (error: %s). "
                                   "Please contact your system administrator.") % error[0])
-                if error[0] in ('rhn.SSL.SSL.Error', 'socket.sslerror'):
+                if error[0] in ('rhn.SSL.SSL.SSLError', 'socket.sslerror'):
                     raise rhnFault(1000,
                                 _("SUSE Manager Proxy error (SSL issues? Error: %s). "
                                   "Please contact your system administrator.") % error[0])

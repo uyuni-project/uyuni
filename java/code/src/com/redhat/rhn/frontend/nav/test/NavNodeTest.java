@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * NavNodeTest
- * @version $Rev$
  */
 public class NavNodeTest extends RhnBaseTestCase {
 

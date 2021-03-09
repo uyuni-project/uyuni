@@ -53,7 +53,7 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
             assertNull(new CobblerPowerCommand(user, server, operation).store());
 
             String cobblerName = CobblerSystemCreateCommand
-                .getCobblerSystemRecordName(server);
+                .getCobblerSystemRecordName(server.getName(), server.getOrgId());
             SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
             String cobblerCommand = null;
             switch (operation) {

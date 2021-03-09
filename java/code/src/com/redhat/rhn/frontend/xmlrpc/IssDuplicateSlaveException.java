@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * ISS Slave we're trying to create already exists
  *
- * @version $Rev$
  */
 public class IssDuplicateSlaveException extends FaultException {
 

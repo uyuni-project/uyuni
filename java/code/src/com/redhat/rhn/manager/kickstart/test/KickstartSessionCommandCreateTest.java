@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * KickstartSessionCommandCreateTest
- * @version $Rev$
  */
 public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestCase {
 

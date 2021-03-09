@@ -19,7 +19,6 @@ package com.redhat.rhn.common.validator;
  * <p>
  *  The <code>Constraint</code> class represents a single data constraint
  * </p>
- * @version $Rev$
  */
 public interface Constraint {
 

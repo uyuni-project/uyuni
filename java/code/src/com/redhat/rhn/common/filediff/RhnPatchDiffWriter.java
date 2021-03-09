@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Converts a list of hunks from a file diff to a unified output format
  * for use with the Unix patch tool.
- * @version $Rev$
  */
 public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
 

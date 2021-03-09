@@ -34,7 +34,6 @@ import junit.framework.Assert;
 /**
  * ActionHelper - abstract base class that can be used to setup
  * tests to verify our struts Actions.
- * @version $Rev$
  */
 public class ActionHelper extends Assert {
 

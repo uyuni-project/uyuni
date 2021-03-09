@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * No action in schedule result
- * @version $Rev$
  */
 public class NoActionInScheduleException extends FaultException  {
 

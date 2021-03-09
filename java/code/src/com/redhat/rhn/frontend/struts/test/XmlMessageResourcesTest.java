@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  * XmlMessageResourcesTest - test the Struts compliant wrapper around our
  * LocalizationService so we can utilize XML based MessageResources.
  *
- * @version $Rev$
  */
 public class XmlMessageResourcesTest extends RhnBaseTestCase {
 

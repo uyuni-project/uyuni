@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
 

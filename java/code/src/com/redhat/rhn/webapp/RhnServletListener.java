@@ -43,7 +43,6 @@ import javax.servlet.ServletContextListener;
  * ServletContextListener for RHN Applications.  Initializes hibernate and
  * the messaging system.
  *
- * @version $Rev$
  */
 public class RhnServletListener implements ServletContextListener {
 

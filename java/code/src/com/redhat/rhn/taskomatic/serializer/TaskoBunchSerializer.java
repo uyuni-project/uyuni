@@ -27,7 +27,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * TaskoBunchSerializer
- * @version $Rev$
  */
 public class TaskoBunchSerializer extends RhnXmlRpcCustomSerializer {
 

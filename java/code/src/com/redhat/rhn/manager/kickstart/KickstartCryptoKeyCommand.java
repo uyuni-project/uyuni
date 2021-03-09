@@ -27,7 +27,6 @@ import java.util.Set;
 /**
  * KickstartCryptoKeyCommand - class for updating the crypto keys
  * associated with a kickstart profile
- * @version $Rev$
  */
 public class KickstartCryptoKeyCommand extends BaseKickstartCommand {
 

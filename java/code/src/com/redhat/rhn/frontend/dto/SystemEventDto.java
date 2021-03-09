@@ -27,7 +27,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * DTO for a com.redhat.rhn.frontend.action..systems.sdc.SystemHistoryAction
- * @version $Rev$
  */
 public class SystemEventDto extends BaseDto implements Serializable {
 

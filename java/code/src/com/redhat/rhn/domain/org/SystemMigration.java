@@ -26,7 +26,6 @@ import java.util.Date;
 /**
  * Class representation of the rhnSystemMigrations table
  * SystemMigration
- * @version $Rev$
  */
 public class SystemMigration implements Serializable {
 

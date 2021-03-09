@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * AllChannelTreeSetupAction
- * @version $Rev$
  */
 public class ChannelProvideAction extends BaseChannelTreeAction {
 

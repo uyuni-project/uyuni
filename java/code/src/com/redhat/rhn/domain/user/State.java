@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.user;
 
 /**
  * State
- * @version $Rev$
  */
 public class State {
 

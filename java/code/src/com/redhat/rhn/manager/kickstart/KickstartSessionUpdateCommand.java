@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 
 /**
  * KickstartSessionUpdateCommand - Command to update a KickstartSession's status
- * @version $Rev$
  */
 public class KickstartSessionUpdateCommand {
 

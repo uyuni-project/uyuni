@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Exception generated during user login attempt.
  *
- * @version $Rev$
  */
 public class UserLoginException extends FaultException  {
 

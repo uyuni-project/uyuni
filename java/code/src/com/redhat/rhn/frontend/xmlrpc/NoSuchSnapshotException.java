@@ -20,7 +20,6 @@ import com.redhat.rhn.FaultException;
 /**
  * Invalid Snapshot Exception
  *
- * @version $Rev$
  */
 public class NoSuchSnapshotException extends FaultException  {
 

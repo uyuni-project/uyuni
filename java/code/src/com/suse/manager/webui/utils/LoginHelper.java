@@ -60,7 +60,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * LoginHelper
- * @version $Rev$
  */
 public class LoginHelper {
 

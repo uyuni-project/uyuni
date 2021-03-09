@@ -52,7 +52,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelAction
- * @version $Rev$
  */
 public class ChannelAction extends RhnSetAction {
 

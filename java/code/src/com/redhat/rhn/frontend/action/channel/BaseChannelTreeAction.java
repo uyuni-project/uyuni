@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseChannelTreeSetupAction
- * @version $Rev$
  */
 public abstract class BaseChannelTreeAction extends RhnUnpagedListAction {
 

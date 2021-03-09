@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This class helps to debug the your rhn page.
  * YourRhnClipsRenderer
- * @version $Rev$
  */
 public class YourRhnClipsRenderer extends RhnAction {
     /**

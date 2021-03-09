@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ChannelSystemDeploySetup
- * @version $Rev$
  */
 public class ChannelSystemDeploySetup extends BaseSetListAction {
 

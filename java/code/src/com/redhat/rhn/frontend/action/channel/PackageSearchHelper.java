@@ -39,7 +39,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * PackageSearchHelper
- * @version $Rev$
  */
 public class PackageSearchHelper {
     private static Logger log = Logger.getLogger(PackageSearchHelper.class);

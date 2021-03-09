@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 /**
  * BaseUpdateChannelCommand
- * @version $Rev$
  */
 public class BaseUpdateChannelCommand extends BasePersistOperation {
 

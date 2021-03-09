@@ -23,7 +23,6 @@ import javax.servlet.jsp.JspException;
  * The VirtualListDisplayTag defines the structure of the ListView
  * when viewing virtual systems and their hosts.
  *
- * @version $Rev$
  * @see com.redhat.rhn.frontend.taglibs.ListDisplayTag
  */
 public class VirtualListDisplayTag extends ListDisplayTag {

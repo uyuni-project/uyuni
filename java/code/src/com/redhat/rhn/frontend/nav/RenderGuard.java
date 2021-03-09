@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.nav;
 
 /**
  * RenderGuard, an interface to decide whether to render a node
- * @version $Rev$
  */
 
 public interface RenderGuard {

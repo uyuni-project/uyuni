@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:45:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
+- handle GPG keys when bootstrapping ssh minions (bsc#1181847)
+
+-------------------------------------------------------------------
+Thu Feb 25 12:12:31 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
+- Ubuntu 18 has version of apt which does not correctly support
+  auth.conf.d directory. Detect the working version and use this feature
+  only when we have a higher version installed
+
+-------------------------------------------------------------------
 Wed Jan 27 13:11:15 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.4-1

@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.config;
 
 /**
  * ConfigDeployAction - Class representing TYPE_CONFIGFILES_DEPLOY
- * @version $Rev$
  */
 public class ConfigDeployAction extends ConfigAction {
 

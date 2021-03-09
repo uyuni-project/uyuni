@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * InvalidKickstartLabelException
- * @version $Rev$
  */
 public class InvalidUpdateTypeAndKickstartTreeException extends FaultException {
 

@@ -27,7 +27,6 @@ import java.util.Date;
 
 /**
  * FileListTest
- * @version $Rev$
  */
 public class FileListTest extends RhnBaseTestCase {
 

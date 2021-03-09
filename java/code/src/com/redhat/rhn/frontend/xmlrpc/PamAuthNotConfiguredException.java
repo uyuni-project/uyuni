@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * PamAuthNotConfiguredException
- * @version $Rev$
  */
 public class PamAuthNotConfiguredException extends FaultException {
 

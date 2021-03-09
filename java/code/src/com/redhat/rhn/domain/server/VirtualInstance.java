@@ -28,7 +28,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * RhnVirtualInstance supports guests of guests; however guests of guests is not
  * being implemented in the RHN 500 release.
  *
- * @version $Rev$
  */
 public class VirtualInstance extends BaseDomainHelper {
 
@@ -223,18 +222,18 @@ public class VirtualInstance extends BaseDomainHelper {
     }
 
     /**
-     * Returns the total memory in KB allocated to the virtual instance.
+     * Returns the total memory in MiB allocated to the virtual instance.
      *
-     * @return The total memory in KB allocated to the virtual instance.
+     * @return The total memory in MiB allocated to the virtual instance.
      */
     public Long getTotalMemory() {
         return getInfo().getTotalMemory();
     }
 
     /**
-     * Sets the total memory in KB allocated to the virtual instance.
+     * Sets the total memory in MiB allocated to the virtual instance.
      *
-     * @param memory The total memory in KB
+     * @param memory The total memory in MiB
      */
     public void setTotalMemory(Long memory) {
         initInfo().setTotalMemory(memory);

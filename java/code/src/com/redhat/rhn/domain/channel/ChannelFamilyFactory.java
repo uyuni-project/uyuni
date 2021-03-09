@@ -34,7 +34,6 @@ import java.util.Map;
 
 /**
  * ChannelFamilyFactory
- * @version $Rev$
  */
 public class ChannelFamilyFactory extends HibernateFactory {
 

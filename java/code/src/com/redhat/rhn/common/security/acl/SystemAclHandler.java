@@ -35,7 +35,6 @@ import java.util.Map;
 
 /**
  * SystemAclHandler
- * @version $Rev$
  */
 public class SystemAclHandler extends BaseHandler {
 

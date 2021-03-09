@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * TaskSchedulerTest
- * @version $Rev$
  */
 public class TaskSchedulerTest extends RhnBaseTestCase {
 

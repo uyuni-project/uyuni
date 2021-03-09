@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * RebootAction - Class representing TYPE_REBOOT
- * @version $Rev$
  */
 public class RebootAction extends Action {
 

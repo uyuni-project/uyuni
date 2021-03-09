@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * KickstartTreeTypeTest
- * @version $Rev$
  */
 public class KickstartTreeTypeTest extends RhnBaseTestCase {
 

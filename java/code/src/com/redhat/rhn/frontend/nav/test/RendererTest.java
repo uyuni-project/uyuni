@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * RendererTest tests all Renderable classes.
- * @version $Rev$
  */
 public class RendererTest extends RhnBaseTestCase {
 

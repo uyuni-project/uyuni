@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * SatelliteExceptionHandler
- * @version $Rev$
  */
 public class SatelliteExceptionHandler extends ExceptionHandler {
     private Exception exception;

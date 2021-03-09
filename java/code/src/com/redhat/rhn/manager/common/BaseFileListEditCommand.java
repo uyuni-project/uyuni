@@ -26,7 +26,6 @@ import java.util.Iterator;
 
 /**
  * BaseFileListEditCommand - baseclass for editing a FileList class.
- * @version $Rev$
  */
 public abstract class BaseFileListEditCommand extends BasePersistOperation {
 

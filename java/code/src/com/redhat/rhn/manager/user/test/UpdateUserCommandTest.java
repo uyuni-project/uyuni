@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * UpdateUserCommandTest
- * @version $Rev$
  */
 public class UpdateUserCommandTest extends RhnBaseTestCase {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * InvalidActionTypeException
- * @version $Rev$
  */
 public class InvalidScriptTypeException extends FaultException {
 

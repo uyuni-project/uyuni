@@ -32,7 +32,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * ErrataSearchActionTest
- * @version $Rev$
  */
 public class ErrataSearchActionTest extends RhnBaseTestCase {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.Server;
 
 /**
  * ChannelSummary
- * @version $Rev$
  *
  * Data object to hold the values displayed for config-channel
  * overview page.

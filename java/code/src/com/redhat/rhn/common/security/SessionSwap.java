@@ -35,7 +35,6 @@ import java.util.List;
  * secret.  Someday this should become a true HMAC, but for now, it is
  * an older algorithm.
  *
- * @version $Rev$
  */
 
 public class SessionSwap {

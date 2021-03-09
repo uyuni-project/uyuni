@@ -34,7 +34,6 @@ import java.util.Set;
  * Base class has attributes common to
  * distros, profiles, system records
  * @author paji
- * @version $Rev$
  */
 public abstract class CobblerObject {
     protected static final String COMMENT = "comment";

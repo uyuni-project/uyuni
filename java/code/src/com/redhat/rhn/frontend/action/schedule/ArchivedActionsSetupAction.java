@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ArchivedActionsSetupAction
- * @version $Rev$
  */
 public class ArchivedActionsSetupAction extends BaseScheduledListAction {
 

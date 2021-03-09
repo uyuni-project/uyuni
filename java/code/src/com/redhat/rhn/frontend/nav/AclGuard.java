@@ -21,7 +21,6 @@ import java.util.Map;
 
 /**
  * AclGuard
- * @version $Rev$
  */
 public class AclGuard implements RenderGuard {
     private Map context;

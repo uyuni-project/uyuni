@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UnsubscribeConfirmSubmitAction
- * @version $Rev$
  */
 public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
 

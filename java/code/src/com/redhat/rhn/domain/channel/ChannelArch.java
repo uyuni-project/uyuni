@@ -27,7 +27,6 @@ import java.util.Set;
 
 /**
  * ChannelArch
- * @version $Rev$
  */
 public class ChannelArch extends BaseDomainHelper {
 

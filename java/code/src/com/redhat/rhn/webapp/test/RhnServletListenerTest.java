@@ -19,7 +19,6 @@ import junit.framework.TestCase;
 
 /**
  * RhnServletListenerTest
- * @version $Rev$
  */
 public class RhnServletListenerTest extends TestCase {
 

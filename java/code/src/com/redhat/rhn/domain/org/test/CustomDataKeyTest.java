@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * CustomDataKeyTest
- * @version $Rev$
  */
 public class CustomDataKeyTest extends RhnBaseTestCase {
 

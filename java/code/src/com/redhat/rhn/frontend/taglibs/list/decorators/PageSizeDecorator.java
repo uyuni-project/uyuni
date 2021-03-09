@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
 /**
  * PageSizeDecorator
- * @version $Rev$
  */
 public class PageSizeDecorator extends BaseListDecorator {
 

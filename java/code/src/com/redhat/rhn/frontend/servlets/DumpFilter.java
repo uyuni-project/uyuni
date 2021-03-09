@@ -33,7 +33,6 @@ import javax.servlet.http.HttpSession;
 /**
  * DumpFilter dumps the current request and response to the log file.
  * Useful for debugging filter and servlet development.
- * @version $Rev$
  */
 public class DumpFilter implements Filter {
     private static Logger log = Logger.getLogger(DumpFilter.class);

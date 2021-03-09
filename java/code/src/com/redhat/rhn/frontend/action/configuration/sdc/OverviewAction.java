@@ -49,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * OverviewAction
- * @version $Rev$
  */
 public class OverviewAction extends RhnAction {
     public static final String GLOBAL_CONFIG_CHANNELS = "globalConfigChannels";

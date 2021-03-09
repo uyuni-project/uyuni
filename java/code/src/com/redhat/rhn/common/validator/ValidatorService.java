@@ -28,7 +28,6 @@ import java.util.List;
  *  validate all the fields in the object and return the list
  *  of errors in the Object's state
  * </p>
- * @version $Rev$
  */
 public class ValidatorService {
 

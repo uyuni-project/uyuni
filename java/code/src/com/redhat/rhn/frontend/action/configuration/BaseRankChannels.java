@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseRankChannels, Abstract class for config channel rankings in ssm and sdc.
- * @version $Rev$
  */
 public abstract class BaseRankChannels extends RhnLookupDispatchAction {
 

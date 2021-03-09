@@ -23,7 +23,6 @@ import java.util.Collection;
  *
  * <p> See <a href="http://java.sun.com/docs/books/jls/assert-spec.html">Sun's
  * assert specification</a> for recommended best practices.
- * @version $Rev$
  */
 public final class Asserts {
 

@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * FileListSubmitAction, for sdc configuration pages
- * @version $Rev$
  */
 public class FileListSubmitAction extends RhnSetAction {
 

@@ -25,7 +25,6 @@ import org.apache.struts.action.ActionForward;
 
 /**
  * DisableSelfConfirmActionTest
- * @version $Rev$
  */
 public class DisableSelfConfirmActionTest extends RhnBaseTestCase {
 

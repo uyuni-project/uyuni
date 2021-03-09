@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * TemplateCategory
- * @version $Rev$
  */
 public class TemplateCategory extends BaseDomainHelper {
 

@@ -36,7 +36,6 @@ import java.util.List;
 
 /**
  * ProfileTest
- * @version $Rev$
  */
 public class ProfileTest extends RhnBaseTestCase {
 

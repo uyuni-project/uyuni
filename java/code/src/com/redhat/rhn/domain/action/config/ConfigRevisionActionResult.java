@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 /**
  * ConfigRevisionAction - Class representation of the table rhnActionConfigRevision.
  *
- * @version $Rev$
  */
 public class ConfigRevisionActionResult extends BaseDomainHelper {
 

@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * UngroupedSetupAction
- * @version $Rev$
  */
 public class UngroupedSetupAction  extends BaseSystemsAction {
 

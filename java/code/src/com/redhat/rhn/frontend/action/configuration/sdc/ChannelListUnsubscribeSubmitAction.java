@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelListUnsubscribeSubmitAction
- * @version $Rev$
  */
 public class ChannelListUnsubscribeSubmitAction extends
         BaseSetOperateOnSelectedItemsAction {

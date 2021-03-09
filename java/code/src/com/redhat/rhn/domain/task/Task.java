@@ -24,7 +24,6 @@ import java.util.Date;
 
 /**
  * Task
- * @version $Rev$
  */
 public class Task implements Serializable {
 

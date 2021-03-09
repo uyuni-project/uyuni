@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * BaseHandlerTest
- * @version $Rev$
  */
 public class BaseHandlerTest extends RhnBaseTestCase {
 

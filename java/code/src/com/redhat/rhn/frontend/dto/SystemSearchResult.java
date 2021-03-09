@@ -24,7 +24,6 @@ import java.util.Calendar;
 
 /**
  * SystemSearchResult
- * @version $Rev$
  */
 public class SystemSearchResult extends SystemOverview {
 

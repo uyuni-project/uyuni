@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * ErrataOverview
- * @version $Rev$
  */
 public class ErrataOverview extends BaseDto {
     private Long id;

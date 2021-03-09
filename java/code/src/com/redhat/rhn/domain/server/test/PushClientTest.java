@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * PushClientTest
- * @version $Rev$
  */
 public class PushClientTest extends RhnBaseTestCase {
 

@@ -32,7 +32,6 @@ import java.util.Set;
 
 /**
  * PackagesProvider
- * @version $Rev$
  * @xmlrpc.namespace packages.provider
  * @xmlrpc.doc Methods to retrieve information about Package Providers associated with
  *      packages.

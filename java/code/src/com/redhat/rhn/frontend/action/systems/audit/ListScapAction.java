@@ -44,7 +44,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 /**
  * ListScapAction
- * @version $Rev$
  */
 
 public class ListScapAction extends ScapSetupAction {

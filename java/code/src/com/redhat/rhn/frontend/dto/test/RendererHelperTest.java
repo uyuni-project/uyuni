@@ -38,7 +38,6 @@ import java.util.stream.IntStream;
 
 /**
  * RendererHelperTest
- * @version $Rev$
  */
 public class RendererHelperTest extends RhnBaseTestCase {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ContentSourceType
- * @version $Rev$
  */
 public class ContentSourceType extends BaseDomainHelper {
 

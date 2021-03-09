@@ -45,7 +45,6 @@ import java.util.List;
 
 /**
  * ActivationKeyTest
- * @version $Rev$
  */
 public class ActivationKeyTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {

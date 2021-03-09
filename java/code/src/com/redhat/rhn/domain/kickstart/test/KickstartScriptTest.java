@@ -27,7 +27,6 @@ import java.util.Iterator;
 /**
  *
  * KickstartScriptTest
- * @version $Rev$
  */
 public class KickstartScriptTest extends BaseTestCaseWithUser {
 

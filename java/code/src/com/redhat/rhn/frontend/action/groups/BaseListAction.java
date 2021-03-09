@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public abstract class BaseListAction extends RhnAction implements Listable {
 

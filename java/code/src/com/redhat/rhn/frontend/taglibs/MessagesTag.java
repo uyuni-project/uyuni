@@ -31,7 +31,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *     &lt;c:out escapeXml="false" value="${message}" /&gt;
  * &lt;/rhn:messages&gt;
  * </pre>
- * @version $Rev$
  */
 public class MessagesTag extends TagSupport {
     private HtmlTag baseTag;

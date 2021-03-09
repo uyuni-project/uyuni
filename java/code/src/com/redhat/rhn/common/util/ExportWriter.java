@@ -20,7 +20,6 @@ import java.util.List;
  * ExportWriter - interface that describes the ability to take in a List and reformat
  * it to some other format.  You write the list to the ExportWriter with write() and then
  * fetch the contents when you are finished (or while processing) with getContents().
- * @version $Rev$
  */
 public interface ExportWriter {
 

@@ -25,7 +25,6 @@ import junit.framework.AssertionFailedError;
 
 /**
  * TinyUrlActionTest
- * @version $Rev$
  */
 public class TinyUrlActionTest extends RhnMockStrutsTestCase {
 

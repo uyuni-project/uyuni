@@ -80,7 +80,8 @@ class BootstrapMinions extends React.Component {
 
     privKeyLoaded(keyString) {
         this.setState({
-            privKey: keyString,
+            // replace CRLF from Windows
+            privKey: keyString.replace(/\r\n/g, "\n"),
             privKeyLoading: false
         });
     }

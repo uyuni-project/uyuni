@@ -74,7 +74,6 @@ import javax.persistence.criteria.Root;
 /**
  * ServerFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.Server objects from the database.
- * @version $Rev$
  */
 public class ServerFactory extends HibernateFactory {
 

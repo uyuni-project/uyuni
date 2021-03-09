@@ -31,7 +31,6 @@ import java.util.concurrent.ConcurrentMap;
  * external systems.  Examples include logic for interacting
  * between Spacewalk and Cobbler.
  *
- * @version $Rev$
  */
 public class IntegrationService {
 

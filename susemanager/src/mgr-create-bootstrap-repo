@@ -20,9 +20,9 @@ initCFG('server.susemanager')
 rhnSQL.initDB()
 
 basepath = CFG.MOUNT_POINT or '/var/spacewalk'
-logfile = '/var/log/rhn/mgr-create-bootstrap-repo.log'
 LOCK  = None
 BETA  = None
+logfile = '/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log'
 UYUNI = None
 
 _sql_synced_proucts = rhnSQL.Statement("""
@@ -259,7 +259,7 @@ def cli():
     parser = OptionParser(usage=usage, description=""
             "Tool to generate repositories containing the required software to "
             "register at SUSE Manager Server. Logs are written to "
-            "/var/log/rhn/mgr-create-bootstrap-repo.log .")
+            "/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log .")
 
     parser.add_option('-n', '--dryrun', action='store_true', dest='dryrun',
                       help='Dry run. Show only changes - do not execute them')

@@ -38,7 +38,6 @@ import java.util.Map;
  * There were no appearent license restrictions on this code, the Author
  * indicated it was free and available to be used by readers of the article.
  *
- * @version $Rev$
  */
 public class Validator {
 

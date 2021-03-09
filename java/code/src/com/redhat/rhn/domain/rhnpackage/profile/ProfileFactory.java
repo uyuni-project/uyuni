@@ -26,7 +26,6 @@ import java.util.Map;
 
 /**
  * ProfileFactory
- * @version $Rev$
  */
 public class ProfileFactory extends HibernateFactory {
 

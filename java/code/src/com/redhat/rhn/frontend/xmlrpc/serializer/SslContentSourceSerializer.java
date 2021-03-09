@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * SslContentSourceSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("contentsourcessl")

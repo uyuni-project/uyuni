@@ -26,7 +26,6 @@ import java.util.Set;
 /**
  * Test Class for the UserPane stuff.
  * UserPaneTest
- * @version $Rev$
  */
 public class UserPaneTest extends BaseTestCaseWithUser {
 

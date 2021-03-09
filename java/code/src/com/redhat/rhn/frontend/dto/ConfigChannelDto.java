@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * ConfigChannelDto for transferring data about configuration channels
- * @version $Rev$
  */
 public class ConfigChannelDto extends BaseDto {
     private Long id;

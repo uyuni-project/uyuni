@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ImportFileConfirmAction, for sdc configuration
- * @version $Rev$
  */
 public class ImportFileConfirmAction extends FileListConfirmSetupAction {
 

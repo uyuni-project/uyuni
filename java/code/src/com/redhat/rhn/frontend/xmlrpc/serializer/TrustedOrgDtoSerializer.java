@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *       #prop("string", "org_name")
  *       #prop("int", "shared_channels")
  *     #struct_end()
- * @version $Rev$
  */
 public class TrustedOrgDtoSerializer extends RhnXmlRpcCustomSerializer {
 

@@ -9,6 +9,7 @@
 import os
 import gettext
 from up2date_client import up2dateErrors
+from up2date_client import up2dateLog
 from up2date_client import config
 from up2date_client.pkgplatform import getPlatform
 from rhn.i18n import sstr, bstr
@@ -84,6 +85,9 @@ else:
                             ts.ts.closeDB()
                             return osVersionRelease
 
+                log = up2dateLog.initLog()
+                log.log_me("Error: Could not determine what version of Linux you are running. "\
+                           "Check if the product is installed correctly. Aborting.")
                 raise up2dateErrors.RpmError(
                     "Could not determine what version of Linux you "\
                     "are running.\nIf you get this error, try running \n\n"\

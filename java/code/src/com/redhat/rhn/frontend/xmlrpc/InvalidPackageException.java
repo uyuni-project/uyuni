@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Invalid Package Exception
  *
- * @version $Rev$
  */
 public class InvalidPackageException extends FaultException  {
 

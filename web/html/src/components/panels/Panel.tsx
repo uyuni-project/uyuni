@@ -7,7 +7,7 @@ type Props = {
   title: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
-  header?: string;
+  header?: React.ReactNode;
   footer?: React.ReactNode;
   children: React.ReactNode;
   buttons?: React.ReactNode;

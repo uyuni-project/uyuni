@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.BasePersistOperation;
 
 /**
  * BaseSystemOperation
- * @version $Rev$
  */
 public abstract class BaseSystemOperation extends BasePersistOperation {
 

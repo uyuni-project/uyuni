@@ -1,6 +1,6 @@
 export type Cancelable = {
   promise: Promise<any>;
-  cancel: (arg0: any) => void;
+  cancel: (reason?: any) => void;
 };
 
 function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => void): Cancelable {

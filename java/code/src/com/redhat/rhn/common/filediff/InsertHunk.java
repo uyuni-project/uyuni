@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * This represents a hunk of text that is only present in the second (right) file
  * when diffing files.
- * @version $Rev$
  */
 public class InsertHunk extends Hunk {
 

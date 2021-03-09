@@ -27,7 +27,6 @@ import java.util.List;
  * between two systems or between a system and a profile. This is
  * similar to the hash, array, map or whatever it is on the perl
  * side.
- * @version $Rev$
  */
 public class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
     public static final int KEY_NO_DIFF = 0;

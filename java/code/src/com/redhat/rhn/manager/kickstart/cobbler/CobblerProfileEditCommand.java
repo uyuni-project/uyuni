@@ -26,7 +26,6 @@ import java.io.File;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public class CobblerProfileEditCommand extends CobblerProfileCommand {
 

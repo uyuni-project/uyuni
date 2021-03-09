@@ -50,7 +50,6 @@ import java.util.Date;
 
 /**
  * SystemOverviewActionTest
- * @version $Rev$
  */
 public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 

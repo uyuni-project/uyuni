@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /** JUnit test case for the Session class.
- * @version $Rev$
  */
 
 public class WebSessionFactoryTest extends RhnBaseTestCase {

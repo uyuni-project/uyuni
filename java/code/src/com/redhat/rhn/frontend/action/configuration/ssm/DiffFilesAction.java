@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * DiffFilesAction
- * @version $Rev$
  */
 public class DiffFilesAction extends BaseListAction {
 

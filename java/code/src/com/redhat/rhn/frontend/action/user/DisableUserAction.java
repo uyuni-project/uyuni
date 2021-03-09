@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DisableUserAction
- * @version $Rev$
  */
 public class DisableUserAction extends RhnAction {
 

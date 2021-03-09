@@ -27,7 +27,6 @@ import java.util.List;
  * Propagates Quartz trigger events to an internal chain
  * of TriggerListeners
  *
- * @version $Rev$
  */
 public class ChainedListener implements TriggerListener {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
  * RhnAction base class for all RHN Struts Actions.
  * Used to override Struts functionality as well as
  * add common features to the RHN Struts Actions.
- * @version $Rev$
  */
 public class RhnListAction extends RhnAction {
 

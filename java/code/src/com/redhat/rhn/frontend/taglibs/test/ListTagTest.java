@@ -32,7 +32,6 @@ import com.redhat.rhn.testing.TagTestUtils;
 
 /**
  * ColumnTagTest
- * @version $Rev$
  */
 public class ListTagTest extends RhnBaseTestCase {
 

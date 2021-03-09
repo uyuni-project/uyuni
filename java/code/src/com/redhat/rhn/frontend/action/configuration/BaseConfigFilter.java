@@ -31,7 +31,6 @@ import java.util.Map;
  * class will do the rest.
  *
  * ConfigFileFilter
- * @version $Rev$
  */
 public abstract class BaseConfigFilter implements ListFilter {
 

@@ -34,7 +34,6 @@ import java.util.List;
  *   Syncs kickstart profiles that were generated using the wizard.
  *   If the file does not exist on the file system, it re-generates the kickstart
  *   and saves it back to disk.
- * @version $Rev$
  */
 public class KickstartFileSyncTask extends RhnJavaJob {
 

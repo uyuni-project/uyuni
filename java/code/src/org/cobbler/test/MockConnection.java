@@ -32,7 +32,6 @@ import java.util.Map;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class MockConnection extends CobblerConnection {
     private String token;

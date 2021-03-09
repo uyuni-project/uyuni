@@ -24,7 +24,6 @@ import com.redhat.rhn.frontend.taglibs.IconTag;
 
 /**
  * SystemListHelper - helper class with some list display functions
- * @version $Rev$
  */
 public class SystemListHelper {
 

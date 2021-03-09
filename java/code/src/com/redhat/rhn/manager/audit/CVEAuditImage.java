@@ -21,7 +21,6 @@ import java.util.Set;
  * patch status regarding a certain given CVE identifier as well as sets of relevant
  * channels and erratas.
  *
- * @version $Rev$
  */
 public class CVEAuditImage implements CVEAuditSystem {
 

@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 /**
  * FileListSetupAction, for sdc configuration pages
- * @version $Rev$
  */
 public class FileListSetupAction extends BaseSetListAction {
 

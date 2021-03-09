@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ElaborationDecorator
- * @version $Rev$
  */
 public class SystemCurrencyIconDecorator extends BaseListDecorator {
 

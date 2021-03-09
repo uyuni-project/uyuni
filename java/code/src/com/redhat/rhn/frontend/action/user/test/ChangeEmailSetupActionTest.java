@@ -26,7 +26,6 @@ import org.apache.struts.action.ActionForward;
 
 /**
  * ChangeEmailSetupActionTest
- * @version $Rev$
  */
 public class ChangeEmailSetupActionTest extends RhnBaseTestCase {
 

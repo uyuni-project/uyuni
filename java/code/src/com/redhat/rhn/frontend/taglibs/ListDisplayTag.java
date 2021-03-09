@@ -124,7 +124,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  * ...
  * </pre>
  *
- * @version $Rev$
  * @see com.redhat.rhn.frontend.taglibs.ColumnTag
  * @see com.redhat.rhn.frontend.taglibs.ListTag
  * @see com.redhat.rhn.frontend.taglibs.SetTag

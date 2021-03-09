@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CompareCopyAction extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev$
  */
 public class CompareCopyAction extends BaseListAction {
 

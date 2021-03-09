@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 25 12:07:16 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
+- adapt to new SSL implementation of rhnlib (bsc#1181807)
+
+-------------------------------------------------------------------
 Wed Jan 27 13:19:10 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.2-1

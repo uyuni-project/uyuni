@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * PhysicalSystemSetupAction
- * @version $Rev$
  */
 public class PhysicalSystemSetupAction extends BaseSystemsAction {
 

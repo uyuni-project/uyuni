@@ -32,7 +32,6 @@ import javax.mail.internet.InternetAddress;
 
 /**
  * UpdateUserCommand
- * @version $Rev$
  */
 public class UpdateUserCommand {
 

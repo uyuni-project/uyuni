@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * RankChannelsAction
- * @version $Rev$
  */
 public class RankChannelsAction extends BaseRankChannels {
 

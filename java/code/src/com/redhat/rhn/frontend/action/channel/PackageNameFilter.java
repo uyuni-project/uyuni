@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * PackageNameFilter
- * @version $Rev$
  */
 public class PackageNameFilter extends BaseListFilter {
 

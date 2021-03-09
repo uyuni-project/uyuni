@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * DWRItemSelector
- * @version $Rev$
  */
 public class DWRItemSelector {
     public static final String JSON_HEADER = "X-JSON";

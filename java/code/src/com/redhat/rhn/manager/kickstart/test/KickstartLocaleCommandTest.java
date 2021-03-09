@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 /**
  * KickstartLocaleCommandTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
 

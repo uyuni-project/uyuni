@@ -2,8 +2,6 @@ include ../common.jade
 
 #image-profile-edit
 
-script(src='/javascript/validator/validator.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.profileId = "#{profileId}";

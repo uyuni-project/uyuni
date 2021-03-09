@@ -52,7 +52,6 @@ import javax.servlet.http.HttpSession;
  * Implementations should conform to the same design as servlets an actions classes
  * in that they should be thread-safe and should not maintain client state.
  *
- * @version $Rev$
  */
 public class StrutsDelegate {
 
