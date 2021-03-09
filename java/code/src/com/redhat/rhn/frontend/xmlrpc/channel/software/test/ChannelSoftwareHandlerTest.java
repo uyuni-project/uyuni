@@ -303,8 +303,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                 serverGroupManager);
 
         int sid = server.getId().intValue();
-        int rc1 = sh.setChildChannels(admin, sid, List.of(child.getLabel()));
-        int rc2 = sh.setBaseChannel(admin, sid, base.getLabel());
+        int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
+        int rc2 = sh.setChildChannels(admin, sid, List.of(child.getLabel()));
 
         server = reload(server);
 
@@ -326,18 +326,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     }
 
-    public void testSetSystemChannels() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testSetBaseChannel() throws Exception {
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
+
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        List<String> channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(c1.getLabel());
-
         assertEquals(0, server.getChannels().size());
-        int result = csh.setSystemChannels(admin,
-                server.getId().intValue(), channelsToSubscribe);
+        int result = sh.setBaseChannel(admin, server.getId().intValue(), c1.getLabel());
 
         server = reload(server);
 
@@ -346,24 +344,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
         assertFalse(c1.getLabel().equals(c2.getLabel()));
-        channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(c2.getLabel());
-        assertEquals(1, channelsToSubscribe.size());
-        result = csh.setSystemChannels(admin,
-                server.getId().intValue(), channelsToSubscribe);
+        result = sh.setBaseChannel(admin, server.getId().intValue(), c2.getLabel());
 
         server = reload(server);
 
         assertEquals(1, result);
-        Channel subscribed = server.getChannels().iterator().next();
         assertTrue(server.getChannels().contains(c2));
 
         //try to make it break
-        channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(TestUtils.randomString());
         try {
-            csh.setSystemChannels(admin,
-                    server.getId().intValue(), channelsToSubscribe);
+            sh.setBaseChannel(admin, server.getId().intValue(), TestUtils.randomString());
             fail("subscribed system to invalid channel.");
         }
         catch (Exception e) {
@@ -373,7 +363,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         server = reload(server);
         //make sure servers channel subscriptions weren't changed
         assertEquals(1, result);
-        subscribed = server.getChannels().iterator().next();
+        Channel subscribed = server.getChannels().iterator().next();
         assertEquals(c2.getLabel(), subscribed.getLabel());
 
         // try setting the base channel of an s390 server to
@@ -381,17 +371,13 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         try {
 
             Channel c3 = ChannelFactoryTest.createTestChannel(admin);
-            List<String> channels = new ArrayList<String>();
-            channels.add(c3.getLabel());
-            assertEquals(1, channels.size());
 
             // change the arch of the server
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
             ServerFactory.save(server);
 
-            int rc = csh.setSystemChannels(admin,
-                    server.getId().intValue(), channels);
+            int rc = sh.setBaseChannel(admin, server.getId().intValue(), c3.getLabel());
 
             fail("allowed incompatible channel arch to be set, returned: " + rc);
         }
