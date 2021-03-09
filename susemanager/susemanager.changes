@@ -1,3 +1,5 @@
+- Require bind-utils so dig is available for mgr-setup
+
 -------------------------------------------------------------------
 Fri Mar 05 15:43:37 CET 2021 - jgonzalez@suse.com
 
