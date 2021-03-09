@@ -875,30 +875,4 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
-    public void testListByDate() throws Exception {
-
-       Calendar cal = Calendar.getInstance();
-       Date earlyDate = cal.getTime();
-       cal.add(Calendar.YEAR, 5);
-       Date laterDate = cal.getTime();
-
-       assertTrue(earlyDate.before(laterDate));
-
-       Errata earlyErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
-       Errata laterErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
-
-       Channel testChannel  = ChannelFactoryTest.createTestChannel(admin);
-
-       earlyErrata.addChannel(testChannel);
-       earlyErrata.setIssueDate(earlyDate);
-       laterErrata.addChannel(testChannel);
-       laterErrata.setIssueDate(laterDate);
-
-       List test =  handler.listByDate(admin, testChannel.getLabel());
-
-       assertEquals(2, test.size());
-       Object[] array = test.toArray();
-       assertEquals(array[0], earlyErrata);
-       assertEquals(array[1], laterErrata);
-    }
 }

@@ -1452,29 +1452,6 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * list errata by date
-     * @param loggedInUser The current user
-     * @param channelLabel channel associated with the errata you are interested in.
-     * @return List of Errata objects
-     * @deprecated being replaced by channel.software.listErrata(User LoggedInUser,
-     * string channelLabel)
-     *
-     * @xmlrpc.doc List errata that have been applied to a particular channel by date.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("string", "channelLabel")
-     * @xmlrpc.returntype
-     *          #array_begin()
-     *              $ErrataSerializer
-     *          #array_end()
-     */
-    @Deprecated
-    public List listByDate(User loggedInUser, String channelLabel) {
-        Channel channel = ChannelFactory.lookupByLabel(loggedInUser.getOrg(),
-                channelLabel);
-        return ErrataFactory.lookupByChannelSorted(loggedInUser.getOrg(), channel);
-    }
-
-    /**
      * Lookup the details for errata associated with the given CVE.
      * @param loggedInUser The current user
      * @param cveName name of the CVE
