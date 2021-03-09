@@ -299,32 +299,26 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelFactory.save(child2);
         assertFalse(child2.isBaseChannel());
 
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
-        List<String> labels = new ArrayList<String>();
-        labels.add(child.getLabel());
-        // adding base last to make sure the handler does the right
-        // thing regardless of where the base channel is.
-        labels.add(base.getLabel());
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
 
-        Integer sid = server.getId().intValue();
-        int rc = csh.setSystemChannels(admin, sid, labels);
+        int sid = server.getId().intValue();
+        int rc1 = sh.setChildChannels(admin, sid, List.of(child.getLabel()));
+        int rc2 = sh.setBaseChannel(admin, sid, base.getLabel());
 
         server = reload(server);
 
         // now verify
-        assertEquals(1, rc);
+        assertEquals(1, rc1);
+        assertEquals(1, rc2);
         assertEquals(2, server.getChannels().size());
         Channel newBase = server.getBaseChannel();
         assertNotNull(newBase);
         assertEquals(newBase.getLabel(), base.getLabel());
 
-        List<String> nobase = new ArrayList<String>();
-        nobase.add(child.getLabel());
-        nobase.add(child2.getLabel());
-
         try {
-            rc = csh.setSystemChannels(admin, sid, nobase);
-            fail("setSystemChannels didn't complain when given no base channel");
+            sh.setBaseChannel(admin, sid, child.getLabel());
+            fail("setBaseChannel didn't complain when given no base channel");
         }
         catch (InvalidChannelException ice) {
             // ice ice baby
@@ -866,31 +860,30 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, secondList.length - iniailList.length);
     }
 
-    public void testSubscribeSystem() throws Exception {
+    public void testChannelSubscription() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         Channel baseChan = ChannelFactoryTest.createBaseChannel(admin);
         Channel childChan = ChannelFactoryTest.createTestChannel(admin);
         childChan.setParentChannel(baseChan);
 
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
 
-        List<String> labels = new ArrayList<String>();
-        labels.add(baseChan.getLabel());
-        labels.add(childChan.getLabel());
+        int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
+        int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
 
-        int returned = handler.subscribeSystem(admin,
-                server.getId().intValue(), labels);
-
-        assertEquals(1, returned);
-        server = (Server)HibernateFactory.reload(server);
+        assertEquals(1, return1);
+        assertEquals(1, return2);
+        server = HibernateFactory.reload(server);
         assertEquals(2, server.getChannels().size());
         assertTrue(server.getChannels().contains(baseChan));
         assertTrue(server.getChannels().contains(childChan));
 
-        labels.clear();
-        returned = handler.subscribeSystem(admin,
-                server.getId().intValue(), labels);
-        assertEquals(1, returned);
-        server = (Server)HibernateFactory.reload(server);
+        return1 = sh.setBaseChannel(admin, server.getId().intValue(), "");
+        return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of());
+        assertEquals(1, return1);
+        assertEquals(1, return2);
+        server = HibernateFactory.reload(server);
         assertEquals(0, server.getChannels().size());
     }
 

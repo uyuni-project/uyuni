@@ -1836,65 +1836,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Subscribe a system to a list of channels
-     * @param loggedInUser The current user
-     * @param labels a list of channel labels to subscribe the system to
-     * @param sid the serverId of the system in question
-     * @return 1 for success
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel) and system.setChildChannels(string sessionKey,
-     * int serverId, array[string channelLabel])
-     *
-     * @xmlrpc.doc Subscribes a system to a list of channels.  If a base channel is
-     *      included, that is set before setting child channels.  When setting child
-     *      channels the current child channel subscriptions are cleared.  To fully
-     *      unsubscribe the system from all channels, simply provide an empty list of
-     *      channel labels.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array_single("string", "label - channel label to subscribe
-     *                  the system to.")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int subscribeSystem(User loggedInUser, Integer sid, List<String> labels) {
-        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
-                loggedInUser);
-
-
-        if (labels.size() == 0) {
-            ServerFactory.unsubscribeFromAllChannels(loggedInUser, server);
-            return 1;
-        }
-
-        Channel base = null;
-        List<Integer> childChannelIds = new ArrayList<Integer>();
-
-        for (String label : labels) {
-            Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), label);
-
-            if (base == null && channel.isBaseChannel()) {
-                base = channel;
-            }
-            else if (base != null && channel.isBaseChannel()) {
-                throw new MultipleBaseChannelException(base.getLabel(), label);
-            }
-            else {
-                childChannelIds.add(channel.getId().intValue());
-            }
-        }
-        if (base != null) {
-
-            systemHandler.setBaseChannel(loggedInUser, sid,
-                    base.getId().intValue());
-        }
-        systemHandler.setChildChannels(loggedInUser, sid, childChannelIds);
-
-        return 1;
-    }
-
-
-    /**
      * Clone a channel
      * @param loggedInUser The current user
      * @param originalLabel the label of the channel to clone
