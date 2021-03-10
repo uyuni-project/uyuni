@@ -728,8 +728,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         base.setParentChannel(null);
         SystemManager.subscribeServerToChannel(admin, server, base);
 
-        Object[] results = handler.listBaseChannels(admin,
-                server.getId().intValue());
+        Object[] results = handler.listSubscribableBaseChannels(admin, server.getId().intValue());
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel

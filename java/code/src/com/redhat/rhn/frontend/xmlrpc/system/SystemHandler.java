@@ -646,40 +646,6 @@ public class SystemHandler extends BaseHandler {
      * can subscribe this system to.
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
-     * @deprecated being replaced by listSubscribableBaseChannels(string sessionKey,
-     * int serverId)
-     *
-     * @xmlrpc.doc Returns a list of subscribable base channels.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     *
-     * @xmlrpc.returntype
-     *  #array_begin()
-     *      #struct_begin("channel")
-     *          #prop_desc("int" "id" "Base Channel ID.")
-     *          #prop_desc("string" "name" "Name of channel.")
-     *          #prop_desc("string" "label" "Label of Channel")
-     *          #prop_desc("int", "current_base", "1 indicates it is the current base
-     *                                      channel")
-     *      #struct_end()
-     *  #array_end()
-     *
-     */
-    @Deprecated
-    public Object[] listBaseChannels(User loggedInUser, Integer sid) throws FaultException {
-
-        return listSubscribableBaseChannels(loggedInUser, sid);
-    }
-
-    /**
-     * Gets a list of base channels subscribable by the logged in user for the server with
-     * the given id.
-     * @param loggedInUser The current user
-     * @param sid The id of the server in question
-     * @return Returns an array of maps representing the base channels the logged in user
-     * can subscribe this system to.
-     * @throws FaultException A FaultException is thrown if the server corresponding to
-     * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of subscribable base channels.
      * @xmlrpc.param #param("string", "sessionKey")
