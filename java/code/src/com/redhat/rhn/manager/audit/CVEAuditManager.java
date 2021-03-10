@@ -65,7 +65,6 @@ import javax.persistence.criteria.Root;
 /**
  * CVESearchManager.
  *
- * @version $Rev$
  */
 public class CVEAuditManager {
 

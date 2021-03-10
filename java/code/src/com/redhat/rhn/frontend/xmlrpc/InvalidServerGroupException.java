@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Invalid Server Group
  *
- * @version $Rev$
  */
 public class InvalidServerGroupException extends FaultException  {
 

@@ -30,7 +30,6 @@ import org.hibernate.criterion.Restrictions;
  * ScapFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.audit.* objects related to SCAP
  * from the database.
- * @version $Rev$
  */
 public class ScapFactory extends HibernateFactory {
 

@@ -32,7 +32,6 @@ import junit.framework.AssertionFailedError;
  * RhnMockDynaActionForm is a mock implementation of
  * a Struts DynaActionForm which allows the user to
  * set expected values during testing.
- * @version $Rev$
  */
 public class RhnMockDynaActionForm extends DynaActionForm
                                    implements Expectation {

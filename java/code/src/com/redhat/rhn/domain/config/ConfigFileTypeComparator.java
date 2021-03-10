@@ -19,7 +19,6 @@ import java.util.Comparator;
 /**
  * Comparator used in ConfigChannel.getConfigFiles
  * ConfigFileTypeComparator
- * @version $Rev$
  */
 public class ConfigFileTypeComparator implements Comparator {
     /**

@@ -20,7 +20,6 @@ import java.util.List;
 /**
  * A single diff trace through two files.
  * Represents one trace of a linked list of traces.
- * @version $Rev$
  */
 public class Trace {
     private Trace next;

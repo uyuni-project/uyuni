@@ -7,5 +7,6 @@ export default {
   'virtualization/pools/create/pools-create': () => import('./pools/create/pools-create.renderer'),
   'virtualization/pools/edit/pools-edit': () => import('./pools/edit/pools-edit.renderer'),
   'virtualization/nets/list/nets-list': () => import('./nets/list/nets-list.renderer'),
+  'virtualization/nets/create/nets-create': () => import('./nets/create/nets-create.renderer'),
 }
 

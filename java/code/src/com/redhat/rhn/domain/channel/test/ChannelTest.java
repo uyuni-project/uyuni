@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * ChannelTest
- * @version $Rev$
  */
 @SuppressWarnings("deprecation")
 public class ChannelTest extends BaseTestCaseWithUser {

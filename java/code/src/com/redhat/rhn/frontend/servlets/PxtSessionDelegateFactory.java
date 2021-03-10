@@ -20,7 +20,6 @@ package com.redhat.rhn.frontend.servlets;
  * PxtSessionDelegateFactory is a factory class for creating PxtSessionDelegate objects.
  *
  * @see PxtSessionDelegate
- * @version $Rev$
  */
 public class PxtSessionDelegateFactory {
 

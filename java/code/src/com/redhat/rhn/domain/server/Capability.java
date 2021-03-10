@@ -20,7 +20,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Capability
- * @version $Rev$
  */
 public class Capability {
     private Long id;

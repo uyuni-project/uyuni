@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * "Driver" for a work queue of worker threads
- * @version $Rev$
  */
 public interface QueueDriver {
 

@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataPackagesSetupAction
- * @version $Rev$
  */
 public class ErrataPackagesSetupAction extends RhnAction {
     /** {@inheritDoc} */

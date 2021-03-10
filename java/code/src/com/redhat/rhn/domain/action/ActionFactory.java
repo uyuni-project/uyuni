@@ -54,6 +54,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeActio
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
@@ -465,6 +466,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE)) {
             retval = new VirtualizationNetworkStateChangeAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_CREATE)) {
+            retval = new VirtualizationNetworkCreateAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -961,7 +965,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP) ||
-                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE);
+                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE) ||
+                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_CREATE);
     }
 
     /**
@@ -987,12 +992,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionStatus STATUS_FAILED =
             lookupActionStatusByName("Failed");
-
-    /**
-     * The constant representing the Action Status PICKEDUP
-     */
-    public static final ActionStatus STATUS_PICKEDUP =
-            lookupActionStatusByName("Picked Up");
 
     /**
      * The constant representing Package Refresh List action.  [ID:1]
@@ -1376,5 +1375,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE =
             lookupActionTypeByLabel("virt.network_state");
+
+    /**
+     * The constant representing "Creates a virtual network" [ID:520]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_NETWORK_CREATE =
+            lookupActionTypeByLabel("virt.network_create");
 }
 

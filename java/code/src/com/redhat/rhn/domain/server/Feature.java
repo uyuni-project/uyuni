@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.AbstractLabelNameHelper;
 
 /**
  * Feature
- * @version $Rev$
  */
 public class Feature extends AbstractLabelNameHelper {
 }

@@ -1,4 +1,27 @@
 - Removed workaround for bnc#668908.
+- Require bind-utils so dig is available for mgr-setup
+
+-------------------------------------------------------------------
+Fri Mar 05 15:43:37 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- Feat: make mgr-create-bootstrap-repo log to another directory and logrotate it
+
+-------------------------------------------------------------------
+Thu Feb 25 12:10:50 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Add python3-distro to RES8, SLE15, Ubuntu20.04 and Debian 10 bootstrap
+  repositories to fix bootstrapping issues
+
+-------------------------------------------------------------------
+Fri Feb 12 14:32:42 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- add SLE 15 SP3 bootstrap repository definitions (bsc#1182008)
+- python3-dbus-python and dependencies not installed by default
+  on JeOS SLE15 images, add them to the bootstrap repository list
+  of packages for traditional (bsc#1182071)
 
 -------------------------------------------------------------------
 Fri Jan 29 16:51:52 CET 2021 - jgonzalez@suse.com

@@ -31,7 +31,6 @@ import redstone.xmlrpc.XmlRpcClient;
  * a mock implementation to our unit tests so they don't require an actual cobbler
  * server.
  * @author paji
- * @version $Rev$
  */
 public class CobblerConnection {
     private XmlRpcClient client;

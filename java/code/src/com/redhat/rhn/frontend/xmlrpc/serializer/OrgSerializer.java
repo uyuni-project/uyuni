@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * OrgSerializer is a custom serializer for the XMLRPC library.
  * It converts an Org to an XMLRPC &lt;struct&gt;.
- * @version $Rev$
  */
 public class OrgSerializer extends RhnXmlRpcCustomSerializer {
 

@@ -21,7 +21,6 @@ package com.redhat.rhn.manager.audit;
  * number indicates either a clone of an assigned channel or an unassigned
  * channel.
  *
- * @version $Rev$
  */
 public class ServerChannelIdPair {
     private long sid;

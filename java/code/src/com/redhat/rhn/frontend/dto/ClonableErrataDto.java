@@ -21,7 +21,6 @@ import java.util.Map;
 
 /**
  * ClonableErrataDto
- * @version $Rev$
  */
 public class ClonableErrataDto extends BaseDto {
 

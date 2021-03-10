@@ -33,7 +33,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * ResetPasswordSubmitActionTest
- * @version $Rev$
  */
 public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 

@@ -75,19 +75,20 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I enter "no-appstream" as "label"
     And I click on "Create"
     Then I should see a "Content Lifecycle Project - Remove AppStream metadata" text
-    When I follow "Attach/Detach Sources"
+    When I click on "Attach/Detach Sources"
     And I select "RHEL8-Pool for x86_64" from "selectedBaseChannel"
     And I check "Custom Channel for CentOS 8 DVD"
     And I check "RES-AS-8-Updates for x86_64"
     And I click on "Save"
     Then I should see a "Custom Channel for CentOS 8 DVD" text
-    When I follow "Attach/Detach Filters"
+    When I click on "Attach/Detach Filters"
     And I check "python-3.8: enable module python38:3.8"
     And I check "ruby-2.7: enable module ruby:2.7"
     And I click on "Save"
     Then I should see a "python-3.8: enable module python38:3.8" text
-    When I follow "Add Environment"
+    When I click on "Add Environment"
     And I enter "result" as "name"
+    And I enter "result" as "label"
     And I enter "Filtered channels without AppStream channels" as "description"
     And I click on "Save"
     Then I should see a "not built" text

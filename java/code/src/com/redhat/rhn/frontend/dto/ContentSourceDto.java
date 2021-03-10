@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ContentSourceDto
- * @version $Rev$
  */
 public class ContentSourceDto extends BaseDto {
 

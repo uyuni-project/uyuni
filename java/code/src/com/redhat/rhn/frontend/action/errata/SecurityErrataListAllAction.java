@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * SecurityErrataListAllAction
- * @version $Rev$
  */
 public class SecurityErrataListAllAction extends ErrataListAllAction {
 

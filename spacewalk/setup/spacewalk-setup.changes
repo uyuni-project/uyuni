@@ -1,4 +1,9 @@
 - Use syslinux folder for cobbler loaders.
+
+-------------------------------------------------------------------
+Fri Feb 12 14:30:21 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
 - Added Apache configuration updates for Cobbler.
 
 -------------------------------------------------------------------

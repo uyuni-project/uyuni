@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.acl.AclManager;
  * RhnRequestProcessor a custom Struts RequestProcessor that
  * intercepts all of our code struts requests
  *
- * @version $Rev$
  */
 
 public class RhnRequestProcessor extends RequestProcessor {

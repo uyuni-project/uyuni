@@ -37,7 +37,6 @@ import java.util.Map;
 
 /**
  * EditActionTest
- * @version $Rev$
  */
 public class EditActionTest extends RhnBaseTestCase {
 

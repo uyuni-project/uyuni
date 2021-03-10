@@ -8,12 +8,15 @@ import userEvent from "@testing-library/user-event";
 // See https://testing-library.com/docs/react-testing-library/api/
 export * from "@testing-library/react";
 
+// react-select testing utilities: https://github.com/romgain/react-select-event#api
+export * from "react-select-event";
+
+export * from "./timer";
+
 // @testing-library/user-event has messed up exports, just manually reexport everything
 export const {
   click,
   dblClick,
-  // We provide our own `type()` below
-  type: rawType,
   upload,
   clear,
   selectOptions,
@@ -25,13 +28,25 @@ export const {
   specialChars,
 } = userEvent;
 
-/** @testing-library/user-event's `type()` is inconsistent without a delay */
-export const type = async (element, text, options) => {
-  const mergedOptions = Object.assign({
-    delay: 10
-  }, options);
-  return rawType(element, text, mergedOptions);
+/**
+ * This is a usable alternative for @testing-library/user-event's `type()`.
+ * The library;s `type()` is non-deterministic without a delay and prohibitively
+ * slow even if you use Number.MIN_VALUE as the delay value.
+ * Instead we use the `paste()` method which inserts the full text in one go and
+ * pretend there is no difference.
+ */
+export const type = async (elementOrPromiseOfElement, text) => {
+  const target = await elementOrPromiseOfElement;
+  // await userEvent.type(target, text, mergedOptions);
+  userEvent.paste(target, text, undefined);
+  /**
+   * `window.requestAnimationFrame` mandatory to ensure we don't proceed until
+   * the UI has updated, expect non-deterministic results without this.
+   */
+  return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
 }
+
+export * from "./forms";
 
 const server = setupServer();
 
@@ -49,3 +64,5 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 export { server };
+
+export * from "./mock.js";

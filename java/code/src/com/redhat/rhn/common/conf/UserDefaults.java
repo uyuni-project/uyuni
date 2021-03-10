@@ -17,7 +17,6 @@ package com.redhat.rhn.common.conf;
 
 /**
  * UserDefaults
- * @version $Rev$
  */
 public class UserDefaults {
     private static UserDefaults instance = new UserDefaults();

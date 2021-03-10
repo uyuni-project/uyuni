@@ -28,7 +28,6 @@ import java.util.List;
  *
  * ConfigureBootstrapCommand - contains logic for setting up and reconfiguring the
  * bootstrap command on the satellite.
- * @version $Rev$
  */
 public class ConfigureBootstrapCommand extends BaseConfigureCommand
         implements SatelliteConfigurator {

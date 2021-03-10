@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteScheduleAction
- * @version $Rev$
  */
 public class DeleteScheduleAction extends RhnAction {
 

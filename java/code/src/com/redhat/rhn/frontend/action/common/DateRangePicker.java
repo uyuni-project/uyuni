@@ -154,7 +154,6 @@ public class DateRangePicker {
     /**
      * DatePickerResults class to encapsulate the results of processing the DatePickers
      * in the form.
-     * @version $Rev$
      */
     public class DatePickerResults {
         private DatePicker start;

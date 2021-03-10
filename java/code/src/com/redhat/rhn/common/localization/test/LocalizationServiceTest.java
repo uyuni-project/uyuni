@@ -30,7 +30,6 @@ import java.util.TimeZone;
 
 /**
  * Test for {@link LocalizationService}.
- * @version $Rev$
  */
 
 public class LocalizationServiceTest extends RhnBaseTestCase {

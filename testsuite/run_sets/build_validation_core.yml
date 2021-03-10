@@ -10,6 +10,7 @@
 # IMMUTABLE ORDER
 
 - features/core/first_settings.feature
+- features/core/srv_admin_preferences.feature
 
 # Configuration channel and configuration file for smoke tests
 - features/build_validation/srv_add_configuration_channel_and_file.feature

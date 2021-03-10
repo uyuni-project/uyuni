@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * DeleteUserActionTest
- * @version $Rev$
  */
 public class DeleteUserActionTest extends RhnBaseTestCase {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
  * PackageListSetupAction
- * @version $Rev$
  */
 public class PackageListSetupAction extends BaseSystemPackagesAction {
     /**

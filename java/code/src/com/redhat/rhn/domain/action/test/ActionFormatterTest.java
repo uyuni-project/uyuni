@@ -26,7 +26,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * ActionFormatterTest  - test the formatters associated with the Actions.
- * @version $Rev$
  */
 public class ActionFormatterTest extends RhnBaseTestCase {
 

@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * TreeEditAction
- * @version $Rev$
  */
 public class TreeEditAction extends BaseTreeAction {
 

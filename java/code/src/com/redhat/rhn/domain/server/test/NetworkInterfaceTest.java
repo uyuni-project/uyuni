@@ -30,7 +30,6 @@ import java.util.Date;
 
 /**
  * NetworkInterfaceTest
- * @version $Rev$
  */
 public class NetworkInterfaceTest extends RhnBaseTestCase {
 

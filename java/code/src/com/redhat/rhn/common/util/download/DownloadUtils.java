@@ -30,7 +30,6 @@ import java.net.URL;
 /**
  *
  * DownloadUtils
- * @version $Rev$
  */
 public class DownloadUtils {
 

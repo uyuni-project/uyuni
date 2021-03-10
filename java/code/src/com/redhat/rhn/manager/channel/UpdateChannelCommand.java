@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 
 /**
  * UpdateChannelCommand - command to create a new channel.
- * @version $Rev$
  */
 public class UpdateChannelCommand extends CreateChannelCommand {
 

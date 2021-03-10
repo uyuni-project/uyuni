@@ -3,6 +3,7 @@ Unit test for LibmodProc class.
 """
 from mgrlibmod.mllib import MLLibmodProc, MLLibmodAPI
 from mgrlibmod.mlerrcode import MlConflictingStreams, MlModuleNotFound
+import json
 import pytest
 from unittest import mock
 from unittest.mock import mock_open
@@ -24,6 +25,32 @@ class TestLibmodProc:
 
     def teardown_method(self):
         del self.libmodproc
+
+    def test_to_json(self):
+        """
+        test_to_json -- test if the output is successfully serialized into JSON
+        """
+
+        # Test module_packages output
+        self.libmodapi.set_repodata(open("tests/data/module_packages-1.json", "r").read()).run()
+        result_dict = self.libmodapi._result
+        json_str = self.libmodapi.to_json()
+
+        assert result_dict == json.loads(json_str)
+
+        # Test list_modules output
+        self.libmodapi.set_repodata(open("tests/data/list_modules.json", "r").read()).run()
+        result_dict = self.libmodapi._result
+        json_str = self.libmodapi.to_json()
+
+        assert result_dict == json.loads(json_str)
+
+        # Test list_packages output
+        self.libmodapi.set_repodata(open("tests/data/list_packages.json", "r").read()).run()
+        result_dict = self.libmodapi._result
+        json_str = self.libmodapi.to_json()
+
+        assert result_dict == json.loads(json_str)
 
     def test_meta_compressed(self):
         """
@@ -158,6 +185,8 @@ class TestLibmodProc:
         for key, value in result['modules'].items():
             assert 'default' in value
             assert 'streams' in value
+            # Assert that streams is a list (serializable)
+            assert type(value['streams']) is list
             # Assert that there are no duplicates in stream names
             assert len(value['streams']) == len(set(value['streams']))
 

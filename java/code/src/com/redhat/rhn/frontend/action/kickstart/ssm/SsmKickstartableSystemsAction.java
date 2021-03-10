@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SsmKickstartableSystemsAction
- * @version $Rev$
  */
 public class SsmKickstartableSystemsAction extends RhnAction implements Listable {
     private static final String DISABLE_RANGES = "disableRanges";

@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * Some acl implementation for configuration management
- * @version $Rev$
  */
 public class ConfigAclHandler extends BaseHandler {
 

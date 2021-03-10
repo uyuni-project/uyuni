@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 /**
  *
  * RowRenderer
- * @version $Rev$
  */
 public class RowRenderer {
 

@@ -32,7 +32,6 @@ import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 /**
  * CVESearchHandler
  *
- * @version $Rev$
  * @xmlrpc.namespace audit
  * @xmlrpc.doc Methods to audit systems.
  */

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ArchType
- * @version $Rev$
  */
 public class ChecksumType extends BaseDomainHelper {
 

@@ -754,7 +754,7 @@ def load_caches(self, server, username):
 
 def get_system_names(self):
     self.generate_system_cache()
-    return self.all_systems.values()
+    return list(self.all_systems.values())
 
 
 def get_system_names_ids(self):

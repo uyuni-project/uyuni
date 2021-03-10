@@ -39,7 +39,6 @@ import java.util.Map;
 
 /**
  * ConfigFileData
- * @version $Rev$
  */
 public abstract class ConfigFileData {
     private static final String VALIDATION_XSD =

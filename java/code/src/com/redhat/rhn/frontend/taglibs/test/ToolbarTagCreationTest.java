@@ -18,7 +18,6 @@ import javax.servlet.jsp.JspException;
 
 /**
  * ToolbarTagCreationTest
- * @version $Rev$
  */
 public class ToolbarTagCreationTest extends BaseTestToolbarTag {
 

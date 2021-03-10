@@ -24,7 +24,6 @@ from . import queue
 from . import errata
 from . import proxy
 from . import get_handler
-from . import abrt
 from . import scap
 
 rpcClasses = {
@@ -34,7 +33,6 @@ rpcClasses = {
     "errata": errata.Errata,
     "proxy": proxy.Proxy,
     "servers": up2date.Servers,
-    "abrt": abrt.Abrt,
     "scap": scap.Scap,
 }
 

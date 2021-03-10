@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for recent systems
  *
- * @version $Rev$
  */
 public class RecentSystemsRenderer extends BaseFragmentRenderer {
 

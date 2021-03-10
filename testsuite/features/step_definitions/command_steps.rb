@@ -188,6 +188,12 @@ When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   end
 end
 
+When(/^vendor change should be enabled for SP migration on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  _result, return_code = node.run("grep -- --allow-vendor-change /var/log/zypper.log")
+  raise 'Vendor change option not found in logs' unless return_code.zero?
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
@@ -258,12 +264,37 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+# This function waits for all the reposyncs to complete.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 30 seconds in a row.
+When(/^I wait until all spacewalk\-repo\-sync finished$/) do
+  reposync_not_running_streak = 0
+  reposync_left_running_streak = 0
+  while reposync_not_running_streak <= 30
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      reposync_left_running_streak = 0
+      sleep 1
+      next
+    end
+    reposync_not_running_streak = 0
+
+    process = command_output.split("\n")[0]
+    channel = process.split(' ')[5]
+    STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+    reposync_left_running_streak += 1
+    sleep 1
+  end
+end
+
 # This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
@@ -304,7 +335,8 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", false)
+      break if code.zero?
       sleep 10
     end
   rescue StandardError => e
@@ -472,6 +504,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
+# WORKAROUND bsc#1181847
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
   gpg_keys = get_gpg_keys(node)
@@ -493,8 +526,8 @@ When(/^the server starts mocking an IPMI host$/) do
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  $server.run('kill $(pidof ipmi_sim)')
-  $server.run('kill $(pidof -x fake_ipmi_host.sh)')
+  $server.run('pkill ipmi_sim')
+  $server.run('pkill fake_ipmi_host.sh || :')
 end
 
 When(/^the server starts mocking a Redfish host$/) do
@@ -841,7 +874,10 @@ end
 When(/^I install package tftpboot-installation on the server$/) do
   node = get_target("server")
   output, _code = node.run("find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm")
-  package = output.split("\n")[0]
+  packages = output.split("\n")
+  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+  # Reverse sort the package name to get the latest version first and install it
+  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
   node.run("rpm -i #{package}")
 end
 
@@ -893,7 +929,15 @@ When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/
   node = get_target(host)
   os_version, _os_family = get_os_version(node)
   cmd = 'false'
-  if (os_version.include? '12') || (os_version.include? '15')
+  if (os_version.include? '15') && (host.include? 'proxy')
+    proxy_version = '40'
+    if os_version.include? 'SP3'
+      proxy_version = '42'
+    elsif os_version.include? 'SP2'
+      proxy_version = '41'
+    end
+    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
+  elsif (os_version.include? '12') || (os_version.include? '15')
     cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
   elsif os_version.include? '11'
     sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
@@ -1333,6 +1377,26 @@ Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host
   end
 end
 
+Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code.zero?
+    sleep 3
+  end
+end
+
+Then(/^"([^"]*)" virtual network on "([^"]*)" should have "([^"]*)" IPv4 address with ([0-9]+) prefix$/) do |net, host, ip, prefix|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{net} virtual net on #{host} never got #{ip}/#{prefix} IPv4 address") do
+    output, _code = node.run("virsh net-dumpxml #{net}")
+    tree = Nokogiri::XML(output)
+    ips = tree.xpath('//ip[@family="ipv4"]')
+    break if !ips.empty? && ips[0]['address'] == ip and ips[0]['prefix'] == prefix
+    sleep 3
+  end
+end
+
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
@@ -1354,12 +1418,22 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
-  cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
+  # Gather all the ids of package refreshes existing at SUMA
+  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh scheduled by admin' | cut -f1 -d' '", false)
+  node_refreshes = ""
+  refreshes.split(' ').each do |refresh_id|
+    next unless refresh_id.match('/[0-9]{1,4}/')
+    refresh_result, = $server.run("spacecmd -u admin -p admin schedule_details #{refresh_id}") # Filter refreshes for specific system
+    next unless refresh_result.include? node
+    node_refreshes += "^#{refresh_id}|"
+  end
+  cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
     result, code = $server.run(cmd, false)
+    sleep 1
+    next if result.include? '0    0    1'
     break if result.include? '1    0    0'
     raise 'refresh package list failed' if result.include? '0    1    0'
-    sleep 1
   end
 end
 
@@ -1367,7 +1441,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
-  result, code = $server.run(command, false)
+  result, _code = $server.run(command, false)
   packages.split(' ').each do |package|
     pkg = package.strip
     raise "package #{pkg} is not installed" unless result.include? pkg
@@ -1379,7 +1453,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
-    result, code = $server.run(command, false)
+    result, _code = $server.run(command, false)
     break if result.include? pkg
     sleep 1
   end
@@ -1473,4 +1547,16 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+end
+
+When(/^I set correct product for "(proxy|branch server)"$/) do |product|
+  if product.include? 'proxy'
+    prod = 'SUSE-Manager-Proxy'
+  elsif product.include? 'branch server'
+    prod = 'SUSE-Manager-Retail-Branch-Server'
+  else
+    raise 'Incorrect product used.'
+  end
+  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting correct product: #{out}"
 end

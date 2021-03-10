@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * OperationsDto
- * @version $Rev$
  */
 public class OperationDetailsDto {
     private Long id;

@@ -75,7 +75,6 @@ import java.util.stream.Collectors;
 /**
  * ActivationKeyHandler
  *
- * @version $Rev$
  *
  * @xmlrpc.namespace activationkey
  * @xmlrpc.doc Contains methods to access common activation key functions

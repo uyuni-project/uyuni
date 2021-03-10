@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChildChannelConfirmAction
- * @version $Rev$
  */
 public class ChildChannelConfirmAction extends RhnAction implements Listable {
 

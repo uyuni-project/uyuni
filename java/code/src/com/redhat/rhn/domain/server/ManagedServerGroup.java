@@ -25,7 +25,6 @@ import java.util.Set;
 /**
  * This class represents the User Managed Server Groups
  * i.e. the types
- * @version $Rev$
  */
 public class ManagedServerGroup extends ServerGroup {
 

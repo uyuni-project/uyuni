@@ -26,7 +26,6 @@ import java.util.Set;
 
 /**
  * PackageActionDetails
- * @version $Rev$
  */
 public class PackageActionDetails extends ActionChild {
 

@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * RhnActionMappingTest
- * @version $Rev$
  */
 public class RhnActionMappingTest extends RhnBaseTestCase {
 

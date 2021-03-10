@@ -170,7 +170,6 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Custom System Info" link in the left menu
     And I should see a "Autoinstallation" link in the left menu
     And I should see a "View System Groups" link
-    And I should see a "Software Crashes" link in the left menu
     And I should see a "Download CSV" link
     And I should see a Sign Out link
 

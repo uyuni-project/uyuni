@@ -22,7 +22,6 @@ import org.hibernate.Session;
 
 /**
  * ActionTypeTest
- * @version $Rev$
  */
 public class ActionTypeTest extends RhnBaseTestCase {
 

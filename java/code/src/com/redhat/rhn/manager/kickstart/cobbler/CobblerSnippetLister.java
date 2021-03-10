@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * CobblerSnippetLister
- * @version $Rev$
  */
 public class CobblerSnippetLister extends BaseManager {
 

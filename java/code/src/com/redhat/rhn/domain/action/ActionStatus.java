@@ -19,7 +19,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ActionStatus
- * @version $Rev$
  */
 public class ActionStatus {
 
@@ -52,6 +51,15 @@ public class ActionStatus {
      */
     public void setName(String n) {
         this.name = n;
+    }
+
+
+    /**
+     * @return if the status represents an action that is in its final state and considered done.
+     * (either completed or failed)
+     */
+    public boolean isDone() {
+        return this.equals(ActionFactory.STATUS_COMPLETED) || this.equals(ActionFactory.STATUS_FAILED);
     }
 
     /**

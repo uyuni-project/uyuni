@@ -30,7 +30,6 @@ import java.util.Map;
 
 /**
  * SatConfigFactory
- * @version $Rev$
  */
 public class SatConfigFactory extends HibernateFactory {
 

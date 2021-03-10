@@ -26,6 +26,18 @@ $ yarn tsc
 # Get a list of remaining errors that need to be resolved manually
 ```
 
+## Configuring your editor
+
+If you're using VS Code, the editor config is already included.  
+For other editors, Typescript has integration plugins for more or less all popular editors.  
+
+Usually, you will only need to specify where the Typescript SDK is, how to configure this depends on your editor:  
+```json
+{
+    "typescript.tsdk": "./web/html/src/node_modules/typescript/lib"
+}
+```
+
 ## Common problems you may encounter:
 
 ### `Argument of type 'Foo' is not assignable to parameter of type 'never'` when pushing into an empty array
@@ -49,6 +61,61 @@ In certain cases `JSX.Element` may be applicable as well, see [examples and disc
 ### `import type {Node} from 'react';`
 
 TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.
+
+### `Property 'children' does not exist on type 'IntrinsicAttributes'`
+
+This can happen when you have a string prop `headingLevel: string` and want to use it in JSX to create an element such as `<HeadingLevel style={{ width: "85%" }}>`.  
+To solve the problem, let TS know that you expect this to be a node name, not a string: `headingLevel: keyof JSX.IntrinsicElements`
+
+### Using `React.Children.toArray()` with `React.cloneElement()`  
+
+The following snippet will throw with `Type 'string' is not assignable to type ReactElement...`. The problem is that [`ReactChild` includes `string | number`](https://stackoverflow.com/a/42261933/1470607), which is not a valid clone target.
+
+```ts
+React.Children.toArray(props.children).map(child => React.cloneElement(child));
+```
+
+To solve the problem, add a type guard that checks whether the child is a valid element to clone:
+
+```ts
+React.Children.toArray(props.children).map(child => React.isValidElement(child) ? React.cloneElement(child) : child);
+```
+
+### Passing down a specific component as a prop
+
+Given a component that wants to consume a specific component as a prop
+
+```tsx
+<Parent child={<Child />} />
+```
+
+If the strict type of `child` is important, you can define the prop as 
+
+```ts
+type Props = {
+	child?: React.ReactComponentElement<typeof Child>;
+}
+```
+
+### `Type 'string' is not assignable to type 'Location'` when using `window.location`
+
+The problem stems from code like: `window.location = "/rhn/manager/clusters";`  
+`window.location` is an object, the correct property to assign to is `window.location.href` which is the location string: `window.location.href = "/rhn/manager/clusters";`
+
+### `SyntaxError: Unexpected token` in JSX
+
+A typical example of the error is this:  
+
+```tsx
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: Foo.ts: Unexpected token, expected "," (16:9)
+  15 |   return (
+> 16 |     <div className="interface">
+     |          ^
+```
+
+This slightly obscure error message usually means that your file is `.ts`, but it should be `.tsx`.  
+The migrator tries to detect this automatically, but it isn't infallible.  
 
 ## Technical tidbits
 

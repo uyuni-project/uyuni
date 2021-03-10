@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ScheduleSystemSerializer
- * @version $Rev$
  * @xmlrpc.doc
  *
  * #struct_begin("system")

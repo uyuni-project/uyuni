@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * A collection of utility methods for testing.
  *
- * @version $Rev$
  */
 public class CVEAuditManagerTestHelper {
 

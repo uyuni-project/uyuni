@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * NoSuchConfigFilePathException
- * @version $Rev$
  */
 public class NoSuchConfigFilePathException extends FaultException {
 

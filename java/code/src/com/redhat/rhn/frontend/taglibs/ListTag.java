@@ -48,7 +48,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  *   &lt;/rhn:listdisplay&gt;
  * &lt;/rhn:list&gt;
  * </pre>
- * @version $Rev$
  * @see com.redhat.rhn.frontend.taglibs.ColumnTag
  * @see com.redhat.rhn.frontend.taglibs.ListDisplayTag
  * @see com.redhat.rhn.frontend.taglibs.SetTag

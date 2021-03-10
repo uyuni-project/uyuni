@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelFilesListSubmit
- * @version $Rev$
  */
 public class ChannelFilesListSubmit extends BaseSetOperateOnSelectedItemsAction {
     public static final String KEY_REMOVE = "channelfiles.jsp.removeselected";

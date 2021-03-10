@@ -24,7 +24,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * PackageArch
- * @version $Rev$
  */
 public class PackageArch extends BaseDomainHelper implements Comparable<PackageArch> {
 

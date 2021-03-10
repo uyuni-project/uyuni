@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataSetupAction
- * @version $Rev$
  */
 public class ErrataSetupAction extends RhnAction implements Listable {
 

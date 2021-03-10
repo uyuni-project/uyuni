@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * IpAddress
- * @version $Rev$
  */
 public class IpAddress {
 

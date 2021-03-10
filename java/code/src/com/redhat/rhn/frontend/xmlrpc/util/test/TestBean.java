@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.util.test;
 
 /**
  * TestBean
- * @version $Rev$
  */
 public class TestBean {
     public static final String DEFAULT_VALUE = "foo";

@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:43:58 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- Move validator dependency from susemanager-frontend-libs package
+
+-------------------------------------------------------------------
+Thu Feb 25 12:11:15 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
+- Speed up the RPM build
+
+-------------------------------------------------------------------
+Fri Feb 12 14:34:08 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
+- Upgrade immer to 8.0.1 to fix CVE-2020-28477
+
+-------------------------------------------------------------------
 Wed Jan 27 13:08:31 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.4-1

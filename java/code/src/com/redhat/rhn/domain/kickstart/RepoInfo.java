@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class RepoInfo {
     private String name;

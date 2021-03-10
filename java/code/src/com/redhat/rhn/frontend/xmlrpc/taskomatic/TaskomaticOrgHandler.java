@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * TaskomaticOrgHandler
- * @version $Rev$
  * @xmlrpc.namespace taskomatic.org
  * @xmlrpc.ignore
  * @xmlrpc.doc provides methods to access orgaznizational taskomatic tasks

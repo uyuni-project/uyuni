@@ -1,28 +1,12 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'nokogiri'
 require 'timeout'
 
-def client_is_zypp?
-  $client.run('test -x /usr/bin/zypper', false)
-end
-
-def client_refresh_metadata
-  if client_is_zypp?
-    $client.run('zypper --non-interactive ref -s', true, 500, 'root')
-  else
-    $client.run('yum clean all', true, 600, 'root')
-    $client.run('yum makecache', true, 600, 'root')
-  end
-end
-
 def client_raw_repodata_dir(channel)
-  if client_is_zypp?
-    "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
-  else
-    "/var/cache/yum/#{channel}"
-  end
+  "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
+  # it would be "/var/cache/yum/#{channel}" for CentOS
 end
 
 def client_system_id_to_i
@@ -90,6 +74,8 @@ end
 def get_gpg_keys(node, target = $server)
   os_version, os_family = get_os_version(node)
   if os_family =~ /^sles/
+    # HACK: SLE 15 uses SLE 12 GPG key
+    os_version = 12 if os_version =~ /^15/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
   elsif os_family =~ /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", false)

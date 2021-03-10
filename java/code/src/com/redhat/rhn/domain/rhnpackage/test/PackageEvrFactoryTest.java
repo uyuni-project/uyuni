@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * PackageEvrTest
- * @version $Rev$
  */
 public class PackageEvrFactoryTest extends RhnBaseTestCase {
 

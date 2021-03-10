@@ -22,7 +22,6 @@ import com.redhat.rhn.frontend.struts.Selectable;
 /**
  * Wrapper class to enable Channels to be used and be selectable
  * SelectableChannel
- * @version $Rev$
  */
 public class SelectableChannel  implements Selectable, Comparable {
 

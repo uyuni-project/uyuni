@@ -30,7 +30,6 @@ import java.util.Map;
  * After the {@link RhnSetFactory} saves a set, it calls {@link #cleanup}
  * with the set being saved as an argument; that method must remove anything
  * from the set in the database that the user does not have permission to.
- * @version $Rev$
  */
 public class SetCleanup {
 
@@ -143,7 +142,6 @@ public class SetCleanup {
      *
      * I've left this a little open in case similar cases are found, though
      * I expect this may be the only one.
-     * @version $Rev$
      */
     private static class SetCleanupWithOrg extends SetCleanup {
         SetCleanupWithOrg(String mode) {

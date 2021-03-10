@@ -19,7 +19,6 @@ package com.redhat.rhn.common.messaging;
  * A interface representing all messages that can be sent through the
  * messaging system,
  *
- * @version $Rev$
  */
 public interface EventMessage {
 

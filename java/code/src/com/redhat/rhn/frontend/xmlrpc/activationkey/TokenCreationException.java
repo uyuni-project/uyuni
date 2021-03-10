@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 /**
  * Token creation failed.
  *
- * @version $Rev$
  */
 public class TokenCreationException extends FaultException {
 

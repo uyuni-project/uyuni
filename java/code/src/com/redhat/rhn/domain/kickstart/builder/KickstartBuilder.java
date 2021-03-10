@@ -60,7 +60,6 @@ import java.util.regex.Pattern;
 
 /**
  * KickstartBuilder: Creates KickstartData objects.
- * @version $Rev$
  */
 public class KickstartBuilder {
 

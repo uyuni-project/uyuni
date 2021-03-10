@@ -24,7 +24,6 @@ import java.util.Date;
 /**
  * KickstartVirtualizationType -
  * Class representation of the table rhnKickstartVirtualizationType.
- * @version $Rev$
  */
 public class KickstartVirtualizationType
                         implements Comparable<KickstartVirtualizationType> {

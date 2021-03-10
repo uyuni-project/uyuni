@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DiffSubmitAction
- * @version $Rev$
  */
 public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction {
 

@@ -28,7 +28,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * SubmittedTag
  * <p>
  * Renders {@literal <input type="hidden" name="submitted" value="true"/>}
- * @version $Rev$
  */
 public class SubmittedTag extends TagSupport {
 

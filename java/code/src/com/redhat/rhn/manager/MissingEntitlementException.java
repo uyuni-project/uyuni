@@ -18,7 +18,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
  * MissingEntitlementException
- * @version $Rev$
  */
 public class MissingEntitlementException extends RhnRuntimeException {
 

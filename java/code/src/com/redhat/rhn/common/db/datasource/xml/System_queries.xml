@@ -1032,7 +1032,7 @@ SELECT PI.server_id ID, S.name,
          COALESCE(VIS.name, '(unknown)') AS STATE_NAME,
          COALESCE(VIS.label, 'unknown') AS STATE_LABEL,
      COALESCE(VII.vcpus, 0) AS VCPUS,
-     COALESCE(VII.memory_size_k, 0) AS MEMORY,
+     COALESCE(VII.memory_size, 0) AS MEMORY,
      COALESCE(((SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = VI.virtual_system_id)), 0 ) as accessible,
          rhn_channel.user_role_check((select channel_id from rhnServerOverview where server_id = VI.virtual_system_id), :user_id, 'subscribe') AS subscribable,
          1 AS selectable
@@ -1353,7 +1353,7 @@ ORDER BY S.ID
 <query name="system_overview" params="">
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
-          unique_crash_count, total_crash_count, LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
+          LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
           SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_RHN_PROXY
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
@@ -1533,18 +1533,6 @@ SELECT PN.name,
  WHERE SP.server_id = :sid
 ORDER BY PN.name, PE.evr
     </query>
-</mode>
-
-<mode name="list_server_software_crashes" class="com.redhat.rhn.frontend.dto.SoftwareCrashDto">
-  <query params="server_id">
-SELECT id,
-       crash,
-       count,
-       component,
-       modified
-  FROM rhnServerCrash
- WHERE server_id = :server_id
-  </query>
 </mode>
 
 <callable-mode name="delete_server">

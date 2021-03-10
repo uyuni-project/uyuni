@@ -19,7 +19,6 @@ package com.redhat.rhn.frontend.action.renderers;
 /**
  * Interface for rendering fragments asynchronously
  *
- * @version $Rev$
  */
 public interface FragmentRenderer {
 

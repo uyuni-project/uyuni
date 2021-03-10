@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * SslContentSource
- * @version $Rev$
  */
 public class SslContentSource extends BaseDomainHelper {
 

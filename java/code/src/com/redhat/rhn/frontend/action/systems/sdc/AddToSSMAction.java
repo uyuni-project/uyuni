@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemOverviewAction
- * @version $Rev$
  */
 public class AddToSSMAction extends RhnAction {
 

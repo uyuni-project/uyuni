@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 
 /**
  * TimeUtilsTest is the test class for TimeUtils.
- * @version $Rev$
  */
 public class TimeUtilsTest extends TestCase {
 

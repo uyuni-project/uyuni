@@ -21,7 +21,6 @@ import org.apache.struts.util.MessageResourcesFactory;
 /**
  * XmlMessageResourcesFactory - factory class used by Struts to
  * get to the XML based
- * @version $Rev$
  */
 
 public class XmlMessageResourcesFactory extends MessageResourcesFactory {

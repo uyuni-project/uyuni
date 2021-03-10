@@ -22,7 +22,6 @@ import org.cobbler.Profile;
 
 /**
  * KickstartCloneCommand - class to clone a KickstartData object and its children
- * @version $Rev$
  */
 public class KickstartCloneCommand extends BaseKickstartCommand {
 

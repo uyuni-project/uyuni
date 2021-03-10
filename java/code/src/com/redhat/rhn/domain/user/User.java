@@ -26,7 +26,6 @@ import java.util.Set;
  * Class User that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
- * @version $Rev$
  */
 public interface User {
     /**

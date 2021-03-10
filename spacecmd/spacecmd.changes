@@ -1,3 +1,11 @@
+- Handle SIGPIPE without user-visible Exception (bsc#1181124)
+- Fix spacecmd compat with Python 3
+
+-------------------------------------------------------------------
+Fri Feb 12 14:26:48 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
+- Deprecated "Software Crashes" feature
 - Document advanced package search on '--help' (bsc#1180583)
 - Fixed advanced search on 'package_listinstalledsystems'
 - Fixed duplicate results when using multiple search criteria (bsc#1180585)

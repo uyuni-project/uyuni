@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * ChannelListActionTest
- * @version $Rev$
  */
 public class ChannelListActionTest extends RhnMockStrutsTestCase {
 

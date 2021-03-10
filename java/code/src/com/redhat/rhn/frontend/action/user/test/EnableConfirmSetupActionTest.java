@@ -34,7 +34,6 @@ import java.util.Date;
 
 /**
  * EnableConfirmSetupActionTest
- * @version $Rev$
  */
 public class EnableConfirmSetupActionTest extends RhnBaseTestCase {
 

@@ -29,7 +29,6 @@ import java.util.Set;
 /**
  * POJO for a rhnActionChain row.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
- * @version $Rev$
  */
 public class ActionChain extends BaseDomainHelper {
 
@@ -44,6 +43,8 @@ public class ActionChain extends BaseDomainHelper {
 
     /** The entries. */
     private Set<ActionChainEntry> entries;
+
+    private boolean dispatched;
 
     /**
      * Default constructor.
@@ -98,6 +99,31 @@ public class ActionChain extends BaseDomainHelper {
      */
     public void setUser(User userIn) {
         user = userIn;
+    }
+
+    /**
+     * @return true if the actionchain was already dispatched.
+     */
+    public boolean isDispatched() {
+        return dispatched;
+    }
+
+    /**
+     * @return if all actions associated with this action chain are done
+     * (either completed or failed)
+     */
+    public boolean isDone() {
+        return getEntries().stream()
+                .flatMap(ace -> ace.getAction().getServerActions().stream())
+                .allMatch(sa -> sa.getStatus().isDone());
+    }
+
+    /**
+     * Sets if the actionchain was already dispatched.
+     * @param dispatchedIn
+     */
+    public void setDispatched(boolean dispatchedIn) {
+        this.dispatched = dispatchedIn;
     }
 
     /**

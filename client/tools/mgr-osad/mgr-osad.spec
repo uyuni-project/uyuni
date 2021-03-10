@@ -51,7 +51,7 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.2.2
+Version:        4.2.3
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -122,7 +122,7 @@ Requires:       python
 Requires:       python-jabberpy
 Requires:       python2-mgr-osa-common = %{version}
 Requires:       python2-rhn-client-tools >= 2.8.4
-Requires:       rhnlib >= 2.8.3
+Requires:       rhnlib >= 4.2.2
 Requires:       python2-uyuni-common-libs
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
@@ -144,7 +144,7 @@ Requires:       python3
 Requires:       python3-jabberpy
 Requires:       python3-mgr-osa-common = %{version}
 Requires:       python3-rhn-client-tools >= 2.8.4
-Requires:       python3-rhnlib >= 2.8.3
+Requires:       python3-rhnlib >= 4.2.2
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
 
@@ -284,7 +284,7 @@ SELinux policy module supporting osa-dispatcher.
 %if 0%{?suse_version}
 cp prog.init.SUSE prog.init
 %endif
-%if 0%{?fedora} || 0%{?rhel}
+%if 0%{?fedora} || 0%{?rhel} >= 8
 sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python3 -s@' invocation.py
 %endif
 

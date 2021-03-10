@@ -20,7 +20,6 @@ import java.util.Map;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
- * @version $Rev$
  */
 public abstract class XccdfTestResultCounts extends BaseDto {
 

@@ -26,7 +26,6 @@ import java.io.File;
 
 /**
  * CobblerSnippetTest
- * @version $Rev$
  */
 public class CobblerSnippetTest extends BaseTestCaseWithUser {
 

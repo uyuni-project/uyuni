@@ -220,6 +220,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(device.getIPv4Addresses(), dev.getIPv4Addresses());
     }
 
+    public void testGetNetworkForSystems() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.addFqdn("domain1.test.local");
+        server.addFqdn("domain2.test.local");
+        ServerFactory.save(server);
+
+        List<Map<String, Object>> returned = handler.getNetworkForSystems(admin,
+                Collections.singletonList(server.getId().intValue()));
+
+        assertEquals(1, returned.size());
+        assertEquals("domain1.test.local", returned.get(0).get("primary_fqdn"));
+    }
+
     public void testObtainReactivationKey() throws Exception {
         Server server = ServerFactoryTest.createUnentitledTestServer(admin, true,
                 ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
@@ -2673,8 +2686,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = getMockedHandler().scheduleApplyHighstate(
-                admin, testServer.getId().intValue(), scheduleDate, true);
+        List<Integer> sids = new LinkedList<>();
+        sids.add(testServer.getId().intValue());
+
+        Long actionId = getMockedHandler().scheduleApplyHighstate(admin, sids, scheduleDate, true);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -2702,8 +2717,37 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw UnsupportedOperationException");
         }
         catch (UnsupportedOperationException e) {
-            assertEquals("System not managed with Salt: " + server.getId(), e.getMessage());
+            assertEquals("Some System not managed with Salt: [" + server.getId() + "]", e.getMessage());
         }
+    }
+
+    public void testScheduleApplyState() throws Exception {
+        Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        List<String> stateNames = new LinkedList<String>();
+        stateNames.add("channels");
+
+        Long actionId = getMockedHandler().scheduleApplyStates(
+                admin, testServer.getId().intValue(), stateNames, scheduleDate, false);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertNotNull(details.getStates());
+        assertEquals(stateNames, details.getMods());
+        assertFalse(details.isTest());
     }
 
     /**

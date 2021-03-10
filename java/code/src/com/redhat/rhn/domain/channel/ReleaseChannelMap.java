@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * ReleaseChannelMap
- * @version $Rev$
  */
 public class ReleaseChannelMap implements Serializable,
                                Comparable<ReleaseChannelMap> {

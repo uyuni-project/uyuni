@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * TokenPackageFactory
- * @version $Rev$
  */
 public class TokenPackageFactory extends HibernateFactory {
 

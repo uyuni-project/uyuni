@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class CustomKeyListAction extends RhnAction {
 

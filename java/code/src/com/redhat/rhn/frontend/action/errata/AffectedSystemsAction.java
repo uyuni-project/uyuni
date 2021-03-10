@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * AffectedSystemsAction
- * @version $Rev$
  */
 public class AffectedSystemsAction extends RhnSetAction {
 

@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * AuditMachineDto
- * @version $Rev$
  */
 public class AuditMachineDto extends BaseDto implements Comparable<AuditMachineDto> {
     private Long id;

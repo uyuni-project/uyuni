@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.action;
 /**
  * Simple bean class for options collections.
  * OptionsCollectionBean
- * @version $Rev$
  */
 public class OptionsCollectionBean {
     private String label;

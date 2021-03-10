@@ -19,7 +19,6 @@ import java.util.Comparator;
 /**
  * Implements the java.util.Comparator class for sorting SystemOverview objects
  *
- * @version $Rev$
  */
 public class SystemOverviewComparator implements Comparator<SystemOverview> {
 

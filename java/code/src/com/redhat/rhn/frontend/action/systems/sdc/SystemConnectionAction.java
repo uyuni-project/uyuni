@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
- * @version $Rev$
  */
 public class SystemConnectionAction extends RhnAction implements Listable<ServerPath> {
 

@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * ErrataConfirmSetupActionTest
- * @version $Rev$
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 

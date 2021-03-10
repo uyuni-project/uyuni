@@ -23,9 +23,9 @@
 rhn.SSL builds an abstraction on top of the objects provided by pyOpenSSL
 """
 
-from OpenSSL import SSL
 # SSL.crypto is provided to other modules
 from OpenSSL import crypto
+import ssl as SSL
 import os
 
 import socket
@@ -39,6 +39,12 @@ if hasattr(socket, 'sslerror'):
     socket_error = socket.sslerror
 else:
     from ssl import socket_error
+
+try:
+    from ssl import CertificateError
+except ImportError:
+    # python 2.6
+    from backports.ssl_match_hostname import match_hostname, CertificateError
 
 class SSLSocket:
     """
@@ -56,9 +62,10 @@ class SSLSocket:
         for f in trusted_certs:
             self.add_trusted_cert(f)
         # SSL method to use
-        self._ssl_method = SSL.SSLv23_METHOD
-        # Flags to pass to the SSL layer
-        self._ssl_verify_flags = SSL.VERIFY_PEER
+        if hasattr(SSL, 'PROTOCOL_TLS'):
+            self._ssl_method = SSL.PROTOCOL_TLS
+        else:
+            self._ssl_method = SSL.PROTOCOL_SSLv23
 
         # Buffer size for reads
         self._buffer_size = 8192
@@ -88,34 +95,27 @@ class SSLSocket:
         """
         self._check_closed()
         # Get a context
-        self._ctx = SSL.Context(self._ssl_method)
-        # disable SSL and allow only TLSv1+
-        self._ctx.set_options(SSL.OP_NO_SSLv2)
-        self._ctx.set_options(SSL.OP_NO_SSLv3)
-        if self._trusted_certs:
-            # We have been supplied with trusted CA certs
-            for f in self._trusted_certs:
-                self._ctx.load_verify_locations(f)
+        if hasattr(SSL, 'SSLContext'):
+            self._ctx = SSL.SSLContext(self._ssl_method)
+            self._ctx.verify_mode = SSL.CERT_REQUIRED
+            self._ctx.check_hostname = True
+            self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
+            if self._trusted_certs:
+               # We have been supplied with trusted CA certs
+                for f in self._trusted_certs:
+                    self._ctx.load_verify_locations(f)
+            self._connection = self._ctx.wrap_socket(self._sock, server_hostname=server_name)
         else:
-            # Reset the verify flags
-            self._ssl_verify_flags = 0
-
-        self._ctx.set_verify(self._ssl_verify_flags, ssl_verify_callback)
-        if hasattr(SSL, "OP_DONT_INSERT_EMPTY_FRAGMENTS"):
-            # Certain SSL implementations break when empty fragments are
-            # initially sent (even if sending them is compliant to
-            # SSL 3.0 and TLS 1.0 specs). Play it safe and disable this
-            # feature (openssl 0.9.6e and later)
-            self._ctx.set_options(SSL.OP_DONT_INSERT_EMPTY_FRAGMENTS)
-
-        # Init the connection
-        self._connection = SSL.Connection(self._ctx, self._sock)
-        # Set server name if defined. This allows connections to
-        # SNI-enabled servers
-        if server_name is not None and getattr(self._connection, "set_tlsext_host_name", None):
-            self._connection.set_tlsext_host_name(bstr(server_name))
-        # Place the connection in client mode
-        self._connection.set_connect_state()
+            # Python 2.6-2.7.8
+            cacert = None
+            if self._trusted_certs:
+                # seems python2.6 supports only 1
+                cacert = self._trusted_certs[0]
+            self._connection = SSL.wrap_socket(self._sock,
+                                               ssl_version=self._ssl_method,
+                                               cert_reqs=SSL.CERT_REQUIRED,
+                                               ca_certs=cacert)
+            match_hostname(self._connection.getpeercert(), server_name)
 
     def makefile(self, mode, bufsize=None):
         """
@@ -154,22 +154,6 @@ class SSLSocket:
         # No connection was established
         if self._connection is None:
             return
-        get_state = None
-        try:
-            get_state = getattr(self._connection, 'state_string')
-        except AttributeError:
-            get_state = getattr(self._connection, 'get_state_string')
-
-        if get_state is not None:
-            # for Python 3
-            if sys.version_info[0] == 3:
-                if get_state() == b'SSL negotiation finished successfully':
-                    self._connection.shutdown()
-            # for Python 2
-            else:
-                if get_state() == 'SSL negotiation finished successfully':
-                    self._connection.shutdown()
-
         self._connection.close()
         self._closed = 1
 
@@ -224,17 +208,18 @@ class SSLSocket:
                 if pending == 0 and buffer_length == amt:
                     # we're done here
                     break
-            except SSL.ZeroReturnError:
-                # Nothing more to be read
-                break
-            except SSL.SysCallError:
-                e = sys.exc_info()[1]
-                print("SSL exception", e.args)
-                break
-            except SSL.WantWriteError:
-                self._poll(select.POLLOUT, 'read')
-            except SSL.WantReadError:
-                self._poll(select.POLLIN, 'read')
+            except SSL.SSLError as err:
+                if err.args[0] == SSL.SSL_ERROR_ZERO_RETURN:
+                    # Nothing more to be read
+                    break
+                elif err.args[0] == SSL.SSL_ERROR_SYSCALL:
+                    e = sys.exc_info()[1]
+                    print("SSL exception", e.args)
+                    break
+                elif err.args[0] == SSL.SSL_ERROR_WANT_WRITE:
+                    self._poll(select.POLLOUT, 'read')
+                elif err.args[0] == SSL.SSL_ERROR_WANT_READ:
+                    self._poll(select.POLLIN, 'read')
 
         if amt:
             ret = self._buffer[:amt]
@@ -272,10 +257,11 @@ class SSLSocket:
                 if sent == len(data):
                     break
                 data = data[sent:]
-            except SSL.WantWriteError:
-                self._poll(select.POLLOUT, 'write')
-            except SSL.WantReadError:
-                self._poll(select.POLLIN, 'write')
+            except SSL.SSLError as err:
+                if err.args[0] == SSL.SSL_ERROR_WANT_WRITE:
+                    self._poll(select.POLLOUT, 'write')
+                elif err.args[0] == SSL.SSL_ERROR_WANT_READ:
+                    self._poll(select.POLLIN, 'write')
 
         return origlen
 
@@ -318,13 +304,14 @@ class SSLSocket:
             try:
                 data = self._connection.recv(bufsize)
                 self._buffer = self._buffer + data
-            except SSL.ZeroReturnError:
-                # Nothing more to be read
-                break
-            except SSL.WantWriteError:
-                self._poll(select.POLLOUT, 'readline')
-            except SSL.WantReadError:
-                self._poll(select.POLLIN, 'readline')
+            except SSL.SSLError as err:
+                if err.args[0] == SSL.SSL_ERROR_ZERO_RETURN:
+                    # Nothing more to be read
+                    break
+                elif err.args[0] == SSL.SSL_ERROR_WANT_WRITE:
+                    self._poll(select.POLLOUT, 'readline')
+                elif err.args[0] == SSL.SSL_ERROR_WANT_READ:
+                    self._poll(select.POLLIN, 'readline')
 
         # We got here if we're done reading, so return everything
         ret = self._buffer
@@ -333,15 +320,7 @@ class SSLSocket:
         return ret
 
 
-def ssl_verify_callback(conn, cert, errnum, depth, ok):
-    """
-    Verify callback, which will be called for each certificate in the
-    certificate chain.
-    """
-    # Nothing by default
-    return ok
-
-class TimeoutException(SSL.Error, socket.timeout):
+class TimeoutException(SSL.SSLError, socket.timeout):
 
     def __init__(self, *args):
         self.args = args

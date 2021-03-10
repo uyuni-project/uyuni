@@ -1,8 +1,37 @@
+- add virtual network create action
+
+-------------------------------------------------------------------
+Fri Mar 05 15:43:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.11-1
+- Get rid of validator global variable
+
+-------------------------------------------------------------------
+Thu Feb 25 12:10:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- Replace CRLF in ssh priv key when bootstrapping (bsc#1182685)
+- Inform user when a request timeout happens (bsc#1178767)
+- Allow to configure request timeout (bsc#1178767)
+- Usage of "edit" icon on Content Lifecycle Management
+
+-------------------------------------------------------------------
+Fri Feb 12 14:32:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- Upgrade immer to fix CVE-2020-28477
+
+-------------------------------------------------------------------
+Mon Feb 08 11:36:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Show the correct version at the WebUI 
+
 -------------------------------------------------------------------
 Mon Feb 01 10:22:21 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.7-1
-- Uyuni 2021.02
+- Uyuni 2021.01
 
 -------------------------------------------------------------------
 Fri Jan 29 14:44:57 CET 2021 - jgonzalez@suse.com

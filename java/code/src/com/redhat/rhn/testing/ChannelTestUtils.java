@@ -29,7 +29,6 @@ import java.util.Set;
 
 /**
  * ChannelTestUtils
- * @version $Rev$
  */
 public class ChannelTestUtils {
     public static final int VIRT_INDEX = 1;

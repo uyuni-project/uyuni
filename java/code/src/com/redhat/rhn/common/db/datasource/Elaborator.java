@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * Elaboratable
- * @version $Rev$
  */
 public interface Elaborator {
 

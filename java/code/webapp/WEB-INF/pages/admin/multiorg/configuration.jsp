@@ -5,15 +5,6 @@
 
 <html:html>
     <body>
-    <script language="javascript" type="text/javascript">
-        function modifyUploadCheckbox(checkbox) {
-            if (checkbox.checked == false) {
-                document.getElementById("crashfile_upload_enabled").disabled = true;
-            } else {
-                document.getElementById("crashfile_upload_enabled").disabled = false;
-            }
-        }
-    </script>
     <c:choose>
         <c:when test="${param.oid != 1}">
             <rhn:toolbar base="h1" icon="header-organisation"

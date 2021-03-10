@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.virtualization.test;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -33,13 +34,13 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +53,7 @@ import org.jmock.Expectations;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
@@ -88,6 +90,15 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                         new TypeToken<Map<String, JsonObject>>() { })
                         .orElse(Collections.emptyMap());
             }
+
+            @Override
+            public List<JsonObject> getHostDevices(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.node_devices.json",
+                        null,
+                        new TypeToken<List<JsonObject>>() { })
+                        .orElse(Collections.emptyList());
+            }
         };
 
         ServerGroupManager serverGroupManager = new ServerGroupManager();
@@ -115,6 +126,32 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertFalse(net1.isAutostart());
         assertTrue(net1.isPersistent());
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
+    }
+
+    public void testDevices() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.devices(getRequestWithCsrf(
+                "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user);
+
+        List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() {}.getType());
+
+        // Physical function device
+        JsonObject eth0 = devs.stream().filter(dev -> dev.get("name").getAsString().equals("eth0")).findFirst().get();
+        assertTrue(eth0.get("PF").getAsBoolean());
+        assertFalse(eth0.get("VF").getAsBoolean());
+
+        // Non SR-IOV device (can be a device where SR-IOV is not enabled from the host side)
+        JsonObject eth1 = devs.stream().filter(dev -> dev.get("name").getAsString().equals("eth1")).findFirst().get();
+        assertFalse(eth1.get("PF").getAsBoolean());
+        assertFalse(eth1.get("VF").getAsBoolean());
+
+        // Virtual function device
+        JsonObject eth4 = devs.stream().filter(dev -> dev.get("name").getAsString().equals("eth4")).findFirst().get();
+        assertFalse(eth4.get("PF").getAsBoolean());
+        assertTrue(eth4.get("VF").getAsBoolean());
+        assertEquals("42:8a:c6:98:8d:00", eth4.get("address").getAsString());
+        assertEquals("0000:3d:02.6", eth4.get("PCI address").getAsString());
+        assertEquals("down", eth4.get("state").getAsString());
     }
 
     public void testStart() throws Exception {
@@ -180,6 +217,37 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
         assertEquals("net0", virtAction.getNetworkName());
         assertEquals("delete", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
+
+    public void testCreate() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.create(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/create",
+                        "{names: ['net0'], definition: {type: 'bridge', autostart: true, bridge: 'ovs0', " +
+                                "virtualport: {type: 'openvswitch', interfaceid: 'thevportuuid'}, " +
+                                "vlans:[{tag: 41}]}, earliest: '2021-02-17T10:09:00.000Z'}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkCreateAction virtAction = (VirtualizationNetworkCreateAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        NetworkDefinition def = virtAction.getDefinition();
+        assertEquals("bridge", def.getForwardMode());
+        assertEquals(Optional.of("ovs0"), def.getBridge());
+        assertTrue(def.isAutostart());
+        assertEquals("openvswitch", def.getVirtualPort().get().getType());
+        assertEquals(Optional.of("thevportuuid"), def.getVirtualPort().get().getInterfaceId());
+        assertEquals(41, def.getVlans().get(0).getTag());
 
         // Check the returned message
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());

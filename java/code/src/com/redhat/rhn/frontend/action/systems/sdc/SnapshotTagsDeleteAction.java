@@ -39,7 +39,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemPendingEventsCancelAction
- * @version $Rev$
  */
 public class SnapshotTagsDeleteAction extends RhnAction {
 

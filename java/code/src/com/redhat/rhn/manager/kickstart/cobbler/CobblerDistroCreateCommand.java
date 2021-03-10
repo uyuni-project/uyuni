@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public class CobblerDistroCreateCommand extends CobblerDistroCommand {
 

@@ -21,7 +21,6 @@ import com.redhat.rhn.FaultException;
 /**
  * SearchServerIndexException is used to note inconsistencies between search server indexes
  * and database values
- * @version $Rev$
  */
 public class SearchServerIndexException extends FaultException {
 

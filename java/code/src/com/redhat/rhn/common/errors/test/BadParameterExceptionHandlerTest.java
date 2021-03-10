@@ -38,7 +38,6 @@ import java.util.Vector;
 
 /**
  * BadParameterExceptionHandlerTest
- * @version $Rev$
  */
 public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 

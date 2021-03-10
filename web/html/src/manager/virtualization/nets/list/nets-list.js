@@ -39,7 +39,6 @@ export function NetsList(props: Props) {
         description={t('This is a list of virtual networks which are configured to run on this host.')}
         modalsData={modalsData}
         idName="name"
-        canCreate={false}
       >
         {
           (createModalButton, onAction) => {

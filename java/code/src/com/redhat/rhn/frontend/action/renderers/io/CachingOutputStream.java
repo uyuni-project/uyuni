@@ -23,7 +23,6 @@ import java.io.IOException;
 /**
  * Caches all content written to it to be retrieved
  * later
- * @version $Rev$
  */
 public class CachingOutputStream extends LegacyServletOutputStream {
 

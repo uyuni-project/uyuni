@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * DiffAction - for System Set Manager
- * @version $Rev$
  */
 public class ConfigListAction extends BaseSetListAction {
 

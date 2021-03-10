@@ -26,7 +26,6 @@ import java.util.HashMap;
  * SessionCleanup
  * Deletes orphan uuids from rhnVirtualInstance table
  * Deletes duplicated uuids for same system id from rhnVirtualInstances
- * @version $Rev$
  */
 public class UuidCleanup extends RhnJavaJob {
 

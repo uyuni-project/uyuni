@@ -25,7 +25,6 @@ import java.util.Map;
 
 /**
  * A set of helpers for create user forms.
- * @version $Rev$
  */
 public class UserActionHelper {
 

@@ -19,7 +19,6 @@ package com.redhat.rhn.frontend.dto;
 /**
  *
  * OrgDto class represents Trusted Org lists
- * @version $Rev$
  */
 public class OrgTrustOverview extends BaseDto {
     private Long id;

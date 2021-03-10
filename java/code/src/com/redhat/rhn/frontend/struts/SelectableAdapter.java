@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.struts;
 
 /**
  * SelectableAdapter
- * @version $Rev$
  */
 public abstract class SelectableAdapter implements Selectable {
     private boolean selected;

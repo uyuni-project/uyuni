@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.ActionFormatter;
  * ErrataActionFormatter - Class that overrides getNotes()
  * to display Errata specific information.
  *
- * @version $Rev$
  */
 public class ScriptActionFormatter extends ActionFormatter {
 

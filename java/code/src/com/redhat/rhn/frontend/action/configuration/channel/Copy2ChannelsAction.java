@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Copy2SystemsAction
- * @version $Rev$
  */
 public class Copy2ChannelsAction extends BaseCopyToAction {
 

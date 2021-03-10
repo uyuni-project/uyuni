@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * BaseSystemPackagesAction
- * @version $Rev$
  */
 public abstract class BaseSystemPackagesAction extends RhnAction {
     private static final String LIST_NAME = "packageList";

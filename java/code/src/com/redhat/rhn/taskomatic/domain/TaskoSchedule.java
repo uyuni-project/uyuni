@@ -29,7 +29,6 @@ import java.util.Map;
  * a schedule represents a concrete bunch, that is scheduled with specified parameters,
  * in specified time period with some periodicity
  * TaskoSchedule
- * @version $Rev$
  */
 public class TaskoSchedule {
 

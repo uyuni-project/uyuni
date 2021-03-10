@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.taglibs;
 
 /**
  * NoteTag
- * @version $Rev$
  */
 public class NoteTag extends ToolTipTag {
 

@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ResetPassword
- * @version $Rev$
  */
 public class ResetPassword extends BaseDomainHelper {
 

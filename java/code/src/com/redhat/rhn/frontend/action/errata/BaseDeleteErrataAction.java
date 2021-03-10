@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseDeleteErrataAction
- * @version $Rev$
  */
 public abstract class BaseDeleteErrataAction extends RhnAction {
 

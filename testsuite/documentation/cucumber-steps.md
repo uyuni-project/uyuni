@@ -324,8 +324,8 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I check the row with the "virgo-dummy-3456" link
-  When I check the row with the "sle_client" hostname
   When I check the row with the "suse_docker_admin" text
+  When I check the "sle_client" client
   When I check "New Test Channel" in the list
   When I uncheck "hoag-dummy-1.1-1.1" in the list
 ```
@@ -738,6 +738,8 @@ When I refresh the "test-pool0" storage pool of this "kvm-server"
 
 ```cucumber
 When I should not see a "test-net1" virtual network on "kvm-server"
+When I should see a "test-net2" virtual network on "kvm_server"
+When "test-net2" on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 ```
 
 <a name="c" />

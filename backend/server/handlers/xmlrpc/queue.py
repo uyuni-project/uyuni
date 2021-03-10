@@ -24,6 +24,7 @@ except ImportError:
     import xmlrpc.client as xmlrpclib
 
 from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb
+from rhn.i18n import sstr
 
 # Global modules
 from spacewalk.common import rhnFlags
@@ -433,10 +434,7 @@ class Queue(rhnHandler):
                 raise_with_tb(rhnFault(30, _("Invalid action value type %s (%s)") %
                                (action_id, type(action_id))), sys.exc_info()[2])
         # bring message into correct format
-        try:
-            message = message.encode('utf8')
-        except UnicodeEncodeError:
-            pass
+        message = sstr(message)
 
         # Authenticate the system certificate
         self.auth_system(system_id)
@@ -487,7 +485,7 @@ class Queue(rhnHandler):
                 rmsg = result["faultString"] + str(data)
         if type(rcode) in [type({}), type(()), type([])] \
                 or type(rcode) is not IntType:
-            rmsg = "%s [%s]" % (UnicodeType(message), UnicodeType(rcode))
+            rmsg = "%s [%s]" % (message, rcode)
             rcode = -1
         # map to db codes.
         status = self.status_for_action_type_code(action_type, rcode)

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataChannelIntersectionAction
- * @version $Rev$
  */
 public class ErrataChannelIntersectionAction extends RhnAction {
 

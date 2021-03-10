@@ -46,7 +46,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 
 /**
  * ForgotCredentialsAction
- * @version $Rev$
  */
 public class ForgotCredentialsAction extends RhnAction {
     private static Logger log = Logger.getLogger(ForgotCredentialsAction.class);

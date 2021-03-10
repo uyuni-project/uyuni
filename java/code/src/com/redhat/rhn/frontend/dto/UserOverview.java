@@ -23,7 +23,6 @@ import java.util.Date;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev$
  */
 public class UserOverview extends BaseDto {
     private Long orgId;

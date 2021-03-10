@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.struts;
 
 /**
  * Selectable
- * @version $Rev$
  */
 public interface Selectable {
     /**

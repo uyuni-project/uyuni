@@ -51,7 +51,6 @@ import java.util.Set;
 
 /**
  * ProfileHandlerTest
- * @version $Rev$
  */
 public class ProfileHandlerTest extends BaseHandlerTestCase {
 

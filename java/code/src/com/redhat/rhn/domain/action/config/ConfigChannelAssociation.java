@@ -34,7 +34,6 @@ import java.io.Serializable;
  * See:
  * http://www.hibernate.org/118.html#A11
  *
- * @version $Rev$
  */
 public class ConfigChannelAssociation extends ActionChild implements Serializable {
 

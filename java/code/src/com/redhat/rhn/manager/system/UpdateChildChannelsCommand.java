@@ -40,7 +40,6 @@ import java.util.List;
 /**
  * UpdateChildChannelsCommand - this will *NOT* remove Proxy or Satellite child channel
  * subscriptions.
- * @version $Rev$
  */
 public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
     /**

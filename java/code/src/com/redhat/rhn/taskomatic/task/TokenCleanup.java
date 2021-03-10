@@ -33,7 +33,6 @@ import java.util.stream.Stream;
 
 /**
  * TokenCleanup
- * @version $Rev$
  */
 public class TokenCleanup extends RhnJavaJob {
 

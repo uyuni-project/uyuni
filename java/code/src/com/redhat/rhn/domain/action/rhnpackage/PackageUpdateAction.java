@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.rhnpackage;
 
 /**
  * PackageUpdateAction
- * @version $Rev$
  */
 public class PackageUpdateAction extends PackageAction {
 

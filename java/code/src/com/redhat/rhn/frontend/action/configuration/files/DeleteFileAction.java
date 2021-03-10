@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteFileAction
- * @version $Rev$
  */
 public class DeleteFileAction extends RhnAction {
 

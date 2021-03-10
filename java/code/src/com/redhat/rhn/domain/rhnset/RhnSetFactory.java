@@ -32,7 +32,6 @@ import java.util.Set;
 
 /**
  * RhnSetFactory
- * @version $Rev$
  */
 public class RhnSetFactory extends HibernateFactory {
     private static final String CATALOG = "Set_queries";

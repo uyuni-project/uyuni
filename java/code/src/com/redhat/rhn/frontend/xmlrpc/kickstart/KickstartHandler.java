@@ -46,7 +46,6 @@ import java.util.List;
  * KickstartHandler
  * @xmlrpc.namespace kickstart
  * @xmlrpc.doc Provides methods to create kickstart files
- * @version $Rev$
  */
 public class KickstartHandler extends BaseHandler {
 

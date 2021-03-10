@@ -33,7 +33,6 @@ import java.util.Map;
 
 /**
  * ChannelEditor
- * @version $Rev$
  */
 public class ChannelEditor {
 

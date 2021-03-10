@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
  * This is the submit action for all three 'copy config file' pages, because
  * the actual work for copying a config file is the same no matter what type of
  * channel you are copying from or to.
- * @version $Rev$
  */
 public abstract class BaseCopyFileSubmitAction extends BaseSetOperateOnSelectedItemsAction {
 

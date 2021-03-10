@@ -23,7 +23,6 @@ import java.util.Date;
 /**
  * LastDeployDto - information about the last successful deploy of a given filename to a
  * specific server.  See config_queries.successful_deploys_for
- * @version $Rev$
  */
 public class LastDeployDto extends BaseDto {
 

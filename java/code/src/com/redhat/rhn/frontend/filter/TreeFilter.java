@@ -30,7 +30,6 @@ import java.util.Set;
 
 /**
  * TreeFilter
- * @version $Rev$
  */
 public class TreeFilter implements ResultsFilter {
 
@@ -167,7 +166,6 @@ public class TreeFilter implements ResultsFilter {
      * This class basically serves as a holder
      * of extra information needed by TreeFilter to identify parents.
      * NodeWrapper
-     * @version $Rev$
      */
     private static class NodeInfo {
         private DepthAware node;

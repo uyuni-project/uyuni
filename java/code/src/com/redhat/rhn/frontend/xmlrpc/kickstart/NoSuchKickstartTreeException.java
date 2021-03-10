@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * NoSuchKickstartTreeException
- * @version $Rev$
  */
 public class NoSuchKickstartTreeException extends FaultException {
 

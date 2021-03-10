@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * TokenPackageFactoryTest
- * @version $Rev$
  */
 public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
 

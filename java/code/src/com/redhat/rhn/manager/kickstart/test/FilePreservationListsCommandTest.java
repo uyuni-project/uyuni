@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 /**
  * FilePreservationListsCommandTest
- * @version $Rev$
  */
 public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCase {
 

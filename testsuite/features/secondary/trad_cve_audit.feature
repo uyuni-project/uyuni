@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -48,8 +48,8 @@ Feature: CVE Audit on traditional clients
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
     And I should see a "Download CSV" link
-    And I should see a "Status" link
-    And I should see a "Name" link
+    And I should see a "Status" button
+    And I should see a "Name" button
     And I should see a "extra CVE data update" link
     Then I follow "Install a new patch on this system" on "sle_client" row
     And I should see a "Relevant Patches" text
@@ -69,8 +69,8 @@ Feature: CVE Audit on traditional clients
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
-    And I should see a "Affected, at least one patch available in an assigned channel" text
-    When I check the row with the "sle_client" hostname
+    Then I should see a "Affected, at least one patch available in an assigned channel" text
+    When I check the "sle_client" client
     Then I should see a "system selected" text
     When I am on the System Manager System Overview page
     Then I should see "sle_client" as link
@@ -95,7 +95,7 @@ Feature: CVE Audit on traditional clients
 
   Scenario: Apply patches
     Given I am on the Systems overview page of this "sle_client"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"

@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * KickstartPackageProfileCommand - Command for adding/removing package profiles to sync
  * with a KickstartData.
- * @version $Rev$
  */
 public class KickstartPackageProfileCommand extends BaseKickstartCommand {
 

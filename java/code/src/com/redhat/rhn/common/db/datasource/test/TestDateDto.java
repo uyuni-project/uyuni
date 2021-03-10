@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * TestDateDto
- * @version $Rev$
  */
 public class TestDateDto {
 

@@ -30,7 +30,6 @@ import java.util.Map;
 
 /**
  * ChannelOrgHandlerTest
- * @version $Rev$
  */
 public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 

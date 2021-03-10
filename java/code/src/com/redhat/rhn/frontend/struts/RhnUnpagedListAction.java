@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * RhnUnpagedListAction
- * @version $Rev$
  */
 public class RhnUnpagedListAction extends RhnAction {
 

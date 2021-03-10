@@ -16,7 +16,6 @@ package com.redhat.rhn.taskomatic.task.threaded;
 
 /**
  * Interface for all workers used in by the TaskQueue
- * @version $Rev$
  */
 public interface QueueWorker extends Runnable {
 

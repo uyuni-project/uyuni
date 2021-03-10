@@ -35,7 +35,6 @@ import java.util.Map;
 
 /**
  * UpdateBaseChannelCommand
- * @version $Rev$
  */
 public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
 

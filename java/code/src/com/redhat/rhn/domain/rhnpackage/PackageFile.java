@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * PackageArch
- * @version $Rev$
  */
 public class PackageFile extends BaseDomainHelper implements Serializable {
 

@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * Copying, whether to local or global channels, looks pretty much the same.
  * This class handles all the common code
- * @version $Rev$
  */
 public abstract class BaseCopyToAction extends RhnAction {
 

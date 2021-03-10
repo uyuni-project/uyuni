@@ -30,7 +30,6 @@ import java.util.Map;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
- * @version $Rev$
  */
 public class CobblerProfileCreateCommand extends CobblerProfileCommand {
 

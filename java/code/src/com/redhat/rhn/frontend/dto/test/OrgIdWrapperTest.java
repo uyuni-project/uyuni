@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 
 /**
  * OrgIdWrapperTest
- * @version $Rev$
  */
 public class OrgIdWrapperTest extends TestCase {
 

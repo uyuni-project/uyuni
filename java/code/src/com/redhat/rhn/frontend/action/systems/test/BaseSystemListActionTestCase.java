@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * BaseSystemListActionTest
- * @version $Rev$
  */
 public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
 

@@ -21,7 +21,6 @@ import org.hibernate.Session;
 
 /**
  * RoleFactory
- * @version $Rev$
  */
 public class RoleFactory extends HibernateFactory {
 

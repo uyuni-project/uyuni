@@ -381,7 +381,8 @@ RES8 = [
     "python3-chardet",
     "python3-pysocks",
     "python3-pytz",
-    "python3-setuptools"
+    "python3-setuptools",
+    "python3-distro"
 ]
 
 RES8_X86 = [
@@ -395,6 +396,7 @@ PKGLIST15_SALT = [
     "python3-Babel",
     "python3-certifi",
     "python3-chardet",
+    "python3-distro",
     "python3-idna",
     "python3-Jinja2",
     "python3-MarkupSafe",
@@ -421,7 +423,14 @@ PKGLIST15SP0SP1_SALT = [
 ]
 
 PKGLIST15_TRAD = [
+    "dbus-1-glib",
+    "glib2-tools",
+    "gio-branding-SLE",
+    "girepository-1_0",
     "libgudev-1_0-0",
+    "libgirepository-1_0-1",
+    "libgio-2_0-0",
+    "libgobject-2_0-0",
     "libnewt0_52",
     "libslang2",
     "newt",
@@ -429,7 +438,9 @@ PKGLIST15_TRAD = [
     "python3-cffi",
     "python3-cryptography",
     "python-dmidecode",
+    "python3-dbus-python",
     "python3-dmidecode",
+    "python3-gobject",
     "python3-libxml2-python",
     "python3-netifaces",
     "python3-newt",
@@ -452,6 +463,7 @@ PKGLIST15_TRAD = [
     "python3-spacewalk-client-tools",
     "python3-uyuni-common-libs*",
     "mgr-daemon|spacewalksd",
+    "shared-mime-info",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
     "zypp-plugin-spacewalk",
@@ -562,6 +574,7 @@ PKGLISTUBUNTU2004 = [
     "libzmq5",
     "python3-crypto",
     "python3-dateutil",
+    "python3-distro",
     "python3-jinja2",
     "python3-markupsafe",
     "python3-msgpack",
@@ -641,6 +654,7 @@ PKGLISTDEBIAN10 = [
     "python3-chardet",
     "python3-six",
     "python3-dateutil",
+    "python3-distro",
     "python3-tz",
     "python3-croniter",
     "python3-crypto",
@@ -1076,6 +1090,22 @@ DATA = {
     'SLE-15-SP2-x86_64' : {
         'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SLE-15-SP3-aarch64' : {
+        'PDID' : [2142, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-ppc64le' : {
+        'PDID' : [2143, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_PPC,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-s390x' : {
+        'PDID' : [2144, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_Z,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLE-15-SP3-x86_64' : {
+        'PDID' : [2145, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SUMA-41-PROXY-x86_64' : {
         'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,

@@ -30,7 +30,6 @@ import java.util.zip.ZipEntry;
 /**
  * An interface to find classes that implement a given interface.
  *
- * @version $Rev$
  */
 class JarFinder implements Finder {
 

@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * LocalConfigFileList
- * @version $Rev$
  */
 public class LocalConfigFileList extends BaseListAction {
 

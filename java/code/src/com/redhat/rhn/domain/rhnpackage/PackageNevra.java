@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.rhnpackage;
 
 /**
  * PackageName
- * @version $Rev$
  */
 public class PackageNevra {
 

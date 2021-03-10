@@ -22,7 +22,6 @@ import java.util.Vector;
 
 /**
  * PackageCreateTest
- * @version $Rev$
  */
 public class PackageCreateTest extends BaseTestCaseWithUser {
 

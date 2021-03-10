@@ -29,7 +29,6 @@ import java.util.Iterator;
  * ListControl is the basic method of control for a list of dataresults to be
  * shown with the ListDisplayTag. It provides filtering and indexing mechanisms
  * for showing data.
- * @version $Rev$
  */
 public class ListControl {
     private boolean indexData;

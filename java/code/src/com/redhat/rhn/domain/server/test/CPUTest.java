@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * CPUTest
- * @version $Rev$
  */
 public class CPUTest extends RhnBaseTestCase {
 

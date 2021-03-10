@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ConfigFileForm
- * @version $Rev$
  */
 public class ConfigFileForm extends ScrubbingDynaActionForm {
 

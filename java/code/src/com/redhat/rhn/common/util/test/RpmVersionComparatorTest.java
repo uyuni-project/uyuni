@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 
 /**
  * RpmVersionComparatorTest
- * @version $Rev$
  */
 public class RpmVersionComparatorTest extends TestCase {
 

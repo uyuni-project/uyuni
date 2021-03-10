@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * SnapshotTagAlreadyExistsException
- * @version $Rev$
  */
 public class SnapshotTagAlreadyExistsException extends FaultException {
     /**

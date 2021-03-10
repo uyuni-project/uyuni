@@ -51,7 +51,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * SyncRepositoriesAction
- * @version $Rev$
  */
 public class SyncRepositoriesAction extends RhnAction implements Listable {
 

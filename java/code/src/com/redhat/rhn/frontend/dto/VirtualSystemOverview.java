@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.filter.DepthAware;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev$
  */
 public class VirtualSystemOverview extends SystemOverview
                                         implements DepthAware {

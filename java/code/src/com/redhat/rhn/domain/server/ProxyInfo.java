@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class ProxyInfo {
     private Server server;

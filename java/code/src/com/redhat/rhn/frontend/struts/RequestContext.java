@@ -53,7 +53,6 @@ import javax.servlet.http.HttpServletRequest;
  * parameters for their ID's and then retrieving them from the
  * appropriate manager.
  *
- * @version $Rev$
  */
 public class RequestContext {
 

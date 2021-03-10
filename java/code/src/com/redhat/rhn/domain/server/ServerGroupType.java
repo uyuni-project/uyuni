@@ -24,7 +24,6 @@ import java.util.Set;
 /**
  * Class that represents the rhnServerGroupType table.
  *
- * @version $Rev$
  */
 public class ServerGroupType extends AbstractLabelNameHelper {
     private char permanent;

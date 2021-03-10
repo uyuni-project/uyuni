@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 /**
  * UserPrefSetupActionTest - Good **EXAMPLE** of a basic SetupActionTest class.
- * @version $Rev$
  */
 public class UserPrefSetupActionTest extends RhnBaseTestCase {
 

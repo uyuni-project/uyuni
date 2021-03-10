@@ -38,7 +38,6 @@ import java.util.Vector;
 
 /**
  * LookupExceptionHandlerTest
- * @version $Rev$
  */
 public class LookupExceptionHandlerTest extends MockObjectTestCase {
 

@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * KickstartCommandNameSerializer: Converts a KickstartCommandName object for
  * representation as an XMLRPC struct.
- * @version $Rev$
  *
  */
 public class KickstartCommandNameSerializer extends RhnXmlRpcCustomSerializer {

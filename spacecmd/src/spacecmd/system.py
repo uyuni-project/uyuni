@@ -2749,6 +2749,15 @@ def do_system_addchildchannels(self, args):
 ####################
 
 
+def _crashes_api_removed(check_api_version):
+    crashes_api_removed_version = '25'
+    if check_api_version(crashes_api_removed_version):
+        logging.error(_("This method was removed since API version %s") % crashes_api_removed_version)
+        return True
+    else:
+        logging.warning(_("This method is deprecated and will be removed in API version %s") % crashes_api_removed_version)
+    return False
+
 def help_system_listcrashedsystems(self):
     print(_("system_listcrashedsystems: List all systems that have experienced a crash and reported by spacewalk-abrt"))
     print(_('usage: system_listcrashedsystems'))
@@ -2756,6 +2765,8 @@ def help_system_listcrashedsystems(self):
 
 
 def do_system_listcrashedsystems(self, args):
+    if _crashes_api_removed(self.check_api_version):
+        return 1
     print('')
     print(_('Count | System ID | Profile Name'))
     print('--------------------------------')
@@ -2784,6 +2795,8 @@ def print_msg(string_msg, flag_verbose):
 
 
 def do_system_deletecrashes(self, args):
+    if _crashes_api_removed(self.check_api_version):
+        return 1
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-i', '--sysid')
     arg_parser.add_argument('-c', '--crashid')
@@ -2828,6 +2841,8 @@ def help_system_listcrashesbysystem(self):
 
 
 def do_system_listcrashesbysystem(self, args):
+    if _crashes_api_removed(self.check_api_version):
+        return 1
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-i', '--sysid')
 
@@ -2858,6 +2873,8 @@ def help_system_getcrashfiles(self):
 
 
 def do_system_getcrashfiles(self, args):
+    if _crashes_api_removed(self.check_api_version):
+        return 1
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-c', '--crashid')
     arg_parser.add_argument('-d', '--dest_folder')

@@ -29,7 +29,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * BaseSetOperateOnDiffActionTest
- * @version $Rev$
  */
 public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
 

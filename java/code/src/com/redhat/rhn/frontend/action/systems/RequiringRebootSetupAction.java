@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * InactiveSetupAction
- * @version $Rev$
  */
 public class RequiringRebootSetupAction extends BaseSystemsAction {
 

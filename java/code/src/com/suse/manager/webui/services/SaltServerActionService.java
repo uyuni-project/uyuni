@@ -69,6 +69,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDis
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
@@ -117,6 +118,10 @@ import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.DnsHostDef;
+import com.suse.manager.virtualization.DnsTxtDef;
+import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.VirtStatesHelper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -125,8 +130,8 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -432,6 +437,10 @@ public class SaltServerActionService {
             VirtualizationNetworkStateChangeAction networkAction = (VirtualizationNetworkStateChangeAction) actionIn;
             return virtNetworkStateChangeAction(minions, networkAction.getNetworkName(), networkAction.getState());
         }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.equals(actionType)) {
+            VirtualizationNetworkCreateAction networkAction = (VirtualizationNetworkCreateAction)actionIn;
+            return virtNetworkCreateAction(minions, networkAction.getNetworkName(), networkAction.getDefinition());
+        }
         else if (ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES.equals(actionType)) {
             ClusterGroupRefreshNodesAction clusterAction =
                     (ClusterGroupRefreshNodesAction)actionIn;
@@ -552,7 +561,7 @@ public class SaltServerActionService {
     private void startActionChainExecution(ActionChain actionChain, Set<MinionSummary> targetMinions) {
         // prepare the start action chain call
         Map<Boolean, ? extends Collection<MinionSummary>> results =
-                callAsyncActionChainStart(MgrActionChains.start(actionChain.getId()), targetMinions);
+                callAsyncActionChainStart(actionChain, targetMinions);
 
         results.get(false).forEach(minionSummary -> {
             LOG.warn("Failed to schedule action chain for minion: " +
@@ -716,7 +725,7 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                handleActionChainResult(minionId, "", 0, true,
+                handleActionChainResult(minionId, "",
                         actionChainResult,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
@@ -950,10 +959,6 @@ public class SaltServerActionService {
         if (!sshMinionIds.isEmpty()) {
             startSSHActionChain(actionChain, sshMinionIds, extraFilerefs);
         }
-
-        // We have generated the sls files for the action chain execution.
-        // Delete the action chain db entity as it's no longer needed.
-        ActionChainFactory.delete(actionChain);
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction,
@@ -2012,6 +2017,110 @@ public class SaltServerActionService {
     }
 
 
+    private Map<LocalCall<?>, List<MinionSummary>> virtNetworkCreateAction(List<MinionSummary> minionSummaries,
+                                                                           String networkName,
+                                                                           NetworkDefinition def) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+                            Map<String, Object> pillar = new HashMap<>();
+                            pillar.put("network_name", networkName);
+                            def.getBridge().ifPresent(bridge -> pillar.put("bridge", bridge));
+                            pillar.put("forward", def.getForwardMode());
+                            pillar.put("autostart", def.isAutostart());
+                            def.getMtu().ifPresent(mtu -> pillar.put("mtu", mtu));
+                            def.getDomain().ifPresent(domain -> pillar.put("domain", domain));
+                            def.getPhysicalFunction().ifPresent(pf -> pillar.put("physical_function", pf));
+                            if (!def.getVirtualFunctions().isEmpty()) {
+                                pillar.put("addresses", String.join(" ", def.getVirtualFunctions()));
+                            }
+                            if (!def.getInterfaces().isEmpty()) {
+                                pillar.put("interfaces", String.join(" ", def.getInterfaces()));
+                            }
+                            if (!def.getVlans().isEmpty()) {
+                                Map<String, Object> tag = new HashMap<>();
+                                def.getVlanTrunk().ifPresent(trunk -> tag.put("trunk", trunk));
+                                tag.put("tags",
+                                        def.getVlans().stream().map(vlan -> {
+                                            HashMap<String, Object> vlanPillar = new HashMap<>();
+                                            vlanPillar.put("id", vlan.getTag());
+                                            vlan.getNativeMode().ifPresent(mode -> vlanPillar.put("nativeMode", mode));
+                                            return vlanPillar;
+                                        }).collect(Collectors.toList())
+                                );
+                                pillar.put("tag", tag);
+                            }
+                            def.getVirtualPort().ifPresent(vportData -> {
+                                Map<String, Object> vport = new HashMap<>();
+                                vport.put("type", vportData.getType());
+                                Map<String, String> params = new HashMap<>();
+                                vportData.getInstanceId().ifPresent(id -> params.put("instanceid", id));
+                                vportData.getInterfaceId().ifPresent(id -> params.put("interfaceid", id));
+                                vportData.getManagerId().ifPresent(id -> params.put("managerid", id));
+                                vportData.getTypeId().ifPresent(id -> params.put("typeid", id));
+                                vportData.getTypeIdVersion().ifPresent(v -> params.put("typeidversion", v));
+                                vportData.getProfileId().ifPresent(id -> params.put("profileid", id));
+                                vport.put("params", params);
+                                pillar.put("vport", vport);
+                            });
+                            def.getNat().ifPresent(natData -> {
+                                Map<String, Object> nat = new HashMap<>();
+                                natData.getAddress().ifPresent(range ->
+                                        nat.put("address", VirtStatesHelper.rangeToPillar(range)));
+                                natData.getPort().ifPresent(ports ->
+                                        nat.put("port", VirtStatesHelper.rangeToPillar(ports)));
+                                pillar.put("nat", nat);
+                            });
+                            def.getIpv4().ifPresent(ipDef ->
+                                    pillar.put("ipv4_config", VirtStatesHelper.ipToPillar(ipDef)));
+                            def.getIpv6().ifPresent(ipDef ->
+                                    pillar.put("ipv6_config", VirtStatesHelper.ipToPillar(ipDef)));
+                            def.getDns().ifPresent(dnsData -> {
+                                Map<String, Object> dns = new HashMap<>();
+                                if (!dnsData.getForwarders().isEmpty()) {
+                                    dns.put("forwarders", dnsData.getForwarders().stream().map(fwd -> {
+                                        Map<String, Object> out = new HashMap<>();
+                                        fwd.getAddress().ifPresent(addr -> out.put("addr", addr));
+                                        fwd.getDomain().ifPresent(domain -> out.put("domain", domain));
+                                        return out;
+                                    }).collect(Collectors.toList()));
+                                }
+                                if (!dnsData.getHosts().isEmpty()) {
+                                    dns.put("hosts", dnsData.getHosts().stream()
+                                        .collect(Collectors.toMap(DnsHostDef::getAddress, DnsHostDef::getNames)));
+                                }
+                                if (!dnsData.getTxts().isEmpty()) {
+                                    dns.put("txt", dnsData.getTxts().stream()
+                                        .collect(Collectors.toMap(DnsTxtDef::getName, DnsTxtDef::getValue)));
+                                }
+                                if (!dnsData.getSrvs().isEmpty()) {
+                                    dns.put("srvs", dnsData.getSrvs().stream().map(srv -> {
+                                        Map<String, Object> out = new HashMap<>();
+                                        out.put("name", srv.getName());
+                                        out.put("protocol", srv.getProtocol());
+                                        srv.getTarget().ifPresent(target -> out.put("target", target));
+                                        srv.getPort().ifPresent(port -> out.put("port", port));
+                                        srv.getPriority().ifPresent(priority -> out.put("priority", priority));
+                                        srv.getDomain().ifPresent(domain -> out.put("domain", domain));
+                                        srv.getWeight().ifPresent(weight -> out.put("weight", weight));
+                                        return out;
+                                    }).collect(Collectors.toList()));
+                                }
+                                pillar.put("dns", dns);
+                            });
+
+                            return State.apply(
+                                    Collections.singletonList("virt.network-create"),
+                                    Optional.of(pillar));
+                        },
+                        Collections::singletonList
+                ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+
     private Map<LocalCall<?>, List<MinionSummary>> clusterRefreshNodesAction(
             ClusterGroupRefreshNodesAction clusterAction) {
         Cluster cluster = clusterAction.getCluster();
@@ -2157,27 +2266,31 @@ public class SaltServerActionService {
     }
 
     /**
-     * @param call the call
+     * @param actionChain the actionChain
      * @param minionSummaries a set of minion summaries of the minions involved in the given Action
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, ? extends Collection<MinionSummary>> callAsyncActionChainStart(LocalCall<?> call,
+    private Map<Boolean, Set<MinionSummary>> callAsyncActionChainStart(
+            ActionChain actionChain,
             Set<MinionSummary> minionSummaries) {
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId)
                 .collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Executing action chain for: " +
-                    minionIds.stream().collect(Collectors.joining(", ")));
+            LOG.debug("Executing action chain for: " + String.join(", ", minionIds));
         }
 
         try {
             List<String> results = saltApi
-                    .callAsync(call, new MinionList(minionIds),
-                            Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
+                    .callAsync(MgrActionChains.start(actionChain.getId()), new MinionList(minionIds),
+                            Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain(actionChain.getId())))
+                    .get().getMinions();
 
-            Map<Boolean, ? extends Collection<MinionSummary>> result = minionSummaries.stream().collect(Collectors
-                    .partitioningBy(minion -> results.contains(minion.getMinionId())));
+            Map<Boolean, Set<MinionSummary>> result = minionSummaries.stream()
+                    .collect(Collectors.partitioningBy(
+                            minion -> results.contains(minion.getMinionId()),
+                            Collectors.toSet()
+                    ));
 
             return result;
         }
@@ -2451,13 +2564,11 @@ public class SaltServerActionService {
      *
      * @param minionId the minion id
      * @param jobId the job id
-     * @param retCode the ret code
-     * @param success whether result is successful or not
      * @param actionChainResult job result
      * @param skipFunction function to check if a result should be skipped from handling
      */
     public void handleActionChainResult(
-            String minionId, String jobId, int retCode, boolean success,
+            String minionId, String jobId,
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
             Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
         int chunk = 1;
@@ -2473,7 +2584,7 @@ public class SaltServerActionService {
             if (stateId.isPresent()) {
                 retActionChainId = stateId.get().getActionChainId();
                 chunk = stateId.get().getChunk();
-                Long actionId = stateId.get().getActionId();
+                long actionId = stateId.get().getActionId();
                 if (skipFunction.apply(actionStateApply)) {
                     continue; // skip this state from handling
                 }
@@ -2506,6 +2617,18 @@ public class SaltServerActionService {
             // Removing the generated SLS file
             SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
                     retActionChainId, minionId, chunk, actionChainFailed);
+
+            ActionChainFactory.getActionChain(retActionChainId).ifPresent(ac -> {
+                // We need to reload server actions since saltssh will be in
+                // the same db session from when the action was started and
+                // won't see results of non ssh minions otherwise.
+                ac.getEntries().stream()
+                        .flatMap(ace -> ace.getAction().getServerActions().stream())
+                        .forEach(HibernateFactory::reload);
+                if (ac.isDone()) {
+                    ActionChainFactory.delete(ac);
+                }
+            });
         }
     }
 

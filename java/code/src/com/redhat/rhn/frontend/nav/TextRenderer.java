@@ -26,7 +26,6 @@ import java.util.Map;
  * <pre>
  *     (*) Node 'name': url [acl: acl] "
  * </pre>
- * @version $Rev$
  */
 
 public class TextRenderer extends Renderable {

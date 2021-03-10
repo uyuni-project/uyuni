@@ -20,7 +20,6 @@ import java.util.Map;
 
 /**
  * ClassBuilder - a ManifestFactory builder which instantiates clases by name.
- * @version $Rev$
  */
 public final class ClassBuilder implements ManifestFactoryBuilder {
 

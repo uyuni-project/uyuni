@@ -31,7 +31,6 @@ import java.util.Objects;
 /**
  * AuthHandler
  * Corresponds to Auth.pm in old perl code.
- * @version $Rev$
  * @xmlrpc.namespace auth
  * @xmlrpc.doc This namespace provides methods to authenticate with the system's
  * management server.

@@ -422,7 +422,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
      * not be affected of a cancellation (bsc#1098993).
      */
     public void testCancelMinionActionsMixedStatus() throws Exception {
-        Action action = createActionWithMinionServerActions(user, ActionFactory.STATUS_PICKEDUP, 3);
+        Action action = createActionWithMinionServerActions(user, ActionFactory.STATUS_PICKED_UP, 3);
 
         // Set first server action to COMPLETED
         Iterator<ServerAction> iterator = action.getServerActions().iterator();

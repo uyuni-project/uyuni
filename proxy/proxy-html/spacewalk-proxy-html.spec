@@ -27,7 +27,7 @@ Name:           spacewalk-proxy-html
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.1
+Version:        4.2.2
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -41,6 +41,13 @@ Requires:       httpd
 This package contains placeholder html pages, which the Spacewalk Server
 displays, if you navigate to it using your browser.
 
+
+%if 0%{?sle_version} && !0%{?is_opensuse}
+%define proxy_dir_name suse_proxy
+%else
+%define proxy_dir_name uyuni_proxy
+%endif
+
 %prep
 %setup -q
 
@@ -49,18 +56,20 @@ displays, if you navigate to it using your browser.
 
 %install
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
-install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy
-install -m 644 _rhn_proxy/* $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy/
+install -d -m 755 $RPM_BUILD_ROOT%{htmldir}/sources
+install -d -m 755 %{proxy_dir_name}/sources/css $RPM_BUILD_ROOT%{htmldir}/sources/css
+install -d -m 755 %{proxy_dir_name}/sources/fonts $RPM_BUILD_ROOT%{htmldir}/sources/fonts
+install -d -m 755 %{proxy_dir_name}/sources/img $RPM_BUILD_ROOT%{htmldir}/sources/img
+cp -pR %{proxy_dir_name}/sources/css/* $RPM_BUILD_ROOT%{htmldir}/sources/css/
+cp -pR %{proxy_dir_name}/sources/fonts/* $RPM_BUILD_ROOT%{htmldir}/sources/fonts/
+cp -pR %{proxy_dir_name}/sources/img/* $RPM_BUILD_ROOT%{htmldir}/sources/img/
+cp -pR %{proxy_dir_name}/*.html $RPM_BUILD_ROOT%{htmldir}/
 
 %files
 %defattr(-,root,root)
-%dir %{htmldir}/_rhn_proxy
-%config %{htmldir}/_rhn_proxy/index.html
-%{htmldir}/_rhn_proxy/*.ico
-%{htmldir}/_rhn_proxy/*.png
+%dir %{htmldir}
+%{htmldir}/index.html
+%{htmldir}/sources
 %doc LICENSE
-%if 0%{?suse_version}
-%dir %dir %{htmldir}/_rhn_proxy
-%endif
 
 %changelog

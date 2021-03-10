@@ -61,7 +61,7 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
           setRequiredChannels(dependencies.requiredChannels);
           setRequiredByChannels(dependencies.requiredByChannels);
         })
-        .catch((jqXHR: any, arg: string = "") => {
+        .catch((jqXHR: JQueryXHR, arg: string = "") => {
           const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
           setMessages(messages.concat(msg));
         })

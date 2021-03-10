@@ -98,7 +98,7 @@ export function ListTab(props: Props) {
   }
 
   const capsType = props.type.replace(/(?:^[a-z])/, word => word.toUpperCase())
-  const createConfirmModal = (action: Object, fn: Function): Array<React.Node> => {
+  const createConfirmModal = (action: Object, onConfirm: Function): Array<React.Node> => {
     return ([
       !action.bulkonly
       && (
@@ -110,7 +110,7 @@ export function ListTab(props: Props) {
           itemName={t(capsType)}
           icon={action.icon}
           selected={[selected].filter(item => item)}
-          fn={(type, items, params) => fn(type, items.map(item => item[props.idName]), params)}
+          onConfirm={(type, items, params) => onConfirm(type, items.map(item => item[props.idName]), params)}
           canForce={action.canForce}
           forceName={action.forceName}
           onClose={() => setSelected({})}
@@ -124,7 +124,7 @@ export function ListTab(props: Props) {
           itemName={t(capsType)}
           icon={action.icon}
           selected={selectedItems}
-          fn={(type, items, params) => fn(type, items.map(item => item[props.idName]), params)}
+          onConfirm={(type, items, params) => onConfirm(type, items.map(item => item[props.idName]), params)}
           canForce={action.canForce}
           forceName={action.forceName}
         />

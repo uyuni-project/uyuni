@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * BaseHandler is the base class for all Acl handlers and should
  * be where we put common reusable methods.
- * @version $Rev$
  */
 public abstract class BaseHandler implements AclHandler {
 

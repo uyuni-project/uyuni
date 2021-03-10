@@ -30,7 +30,6 @@ import java.util.Date;
 
 /**
  * ServerActionTest
- * @version $Rev$
  */
 public class ServerActionTest extends RhnBaseTestCase {
 

@@ -82,6 +82,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", "myhost");
         pillarData.put("contact_method", key
                 .map(k -> k.getContactMethod().getLabel())

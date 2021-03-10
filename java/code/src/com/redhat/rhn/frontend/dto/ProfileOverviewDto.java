@@ -19,7 +19,6 @@ package com.redhat.rhn.frontend.dto;
  * ProfileOverviewDto class represents a stored profile typically listed
  * within the {@literal Systems->Stored} Profiles
  *
- * @version $Rev$
  */
 public class ProfileOverviewDto extends BaseDto {
 

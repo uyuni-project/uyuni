@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * TaskFactory
- * @version $Rev$
  */
 public class TaskFactory extends HibernateFactory {
 

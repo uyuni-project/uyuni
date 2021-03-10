@@ -1,4 +1,26 @@
 - Fixed kickstart tree permissions to a+r.
+- Avoid race condition due multiple reposync import threads (bsc#1183151)
+
+-------------------------------------------------------------------
+Fri Mar 05 15:41:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Fix for UnicodeDecodeError in satellite-sync: Opening RPM file in binary mode (bsc#1181274)
+
+-------------------------------------------------------------------
+Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- Open repomd files as binary (bsc#1173893)
+- Rename rhnVirtualInstanceInfo memory_size_k column
+
+-------------------------------------------------------------------
+Fri Feb 12 14:27:27 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
+- fix string conversion of action result
+- Fix requesting Release file in debian repos (bsc#1182006)
+- Removed "Software Crashes" feature
 
 -------------------------------------------------------------------
 Wed Jan 27 13:01:05 CET 2021 - jgonzalez@suse.com

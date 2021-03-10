@@ -29,7 +29,6 @@ import java.util.Map;
 /**
  * ClientCertificate class representing the systemid file
  * /etc/sysconfig/rhn/systemid.
- * @version $Rev$
  */
 public class ClientCertificate {
 

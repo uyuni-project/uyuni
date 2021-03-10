@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ScheduleDetailAction
- * @version $Rev$
  */
 public class ScheduleDetailAction extends RhnAction {
 

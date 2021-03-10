@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * UserOverviewTest
- * @version $Rev$
  */
 public class UserOverviewTest extends RhnBaseTestCase {
     private UserOverview uo;

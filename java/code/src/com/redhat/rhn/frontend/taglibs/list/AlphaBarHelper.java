@@ -31,7 +31,6 @@ import javax.servlet.jsp.PageContext;
 /**
  *
  * AlphaBarHelper
- * @version $Rev$
  */
 public class AlphaBarHelper {
 

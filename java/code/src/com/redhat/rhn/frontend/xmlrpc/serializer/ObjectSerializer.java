@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ObjectSerializer
- * @version $Rev$
  */
 public class ObjectSerializer extends RhnXmlRpcCustomSerializer {
 

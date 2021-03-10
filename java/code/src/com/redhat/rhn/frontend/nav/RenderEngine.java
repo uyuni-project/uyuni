@@ -20,7 +20,6 @@ import java.util.Map;
 
 /**
  * RenderEngine
- * @version $Rev$
  */
 
 public class RenderEngine {

@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
  *
- * @version $Rev$
  */
 public class SelectMode extends BaseMode implements Serializable {
 

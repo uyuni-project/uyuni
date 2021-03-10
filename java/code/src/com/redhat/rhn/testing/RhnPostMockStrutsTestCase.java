@@ -31,7 +31,6 @@ import servletunit.HttpServletRequestSimulator;
 
 /**
  * RhnPostMockStrutsTestCase
- * @version $Rev$
  */
 public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
 

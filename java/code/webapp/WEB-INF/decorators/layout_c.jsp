@@ -56,7 +56,8 @@
       <script type="text/javascript">
         spaImportReactPage('shared/menu');
         <c:if test="${rhn:getConfig('web.spa.enable')}">
-          window.pageRenderers  && window.pageRenderers.spaengine.init && window.pageRenderers.spaengine.init();
+          <c:set var="spaTimeout" value="${rhn:getConfig('web.spa.timeout')}"/>
+          window.pageRenderers && window.pageRenderers.spaengine.init && window.pageRenderers.spaengine.init(${spaTimeout});
         </c:if>
       </script>
     </div>

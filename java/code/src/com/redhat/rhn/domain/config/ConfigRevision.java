@@ -22,7 +22,6 @@ import java.util.Date;
 
 /**
  * ConfigRevision - Class representation of the table rhnConfigRevision.
- * @version $Rev$
  */
 public class ConfigRevision extends BaseDomainHelper {
 

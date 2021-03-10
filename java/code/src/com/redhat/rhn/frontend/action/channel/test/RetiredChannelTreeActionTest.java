@@ -32,7 +32,6 @@ import java.util.Date;
 
 /**
  * RetiredChannelTreeSetupActionTest
- * @version $Rev$
  */
 public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
 

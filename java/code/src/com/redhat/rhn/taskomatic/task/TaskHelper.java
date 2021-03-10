@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 /**
  * TaskHelper
  * Helper class to provide common functionality to tasks
- * @version $Rev$
  */
 public class TaskHelper {
 

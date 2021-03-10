@@ -44,7 +44,6 @@ import junit.framework.TestCase;
  * SatScrubberTest - this test actually cleans up old junit created test data.
  * After the 410 build is turned off on digdug/cruisecontrol we can remove this
  * test.  Didn't want to check it into our release branch.
- * @version $Rev$
  */
 public class SatScrubberTest extends TestCase {
 

@@ -66,7 +66,6 @@ import java.util.List;
 
 /**
  * ActionFactoryTest
- * @version $Rev$
  */
 public class ActionFactoryTest extends RhnBaseTestCase {
 

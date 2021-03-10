@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * NoSuchCryptoKeyException
- * @version $Rev$
  */
 public class NoSuchCryptoKeyException extends FaultException {
 

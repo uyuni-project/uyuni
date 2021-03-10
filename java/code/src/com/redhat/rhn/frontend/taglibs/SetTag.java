@@ -25,7 +25,6 @@ import javax.servlet.jsp.JspWriter;
 
 /**
  * SetTag
- * @version $Rev$
  */
 public class SetTag extends ColumnTag {
     private String radioElement;

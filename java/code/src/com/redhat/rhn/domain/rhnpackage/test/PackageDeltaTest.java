@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * PackageDeltaTest
- * @version $Rev$
  */
 public class PackageDeltaTest extends RhnBaseTestCase {
     /**

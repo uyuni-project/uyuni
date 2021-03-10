@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * ValidationException
- * @version $Rev$
  */
 public class ValidationException extends FaultException {
 

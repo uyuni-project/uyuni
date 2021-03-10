@@ -29,7 +29,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * ToolTip
  * Renders <span class="small-text"><strong>Tip:</strong>Take Vacations.</span>
- * @version $Rev$
  */
 public class ToolTipTag extends TagSupport {
 

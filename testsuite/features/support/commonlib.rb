@@ -39,8 +39,11 @@ end
 # determine image for PXE boot tests
 def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o'
     'Kiwi/POS_Image-JeOS7_head'
+  when 'sles15sp2', 'sles15sp2o'
+    # Same image version is used in case of 4.0 and 4.1
+    'Kiwi/POS_Image-JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
   else
@@ -50,8 +53,11 @@ end
 
 def compute_image_name
   case ENV['PXEBOOT_IMAGE']
-  when 'sles15sp2', 'sles15sp2o', 'sles15sp3o'
+  when 'sles15sp3', 'sles15sp3o'
     'POS_Image_JeOS7_head'
+  when 'sles15sp2', 'sles15sp2o'
+    # Same kiwi image version is used in case of 4.0 and 4.1
+    'POS_Image_JeOS7_41'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not supported image version.'
   else
@@ -60,8 +66,8 @@ def compute_image_name
 end
 
 # If we for example
-#  - start a reposync in reposync/srv_sync_channels.feature.
-#  - then kill it in reposync/srv_abort_all_sync.feature
+#  - start a reposync in reposync/srv_sync_channels.feature
+#  - then kill it in reposync/srv_wait_for_reposync.feature
 #  - then restart it later on in init_clients/sle_minion.feature
 # then the channel will be in an inconsistent state.
 #

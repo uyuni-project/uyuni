@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * No Such Network Interface Exception
  *
- * @version $Rev$
  */
 public class NoSuchNetworkInterfaceException extends FaultException  {
 

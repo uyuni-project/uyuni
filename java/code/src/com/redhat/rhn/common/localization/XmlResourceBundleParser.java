@@ -27,7 +27,6 @@ import java.util.Map;
 /**
  * Internal class for SAX parsing the XML ResourceBundles.
  * See XmlResourceBundle for usage.
- * @version $Rev$
  */
 
 class XmlResourceBundleParser  extends DefaultHandler {

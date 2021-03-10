@@ -22,7 +22,6 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * BaseCryptoKeyCommand - base for edit/create CryptKeys
- * @version $Rev$
  */
 public abstract class BaseCryptoKeyCommand {
 

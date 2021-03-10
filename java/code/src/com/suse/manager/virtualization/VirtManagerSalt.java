@@ -143,6 +143,16 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    public List<JsonObject> getHostDevices(String minionId) {
+        LocalCall<List<JsonObject>> call =
+                new LocalCall<>("virt.node_devices", Optional.empty(), Optional.empty(),
+                        new TypeToken<List<JsonObject>>() { });
+        return saltApi.callSync(call, minionId).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, JsonObject> getPools(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
@@ -228,7 +238,7 @@ public class VirtManagerSalt implements VirtManager {
                         Map<String, Object> vm = entry.getValue();
                         String state = vm.get("state").toString();
                         GuestProperties props = new GuestProperties(
-                                ((Double)vm.get("maxMem")).longValue(),
+                                ((Double)vm.get("maxMem")).longValue() / 1024,
                                 entry.getKey(),
                                 "shutdown".equals(state) ? "stopped" : state,
                                 vm.get("uuid").toString(),

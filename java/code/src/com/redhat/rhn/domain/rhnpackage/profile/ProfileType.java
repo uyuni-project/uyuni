@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ProfileType
- * @version $Rev$
  */
 public class ProfileType extends BaseDomainHelper {
 

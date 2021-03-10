@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ConfigFileState - Class representation of the table rhnConfigFileState.
- * @version $Rev$
  */
 public class ConfigFileState extends BaseDomainHelper {
 

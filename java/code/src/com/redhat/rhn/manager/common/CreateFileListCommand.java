@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * CreateFileListCommand - Command Class to create and store a
  * com.redhat.rhn.domain.common.FileList.
- * @version $Rev$
  */
 public class CreateFileListCommand extends BaseFileListEditCommand {
 

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * RhnHelper contains helpful methods usable by our presentation layers.
  *
- * @version $Rev$
  */
 public class RhnHelper {
 

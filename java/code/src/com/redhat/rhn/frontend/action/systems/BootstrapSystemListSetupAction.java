@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * Lists bare metal systems.
- * @version $Rev$
  */
 public class BootstrapSystemListSetupAction extends BaseSystemsAction {
 

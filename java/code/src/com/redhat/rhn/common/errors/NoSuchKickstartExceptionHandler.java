@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PermissionExceptionHandler
- * @version $Rev$
  */
 public class NoSuchKickstartExceptionHandler extends ExceptionHandler {
 

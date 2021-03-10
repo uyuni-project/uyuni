@@ -31,7 +31,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * BaseTestToolbarTag
- * @version $Rev$
  */
 public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     protected URL url = null;

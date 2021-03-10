@@ -422,34 +422,5 @@
     </div>
   </div>
 
-  <rhn:require acl="client_capable(abrt.check);" mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4><bean:message key="sdc.details.overview.crashes.application"/></h4>
-      </div>
-      <table class="table">
-        <c:choose>
-          <c:when test="${system.crashCount == null}">
-            <bean:message key="sdc.details.overview.crashes.nodata"/>
-          </c:when>
-          <c:otherwise>
-            <tr>
-              <td><bean:message key="sdc.details.overview.crashes.uniquecrashcount"/></td>
-              <td><a href="/rhn/systems/details/SoftwareCrashes.do?sid=${system.id}"><c:out value="${system.crashCount.uniqueCrashCount}"/></a></td>
-            </tr>
-            <tr>
-              <td><bean:message key="sdc.details.overview.crashes.totalcrashcount"/></td>
-              <td><a href="/rhn/systems/details/SoftwareCrashes.do?sid=${system.id}"><c:out value="${system.crashCount.totalCrashCount}"/></a></td>
-            </tr>
-            <tr>
-              <td><bean:message key="sdc.details.overview.crashes.lastreport"/></td>
-              <td><fmt:formatDate value="${system.crashCount.lastReport}" type="both" dateStyle="short" timeStyle="long"/></td>
-            </tr>
-           </c:otherwise>
-        </c:choose>
-      </table>
-    </div>
-  </rhn:require>
-
 </body>
 </html:html>

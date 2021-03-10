@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
  * Handles display and update of
  * {@literal Kickstart -> System Details -> Locale}
  *
- * @version $Rev$
  */
 public class KickstartLocaleEditAction extends BaseKickstartEditAction {
 

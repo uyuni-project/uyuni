@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EnabledListSetupAction
- * @version $Rev$
  */
 public class EnabledListSetupAction extends RhnAction implements Listable {
     public static final String LIST_NAME = "userList";

@@ -41,7 +41,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * UserHandler
- * @version $Rev$
  * @xmlrpc.namespace user.external
  * @xmlrpc.doc If you are using IPA integration to allow authentication of users from
  * an external IPA server (rare) the users will still need to be created in the #product()

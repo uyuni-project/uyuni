@@ -23,7 +23,6 @@ import org.cobbler.SystemRecord;
 
 
 /**
- * @version $Rev$
  */
 public class CobblerSystemRemoveCommand extends CobblerCommand {
 

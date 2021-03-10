@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * Helper class to hold the number of files and directories
  * Mainly used by ConfigManagger and OverviewAction page.
  * ConfigFileCount
- * @version $Rev$
  */
 public class ConfigFileCount {
     private long files;

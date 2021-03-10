@@ -33,7 +33,14 @@ const args = require("./args");
     const inputPaths = rawInputs.map(item => path.resolve(cwd, item));
     const inputs = inputPaths.join(" ");
     if (isVerbose) {
-      console.log(`got inputs:\n${inputPaths.join("\n")}`);
+      console.log(`got input paths:\n${inputPaths.join("\n")}`);
+    }
+
+    // Sanity check
+    console.log("finding inputs");
+    for (const item of inputPaths) {
+      // If the file exists, all is good; if it throws, the program exits
+      await fs.promises.access(item);
     }
 
     // Run an automatic tool that performs basic syntax transforms
@@ -112,6 +119,10 @@ const args = require("./args");
     console.log("migrate object array to any array");
     await execAndLog(`sed -i'${tempExtension}' -e 's/Array<Object>/Array<any>/' ${tsInputs}`);
 
+    // Hash<...> -> Record<...>
+    console.log("migrate hash to record");
+    await execAndLog(`sed -i'${tempExtension}' -e 's/Hash</Record</' ${tsInputs}`);
+
     // In strict TS, an empty untyped object is of type `{}` and can't have keys added to it
     // let foo = {}; -> let foo: any = {};
     console.log("migrate untyped object initializations");
@@ -125,6 +136,18 @@ const args = require("./args");
     await execAndLog(`sed -i'${tempExtension}' -e 's/let \\([a-zA-Z0-9]*\\) = [\\s*];/let \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i'${tempExtension}' -e 's/const \\([a-zA-Z0-9]*\\) = [\\s*];/const \\1: any[] = [];/' ${tsInputs}`);
     await execAndLog(`sed -i'${tempExtension}' -e 's/var \\([a-zA-Z0-9]*\\) = [\\s*];/var \\1: any[] = [];/' ${tsInputs}`);
+
+    // TS doesn't know what the type of this is, but we do
+    // jqXHR: any -> jqXHR: JQueryXHR
+    console.log("annotate jqXHR types");
+    await execAndLog(`sed -i'${tempExtension}' -e 's/jqXHR: any/jqXHR: JQueryXHR/' ${tsInputs}`);
+
+    // There is no excuse to keep these around anymore
+    // "use strict"; -> remove
+    // /* eslint-disable */ -> remove
+    console.log("remove deprecated annotations");
+    await execAndLog(`sed -i'${tempExtension}' -e 's/"use strict";//' ${tsInputs}`);
+    await execAndLog(`sed -i'${tempExtension}' -e 's/\\/\\* eslint-disable \\*\\///' ${tsInputs}`);
 
     // Find which imported files have type annotations but were not included in the migration
     console.log("finding untyped annotated imports");
@@ -163,7 +186,7 @@ const args = require("./args");
 
     console.log("\ndone with automations, try running `yarn tsc` to find any remaining issues\n");
   } catch (error) {
-    console.error(error);
+    console.error((error && error.message) || error || "Unknown error");
     process.exit(1);
   }
 })();

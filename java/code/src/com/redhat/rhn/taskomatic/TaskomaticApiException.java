@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic;
 /**
  *
  * TaskomaticApiException
- * @version $Rev$
  */
 public class TaskomaticApiException extends Exception {
 

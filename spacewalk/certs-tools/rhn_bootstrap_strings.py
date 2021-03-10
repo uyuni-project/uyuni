@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
+# Copyright (c) 2021 SUSE LLC.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -36,9 +37,9 @@ echo "{productName} Client bootstrap script v4.1"
 #   ...or...
 #
 #   (2) in a decentralized manner, executed on each client, via wget or curl:
-#         wget -qO- https://<hostname>/pub/bootstrap/bootstrap-<edited_name>.sh | /bin/bash
+#         wget -qO- https://{hostname}/pub/bootstrap/bootstrap-<edited_name>.sh | /bin/bash
 #         ...or...
-#         curl -Sks https://<hostname>/pub/bootstrap/bootstrap-<edited_name>.sh | /bin/bash
+#         curl -Sks https://{hostname}/pub/bootstrap/bootstrap-<edited_name>.sh | /bin/bash
 
 # SECURITY NOTE:
 #   Use of these scripts via the two methods discussed is the most expedient
@@ -82,6 +83,8 @@ echo "      only the FIRST activation key will be used. Multiple activation keys
 echo "      are not supported with salt"
 echo "    - ORG_GPG_KEY needs to be set to the name(s) of the corporate public"
 echo "      GPG key filename(s) (residing in {apachePubDirectory}) if appropriate. XKEY or XKEY,YKEY"
+echo "    - When reactivating Salt minion, use REACTIVATION_KEY variable"
+echo "      Consider using environmental variable REACTIVATION_KEY for single use reactivation keys."
 echo
 echo "Verify that the script variable settings are correct:"
 echo "    - CLIENT_OVERRIDES should be only set differently if a customized"
@@ -99,6 +102,11 @@ echo
 # NOTE: ACTIVATION_KEYS *must* be used to bootstrap a client machine.
 ACTIVATION_KEYS={activation_keys}
 ORG_GPG_KEY={org_gpg_key}
+
+# To reactivate single Salt client use following variable:
+# NOTE: Reactivation keys are removed valid only for single use.
+#       It is also possible to use REACTIVATION_KEY environmental variable.
+REACTIVATION_KEY=${{REACTIVATION_KEY:-}}
 
 # can be edited, but probably correct:
 CLIENT_OVERRIDES={overrides}
@@ -964,6 +972,10 @@ if [ -z "$ACTIVATION_KEYS" ] ; then
     exit 1
 fi
 
+if [ -n "$REACTIVATION_KEY" ] ; then
+    ACTIVATION_KEYS="$REACTIVATION_KEY,$ACTIVATION_KEYS"
+fi
+
 if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "* registering"
     files=""
@@ -1024,18 +1036,27 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "* registering"
 
     echo "$MYNAME" > "$MINION_ID_FILE"
-    echo "master: $HOSTNAME" > "$SUSEMANAGER_MASTER_FILE"
-    echo "server_id_use_crc: adler32" >> "$SUSEMANAGER_MASTER_FILE"
-    echo "enable_legacy_startup_events: False" >> "$SUSEMANAGER_MASTER_FILE"
-    echo "enable_fqdns_grains: False" >> "$SUSEMANAGER_MASTER_FILE"
-    echo "start_event_grains: [machine_id, saltboot_initrd, susemanager]" >> "$SUSEMANAGER_MASTER_FILE"
-    echo "mine_enabled: False" >> "$SUSEMANAGER_MASTER_FILE"
+    cat <<EOF > "$SUSEMANAGER_MASTER_FILE"
+master: $HOSTNAME
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+start_event_grains: [machine_id, saltboot_initrd, susemanager]
+mine_enabled: False
 
-    if [ -n "$ACTIVATION_KEYS" ] ; then
-        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
 grains:
     susemanager:
+EOF
+    if [ -n "$ACTIVATION_KEYS" ] ; then
+        echo "Using activaion key: \"$ACTIVATION_KEYS\""
+        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
         activation_key: "$(echo $ACTIVATION_KEYS | cut -d, -f1)"
+EOF
+    fi
+    if [ -n "$REACTIVATION_KEY" ]; then
+        echo "Using reactivation key: \"$REACTIVATION_KEY\""
+        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
+        management_key: "$(echo $REACTIVATION_KEY)"
 EOF
     fi
 fi

@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
  * AuthenticationServiceTest is a base test class for testing AuthenticationService
  * implementations.
  *
- * @version $Rev$
  */
 public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTestCase {
 

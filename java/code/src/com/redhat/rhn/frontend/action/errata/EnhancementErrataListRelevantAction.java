@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * EnhancementErrataListRelevantAction
- * @version $Rev$
  */
 public class EnhancementErrataListRelevantAction extends
         ErrataListRelevantAction {

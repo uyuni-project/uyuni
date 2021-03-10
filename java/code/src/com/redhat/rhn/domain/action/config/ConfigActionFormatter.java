@@ -31,7 +31,6 @@ import java.util.Set;
 
 /**
  * ConfigActionFormatter
- * @version $Rev$
  */
 public class ConfigActionFormatter extends ActionFormatter {
 

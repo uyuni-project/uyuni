@@ -26,7 +26,6 @@ import java.io.Writer;
 /**
  *
  * PackageStateSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

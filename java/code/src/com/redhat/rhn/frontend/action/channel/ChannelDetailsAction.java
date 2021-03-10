@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelDetailsAction handles the interaction of the ChannelDetails page.
- * @version $Rev$
  */
 public class ChannelDetailsAction extends RhnAction {
 

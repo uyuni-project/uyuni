@@ -162,41 +162,6 @@
         </context-group>
         <target>Besoin de mise à jour du système</target>
       </trans-unit>
-      <trans-unit id="software.crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target>Incidents logiciel</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.overview" xml:space="preserve">
-        <source>Software Crashes Overview</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target>Aperçu des incidents logiciel</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.overview.summary" xml:space="preserve">
-        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target>Le tableau ci-dessous répertorie les incidents logiciel, regroupés par UUID, qui se sont produits sur vos systèmes. Des UUID d'incidents identiques indiquent potentiellement des incidents logiciel de type similaire ou identique.</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.by.uuid.summary" xml:space="preserve">
-        <source>The table below lists systems where a crash with the above UUID occurred.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target>Le tableau ci-dessous répertorie les systèmes sur lesquels un incident avec l'UUID mentionné ci-dessus s'est produit.</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.uuid.header" xml:space="preserve">
-        <source>Summary for crashes with identical UUID</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target>Sommaire des incidents avec un UUID identique</target>
-      </trans-unit>
       <trans-unit id="ssm.nav.config" xml:space="preserve">
         <source>Configuration</source>
         <context-group name="ctx">

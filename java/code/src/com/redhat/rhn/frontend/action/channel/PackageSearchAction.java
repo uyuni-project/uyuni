@@ -42,7 +42,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * PackageSearchAction
- * @version $Rev$
  */
 public class PackageSearchAction extends BaseSearchAction {
 

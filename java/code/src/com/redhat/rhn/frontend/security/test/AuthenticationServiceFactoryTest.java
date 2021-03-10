@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 /**
  *
  * AuthenticationServiceFactoryTest
- * @version $Rev$
  */
 public class AuthenticationServiceFactoryTest extends TestCase {
 

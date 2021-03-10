@@ -20,7 +20,6 @@ import java.util.Map;
 
 /**
  * DummyObject
- * @version $Rev$
  */
 
 public class DummyObject {

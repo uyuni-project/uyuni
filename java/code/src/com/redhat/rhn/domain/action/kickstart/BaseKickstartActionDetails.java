@@ -23,7 +23,6 @@ import java.util.Set;
 /**
  *
  * BaseKickstartActionDetails
- * @version $Rev$
  */
 public abstract class BaseKickstartActionDetails extends ActionChild {
 

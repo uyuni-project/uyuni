@@ -50,7 +50,6 @@ import com.redhat.rhn.manager.user.UserManager;
 
 /**
  * SystemOverviewAction
- * @version $Rev$
  */
 public class SystemOverviewAction extends RhnAction {
 

@@ -30,7 +30,6 @@ import java.util.Set;
 
 /**
  * TaskScheduler
- * @version $Rev$
  */
 public class TaskScheduler {
 

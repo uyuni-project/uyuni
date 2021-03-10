@@ -2,9 +2,13 @@ declare global {
   interface Window {
     _IS_UYUNI: boolean;
 
+    // CSRF loopback
+    csrfToken?: string;
+
     // Translation data
     translationData?: any;
     preferredLocale?: string;
+    docsLocale?: string;
 
     // SPA engine and renderer
     pageRenderers?: {
@@ -38,8 +42,19 @@ declare global {
   function t(msg: string, ...args: Array<any>): string;
   var onDocumentReadyInitOldJS: Function;
   var Loggerhead: any;
+  var ace: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
+
+  // Used by section-toolbar, defined in spacewalk-essentials.js
+  var handleSst: Function;
+
+  // Used by cveaudit and spacewalk-checkall.js
+  var DWRItemSelector: any;
+  var dwr: any;
+
+  /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
+  var localTime: string | undefined;
 }
 
 export {};

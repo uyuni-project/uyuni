@@ -273,7 +273,7 @@ class MLLibmodAPI:
             d_mod = mod.get_defaults()
             mobj[m_name] = {
                 "default": d_mod.get_default_stream() if d_mod else None,
-                "streams": set([s.get_stream_name() for s in mod.get_all_streams()])
+                "streams": list(set([s.get_stream_name() for s in mod.get_all_streams()]))
             }
 
         modules["modules"] = mobj

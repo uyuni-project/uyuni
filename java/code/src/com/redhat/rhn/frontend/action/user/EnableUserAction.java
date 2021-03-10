@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EnableUserAction
- * @version $Rev$
  */
 public class EnableUserAction extends RhnAction {
 

@@ -30,7 +30,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * ConfigFileTag
  * <p>
  * {@literal <cfg:file id=""  value="" type="file|dir" revision="" nolink="">}
- * @version $Rev$
  */
 public class ConfigFileTag extends TagSupport {
 

@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.kickstart.KickstartPackageProfileCommand;
 
 /**
  * KickstartPackageProfileCommandTest
- * @version $Rev$
  */
 public class KickstartPackageProfileCommandTest extends BaseKickstartCommandTestCase {
 

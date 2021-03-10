@@ -28,7 +28,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * Class representation of the rhnserverhistory table
  * ServerHistoryEvent
- * @version $Rev$
  */
 public class ServerHistoryEvent extends BaseDomainHelper {
 

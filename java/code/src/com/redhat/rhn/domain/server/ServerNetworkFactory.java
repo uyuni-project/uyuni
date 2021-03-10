@@ -23,7 +23,6 @@ import java.util.List;
  * ServerFactory - the singleton class used to fetch and store
  * {@link ServerNetAddress4} and {@link ServerNetAddress6} objects
  * from the database.
- * @version $Rev$
  */
 public class ServerNetworkFactory extends HibernateFactory {
 

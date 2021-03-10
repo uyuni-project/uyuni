@@ -75,7 +75,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * ...
  * </pre>
  * Otherwise, you simply get sometext.
- * @version $Rev$
  * @see com.redhat.rhn.frontend.taglibs.ListTag
  * @see com.redhat.rhn.frontend.taglibs.ListDisplayTag
  * @see com.redhat.rhn.frontend.taglibs.SetTag

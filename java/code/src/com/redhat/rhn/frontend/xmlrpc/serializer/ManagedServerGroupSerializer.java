@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  * ManagedServerGroupSerializer is a custom serializer for the XMLRPC library.
  * It converts an ServerGroup to an XMLRPC &lt;struct&gt;.
- * @version $Rev$
  * @xmlrpc.doc
  *      #struct_begin("Server Group")
  *          #prop("int", "id")

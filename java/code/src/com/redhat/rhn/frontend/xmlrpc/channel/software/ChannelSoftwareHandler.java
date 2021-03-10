@@ -112,7 +112,6 @@ import java.util.stream.Collectors;
 
 /**
  * ChannelSoftwareHandler
- * @version $Rev$
  * @xmlrpc.namespace channel.software
  * @xmlrpc.doc Provides methods to access and modify many aspects of a channel.
  */

@@ -26,7 +26,6 @@ import java.io.Writer;
  *
  * An XML Serializer that does no escaping.  Be very careful!
  *
- * @version $Rev$
  */
 public class UnescapingXmlSerializer extends XMLSerializer {
 

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CopyFileLocalSubmitAction
- * @version $Rev$
  */
 public class CopyFileLocalSubmitAction extends BaseCopyFileSubmitAction {
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.server;
 
 /**
  * ServerConstants
- * @version $Rev$
  */
 public class ServerConstants {
     /**

@@ -88,7 +88,10 @@ mgrchannels_repo:
 {%- endif %}
 {%- endif %}
 
-{%- if (grains['os'] == 'Debian' and grains['osmajorrelease']|int >= 10) or (grains['os'] == 'Ubuntu' and grains['osmajorrelease']|int >= 18) %}
+{%- set apt_version = salt['pkg.version']("apt") %}
+{%- set apt_support_acd = grains['os_family'] == 'Debian' and apt_version and salt['pkg.version_cmp'](apt_version, "1.6.10") > 0 %}
+
+{%- if apt_support_acd %}
 aptauth_conf:
   file.managed:
     - name: "/etc/apt/auth.conf.d/susemanager.conf"
@@ -119,6 +122,6 @@ mgrchannels_yum_clean_all:
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
     -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
 {%- endif %}
-{%- elif grains['os_family'] == 'Debian' %}
-{%- include 'channels/debiankeyring.sls' %}
 {%- endif %}
+
+{% include 'channels/gpg-keys.sls' %}

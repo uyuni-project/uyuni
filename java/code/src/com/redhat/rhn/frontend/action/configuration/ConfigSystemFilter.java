@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * ConfigSystemFilter
- * @version $Rev$
  */
 public class ConfigSystemFilter extends BaseConfigFilter {
     private List fields;

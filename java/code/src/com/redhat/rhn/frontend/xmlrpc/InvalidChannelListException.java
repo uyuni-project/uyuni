@@ -24,7 +24,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * The channel list provided has invalid content.
  *
- * @version $Rev$
  */
 public class InvalidChannelListException extends FaultException  {
 

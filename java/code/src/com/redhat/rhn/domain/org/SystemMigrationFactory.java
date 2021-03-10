@@ -26,7 +26,6 @@ import java.util.Map;
  /**
   * A small wrapper around hibernate files to remove some of the complexities
   * of writing to hibernate.
-  * @version $Rev$
  */
  public class SystemMigrationFactory extends HibernateFactory {
 

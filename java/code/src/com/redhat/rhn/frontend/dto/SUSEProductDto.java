@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * Simple DTO representing a SUSEProduct.
- * @version $Rev$
  */
 public class SUSEProductDto extends BaseDto {
 

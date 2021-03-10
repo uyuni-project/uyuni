@@ -24,7 +24,6 @@ import java.util.Date;
 
 /**
  * KickstartSessionTest
- * @version $Rev$
  */
 public class KickstartIpTest extends BaseTestCaseWithUser {
 

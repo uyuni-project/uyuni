@@ -16,7 +16,6 @@ package com.redhat.rhn.testing;
 
 /**
  * Sequence
- * @version $Rev$
  */
 public class Sequence {
 

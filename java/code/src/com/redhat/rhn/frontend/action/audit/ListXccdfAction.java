@@ -35,7 +35,6 @@ import com.redhat.rhn.manager.audit.ScapManager;
 
 /**
  * ListXccdfAction
- * @version $Rev$
  */
 
 public class ListXccdfAction extends RhnAction implements Listable {

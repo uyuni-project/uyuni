@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.audit;
 /**
  * Enum representing different patch status values.
  *
- * @version $Rev$
  */
 public enum PatchStatus {
 

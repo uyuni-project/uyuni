@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * TreeEditCommand to edit a KickstartableTree
- * @version $Rev$
  */
 public class TreeEditOperation extends BaseTreeEditOperation {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * Thrown if the the save of the ks tree failed.
- * @version $Rev$
  */
 public class InvalidKickstartTreeException extends FaultException {
 

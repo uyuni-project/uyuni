@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidRepoTypeException
- * @version $Rev$
  */
 public class InvalidRepoTypeException extends FaultException {
 

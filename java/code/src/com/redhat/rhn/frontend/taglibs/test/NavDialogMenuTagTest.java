@@ -31,7 +31,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * NavDialogMenuTagTest
- * @version $Rev$
  */
 public class NavDialogMenuTagTest extends RhnBaseTestCase {
 

@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * DiffVisitor represents any class that is going to visit hunks.
  * This could be a DiffWriter.
- * @version $Rev$
  */
 public interface DiffVisitor {
 

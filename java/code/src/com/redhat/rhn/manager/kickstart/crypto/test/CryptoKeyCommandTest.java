@@ -28,7 +28,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * CryptoKeyCommandTest - test for CryptoKeyCommand
- * @version $Rev$
  */
 public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 

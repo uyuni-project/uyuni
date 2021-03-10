@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * EssentialServerDto
- * @version $Rev$
  */
 public class EssentialServerDto extends BaseDto {
 

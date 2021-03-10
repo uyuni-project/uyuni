@@ -27,18 +27,6 @@ create table rhnOrgConfiguration
                                     default ('Y') not null
                                     constraint rhn_org_conf_errata_emails_chk
                                     check (errata_emails_enabled in ('Y', 'N')),
-    crash_reporting_enabled    char(1)
-                                   default ('Y') not null
-                                   constraint rhn_org_conf_crash_report_chk
-                                   check (crash_reporting_enabled in ('Y', 'N')),
-    crashfile_upload_enabled   char(1)
-                                   default ('Y') not null
-                                   constraint rhn_org_conf_crash_upload_chk
-                                   check (crashfile_upload_enabled in ('Y', 'N')),
-    crash_file_sizelimit       NUMERIC
-                                   default(2048) not null
-                                   constraint rhn_org_conf_sizelimit_chk
-                                   check (crash_file_sizelimit >= 0),
     scapfile_upload_enabled    char(1)
                                    default ('N') not null
                                    constraint rhn_org_conf_scap_upload_chk

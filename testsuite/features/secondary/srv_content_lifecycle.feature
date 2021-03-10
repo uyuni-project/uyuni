@@ -35,7 +35,7 @@ Feature: Content lifecycle
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    And I follow "Attach/Detach Sources"
+    And I click on "Attach/Detach Sources"
     And I select "SLES12-SP5-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Save"
     Then I wait until I see "SLES12-SP5-Pool for x86_64" text
@@ -57,28 +57,28 @@ Feature: Content lifecycle
     And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
     And I should see a "SLES12-SP5-Updates for x86_64" text
     And I should see a "SLE-Manager-Tools12-Pool for x86_64 SP5" text
-    And I should see a "Build (4)" text
+    And I should see a "Build (6)" text
 
   Scenario: Add environments to the project
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "No environments created" text
-    When I follow "Add Environment"
+    When I click on "Add Environment"
     And I enter "dev_name" as "name"
     And I enter "dev_label" as "label"
     And I enter "dev_desc" as "description"
     And I click on "Save"
     Then I wait until I see "dev_name" text
     And I should see a "dev_desc" text
-    When I follow "Add Environment"
+    When I click on "Add Environment"
     And I enter "prod_name" as "name"
     And I enter "prod_label" as "label"
     And I enter "prod_desc" as "description"
     And I click on "Save"
     Then I wait until I see "prod_name" text
     And I should see a "prod_desc" text
-    When I follow "Add Environment"
+    When I click on "Add Environment"
     And I enter "qa_name" as "name"
     And I enter "qa_label" as "label"
     And I enter "qa_desc" as "description"
@@ -106,7 +106,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
-    When I click on "Build (4)"
+    When I click on "Build (6)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
@@ -136,7 +136,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "Build (0)" text
-    When I follow "Attach/Detach Sources"
+    When I click on "Attach/Detach Sources"
     And I add the "Test Base Channel" channel to sources
     And I click on "Save"
     Then I wait until I see "Test Base Channel" text

@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * ManifestFactoryBuilder, an interface describing a builder for the
  * factory
- * @version $Rev$
  */
 
 public interface ManifestFactoryBuilder {

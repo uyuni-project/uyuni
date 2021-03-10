@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * SubscribeChannelsAction
- * @version $Rev$
  */
 public class SubscribeChannelsAction extends BaseListAction {
     public static final String WIZARD_MODE = "wizardMode";

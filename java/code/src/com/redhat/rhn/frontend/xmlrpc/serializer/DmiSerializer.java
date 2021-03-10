@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * DmiSerializer
- * @version $Rev$
  * @xmlrpc.doc
  *      #struct_begin("DMI")
  *          #prop("string", "vendor")

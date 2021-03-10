@@ -30,7 +30,6 @@ import java.util.Map;
  * This class provides entry point to
  * retrieve Panes through hibernate..
  * PaneFactory
- * @version $Rev$
  */
 public class PaneFactory {
 

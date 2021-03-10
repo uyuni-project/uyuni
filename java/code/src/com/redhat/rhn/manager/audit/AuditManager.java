@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
 
 /**
  * AuditManager
- * @version $Rev$
  */
 public class AuditManager /* extends BaseManager */ {
 

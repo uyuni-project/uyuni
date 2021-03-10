@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 
 /**
  * KickstartableTreeDetail
- * @version $Rev$
  */
 public class KickstartableTreeDetail extends KickstartableTree {
 

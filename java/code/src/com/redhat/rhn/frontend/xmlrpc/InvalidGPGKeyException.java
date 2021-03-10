@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidGPGKeyException
- * @version $Rev$
  */
 public class InvalidGPGKeyException extends FaultException {
 

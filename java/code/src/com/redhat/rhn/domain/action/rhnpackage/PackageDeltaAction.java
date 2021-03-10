@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.rhnpackage;
 
 /**
  * PackageDeltaAction
- * @version $Rev$
  */
 public class PackageDeltaAction extends PackageAction {
 

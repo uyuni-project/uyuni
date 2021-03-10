@@ -19,7 +19,6 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
@@ -56,15 +55,17 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -216,7 +217,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             },
             ak -> {
                 if (Objects.isNull(ak.getServer())) {
-                    LOG.error("Management Key is not a reactivation key: " + ak.getKey());
+                    if (Objects.isNull(ak.getKickstartSession())) {
+                        LOG.error("Management Key is not a reactivation key: " + ak.getKey());
+                    }
                     return false;
                 }
                 //considered valid reactivation key only in this case
@@ -390,7 +393,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             setServerPaths(minion, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(minion);
-            giveCapabilities(minion);
+            giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
             GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
@@ -681,12 +684,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         server.getServerPaths().addAll(proxyPaths.orElse(Collections.emptySet()));
     }
 
-    private void giveCapabilities(MinionServer server) {
+    private void giveCapabilities(MinionServer server, boolean isSaltSSH) {
         // Salt systems always have the script.run capability
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        // Salt systems can be audited
-        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+        if (!isSaltSSH) {
+            // Not Salt ssh systems can be audited
+            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+        }
 
         //Capabilities to enable configuration management for minions
         SystemManager.giveCapability(server.getId(),

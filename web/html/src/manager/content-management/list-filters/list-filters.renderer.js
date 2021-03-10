@@ -11,7 +11,9 @@ export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}
   let filtersJson = [];
   try{
     filtersJson = JSON.parse(filters);
-  }  catch(error) {}
+  }  catch(error) {
+    console.log(error);
+  }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>

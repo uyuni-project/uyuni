@@ -41,7 +41,6 @@ import java.util.Map;
 
 /**
  * OrgTrustHandlerTest
- * @version $Rev$
  */
 public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 

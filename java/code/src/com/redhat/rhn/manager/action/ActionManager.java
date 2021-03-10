@@ -188,7 +188,7 @@ public class ActionManager extends BaseManager {
         }
         Date now = Calendar.getInstance().getTime();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
-                serverAction.getStatus().equals((ActionFactory.STATUS_PICKEDUP))) {
+                serverAction.getStatus().equals((ActionFactory.STATUS_PICKED_UP))) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             serverAction.setResultMsg(message);
             serverAction.setCompletionTime(now);
@@ -360,7 +360,7 @@ public class ActionManager extends BaseManager {
         Set<ServerAction> serverActions = actionsToDelete.stream()
                 .flatMap(a -> a.getServerActions().stream())
                 .filter(sa -> ActionFactory.STATUS_QUEUED.equals(sa.getStatus()) ||
-                        ActionFactory.STATUS_PICKEDUP.equals(sa.getStatus()))
+                        ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus()))
                 .filter(Opt.fold(serverIds,
                         // if serverIds is not specified, do not filter at all
                         () -> (a -> true),
@@ -405,7 +405,7 @@ public class ActionManager extends BaseManager {
                         ActionFactory.delete(sa);
                     }
                     // Set to FAILED if the state is PICKED_UP
-                    else if (ActionFactory.STATUS_PICKEDUP.equals(sa.getStatus())) {
+                    else if (ActionFactory.STATUS_PICKED_UP.equals(sa.getStatus())) {
                         failSystemAction(user, sa.getServerId(), sa.getParentAction().getId(),
                                 "Canceled by " + user.getLogin());
                     }

@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 /**
  * ApiHandler
  * Corresponds to API.pm in old perl code.
- * @version $Rev$
  * @xmlrpc.namespace api
  * @xmlrpc.doc Methods providing information about the API.
  */

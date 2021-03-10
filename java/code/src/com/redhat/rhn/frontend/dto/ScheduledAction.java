@@ -26,7 +26,6 @@ import java.util.List;
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  *
- * @version $Rev$
  */
 public class ScheduledAction extends BaseDto implements RowCallback {
 

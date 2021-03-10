@@ -17,7 +17,8 @@ function request(
     type: "GET" | "POST" | "DELETE" | "PUT",
     headers,
     data: any,
-    contentType: string,
+    /** NB! The default contentType for jQuery.ajax() is 'application/x-www-form-urlencoded; charset=UTF-8' */
+    contentType?: string,
     processData: boolean = true
 ): Cancelable {
     const a = jQuery.ajax({
@@ -37,15 +38,15 @@ function request(
     return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
+function post(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function del(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
+function del(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function put(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
+function put(url: string, data?: any, contentType?: string, processData: boolean = true): Cancelable {
     return request(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
@@ -68,10 +69,9 @@ function errorMessageByStatus(status: number): Array<string> {
 }
 
 export type MapFuncType = (arg0: string, arg1: string) => string | null | undefined;
-export type jqXHR = {status: number; statusText: string; responseText: string; responseJSON: any};
 
 function responseErrorMessage(
-    jqXHR: Error | jqXHR,
+    jqXHR: Error | JQueryXHR,
     messageMapFunc: MapFuncType | null | undefined = null
 ): Array<MessageType> {
     if (jqXHR instanceof Error) {

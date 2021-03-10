@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author paji
  * ConfigurationChannelsAction
- * @version $Rev$
  */
 public class ListRemoveChannelsAction extends BaseListAction {
 

@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * PackageArchTest
- * @version $Rev$
  */
 public class PackageArchTest extends RhnBaseTestCase {
     /**

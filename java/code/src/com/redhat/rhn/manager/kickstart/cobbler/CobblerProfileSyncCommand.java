@@ -34,7 +34,6 @@ import redstone.xmlrpc.XmlRpcFault;
 /**
  * This command finds profiles that have been changed on the cobbler server and syncs
  *  those changes to the satellite
- * @version $Rev$
  */
 public class CobblerProfileSyncCommand extends CobblerCommand {
 

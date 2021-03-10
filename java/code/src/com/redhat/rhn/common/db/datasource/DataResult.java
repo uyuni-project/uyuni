@@ -24,7 +24,6 @@ import java.util.Map;
 /**
  * The results of operations on the DataSource layer.
  * @param <T> the type of the objects to be used in this list.
- * @version $Rev$
  */
 public class DataResult<T> extends ArrayList<T> {
 

@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  * Simple implementation of a fragment renderer which automates
  * the boilerplate work done rendering a fragment
  *
- * @version $Rev$
  */
 public abstract class BaseFragmentRenderer implements FragmentRenderer {
 

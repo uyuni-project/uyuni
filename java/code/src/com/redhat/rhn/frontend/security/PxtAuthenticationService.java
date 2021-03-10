@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PxtAuthenticationService
- * @version $Rev$
  */
 public class PxtAuthenticationService extends BaseAuthenticationService {
 

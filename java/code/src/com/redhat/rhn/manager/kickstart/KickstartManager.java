@@ -47,7 +47,6 @@ import java.util.function.Predicate;
 /**
  *
  * KickstartManager
- * @version $Rev$
  */
 public class KickstartManager extends BaseManager {
     private static final KickstartManager INSTANCE = new KickstartManager();

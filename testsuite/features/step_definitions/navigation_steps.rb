@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC.
+# Copyright (c) 2010-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 #
@@ -147,7 +147,7 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//div[@id='#{arg2}']"
+  xpath = "//input[@id='#{arg2}']/../../../../.."
   if has_xpath?(xpath)
     find(:xpath, xpath).click
     find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
@@ -763,11 +763,6 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
   step %(I check "#{text}" in the list)
 end
 
-Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
-  system_name = get_system_name(host)
-  step %(I check "#{system_name}" in the list)
-end
-
 When(/^I check the first patch in the list$/) do
   step %(I check the first row in the list)
 end
@@ -801,6 +796,15 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   end
 end
 
+When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host|
+  system_name = get_system_name(host)
+  find("input[placeholder='Filter by System Name: ']").set(system_name)
+end
+
+When(/^I enter "([^"]*)" as the filtered package states name$/) do |input|
+  find("input[placeholder='Search package']").set(input)
+end
+
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
   find("input[placeholder='Filter by Package Name: ']").set(input)
 end
@@ -821,12 +825,12 @@ When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
   find("input[placeholder='Filter by Result: ']").set(input)
 end
 
-Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
-  steps %(
-    When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
-    And I click on the filter button
-    And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
-  )
+When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
+  step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
+end
+
+When(/^I check the package for "([^"]*)" in the list$/) do |host|
+  step %(I check "#{PACKAGE_BY_CLIENT[host]}" in the list)
 end
 
 When(/^I check row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
@@ -882,9 +886,9 @@ end
 # Test if an option is selected
 #
 Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//div[@id='#{arg2}']"
+  xpath = "//input[@id='#{arg2}']"
   if has_xpath?(xpath)
-    xpath = "//div[@id='#{arg2}']/div/div/div[normalize-space(text())='#{arg1}']"
+    xpath = "//input[@id='#{arg2}']/../../../../../div/div/div[normalize-space(text())='#{arg1}']"
     raise "#{arg1} is not selected as #{arg2}" unless has_xpath?(xpath)
   else
     raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
@@ -896,7 +900,7 @@ end
 #
 When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
   repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
-    xpath = "//div[@id='#{arg2}']"
+    xpath = "//input[@id='#{arg2}']/../../../../.."
     if has_xpath?(xpath)
       find(:xpath, xpath).click
       has_option = has_xpath?("#{xpath}/div/div/div[normalize-space(text())='#{arg1}']")

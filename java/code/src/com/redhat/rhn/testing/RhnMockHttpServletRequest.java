@@ -31,7 +31,6 @@ import com.mockobjects.servlet.MockHttpServletRequest;
  * RhnMockHttpServletRequest is a mock implementation of the
  * HttpServletRequest which fixes deficiencies in the MockObjects'
  * implementation of MockHttpServletRequest.
- * @version $Rev$
  */
 public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 

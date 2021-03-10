@@ -53,7 +53,6 @@ import java.util.Set;
 
 /**
  * ProfileManagerTest
- * @version $Rev$
  */
 public class ProfileManagerTest extends BaseTestCaseWithUser {
 

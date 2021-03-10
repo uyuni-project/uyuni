@@ -159,9 +159,6 @@ rhnServerArch                  :: rhnArchType
 rhnServerChannel               :: rhnServer rhnChannel
 rhnServerChannelArchCompat     :: rhnServerArch rhnChannelArch
 rhnServerConfigChannel         :: rhnServer rhnConfigChannel
-rhnServerCrash                 :: rhnServer rhnPackageName rhnPackageEVR rhnPackageArch
-rhnServerCrashFile             :: rhnServerCrash
-rhnServerCrashNote             :: rhnServerCrash web_contact
 rhnServerCustomDataValue       :: rhnCustomDataKey
 rhnServerDMI                   :: rhnServer
 rhnServerFQDN                  :: rhnServer

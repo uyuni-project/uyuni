@@ -48,7 +48,6 @@ import com.redhat.rhn.frontend.events.NewUserEvent;
 
 /**
  * A command to create or edit users
- * @version $Rev$
  */
 public class CreateUserCommand {
 
@@ -323,11 +322,21 @@ public class CreateUserCommand {
 
     /**
      * @param passwordIn The password to set
+     * @param validate if password requirements should be validated
+     */
+    public void setPassword(String passwordIn, boolean validate) {
+        passwordErrors = new ArrayList(); //init password errors list
+        if (validate) {
+            validatePassword(passwordIn);
+        }
+        user.setPassword(passwordIn);
+    }
+
+    /**
+     * @param passwordIn The password to set
      */
     public void setPassword(String passwordIn) {
-        passwordErrors = new ArrayList(); //init password errors list
-        validatePassword(passwordIn);
-        user.setPassword(passwordIn);
+        setPassword(passwordIn, true);
     }
 
     /**

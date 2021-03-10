@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 /**
  *
  * TaskManager
- * @version $Rev$
  */
 public class TaskManager {
 

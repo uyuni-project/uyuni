@@ -23,7 +23,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * SystemListSetupAction
- * @version $Rev$
  */
 public class SystemCurrencyAction extends BaseSystemsAction {
 

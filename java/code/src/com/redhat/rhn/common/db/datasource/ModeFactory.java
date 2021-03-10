@@ -32,7 +32,6 @@ import java.util.Map;
  * Class to drive parsing of the DataSource XML files, and return modes
  * as they are requested.
  *
- * @version $Rev$
  */
 public class ModeFactory implements ManifestFactoryBuilder {
 

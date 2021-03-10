@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * TinyUrlAction - action to perform internal redirect to Kickstart download files
- * @version $Rev$
  */
 public class TinyUrlAction extends RhnAction {
 

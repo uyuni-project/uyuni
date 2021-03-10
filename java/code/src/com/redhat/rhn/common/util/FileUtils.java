@@ -23,13 +23,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -37,7 +37,6 @@ import java.nio.file.Path;
 /**
  * Simple file utilities to read/write strings to a file on disk.
  *
- *@version $Rev$
  */
 public class FileUtils {
 
@@ -61,12 +60,13 @@ public class FileUtils {
                 file.delete();
             }
             file.createNewFile();
-            Writer output = new BufferedWriter(new FileWriter(file));
-            try {
-              output.write(contents);
-            }
-            finally {
-              output.close();
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 FileWriter fw = new FileWriter(fos.getFD());
+                 BufferedWriter output = new BufferedWriter(fw)) {
+                output.write(contents);
+                output.flush();
+                fw.flush();
+                fos.getFD().sync();
             }
         }
         catch (Exception e) {

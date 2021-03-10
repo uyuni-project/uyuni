@@ -21,7 +21,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ConfigFileName - Class representation of the table rhnConfigFileName.
- * @version $Rev$
  */
 public class ConfigFileName extends BaseDomainHelper {
 

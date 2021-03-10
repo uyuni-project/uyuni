@@ -528,8 +528,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                     CobblerXMLRPCHelper.getConnection(user), data.getCobblerId());
             KickstartData ksData = KickstartFactory.
                     lookupKickstartDataByCobblerIdAndOrg(user.getOrg(), cobblerProfile.getId());
-            CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(host, cobblerProfile.getName(),
-                    data.getName(), ksData);
+            CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(user, cobblerProfile.getName(),
+                    data.getName(), ksData, host.getName(), host.getOrgId());
             String ksHost = helper.getKickstartHost();
             cobblerCmd.setKickstartHost(ksHost);
             cobblerCmd.store();

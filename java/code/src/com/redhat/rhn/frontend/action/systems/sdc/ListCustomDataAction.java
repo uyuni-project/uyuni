@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ListCustomDataAction handles the interaction of the sdc/ListCustomData page.
- * @version $Rev$
  */
 public class ListCustomDataAction extends RhnAction {
     public static final String SID = "sid";

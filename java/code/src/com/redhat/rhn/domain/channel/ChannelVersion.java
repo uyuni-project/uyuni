@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * Simple enum class to represent the RHEL version of a channel.
  * ChannelVersion
- * @version $Rev$
  */
 public class ChannelVersion {
 

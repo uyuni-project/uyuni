@@ -25,7 +25,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
  * In order to create a stored profile for a system, the system must have a base channel
  * defined.
  *
- * @version $Rev$
  */
 public class ProfileNoBaseChannelException extends FaultException {
 

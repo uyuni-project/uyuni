@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 /**
  * KickstartPrePostCommand - for editing the pre and post steps
  * in a kickstart.
- * @version $Rev$
  */
 public class KickstartPartitionCommand extends BaseKickstartCommand {
     /**

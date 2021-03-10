@@ -20,7 +20,6 @@ import com.redhat.rhn.FaultException;
 /**
  * No Push Client Exception
  *
- * @version $Rev$
  */
 public class NoPushClientException extends FaultException  {
 

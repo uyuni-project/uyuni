@@ -39,11 +39,22 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.SystemRecord;
+
 import java.net.IDN;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,15 +66,6 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.SystemRecord;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -123,8 +125,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private ProxyInfo proxyInfo;
     private Set<ServerGroup> groups = new HashSet<>();
     private Set<ClientCapability> capabilities = new HashSet<>();
-    private CrashCount crashCount;
-    private Set<Crash> crashes;
     private Set<InstalledProduct> installedProducts = new HashSet<>();
     private String machineId;
     private String hostname;
@@ -944,6 +944,36 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return ni.getIPv4Addresses().stream().findFirst().map(ServerNetAddress4::getAddress).orElse(null);
         }
         return null;
+    }
+
+    /**
+     * Return the ServerFQDN which is considered the primary.
+     *
+     * If primary FQDN is not explicitly set, the first one
+     * is returned, based on the alphabetic order.
+     *
+     * @return The primary FQDN for this server
+     */
+    public ServerFQDN findPrimaryFqdn() {
+        return this.fqdns.stream()
+                .filter(ServerFQDN::isPrimary)
+                .findFirst()
+                .orElseGet(() -> {
+                    if (!fqdns.isEmpty()) {
+                        return Collections.min(fqdns, Comparator.comparing(ServerFQDN::getName));
+                    }
+                    return null;
+                });
+    }
+
+    /**
+     * @param fqdnName The FQDN to be obtained
+     * @return The fqdn with the specified name
+     */
+    public Optional<ServerFQDN> lookupFqdn(String fqdnName) {
+        return this.fqdns.stream()
+                .filter((fqdn) -> fqdn.getName().equals(fqdnName))
+                .findFirst();
     }
 
     /**
@@ -1895,20 +1925,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return Return application crashes.
-     */
-    public CrashCount getCrashCount() {
-        return crashCount;
-    }
-
-    /**
-     * @param crashIn Set application crashes.
-     */
-    public void setCrashCount(CrashCount crashIn) {
-        crashCount = crashIn;
-    }
-
-    /**
      * @param installedProductsIn the installedProducts to set
      */
     public void setInstalledProducts(Set<InstalledProduct> installedProductsIn) {
@@ -1951,7 +1967,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
             n.setPrimary(null);
         }
         SystemManager.storeServer(this);
-        primaryInterface.setPrimary("Y");
+        if (primaryInterface != null) {
+            primaryInterface.setPrimary("Y");
+        }
     }
 
     /**
@@ -1971,6 +1989,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * @param fqdnName name of the primary FQDN
+     */
+    public void setPrimaryFQDNWithName(String fqdnName) {
+        ServerFQDN newPrimaryFQDN = null;
+        for (ServerFQDN fqdn: fqdns) {
+            fqdn.setPrimary(false);
+            if (fqdn.getName().equals(fqdnName)) {
+                newPrimaryFQDN = fqdn;
+            }
+        }
+        SystemManager.storeServer(this);
+        if (newPrimaryFQDN != null) {
+            newPrimaryFQDN.setPrimary(true);
+        }
+    }
+
+    /**
      * @return active Set of active interaces without lo
      */
     public Set<NetworkInterface> getActiveNetworkInterfaces() {
@@ -1981,20 +2016,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
             }
         }
         return active;
-    }
-
-    /**
-     * @return Returns the crashes.
-     */
-    public Set<Crash> getCrashes() {
-        return crashes;
-    }
-
-    /**
-     * @param c The crashes to set.
-     */
-    public void setCrashes(Set<Crash> c) {
-        this.crashes = c;
     }
 
     /**

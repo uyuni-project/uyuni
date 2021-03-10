@@ -22,7 +22,6 @@ import java.util.Iterator;
 
 /**
  * KickstartScriptDeleteCommand
- * @version $Rev$
  */
 public class KickstartScriptDeleteCommand extends KickstartScriptEditCommand {
 

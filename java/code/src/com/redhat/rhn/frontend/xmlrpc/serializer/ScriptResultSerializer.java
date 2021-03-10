@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * Converts a ScriptResult to an XMLRPC &lt;struct&gt;.
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("script result")

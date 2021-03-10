@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for critical systems
  *
- * @version $Rev$
  */
 public class CriticalSystemsRenderer extends BaseFragmentRenderer {
 

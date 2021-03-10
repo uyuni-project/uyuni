@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.action.Action;
 
 /**
  * KickstartGuestAction
- * @version $Rev$
  */
 public class KickstartGuestAction extends Action {
 

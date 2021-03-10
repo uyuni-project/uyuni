@@ -31,7 +31,6 @@ import java.util.Set;
 
 /**
  * UpdateBaseChannelCommandTest
- * @version $Rev$
  */
 public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
     public void testChannelPreservation() throws Exception {

@@ -54,7 +54,7 @@ storiesOf('Dialogs', module)
           itemName="item"
           icon="fa-trash"
           selected={items}
-          fn={doAction}
+          onConfirm={doAction}
           canForce={true}
           forceName="Purge"
         />

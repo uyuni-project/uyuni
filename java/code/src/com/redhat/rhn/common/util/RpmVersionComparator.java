@@ -25,7 +25,6 @@ import java.util.Comparator;
  * but close enough to warrant being a comparator. For examples of asymmetry,
  * check the test.
  *
- * @version $Rev$
  */
 public class RpmVersionComparator implements Comparator<String> {
 

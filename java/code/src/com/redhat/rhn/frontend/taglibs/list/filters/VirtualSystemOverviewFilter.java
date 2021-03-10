@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * VirtualSystemOverviewFilter
- * @version $Rev$
  */
 public class VirtualSystemOverviewFilter extends SystemOverviewFilter {
 

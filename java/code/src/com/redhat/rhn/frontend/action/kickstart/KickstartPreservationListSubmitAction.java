@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * KickstartPreservationListSubmitAction.
- * @version $Rev$
  */
 public class KickstartPreservationListSubmitAction extends BaseKickstartListSubmitAction {
 

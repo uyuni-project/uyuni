@@ -18,7 +18,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * SummaryPopulationTest
- * @version $Rev$
  */
 public class SummaryPopulationTest extends RhnBaseTestCase {
 

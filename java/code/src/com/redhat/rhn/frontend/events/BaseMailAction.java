@@ -23,7 +23,6 @@ import com.suse.manager.utils.MailHelper;
 
 /**
  * BaseMailAction - basic abstract class to encapsulate some common Action logic.
- * @version $Rev$
  */
 public abstract class BaseMailAction {
 

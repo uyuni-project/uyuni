@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.action.kickstart;
 
 /**
  * KickstartGuestToolsChannelSubscriptionAction
- * @version $Rev$
  */
 public class KickstartGuestToolsChannelSubscriptionAction extends
         KickstartAction {

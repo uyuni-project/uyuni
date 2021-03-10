@@ -19,7 +19,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 /**
  * EntitlementManagerTest
- * @version $Rev$
  */
 public class ManagementEntitlementTest extends BaseEntitlementTestCase {
 

@@ -25,7 +25,6 @@ import java.util.Map;
  * same nav xml file over and over.  Operates 'dumbly' right now,
  * which is to basically cache a given lookup forever.
  *
- * @version $Rev$
  */
 
 public class NavCache {

@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * YourRhnAction
- * @version $Rev$
  */
 public class YourRhnAction extends RhnAction {
 

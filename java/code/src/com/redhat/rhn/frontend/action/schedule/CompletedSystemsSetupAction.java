@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CompletedSystemsSetupAction
- * @version $Rev$
  */
 public class CompletedSystemsSetupAction extends RhnListAction {
 

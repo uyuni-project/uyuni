@@ -27,7 +27,6 @@ import java.util.Map;
  *  executes a DataSource (our XML sourced SQL query classes) query
  *  and formats it into a DataResult object used by our UI layer for
  *  viewing.
- * @version $Rev$
  */
 public abstract class BaseManager {
 

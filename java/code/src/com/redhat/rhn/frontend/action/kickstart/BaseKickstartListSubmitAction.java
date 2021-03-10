@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * BaseKickstartListSubmitAction
- * @version $Rev$
  */
 public abstract class BaseKickstartListSubmitAction extends BaseSetOperateOnDiffAction {
 

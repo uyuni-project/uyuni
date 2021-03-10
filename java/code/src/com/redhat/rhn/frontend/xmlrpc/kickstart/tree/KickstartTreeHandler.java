@@ -37,7 +37,6 @@ import java.util.List;
  * on KickstartableTree objects.
  * @xmlrpc.namespace kickstart.tree
  * @xmlrpc.doc Provides methods to access and modify the kickstart trees.
- * @version $Rev$
  */
 public class KickstartTreeHandler extends BaseHandler {
 

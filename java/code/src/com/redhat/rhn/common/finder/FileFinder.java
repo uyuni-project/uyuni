@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * Implementation of Finder that searches the file system
  *
- * @version $Rev$
  */
 class FileFinder implements Finder {
 

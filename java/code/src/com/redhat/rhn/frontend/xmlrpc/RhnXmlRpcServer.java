@@ -22,7 +22,6 @@ import redstone.xmlrpc.XmlRpcServer;
 
 /**
  * RhnXmlRpcServer
- * @version $Rev$
  */
 public class RhnXmlRpcServer extends XmlRpcServer {
 

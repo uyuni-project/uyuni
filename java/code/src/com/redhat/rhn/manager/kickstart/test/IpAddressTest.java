@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * IpAddressTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class IpAddressTest extends RhnBaseTestCase {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * FileDownloadAction
- * @version $Rev$
  */
 public class FileDownloadAction extends RhnAction {
 

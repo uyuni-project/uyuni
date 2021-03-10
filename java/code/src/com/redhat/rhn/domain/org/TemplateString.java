@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * TemplateString
- * @version $Rev$
  */
 public class TemplateString extends BaseDomainHelper {
 
