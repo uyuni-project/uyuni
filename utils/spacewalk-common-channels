@@ -37,6 +37,7 @@ DEFAULT_CONFIG = '/etc/rhn/spacewalk-common-channels.ini'
 DEFAULT_REPO_TYPE = 'yum'
 
 CHANNEL_ARCH = {
+    'aarch64':      'channel-aarch64',
     'i386':         'channel-ia32',
     'ia64':         'channel-ia64',
     'sparc':        'channel-sparc',
