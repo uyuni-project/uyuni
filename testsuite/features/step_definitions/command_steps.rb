@@ -267,11 +267,11 @@ end
 # This function waits for all the reposyncs to complete.
 #
 # This function is written as a state machine. It bails out if no process is seen during
-# 30 seconds in a row, or if the reposyncs last more than 7200 seconds in a row.
+# 30 seconds in a row.
 When(/^I wait until all spacewalk\-repo\-sync finished$/) do
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
+  while reposync_not_running_streak <= 30
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
     if command_output.empty?
       reposync_not_running_streak += 1
