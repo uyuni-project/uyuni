@@ -1610,7 +1610,26 @@ public class ErrataManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant)
+                                               List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant)
+            throws TaskomaticApiException {
+        return applyErrataHelper(loggedInUser, systemIds, errataIds, earliestOccurrence, onlyRelevant, false);
+    }
+
+    /**
+     * Apply errata updates to a system list at a specified time.
+     * @param loggedInUser The logged in user
+     * @param systemIds list of system IDs
+     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
+     * @param allowVendorChange If true not all erratas are applied to all systems.
+     * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
+            List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant, boolean allowVendorChange)
         throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
@@ -1622,7 +1641,7 @@ public class ErrataManager extends BaseManager {
 
         // at this point all errata is applicable to all systems, so let's apply
         return applyErrata(loggedInUser, errataIds, earliestOccurrence,
-                null, systemIds, onlyRelevant);
+                null, systemIds, onlyRelevant, allowVendorChange);
     }
 
     /**
@@ -1657,9 +1676,8 @@ public class ErrataManager extends BaseManager {
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
             ActionChain actionChain, List<Long> serverIds)
         throws TaskomaticApiException {
-        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true, false);
     }
-
 
     /**
      * Apply a list of errata to a list of servers, with an optional Action
@@ -1671,15 +1689,18 @@ public class ErrataManager extends BaseManager {
      * @param earliest schedule time
      * @param actionChain the action chain to add the action to or null
      * @param serverIds server ids
-     * @param allowVendorChange allow vendor change boolean
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
+     *        If false, InvalidErrataException is thrown if an errata does not apply
+     *        to a system.
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
-                                         ActionChain actionChain, List<Long> serverIds, boolean allowVendorChange)
-        throws TaskomaticApiException {
-        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true, allowVendorChange);
+                                         ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
+            throws TaskomaticApiException {
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, onlyRelevant, false);
     }
 
     /**
@@ -1702,7 +1723,7 @@ public class ErrataManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    private static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
+    public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
             ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant, boolean allowVendorChange)
         throws TaskomaticApiException {
 
