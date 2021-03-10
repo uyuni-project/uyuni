@@ -1724,8 +1724,9 @@ class Backend:
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
-            toinsert[0].append(item['channel_family_id'])
-            toinsert[1].append(item['org_id'])
+            if item['channel_family_id']:
+                toinsert[0].append(item['channel_family_id'])
+                toinsert[1].append(item['org_id'])
         if toinsert[0]:
             insert_pcf.executemany(cfid=toinsert[0],
                                    org_id=toinsert[1])
