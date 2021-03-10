@@ -148,7 +148,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
             List<Long> errataIds = new ArrayList<Long>(errataList);
             try {
                 ErrataManager.applyErrata(user, errataIds, earliest, actionChain,
-                        serverIds, allowVendorChange);
+                        serverIds, true, allowVendorChange);
 
                 ActionMessages msg = new ActionMessages();
                 Object[] args = null;

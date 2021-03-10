@@ -3216,29 +3216,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
             List<Integer> errataIds) {
-        return scheduleApplyErrata(loggedInUser, serverIds, errataIds, null, false, false);
-    }
-
-    /**
-     * Schedules an action to apply errata updates to multiple systems.
-     * @param loggedInUser The current user
-     * @param serverIds List of server IDs to apply the errata to (as Integers)
-     * @param errataIds List of errata IDs to apply (as Integers)
-     * @param allowVendorChange boolean
-     * @return list of action ids, exception thrown otherwise
-     * @since 24
-     *
-     * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #array_single("int", "errataId")
-     * @xmlrpc.param #param("boolean", "allowVendorChange")
-     * @xmlrpc.returntype #array_single("int", "actionId")
-     */
-    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
-                                          List<Integer> errataIds, boolean allowVendorChange) {
-        return scheduleApplyErrata(loggedInUser, serverIds, errataIds, null,
-                false, allowVendorChange);
+        return scheduleApplyErrata(loggedInUser, serverIds, errataIds, null, false);
     }
 
     /**
@@ -3362,7 +3340,7 @@ public class SystemHandler extends BaseHandler {
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
-                    serverIds, errataIds, earliestOccurrence, onlyRelevant);
+                    serverIds, errataIds, earliestOccurrence, onlyRelevant, allowVendorChange);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -3491,36 +3469,6 @@ public class SystemHandler extends BaseHandler {
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, earliestOccurrence, allowModules);
     }
 
-    /**
-     * Schedules an action to apply errata updates to a system at a specified time.
-     * @param loggedInUser The current user
-     * @param sid ID of the server
-     * @param errataIds List of errata IDs to apply (as Integers)
-     * @param earliestOccurrence Earliest occurrence of the errata update
-     * @param allowModules Allow this API call, despite modular content being present
-     * @param allowVendorChange boolean
-     * @return list of action ids, exception thrown otherwise
-     * @since 21
-     *
-     * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
-     * given date/time.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array_single("int", "errataId")
-     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.param #param_desc("boolean", "allowModules",
-     *          "Allow this API call, despite modular content being present")
-     * @xmlrpc.param #param("boolean", "allowVendorChange")
-     * @xmlrpc.returntype #array_single("int", "actionId")
-     */
-    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid, List<Integer> errataIds,
-                                          Date earliestOccurrence, Boolean allowModules, boolean allowVendorChange) {
-        List<Integer> serverIds = new ArrayList<Integer>();
-        serverIds.add(sid);
-        return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules, allowVendorChange);
-    }
-
-
    /**
      * Schedules an action to apply errata updates to a a list of systems at a specified time.
      * @param loggedInUser The current user
@@ -3528,7 +3476,7 @@ public class SystemHandler extends BaseHandler {
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @param allowModules Allow this API call, despite modular content being present
-     * @param allowVendorChange boolean
+     * @param onlyRelevant boolean
      * @return list of action ids, exception thrown otherwise
      * @since 24
      *
@@ -3544,9 +3492,9 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
-                                         Date earliestOccurrence, Boolean allowModules, boolean allowVendorChange) {
+                                         Date earliestOccurrence, Boolean allowModules, boolean onlyRelevant) {
         return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
-                false, allowVendorChange);
+                onlyRelevant, false);
 
 }
     /**
