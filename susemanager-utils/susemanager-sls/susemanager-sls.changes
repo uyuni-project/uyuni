@@ -1,3 +1,4 @@
+- Skip removed product classes with satellite-sync
 - handle GPG keys when bootstrapping ssh minions (bsc#1181847)
 
 -------------------------------------------------------------------
