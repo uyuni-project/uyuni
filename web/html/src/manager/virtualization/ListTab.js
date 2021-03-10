@@ -45,6 +45,7 @@ type Props = {
   getCreateActionsKeys: (actionResults: Object) => Array<string>,
   idName: string,
   panelButtons: React.Node,
+  messages?: Array<MessageType>,
 };
 
 export function ListTab(props: Props) {
@@ -208,21 +209,18 @@ export function ListTab(props: Props) {
                   refreshError,
                 }) => {
                   const {columns, actionsProvider} = props.children(createModalButton, onAction);
+                  const allMessages = [].concat(
+                    errors.map(msg => MessagesUtils.error(msg)[0]),
+                    getCreationActionMessages(),
+                    props.messages,
+                    messages,
+                  );
                   return (
                     <div>
                       {panelButtons}
                       <h2>{props.title}</h2>
                       <p>{props.description}</p>
-                      <Messages
-                        items={
-                          [].concat(
-                            errors.map(msg => MessagesUtils.error(msg)[0]),
-                            getCreationActionMessages()
-                          )
-                        }
-                      />
-                      { refreshError && <Messages items={refreshError} /> }
-                      { messages && <Messages items={messages} /> }
+                      <Messages items={allMessages}/>
                       <Table
                         data={data != null ? Object.keys(data).map(id => data[id]): []}
                         emptyText={t(`No virtual ${props.type} to show.`)}
@@ -290,4 +288,5 @@ ListTab.defaultProps = {
   getCreateActionsKeys: (actions) => Object.keys(actions).filter(key => key.startsWith("new-")),
   modalsData: [],
   panelButtons: [],
+  messages: [],
 }
