@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 18:06+0000\n"
+"POT-Creation-Date: 2021-03-10 11:39+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -423,7 +423,7 @@ msgid "Login"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
-#: ../html/src/manager/clusters/remove-node/remove-node.js:82
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "Quitar"
 
@@ -1664,7 +1664,7 @@ msgid "Join node"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:209
-#: ../html/src/manager/clusters/remove-node/remove-node.js:47
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:49
 #, fuzzy
 msgid "Remove node"
 msgstr "Quitar"
@@ -1813,8 +1813,8 @@ msgid "Schedule join node"
 msgstr ""
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:105
-#: ../html/src/manager/clusters/remove-node/remove-node.js:63
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:72
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:76
 msgid "Cluster:"
 msgstr ""
 
@@ -1851,16 +1851,16 @@ msgstr "Filtros"
 msgid "Type"
 msgstr "Tipo"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:40
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:43
 #, fuzzy
 msgid "Remove nodes"
 msgstr "Quitar"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:59
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:68
 msgid "Schedule remove node"
 msgstr ""
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:67
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:76
 msgid "Nodes to remove:"
 msgstr ""
 
@@ -1868,20 +1868,20 @@ msgstr ""
 msgid "Upgrade plan"
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:36
 msgid "Upgrade "
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:48
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:55
 #, fuzzy
 msgid "Configuration override"
 msgstr "Canales de configuración"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:60
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:72
 msgid "Schedule upgrade cluster"
 msgstr ""
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:82
 msgid "Upgrade"
 msgstr ""
 

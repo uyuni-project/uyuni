@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 18:06+0000\n"
+"POT-Creation-Date: 2021-03-10 11:39+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -422,7 +422,7 @@ msgid "Login"
 msgstr "登录"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
-#: ../html/src/manager/clusters/remove-node/remove-node.js:82
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "去除"
 
@@ -1665,7 +1665,7 @@ msgid "Join node"
 msgstr "加入节点"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:209
-#: ../html/src/manager/clusters/remove-node/remove-node.js:47
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:49
 msgid "Remove node"
 msgstr "去除节点"
 
@@ -1812,8 +1812,8 @@ msgid "Schedule join node"
 msgstr "安排加入节点"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:105
-#: ../html/src/manager/clusters/remove-node/remove-node.js:63
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:72
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:76
 msgid "Cluster:"
 msgstr "群集："
 
@@ -1849,15 +1849,15 @@ msgstr "群集"
 msgid "Type"
 msgstr "类型"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:40
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:43
 msgid "Remove nodes"
 msgstr "去除节点"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:59
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:68
 msgid "Schedule remove node"
 msgstr "安排去除节点"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.js:67
+#: ../html/src/manager/clusters/remove-node/remove-node.tsx:76
 msgid "Nodes to remove:"
 msgstr "要去除的节点："
 
@@ -1865,19 +1865,19 @@ msgstr "要去除的节点："
 msgid "Upgrade plan"
 msgstr "升级计划"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:36
 msgid "Upgrade "
 msgstr "升级 "
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:48
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:55
 msgid "Configuration override"
 msgstr "配置覆盖"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:60
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:72
 msgid "Schedule upgrade cluster"
 msgstr "安排升级群集"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:82
 msgid "Upgrade"
 msgstr "升级"
 
