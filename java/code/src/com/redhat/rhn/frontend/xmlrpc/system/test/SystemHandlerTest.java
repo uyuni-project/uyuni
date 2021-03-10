@@ -749,14 +749,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Channel child = ChannelFactoryTest.createTestChannel(admin);
         child.setParentChannel(parent);
 
-        Object[] result = handler.listChildChannels(admin,
-                server.getId().intValue());
+        Object[] result = handler.listSubscribableChildChannels(admin, server.getId().intValue());
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
         server = reload(server);
-        result = handler.listChildChannels(admin,
-                server.getId().intValue());
+
+        result = handler.listSubscribableChildChannels(admin, server.getId().intValue());
 
         //server should have 1 child channel
         assertEquals(1, result.length);

@@ -888,40 +888,6 @@ public class SystemHandler extends BaseHandler {
      * subscribe too.
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
-     * @deprecated being replaced by listSubscribableChildChannels(string sessionKey,
-     * int serverId)
-     *
-     * @xmlrpc.doc Returns a list of subscribable child channels.  This only shows channels
-     * the system is *not* currently subscribed to.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("child channel")
-     *              #prop("int", "id")
-     *              #prop("string", "name")
-     *              #prop("string", "label")
-     *              #prop("string", "summary")
-     *              #prop("string", "has_license")
-     *              #prop("string", "gpg_key_url")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public Object[] listChildChannels(User loggedInUser, Integer sid)
-            throws FaultException {
-
-        return listSubscribableChildChannels(loggedInUser, sid);
-    }
-
-    /**
-     * List the child channels that this system can subscribe to.
-     * @param loggedInUser The current user
-     * @param sid The id of the system in question
-     * @return Returns an array of maps representing the channels this server could
-     * subscribe too.
-     * @throws FaultException A FaultException is thrown if the server corresponding to
-     * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of subscribable child channels.  This only shows channels
      * the system is *not* currently subscribed to.
