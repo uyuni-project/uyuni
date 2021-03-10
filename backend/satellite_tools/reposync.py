@@ -684,9 +684,9 @@ class RepoSync(object):
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
         for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'rhn')):
             for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP)
+                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP, chmod=int('0755', 8))
             for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP)
+                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP, chmod=int('0644', 8))
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
@@ -1608,6 +1608,7 @@ class RepoSync(object):
             if treeinfo:
                 try:
                     treeinfo_parser = TreeInfoParser(treeinfo)
+                    treeinfo_path = path
                     break
                 except TreeInfoError:
                     pass
@@ -1628,6 +1629,7 @@ class RepoSync(object):
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, ks_path))
         # Make sure images are included
         to_download = set()
+        to_download.add(treeinfo_path)
         for repo_path in treeinfo_parser.get_images():
             local_path = os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)
             # TODO: better check
