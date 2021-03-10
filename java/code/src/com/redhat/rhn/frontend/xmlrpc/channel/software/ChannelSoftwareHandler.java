@@ -3123,58 +3123,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Unsubscribe channels from the specified minions, trigger immediate channels update state
-     * @param user The current user
-     * @param sids System Ids for minions
-     * @param baseChannel base channel label
-     * @param childLabels child channels' labels
-     * @return array containing action Ids
-     * @deprecated being replaced by refreshSystemsChannelInfo
-     *
-     * @xmlrpc.doc Unsubscribe channels from the specified minions, trigger immediate channels update state
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #param("string", "baseChannelLabel")
-     * @xmlrpc.param #array_single("string", "childLabels")
-     * @xmlrpc.returntype #array_single("int", "actionId")
-     */
-    @Deprecated
-    public long[] unsubscribeChannels(User user, List<Integer> sids, String baseChannel, List<String> childLabels) {
-        Set<Action> actions = new HashSet<>();
-        try {
-            Set<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toSet());
-            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-            Date earliest = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
-            //If baseChannelLabel is there then we subscribe to nothing
-            if (StringUtils.isNotEmpty(baseChannel)) {
-                actions = ActionChainManager.scheduleSubscribeChannelsAction(user, serverIds, Optional.empty(),
-                        Collections.EMPTY_SET, earliest, null);
-            }
-            else {
-                List<Channel> childChannelsToRemove = childLabels.stream()
-                        .map(clabel -> lookupChannelByLabel(user, clabel))
-                        .collect(Collectors.toList());
-
-                for (Long serverId : serverIds) {
-                    Server server = SystemManager.lookupByIdAndUser(serverId, user);
-                    Set<Channel> childChannels = server.getChildChannels();
-                    childChannels.removeAll(childChannelsToRemove);
-                    Set<Action> action =
-                            ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
-                                    Optional.of(server.getBaseChannel()), childChannels, earliest, null);
-                    actions.addAll(action);
-
-                }
-            }
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
-        }
-        return actions.stream().mapToLong(a -> a.getId()).toArray();
-
-    }
-
-    /**
      * Refresh pillar data and then schedule channels state on the given minions
      * @param user The current user
      * @param sids server ids for the minions
