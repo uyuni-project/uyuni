@@ -149,26 +149,6 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * @deprecated
-     * Synchronize SUSE product channels between the Customer Center
-     * and the #product() database.
-     * This method is one step of the whole refresh cycle.
-     *
-     * @param loggedInUser the currently logged in user
-     * @return Integer
-     *
-     * @xmlrpc.doc (Deprecated) Synchronize SUSE product channels between the Customer Center
-     *             and the #product() database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public Integer synchronizeProductChannels(User loggedInUser) {
-        ensureSatAdmin(loggedInUser);
-        return BaseHandler.VALID;
-    }
-
-    /**
      * Synchronize subscriptions between the Customer Center
      * and the #product() database.
      * This method is one step of the whole refresh cycle.
