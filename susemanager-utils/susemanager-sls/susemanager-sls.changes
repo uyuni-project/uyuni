@@ -1,3 +1,4 @@
+- Skip removed product classes with satellite-sync
 - add virtual network creation action
 
 -------------------------------------------------------------------
