@@ -59,11 +59,11 @@ for host in hosts:
 
     if systems.has_key(host):
         sid = systems[host]
-        chans = server.system.listChildChannels(session, sid)
+        chans = server.system.listSubscribableChildChannels(session, sid)
     elif systems.has_key(host.split('.')[0]):
         sid = systems[host.split('.')[0]]
         print "Trying alternate name: %s" % host.split('.')[0]
-        chans = server.system.listChildChannels(session, sid)
+        chans = server.system.listSubscribableChildChannels(session, sid)
     else:
         print "WARNING: %s not found in RHN" % host
         continue
