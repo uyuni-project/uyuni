@@ -50,27 +50,6 @@ import java.util.List;
 public class KickstartHandler extends BaseHandler {
 
     /**
-     * List the available kickstartable trees for the given channel.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel to search.
-     * @return Array of KickstartableTreeObjects
-     * @deprecated being replaced by kickstart.tree.list(string sessionKey,
-     * string channelLabel)
-     *
-     * @xmlrpc.doc List the available kickstartable trees for the given channel.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
-     * search.")
-     * @xmlrpc.returntype #array_begin() $KickstartTreeSerializer #array_end()
-     */
-    @Deprecated
-    public List listKickstartableTrees(User loggedInUser,
-            String channelLabel) {
-        return new KickstartTreeHandler().
-                list(loggedInUser, channelLabel);
-    }
-
-    /**
      * List kickstartable channels for the logged in user.
      * @param loggedInUser The current user
      * @return Array of Channel objects.

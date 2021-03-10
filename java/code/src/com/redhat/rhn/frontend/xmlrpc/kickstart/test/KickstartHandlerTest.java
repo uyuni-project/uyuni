@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidKickstartLabelException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidVirtualizationTypeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.NoSuchKickstartTreeException;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.testing.TestUtils;
@@ -68,8 +69,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTree testTree = KickstartableTreeTest.
             createTestKickstartableTree(baseChan);
-        List ksTrees = handler.listKickstartableTrees(admin,
-                baseChan.getLabel());
+        List ksTrees = new KickstartTreeHandler().
+                list(admin, baseChan.getLabel());
         assertTrue(ksTrees.size() > 0);
 
         boolean found = false;
@@ -85,8 +86,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
 
     public void testListKickstartableTreesByNonExistentChannelLabel() throws Exception {
         try {
-            handler.listKickstartableTrees(admin,
-                    "no such label");
+            new KickstartTreeHandler().
+                    list(admin, "no such label");
             fail();
         }
         catch (Exception e) {
