@@ -256,10 +256,7 @@ _packageStatement_update = """
         pe.version as version,
         pe.release as release,
         pa.label as arch,
-        (select 1 from rhnErrata e
-                  join rhnErrataPackage ep on e.id = ep.errata_id
-                  where ep.package_id = p.id
-                  and e.advisory_status = 'retracted') as retracted
+        cp.is_retracted as retracted
     from rhnActionPackage ap
 left join rhnPackageArch pa
      on ap.package_arch_id = pa.id,
@@ -267,7 +264,7 @@ left join rhnPackageArch pa
         rhnPackageName pn,
         rhnPackageEVR pe,
         rhnServerChannel sc,
-        rhnChannelPackage cp
+        suseChannelPackageRetractedStatusView cp,
     where ap.action_id = :actionid
         and ap.evr_id is not null
         and ap.evr_id = p.evr_id
