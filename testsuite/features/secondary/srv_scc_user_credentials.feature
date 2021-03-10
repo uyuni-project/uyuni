@@ -3,8 +3,8 @@
 
 Feature: SCC user credentials in the Setup Wizard
   As a systems administrator
-  In order to access to SUSE Customer Service
-  I want to create, edit, and delete the credentials of the organization
+  In order to manage organization's access to SUSE Customer Service
+  I want to create, edit, and delete its credentials
 
 @no_mirror
   Scenario: Enter some invalid organization credentials
