@@ -41,14 +41,41 @@ database:
 content-management: 
 - java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
 - java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
+spark-router:
+- java/code/src/com/suse/manager/webui/Router.java
+webui-templates:
+- java/code/src/com/suse/manager/webui/templates/*
+- java/code/src/com/suse/manager/webui/templates/**/*
+webui-controllers:
+- java/code/src/com/suse/manager/webui/controller/*
+- java/code/src/com/suse/manager/webui/controller/**/*
+salt-actions-implementations:
+- java/code/src/com/suse/manager/webui/services/SaltServerActionService.java
+salt-events-listener:
+- java/code/src/com/suse/manager/reactor/SaltReactor.java
+data-model:
+- java/code/src/com/redhat/rhn/domain/*
+- java/code/src/com/redhat/rhn/domain/**/*
+old-ui:
+- java/code/src/com/redhat/rhn/frontend/*
+- java/code/src/com/redhat/rhn/frontend/**/*
+xmlrpc:
+- java/code/src/com/redhat/rhn/frontend/xmlrpc/*
+- java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
 
 #QA Labels
 testing: 
 - testsuite/*
 - testsuite/**/*
+test-framework:
+- testsuite/features/support/*
+- testsuite/features/step_definitions/*
 core-features: 
 - testsuite/features/core/*
 - testsuite/features/core/**/*
+build-validation-features: 
+- testsuite/features/build_validation/*
+- testsuite/features/build_validation/**/*
 secondary-features: 
 - testsuite/features/secondary/*
 - testsuite/features/secondary/**/*
