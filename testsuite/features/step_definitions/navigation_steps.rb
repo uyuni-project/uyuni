@@ -469,11 +469,20 @@ Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2
   end
 end
 
-Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon_class|
+Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon|
+  if icon == 'retracted'
+    content_selector = "i[class*='errata-retracted']"
+  else
+    raise "Unsupported icon '#{icon}' in the step definition"
+  end
+
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
   within(:xpath, xpath_query) do
-    func = should_not ? :has_no_css? : :has_css?
-    raise "xpath: #{xpath_query} has no content #{icon_class}" unless send(func, "i[class*='#{icon_class}']", wait: DEFAULT_TIMEOUT)
+    if should_not
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: DEFAULT_TIMEOUT)
+    else
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: DEFAULT_TIMEOUT)
+    end
   end
 end
 
