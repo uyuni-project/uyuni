@@ -1,3 +1,4 @@
+- remove deprecated xmlrpc functions
 - Implement retracted patches
 - Speed up pages to compare or add packages to channels (bsc#1178767)
 - Remove validator.js from jade templates
