@@ -37,7 +37,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import com.redhat.rhn.frontend.xmlrpc.UserNeverLoggedInException;
 import com.redhat.rhn.frontend.xmlrpc.UserNotUpdatedException;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -51,7 +50,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
