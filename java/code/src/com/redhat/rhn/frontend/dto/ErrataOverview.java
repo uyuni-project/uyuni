@@ -158,16 +158,6 @@ public class ErrataOverview extends BaseDto {
     }
 
     /**
-     * @return Package names by ids.
-     */
-    public Map<Long, String> getPackageInfo() {
-        Map<Long, String> m = new HashMap<>();
-        for (int i = 0; i < packageNames.size(); i++) {
-            m.put(pids.get(i), packageNames.get(i));
-        }
-        return m;
-    }
-    /**
      * @param p The packageNames to set.
      */
     public void setPackageNames(List p) {
