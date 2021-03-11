@@ -42,7 +42,7 @@ export function NetsList(props: Props) {
         modalsData={modalsData}
         idName="name"
         canCreate={props.allow_changing}
-        messages={props.allow_changing ? [] : MessagesUtils.warning(t("Salt minion doesn't support virtual network creation and editing"))}
+        messages={props.allow_changing ? [] : MessagesUtils.warning(t("The Salt version on this system does not support virtual network creating and editing"))}
       >
         {
           (createModalButton, onAction) => {
