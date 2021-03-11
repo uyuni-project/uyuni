@@ -3847,15 +3847,12 @@ public class SystemHandler extends BaseHandler {
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
                                          List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
-        List<ErrataOverview> errataOverviews = ErrataFactory.searchByPackageIds(packageIds);
-        List<ErrataOverview> retracted = errataOverviews.stream()
-                .filter(eo -> eo.getAdvisoryStatus() == AdvisoryStatus.RETRACTED)
-                .collect(toList());
-        List<Long> longPids = packageIds.stream().map(Integer::longValue).collect(toList());
+        List<Tuple2<Long, Long>> retracted = ErrataFactory.retractedPackages(
+                packageIds.stream().map(Integer::longValue).collect(toList()),
+                sids.stream().map(Integer::longValue).collect(toList()));
+
         List<Long> retractedPids = retracted.stream()
-                .flatMap(s -> s.getPackageIds().stream())
-                .filter(longPids::contains)
-                .distinct()
+                .map(t -> t.getA())
                 .collect(toList());
         if (retracted.isEmpty()) {
             return schedulePackagesAction(loggedInUser, sids,
