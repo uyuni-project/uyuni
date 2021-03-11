@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 09:51+0000\n"
+"POT-Creation-Date: 2021-03-11 11:00+0000\n"
 "PO-Revision-Date: 2021-02-05 10:01+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -4608,7 +4608,9 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:45
-msgid "Salt minion doesn't support virtual network creation and editing"
+msgid ""
+"The Salt version on this system does not support virtual network creating "
+"and editing"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
