@@ -52,5 +52,6 @@
 - features/secondary/min_change_software_channel.feature
 - features/secondary/srv_test_maintenance_windows.feature
 - features/secondary/srv_user_configuration_salt_states.feature
+- features/secondary/srv_retracted_patches.feature
 
 ## Secondary features END ##
