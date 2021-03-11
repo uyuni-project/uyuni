@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 09:44+0000\n"
+"POT-Creation-Date: 2021-03-11 09:51+0000\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -3874,33 +3874,33 @@ msgstr "拒否済み"
 msgid "Fingerprint"
 msgstr "フィンガープリント"
 
-#: ../html/src/manager/shared/menu/menu.js:169
+#: ../html/src/manager/shared/menu/menu.tsx:196
 msgid "Clear Menu"
 msgstr "メニューの消去"
 
-#: ../html/src/manager/shared/menu/menu.js:171
+#: ../html/src/manager/shared/menu/menu.tsx:198
 msgid "Filter menu"
 msgstr "フィルタメニュー"
 
-#: ../html/src/manager/shared/menu/menu.js:206
-#: ../html/src/manager/shared/menu/menu.js:209
+#: ../html/src/manager/shared/menu/menu.tsx:235
+#: ../html/src/manager/shared/menu/menu.tsx:238
 msgid "Uyuni homepage"
 msgstr "Uyuni ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.js:207
+#: ../html/src/manager/shared/menu/menu.tsx:236
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.js:213
-#: ../html/src/manager/shared/menu/menu.js:216
+#: ../html/src/manager/shared/menu/menu.tsx:245
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.js:214
+#: ../html/src/manager/shared/menu/menu.tsx:248
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.js:214
+#: ../html/src/manager/shared/menu/menu.tsx:250
 msgid "Manager"
 msgstr "Manager"
 
