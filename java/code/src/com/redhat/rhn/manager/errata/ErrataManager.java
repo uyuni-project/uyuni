@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2010--2021 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -11,9 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-/*
- * Copyright (c) 2010 SUSE LLC
  */
 package com.redhat.rhn.manager.errata;
 
@@ -1663,7 +1661,7 @@ public class ErrataManager extends BaseManager {
     }
 
 
-        /**
+    /**
      * Apply a list of errata to a list of servers, with an optional Action
      * Chain.
      * Note that not all erratas are applied to all systems. Systems get
@@ -1852,8 +1850,8 @@ public class ErrataManager extends BaseManager {
         //Taskomatic part is needed only for minionActions
         //and only if actions are not added to an action chain
         if (actionChain == null && !minionTaskoActions.isEmpty()) {
-                taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
-                MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
+            taskomaticApi.scheduleMinionActionExecutions(minionTaskoActions, false);
+            MinionActionManager.scheduleStagingJobsForMinions(minionTaskoActions, user);
         }
         return actionIds;
     }
