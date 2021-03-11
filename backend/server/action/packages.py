@@ -282,7 +282,7 @@ left join rhnPackageArch pa
         null as release,
         null as epoch,
         pa.label as arch,
-        0 as retracted
+        false as retracted
    from rhnActionPackage ap
 left join rhnPackageArch pa
      on ap.package_arch_id = pa.id,

@@ -33,7 +33,7 @@ FROM (
                       suseChannelPackageRetractedStatusView   cp
                 where p.evr_id = pe.id
                   and cp.package_id = p.id
-                  and cp.is_retracted = 0
+                  and NOT cp.is_retracted
                 group by cp.channel_id, p.name_id, p.package_arch_id) m,
               rhnPackageEVR       pe,
               rhnPackage          p,
