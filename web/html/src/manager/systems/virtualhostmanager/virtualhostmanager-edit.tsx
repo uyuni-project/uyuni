@@ -311,7 +311,6 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           required
           labelClass="col-md-3"
           divClass="col-md-6"
-          value={this.state.model.module_context}
           isClearable
           options={this.state.model.contexts.map(k => (k === "" ? "<default>" : k))}
         />
