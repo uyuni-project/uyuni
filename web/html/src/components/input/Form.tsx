@@ -16,7 +16,7 @@ type Props = {
   onSubmitInvalid?: Function;
 
   /** A reference to pass to the <form> element */
-  formRef?: string;
+  formRef?: React.LegacyRef<HTMLFormElement>;
 
   /** CSS class of the form */
   className?: string;
