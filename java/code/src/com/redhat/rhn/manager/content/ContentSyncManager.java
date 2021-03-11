@@ -2205,7 +2205,7 @@ public class ContentSyncManager {
             return accessibleUrl(url, username, password);
         }
         catch (URISyntaxException e) {
-            log.warn(e.getMessage());
+            log.error("accessibleUrl: " + url + " URISyntaxException " + e.getMessage());
         }
         return false;
     }
@@ -2226,9 +2226,9 @@ public class ContentSyncManager {
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
-                boolean readable = Files.isReadable(testUrlPath);
-                log.debug(String.format("Test file URL %s: readable %s", testUrlPath, readable));
-                return readable;
+                boolean res = Files.isReadable(testUrlPath);
+                log.debug("accessibleUrl:" + testUrlPath.toString() + " " + res);
+                return res;
             }
             else {
                 URI testUri = new URI(uri.getScheme(), null, uri.getHost(),
@@ -2236,19 +2236,15 @@ public class ContentSyncManager {
                 // Verify the mirrored repo by sending a HEAD request
                 int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         user, password).getStatusLine().getStatusCode();
-                if (status == HttpURLConnection.HTTP_OK) {
-                    return true;
-                }
-                else {
-                    log.warn("accessibleUrl: " + testUri.toString() + " returned status " + status);
-                }
+                log.debug("accessibleUrl: " + testUri.toString() + " returned status " + status);
+                return (status == HttpURLConnection.HTTP_OK);
             }
         }
         catch (IOException e) {
-            log.warn(e.getMessage());
+            log.error("accessibleUrl: " + url + " IOException " + e.getMessage());
         }
         catch (URISyntaxException e) {
-            log.warn(e.getMessage());
+            log.error("accessibleUrl: " + url + " URISyntaxException " + e.getMessage());
         }
         return false;
     }
