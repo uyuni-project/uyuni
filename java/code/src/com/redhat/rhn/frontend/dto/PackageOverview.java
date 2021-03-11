@@ -240,12 +240,4 @@ public class PackageOverview extends BaseDto {
         retracted = retractedIn;
     }
 
-    /**
-     * Sets the retracted.
-     *
-     * @param retractedIn the retracted
-     */
-    public void setRetracted(Integer retractedIn) {
-        retracted = retractedIn == 1;
-    }
 }

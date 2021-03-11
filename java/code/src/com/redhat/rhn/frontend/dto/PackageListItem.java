@@ -129,10 +129,6 @@ public class PackageListItem extends IdComboDto {
         retracted = retractedIn;
     }
 
-    public void setRetracted(Integer retractedIn) {
-        retracted = retractedIn == 1;
-    }
-
     /**
      * @return Returns the arch.
      */
