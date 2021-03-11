@@ -8,7 +8,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/PackageList</context>
           </context-group>
-        <target>아키텍처 </target>
+        <target>아키텍처</target>
       </trans-unit>
       <trans-unit id="column.release" xml:space="preserve">
           <source>Release</source>
