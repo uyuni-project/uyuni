@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new CentOS 6 minion via salt-ssh
@@ -10,16 +10,20 @@ Feature: Bootstrap a CentOS 6 Salt minion
   Scenario: Clean up sumaform leftovers on a CentOS 6 Salt minion
     When I perform a full salt minion cleanup on "ceos6_minion"
 
+  Scenario: Create the bootstrap repository for a CentOS 6 Salt minion
+    Given I am authorized
+    When I create the bootstrap repository for "ceos6_minion" on the server
+
   Scenario: Bootstrap a CentOS 6 Salt minion
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    And I enter the hostname of "ceos6_minion" as "hostname"
+    When I enter the hostname of "ceos6_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-ceos6_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos6_minion"
 
 @proxy

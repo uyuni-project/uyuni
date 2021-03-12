@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Ubuntu minion
@@ -9,6 +9,10 @@ Feature: Bootstrap a Ubuntu 20.04 Salt minion
 
   Scenario: Clean up sumaform leftovers on a Ubuntu 20.04 minion
     When I perform a full salt minion cleanup on "ubuntu2004_minion"
+
+  Scenario: Create the bootstrap repository for a Ubuntu 20.04 minion
+    Given I am authorized
+    When I create the bootstrap repository for "ubuntu2004_minion" on the server
 
   Scenario: Bootstrap a Ubuntu 20.04 minion
     Given I am authorized
@@ -22,7 +26,7 @@ Feature: Bootstrap a Ubuntu 20.04 Salt minion
     And I select "1-ubuntu2004_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu2004_minion"
 
 @proxy

@@ -1,11 +1,11 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to bootstrap a SLES 12 SP4 salt build host via the GUI
+Feature: Bootstrap a SLES 12 SP4 Salt build host via the GUI
 
-  Scenario: Create the bootstrap repository for a SLES 12 SP4 salt build host
+  Scenario: Create the bootstrap repository for a SLES 12 SP4 build host
      Given I am authorized
-     When I create the "x86_64" bootstrap repository for "sle12sp4_buildhost" on the server
+     When I create the bootstrap repository for "sle12sp4_buildhost" on the server
 
   Scenario: Bootstrap a SLES build host
      Given I am authorized

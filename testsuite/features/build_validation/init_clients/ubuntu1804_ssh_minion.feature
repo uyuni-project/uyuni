@@ -5,10 +5,14 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu1804_ssh_minion
-Feature: Bootstrap a Ubuntu 18.04 Salt SSH Minion
+Feature: Bootstrap a Ubuntu 18.04 Salt SSH minion
 
-  Scenario: Clean up sumaform leftovers on a 18.04 Salt SSH Minion
+  Scenario: Clean up sumaform leftovers on a 18.04 Salt SSH minion
     When I perform a full salt minion cleanup on "ubuntu1804_ssh_minion"
+
+  Scenario: Create the bootstrap repository for a Ubuntu 18.04 Salt SSH minion
+    Given I am authorized
+    When I create the bootstrap repository for "ubuntu1804_ssh_minion" on the server
 
   Scenario: Bootstrap a SSH-managed Ubuntu 18.04 minion
     Given I am authorized
@@ -22,11 +26,11 @@ Feature: Bootstrap a Ubuntu 18.04 Salt SSH Minion
     And I select the hostname of "proxy" from "proxies"
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1804_ssh_minion"
 
   # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for 18.04 Salt SSH Minion
+  Scenario: Import the GPG keys for 18.04 Salt SSH minion
     When I import the GPG keys for "ubuntu1804_ssh_minion"
 
   Scenario: Check events history for failures on SSH-managed Ubuntu 18.04 minion
