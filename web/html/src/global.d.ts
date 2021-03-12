@@ -1,5 +1,3 @@
-import * as es5 from 'typescript/lib/lib.es5.d.ts'
-
 declare global {
   interface Window {
     // See java/code/webapp/WEB-INF/includes/leftnav.jsp
@@ -55,6 +53,9 @@ declare global {
   // Used by cveaudit and spacewalk-checkall.js
   var DWRItemSelector: any;
   var dwr: any;
+
+  // Defined in spacewalk-checkall.js
+  var numericValidate: (event: any) => any;
 
   /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
   var localTime: string | undefined;
