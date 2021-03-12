@@ -477,7 +477,8 @@ Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2
 end
 
 Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon|
-  if icon == 'retracted'
+  case icon
+  when 'retracted'
     content_selector = "i[class*='errata-retracted']"
   else
     raise "Unsupported icon '#{icon}' in the step definition"
