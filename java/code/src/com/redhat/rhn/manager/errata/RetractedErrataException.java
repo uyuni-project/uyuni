@@ -13,9 +13,8 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc;
+package com.redhat.rhn.manager.errata;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.localization.LocalizationService;
 
 import java.util.List;
@@ -24,28 +23,33 @@ import java.util.stream.Collectors;
 /**
  * Retracted Errata Exception
  */
-public class RetractedErrataException extends FaultException  {
+public class RetractedErrataException extends RuntimeException  {
+
+    private List<Long> errataIds;
 
     /**
      * Constructor
-     * @param errataIds The retracted errata ids.
+     * @param errataIdsIn The retracted errata ids.
      */
-    public RetractedErrataException(List<Long> errataIds) {
-        super(2602, "retractedErrata" , LocalizationService.getInstance().
+    public RetractedErrataException(List<Long> errataIdsIn) {
+        super(LocalizationService.getInstance().
                 getMessage("api.errata.retractederrata",
-                        errataIds.stream().map(Object::toString).collect(Collectors.joining(","))));
+                        errataIdsIn.stream().map(Object::toString).collect(Collectors.joining(","))));
     }
 
     /**
      * Constructor
-     * @param errataIds The retracted errata ids.
+     * @param errataIdsIn The retracted errata ids.
      * @param cause the cause
      */
-    public RetractedErrataException(List<Long> errataIds, Throwable cause) {
-        super(2602, "retractedErrata" , LocalizationService.getInstance().
+    public RetractedErrataException(List<Long> errataIdsIn, Throwable cause) {
+        super(LocalizationService.getInstance().
                 getMessage("api.errata.retractederrata",
-                        errataIds.stream().map(Object::toString).collect(Collectors.joining(","))),
+                        errataIdsIn.stream().map(Object::toString).collect(Collectors.joining(","))),
                 cause);
     }
 
+    public List<Long> getErrataIds() {
+        return errataIds;
+    }
 }
