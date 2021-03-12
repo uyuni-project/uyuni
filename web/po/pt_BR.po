@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:06+0000\n"
+"POT-Creation-Date: 2021-03-12 13:21+0000\n"
 "PO-Revision-Date: 2020-12-08 00:26+0000\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -299,7 +299,7 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
-#: ../html/src/manager/salt/keys/key-management.js:35
+#: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.js:154
 #: ../html/src/manager/state/recurring-states-details.js:156
 #: ../html/src/manager/state/recurring-states-list.js:125
@@ -1178,7 +1178,6 @@ msgstr ""
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
-#: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
 msgstr ""
@@ -1212,6 +1211,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:629
+#: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
@@ -1229,7 +1229,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
-#: ../html/src/manager/salt/keys/key-management.js:178
+#: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
@@ -3514,7 +3514,7 @@ msgid "Package States"
 msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.js:336
-#: ../html/src/manager/salt/keys/key-management.js:171
+#: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:58
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
@@ -3644,13 +3644,13 @@ msgid "Delete Notification"
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:39
-#: ../html/src/manager/salt/cmd/remote-commands.js:284
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:340
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:52
-#: ../html/src/manager/salt/cmd/remote-commands.js:304
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:360
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
@@ -3661,136 +3661,134 @@ msgid ""
 "this organization"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:48
-#: ../html/src/manager/salt/keys/key-management.js:55
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:52
+#: ../html/src/manager/salt/keys/key-management.tsx:71
 msgid "pending"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:55
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:56
 msgid "timed out"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
 msgid "- hide error -"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
 msgid "- show error -"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:75
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
 msgid "- hide response -"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:75
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
 msgid "- show response -"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:159
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:178
 msgid "Stop waiting"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:161
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:181
 msgid "Stop waiting for all the minions to respond"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:164
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:189
 msgid "Find targets"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:166
-#: ../html/src/manager/salt/cmd/remote-commands.js:172
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:192
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:202
 msgid "Check which minions match the target expression"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:174
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:207
 msgid "Run command"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:176
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:210
 msgid "Run the command on the target minions"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:183
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:218
 msgid "Remote Commands"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:190
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:231
 msgid "Type the command here"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:193
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:241
 msgid "Type the minion_id pattern to target here"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:205
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:252
 msgid "Target systems"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:212
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:262
 msgid "No target systems previewed"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:212
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
 msgid "No target systems found"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:393
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
 msgid "Not all minions responded on time."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:418
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
 msgid "No minions matched the target expression."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:420
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "Server returned an error: {0}"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:487
-#: ../html/src/manager/salt/cmd/remote-commands.js:491
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
 msgid "Matching ssh-push minions..."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:500
-msgid "Session expired, please reload the page to run command on systems."
-msgstr ""
-
-#: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:75
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr ""
-
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:84
 msgid "Formula Catalog"
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Filter by formula name"
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
 msgid "Formula"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.js:33
+#: ../html/src/manager/salt/keys/key-management.tsx:33
 msgid "Accept"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.js:51
+#: ../html/src/manager/salt/keys/key-management.tsx:42
+msgid "Reject"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.tsx:67
 msgid "accepted"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.js:59
+#: ../html/src/manager/salt/keys/key-management.tsx:75
 msgid "rejected"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.js:63
+#: ../html/src/manager/salt/keys/key-management.tsx:79
 msgid "denied"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.js:159
+#: ../html/src/manager/salt/keys/key-management.tsx:146
+msgid "Keys"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
 msgstr ""
 
@@ -5199,6 +5197,11 @@ msgstr ""
 
 #: ../html/src/utils/network.ts:73
 msgid "Session expired, please reload the page."
+msgstr ""
+
+#: ../html/src/utils/network.ts:75
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
 #: ../html/src/utils/network.ts:77

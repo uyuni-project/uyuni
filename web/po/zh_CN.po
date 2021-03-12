@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:06+0000\n"
+"POT-Creation-Date: 2021-03-12 13:21+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -291,7 +291,7 @@ msgstr "取消"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
-#: ../html/src/manager/salt/keys/key-management.js:35
+#: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.js:154
 #: ../html/src/manager/state/recurring-states-details.js:156
 #: ../html/src/manager/state/recurring-states-list.js:125
@@ -1185,7 +1185,6 @@ msgstr "会话已失效，请重新装载页面以查看最新数据。"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
-#: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -1219,6 +1218,7 @@ msgstr "审计映像"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:629
+#: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
@@ -1236,7 +1236,7 @@ msgstr "名称"
 #: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
-#: ../html/src/manager/salt/keys/key-management.js:178
+#: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
@@ -3544,7 +3544,7 @@ msgid "Package States"
 msgstr "软件包状态"
 
 #: ../html/src/manager/minion/packages/package-states.js:336
-#: ../html/src/manager/salt/keys/key-management.js:171
+#: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:58
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
@@ -3674,13 +3674,13 @@ msgid "Delete Notification"
 msgstr "删除通知"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
-#: ../html/src/manager/salt/cmd/remote-commands.js:284
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:340
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
 #: ../html/src/manager/notifications/notifications.tsx:52
-#: ../html/src/manager/salt/cmd/remote-commands.js:304
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:360
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "连接到服务器时出错。请刷新页面以重试。"
@@ -3691,136 +3691,135 @@ msgid ""
 "this organization"
 msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:48
-#: ../html/src/manager/salt/keys/key-management.js:55
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:52
+#: ../html/src/manager/salt/keys/key-management.tsx:71
 msgid "pending"
 msgstr "等待中"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:55
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:56
 msgid "timed out"
 msgstr "超时"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
 msgid "- hide error -"
 msgstr "- 隐藏错误 -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
 msgid "- show error -"
 msgstr "- 显示错误 -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:75
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
 msgid "- hide response -"
 msgstr "- 隐藏响应 -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:75
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
 msgid "- show response -"
 msgstr "- 显示响应 -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:159
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:178
 msgid "Stop waiting"
 msgstr "停止等待"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:161
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:181
 msgid "Stop waiting for all the minions to respond"
 msgstr "停止等待所有受控端做出响应"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:164
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:189
 msgid "Find targets"
 msgstr "查找目标"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:166
-#: ../html/src/manager/salt/cmd/remote-commands.js:172
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:192
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:202
 msgid "Check which minions match the target expression"
 msgstr "检查哪些受控端与目标表达式匹配"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:174
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:207
 msgid "Run command"
 msgstr "运行命令"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:176
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:210
 msgid "Run the command on the target minions"
 msgstr "在目标受控端上运行命令"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:183
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:218
 msgid "Remote Commands"
 msgstr "远程命令"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:190
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:231
 msgid "Type the command here"
 msgstr "在此处键入命令"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:193
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:241
 msgid "Type the minion_id pattern to target here"
 msgstr "在此处键入目标的 minion_id 模式"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:205
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:252
 msgid "Target systems"
 msgstr "目标系统"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:212
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:262
 msgid "No target systems previewed"
 msgstr "未预览目标系统"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:212
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
 msgid "No target systems found"
 msgstr "未找到目标系统"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:393
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
 msgid "Not all minions responded on time."
 msgstr "并非所有受控端都按时做出了响应。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:418
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
 msgid "No minions matched the target expression."
 msgstr "没有任何受控端与目标表达式匹配。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:420
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "Server returned an error: {0}"
 msgstr "服务器返回了错误：{0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:487
-#: ../html/src/manager/salt/cmd/remote-commands.js:491
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
 msgid "Matching ssh-push minions..."
 msgstr "正在匹配 ssh-push 受控端..."
 
-#: ../html/src/manager/salt/cmd/remote-commands.js:500
-msgid "Session expired, please reload the page to run command on systems."
-msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
-
-#: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:75
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr "授权错误，请重新装载页面或重试注销/登录。"
-
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:84
 msgid "Formula Catalog"
 msgstr "公式目录"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Filter by formula name"
 msgstr "按公式名称过滤"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
 msgid "Formula"
 msgstr "公式"
 
-#: ../html/src/manager/salt/keys/key-management.js:33
+#: ../html/src/manager/salt/keys/key-management.tsx:33
 msgid "Accept"
 msgstr "接受"
 
-#: ../html/src/manager/salt/keys/key-management.js:51
+#: ../html/src/manager/salt/keys/key-management.tsx:42
+#, fuzzy
+msgid "Reject"
+msgstr "已拒绝"
+
+#: ../html/src/manager/salt/keys/key-management.tsx:67
 msgid "accepted"
 msgstr "已接受"
 
-#: ../html/src/manager/salt/keys/key-management.js:59
+#: ../html/src/manager/salt/keys/key-management.tsx:75
 msgid "rejected"
 msgstr "已拒绝"
 
-#: ../html/src/manager/salt/keys/key-management.js:63
+#: ../html/src/manager/salt/keys/key-management.tsx:79
 msgid "denied"
 msgstr "已拒绝"
 
-#: ../html/src/manager/salt/keys/key-management.js:159
+#: ../html/src/manager/salt/keys/key-management.tsx:146
+msgid "Keys"
+msgstr ""
+
+#: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
 msgstr "指纹"
 
@@ -5267,6 +5266,11 @@ msgstr "分割成组"
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
 
+#: ../html/src/utils/network.ts:75
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
+msgstr "授权错误，请重新装载页面或重试注销/登录。"
+
 #: ../html/src/utils/network.ts:77
 msgid "Resource not found."
 msgstr "未找到资源。"
@@ -5274,6 +5278,9 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Session expired, please reload the page to run command on systems."
+#~ msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
 
 #~ msgid ""
 #~ "Session expired, please reload the page to receive notifications in real-"
