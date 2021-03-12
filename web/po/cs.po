@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 12:49+0000\n"
+"POT-Creation-Date: 2021-03-12 13:00+0000\n"
 "PO-Revision-Date: 2021-02-05 10:01+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -81,19 +81,19 @@ msgstr ""
 msgid "No upcoming maintenance windows"
 msgstr "Žádná nadcházející okna údržby"
 
-#: ../html/src/components/action-schedule.tsx:244
+#: ../html/src/components/action-schedule.tsx:242
 msgid "Earliest:"
 msgstr "Nejdříve:"
 
-#: ../html/src/components/action-schedule.tsx:244
+#: ../html/src/components/action-schedule.tsx:242
 msgid "Maintenance Window:"
 msgstr "Okno údržby:"
 
-#: ../html/src/components/action-schedule.tsx:274
+#: ../html/src/components/action-schedule.tsx:272
 msgid "Add to:"
 msgstr "Přidat k:"
 
-#: ../html/src/components/action-schedule.tsx:292
+#: ../html/src/components/action-schedule.tsx:290
 msgid "Loading the scheduler..."
 msgstr "Načítání plánovače..."
 
@@ -110,10 +110,10 @@ msgid "Configuration Channel: {0}"
 msgstr "Konfigurační kanál: {0}"
 
 #: ../html/src/components/config-channels.tsx:78
-#: ../html/src/manager/images/image-profiles.js:160
-#: ../html/src/manager/images/image-stores.js:157
-#: ../html/src/manager/images/image-view-overview.js:207
-#: ../html/src/manager/images/image-view-overview.js:215
+#: ../html/src/manager/images/image-profiles.tsx:206
+#: ../html/src/manager/images/image-stores.tsx:203
+#: ../html/src/manager/images/image-view-overview.tsx:322
+#: ../html/src/manager/images/image-view-overview.tsx:347
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
@@ -157,8 +157,8 @@ msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďt
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
 #: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
-#: ../html/src/manager/images/image-view.js:683
-#: ../html/src/manager/images/image-view.js:685
+#: ../html/src/manager/images/image-view.tsx:794
+#: ../html/src/manager/images/image-view.tsx:796
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
@@ -268,10 +268,10 @@ msgstr "Opravdu chcete {0} vybrané {1}? (Vybráno {2} {1})"
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
-#: ../html/src/manager/images/image-view-overview.js:467
-#: ../html/src/manager/images/image-view-overview.js:468
-#: ../html/src/manager/images/image-view-overview.js:526
-#: ../html/src/manager/images/image-view-overview.js:527
+#: ../html/src/manager/images/image-view-overview.tsx:691
+#: ../html/src/manager/images/image-view-overview.tsx:692
+#: ../html/src/manager/images/image-view-overview.tsx:762
+#: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/systems/delete-system.js:74
 #: ../html/src/manager/systems/delete-system.js:75
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
@@ -284,13 +284,13 @@ msgstr "Zrušit"
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/images/image-profiles.js:106
-#: ../html/src/manager/images/image-profiles.js:166
-#: ../html/src/manager/images/image-stores.js:109
-#: ../html/src/manager/images/image-stores.js:163
-#: ../html/src/manager/images/image-view.js:316
-#: ../html/src/manager/images/image-view.js:320
-#: ../html/src/manager/images/image-view.js:607
+#: ../html/src/manager/images/image-profiles.tsx:137
+#: ../html/src/manager/images/image-profiles.tsx:212
+#: ../html/src/manager/images/image-stores.tsx:140
+#: ../html/src/manager/images/image-stores.tsx:209
+#: ../html/src/manager/images/image-view.tsx:353
+#: ../html/src/manager/images/image-view.tsx:363
+#: ../html/src/manager/images/image-view.tsx:684
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -434,7 +434,7 @@ msgid "Remove"
 msgstr "Odstranit"
 
 #: ../html/src/components/input/Password.stories.js:26
-#: ../html/src/manager/images/image-store-edit.js:152
+#: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
@@ -881,9 +881,9 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.js:109
-#: ../html/src/manager/images/image-stores.js:112
-#: ../html/src/manager/images/image-view.js:326
+#: ../html/src/manager/images/image-profiles.tsx:142
+#: ../html/src/manager/images/image-stores.tsx:145
+#: ../html/src/manager/images/image-view.tsx:377
 #: ../html/src/manager/notifications/notification-messages.tsx:426
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
@@ -894,7 +894,7 @@ msgid "Please be patient, this might take several minutes."
 msgstr "Buďte prosím trpěliví, může to trvat několik minut."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:184
-#: ../html/src/manager/images/image-view-overview.js:79
+#: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Completed"
 msgstr "Dokončeno"
 
@@ -903,8 +903,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
-#: ../html/src/manager/images/image-view-patches.js:81
-#: ../html/src/manager/images/image-view.js:600
+#: ../html/src/manager/images/image-view-patches.tsx:92
+#: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.js:113
@@ -999,7 +999,7 @@ msgstr "Popis výrobku"
 #: ../html/src/manager/admin/setup/products/products.tsx:626
 #: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
-#: ../html/src/manager/images/image-view-packages.js:48
+#: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "Architektura"
@@ -1185,7 +1185,7 @@ msgstr "Spotřebovaný čas"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
-#: ../html/src/manager/images/image-view-runtime.js:97
+#: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
 msgid "Status"
 msgstr "Stav"
@@ -1243,7 +1243,7 @@ msgstr "Auditovat obrazy"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
-#: ../html/src/manager/images/image-view.js:544
+#: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
@@ -1256,9 +1256,9 @@ msgid "Name"
 msgstr "Název"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
-#: ../html/src/manager/images/image-profiles.js:147
-#: ../html/src/manager/images/image-stores.js:152
-#: ../html/src/manager/images/image-view.js:595
+#: ../html/src/manager/images/image-profiles.tsx:192
+#: ../html/src/manager/images/image-stores.tsx:197
+#: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.js:178
@@ -1726,10 +1726,11 @@ msgstr "Upravit vlastnosti"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
-#: ../html/src/manager/images/image-profile-edit.js:381
-#: ../html/src/manager/images/image-profiles.js:134
-#: ../html/src/manager/images/image-store-edit.js:193
-#: ../html/src/manager/images/image-stores.js:137
+#: ../html/src/manager/images/image-build.tsx:270
+#: ../html/src/manager/images/image-profile-edit.tsx:526
+#: ../html/src/manager/images/image-profiles.tsx:179
+#: ../html/src/manager/images/image-store-edit.tsx:268
+#: ../html/src/manager/images/image-stores.tsx:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
@@ -1765,7 +1766,7 @@ msgid "Action has been "
 msgstr "Akce byla "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.js:178
+#: ../html/src/manager/images/image-build.tsx:223
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
@@ -1778,7 +1779,7 @@ msgid " successfully."
 msgstr "Filtr upraven úspěšně"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.js:175
+#: ../html/src/manager/images/image-build.tsx:217
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
@@ -1812,7 +1813,7 @@ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
 msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.js:669
+#: ../html/src/manager/images/image-view.tsx:772
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:57
 msgid "Overview"
 msgstr "Přehled"
@@ -1879,9 +1880,9 @@ msgstr "Klastry"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
-#: ../html/src/manager/images/image-stores.js:144
-#: ../html/src/manager/images/image-view-patches.js:72
-#: ../html/src/manager/images/image-view.js:538
+#: ../html/src/manager/images/image-stores.tsx:189
+#: ../html/src/manager/images/image-view-patches.tsx:84
+#: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
@@ -1933,10 +1934,12 @@ msgid "Create project"
 msgstr "Vytvořit projekt"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
-#: ../html/src/manager/images/image-profile-edit.js:367
-#: ../html/src/manager/images/image-profiles.js:111
-#: ../html/src/manager/images/image-store-edit.js:170
-#: ../html/src/manager/images/image-stores.js:114
+#: ../html/src/manager/images/image-profile-edit.tsx:501
+#: ../html/src/manager/images/image-profiles.tsx:148
+#: ../html/src/manager/images/image-profiles.tsx:149
+#: ../html/src/manager/images/image-store-edit.tsx:234
+#: ../html/src/manager/images/image-stores.tsx:151
+#: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.js:49
@@ -2036,7 +2039,7 @@ msgstr "Párovač"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
-#: ../html/src/manager/images/image-view-packages.js:42
+#: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "Název balíčku"
@@ -2052,7 +2055,8 @@ msgstr "Epocha"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
-#: ../html/src/manager/images/image-view.js:549
+#: ../html/src/manager/images/image-build.tsx:386
+#: ../html/src/manager/images/image-view.tsx:630
 msgid "Version"
 msgstr "Verze"
 
@@ -2084,7 +2088,7 @@ msgstr "Vydáno"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
-#: ../html/src/manager/images/image-view-patches.js:86
+#: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "Synopse"
 
@@ -2287,11 +2291,11 @@ msgstr "Sestavení ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
-#: ../html/src/manager/images/image-build.js:287
-#: ../html/src/manager/images/image-profiles.js:154
-#: ../html/src/manager/images/image-view-overview.js:375
-#: ../html/src/manager/images/image-view-overview.js:457
-#: ../html/src/manager/images/image-view.js:581
+#: ../html/src/manager/images/image-build.tsx:416
+#: ../html/src/manager/images/image-profiles.tsx:200
+#: ../html/src/manager/images/image-view-overview.tsx:578
+#: ../html/src/manager/images/image-view-overview.tsx:675
+#: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
 msgstr "Sestavení"
 
@@ -2356,13 +2360,13 @@ msgid "Generating repositories data"
 msgstr "Generování dat úložiště"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
-#: ../html/src/manager/images/image-view.js:420
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr "Sestaveno"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
-#: ../html/src/manager/images/image-view-overview.js:37
-#: ../html/src/manager/images/image-view.js:422
+#: ../html/src/manager/images/image-view-overview.tsx:79
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr "Selhalo"
 
@@ -2517,7 +2521,7 @@ msgid "Sources edited successfully"
 msgstr "Zdroje upraveny úspěšně"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
-#: ../html/src/manager/images/image-build.js:221
+#: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "Softwarové kanály"
 
@@ -2591,15 +2595,15 @@ msgstr "Neplatný typ cíle."
 msgid "Formula saved. Apply the "
 msgstr "Vzorec uložen. Použijte "
 
-#: ../html/src/manager/images/image-build.js:27
+#: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
 msgstr "Nastala neznámá chyba."
 
-#: ../html/src/manager/images/image-build.js:28
+#: ../html/src/manager/images/image-build.tsx:36
 msgid "The image build has been scheduled."
 msgstr "Sestavení obrazu bylo naplánováno."
 
-#: ../html/src/manager/images/image-build.js:29
+#: ../html/src/manager/images/image-build.tsx:38
 #: ../html/src/manager/images/image-import.tsx:18
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
@@ -2607,25 +2611,50 @@ msgid ""
 msgstr ""
 "Při plánování úkolu došlo k chybě. Ujistěte se, že je spuštěn plánovač úloh."
 
-#: ../html/src/manager/images/image-build.js:177
+#: ../html/src/manager/images/image-build.tsx:222
 msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
 
-#: ../html/src/manager/images/image-build.js:207
+#: ../html/src/manager/images/image-build.tsx:253
+msgid "Profile Summary"
+msgstr ""
+
+#: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
 msgstr "Není vybrán žádný profil"
 
-#: ../html/src/manager/images/image-build.js:212
-#: ../html/src/manager/images/image-profile-edit.js:382
+#: ../html/src/manager/images/image-build.tsx:274
+#: ../html/src/manager/images/image-profile-edit.tsx:535
 msgid "Image Type"
 msgstr "Typ obrazu"
 
-#: ../html/src/manager/images/image-build.js:214
+#: ../html/src/manager/images/image-build.tsx:278
+#: ../html/src/manager/images/image-import.tsx:264
+msgid "Image Store"
+msgstr "Úložiště obrazu"
+
+#: ../html/src/manager/images/image-build.tsx:282
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "Cesta"
 
-#: ../html/src/manager/images/image-build.js:271
+#: ../html/src/manager/images/image-build.tsx:286
+#: ../html/src/manager/images/image-import.tsx:239
+#: ../html/src/manager/images/image-profile-edit.tsx:392
+msgid "Activation Key"
+msgstr "Aktivační klíč"
+
+#: ../html/src/manager/images/image-build.tsx:355
+#, fuzzy
+msgid "Build Image"
+msgstr "Auditovat obrazy"
+
+#: ../html/src/manager/images/image-build.tsx:371
+#, fuzzy
+msgid "Image Profile"
+msgstr "Profily obrazů"
+
+#: ../html/src/manager/images/image-build.tsx:392
 #: ../html/src/manager/images/image-import.tsx:302
 msgid "Build Host"
 msgstr "Sestavení hostitele"
@@ -2639,14 +2668,9 @@ msgid "The image import has been scheduled."
 msgstr "Import obrazu byl naplánován."
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.js:301
+#: ../html/src/manager/images/image-profile-edit.tsx:385
 msgid "There are no channels assigned to this key."
 msgstr "Této klávese nejsou přiřazeny žádné kanály."
-
-#: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.js:305
-msgid "Activation Key"
-msgstr "Aktivační klíč"
 
 #: ../html/src/manager/images/image-import.tsx:252
 msgid "Import Image"
@@ -2655,10 +2679,6 @@ msgstr "Import obrazu"
 #: ../html/src/manager/images/image-import.tsx:254
 msgid "You can import Container images only using this feature."
 msgstr "Obrazy kontejnerů lze importovat pouze touto funkcí."
-
-#: ../html/src/manager/images/image-import.tsx:264
-msgid "Image Store"
-msgstr "Úložiště obrazu"
 
 #: ../html/src/manager/images/image-import.tsx:283
 msgid "Image name"
@@ -2677,57 +2697,63 @@ msgid "Image version is required."
 msgstr "Verze obrazu je povinná."
 
 #: ../html/src/manager/images/image-import.tsx:318
-#: ../html/src/manager/images/image-view.js:324
+#: ../html/src/manager/images/image-view.tsx:372
 msgid "Import"
 msgstr "Import"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.js:362
+#: ../html/src/manager/images/image-profile-edit.tsx:479
+#: ../html/src/manager/images/image-store-edit.tsx:211
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:202
 msgid "Clear fields"
 msgstr "Vymazat pole"
 
-#: ../html/src/manager/images/image-profile-edit.js:256
+#: ../html/src/manager/images/image-profile-edit.tsx:293
 msgid "Target Image Store"
 msgstr "Cílové úložiště obrazu"
 
-#: ../html/src/manager/images/image-profile-edit.js:276
+#: ../html/src/manager/images/image-profile-edit.tsx:317
+#, fuzzy
+msgid "Dockerfile URL"
+msgstr "Soubor příkazů pro Docker"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
 msgstr "Konfigurace URL"
 
-#: ../html/src/manager/images/image-profile-edit.js:305
+#: ../html/src/manager/images/image-profile-edit.tsx:393
 msgid "Activation key is required for kiwi images."
 msgstr "U obrazů kiwi je vyžadován aktivační klíč."
 
-#: ../html/src/manager/images/image-profile-edit.js:334
+#: ../html/src/manager/images/image-profile-edit.tsx:433
 msgid "Remove entry"
 msgstr "Odebrat položku"
 
-#: ../html/src/manager/images/image-profile-edit.js:342
+#: ../html/src/manager/images/image-profile-edit.tsx:448
 msgid "Custom Info Values"
 msgstr "Hodnoty zákaznických informací"
 
-#: ../html/src/manager/images/image-profile-edit.js:352
+#: ../html/src/manager/images/image-profile-edit.tsx:462
 msgid "Create additional custom info keys"
 msgstr "Vytvořit další zákaznické informační klíče"
 
-#: ../html/src/manager/images/image-profile-edit.js:365
-#: ../html/src/manager/images/image-store-edit.js:168
+#: ../html/src/manager/images/image-profile-edit.tsx:490
+#: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "Aktualizace"
 
-#: ../html/src/manager/images/image-profile-edit.js:375
+#: ../html/src/manager/images/image-profile-edit.tsx:513
 msgid "Edit Image Profile: '"
 msgstr "Upravit profil obrazu: '"
 
-#: ../html/src/manager/images/image-profile-edit.js:375
+#: ../html/src/manager/images/image-profile-edit.tsx:513
 msgid "Create Image Profile"
 msgstr "Vytvořit profil obrazu"
 
-#: ../html/src/manager/images/image-profile-edit.js:381
+#: ../html/src/manager/images/image-profile-edit.tsx:529
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2735,454 +2761,474 @@ msgstr ""
 "Popisek (označení) je povinný a jedinečný řetězec, který nesmí obsahovat "
 "dvojtečky (:)."
 
-#: ../html/src/manager/images/image-profiles.js:21
+#: ../html/src/manager/images/image-profiles.tsx:23
 msgid "Dockerfile"
 msgstr "Soubor příkazů pro Docker"
 
-#: ../html/src/manager/images/image-profiles.js:22
+#: ../html/src/manager/images/image-profiles.tsx:24
 msgid "Kiwi"
 msgstr "Kiwi"
 
-#: ../html/src/manager/images/image-profiles.js:26
+#: ../html/src/manager/images/image-profiles.tsx:28
 msgid "Image profile cannot be found."
 msgstr "Profil obrazu nelze najít."
 
-#: ../html/src/manager/images/image-profiles.js:27
+#: ../html/src/manager/images/image-profiles.tsx:29
 msgid "Image profile has been deleted."
 msgstr "Profil obrazu byl smazán."
 
-#: ../html/src/manager/images/image-profiles.js:28
+#: ../html/src/manager/images/image-profiles.tsx:30
 msgid "Image profiles have been deleted."
 msgstr "Profily obrazů byly odstraněny."
 
-#: ../html/src/manager/images/image-profiles.js:107
-#: ../html/src/manager/images/image-stores.js:110
-#: ../html/src/manager/images/image-view.js:317
+#: ../html/src/manager/images/image-profiles.tsx:138
+#: ../html/src/manager/images/image-stores.tsx:141
+#: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../html/src/manager/images/image-profiles.js:117
+#: ../html/src/manager/images/image-profiles.tsx:159
 msgid "Image Profiles"
 msgstr "Profily obrazů"
 
-#: ../html/src/manager/images/image-profiles.js:141
+#: ../html/src/manager/images/image-profiles.tsx:186
 msgid "Build Type"
 msgstr "Typ sestavení"
 
-#: ../html/src/manager/images/image-profiles.js:180
+#: ../html/src/manager/images/image-profiles.tsx:228
 #: ../html/src/manager/systems/delete-system-confirm.js:12
 msgid "Delete Profile"
 msgstr "Odstranit profil"
 
-#: ../html/src/manager/images/image-profiles.js:181
+#: ../html/src/manager/images/image-profiles.tsx:231
 msgid "Are you sure you want to delete profile"
 msgstr "Opravdu chcete smazat profil"
 
-#: ../html/src/manager/images/image-profiles.js:187
+#: ../html/src/manager/images/image-profiles.tsx:241
 msgid "Delete Selected Profile(s)"
 msgstr "Odstranit vybraný/-é profil/-y"
 
-#: ../html/src/manager/images/image-profiles.js:190
+#: ../html/src/manager/images/image-profiles.tsx:245
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "Opravdu chcete odstranit vybraný profil?"
 
-#: ../html/src/manager/images/image-profiles.js:190
+#: ../html/src/manager/images/image-profiles.tsx:247
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
 
-#: ../html/src/manager/images/image-store-edit.js:151
+#: ../html/src/manager/images/image-store-edit.tsx:174
+msgid "Use credentials"
+msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: ../html/src/manager/images/image-store-edit.js:178
+#: ../html/src/manager/images/image-store-edit.tsx:246
 msgid "Edit Image Store: '"
 msgstr "Upravit úložiště obrazů: '"
 
-#: ../html/src/manager/images/image-store-edit.js:178
+#: ../html/src/manager/images/image-store-edit.tsx:246
 msgid "Create Image Store"
 msgstr "Vytvořit úložiště obrazů"
 
-#: ../html/src/manager/images/image-store-edit.js:187
+#: ../html/src/manager/images/image-store-edit.tsx:260
 msgid "Store Type"
 msgstr "Typ úložiště"
 
-#: ../html/src/manager/images/image-store-edit.js:193
+#: ../html/src/manager/images/image-store-edit.tsx:271
 msgid "Label is required and must be unique."
 msgstr "Označení je povinné a musí být jedinečné."
 
-#: ../html/src/manager/images/image-store-edit.js:194
+#: ../html/src/manager/images/image-store-edit.tsx:277
 msgid "Store URI"
 msgstr "URI úložiště"
 
-#: ../html/src/manager/images/image-stores.js:21
+#: ../html/src/manager/images/image-stores.tsx:23
 msgid "Image store cannot be found."
 msgstr "Úložiště obrazů nelze najít."
 
-#: ../html/src/manager/images/image-stores.js:22
+#: ../html/src/manager/images/image-stores.tsx:24
 msgid "Image store has been deleted."
 msgstr "Úložiště obrazů bylo odstraněno."
 
-#: ../html/src/manager/images/image-stores.js:23
+#: ../html/src/manager/images/image-stores.tsx:25
 msgid "Image stores have been deleted."
 msgstr "Úložiště obrazů byla odstraněna."
 
-#: ../html/src/manager/images/image-stores.js:120
+#: ../html/src/manager/images/image-stores.tsx:162
 msgid "Image Stores"
 msgstr "Úložiště obrazů"
 
-#: ../html/src/manager/images/image-stores.js:176
+#: ../html/src/manager/images/image-stores.tsx:224
 msgid "Delete Store"
 msgstr "Odstranit úložiště"
 
-#: ../html/src/manager/images/image-stores.js:177
+#: ../html/src/manager/images/image-stores.tsx:227
 msgid "Are you sure you want to delete store"
 msgstr "Opravdu chcete smazat úložiště"
 
-#: ../html/src/manager/images/image-stores.js:183
+#: ../html/src/manager/images/image-stores.tsx:237
 msgid "Delete Selected Store(s)"
 msgstr "Odstranit vybrané(-á) úložiště"
 
-#: ../html/src/manager/images/image-stores.js:186
+#: ../html/src/manager/images/image-stores.tsx:241
 msgid "Are you sure you want to delete the selected store?"
 msgstr ""
 
-#: ../html/src/manager/images/image-stores.js:186
+#: ../html/src/manager/images/image-stores.tsx:243
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:29
-#: ../html/src/manager/images/image-view-overview.js:39
-#: ../html/src/manager/images/image-view-overview.js:158
-#: ../html/src/manager/images/image-view-overview.js:294
-#: ../html/src/manager/images/image-view-runtime.js:44
-#: ../html/src/manager/images/image-view-runtime.js:79
-#: ../html/src/manager/images/image-view.js:397
-#: ../html/src/manager/images/image-view.js:439
+#: ../html/src/manager/images/image-view-overview.tsx:36
+#: ../html/src/manager/images/image-view-overview.tsx:37
+#: ../html/src/manager/images/image-view-overview.tsx:91
+#: ../html/src/manager/images/image-view-overview.tsx:92
+#: ../html/src/manager/images/image-view-overview.tsx:251
+#: ../html/src/manager/images/image-view-overview.tsx:252
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view-overview.tsx:466
+#: ../html/src/manager/images/image-view-runtime.tsx:68
+#: ../html/src/manager/images/image-view-runtime.tsx:105
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:31
-#: ../html/src/manager/images/image-view.js:416
+#: ../html/src/manager/images/image-view-overview.tsx:43
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:31
-#: ../html/src/manager/images/image-view-overview.js:33
-#: ../html/src/manager/images/image-view-overview.js:35
-#: ../html/src/manager/images/image-view-overview.js:37
+#: ../html/src/manager/images/image-view-overview.tsx:45
+#: ../html/src/manager/images/image-view-overview.tsx:57
+#: ../html/src/manager/images/image-view-overview.tsx:69
+#: ../html/src/manager/images/image-view-overview.tsx:81
 msgid "Go to event"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:31
+#: ../html/src/manager/images/image-view-overview.tsx:48
 msgid " is queued"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:33
+#: ../html/src/manager/images/image-view-overview.tsx:55
 msgid "In progress"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:33
+#: ../html/src/manager/images/image-view-overview.tsx:60
 msgid " in progress"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:35
+#: ../html/src/manager/images/image-view-overview.tsx:67
 msgid "Successful"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:35
+#: ../html/src/manager/images/image-view-overview.tsx:72
 msgid " is successful"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:37
+#: ../html/src/manager/images/image-view-overview.tsx:84
 msgid " has failed"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:48
-#: ../html/src/manager/images/image-view.js:414
+#: ../html/src/manager/images/image-view-overview.tsx:103
+#: ../html/src/manager/images/image-view-overview.tsx:104
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:68
+#: ../html/src/manager/images/image-view-overview.tsx:126
 msgid " Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:73
+#: ../html/src/manager/images/image-view-overview.tsx:131
 msgid "Picked Up"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:107
-#: ../html/src/manager/images/image-view.js:460
+#: ../html/src/manager/images/image-view-overview.tsx:184
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:108
-#: ../html/src/manager/images/image-view.js:461
-#: ../html/src/manager/images/image-view.js:515
+#: ../html/src/manager/images/image-view-overview.tsx:185
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:120
-#: ../html/src/manager/images/image-view-overview.js:151
-#: ../html/src/manager/images/image-view.js:432
-#: ../html/src/manager/images/image-view.js:473
+#: ../html/src/manager/images/image-view-overview.tsx:195
+#: ../html/src/manager/images/image-view-overview.tsx:232
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:134
-#: ../html/src/manager/images/image-view.js:487
+#: ../html/src/manager/images/image-view-overview.tsx:212
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:156
-#: ../html/src/manager/images/image-view.js:437
+#: ../html/src/manager/images/image-view-overview.tsx:243
+#: ../html/src/manager/images/image-view-overview.tsx:245
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:160
-#: ../html/src/manager/images/image-view.js:441
+#: ../html/src/manager/images/image-view-overview.tsx:258
+#: ../html/src/manager/images/image-view-overview.tsx:259
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:207
+#: ../html/src/manager/images/image-view-overview.tsx:323
 msgid "Edit profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:215
+#: ../html/src/manager/images/image-view-overview.tsx:348
 msgid "Edit store"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:258
-#: ../html/src/manager/images/image-view.js:636
+#: ../html/src/manager/images/image-view-overview.tsx:417
+#: ../html/src/manager/images/image-view.tsx:729
 msgid "Instance Details for '{0}'"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:296
-#: ../html/src/manager/images/image-view.js:399
+#: ../html/src/manager/images/image-view-overview.tsx:472
+#: ../html/src/manager/images/image-view-overview.tsx:473
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:298
-#: ../html/src/manager/images/image-view.js:401
+#: ../html/src/manager/images/image-view-overview.tsx:479
+#: ../html/src/manager/images/image-view-overview.tsx:480
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:300
-#: ../html/src/manager/images/image-view.js:403
+#: ../html/src/manager/images/image-view-overview.tsx:486
+#: ../html/src/manager/images/image-view-overview.tsx:487
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:302
-#: ../html/src/manager/images/image-view.js:405
+#: ../html/src/manager/images/image-view-overview.tsx:493
+#: ../html/src/manager/images/image-view-overview.tsx:494
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:359
+#: ../html/src/manager/images/image-view-overview.tsx:562
 msgid "Image Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:365
+#: ../html/src/manager/images/image-view-overview.tsx:565
 msgid "Image Info"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:373
+#: ../html/src/manager/images/image-view-overview.tsx:576
 msgid "Build Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:381
-#: ../html/src/manager/images/image-view-overview.js:516
+#: ../html/src/manager/images/image-view-overview.tsx:584
+#: ../html/src/manager/images/image-view-overview.tsx:752
 msgid "Inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:390
+#: ../html/src/manager/images/image-view-overview.tsx:593
 msgid "Rebuild"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:391
+#: ../html/src/manager/images/image-view-overview.tsx:594
 msgid "Reschedule the build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:399
+#: ../html/src/manager/images/image-view-overview.tsx:602
 msgid "Reinspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:400
+#: ../html/src/manager/images/image-view-overview.tsx:603
 msgid "Reschedule the inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:413
+#: ../html/src/manager/images/image-view-overview.tsx:616
 msgid "Custom Image Information"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:426
-#: ../html/src/manager/images/image-view.js:321
-#: ../html/src/manager/images/image-view.js:619
+#: ../html/src/manager/images/image-view-overview.tsx:630
+#: ../html/src/manager/images/image-view.tsx:364
+#: ../html/src/manager/images/image-view.tsx:698
 msgid "Delete Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:427
-#: ../html/src/manager/images/image-view.js:620
+#: ../html/src/manager/images/image-view-overview.tsx:633
+#: ../html/src/manager/images/image-view.tsx:701
 msgid "Are you sure you want to delete image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:458
+#: ../html/src/manager/images/image-view-overview.tsx:676
 msgid "Schedule build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:489
+#: ../html/src/manager/images/image-view-overview.tsx:718
 msgid "Rebuild Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:517
+#: ../html/src/manager/images/image-view-overview.tsx:753
 msgid "Schedule inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.js:548
+#: ../html/src/manager/images/image-view-overview.tsx:789
 msgid "Reinspect Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-packages.js:54
+#: ../html/src/manager/images/image-view-packages.tsx:53
 #: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:12
+#: ../html/src/manager/images/image-view-patches.tsx:20
 msgid "fa fa-shield fa-1-5x"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:13
+#: ../html/src/manager/images/image-view-patches.tsx:21
 msgid "fa fa-bug fa-1-5x"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:14
+#: ../html/src/manager/images/image-view-patches.tsx:22
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:15
+#: ../html/src/manager/images/image-view-patches.tsx:23
 msgid "fa fa-refresh fa-1-5x"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:16
+#: ../html/src/manager/images/image-view-patches.tsx:24
 msgid "fa fa-archive fa-1-5"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:20
+#: ../html/src/manager/images/image-view-patches.tsx:28
 msgid "Security advisory"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:21
+#: ../html/src/manager/images/image-view-patches.tsx:29
 msgid "Bug fix advisory"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:22
+#: ../html/src/manager/images/image-view-patches.tsx:30
 msgid "Product enhancement advisory"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:23
+#: ../html/src/manager/images/image-view-patches.tsx:31
 msgid "Reboot required"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:24
+#: ../html/src/manager/images/image-view-patches.tsx:32
 msgid "Affects package management stack"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:78
+#: ../html/src/manager/images/image-view-patches.tsx:90
 msgid "Advisory"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-patches.js:92
+#: ../html/src/manager/images/image-view-patches.tsx:101
 msgid "Updated"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:42
+#: ../html/src/manager/images/image-view-runtime.tsx:31
+#, fuzzy
+msgid "Loading runtime information..."
+msgstr "Další informace"
+
+#: ../html/src/manager/images/image-view-runtime.tsx:65
 msgid "Instance is consistent with SUSE Manager"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:46
+#: ../html/src/manager/images/image-view-runtime.tsx:70
 msgid "Instance is outdated"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:77
+#: ../html/src/manager/images/image-view-runtime.tsx:102
 msgid "Cluster is consistent with SUSE Manager"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:81
+#: ../html/src/manager/images/image-view-runtime.tsx:107
 msgid "Cluster is outdated"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:95
+#: ../html/src/manager/images/image-view-runtime.tsx:127
 msgid "Pod"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-runtime.js:96
+#: ../html/src/manager/images/image-view-runtime.tsx:128
 msgid "Namespace"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:282
+#: ../html/src/manager/images/image-view.tsx:307
 msgid "Deleted successfully."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:294
+#: ../html/src/manager/images/image-view.tsx:323
 msgid "Image inspect has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:307
+#: ../html/src/manager/images/image-view.tsx:339
 msgid "Image build has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:334
+#: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:418
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:424
+#: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:508
-#: ../html/src/manager/images/image-view.js:670
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Runtime"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:555
+#: ../html/src/manager/images/image-view.tsx:633
 msgid "Revision"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:561
+#: ../html/src/manager/images/image-view.tsx:637
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:566
-#: ../html/src/manager/images/image-view.js:669
+#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Patches"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:575
-#: ../html/src/manager/images/image-view.js:669
+#: ../html/src/manager/images/image-view.tsx:653
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Packages"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:587
+#: ../html/src/manager/images/image-view.tsx:661
 msgid "Last Modified"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:626
+#: ../html/src/manager/images/image-view.tsx:714
 msgid "Delete Selected Image(s)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:629
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Are you sure you want to delete the selected image?"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.js:629
+#: ../html/src/manager/images/image-view.tsx:720
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr ""
 
