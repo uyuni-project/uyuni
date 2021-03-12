@@ -10,6 +10,10 @@ Feature: Bootstrap a CentOS 8 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a CentOS 8 Salt SSH minion
     When I perform a full salt minion cleanup on "ceos8_ssh_minion"
 
+  Scenario: Create the bootstrap repository for a CentOS 8 Salt SSH minion
+    Given I am authorized
+    When I create the bootstrap repository for "ceos8_ssh_minion" on the server
+
   Scenario: Bootstrap a CentOS 8 Salt SSH minion
     Given I am authorized
     When I go to the bootstrapping page
@@ -20,7 +24,7 @@ Feature: Bootstrap a CentOS 8 Salt SSH minion
     And I select "1-ceos8_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos8_ssh_minion"
 
   # WORKAROUND bsc#1181847
