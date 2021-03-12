@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:21+0000\n"
+"POT-Creation-Date: 2021-03-12 15:07+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -114,7 +114,9 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-list.js:119
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
@@ -158,8 +160,8 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/state/recurring-states-details.js:140
-#: ../html/src/manager/state/recurring-states-details.js:142
+#: ../html/src/manager/state/recurring-states-details.tsx:154
+#: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
@@ -292,9 +294,9 @@ msgstr "取消"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.tsx:51
-#: ../html/src/manager/state/recurring-states-details.js:154
-#: ../html/src/manager/state/recurring-states-details.js:156
-#: ../html/src/manager/state/recurring-states-list.js:125
+#: ../html/src/manager/state/recurring-states-details.tsx:168
+#: ../html/src/manager/state/recurring-states-details.tsx:170
+#: ../html/src/manager/state/recurring-states-list.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
@@ -542,7 +544,7 @@ msgstr "第 {0} 页，共 {1} 页"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.js:88
+#: ../html/src/manager/state/recurring-states-list.tsx:101
 msgid "Schedule Name"
 msgstr "日程安排名称"
 
@@ -890,7 +892,7 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.js:113
+#: ../html/src/manager/state/recurring-states-list.tsx:126
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
 msgstr "细节"
@@ -1237,7 +1239,7 @@ msgstr "名称"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.js:108
+#: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
@@ -1903,7 +1905,7 @@ msgstr "创建项目"
 #: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.js:49
+#: ../html/src/manager/state/recurring-states-list.tsx:60
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
@@ -2535,6 +2537,7 @@ msgstr "已保存公式。请在已启用的公式中编辑配置选项，并应
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr "Highstate"
 
@@ -3236,7 +3239,7 @@ msgstr "删除维护日历"
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:49
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.js:137
+#: ../html/src/manager/state/recurring-states-list.tsx:155
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
@@ -3305,7 +3308,7 @@ msgid "Multi"
 msgstr "多个"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:96
-#: ../html/src/manager/state/recurring-states-details.js:92
+#: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
@@ -3383,6 +3386,7 @@ msgstr "请确认是否继续。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/nets/network-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
@@ -3853,113 +3857,148 @@ msgstr "SuSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.js:30
+#: ../html/src/manager/state/display-highstate.tsx:33
 msgid "Highstate for {0}"
 msgstr "{0} Highstate"
 
-#: ../html/src/manager/state/display-highstate.js:125
+#: ../html/src/manager/state/display-highstate.tsx:135
 msgid "There are no applicable systems."
 msgstr "没有适用的系统。"
 
-#: ../html/src/manager/state/highstate.js:50
+#: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
 msgstr "操作已成功添加到 "
 
-#: ../html/src/manager/state/highstate.js:51
+#: ../html/src/manager/state/highstate.tsx:69
 msgid "Applying the highstate has been "
 msgstr "应用 highstate "
 
-#: ../html/src/manager/state/highstate.js:51
+#: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
 msgstr "已安排。"
 
-#: ../html/src/manager/state/highstate.js:95
-msgid "Apply Highstate"
-msgstr "应用 Highstate"
-
-#: ../html/src/manager/state/highstate.js:107
-msgid "Create Recurring"
-msgstr "创建重复性"
-
-#: ../html/src/manager/state/recurring-states-details.js:43
-msgid "Execution time"
-msgstr "执行时间"
-
-#: ../html/src/manager/state/recurring-states-details.js:97
-msgid "State:"
-msgstr "状态："
-
-#: ../html/src/manager/state/recurring-states-details.js:98
-#: ../html/src/manager/state/recurring-states-list.js:75
-msgid "Active"
-msgstr "活动"
-
-#: ../html/src/manager/state/recurring-states-details.js:98
-msgid "Inactive"
-msgstr "非活动"
-
-#: ../html/src/manager/state/recurring-states-details.js:102
-msgid "Test"
-msgstr "测试"
-
-#: ../html/src/manager/state/recurring-states-details.js:103
-msgid "True"
-msgstr "True"
-
-#: ../html/src/manager/state/recurring-states-details.js:107
-msgid "Target type"
-msgstr "目标类型"
-
-#: ../html/src/manager/state/recurring-states-details.js:112
-msgid "Organization name"
-msgstr "组织名称"
-
-#: ../html/src/manager/state/recurring-states-details.js:117
-msgid "Created by"
-msgstr "创建者"
-
-#: ../html/src/manager/state/recurring-states-details.js:121
-msgid "Created at"
-msgstr "创建时间"
-
-#: ../html/src/manager/state/recurring-states-details.js:126
-msgid "Quartz format string"
-msgstr "Quartz 格式字符串"
-
-#: ../html/src/manager/state/recurring-states-details.js:174
-#: ../html/src/manager/state/recurring-states-list.js:136
-msgid "Delete Recurring State Schedule"
-msgstr "删除重复性状态日程安排"
-
-#: ../html/src/manager/state/recurring-states-details.js:175
-msgid "Are you sure you want to delete this schedule?"
-msgstr "您确定要删除此日程安排吗？"
-
-#: ../html/src/manager/state/recurring-states-edit.js:98
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
 msgid "Test mode"
 msgstr "测试模式"
 
-#: ../html/src/manager/state/recurring-states-list.js:58
+#: ../html/src/manager/state/highstate.tsx:126
+msgid "Apply Highstate"
+msgstr "应用 Highstate"
+
+#: ../html/src/manager/state/highstate.tsx:135
+msgid "Create Recurring"
+msgstr "创建重复性"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:14
+msgid "Minion"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:16
+#, fuzzy
+msgid "Group"
+msgstr "组 ID"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "组织"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:52
+msgid "Execution time"
+msgstr "执行时间"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:109
+msgid "State:"
+msgstr "状态："
+
+#: ../html/src/manager/state/recurring-states-details.tsx:110
+#: ../html/src/manager/state/recurring-states-list.tsx:92
+msgid "Active"
+msgstr "活动"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:110
+msgid "Inactive"
+msgstr "非活动"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:114
+msgid "Test"
+msgstr "测试"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:115
+msgid "True"
+msgstr "True"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:119
+msgid "Target type"
+msgstr "目标类型"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:124
+msgid "Organization name"
+msgstr "组织名称"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:129
+msgid "Created by"
+msgstr "创建者"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:134
+msgid "Created at"
+msgstr "创建时间"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:140
+msgid "Quartz format string"
+msgstr "Quartz 格式字符串"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:183
+#: ../html/src/manager/state/recurring-states-list.tsx:154
+msgid "Delete Recurring State Schedule"
+msgstr "删除重复性状态日程安排"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:184
+msgid "Are you sure you want to delete this schedule?"
+msgstr "您确定要删除此日程安排吗？"
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
+#, fuzzy
+msgid "Update "
+msgstr "更新"
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
+#, fuzzy
+msgid "Create "
+msgstr "创建"
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:131
+msgid "Back to list"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:140
+#, fuzzy
+msgid "Schedule Recurring Highstate"
+msgstr "重复性状态"
+
+#: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
 msgstr "重复性状态"
 
-#: ../html/src/manager/state/recurring-states-list.js:71
+#: ../html/src/manager/state/recurring-states-list.tsx:87
 msgid "No schedules created."
 msgstr "未创建日程安排。"
 
-#: ../html/src/manager/state/recurring-states-list.js:95
+#: ../html/src/manager/state/recurring-states-list.tsx:108
 msgid "Frequency"
 msgstr "频率"
 
-#: ../html/src/manager/state/recurring-states-list.js:102
+#: ../html/src/manager/state/recurring-states-list.tsx:115
 msgid "Target Type"
 msgstr "目标类型"
 
-#: ../html/src/manager/state/recurring-states.js:115
+#: ../html/src/manager/state/recurring-states.tsx:146
 msgid "Schedule successfully"
 msgstr "安排成功"
 
-#: ../html/src/manager/state/recurring-states.js:140
+#: ../html/src/manager/state/recurring-states.tsx:172
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 
@@ -4331,11 +4370,6 @@ msgstr "删除虚拟主机管理器"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "您确定要删除此虚拟主机管理器吗？"
-
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "组织"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203

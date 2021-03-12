@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:21+0000\n"
+"POT-Creation-Date: 2021-03-12 15:07+0000\n"
 "PO-Revision-Date: 2020-12-08 00:26+0000\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -120,7 +120,9 @@ msgstr "Canal de configuração: {0}"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-list.js:119
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
@@ -165,8 +167,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/state/recurring-states-details.js:140
-#: ../html/src/manager/state/recurring-states-details.js:142
+#: ../html/src/manager/state/recurring-states-details.tsx:154
+#: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
@@ -300,9 +302,9 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.tsx:51
-#: ../html/src/manager/state/recurring-states-details.js:154
-#: ../html/src/manager/state/recurring-states-details.js:156
-#: ../html/src/manager/state/recurring-states-list.js:125
+#: ../html/src/manager/state/recurring-states-details.tsx:168
+#: ../html/src/manager/state/recurring-states-details.tsx:170
+#: ../html/src/manager/state/recurring-states-list.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
@@ -552,7 +554,7 @@ msgstr "Página {0} de {1}"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.js:88
+#: ../html/src/manager/state/recurring-states-list.tsx:101
 msgid "Schedule Name"
 msgstr "Nome da programação"
 
@@ -892,7 +894,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.js:113
+#: ../html/src/manager/state/recurring-states-list.tsx:126
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
 msgstr ""
@@ -1230,7 +1232,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.js:108
+#: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
@@ -1883,7 +1885,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.js:49
+#: ../html/src/manager/state/recurring-states-list.tsx:60
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
@@ -2512,6 +2514,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr ""
 
@@ -3207,7 +3210,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:49
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.js:137
+#: ../html/src/manager/state/recurring-states-list.tsx:155
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
@@ -3276,7 +3279,7 @@ msgid "Multi"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:96
-#: ../html/src/manager/state/recurring-states-details.js:92
+#: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr ""
 
@@ -3354,6 +3357,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/nets/network-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
@@ -3822,113 +3826,144 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.js:30
+#: ../html/src/manager/state/display-highstate.tsx:33
 msgid "Highstate for {0}"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.js:125
+#: ../html/src/manager/state/display-highstate.tsx:135
 msgid "There are no applicable systems."
 msgstr ""
 
-#: ../html/src/manager/state/highstate.js:50
+#: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
 msgstr ""
 
-#: ../html/src/manager/state/highstate.js:51
+#: ../html/src/manager/state/highstate.tsx:69
 msgid "Applying the highstate has been "
 msgstr ""
 
-#: ../html/src/manager/state/highstate.js:51
+#: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
 msgstr ""
 
-#: ../html/src/manager/state/highstate.js:95
-msgid "Apply Highstate"
-msgstr ""
-
-#: ../html/src/manager/state/highstate.js:107
-msgid "Create Recurring"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:43
-msgid "Execution time"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:97
-msgid "State:"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:98
-#: ../html/src/manager/state/recurring-states-list.js:75
-msgid "Active"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:98
-msgid "Inactive"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:102
-msgid "Test"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:103
-msgid "True"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:107
-msgid "Target type"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:112
-msgid "Organization name"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:117
-msgid "Created by"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:121
-msgid "Created at"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:126
-msgid "Quartz format string"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:174
-#: ../html/src/manager/state/recurring-states-list.js:136
-msgid "Delete Recurring State Schedule"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.js:175
-msgid "Are you sure you want to delete this schedule?"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-edit.js:98
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
 msgid "Test mode"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.js:58
+#: ../html/src/manager/state/highstate.tsx:126
+msgid "Apply Highstate"
+msgstr ""
+
+#: ../html/src/manager/state/highstate.tsx:135
+msgid "Create Recurring"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:14
+msgid "Minion"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:16
+msgid "Group"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "Organização"
+
+#: ../html/src/manager/state/recurring-states-details.tsx:52
+msgid "Execution time"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:109
+msgid "State:"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:110
+#: ../html/src/manager/state/recurring-states-list.tsx:92
+msgid "Active"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:110
+msgid "Inactive"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:114
+msgid "Test"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:115
+msgid "True"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:119
+msgid "Target type"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:124
+msgid "Organization name"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:129
+msgid "Created by"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:134
+msgid "Created at"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:140
+msgid "Quartz format string"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:183
+#: ../html/src/manager/state/recurring-states-list.tsx:154
+msgid "Delete Recurring State Schedule"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-details.tsx:184
+msgid "Are you sure you want to delete this schedule?"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
+msgid "Update "
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:121
+msgid "Create "
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:131
+msgid "Back to list"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-edit.tsx:140
+msgid "Schedule Recurring Highstate"
+msgstr ""
+
+#: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.js:71
+#: ../html/src/manager/state/recurring-states-list.tsx:87
 msgid "No schedules created."
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.js:95
+#: ../html/src/manager/state/recurring-states-list.tsx:108
 msgid "Frequency"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.js:102
+#: ../html/src/manager/state/recurring-states-list.tsx:115
 msgid "Target Type"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states.js:115
+#: ../html/src/manager/state/recurring-states.tsx:146
 msgid "Schedule successfully"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states.js:140
+#: ../html/src/manager/state/recurring-states.tsx:172
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr ""
 
@@ -4291,11 +4326,6 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
-
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "Organização"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
