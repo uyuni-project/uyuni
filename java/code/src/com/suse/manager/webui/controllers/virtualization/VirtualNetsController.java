@@ -98,11 +98,14 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      */
     public ModelAndView show(Request request, Response response, User user) {
         Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
+        Map<String, Boolean> features = virtManager.getFeatures(minionId).orElse(new HashMap<>());
         return renderPage(request, response, user, "show", () -> {
             Map<String, Object> extra = new HashMap<>();
             extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
                     virtManager.getHypervisor(host.getMinionId()).orElse("") :
                     "");
+            extra.put("support_enhanced_network", features.getOrDefault("enhanced_network", false));
             return extra;
         });
     }

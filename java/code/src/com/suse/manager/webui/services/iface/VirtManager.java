@@ -132,4 +132,13 @@ public interface VirtManager {
      * @return the plan to pass to VirtualInstanceManager.updateGuestsVirtualInstances
      */
     Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId);
+
+    /**
+     * Get a list of virtual features the minion supports.
+     *
+     * @param minionId the minion id
+     *
+     * @return the map of features.
+     */
+    Optional<Map<String, Boolean>> getFeatures(String minionId);
 }

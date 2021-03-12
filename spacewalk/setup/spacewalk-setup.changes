@@ -1,3 +1,5 @@
+- Use syslinux folder for cobbler loaders.
+
 -------------------------------------------------------------------
 Fri Feb 12 14:30:21 CET 2021 - jgonzalez@suse.com
 

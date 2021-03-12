@@ -90,4 +90,9 @@ public class TestVirtManager implements VirtManager {
     public Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Optional<Map<String, Boolean>> getFeatures(String minionId) {
+        throw new UnsupportedOperationException();
+    }
 }

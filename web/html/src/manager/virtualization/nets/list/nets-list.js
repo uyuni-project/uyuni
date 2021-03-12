@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Column } from 'components/table/Column';
 import { Utils } from 'utils/functions';
 import { AsyncButton } from 'components/buttons';
+import { Utils as MessagesUtils } from 'components/messages';
 import { Utils as ListUtils } from '../../list.utils';
 import { ListTab } from '../../ListTab';
 import { HypervisorCheck } from '../../HypervisorCheck';
@@ -13,6 +14,7 @@ type Props = {
   serverId: string,
   pageSize: number,
   hypervisor: string,
+  allow_changing: boolean,
 };
 
 export function NetsList(props: Props) {
@@ -39,6 +41,8 @@ export function NetsList(props: Props) {
         description={t('This is a list of virtual networks which are configured to run on this host.')}
         modalsData={modalsData}
         idName="name"
+        canCreate={props.allow_changing}
+        messages={props.allow_changing ? [] : MessagesUtils.warning(t("The Salt version on this system does not support virtual network creating and editing"))}
       >
         {
           (createModalButton, onAction) => {

@@ -1,3 +1,4 @@
+- Removed workaround for bnc#668908.
 - Require bind-utils so dig is available for mgr-setup
 
 -------------------------------------------------------------------

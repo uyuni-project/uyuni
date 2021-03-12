@@ -1,4 +1,5 @@
 - Skip removed product classes with satellite-sync
+- add grain for virt module features
 - add virtual network creation action
 
 -------------------------------------------------------------------

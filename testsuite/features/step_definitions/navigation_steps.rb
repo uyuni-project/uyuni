@@ -148,7 +148,7 @@ end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   xpath = "//input[@id='#{arg2}']/../../../../.."
-  if has_xpath?(xpath)
+  if all(:xpath, xpath, wait: 0).any?
     find(:xpath, xpath).click
     find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
   else
