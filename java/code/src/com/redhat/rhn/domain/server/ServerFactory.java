@@ -117,7 +117,8 @@ public class ServerFactory extends HibernateFactory {
         }
         server.getCustomDataValues().clear();
         server.asMinionServer().ifPresent(minion -> {
-           MinionPillarManager.INSTANCE.generatePillar(minion);
+           MinionPillarManager.INSTANCE.generatePillar(minion, false,
+               MinionPillarManager.PillarSubset.CUSTOM_INFO);
         });
     }
 
@@ -134,7 +135,8 @@ public class ServerFactory extends HibernateFactory {
             SINGLETON.removeObject(value);
         }
         server.asMinionServer().ifPresent(minion -> {
-           MinionPillarManager.INSTANCE.generatePillar(minion);
+           MinionPillarManager.INSTANCE.generatePillar(minion, false,
+               MinionPillarManager.PillarSubset.CUSTOM_INFO);
         });
     }
 
@@ -693,7 +695,8 @@ public class ServerFactory extends HibernateFactory {
             server.getCustomDataValues().remove(value);
             SINGLETON.removeObject(value);
             server.asMinionServer().ifPresent(minion -> {
-                MinionPillarManager.INSTANCE.generatePillar(minion);
+                MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                    MinionPillarManager.PillarSubset.CUSTOM_INFO);
             });
         }
 

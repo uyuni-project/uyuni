@@ -22,10 +22,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Manager class for generating or removing minion pillar files.
@@ -36,6 +34,7 @@ public class MinionPillarManager {
         GENERAL,
         GROUP_MEMBERSHIP,
         VIRTUALIZATION,
+        CUSTOM_INFO
     };
 
     /** Logger */
@@ -44,24 +43,29 @@ public class MinionPillarManager {
     public static final MinionPillarManager INSTANCE = new MinionPillarManager(
                     new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
                     new MinionPillarFileManager(MinionGroupMembershipPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE));
+                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE),
+                    new MinionPillarFileManager(MinionCustomInfoPillarGenerator.INSTANCE));
 
     private MinionPillarFileManager generalPillarFileManager;
     private MinionPillarFileManager groupMembershipPillarFileManager;
     private MinionPillarFileManager virtualizationPillarFileManager;
+    private MinionPillarFileManager customInfoPillarFileManager;
 
     /**
      * Constructor for MinionPillarManager
      * @param generalPillarFileManagerIn general pillar file manager
      * @param groupMembershipPillarFileManagerIn group membership pillar file manager
      * @param virtualizationPillarFileManagerIn virtualization pillar file manager
+     * @param customInfoPillarFileManagerIn custom info pillar file manager
      */
     public MinionPillarManager(MinionPillarFileManager generalPillarFileManagerIn,
                                MinionPillarFileManager groupMembershipPillarFileManagerIn,
-                               MinionPillarFileManager virtualizationPillarFileManagerIn) {
+                               MinionPillarFileManager virtualizationPillarFileManagerIn,
+                               MinionPillarFileManager customInfoPillarFileManagerIn) {
         this.generalPillarFileManager = generalPillarFileManagerIn;
         this.groupMembershipPillarFileManager = groupMembershipPillarFileManagerIn;
         this.virtualizationPillarFileManager = virtualizationPillarFileManagerIn;
+        this.customInfoPillarFileManager = customInfoPillarFileManagerIn;
     }
 
     /**
@@ -94,6 +98,9 @@ public class MinionPillarManager {
                 case VIRTUALIZATION:
                     virtualizationPillarFileManager.updatePillarFile(minion);
                     break;
+                case CUSTOM_INFO:
+                    customInfoPillarFileManager.updatePillarFile(minion);
+                    break;
                 default:
                     throw new RuntimeException("unreachable");
             }
@@ -116,6 +123,7 @@ public class MinionPillarManager {
         generalPillarFileManager.updatePillarFile(minion);
         groupMembershipPillarFileManager.updatePillarFile(minion);
         virtualizationPillarFileManager.updatePillarFile(minion);
+        customInfoPillarFileManager.updatePillarFile(minion);
     }
 
     /**
@@ -126,6 +134,7 @@ public class MinionPillarManager {
         generalPillarFileManager.removePillarFile(minionId);
         groupMembershipPillarFileManager.removePillarFile(minionId);
         virtualizationPillarFileManager.removePillarFile(minionId);
+        customInfoPillarFileManager.removePillarFile(minionId);
     }
 
     /**
@@ -135,6 +144,7 @@ public class MinionPillarManager {
         generalPillarFileManager.setPillarDataPath(pillarDataPathIn);
         groupMembershipPillarFileManager.setPillarDataPath(pillarDataPathIn);
         virtualizationPillarFileManager.setPillarDataPath(pillarDataPathIn);
+        customInfoPillarFileManager.setPillarDataPath(pillarDataPathIn);
     }
 
 }

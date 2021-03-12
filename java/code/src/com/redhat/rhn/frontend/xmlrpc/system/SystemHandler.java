@@ -2015,7 +2015,8 @@ public class SystemHandler extends BaseHandler {
         }
 
         server.asMinionServer().ifPresent(minion -> {
-            MinionPillarManager.INSTANCE.generatePillar(minion);
+            MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                MinionPillarManager.PillarSubset.CUSTOM_INFO);
         });
 
         // If we skipped any keys, we need to throw an exception and let the user know.

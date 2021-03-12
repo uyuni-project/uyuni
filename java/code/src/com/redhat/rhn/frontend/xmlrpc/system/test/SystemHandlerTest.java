@@ -1083,7 +1083,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private Map<String, Object> readCustomInfoPillar(MinionServer minion) throws Exception {
         Path filePath = tmpPillarRoot.resolve(
                 PILLAR_DATA_FILE_PREFIX + "_" +
-                minion.getMinionId() + "." +
+                minion.getMinionId() + "_custom_info." +
                 PILLAR_DATA_FILE_EXT);
 
         assertTrue(Files.exists(filePath));
@@ -1187,8 +1187,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         val = server.getCustomDataValue(testKey);
         assertNull(val);
 
-        pillar = readCustomInfoPillar(server);
-        assertFalse(pillar.containsKey(keyLabel));
+        Path filePath = tmpPillarRoot.resolve(
+                PILLAR_DATA_FILE_PREFIX + "_" +
+                server.getMinionId() + "_custom_info." +
+                PILLAR_DATA_FILE_EXT);
+
+        assertFalse(Files.exists(filePath));
     }
 
     public void testListUserSystems() throws Exception {

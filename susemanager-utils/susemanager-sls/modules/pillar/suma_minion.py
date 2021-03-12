@@ -47,7 +47,7 @@ MANAGER_GLOBAL_PILLAR = [
 ]
 
 MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
-MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml"]
+MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml", "_custom_info.yml"]
 
 CONFIG_FILE = '/etc/rhn/rhn.conf'
 
