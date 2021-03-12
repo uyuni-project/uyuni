@@ -22,7 +22,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 // See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
   interface Window {
-    actionChains: any;
+    actionChains?: any;
   }
 }
 
