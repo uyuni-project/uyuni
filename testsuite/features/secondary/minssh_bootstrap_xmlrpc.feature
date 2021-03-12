@@ -42,6 +42,7 @@ Feature: Register a salt-ssh system via XML-RPC
     When I wait until button "Search" becomes enabled
     And I enter "sle-manager-tools-release" as the filtered package states name
     And I click on "Search" in element "search-row"
+    And I wait until I see "sle-manager-tools-release" text
     And I remove package "sle-manager-tools-release" from highstate
 
 @ssh_minion
