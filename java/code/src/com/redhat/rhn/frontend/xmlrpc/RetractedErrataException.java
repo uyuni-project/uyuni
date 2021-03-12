@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * Retracted Errata Exception
- *
- * @version $Rev$
  */
 public class RetractedErrataException extends FaultException  {
 
