@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 /**
  * Retracted Package Exception
  */
-public class RetractedPackageException extends FaultException  {
+public class RetractedPackageFault extends FaultException  {
 
     /**
      * Constructor
      * @param pkgIds The retracted package ids.
      */
-    public RetractedPackageException(List<Long> pkgIds) {
+    public RetractedPackageFault(List<Long> pkgIds) {
         super(2303, "retractedPackage" , LocalizationService.getInstance().
                 getMessage("api.package.retractedpackage",
                         pkgIds.stream().map(Object::toString).collect(Collectors.joining(","))));
@@ -41,7 +41,7 @@ public class RetractedPackageException extends FaultException  {
      * @param pkgIds The retracted package ids.
      * @param cause the cause
      */
-    public RetractedPackageException(List<Long> pkgIds, Throwable cause) {
+    public RetractedPackageFault(List<Long> pkgIds, Throwable cause) {
         super(2303, "retractedPackage" , LocalizationService.getInstance().
                 getMessage("api.package.retractedpackage",
                         pkgIds.stream().map(Object::toString).collect(Collectors.joining(","))),

@@ -67,7 +67,6 @@ import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.frontend.xmlrpc.RetractedErrataException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.action.MinionActionManager;
