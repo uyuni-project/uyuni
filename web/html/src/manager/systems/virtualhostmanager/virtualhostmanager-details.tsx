@@ -87,7 +87,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
                 comparator={Utils.sortByText}
                 header={t("Name")}
                 cell={(row, criteria) =>
-                  row.type == "server" ? (
+                  row.type === "server" ? (
                     <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a>
                   ) : (
                     row.name

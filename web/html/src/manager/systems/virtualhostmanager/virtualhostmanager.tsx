@@ -191,16 +191,16 @@ class VirtualHostManager extends React.Component<Props, State> {
         helpUrl="reference/systems/virtual-host-managers.html"
       >
         {this.state.messages ? <Messages items={this.state.messages} /> : null}
-        {this.state.action == "details" ? (
+        {this.state.action === "details" ? (
           <VirtualHostManagerDetails
             data={this.state.selected}
             onCancel={this.handleBackAction}
             onEdit={this.handleEditAction}
             onDelete={this.deleteSelected}
           />
-        ) : this.state.action == "create" ? (
+        ) : this.state.action === "create" ? (
           <VirtualHostManagerEdit type={this.getCreateType()} onCancel={this.handleBackAction} />
-        ) : this.state.action == "edit" ? (
+        ) : this.state.action === "edit" ? (
           <VirtualHostManagerEdit
             item={this.state.selected}
             type={this.state.selected.gathererModule}

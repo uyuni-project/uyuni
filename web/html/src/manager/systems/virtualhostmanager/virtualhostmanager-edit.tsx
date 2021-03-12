@@ -221,7 +221,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   }
 
   paramField(name, defaultValue) {
-    let required = this.isEdit() ? name != "password" && name != "username" : true;
+    let required = this.isEdit() ? name !== "password" && name !== "username" : true;
     if (name.toLowerCase() === "password") {
       return (
         <Password
