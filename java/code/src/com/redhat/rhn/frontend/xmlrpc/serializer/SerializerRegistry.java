@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2009--2017 Red Hat, Inc.
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -68,6 +68,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ShortSystemInfoSerializer.class);
         SERIALIZER_CLASSES.add(SystemGroupsDTOSerializer.class);
         SERIALIZER_CLASSES.add(FormulaDataSerializer.class);
+        SERIALIZER_CLASSES.add(FormulaSerializer.class);
         SERIALIZER_CLASSES.add(EmptySystemProfileSerializer.class);
         SERIALIZER_CLASSES.add(UserSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeSerializer.class);

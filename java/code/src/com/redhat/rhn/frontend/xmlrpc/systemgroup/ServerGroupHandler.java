@@ -20,26 +20,36 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.formula.Formula;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
+import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.clusters.ClusterFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * ServerGroupHandler
@@ -544,5 +554,113 @@ public class ServerGroupHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
+    }
+
+    /**
+     * List all Configuration Channels assigned to a system group
+     * @param loggedInUser the user
+     * @param systemGroupName the group name
+     * @return list of Config Channels
+     * @since 25
+     *
+     * @xmlrpc.doc List all Configuration Channels assigned to a system group
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "systemGroupName")
+     * @xmlrpc.returntype
+     * #array_begin()
+     * $ConfigChannelSerializer
+     * #array_end()
+     */
+    public List<ConfigChannel> listAssignedConfigChannels(User loggedInUser, String systemGroupName) {
+        ServerGroup group = Optional.ofNullable(
+                ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())
+                ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
+
+        return StateFactory.latestConfigChannels(group).orElseGet(Collections::emptyList);
+    }
+
+    /**
+     * Subscribe given config channels to a system group
+     * @param loggedInUser the user
+     * @param systemGroupName the group name
+     * @param configChannelLabels list of config channel labels to subscribe
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Subscribe given config channels to a system group
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "systemGroupName")
+     * @xmlrpc.param #array_single("string", "configChannelLabels")
+     * @xmlrpc.returntype 1 on success, exception on failure
+     */
+    public int subscribeConfigChannel(User loggedInUser, String systemGroupName,
+            List<String> configChannelLabels) {
+
+        ServerGroup group = Optional.ofNullable(
+                ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())
+                ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
+        ConfigurationManager manager = ConfigurationManager.getInstance();
+
+        List<ConfigChannel> channels = configChannelLabels.stream()
+            .map(l -> Optional.ofNullable(manager.lookupGlobalConfigChannel(loggedInUser, l))
+                    .orElseThrow(() -> new NoSuchChannelException(l)))
+            .collect(Collectors.toList());
+
+        group.subscribeConfigChannels(channels, loggedInUser);
+        return 1;
+    }
+
+    /**
+     * Unsubscribe given config channels to a system group
+     * @param loggedInUser the user
+     * @param systemGroupName the group name
+     * @param configChannelLabels list of config channel labels to subscribe
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Unsubscribe given config channels to a system group
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "systemGroupName")
+     * @xmlrpc.param #array_single("string", "configChannelLabels")
+     * @xmlrpc.returntype 1 on success, exception on failure
+     */
+    public int unsubscribeConfigChannel(User loggedInUser, String systemGroupName,
+            List<String> configChannelLabels) {
+
+        ServerGroup group = Optional.ofNullable(
+                ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())
+                ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
+        ConfigurationManager manager = ConfigurationManager.getInstance();
+
+        List<ConfigChannel> channels = configChannelLabels.stream()
+            .map(l -> Optional.ofNullable(manager.lookupGlobalConfigChannel(loggedInUser, l))
+                    .orElseThrow(() -> new NoSuchChannelException(l)))
+            .collect(Collectors.toList());
+
+        group.unsubscribeConfigChannels(channels, loggedInUser);
+        return 1;
+    }
+
+    /**
+     * List all Formulas assigned to a system group
+     * @param loggedInUser the user
+     * @param systemGroupName the group name
+     * @return list of Formulas
+     * @since 25
+     *
+     * @xmlrpc.doc List all Configuration Channels assigned to a system group
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "systemGroupName")
+     * @xmlrpc.returntype
+     * #array_begin()
+     * $FormualSerializer
+     * #array_end()
+     */
+    public List<Formula> listAssignedFormuals(User loggedInUser, String systemGroupName) {
+        ServerGroup group = Optional.ofNullable(
+                ServerGroupFactory.lookupByNameAndOrg(systemGroupName, loggedInUser.getOrg())
+                ).orElseThrow(() -> new LookupServerGroupException(systemGroupName));
+
+        List<Formula> formulas = FormulaFactory.listFormulas();
+        List<String> assigned = FormulaFactory.getFormulasByGroupId(group.getId());
+        return formulas.stream().filter(f -> assigned.contains(f.getName())).collect(Collectors.toList());
     }
 }
