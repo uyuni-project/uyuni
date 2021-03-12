@@ -47,7 +47,6 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -129,7 +128,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
-import com.redhat.rhn.frontend.xmlrpc.RetractedPackageException;
+import com.redhat.rhn.frontend.xmlrpc.RetractedPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
@@ -3669,7 +3668,7 @@ public class SystemHandler extends BaseHandler {
                     sids.stream().map(s -> s.longValue()).collect(toList())
             );
             if (!pidsidpairs.isEmpty()) {
-                throw new RetractedPackageException(pidsidpairs.stream().map(t -> t.getA()).collect(toList()));
+                throw new RetractedPackageFault(pidsidpairs.stream().map(t -> t.getA()).collect(toList()));
             }
         }
 
@@ -3860,7 +3859,7 @@ public class SystemHandler extends BaseHandler {
                     ActionFactory.TYPE_PACKAGES_UPDATE, allowModules);
         }
         else {
-            throw new RetractedPackageException(retractedPids);
+            throw new RetractedPackageFault(retractedPids);
         }
     }
 
