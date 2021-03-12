@@ -58,10 +58,6 @@ Usually it means the target expects a string, but you want to pass an element.
 To fix, change the target's props to accept `React.ReactNode` which among other things is a superset of `string`.  
 In certain cases `JSX.Element` may be applicable as well, see [examples and discussions here](https://github.com/typescript-cheatsheets/react#useful-react-prop-type-examples).  
 
-### `import type {Node} from 'react';`
-
-TODO: Karl will fix this in a followup PR. About 10 files need manual `Node` -> `React.ReactNode`.
-
 ### `Property 'children' does not exist on type 'IntrinsicAttributes'`
 
 This can happen when you have a string prop `headingLevel: string` and want to use it in JSX to create an element such as `<HeadingLevel style={{ width: "85%" }}>`.  
