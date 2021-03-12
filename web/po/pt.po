@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:00+0000\n"
+"POT-Creation-Date: 2021-03-12 13:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3633,7 +3633,7 @@ msgstr ""
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.js:29
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:31
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
