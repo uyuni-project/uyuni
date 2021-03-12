@@ -3,10 +3,6 @@
 
 Feature: Bootstrap a Salt minion via the GUI
 
-  Scenario: Create the bootstrap repository for a Salt client
-     Given I am authorized
-     And I create the "x86_64" bootstrap repository for "sle_minion" on the server
-
   Scenario: Bootstrap a SLES minion
      Given I am authorized
      When I go to the bootstrapping page
