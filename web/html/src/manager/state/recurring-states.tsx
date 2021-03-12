@@ -13,6 +13,7 @@ import SpaRenderer from "core/spa/spa-renderer";
  *  - java/code/src/com/suse/manager/webui/templates/minion/recurring-states.jade
  *  - java/code/src/com/suse/manager/webui/templates/org/recurring-states.jade
  *  - java/code/src/com/suse/manager/webui/templates/schedule/recurring-states.jade
+ *  - java/code/src/com/suse/manager/webui/templates/yourorg/recurring-states.jade
  */
 declare global {
   interface Window {
