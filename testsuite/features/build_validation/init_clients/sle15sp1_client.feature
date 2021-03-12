@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp1_client
@@ -6,6 +6,10 @@ Feature: Bootstrap a SLES 15 SP1 traditional client
 
   Scenario: Clean up sumaform leftovers on a SLES 15 SP1 traditional client
     When I perform a full salt minion cleanup on "sle15sp1_client"
+
+  Scenario: Create the bootstrap repository for a SLES 15 SP1 traditional client
+    Given I am authorized
+    When I create the bootstrap repository for "sle15sp1_client" on the server
 
   Scenario: Register a SLES 15 SP1 traditional client
     When I bootstrap traditional client "sle15sp1_client" using bootstrap script with activation key "1-sle15sp1_client_key" from the proxy
@@ -15,7 +19,7 @@ Feature: Bootstrap a SLES 15 SP1 traditional client
 
   Scenario: The onboarding of SLES 15 SP1 traditional client is completed
     Given I am authorized
-    Then I wait until onboarding is completed for "sle15sp1_client"
+    When I wait until onboarding is completed for "sle15sp1_client"
 
   Scenario: Check registration values of SLES 15 SP1 traditional
     Given I update the profile of "sle15sp1_client"
