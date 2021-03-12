@@ -27927,7 +27927,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>期限切れの行が増加し過ぎないようにこれらを PXTSessions テーブルから削除する</target>
+        <target>PXTSessions テーブルのサイズが大きくなりすぎないようにこのテーブルから期限切れの行を削除する</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.sandbox-cleanup-bunch" xml:space="preserve">
         <source>Cleans up sandbox</source>
