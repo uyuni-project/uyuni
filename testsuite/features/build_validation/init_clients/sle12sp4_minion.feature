@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle12sp4_minion
@@ -7,9 +7,9 @@ Feature: Bootstrap a SLES 12 SP4 Salt minion
   Scenario: Clean up sumaform leftovers on a SLES 12 SP4 Salt minion
     When I perform a full salt minion cleanup on "sle12sp4_minion"
 
-  Scenario: Create the bootstrap repository for a Salt client
+  Scenario: Create the bootstrap repository for a SLES 12 SP4 minion
     Given I am authorized
-    And I create the "x86_64" bootstrap repository for "sle12sp4_minion" on the server
+    When I create the bootstrap repository for "sle12sp4_minion" on the server
 
   Scenario: Bootstrap a SLES 12 SP4 minion
     Given I am authorized
@@ -27,7 +27,7 @@ Feature: Bootstrap a SLES 12 SP4 Salt minion
 
   Scenario: Check the new bootstrapped SLES 12 SP4 minion in System Overview page
     Given I am authorized
-    And I go to the minion onboarding page
+    When I go to the minion onboarding page
     Then I should see a "accepted" text
     And the Salt master can reach "sle12sp4_minion"
 

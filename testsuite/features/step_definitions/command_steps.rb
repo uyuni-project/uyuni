@@ -868,26 +868,18 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
-  node = get_target(host)
-  os_version, _os_family = get_os_version(node)
-  cmd = 'false'
-  if (os_version.include? '15') && (host.include? 'proxy')
-    proxy_version = '40'
-    if os_version.include? 'SP3'
-      proxy_version = '42'
-    elsif os_version.include? 'SP2'
-      proxy_version = '41'
-    end
-    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
-  elsif (os_version.include? '12') || (os_version.include? '15')
-    cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
-  elsif os_version.include? '11'
-    sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
-    cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}"
-  end
-  puts 'Creating the boostrap repository on the server: ' + cmd
-  $server.run(cmd, false)
+When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
+  base_channel = BASE_CHANNEL_BY_CLIENT[host]
+  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  cmd = if parent_channel.nil?
+          "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
+        else
+          "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
+        end
+  STDOUT.puts 'Creating the boostrap repository on the server:'
+  STDOUT.puts '  ' + cmd
+  $server.run(cmd)
 end
 
 When(/^I open avahi port on the proxy$/) do

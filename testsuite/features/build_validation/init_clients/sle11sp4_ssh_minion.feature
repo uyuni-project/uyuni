@@ -2,22 +2,26 @@
 # Licensed under the terms of the MIT license.
 
 @sle11sp4_ssh_minion
-Feature: Bootstrap a SLES 11 SP4 Salt SSH Minion
+Feature: Bootstrap a SLES 11 SP4 Salt SSH minion
 
-  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 Salt SSH Minion
+  Scenario: Clean up sumaform leftovers on a SLES 11 SP4 Salt SSH minion
     When I perform a full salt minion cleanup on "sle11sp4_ssh_minion"
+
+  Scenario: Create the bootstrap repository for a SLES 11 SP4 Salt SSH minion
+    Given I am authorized
+    When I create the bootstrap repository for "sle11sp4_ssh_minion" on the server
 
   Scenario: Bootstrap a SLES 11 SP4 system managed via salt-ssh
     Given I am authorized
-    And I go to the bootstrapping page
+    When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    And I check "manageWithSSH"
+    When I check "manageWithSSH"
     And I enter the hostname of "sle11sp4_ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I select "1-sle11sp4_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle11sp4_ssh_minion"
 
 # HACK
@@ -38,7 +42,7 @@ Feature: Bootstrap a SLES 11 SP4 Salt SSH Minion
     And I remove package "sle-manager-tools-release" from highstate
 
   # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for SLES 11 SP4 Salt SSH Minion
+  Scenario: Import the GPG keys for SLES 11 SP4 Salt SSH minion
     When I import the GPG keys for "sle11sp4_ssh_minion"
 
 @proxy

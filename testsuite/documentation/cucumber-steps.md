@@ -481,7 +481,7 @@ The check box can be identified by name, id or label text.
 * Execute mgr-create-bootstrap-repo
 
 ```cucumber
-  When I create the "x86_64" bootstrap repository for "sle_minion" on the server
+  When I create the bootstrap repository for "sle_minion" on the server
 ```
 
 * Execute spacewalk-channel

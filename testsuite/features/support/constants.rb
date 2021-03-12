@@ -197,6 +197,38 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-prod
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
                           'ubuntu-20.04-pool' => 'ubuntu-20.04-pool-amd64' }.freeze
 
+CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.0-Pool' => 'SUMA-40-PROXY-x86_64',
+                                    'SLES11-SP3-Pool' => 'SLE-11-SP3-i586',
+                                    'SLES11-SP4-Pool' => 'SLE-11-SP4-x86_64',
+                                    'SLES12-SP4-Pool' => 'SLE-12-SP4-x86_64',
+                                    'SLES12-SP5-Pool' => 'SLE-12-SP5-x86_64',
+                                    'SLES15-Pool' => 'SLE-15-x86_64',
+                                    'SLES15-SP1-Pool' => 'SLE-15-SP1-x86_64',
+                                    'SLES15-SP2-Pool' => 'SLE-15-SP2-x86_64',
+                                    'SLES15-SP3-Pool' => 'SLE-15-SP3-x86_64',
+                                    'RHEL x86_64 Server 6' => 'RES6-x86_64',
+                                    'RHEL x86_64 Server 7' => 'RES7-x86_64',
+                                    'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
+                                    'ubuntu-16.04-pool' => 'ubuntu-16.04-amd64',
+                                    'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
+                                    'ubuntu-20.04-pool' => 'ubuntu-18.04-amd64' }.freeze
+
+PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.0-Pool' => 'sle-product-suse-manager-proxy-4.0-pool-x86_64',
+                                           'SLES11-SP3-Pool' => nil,
+                                           'SLES11-SP4-Pool' => nil,
+                                           'SLES12-SP4-Pool' => nil,
+                                           'SLES12-SP5-Pool' => nil,
+                                           'SLES15-Pool' => 'sle-product-sles15-pool-x86_64',
+                                           'SLES15-SP1-Pool' => 'sle-product-sles15-sp1-pool-x86_64',
+                                           'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
+                                           'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
+                                           'RHEL x86_64 Server 6' => 'rhel-x86_64-server-6',
+                                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
+                                           'RHEL8-Pool for x86_64' => nil,
+                                           'ubuntu-16.04-pool' => nil,
+                                           'ubuntu-18.04-pool' => nil,
+                                           'ubuntu-20.04-pool' => nil }.freeze
+
 PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
                       'sle_minion' => 'x86_64',
