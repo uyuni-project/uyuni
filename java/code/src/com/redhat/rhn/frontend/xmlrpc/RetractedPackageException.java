@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * Retracted Package Exception
- *
- * @version $Rev$
  */
 public class RetractedPackageException extends FaultException  {
 
