@@ -24,6 +24,8 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
+    // TODO: Eventually this should be ["error", "always"]
+    "radix": ["warn", "always"],
     // TODO: Eventually we should enforce this as well
     // "no-eq-null": "error",
     // TODO: This needs to be reworked with Typescript support in mind

@@ -1,3 +1,5 @@
+import * as es5 from 'typescript/lib/lib.es5.d.ts'
+
 declare global {
   interface Window {
     // See java/code/webapp/WEB-INF/includes/leftnav.jsp

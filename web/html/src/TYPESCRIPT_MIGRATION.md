@@ -43,8 +43,8 @@ Usually, you will only need to specify where the Typescript SDK is, how to confi
 ### `Argument of type 'Foo' is not assignable to parameter of type 'never'` when pushing into an empty array
 
 Untyped arrays `const foo = []` are of type `never[]`, meaning you can't push anything non-empty into them.  
-To fix the problem, add a type to the initialization: `const foo: Foo[] = []`  
-This is not a problem if the source of the assignment is already typed as in `const foo = getTypedFoo()`
+To fix the problem, add a type to the initialization: `const foo: Foo[] = [];`  
+This is not a problem if the source of the assignment is already typed as in `const foo = getTypedFoo();`
 
 ### `Type 'string[]' is not assignable to type 'number[]'`
 
@@ -116,6 +116,25 @@ SyntaxError: Foo.ts: Unexpected token, expected "," (16:9)
 
 This slightly obscure error message usually means that your file is `.ts`, but it should be `.tsx`.  
 The migrator tries to detect this automatically, but it isn't infallible.  
+
+### `Type '(string | null | undefined)[]' is not assignable to type 'string[]'` when using `Array.prototype.filter()`
+
+A simple example of the problem is the below (otherwise perfectly valid) snippet:  
+
+```tsx
+const foo: (string | null | undefined)[] = [];
+const bar: string[] = foo.filter(Boolean);
+//    ^^^ Error shown here
+```
+
+This is a [very long-standing open issue in Typescript](https://github.com/microsoft/TypeScript/issues/16655). Shortly put, the `Boolean` constructor doesn't correctly constrain the types as it constrains values.  
+
+We have a shim in place to fix this (see `lib.es5.d.ts`), if that doesn't work you can use either the below snippet or other alternatives from the link.  
+
+```tsx
+const foo: (string | null | undefined)[] = [];
+const bar: string[] = foo.filter((item): item is string => Boolean(item));
+```
 
 ## Technical tidbits
 
