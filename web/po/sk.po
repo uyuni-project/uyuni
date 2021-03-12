@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 11:00+0000\n"
+"POT-Creation-Date: 2021-03-12 12:49+0000\n"
 "PO-Revision-Date: 2021-02-05 10:01+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -43,19 +43,19 @@ msgstr ""
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
 msgid "Please input required fields: {0}"
 msgstr "Prosím, zadajte požadované polia: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:155
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:199
+#: ../html/src/components/FormulaForm.tsx:200
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -63,7 +63,7 @@ msgstr ""
 "Na tejto stránke môžete nakonfigurovať vzorce Salt na automatickú inštaláciu "
 "a konfiguráciu softvéru."
 
-#: ../html/src/components/action-schedule.tsx:47
+#: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
 msgstr "nový akčný reťazec"
 
@@ -508,7 +508,7 @@ msgid "First"
 msgstr "Prvá"
 
 #: ../html/src/components/pagination.tsx:23
-#: ../html/src/manager/admin/setup/products/products.js:351
+#: ../html/src/manager/admin/setup/products/products.tsx:392
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
@@ -516,7 +516,7 @@ msgid "Prev"
 msgstr "Predchádzajúce"
 
 #: ../html/src/components/pagination.tsx:28
-#: ../html/src/manager/admin/setup/products/products.js:357
+#: ../html/src/manager/admin/setup/products/products.tsx:398
 #: ../html/src/manager/clusters/add-cluster/select-provider.tsx:26
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:102
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
@@ -538,7 +538,7 @@ msgid "Page"
 msgstr "Stránka"
 
 #: ../html/src/components/pagination.tsx:103
-#: ../html/src/manager/admin/setup/products/products.js:362
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
 msgstr "z"
@@ -608,7 +608,7 @@ msgid "({0} selected)"
 msgstr "(Vybrané {0})"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.js:287
+#: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -626,7 +626,7 @@ msgstr "Vybrať všetko"
 msgid "Loading..."
 msgstr "Načítava sa..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:355
+#: ../html/src/components/table/TableDataHandler.tsx:354
 msgid "items per page"
 msgstr "položiek na stránku"
 
@@ -877,11 +877,11 @@ msgid ""
 msgstr ""
 " Tomcat a Taskomatic sú potrebné na to, aby sa prejavili konfiguračné zmeny."
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:144
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
 #: ../html/src/manager/images/image-profiles.js:109
 #: ../html/src/manager/images/image-stores.js:112
@@ -891,20 +891,20 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 msgid "Refresh"
 msgstr "Obnoviť"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:179
 msgid "Please be patient, this might take several minutes."
 msgstr "Prosím, buďte trpezliví, môže to trvať niekoľko minút."
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:184
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
 msgstr "Dokončené"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:189
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-patches.js:81
 #: ../html/src/manager/images/image-view.js:600
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
@@ -914,7 +914,7 @@ msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#: ../html/src/manager/admin/setup/products/products.js:114
+#: ../html/src/manager/admin/setup/products/products.tsx:136
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -922,15 +922,15 @@ msgstr ""
 "Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
 "kanál nástrojov klienta sa nebudú zobrazovať."
 
-#: ../html/src/manager/admin/setup/products/products.js:156
+#: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
 msgstr "Obnovovanie katalógu produktov prebieha..."
 
-#: ../html/src/manager/admin/setup/products/products.js:226
+#: ../html/src/manager/admin/setup/products/products.tsx:251
 msgid "Setup Wizard"
 msgstr "Sprievodca nastavením"
 
-#: ../html/src/manager/admin/setup/products/products.js:244
+#: ../html/src/manager/admin/setup/products/products.tsx:276
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -938,48 +938,48 @@ msgstr ""
 "Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
 "neskôr, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.js:251
+#: ../html/src/manager/admin/setup/products/products.tsx:281
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalóg produktov sa stále obnovuje, čakajte, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.js:253
+#: ../html/src/manager/admin/setup/products/products.tsx:283
 msgid "Select some product first."
 msgstr "Najskôr vyberte nejaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.js:262
-#: ../html/src/manager/admin/setup/products/products.js:269
+#: ../html/src/manager/admin/setup/products/products.tsx:292
+#: ../html/src/manager/admin/setup/products/products.tsx:300
 msgid "Add products"
 msgstr "Pridať produkty"
 
-#: ../html/src/manager/admin/setup/products/products.js:286
+#: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid "Clear products selection"
 msgstr "Vymazať výber produktov"
 
-#: ../html/src/manager/admin/setup/products/products.js:326
+#: ../html/src/manager/admin/setup/products/products.tsx:359
 msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.js:327
+#: ../html/src/manager/admin/setup/products/products.tsx:362
+#, fuzzy
 msgid ""
-"The products displayed on this list are directly linked to "
-"your                   Organization credentials (Mirror credentials) as well "
-"as your SUSE subscriptions."
+"The products displayed on this list are directly linked to your Organization "
+"credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "Produkty zobrazené v tomto zozname sú priamo spojené s "
 "vašimi                   prihlasovacími údajmi organizácie (prihlasovacími "
 "údajmi zrkadla) ako aj vaším predplatným SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.js:329
+#: ../html/src/manager/admin/setup/products/products.tsx:367
+#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
-"correct                   Organization credentials in the previous wizard "
-"step."
+"correct Organization credentials in the previous wizard step."
 msgstr ""
 "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
 "správne                   prihlasovacie údaje organizácie v predchádzajúcom "
 "kroku sprievodcu."
 
-#: ../html/src/manager/admin/setup/products/products.js:338
+#: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -987,61 +987,61 @@ msgstr ""
 "Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
 "(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
 
-#: ../html/src/manager/admin/setup/products/products.js:401
+#: ../html/src/manager/admin/setup/products/products.tsx:453
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/manager/admin/setup/products/products.js:488
+#: ../html/src/manager/admin/setup/products/products.tsx:550
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.js:538
+#: ../html/src/manager/admin/setup/products/products.tsx:620
 msgid "Product Description"
 msgstr "Popis produktu"
 
-#: ../html/src/manager/admin/setup/products/products.js:539
-#: ../html/src/manager/admin/setup/products/products.js:865
+#: ../html/src/manager/admin/setup/products/products.tsx:626
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/manager/admin/setup/products/products.js:539
+#: ../html/src/manager/admin/setup/products/products.tsx:628
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.js:540
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.js:704
+#: ../html/src/manager/admin/setup/products/products.tsx:806
 msgid " channels sync failed"
 msgstr " synchronizácia kanálov zlyhala"
 
-#: ../html/src/manager/admin/setup/products/products.js:710
+#: ../html/src/manager/admin/setup/products/products.tsx:814
 msgid " channels sync in progress"
 msgstr " prebieha synchronizácia kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.js:716
+#: ../html/src/manager/admin/setup/products/products.tsx:822
 msgid " channels synced"
 msgstr " kanály synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.js:734
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
 "produkt"
 
-#: ../html/src/manager/admin/setup/products/products.js:734
+#: ../html/src/manager/admin/setup/products/products.tsx:848
 msgid "Select this product"
 msgstr "Vybrať tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.js:744
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrkadlený."
 
-#: ../html/src/manager/admin/setup/products/products.js:770
+#: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.js:135
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
@@ -1049,7 +1049,7 @@ msgstr "Tento produkt je zrkadlený."
 msgid "recommended"
 msgstr "odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.js:784
+#: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.js:166
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
@@ -1057,91 +1057,91 @@ msgstr "odporúčané"
 msgid "include recommended"
 msgstr "zahrnúť odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.js:824
+#: ../html/src/manager/admin/setup/products/products.tsx:949
 msgid "SCC product catalog refresh in progress"
 msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
-#: ../html/src/manager/admin/setup/products/products.js:828
+#: ../html/src/manager/admin/setup/products/products.tsx:952
 msgid "Scheduling channels product resync"
 msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.js:832
+#: ../html/src/manager/admin/setup/products/products.tsx:955
 msgid "Channels product resync scheduled"
 msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
-#: ../html/src/manager/admin/setup/products/products.js:836
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "Schedule channels product resync"
 msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.js:875
+#: ../html/src/manager/admin/setup/products/products.tsx:1019
 msgid "Show product's channels"
 msgstr "Zobraziť kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.js:899
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Product Channels - "
 msgstr "Kanály produktov - "
 
-#: ../html/src/manager/admin/setup/products/products.js:904
+#: ../html/src/manager/admin/setup/products/products.tsx:1056
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.js:909
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Optional Channels"
 msgstr "Voliteľné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.js:931
+#: ../html/src/manager/admin/setup/products/products.tsx:1078
 msgid "not synced"
 msgstr "nesynchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.js:933
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 msgid "sync in progress"
 msgstr "prebieha synchronizácia"
 
-#: ../html/src/manager/admin/setup/products/products.js:935
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "synced"
 msgstr "synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.js:937
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "sync failed"
 msgstr "synchronizácia zlyhala"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:86
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:93
 msgid " running"
 msgstr " bežiace"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:87
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:101
 msgid " finished"
 msgstr " dokončené"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:88
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:109
 msgid " failed"
 msgstr " neúspešné"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:89
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:117
 msgid " interrupted"
 msgstr " prerušené"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:90
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:125
 msgid " ready to run"
 msgstr " pripravené na spustenie"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:91
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:133
 msgid " skipped"
 msgstr " preskočené"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:107
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:153
 msgid "Task Engine Status"
 msgstr "Stav nástroja úloh"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:115
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:163
 msgid "Last Execution Times"
 msgstr "Posledné časy vykonania"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:116
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:167
 msgid "Runtime Status"
 msgstr "Stav behu programu"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:128
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:181
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
@@ -1149,15 +1149,15 @@ msgstr ""
 "Server je spustený alebo dokončil vykonávanie nasledujúcich úloh počas "
 "posledných 5 minút."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:129
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:184
 msgid "Data is refreshed every "
 msgstr "Dáta sa obnovujú každých "
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:129
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:186
 msgid " seconds"
 msgstr " sekúnd"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:139
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:194
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
@@ -1166,27 +1166,27 @@ msgstr " sekúnd"
 msgid "Filter by name"
 msgstr "Filtrovať podľa názvu"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:144
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 msgid "Task Id"
 msgstr "Id úlohy"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:150
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:200
 msgid "Task Name"
 msgstr "Názov úlohy"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:156
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:206
 msgid "Start Time"
 msgstr "Čas spustenia"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:162
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:212
 msgid "End Time"
 msgstr "Čas skončenia"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:168
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:218
 msgid "Elapsed Time"
 msgstr "Uplynutý čas"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:174
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
@@ -1196,15 +1196,15 @@ msgid "Status"
 msgstr "Stav"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:180
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:229
 msgid "Data"
 msgstr "Údaje"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:192
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:240
 msgid "There are no tasks running on the server at the moment."
 msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:210
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
@@ -1212,11 +1212,11 @@ msgstr ""
 "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
 "aktuálne údaje."
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:212
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.ts:65
+#: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
 
@@ -2165,7 +2165,7 @@ msgstr "Vymazať projekt"
 msgid "Are you sure you want to delete project"
 msgstr "Naozaj chcete vymazať projekt"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:74
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -3807,7 +3807,7 @@ msgstr ""
 "systémoch."
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:61
+#: ../html/src/utils/network.ts:75
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
@@ -5277,15 +5277,15 @@ msgstr "Vybrať systémovú skupinu"
 msgid "Split into groups"
 msgstr "Rozdeliť do skupín"
 
-#: ../html/src/utils/network.ts:59
+#: ../html/src/utils/network.ts:73
 msgid "Session expired, please reload the page."
 msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
 
-#: ../html/src/utils/network.ts:63
+#: ../html/src/utils/network.ts:77
 msgid "Resource not found."
 msgstr "Zdroj sa nenašiel."
 
-#: ../html/src/utils/network.ts:67
+#: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 

@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 11:00+0000\n"
+"POT-Creation-Date: 2021-03-12 12:49+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -42,25 +42,25 @@ msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
 
-#: ../html/src/components/FormulaForm.tsx:151
+#: ../html/src/components/FormulaForm.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
 msgid "Please input required fields: {0}"
 msgstr "请输入必填字段：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:154
+#: ../html/src/components/FormulaForm.tsx:155
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
 msgid "Invalid format of fields: {0}"
 msgstr "无效的字段格式：{0}"
 
-#: ../html/src/components/FormulaForm.tsx:199
+#: ../html/src/components/FormulaForm.tsx:200
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
-#: ../html/src/components/action-schedule.tsx:47
+#: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
 msgstr "新操作链"
 
@@ -500,7 +500,7 @@ msgid "First"
 msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:23
-#: ../html/src/manager/admin/setup/products/products.js:351
+#: ../html/src/manager/admin/setup/products/products.tsx:392
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
@@ -508,7 +508,7 @@ msgid "Prev"
 msgstr "上一步"
 
 #: ../html/src/components/pagination.tsx:28
-#: ../html/src/manager/admin/setup/products/products.js:357
+#: ../html/src/manager/admin/setup/products/products.tsx:398
 #: ../html/src/manager/clusters/add-cluster/select-provider.tsx:26
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:102
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
@@ -530,7 +530,7 @@ msgid "Page"
 msgstr "页码"
 
 #: ../html/src/components/pagination.tsx:103
-#: ../html/src/manager/admin/setup/products/products.js:362
+#: ../html/src/manager/admin/setup/products/products.tsx:403
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
 msgstr "/"
@@ -598,7 +598,7 @@ msgid "({0} selected)"
 msgstr "（已选择 {0} 个）"
 
 #: ../html/src/components/table/SearchPanel.tsx:50
-#: ../html/src/manager/admin/setup/products/products.js:287
+#: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
 msgstr "清除"
 
@@ -616,7 +616,7 @@ msgstr "全选"
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:355
+#: ../html/src/components/table/TableDataHandler.tsx:354
 msgid "items per page"
 msgstr "项每页"
 
@@ -858,11 +858,11 @@ msgid ""
 "effect."
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:144
 msgid "Refresh the product catalog from SUSE Customer Center"
 msgstr "从 SUSE Customer Center 刷新产品目录"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
 #: ../html/src/manager/images/image-profiles.js:109
 #: ../html/src/manager/images/image-stores.js:112
@@ -872,20 +872,20 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 msgid "Refresh"
 msgstr "刷新"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:179
 msgid "Please be patient, this might take several minutes."
 msgstr "请耐心等候，这可能需要几分钟时间。"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:184
 #: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
 msgstr "已完成"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:189
 msgid "Operation not successful: Empty reply from the server"
 msgstr "操作不成功：服务器返回了空答复"
 
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-patches.js:81
 #: ../html/src/manager/images/image-view.js:600
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
@@ -895,67 +895,67 @@ msgstr "操作不成功：服务器返回了空答复"
 msgid "Details"
 msgstr "细节"
 
-#: ../html/src/manager/admin/setup/products/products.js:114
+#: ../html/src/manager/admin/setup/products/products.tsx:136
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 "没有可用的 SUSE Manager Server 订阅。需要客户端工具频道的产品将不显示。"
 
-#: ../html/src/manager/admin/setup/products/products.js:156
+#: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
 msgstr "产品目录刷新正在运行..."
 
-#: ../html/src/manager/admin/setup/products/products.js:226
+#: ../html/src/manager/admin/setup/products/products.tsx:251
 msgid "Setup Wizard"
 msgstr "安装向导"
 
-#: ../html/src/manager/admin/setup/products/products.js:244
+#: ../html/src/manager/admin/setup/products/products.tsx:276
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
-#: ../html/src/manager/admin/setup/products/products.js:251
+#: ../html/src/manager/admin/setup/products/products.tsx:281
 msgid "The product catalog is still refreshing, please wait."
 msgstr "产品目录仍在刷新，请稍候。"
 
-#: ../html/src/manager/admin/setup/products/products.js:253
+#: ../html/src/manager/admin/setup/products/products.tsx:283
 msgid "Select some product first."
 msgstr "请先选择某个产品。"
 
-#: ../html/src/manager/admin/setup/products/products.js:262
-#: ../html/src/manager/admin/setup/products/products.js:269
+#: ../html/src/manager/admin/setup/products/products.tsx:292
+#: ../html/src/manager/admin/setup/products/products.tsx:300
 msgid "Add products"
 msgstr "添加产品"
 
-#: ../html/src/manager/admin/setup/products/products.js:286
+#: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.js:326
+#: ../html/src/manager/admin/setup/products/products.tsx:359
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.js:327
+#: ../html/src/manager/admin/setup/products/products.tsx:362
+#, fuzzy
 msgid ""
-"The products displayed on this list are directly linked to "
-"your                   Organization credentials (Mirror credentials) as well "
-"as your SUSE subscriptions."
+"The products displayed on this list are directly linked to your Organization "
+"credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品已直接链接到您的                   组织身份凭证（镜像身份凭"
 "证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.js:329
+#: ../html/src/manager/admin/setup/products/products.tsx:367
+#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
-"correct                   Organization credentials in the previous wizard "
-"step."
+"correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确认已在上一个向导步骤中                   添加了正确"
 "的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.js:338
+#: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -963,59 +963,59 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.js:401
+#: ../html/src/manager/admin/setup/products/products.tsx:453
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.js:488
+#: ../html/src/manager/admin/setup/products/products.tsx:550
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.js:538
+#: ../html/src/manager/admin/setup/products/products.tsx:620
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.js:539
-#: ../html/src/manager/admin/setup/products/products.js:865
+#: ../html/src/manager/admin/setup/products/products.tsx:626
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.js:539
+#: ../html/src/manager/admin/setup/products/products.tsx:628
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.js:540
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Channels"
 msgstr "频道"
 
-#: ../html/src/manager/admin/setup/products/products.js:704
+#: ../html/src/manager/admin/setup/products/products.tsx:806
 msgid " channels sync failed"
 msgstr " 频道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.js:710
+#: ../html/src/manager/admin/setup/products/products.tsx:814
 msgid " channels sync in progress"
 msgstr " 频道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.js:716
+#: ../html/src/manager/admin/setup/products/products.tsx:822
 msgid " channels synced"
 msgstr " 频道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:734
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.js:734
+#: ../html/src/manager/admin/setup/products/products.tsx:848
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.js:744
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.js:770
+#: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.js:135
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
@@ -1023,7 +1023,7 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.js:784
+#: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.js:166
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
@@ -1031,105 +1031,105 @@ msgstr "建议"
 msgid "include recommended"
 msgstr "包括建议项"
 
-#: ../html/src/manager/admin/setup/products/products.js:824
+#: ../html/src/manager/admin/setup/products/products.tsx:949
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.js:828
+#: ../html/src/manager/admin/setup/products/products.tsx:952
 msgid "Scheduling channels product resync"
 msgstr "正在安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:832
+#: ../html/src/manager/admin/setup/products/products.tsx:955
 msgid "Channels product resync scheduled"
 msgstr "已安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:836
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "Schedule channels product resync"
 msgstr "安排频道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:875
+#: ../html/src/manager/admin/setup/products/products.tsx:1019
 msgid "Show product's channels"
 msgstr "显示产品的频道"
 
-#: ../html/src/manager/admin/setup/products/products.js:899
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Product Channels - "
 msgstr "产品频道 - "
 
-#: ../html/src/manager/admin/setup/products/products.js:904
+#: ../html/src/manager/admin/setup/products/products.tsx:1056
 msgid "Mandatory Channels"
 msgstr "必需频道"
 
-#: ../html/src/manager/admin/setup/products/products.js:909
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Optional Channels"
 msgstr "可选频道"
 
-#: ../html/src/manager/admin/setup/products/products.js:931
+#: ../html/src/manager/admin/setup/products/products.tsx:1078
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:933
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.js:935
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.js:937
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "sync failed"
 msgstr "同步失败"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:86
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:93
 msgid " running"
 msgstr " 正在运行"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:87
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:101
 msgid " finished"
 msgstr " 已完成"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:88
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:109
 msgid " failed"
 msgstr " 失败"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:89
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:117
 msgid " interrupted"
 msgstr " 已中断"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:90
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:125
 msgid " ready to run"
 msgstr " 准备好运行"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:91
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:133
 msgid " skipped"
 msgstr " 已跳过"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:107
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:153
 msgid "Task Engine Status"
 msgstr "任务引擎状态"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:115
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:163
 msgid "Last Execution Times"
 msgstr "上次执行时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:116
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:167
 msgid "Runtime Status"
 msgstr "运行时状态"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:128
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:181
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
 msgstr "在过去 5 分钟服务器正在运行或已完成执行以下任务。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:129
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:184
 msgid "Data is refreshed every "
 msgstr "数据每隔 "
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:129
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:186
 msgid " seconds"
 msgstr " 秒刷新"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:139
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:194
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
@@ -1138,27 +1138,27 @@ msgstr " 秒刷新"
 msgid "Filter by name"
 msgstr "按名称过滤"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:144
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
 msgid "Task Id"
 msgstr "任务 ID"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:150
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:200
 msgid "Task Name"
 msgstr "任务名称"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:156
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:206
 msgid "Start Time"
 msgstr "开始时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:162
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:212
 msgid "End Time"
 msgstr "结束时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:168
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:218
 msgid "Elapsed Time"
 msgstr "已用时间"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:174
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
@@ -1168,25 +1168,25 @@ msgid "Status"
 msgstr "状态"
 
 #. comparator={this.sortByText}
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:180
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:229
 msgid "Data"
 msgstr "数据"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:192
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:240
 msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:210
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
-#: ../html/src/manager/admin/task-engine-status/taskotop.js:212
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.ts:65
+#: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
 
@@ -2114,7 +2114,7 @@ msgstr "删除项目"
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:74
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
@@ -3740,7 +3740,7 @@ msgid "Session expired, please reload the page to run command on systems."
 msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:61
+#: ../html/src/utils/network.ts:75
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr "授权错误，请重新装载页面或重试注销/登录。"
@@ -5216,15 +5216,15 @@ msgstr "选择系统组"
 msgid "Split into groups"
 msgstr "分割成组"
 
-#: ../html/src/utils/network.ts:59
+#: ../html/src/utils/network.ts:73
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
 
-#: ../html/src/utils/network.ts:63
+#: ../html/src/utils/network.ts:77
 msgid "Resource not found."
 msgstr "未找到资源。"
 
-#: ../html/src/utils/network.ts:67
+#: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
 
