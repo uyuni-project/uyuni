@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-12 18:39+0100\n"
-"PO-Revision-Date: 2021-02-16 09:35+0000\n"
+"PO-Revision-Date: 2021-03-13 16:56+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/cs/>\n"
@@ -1060,7 +1060,7 @@ msgstr "Ujistěte se, že vaše síťové připojení je funkční."
 
 #: ../src/up2date_client/rhnregGui.py:341
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Při komunikaci se Spacewalk serverem došlo k chybě."
+msgstr "Došlo k chybě komunikace se serverem Spacewalk."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
