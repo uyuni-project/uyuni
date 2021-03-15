@@ -38,7 +38,7 @@ public class PackageOverview extends BaseDto {
     private String version;
     private String epoch;
     private String release;
-    private boolean retracted;
+    private Boolean retracted;
 
 
     /**
@@ -228,7 +228,7 @@ public class PackageOverview extends BaseDto {
      *
      * @return retracted
      */
-    public boolean isRetracted() {
+    public Boolean getRetracted() {
         return retracted;
     }
 
@@ -237,7 +237,7 @@ public class PackageOverview extends BaseDto {
      *
      * @param retractedIn the retracted
      */
-    public void setRetracted(boolean retractedIn) {
+    public void setRetracted(Boolean retractedIn) {
         retracted = retractedIn;
     }
 

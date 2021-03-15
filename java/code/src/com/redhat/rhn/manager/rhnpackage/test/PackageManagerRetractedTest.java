@@ -169,16 +169,16 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // only the "newerPkg" is retracted in the original channel
         DataResult<PackageOverview> pkgsOriginal = PackageManager.listPackagesInChannelForList(channel.getId());
         Map<Long, PackageOverview> pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
-        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).isRetracted());
-        assertTrue(pkgsOriginalMap.get(newerPkg.getId()).isRetracted());
-        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).isRetracted());
+        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
+        assertTrue(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
+        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
 
         // no package retracted in the cloned channel
         pkgsOriginal = PackageManager.listPackagesInChannelForList(clonedChannel.getId());
         pkgsOriginalMap = pkgsOriginal.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
-        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).isRetracted());
-        assertFalse(pkgsOriginalMap.get(newerPkg.getId()).isRetracted());
-        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).isRetracted());
+        assertFalse(pkgsOriginalMap.get(oldPkg.getId()).getRetracted());
+        assertFalse(pkgsOriginalMap.get(newerPkg.getId()).getRetracted());
+        assertFalse(pkgsOriginalMap.get(newestPkg.getId()).getRetracted());
     }
 
     public void testChannelListAllPackages() throws Exception {
