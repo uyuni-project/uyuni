@@ -20,20 +20,6 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |mountpoi
   $server.run("mount -o loop #{iso_path} /srv/www/htdocs/#{mountpoint}", true, 500, 'root')
 end
 
-When(/^I download the SSL certificate$/) do
-  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
-  wget = 'wget --no-check-certificate -O'
-  $client.run("#{wget} #{cert_path} http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500, 'root')
-  $client.run("ls #{cert_path}")
-end
-
-When(/^I make the SSL certificate available to zypper$/) do
-  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
-  trust_path = '/etc/pki/trust/anchors'
-  $client.run("cd #{trust_path} && ln -sf #{cert_path}")
-  $client.run('update-ca-certificates')
-end
-
 Then(/^I can see all system information for "([^"]*)"$/) do |host|
   node = get_target(host)
   step %(I should see a "#{node.hostname}" text)
