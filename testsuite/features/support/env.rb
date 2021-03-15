@@ -35,7 +35,7 @@ if File.exist?(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
   $build_validation = true
   # HACK
-  # QAM and Build Validations will require longer timeouts due to the low performance of our VMs
+  # Build Validations will require longer timeouts due to the low performance of our VMs
   # if we ever improve this fact, we can reduce these timeouts.
   Capybara.default_max_wait_time = 30
   DEFAULT_TIMEOUT = 1800
@@ -282,14 +282,6 @@ end
 
 Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
-end
-
-Before('@build_validation') do
-  skip_this_scenario unless $build_validation
-end
-
-Before('@continuous_integration') do
-  skip_this_scenario if $build_validation
 end
 
 Before('@skip_for_ubuntu') do |scenario|
