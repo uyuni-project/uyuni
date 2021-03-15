@@ -24,8 +24,7 @@ except ImportError:
     from StringIO import StringIO
 from collections import namedtuple
 
-import mock
-from mock import Mock, MagicMock
+from mock import Mock, MagicMock, patch
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 
@@ -37,12 +36,14 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.get_groups = Mock(return_value=None)
 
         # don't read configs
-        mock.patch('spacewalk.common.suseLib.initCFG').start()
-        mock.patch('spacewalk.common.suseLib.CFG').start()
+        patch('spacewalk.common.suseLib.initCFG').start()
+        patch('spacewalk.common.suseLib.CFG').start()
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ''
         yum_src.CFG.PREPENDED_DIR = ''
+        yum_src.CFG.REPOSYNC_MINRATE = 1000
+        yum_src.CFG.REPOSYNC_TIMEOUT = 300
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
@@ -137,3 +138,32 @@ class YumSrcTest(unittest.TestCase):
         patches = cs.get_updates()
         self.assertEqual(patches[0], 'patches')
         self.assertEqual(len(patches[1]), 2)
+
+
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
+    @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
+    @patch("spacewalk.common.rhnLog", Mock())
+    @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
+    def test_minrate_timeout_config(self):
+        CFG = Mock()
+        CFG.REPOSYNC_TIMEOUT = 42
+        CFG.REPOSYNC_MINRATE = 42
+        CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
+        CFG.MOUNT_POINT = ""
+        CFG.PREPENDED_DIR = ''
+        CFG.http_proxy = False
+
+        grabber_spy = Mock()
+
+        with patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlread", grabber_spy
+        ), patch("spacewalk.satellite_tools.repo_plugins.yum_src.CFG", CFG), patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.os.path.isfile",
+            Mock(return_value=False),
+        ):
+            cs = yum_src.ContentSource("http://example.com/foo/", "test_repo", org="")
+            cs.get_file("bar")
+
+            self.assertEqual(grabber_spy.call_args[1]["timeout"],  42)
+            self.assertEqual(grabber_spy.call_args[1]["minrate"],  42)
