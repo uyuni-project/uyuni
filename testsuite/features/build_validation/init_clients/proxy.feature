@@ -16,10 +16,6 @@ Feature: Setup SUSE Manager proxy
     And I set correct product for "proxy"
     # End of WORKAROUND
 
-  Scenario: Create the bootstrap repository for the SUSE Manager proxy
-    Given I am authorized
-    When I create the bootstrap repository for "proxy" on the server
-
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized
     When I go to the bootstrapping page

@@ -10,10 +10,6 @@ Feature: Bootstrap a CentOS 8 Salt minion
   Scenario: Clean up sumaform leftovers on a CentOS 8 Salt minion
     When I perform a full salt minion cleanup on "ceos8_minion"
 
-  Scenario: Create the bootstrap repository for a CentOS 8 Salt minion
-    Given I am authorized
-    When I create the bootstrap repository for "ceos8_minion" on the server
-
   Scenario: Bootstrap a CentOS 8 Salt minion
     Given I am authorized
     When I go to the bootstrapping page

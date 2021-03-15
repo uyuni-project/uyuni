@@ -7,10 +7,6 @@ Feature: Bootstrap a SLES 12 SP4 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a SLES 12 SP4 Salt SSH minion
     When I perform a full salt minion cleanup on "sle12sp4_ssh_minion"
 
-  Scenario: Create the bootstrap repository for a SLES 12 SP4 Salt SSH minion
-    Given I am authorized
-    When I create the bootstrap repository for "sle12sp4_minion" on the server
-
   Scenario: Bootstrap a SLES 12 SP4 system managed via salt-ssh
     Given I am authorized
     When I go to the bootstrapping page
