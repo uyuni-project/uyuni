@@ -1,3 +1,5 @@
+- set AJP parameters differently to prevent AH00992, AH00877 and
+  AH01030: ajp_ilink_receive() can't receive header errors (bsc#1179271)
 - Use syslinux folder for cobbler loaders.
 
 -------------------------------------------------------------------
