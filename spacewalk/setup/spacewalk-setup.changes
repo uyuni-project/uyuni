@@ -1,3 +1,6 @@
+- set AJP parameters differently to prevent AH00992, AH00877 and
+  AH01030: ajp_ilink_receive() can't receive header errors (bsc#1179271)
+
 -------------------------------------------------------------------
 Mon Nov 23 15:15:08 CET 2020 - jgonzalez@suse.com
 
