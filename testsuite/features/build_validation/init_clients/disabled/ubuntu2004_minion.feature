@@ -10,10 +10,6 @@ Feature: Bootstrap a Ubuntu 20.04 Salt minion
   Scenario: Clean up sumaform leftovers on a Ubuntu 20.04 minion
     When I perform a full salt minion cleanup on "ubuntu2004_minion"
 
-  Scenario: Create the bootstrap repository for a Ubuntu 20.04 minion
-    Given I am authorized
-    When I create the bootstrap repository for "ubuntu2004_minion" on the server
-
   Scenario: Bootstrap a Ubuntu 20.04 minion
     Given I am authorized
     When I go to the bootstrapping page

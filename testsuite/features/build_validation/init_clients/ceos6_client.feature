@@ -7,10 +7,6 @@ Feature: Bootstrap a CentOS 6 traditional client
   Scenario: Clean up sumaform leftovers on a CentOS 6 traditional client
     When I perform a full salt minion cleanup on "ceos6_client"
 
-  Scenario: Create the bootstrap repository for a CentOS 6 traditional client
-    Given I am authorized
-    When I create the bootstrap repository for "ceos6_client" on the server
-
   Scenario: Prepare a CentOS 6 traditional client
     When I enable the repositories "centos_base_backup centos_updates_backup tools_pool_repo" on this "ceos6_client" without error control
     And I run "/usr/bin/update-ca-trust force-enable" on "ceos6_client"

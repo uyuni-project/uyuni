@@ -7,10 +7,6 @@ Feature: Bootstrap a SLES 12 SP4 traditional client
   Scenario: Clean up sumaform leftovers on a SLES 12 SP4 traditional client
     When I perform a full salt minion cleanup on "sle12sp4_client"
 
-  Scenario: Create the bootstrap repository for a SLES 12 SP4 traditional client
-    Given I am authorized
-    When I create the bootstrap repository for "sles12sp4_client" on the server
-
   Scenario: Register a SLES 12 SP4 traditional client
     When I bootstrap traditional client "sle12sp4_client" using bootstrap script with activation key "1-sle12sp4_client_key" from the proxy
     And I install package "spacewalk-client-setup mgr-cfg-actions" on this "sle12sp4_client"

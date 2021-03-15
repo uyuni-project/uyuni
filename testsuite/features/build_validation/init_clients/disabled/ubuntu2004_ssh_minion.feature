@@ -10,10 +10,6 @@ Feature: Bootstrap a Ubuntu 20.04 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a Ubuntu 20.04 Salt SSH minion
     When I perform a full salt minion cleanup on "ubuntu2004_ssh_minion"
 
-  Scenario: Create the bootstrap repository for a Ubuntu 20.04 Salt SSH minion
-    Given I am authorized
-    When I create the bootstrap repository for "ubuntu2004_ssh_minion" on the server
-
   Scenario: Bootstrap a SSH-managed Ubuntu 20.04 minion
     Given I am authorized
     When I go to the bootstrapping page
