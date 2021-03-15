@@ -7,10 +7,6 @@ Feature: Bootstrap a SLES 15 SP2 Salt minion
   Scenario: Clean up sumaform leftovers on a SLES 15 SP2 Salt minion
     When I perform a full salt minion cleanup on "sle15sp2_minion"
 
-  Scenario: Create the bootstrap repository for a SLES 15 SP2 minion
-    Given I am authorized
-    When I create the bootstrap repository for "sle15sp2_minion" on the server
-
   Scenario: Bootstrap a SLES 15 SP2 minion
     Given I am authorized
     When I go to the bootstrapping page
