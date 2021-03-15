@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
@@ -451,5 +452,16 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         assertContains(assignedChannels1, cc2);
         assertFalse("Unexpected channel found", assignedChannels1.contains(cc1));
+    }
+
+    /*
+     * Just check that we do not crash
+     */
+    public void testListAssignedFormulas() throws Exception {
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
+
+        List<Formula> assignedFormulas = handler.listAssignedFormuals(admin, group.getName());
+
+        assertTrue("Unexpected assigned formulas found", assignedFormulas.isEmpty());
     }
 }
