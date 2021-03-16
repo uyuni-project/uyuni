@@ -45,6 +45,3 @@ Feature: Adding the CentOS 7 distribution custom repositories
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
-
-  Scenario: The custom channel for CentOS 7 has been synced
-    When I wait until the channel "centos-7-iso" has been synced
