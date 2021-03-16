@@ -27,25 +27,6 @@ Feature: Register a salt-ssh system via XML-RPC
      And I wait until I see the name of "ssh_minion", refreshing the page
      And I wait until onboarding is completed for "ssh_minion"
 
-# HACK
-# Package 'sle-manager-tools-release' is automatically installed during bootstrap and
-# stays installed after removal of channel containing it. So it is not possible to update it.
-# Package needs to be removed from highstate to avoid failure when updating it.
-@ssh_minion
-  Scenario: Remove sle-manager-tools-release from state after bootstrap via XML-RPC
-    Given I am on the Systems overview page of this "ssh_minion"
-    When I wait until I see "States" text
-    And I follow "States" in the content area
-    And I wait until I see "Highstate" text
-    And I follow "Packages" in the content area
-    Then I should see a "Package States" text
-    When I follow "Search" in the content area
-    And I wait until button "Search" becomes enabled
-    And I enter "sle-manager-tools-release" as the filtered package states name
-    And I click on "Search" in element "search-row"
-    And I wait until I see "sle-manager-tools-release" text
-    And I remove package "sle-manager-tools-release" from highstate
-
 @ssh_minion
   Scenario: Check contact method of this Salt SSH system
     Given I am on the Systems overview page of this "ssh_minion"
