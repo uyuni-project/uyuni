@@ -147,7 +147,7 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//input[@id='#{arg2}']/../../../../.."
+  xpath = "//input[@name='#{arg2}']/.."
   if all(:xpath, xpath, wait: 0).any?
     find(:xpath, xpath).click
     find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
