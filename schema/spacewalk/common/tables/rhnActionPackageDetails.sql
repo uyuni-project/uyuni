@@ -23,7 +23,7 @@ CREATE TABLE rhnActionPackageDetails
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
     allow_vendor_change  CHAR(1) DEFAULT ('N') NOT NULL 
-    CONSTRAINT rhn_actdet_avc_ck CHECK (allow_vendor_change in ('Y','N'))
+    CONSTRAINT rhn_actdet_avc_ck CHECK (allow_vendor_change in ('Y','N')),
 
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
