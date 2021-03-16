@@ -86,7 +86,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
 
         Optional<MinionServer> minion = MinionServerFactory.lookupById(sid);
         // Check if this is a SUSE system
-        boolean isSUSEMinion = minion.isPresent() && minion.get().getOsFamily().equals("Suse");
+        boolean isSUSEMinion = minion.map(m -> m.getOsFamily().equals("Suse")).orElse(false);
         boolean zyppPluginInstalled = false;
         if (!isSUSEMinion) {
             Server server = ServerFactory.lookupById(sid);

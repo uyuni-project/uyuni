@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.action.server.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -28,7 +27,6 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import java.util.Date;
 
 /**
@@ -95,7 +93,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
-        new ActionPackageDetails(parent);
+        new ActionPackageDetails();
         ServerAction child = createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 

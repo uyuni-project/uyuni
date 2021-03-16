@@ -1623,7 +1623,7 @@ public class ErrataManager extends BaseManager {
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @param onlyRelevant If true not all erratas are applied to all systems.
      *        Systems get only the erratas relevant for them.
-     * @param allowVendorChange If true not all erratas are applied to all systems.
+     * @param allowVendorChange true if vendor change allowed
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
@@ -1684,30 +1684,6 @@ public class ErrataManager extends BaseManager {
      * Chain.
      * Note that not all erratas are applied to all systems. Systems get
      * only the erratas relevant for them.
-     * @param user user
-     * @param errataIds errata ids
-     * @param earliest schedule time
-     * @param actionChain the action chain to add the action to or null
-     * @param serverIds server ids
-     * @param onlyRelevant If true not all erratas are applied to all systems.
-     *        Systems get only the erratas relevant for them.
-     *        If false, InvalidErrataException is thrown if an errata does not apply
-     *        to a system.
-     * @return list of action ids
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
-                                         ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
-            throws TaskomaticApiException {
-        return applyErrata(user, errataIds, earliest, actionChain, serverIds, onlyRelevant, false);
-    }
-
-    /**
-     * Apply a list of errata to a list of servers, with an optional Action
-     * Chain.
-     * Note that not all erratas are applied to all systems. Systems get
-     * only the erratas relevant for them.
      *
      * @param user user
      * @param errataIds errata ids
@@ -1718,7 +1694,7 @@ public class ErrataManager extends BaseManager {
      *        Systems get only the erratas relevant for them.
      *        If false, InvalidErrataException is thrown if an errata does not apply
      *        to a system.
-     * @param allowVendorChange If true not all erratas are applied to all systems.
+     * @param allowVendorChange true if vendor change allowed
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
@@ -1854,14 +1830,14 @@ public class ErrataManager extends BaseManager {
             concat(updateStackActions,
             nonUpdateStackActions))
             .collect(toList());
-        List<ErrataAction> minionErrataActions = minionActions.collect(toList());
-        List<Action> minionTaskoActions = new ArrayList<>();
         traditionalErrataActions.stream().forEach(ea-> {
             ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
             Action action = ActionManager.storeAction(ea);
             actionIds.add(action.getId());
         });
 
+        List<ErrataAction> minionErrataActions = minionActions.collect(toList());
+        List<Action> minionTaskoActions = new ArrayList<>();
         minionErrataActions.stream().forEach(ea-> {
            ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
            Action action = ActionManager.storeAction(ea);
