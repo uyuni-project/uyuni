@@ -1,3 +1,4 @@
+- Add table to store salt pillars
 - Add 'flush_cache' flag to Ansible playbook execution action
   (bsc#1190405)
 - create unique index on package details action id (bsc#1190396, bsc#1190275)
