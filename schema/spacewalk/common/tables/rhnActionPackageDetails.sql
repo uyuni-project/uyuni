@@ -24,7 +24,13 @@ CREATE TABLE rhnActionPackageDetails
                        ON DELETE CASCADE,
     allow_vendor_change  CHAR(1) DEFAULT ('N') NOT NULL 
     CONSTRAINT rhn_actdet_avc_ck CHECK (allow_vendor_change in ('Y','N'))
+
+    created   TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL
 );
+
 
 CREATE INDEX rhn_act_eud_aid_idx
     ON rhnActionPackageDetails (action_id);

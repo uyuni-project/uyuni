@@ -23,9 +23,29 @@ CREATE TABLE IF NOT EXISTS rhnActionPackageDetails
                        ON DELETE CASCADE,
     allow_vendor_change  CHAR(1) DEFAULT ('N') NOT NULL 
     CONSTRAINT rhn_actdet_avc_ck CHECK (allow_vendor_change in ('Y','N'))
+
+    created   TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL
+
 );
 
 CREATE INDEX IF NOT EXISTS rhn_act_eud_aid_idx
     ON rhnActionPackageDetails (action_id);
 
 CREATE SEQUENCE IF NOT EXISTS rhn_actiondpd_id_seq;
+
+create or replace function rhn_actionpackagedetails_mod_trig_fun() returns trigger as
+$$
+begin
+        new.modified := current_timestamp;
+        return new;
+end;
+$$ language plpgsql;
+
+create trigger
+rhn_actionpackagedetails_mod_trig
+before insert or update on rhnActionPackageDetails
+for each row
+execute procedure rhn_actionpackagedetails_mod_trig_fun();
