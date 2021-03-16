@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
@@ -34,7 +33,7 @@ import java.util.List;
  *
  * @version $Rev: 2143 $
  */
-public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltConfigurable {
+public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
