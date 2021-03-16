@@ -83,9 +83,3 @@ Feature: Adding the Ubuntu 20.04 distribution custom repositories
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
-
-  Scenario: The custom channel for ubuntu-focal-main has been synced
-    When I wait until the channel "ubuntu-focal-main" has been synced
-
-  Scenario: The custom channel for ubuntu-focal-main-updates has been synced
-    When I wait until the channel "ubuntu-focal-main-updates" has been synced
