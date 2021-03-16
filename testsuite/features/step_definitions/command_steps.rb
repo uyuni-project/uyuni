@@ -873,9 +873,9 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
   channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
   parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
   cmd = if parent_channel.nil?
-          "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels"
+          "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
         else
-          "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
+          "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
         end
   STDOUT.puts 'Creating the boostrap repository on the server:'
   STDOUT.puts '  ' + cmd
