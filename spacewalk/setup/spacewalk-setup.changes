@@ -1,3 +1,4 @@
+- Add postgresql external pillar configuration
 - Simplified perl module dependency.
 - Fixed com.sun.bind issue on package update.
 - Enabled pylint for all builds but don't stop on error.
