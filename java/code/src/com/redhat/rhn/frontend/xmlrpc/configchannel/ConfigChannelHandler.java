@@ -29,7 +29,10 @@ import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.config.EncodedConfigRevision;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
@@ -61,6 +64,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.empty;
 
@@ -1021,5 +1025,31 @@ public class ConfigChannelHandler extends BaseHandler {
                                                           channelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listChannelSystems(loggedInUser, channel, null);
+    }
+
+    /**
+     * List the Groups where a given configuration channel is assigned to
+     * @param loggedInUser the user
+     * @param channelLabel the label for the configuration channels
+     * @return a list of Groups
+     *
+     * @xmlrpc.doc Return a list of Groups where a given configuration channel is assigned to
+     * @xmlrpc.param  #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel",
+     *                          "label of config channel to list assigned groups.")
+     * @xmlrpc.returntype
+     * #array_begin()
+     * $ManagedServerGroupSerializer
+     * #array_end()
+     */
+    public List<ManagedServerGroup> listAssignedSystemGroups(User loggedInUser, String channelLabel) {
+        XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
+        ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
+                                                          channelLabel);
+
+        List<Long> groupIds = StateFactory.listConfigChannelsSubscribedGroupIds(channel);
+        return groupIds.stream()
+            .map(gid -> ServerGroupFactory.lookupByIdAndOrg(gid, loggedInUser.getOrg()))
+            .collect(Collectors.toList());
     }
 }
