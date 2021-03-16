@@ -23,6 +23,8 @@ def __getErrataInfo(errata_id):
 
 def update(errataidlist, cache_only=None):
     packagelist = []
+    if type(errataidlist) == dict:
+        errataidlist = params['errata_ids']
 
     if type(errataidlist) not in [type([]), type(())]:
         errataidlist = [ errataidlist ]

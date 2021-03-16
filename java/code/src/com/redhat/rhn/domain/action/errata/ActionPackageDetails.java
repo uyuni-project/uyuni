@@ -18,8 +18,13 @@ package com.redhat.rhn.domain.action.errata;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
 
+/**
+ * ActionPackageDetails
+ *
+ * Handles the vendor change flag for patching, upgrading, installing
+ */
 public class ActionPackageDetails extends ActionChild {
-     private Long id;
+     private long id;
      private boolean allowVendorChange = false;
 
     /**
@@ -27,13 +32,6 @@ public class ActionPackageDetails extends ActionChild {
      */
     public ActionPackageDetails() {  }
 
-    /**
-     * Constructor
-     * @param parentActionIn Action
-     */
-     public ActionPackageDetails(Action parentActionIn) {
-            super.setParentAction(parentActionIn);
-     }
     /**
      * Constructor
      * @param parentActionIn Action
@@ -48,7 +46,7 @@ public class ActionPackageDetails extends ActionChild {
      * Return the ID.
      * @return id
      */
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -56,10 +54,9 @@ public class ActionPackageDetails extends ActionChild {
      * Set the ID.
      * @param idIn id
      */
-    public void setId(Long idIn) {
+    public void setId(long idIn) {
         this.id = idIn;
     }
-
 
     /**
      * @return Returns allow vendor change

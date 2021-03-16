@@ -1031,7 +1031,7 @@ public class SaltServerActionService {
      *
      * @param minionSummaries list of minion summaries to target
      * @param errataIds list of errata ids
-     * @param allowVendorChange boolean if vendor change allowed
+     * @param allowVendorChange true if vendor change allowed
      * @return minion summaries grouped by local call
      */
     public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,

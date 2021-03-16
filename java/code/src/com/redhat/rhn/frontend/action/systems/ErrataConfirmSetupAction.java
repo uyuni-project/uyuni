@@ -75,8 +75,6 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
-        DynaActionForm form = (DynaActionForm) formIn;
-
 
         Long sid = requestContext.getRequiredParam("sid");
         RhnSet set = ErrataSetupAction.getSetDecl(sid).get(user);
@@ -95,7 +93,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         //Setup the Action Chain widget
         ActionChainHelper.prepopulateActionChains(request);
-        boolean allowVendorChange = BooleanUtils.toBoolean(request.getParameterValues(ALLOW_VENDOR_CHANGE)[0]);
+        boolean allowVendorChange = BooleanUtils.toBoolean(request.getParameter(ALLOW_VENDOR_CHANGE));
         request.setAttribute("date", picker);
         request.setAttribute("system", server);
         request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
