@@ -52,7 +52,7 @@ CREATE TABLE rhnKSData
     nochroot_post   BYTEA,
     partition_data   BYTEA,
     static_device   VARCHAR(32),
-    kernel_params   VARCHAR(128),
+    kernel_params   VARCHAR(2048),
     verboseup2date  CHAR(1)
                         DEFAULT ('N') NOT NULL
                         CONSTRAINT rhn_ks_verbose_up2date_ck

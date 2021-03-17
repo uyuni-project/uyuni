@@ -59,7 +59,7 @@
             <bean:message key="kickstartdetails.jsp.kernel_options"/>:
         </label>
         <div class="col-md-6">
-            <html:text property="kernelopts" maxlength="256" size="64" styleClass="form-control"/>
+            <html:text property="kernelopts" maxlength="2048" size="64" styleClass="form-control"/>
         </div>
     </div>
 
@@ -68,7 +68,7 @@
             <bean:message key="kickstartdetails.jsp.post_kernel_options"/>:
         </label>
         <div class="col-md-6">
-            <html:text property="postkernelopts" maxlength="256" size="64" styleClass="form-control"/>
+            <html:text property="postkernelopts" maxlength="2048" size="64" styleClass="form-control"/>
         </div>
     </div>
 </c:if>

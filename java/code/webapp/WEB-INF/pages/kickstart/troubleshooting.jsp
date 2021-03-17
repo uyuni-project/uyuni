@@ -43,7 +43,7 @@
 
         <tr>
           <th><bean:message key="kickstart.troubleshooting.jsp.kernelparams" />:</th>
-          <td><html:text property="kernelParams" maxlength="64" size="32" /></td>
+          <td><html:text property="kernelParams" maxlength="2048" size="32" /></td>
         </tr>
 
         <tr>

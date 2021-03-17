@@ -115,7 +115,7 @@
                                 <bean:message key="kickstartdetails.jsp.kernel_options"/>
                             </label>
                             <div class="col-lg-6">
-                                <html:text property="kernel_options" maxlength="1024" size="32" styleClass="form-control"/>
+                                <html:text property="kernel_options" maxlength="2048" size="32" styleClass="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -123,7 +123,7 @@
                                 <bean:message key="kickstartdetails.jsp.post_kernel_options"/>
                             </label>
                             <div class="col-lg-6">
-                                <html:text property="post_kernel_options" maxlength="1024" size="32" styleClass="form-control"/>
+                                <html:text property="post_kernel_options" maxlength="2048" size="32" styleClass="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
