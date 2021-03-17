@@ -1012,6 +1012,13 @@
         </context-group>
         <target>Canali software</target>
       </trans-unit>
+      <trans-unit id="Software Crashes" xml:space="preserve">
+        <source>Software Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target>Crash del software</target>
+      </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
@@ -1814,11 +1821,11 @@
         <target>È stata programmata con successo la ricarica del profilo hardware {0}.</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Networking properties updated.</source>
+        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">Interfaccia di rete primaria impostata su &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target>Interfaccia di rete primaria impostata su &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2928,6 +2935,13 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="toolbar.delete.crash" xml:space="preserve">
+        <source>Delete Software Crash</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>Cancella il crash software</target>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; system.</source>
@@ -5929,6 +5943,27 @@ utente prima di disabilitare l'account in questione.</target>
         </context-group>
         <target>Script di bootstrap</target>
       </trans-unit>
+      <trans-unit id="Crash Details" xml:space="preserve">
+        <source>Crash Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target>Informazioni sul crash</target>
+      </trans-unit>
+      <trans-unit id="Crash Files" xml:space="preserve">
+        <source>Crash Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target>File del crash</target>
+      </trans-unit>
+      <trans-unit id="Crash Notes" xml:space="preserve">
+        <source>Crash Notes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target>Note del crash</target>
+      </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
         <context-group name="ctx">
@@ -8232,6 +8267,13 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         </context-group>
         <target>Questo sistema è già stato sospeso.</target>
       </trans-unit>
+      <trans-unit id="systems.details.virt.guest.already.crashed" xml:space="preserve">
+        <source>This system is crashed.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
+        </context-group>
+        <target>Questo sistema è stato arrestato inaspettatamente.</target>
+      </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
         <context-group name="ctx">
@@ -8700,6 +8742,14 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         <source>The specified server is not a member of the specified group</source>
         <target>Il server in questione non è un membro del gruppo specificato</target>
       </trans-unit>
+      <trans-unit id="api.system.crash.nocrashesfound" xml:space="preserve">
+        <source>No crashes recorded for the specified system.</source>
+        <target>No crash presenti per il sistema specificato.</target>
+      </trans-unit>
+      <trans-unit id="api.system.crash.nosuchcrash" xml:space="preserve">
+        <source>No such crash found.</source>
+        <target>Crash non trovato.</target>
+      </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target>Interfaccia di rete non trovata: {0}.</target>
@@ -8719,6 +8769,10 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
         <target>Il file richiesto è troppo grande per il download attraverso XMLRPC.</target>
+      </trans-unit>
+      <trans-unit id="api.crashfile.download.toolarge" xml:space="preserve">
+        <source>The requested crash file is too large to download over XMLRPC.</source>
+        <target>Il file crash richiesto è troppo grande per il download attraverso XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
@@ -9588,6 +9642,22 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
         <target>Impostare la frequenza per la nuova programmazione.</target>
+      </trans-unit>
+      <trans-unit id="message.crashdeleted" xml:space="preserve">
+        <source>Software crash {0} was successfully deleted.</source>
+        <target>È stato rimosso con successo il crash del software {0}.</target>
+      </trans-unit>
+      <trans-unit id="message.crashesdeleted" xml:space="preserve">
+        <source>{0} software crashes were successfully deleted.</source>
+        <target>Sono stati rimossi con successo {0} crash del software.</target>
+      </trans-unit>
+      <trans-unit id="message.crashnotecreated" xml:space="preserve">
+        <source>Crash Note was successfully created.</source>
+        <target>È stata creata con successo una Nota relativa al crash.</target>
+      </trans-unit>
+      <trans-unit id="message.crashnoteupdated" xml:space="preserve">
+        <source>Crash Note was successfully updated.</source>
+        <target>È stata aggiornata con successo una Nota relativa al crash.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
@@ -10619,10 +10689,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
-        <source>No such FQDN: {0}.</source>
       <target state="new" />
   </trans-unit>
       </body>
