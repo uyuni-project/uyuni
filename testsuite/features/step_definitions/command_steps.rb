@@ -925,6 +925,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
+# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
 When(/^I clean up all bootstrap repositories on the server$/) do
   $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
 end
