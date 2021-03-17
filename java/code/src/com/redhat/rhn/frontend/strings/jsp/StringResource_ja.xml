@@ -1017,7 +1017,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
-        <target state="needs-adaptation">リンクをたどった場合、リンクが誤っていたり古かったりすることがあります。  このような場合はブラウザの戻るボタンを押して戻って別のリンクを試すか、もしくは上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索してください。</target>
+        <target state="translated">リンクをたどった場合、リンクが誤っていたり古かったりすることがあります。  このような場合はブラウザの戻るボタンを押して戻って別のリンクを試すか、もしくは上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページに移動してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1028,7 +1028,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
-        <target state="needs-adaptation">ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページが移動していることがあります。このような場合は、上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索して、ドキュメントが見つかった場合は、ブックマークを更新してください。</target>
+        <target state="translated">ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページが移動していることがあります。このような場合は、上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索して、ドキュメントが見つかった場合はブックマークを更新してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -3713,7 +3713,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="needs-adaptation">パッチはありません</target>
+        <target state="translated">パッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -4496,14 +4496,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
         <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
-        <target state="needs-adaptation">下記では組織内でのステージングコンテンツの使用可否やエラータの電子メール通知、ソフトウェアクラッシュのレポート (クラッシュファイルのアップロード制限は正の数で指定することができます。 0 を指定すると無制限です) や SCAP 設定などを行なうことができます。</target>
+        <target state="translated">下記では組織内でのステージングコンテンツの使用可否やエラータの電子メール通知、 SCAP 設定などを行なうことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
-        <target state="needs-adaptation">下記はお使いの組織の設定一覧です。ここではステージングコンテンツの使用可否やエラータの電子メール通知、ソフトウェアクラッシュのレポートや SCAP 設定などを行なうことができます。</target>
+        <target state="translated">下記はお使いの組織の設定一覧です。ここではステージングコンテンツの使用可否やエラータの電子メール通知、 SCAP 設定などを行なうことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -17503,7 +17503,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -17511,7 +17511,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>最終変更</target>
       </trans-unit>
@@ -17540,7 +17540,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルをサブスクライブしていて配備可能なシステムはありません</target>
       </trans-unit>
@@ -17548,7 +17548,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -17556,7 +17556,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17564,7 +17564,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -17572,7 +17572,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -17580,7 +17580,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -17588,7 +17588,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -17596,7 +17596,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17604,7 +17604,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -17612,7 +17612,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -17620,7 +17620,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -17628,7 +17628,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -24876,7 +24876,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
         <source>Primary FQDN:</source>
-        <target state="needs-adaptation">FQDN:</target>
+        <target state="translated">プライマリ FQDN:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
