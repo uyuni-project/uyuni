@@ -15,7 +15,7 @@ Feature: Bootstrap a CentOS 7 traditional client
     Then I should see "ceos7_client" via spacecmd
 
   Scenario: The onboarding of CentOS 7 traditional client is completed
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I wait until onboarding is completed for "ceos7_client"
 
 @proxy

@@ -11,7 +11,7 @@ Feature: Bootstrap a CentOS 7 Salt minion
     When I perform a full salt minion cleanup on "ceos7_minion"
 
   Scenario: Bootstrap a CentOS 7 Salt minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos7_minion" as "hostname"

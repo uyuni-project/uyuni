@@ -16,7 +16,7 @@ Feature: Setup SUSE Manager proxy
     # End of WORKAROUND
 
   Scenario: Bootstrap the proxy as a Salt minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy" as "hostname"
