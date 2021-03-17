@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 10:38+0000\n"
+"POT-Creation-Date: 2021-03-02 15:33+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -855,7 +855,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.js:109
 #: ../html/src/manager/images/image-stores.js:112
 #: ../html/src/manager/images/image-view.js:326
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
 msgstr "刷新"
@@ -1166,13 +1166,14 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.js:468
+#: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.ts:64
 msgid "Server error, please check log files."
@@ -1774,7 +1775,7 @@ msgstr "群集"
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/images/image-view.js:538
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
-#: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "类型"
@@ -3440,131 +3441,139 @@ msgstr "已保存软件包状态。"
 msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
-#: ../html/src/manager/notifications/notification-messages.tsx:26
+#: ../html/src/manager/notifications/notification-messages.js:23
 msgid "Onboarding failed"
 msgstr "载入失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:30
+#: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
 msgstr "频道同步失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:34
+#: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
 msgstr "频道同步已完成"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:38
+#: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
 msgstr "创建引导储存库失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:42
+#: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
 msgstr "状态应用失败"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:133
+#: ../html/src/manager/notifications/notification-messages.js:112
 msgid "Filter by type"
 msgstr "按类型过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:233
-#: ../html/src/manager/notifications/notification-messages.tsx:234
+#: ../html/src/manager/notifications/notification-messages.js:211
 msgid "Info"
 msgstr "信息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.js:217
 msgid "Error"
 msgstr "错误"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:316
+#: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
 msgstr "显示细节"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:365
+#: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
 msgstr "重试载入"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:375
+#: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:393
+#: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:398
+#: ../html/src/manager/notifications/notification-messages.js:339
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:430
-#: ../html/src/manager/notifications/notification-messages.tsx:431
+#: ../html/src/manager/notifications/notification-messages.js:358
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:438
-#: ../html/src/manager/notifications/notification-messages.tsx:439
+#: ../html/src/manager/notifications/notification-messages.js:362
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:539
+#: ../html/src/manager/notifications/notification-messages.js:374
+#: ../html/src/manager/notifications/notification-messages.js:456
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:461
+#: ../html/src/manager/notifications/notification-messages.js:379
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:477
+#: ../html/src/manager/notifications/notification-messages.js:398
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:495
+#: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
 msgstr "摘要"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
 msgstr "创建日期"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
 msgstr "操作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.js:441
 msgid "Delete Notification"
 msgstr "删除通知"
 
-#: ../html/src/manager/notifications/notifications.tsx:39
+#: ../html/src/manager/notifications/notifications.js:36
 #: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
-#: ../html/src/manager/notifications/notifications.tsx:52
+#: ../html/src/manager/notifications/notifications.js:49
 #: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "连接到服务器时出错。请刷新页面以重试。"
+
+#: ../html/src/manager/notifications/notifications.js:95
+msgid ""
+"Session expired, please reload the page to receive notifications in real-"
+"time."
+msgstr "会话已失效，请重新装载页面以实时接收通知。"
+
+#: ../html/src/manager/notifications/notifications.js:98
+#: ../html/src/manager/salt/cmd/remote-commands.js:503
+#: ../html/src/utils/network.ts:60
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
+msgstr "授权错误，请重新装载页面或重试注销/登录。"
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.js:29
 msgid ""
@@ -3666,12 +3675,6 @@ msgstr "正在匹配 ssh-push 受控端..."
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
 msgstr "会话已失效，请重新装载页面以在系统上运行命令。"
-
-#: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:60
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr "授权错误，请重新装载页面或重试注销/登录。"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
@@ -4796,11 +4799,6 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:66
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
-
-#~ msgid ""
-#~ "Session expired, please reload the page to receive notifications in real-"
-#~ "time."
-#~ msgstr "会话已失效，请重新装载页面以实时接收通知。"
 
 #~ msgid ""
 #~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-03 10:38+0000\n"
+"POT-Creation-Date: 2021-03-02 15:33+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -864,7 +864,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.js:109
 #: ../html/src/manager/images/image-stores.js:112
 #: ../html/src/manager/images/image-view.js:326
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/notifications/notification-messages.js:356
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
 msgstr ""
@@ -1168,14 +1168,15 @@ msgstr "En este momento no hay ninguna tarea ejecutándose en el servidor."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:210
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "La sesión ha caducado. Vuelva a cargar la página para ver datos actualizados."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:212
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.js:468
+#: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.ts:64
 msgid "Server error, please check log files."
@@ -1780,7 +1781,7 @@ msgstr "Filtros"
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/images/image-view.js:538
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
-#: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "Tipo"
@@ -3471,132 +3472,140 @@ msgstr ""
 msgid "Applying the packages states has been "
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:26
+#: ../html/src/manager/notifications/notification-messages.js:23
 msgid "Onboarding failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:30
+#: ../html/src/manager/notifications/notification-messages.js:27
 msgid "Channel sync failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:34
+#: ../html/src/manager/notifications/notification-messages.js:31
 msgid "Channel sync finished"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:38
+#: ../html/src/manager/notifications/notification-messages.js:35
 msgid "Creating Bootstrap Repository failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:42
+#: ../html/src/manager/notifications/notification-messages.js:39
 msgid "State apply failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:133
+#: ../html/src/manager/notifications/notification-messages.js:112
 #, fuzzy
 msgid "Filter by type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:233
-#: ../html/src/manager/notifications/notification-messages.tsx:234
+#: ../html/src/manager/notifications/notification-messages.js:211
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.js:214
 msgid "Warning"
 msgstr "Alerta"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.js:217
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:316
+#: ../html/src/manager/notifications/notification-messages.js:272
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:365
+#: ../html/src/manager/notifications/notification-messages.js:318
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:375
+#: ../html/src/manager/notifications/notification-messages.js:322
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:393
+#: ../html/src/manager/notifications/notification-messages.js:336
 msgid "Unread Messages"
 msgstr "Mensajes no leídos"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:398
+#: ../html/src/manager/notifications/notification-messages.js:339
 msgid "All Messages"
 msgstr "Todos los mensajes"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:430
-#: ../html/src/manager/notifications/notification-messages.tsx:431
+#: ../html/src/manager/notifications/notification-messages.js:358
 msgid "Delete selected messages"
 msgstr "Eliminar mensajes seleccionados"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:438
-#: ../html/src/manager/notifications/notification-messages.tsx:439
+#: ../html/src/manager/notifications/notification-messages.js:362
 msgid "Mark selected as read"
 msgstr "Marcar seleccionados como leídos"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:539
+#: ../html/src/manager/notifications/notification-messages.js:374
+#: ../html/src/manager/notifications/notification-messages.js:456
 msgid "Notification Messages"
 msgstr "Mensajes de notificación"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:461
+#: ../html/src/manager/notifications/notification-messages.js:379
 msgid "The server has collected the following notification messages."
 msgstr "El servidor ha reunido los mensajes de notificación siguientes."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:477
+#: ../html/src/manager/notifications/notification-messages.js:398
 #, fuzzy
 msgid "Filter by summary"
 msgstr "Filtrar por nombre de sistema"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.js:404
 msgid "Severity"
 msgstr "Gravedad"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:495
+#: ../html/src/manager/notifications/notification-messages.js:416
 msgid "Summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.js:422
 msgid "Created"
 msgstr "Creación"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.js:427
 msgid "Action"
 msgstr "Acción"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.js:433
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.js:438
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.js:441
 msgid "Delete Notification"
 msgstr ""
 
-#: ../html/src/manager/notifications/notifications.tsx:39
+#: ../html/src/manager/notifications/notifications.js:36
 #: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 
-#: ../html/src/manager/notifications/notifications.tsx:52
+#: ../html/src/manager/notifications/notifications.js:49
 #: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:95
+msgid ""
+"Session expired, please reload the page to receive notifications in real-"
+"time."
+msgstr ""
+
+#: ../html/src/manager/notifications/notifications.js:98
+#: ../html/src/manager/salt/cmd/remote-commands.js:503
+#: ../html/src/utils/network.ts:60
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.js:29
@@ -3698,12 +3707,6 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.js:500
 msgid "Session expired, please reload the page to run command on systems."
-msgstr ""
-
-#: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:60
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
