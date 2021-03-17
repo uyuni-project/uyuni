@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:21+0000\n"
+"POT-Creation-Date: 2021-03-12 13:06+0000\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -300,7 +300,7 @@ msgstr "取り消し"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
-#: ../html/src/manager/salt/keys/key-management.tsx:51
+#: ../html/src/manager/salt/keys/key-management.js:35
 #: ../html/src/manager/state/recurring-states-details.js:154
 #: ../html/src/manager/state/recurring-states-details.js:156
 #: ../html/src/manager/state/recurring-states-list.js:125
@@ -1212,6 +1212,7 @@ msgstr ""
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
 #: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
@@ -1245,7 +1246,6 @@ msgstr "監査イメージ"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:629
-#: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
@@ -1263,7 +1263,7 @@ msgstr "名前"
 #: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
-#: ../html/src/manager/salt/keys/key-management.tsx:194
+#: ../html/src/manager/salt/keys/key-management.js:178
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
@@ -3634,7 +3634,7 @@ msgid "Package States"
 msgstr "パッケージの状態"
 
 #: ../html/src/manager/minion/packages/package-states.js:336
-#: ../html/src/manager/salt/keys/key-management.tsx:187
+#: ../html/src/manager/salt/keys/key-management.js:171
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:58
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
@@ -3764,13 +3764,13 @@ msgid "Delete Notification"
 msgstr "通知の削除"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:340
+#: ../html/src/manager/salt/cmd/remote-commands.js:284
 #: ../html/src/manager/virtualization/useVirtNotification.js:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 接続が閉じられました。ページを更新してやり直してください。"
 
 #: ../html/src/manager/notifications/notifications.tsx:52
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:360
+#: ../html/src/manager/salt/cmd/remote-commands.js:304
 #: ../html/src/manager/virtualization/useVirtNotification.js:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
@@ -3784,135 +3784,140 @@ msgstr ""
 "この組織内の各 minion サーバに対し、設定チャンネルの適用をスケジュールしまし"
 "た"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:52
-#: ../html/src/manager/salt/keys/key-management.tsx:71
+#: ../html/src/manager/salt/cmd/remote-commands.js:48
+#: ../html/src/manager/salt/keys/key-management.js:55
 msgid "pending"
 msgstr "待機"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:56
+#: ../html/src/manager/salt/cmd/remote-commands.js:55
 msgid "timed out"
 msgstr "タイムアウト"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
+#: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- hide error -"
 msgstr "- エラーを隠す -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:65
+#: ../html/src/manager/salt/cmd/remote-commands.js:66
 msgid "- show error -"
 msgstr "- エラーを表示する -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
+#: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- hide response -"
 msgstr "- 応答を隠す -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:72
+#: ../html/src/manager/salt/cmd/remote-commands.js:75
 msgid "- show response -"
 msgstr "- 応答を表示する -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:178
+#: ../html/src/manager/salt/cmd/remote-commands.js:159
 msgid "Stop waiting"
 msgstr "待機の停止"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:181
+#: ../html/src/manager/salt/cmd/remote-commands.js:161
 msgid "Stop waiting for all the minions to respond"
 msgstr "全ての minion が応答するまでの待機を停止"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:189
+#: ../html/src/manager/salt/cmd/remote-commands.js:164
 msgid "Find targets"
 msgstr "ターゲットの検索"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:192
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:202
+#: ../html/src/manager/salt/cmd/remote-commands.js:166
+#: ../html/src/manager/salt/cmd/remote-commands.js:172
 msgid "Check which minions match the target expression"
 msgstr "どの minion がターゲット式に一致するかの確認"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:207
+#: ../html/src/manager/salt/cmd/remote-commands.js:174
 msgid "Run command"
 msgstr "コマンドの実行"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:210
+#: ../html/src/manager/salt/cmd/remote-commands.js:176
 msgid "Run the command on the target minions"
 msgstr "ターゲットの minion でのコマンドの実行"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:218
+#: ../html/src/manager/salt/cmd/remote-commands.js:183
 msgid "Remote Commands"
 msgstr "リモートコマンド"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:231
+#: ../html/src/manager/salt/cmd/remote-commands.js:190
 msgid "Type the command here"
 msgstr "コマンドを入力してください"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:241
+#: ../html/src/manager/salt/cmd/remote-commands.js:193
 msgid "Type the minion_id pattern to target here"
 msgstr "ターゲットとなる minion_id パターンを入力してください"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:252
+#: ../html/src/manager/salt/cmd/remote-commands.js:205
 msgid "Target systems"
 msgstr "ターゲットシステム"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:262
+#: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems previewed"
 msgstr "ターゲットシステムをプレビューしていません"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
+#: ../html/src/manager/salt/cmd/remote-commands.js:212
 msgid "No target systems found"
 msgstr "ターゲットのシステムが見つかりませんでした"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.js:393
 msgid "Not all minions responded on time."
 msgstr "一部の minion が時間通りに応答しませんでした。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.js:418
 msgid "No minions matched the target expression."
 msgstr "ターゲット式に一致する minion はありません。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.js:420
 msgid "Server returned an error: {0}"
 msgstr "サーバはエラーを返しました: {0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
+#: ../html/src/manager/salt/cmd/remote-commands.js:487
+#: ../html/src/manager/salt/cmd/remote-commands.js:491
 msgid "Matching ssh-push minions..."
 msgstr "一致する ssh-push minion..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:84
+#: ../html/src/manager/salt/cmd/remote-commands.js:500
+msgid "Session expired, please reload the page to run command on systems."
+msgstr ""
+"セッションの有効期限が切れました。システムでコマンドを実行するには、ページを"
+"再読み込みしてください。"
+
+#: ../html/src/manager/salt/cmd/remote-commands.js:503
+#: ../html/src/utils/network.ts:75
+msgid ""
+"Authorization error, please reload the page or try to logout/login again."
+msgstr ""
+"認証エラーが発生しました。ページを再読み込みするか、いったんログアウトしてロ"
+"グインし直してください。"
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:63
 msgid "Formula Catalog"
 msgstr "Formula カタログ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:73
 msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.js:78
 msgid "Formula"
 msgstr "Formula"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:33
+#: ../html/src/manager/salt/keys/key-management.js:33
 msgid "Accept"
 msgstr "受け入れる"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:42
-#, fuzzy
-msgid "Reject"
-msgstr "拒否済み"
-
-#: ../html/src/manager/salt/keys/key-management.tsx:67
+#: ../html/src/manager/salt/keys/key-management.js:51
 msgid "accepted"
 msgstr "受け入れ済み"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:75
+#: ../html/src/manager/salt/keys/key-management.js:59
 msgid "rejected"
 msgstr "拒否済み"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:79
+#: ../html/src/manager/salt/keys/key-management.js:63
 msgid "denied"
 msgstr "拒否済み"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:146
-msgid "Keys"
-msgstr ""
-
-#: ../html/src/manager/salt/keys/key-management.tsx:176
+#: ../html/src/manager/salt/keys/key-management.js:159
 msgid "Fingerprint"
 msgstr "フィンガープリント"
 
@@ -5389,13 +5394,6 @@ msgstr "グループに分割"
 msgid "Session expired, please reload the page."
 msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
 
-#: ../html/src/utils/network.ts:75
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr ""
-"認証エラーが発生しました。ページを再読み込みするか、いったんログアウトしてロ"
-"グインし直してください。"
-
 #: ../html/src/utils/network.ts:77
 msgid "Resource not found."
 msgstr "リソースが見つかりませんでした。"
@@ -5403,11 +5401,6 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
-
-#~ msgid "Session expired, please reload the page to run command on systems."
-#~ msgstr ""
-#~ "セッションの有効期限が切れました。システムでコマンドを実行するには、ページ"
-#~ "を再読み込みしてください。"
 
 #~ msgid ""
 #~ "Session expired, please reload the page to receive notifications in real-"
