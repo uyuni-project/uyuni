@@ -1,3 +1,8 @@
+## ☢ 4.1: do not merge during Hackweek ☢
+
+Everyone will be busy with Hackweek and we want to keep the testsuite for 4.1 as green as possible.
+Unless urgent and well tested, please do not merge to 4.1 while the Hackweek is happening: Mar 22->Mar 26 (included).
+
 ## Maintenance Update status
 
 Check http://ramrod.mgr.suse.de/pub/mu-badges/ and if any of the versions has an active Maintenance Update, please consider if this PR should be ported to the Maintenance Update branch.
