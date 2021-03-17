@@ -926,7 +926,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I clean up all bootstrap repositories on the server$/) do
-  $server.run('rm -rf /srv/www/htdocs/pub/repositories/')
+  $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|

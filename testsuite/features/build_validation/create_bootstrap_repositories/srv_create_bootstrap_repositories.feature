@@ -3,7 +3,7 @@
 
 Feature: Create bootstrap repositories
 
-Scenario: Clean up all bootstrap repositories on the server
+  Scenario: Clean up all bootstrap repositories on the server
     When I clean up all bootstrap repositories on the server
 
 @proxy
