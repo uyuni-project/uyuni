@@ -12,4 +12,4 @@
 ALTER TABLE rhnActionVirtCreate
     ADD COLUMN IF NOT EXISTS cobbler_system VARCHAR(256),
     ADD COLUMN IF NOT EXISTS kickstart_host VARCHAR(256),
-    ADD COLUMN IF NOT EXISTS kernel_options VARCHAR(256);
+    ADD COLUMN IF NOT EXISTS kernel_options VARCHAR(2048);

@@ -37,8 +37,8 @@ CREATE TABLE rhnKickstartableTree
     install_type    NUMERIC NOT NULL
                         CONSTRAINT rhn_kstree_it_fk
                             REFERENCES rhnKSInstallType (id),
-    kernel_options       VARCHAR(256),
-    kernel_options_post  VARCHAR(256),
+    kernel_options       VARCHAR(2048),
+    kernel_options_post  VARCHAR(2048),
     last_modified   TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,
     created         TIMESTAMPTZ
