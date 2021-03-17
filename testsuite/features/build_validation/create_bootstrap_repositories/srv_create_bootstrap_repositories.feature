@@ -3,6 +3,10 @@
 
 Feature: Create bootstrap repositories
 
+# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
+  Scenario: Clean up all bootstrap repositories on the server
+    When I clean up all bootstrap repositories on the server
+
 @proxy
   Scenario: Create the bootstrap repository for the SUSE Manager proxy
     When I create the bootstrap repository for "proxy" on the server
