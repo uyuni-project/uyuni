@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-10 11:39+0000\n"
+"POT-Creation-Date: 2021-03-09 18:06+0000\n"
 "PO-Revision-Date: 2021-02-05 10:01+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -431,7 +431,7 @@ msgid "Login"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
+#: ../html/src/manager/clusters/remove-node/remove-node.js:82
 msgid "Remove"
 msgstr "Odstrániť"
 
@@ -1711,7 +1711,7 @@ msgid "Join node"
 msgstr "Pripojiť uzol"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:209
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:49
+#: ../html/src/manager/clusters/remove-node/remove-node.js:47
 msgid "Remove node"
 msgstr "Odstrániť uzol"
 
@@ -1861,8 +1861,8 @@ msgid "Schedule join node"
 msgstr "Naplánovať pripojenie uzla"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:105
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:72
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:76
+#: ../html/src/manager/clusters/remove-node/remove-node.js:63
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
 msgid "Cluster:"
 msgstr "Klaster:"
 
@@ -1898,15 +1898,15 @@ msgstr "Klastre"
 msgid "Type"
 msgstr "Typ"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:43
+#: ../html/src/manager/clusters/remove-node/remove-node.js:40
 msgid "Remove nodes"
 msgstr "Odstrániť uzly"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:68
+#: ../html/src/manager/clusters/remove-node/remove-node.js:59
 msgid "Schedule remove node"
 msgstr "Naplánovať odstránenie uzla"
 
-#: ../html/src/manager/clusters/remove-node/remove-node.tsx:76
+#: ../html/src/manager/clusters/remove-node/remove-node.js:67
 msgid "Nodes to remove:"
 msgstr "Uzly na odstránenie:"
 
@@ -1914,19 +1914,19 @@ msgstr "Uzly na odstránenie:"
 msgid "Upgrade plan"
 msgstr "Plán zvýšenia verzie"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:36
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
 msgid "Upgrade "
 msgstr "Zvýšiť verziu "
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:55
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:48
 msgid "Configuration override"
 msgstr "Prepísanie konfigurácie"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:72
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:60
 msgid "Schedule upgrade cluster"
 msgstr "Naplánovať zvýšenie verzie klastra"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.tsx:82
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
 msgid "Upgrade"
 msgstr "Zvýšenie verzie"
 
