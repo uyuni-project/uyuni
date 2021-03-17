@@ -11,7 +11,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
     When I perform a full salt minion cleanup on "ceos6_ssh_minion"
 
   Scenario: Bootstrap a CentOS 6 Salt SSH minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"

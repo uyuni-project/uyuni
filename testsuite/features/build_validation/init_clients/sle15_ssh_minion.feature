@@ -8,7 +8,7 @@ Feature: Bootstrap a SLES 15 Salt SSH minion
     When I perform a full salt minion cleanup on "sle15_ssh_minion"
 
   Scenario: Bootstrap a SLES 15 system managed via salt-ssh
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"

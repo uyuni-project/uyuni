@@ -14,7 +14,7 @@ Feature: Bootstrap a SLES 15 traditional client
     Then I should see "sle15_client" via spacecmd
 
   Scenario: The onboarding of SLES 15 traditional client is completed
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I wait until onboarding is completed for "sle15_client"
 
   Scenario: Check registration values of SLES 15 traditional client
