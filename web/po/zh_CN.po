@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 09:44+0000\n"
+"POT-Creation-Date: 2021-03-10 11:39+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -299,7 +299,7 @@ msgstr "取消"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:37
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:29
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:27
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:315
 msgid "Delete"
@@ -1134,7 +1134,7 @@ msgstr " 秒刷新"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
-#: ../html/src/manager/virtualization/ListTab.js:237
+#: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr "按名称过滤"
 
@@ -1221,7 +1221,7 @@ msgstr "审计映像"
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:53
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:49
 #: ../html/src/manager/virtualization/nets/network-properties.js:165
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
@@ -1239,7 +1239,7 @@ msgstr "名称"
 #: ../html/src/manager/salt/keys/key-management.js:178
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
-#: ../html/src/manager/virtualization/ListTab.js:261
+#: ../html/src/manager/virtualization/ListTab.js:263
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "操作"
@@ -3267,8 +3267,8 @@ msgid "Upcoming Maintenance Windows"
 msgstr "即将到来的维护时段"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:109
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:21
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:88
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "开始"
@@ -3499,7 +3499,7 @@ msgstr "软件包状态"
 #: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.js:171
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:58
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "州/省"
@@ -4357,11 +4357,11 @@ msgstr "添加虚拟主机管理器"
 msgid "Please install libvirt python module."
 msgstr "请安装 libvirt Python 模块。"
 
-#: ../html/src/manager/virtualization/ListTab.js:144
+#: ../html/src/manager/virtualization/ListTab.js:143
 msgid "{0} selected"
 msgstr "已选择 {0}"
 
-#: ../html/src/manager/virtualization/ListTab.js:244
+#: ../html/src/manager/virtualization/ListTab.js:246
 msgid "Action Status"
 msgstr "操作状态"
 
@@ -4425,7 +4425,7 @@ msgid "Start / Resume"
 msgstr "开始/恢复"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:26
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:24
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:266
 msgid "Stop"
 msgstr "停止"
@@ -4561,30 +4561,26 @@ msgstr "清除字段"
 msgid "Create Virtual Network"
 msgstr "虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:40
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
 msgstr "虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:41
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:39
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "这是配置为在此主机上运行的虚拟网络列表。"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:45
-msgid "Salt minion doesn't support virtual network creation and editing"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:64
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "自动启动"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:72
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:68
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "持久"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:81
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:77
 #: ../html/src/manager/virtualization/nets/network-properties.js:210
 msgid "Bridge"
 msgstr "网桥"
