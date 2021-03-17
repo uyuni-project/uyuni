@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-02-18 09:17+0000\n"
-"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
+"PO-Revision-Date: 2021-03-17 11:59+0000\n"
+"Last-Translator: Frantisek Kobzik <fkobzik@suse.com>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -1442,9 +1442,8 @@ msgid "End date"
 msgstr "Datum konce"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
-#, fuzzy
 msgid "Delete Pin"
-msgstr "Odstranit profil"
+msgstr "Odstranit pin"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
