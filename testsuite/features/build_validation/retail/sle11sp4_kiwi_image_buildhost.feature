@@ -4,11 +4,11 @@
 Feature: Bootstrap a SLES 11 SP4 Salt build host via the GUI
 
   Scenario: Create the bootstrap repository for a SLES 11 SP4 build host
-     Given I am authorized
+     Given I am authorized as "admin" with password "admin"
      When I create the bootstrap repository for "sle11sp4_buildhost" on the server
 
   Scenario: Bootstrap a SLES 11 SP4 build host
-     Given I am authorized
+     Given I am authorized as "admin" with password "admin"
      When I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle11sp4_buildhost" as "hostname"
@@ -20,7 +20,7 @@ Feature: Bootstrap a SLES 11 SP4 Salt build host via the GUI
      And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped SLES 11 SP4 build host in System Overview page
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the minion onboarding page
     Then I should see a "accepted" text
     When I am on the System Overview page

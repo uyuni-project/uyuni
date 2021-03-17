@@ -15,11 +15,11 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
     And I am on the System Overview page
     And I wait until I see the name of "sle15sp2_terminal", refreshing the page
     And I follow this "sle15sp2_terminal" link
-    And I wait until event "Apply states [util.syncstates, saltboot] scheduled by (none)" is completed
+    And I wait until event "Apply states [util.syncstates, saltboot] scheduled" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP2-Pool" is checked, refreshing the page
-    And I wait until event "Package List Refresh scheduled by (none)" is completed
+    And I wait until event "Package List Refresh scheduled" is completed
     Then the PXE boot minion should have been reformatted
 
   Scenario: Check connection from SLES 15 SP2 retail terminal to branch server
@@ -37,7 +37,7 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove a package on the SLES 15 SP2 retail terminal
     Given I am on the Systems overview page of this "sle15sp2_terminal"
@@ -49,4 +49,4 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
