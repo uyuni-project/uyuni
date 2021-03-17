@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-01-10 20:38+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
@@ -62,35 +62,35 @@ msgstr "rhn_register musíte spúšťať ako správca systému."
 msgid "There was some sort of I/O error: %s"
 msgstr "Vyskytlo sa niekoľko V/V chýb: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "Chyba pri čítaní cpu informácii:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "Chyba pri čítaní pamäťových informácii:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "Chyba pri čítaní sieťových informácii:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "Chyba pri čítaní informácii inštalačnej metódy:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "Chyba pri čítaní informácii sieťového rozhrania:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 msgid "Error reading network FQDNs information:"
 msgstr "Chyba pri čítaní sieťových informácii FQDN:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 msgid "Error reading system info:"
 msgstr "Chyba pri čítaní systémových informácií:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 msgid "Error reading machine info:"
 msgstr "Chyba pri čítaní informácií o stroji:"
 
@@ -111,23 +111,23 @@ msgid "This system may not be updated until it is associated with a channel."
 msgstr ""
 "Tento systém nemôže byť aktualizovaný, dokiaľ nebude priradený ku kanálu."
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 msgid "Show additional output. Repeat for more detail."
 msgstr "Zobraziť ďalší výstup. Opakovať kvôli viac detailom."
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "Zadať http proxy pre použitie"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "Zadať meno používateľa pre použitie s autentifikovaným http proxy"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "Zadať heslo pre použitie s autentifikovaným http proxy"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -135,21 +135,21 @@ msgstr ""
 "\n"
 "Prerušené.\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "Vyskytla sa neočakávaná chyba OS: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "Pokus o pripojenie s poškodeným URI.\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "Pokus o pripojenie s poškodeným URI: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "Vyskytlo sa niekoľko V/V chýb: %s\n"
@@ -1474,7 +1474,7 @@ msgstr ""
 "znova,\n"
 "    aby ste sa vyhli požadovaniu oprávnenia správy."
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 "Pokúšanie sa o spustenie viac ako jednej inštancie mgr_check. Ukončenie.\n"

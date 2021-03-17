@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (Taiwan) <https://l10n.opensuse.org/projects/uyuni/"
@@ -74,37 +74,37 @@ msgstr "您必須是 root 才能執行 rhn_register。"
 msgid "There was some sort of I/O error: %s"
 msgstr "發生某種 I/O 錯誤：%s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "讀取處理器資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "讀取系統記憶體資訊時發生錯誤："
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "讀取網路資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "讀取安裝方法的資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "讀取網路介面資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "讀取網路資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "讀取系統記憶體資訊時發生錯誤："
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "讀取處理器資訊時發生問題："
@@ -125,24 +125,24 @@ msgstr "找不到 SystemId"
 msgid "This system may not be updated until it is associated with a channel."
 msgstr "在系統與一個頻道產生關聯前，該部系統將不會被更新。"
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "顯示額外的輸出"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "請指定要使用的 http 代理伺服器"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "請指定用作 http 代理伺服器認證的用戶名"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "請指定用作 http 代理伺服器認證的密碼"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -150,21 +150,21 @@ msgstr ""
 "\n"
 "已中止。\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "發生一個非預期的作業系統錯誤： %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "試圖連上錯誤的 URI。\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "試圖連上錯誤的 URI：%s。\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "發生某種 I/O 錯誤：%s\n"
@@ -1386,7 +1386,7 @@ msgstr ""
 "    一組帳號上為全域預設值，您可停用這組金鑰，並重新嘗試以避免\n"
 "    需要使用到 Management 權利。"
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "試圖執行超過一組 rhn_check。退出中。\n"

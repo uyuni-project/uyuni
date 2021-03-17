@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Assamese (http://www.transifex.com/projects/p/spacewalk/"
@@ -64,37 +64,37 @@ msgstr "আপুনি rhn_register ৰূট হিচাপেহে চল�
 msgid "There was some sort of I/O error: %s"
 msgstr "কোনো I/O ধৰণৰ বুল হ'ল: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "cpu ৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "ব্যৱস্থাপ্ৰনালীৰ স্মৃতিশক্তিৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "জালপ্ৰসাৰৰ তথ্য পঢ়োঁতে হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "সংস্থাপন পদ্ধতিৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "নে'টৱৰ্ক সংযোগ মাধ্যমৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "জালপ্ৰসাৰৰ তথ্য পঢ়োঁতে হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "ব্যৱস্থাপ্ৰনালীৰ স্মৃতিশক্তিৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "cpu ৰ তথ্য পঢ়োঁতে ভুল হ'ল:"
@@ -117,25 +117,25 @@ msgstr ""
 "কোনো এটা সংযোগপ্ৰণালীৰ সৈতে সহযোগি নোহোৱা লৈকে এই ব্যৱস্থাপ্ৰনালী বৰ্ত্তমানলৈ অনা "
 "ন'হ'ব পাৰে ।"
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "অতিৰিক্ত নিৰ্গম প্ৰদৰ্শণ কৰক"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "ব্যৱহাৰ কৰিব'লে এটা http নিযুক্তক নিৰ্দ্দিষ্ট কৰক"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr ""
 "এটা প্ৰামাণিক http নিযুক্তকৰ সৈতে ব্যৱহাৰ কৰিব'লৈ ব্যৱহাৰকৰ্তাৰ নাম নিৰ্দ্দিষ্ট কৰক"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "এটা প্ৰামাণিক http নিযুক্তকৰ সৈতে ব্যৱহাৰ কৰিব'লৈ গুপ্তশব্দ নিৰ্দ্দিষ্ট কৰক"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -143,21 +143,21 @@ msgstr ""
 "\n"
 "নিষ্ফল কৰা হ'ল\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "এটা অপ্ৰত্যাশিত OS ভুল হ'ল: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "এটা বিকৃত URI ৰ সৈতে সংযোগৰ চেষ্টা কৰা হৈছিল।\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "এটা বিকৃত URI ৰ সৈতে সংযোগৰ চেষ্টা কৰা হৈছিল: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "কোনো প্ৰকাৰৰ I/O ভুল হৈছিল: %s\n"
@@ -1442,7 +1442,7 @@ msgstr ""
 "অবিকল্প বুলি ৰখা হৈছে, আপুনি এই চাবিক অসামৰ্থবান কৰি পুনৰ চেষ্টা কৰিব পাৰে\n"
 "    ব্যৱস্থাপক অনুজ্ঞাৰ প্ৰয়োজনীয়তা বাদ দিবলে।"
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""

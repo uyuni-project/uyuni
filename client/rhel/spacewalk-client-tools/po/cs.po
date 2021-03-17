@@ -18,11 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-13 16:56+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
-"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/cs/>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,35 +67,35 @@ msgstr "Program rhn_register musíte spustit jako root."
 msgid "There was some sort of I/O error: %s"
 msgstr "Došlo k I/O chybě: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "Chyba při čtení informací o cpu:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "Chyba při čtení informací o systémové paměti:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "Chyba při čtení informací o síti:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "Chyba při čtení informací o metodě instalace:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "Chyba při čtení informací o síťových rozhraních:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 msgid "Error reading network FQDNs information:"
 msgstr "Chyba čtení informací o FQDN sítě:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 msgid "Error reading system info:"
 msgstr "Chyba čtení informací o systému:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 msgid "Error reading machine info:"
 msgstr "Chyba čtení informací o počítači:"
 
@@ -116,24 +116,24 @@ msgid "This system may not be updated until it is associated with a channel."
 msgstr ""
 "Tento systém nemůže být aktualizován, dokud není asociován s nějakým kanálem."
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 msgid "Show additional output. Repeat for more detail."
 msgstr "Zobrazit další výstup. Další podrobnosti získáte opakováním."
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "Zadejte HTTP proxy, kterou chcete používat"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr ""
 "Zadejte jméno uživatele, které chcete použít pro autentizaci k HTTP proxy"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "Zadejte heslo, které chcete použít pro autentizaci k HTTP proxy"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -141,25 +141,25 @@ msgstr ""
 "\n"
 "Přerušeno.\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "Došlo k neočekávané chybě OS: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr ""
 "Došlo k pokusu o spojení s poškozeným URI.\n"
 "\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr ""
 "Došlo k pokusu o spojení s poškozeným URI: %s.\n"
 "\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "Došlo k I/O chybě: %s\n"
@@ -1477,7 +1477,7 @@ msgstr ""
 "vyhnout nutnosti\n"
 "    žádat o koupi oprávnění Management."
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr "Pokus o spuštění více než jedné instance mgr_check. Ukončení.\n"
 

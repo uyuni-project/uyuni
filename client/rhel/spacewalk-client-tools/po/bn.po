@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Bengali (http://www.transifex.com/projects/p/spacewalk/"
@@ -82,37 +82,37 @@ msgstr "আপনাকে অবশ্যই rhn_register চালাতে �
 msgid "There was some sort of I/O error: %s"
 msgstr "I/O (ইনপুট/আউটপুট) জড়িত কোনো সমস্যা হয়েছে: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "ইনস্টলেশন পদ্ধতি সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "নেটওয়ার্ক ইন্টারফেস সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "নেটওয়ার্ক সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "সিস্টেমের মেমরি সংক্রান্ত তথ্য পড়তে সমস্যা:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "cpu সংক্রান্ত তথ্য পড়তে সমস্যা হয়েছে:"
@@ -133,24 +133,24 @@ msgstr "systemid খুঁজে বের করতে ব্যর্থ"
 msgid "This system may not be updated until it is associated with a channel."
 msgstr "একটি চ্যানেলের সাথে যুক্ত না হওয়া পর্যন্ত সিস্টেমটিকে পরিবর্ধিত নাও হতে পারে।"
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "অতিরিক্ত আউটপুট প্রদর্শন করো"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "ব্যবহারের জন্য একটি http প্রক্সি উল্লেখ করুন"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "অনুমোদিত http প্রক্সিতে ব্যবহারের জন্য একটি ব্যবহারকারীর-নাম উল্লেখ করুন"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "অনুমোদিত http প্রক্সির সাথে ব্যবহারের জন্য একটি পাসওয়ার্ড উল্লেখ করুন"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -158,21 +158,21 @@ msgstr ""
 "\n"
 "অস্বাভাবিক সমাপ্তি ঘটেছে।\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "অপারেটিং সিস্টেম সংক্রান্ত একটি অপ্রত্যাশিত সমস্যা দেখা দিয়েছে: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "কোনো ধরনের I/O ( ইনপুট/আউটপুট ) সমস্যা হয়েছে: %s\n"
@@ -1362,7 +1362,7 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 

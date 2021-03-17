@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/spacewalk/"
@@ -69,37 +69,37 @@ msgstr "Należy uruchomić rhn_register jako root."
 msgid "There was some sort of I/O error: %s"
 msgstr "Wystąpił błąd wejścia/wyjścia: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "Błąd podczas odczytywania informacji o procesorze:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "Błąd podczas odczytywania informacji o pamięci systemu:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "Błąd podczas odczytywania informacji o sieci:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "Błąd podczas odczytywania informacji o metodzie instalacji:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "Błąd podczas odczytywania informacji o interfejsie sieciowym:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "Błąd podczas odczytywania informacji o sieci:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "Błąd podczas odczytywania informacji o pamięci systemu:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "Błąd podczas odczytywania informacji o procesorze:"
@@ -122,24 +122,24 @@ msgstr ""
 "Ten system nie może zostać zaktualizowany, dopóki nie zostanie powiązany "
 "z kanałem."
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "Wyświetla dodatkowe wyjście"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "Podaje używanego pośrednika HTTP"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "Podaje nazwę użytkownika używaną z uwierzytelnionym pośrednikiem HTTP"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "Podaje hasło używane z uwierzytelnionym pośrednikiem HTTP"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -147,21 +147,21 @@ msgstr ""
 "\n"
 "Przerwano.\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "Wystąpił nieoczekiwany błąd systemu operacyjnego: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "Próbowano połączenia z błędnie sformatowanym adresem URI.\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "Próbowano połączenia z błędnie sformatowanym adresem URI: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "Wystąpił błąd wejścia/wyjścia: %s\n"
@@ -1500,7 +1500,7 @@ msgstr ""
 "    jest ustawiony na koncie jako uniwersalnie domyślny, można go wyłączyć\n"
 "    i spróbować ponownie, aby uniknąć potrzeby ważności zarządzania."
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""

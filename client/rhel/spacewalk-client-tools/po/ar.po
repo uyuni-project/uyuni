@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2016-02-18 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/spacewalk/"
@@ -66,37 +66,37 @@ msgstr ""
 msgid "There was some sort of I/O error: %s"
 msgstr "كان هناك خطأ ما في I/O: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "خطأ في تحديد بيانات وحدة المعالجة المركزية:  "
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "حدث خطأ في  قراءة بيانات  ذاكرة النظام:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "حدث خطأ أثناء قراءة بيانات الشبكة:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "حدث خطأ في قراءة بيانات طريقة التثبيت:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "حدث خطأ في قراءة بيانات بطاقة الشبكة:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "حدث خطأ أثناء قراءة بيانات الشبكة:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "حدث خطأ في  قراءة بيانات  ذاكرة النظام:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "خطأ في تحديد بيانات وحدة المعالجة المركزية:  "
@@ -117,24 +117,24 @@ msgstr ""
 msgid "This system may not be updated until it is associated with a channel."
 msgstr "لا يمكن تحديث النّظام حتّى يتمّ ضمّه إلى قناة."
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "اعرض مُخرجات إضافيّة"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "حدّد http proxy لاستخدامه"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "حدّد اسم مستخدم لاستخدامه مع وسيط http المُوثّق"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "حدّد كلمة مرور لاستخدامها مع http proxy مُوثّق"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -142,21 +142,21 @@ msgstr ""
 "\n"
 "تم الإجهاض.\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "حدث خطأ غير متوقّع بنظام التشغيل: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "حدث خطأ ما في عملية الإدخال والإخراج: %s\n"
@@ -1286,7 +1286,7 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
 

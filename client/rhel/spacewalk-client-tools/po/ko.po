@@ -19,11 +19,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 18:39+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,37 +69,37 @@ msgstr "root 계정으로 rhn_register를 실행하셔야 합니다."
 msgid "There was some sort of I/O error: %s"
 msgstr "입/출력 오류 발생: %s"
 
-#: ../src/up2date_client/hardware.py:1032
+#: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
 msgstr "cpu 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1039
+#: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
 msgstr "시스템 메모리 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1049
+#: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
 msgstr "네트워크 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1070
+#: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
 msgstr "설치 방식 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1078
+#: ../src/up2date_client/hardware.py:1110
 msgid "Error reading network interface information:"
 msgstr "네트워크 인터페이스 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1086
+#: ../src/up2date_client/hardware.py:1118
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "네트워크 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1093
+#: ../src/up2date_client/hardware.py:1125
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "시스템 메모리 정보를 읽어오는 중 오류 발생:"
 
-#: ../src/up2date_client/hardware.py:1100
+#: ../src/up2date_client/hardware.py:1132
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "cpu 정보를 읽어오는 중 오류 발생:"
@@ -120,24 +120,24 @@ msgstr "SystemId를 찾을 수 없음 "
 msgid "This system may not be updated until it is associated with a channel."
 msgstr "이 시스템에 채널을 할당하기 전에는 업데이트가 실행되지 않을 것입니다."
 
-#: ../src/up2date_client/rhncli.py:68
+#: ../src/up2date_client/rhncli.py:65
 #, fuzzy
 msgid "Show additional output. Repeat for more detail."
 msgstr "추가 출력을 보여줌"
 
-#: ../src/up2date_client/rhncli.py:70
+#: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
 msgstr "사용할 http proxy를 지정"
 
-#: ../src/up2date_client/rhncli.py:72
+#: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
 msgstr "인증받은 http proxy와 함께 사용할 사용자명 지정"
 
-#: ../src/up2date_client/rhncli.py:74
+#: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
 msgstr "인증받은 http proxy에 사용할 암호 지정"
 
-#: ../src/up2date_client/rhncli.py:96
+#: ../src/up2date_client/rhncli.py:93
 msgid ""
 "\n"
 "Aborted.\n"
@@ -145,21 +145,21 @@ msgstr ""
 "\n"
 "중지.\n"
 
-#: ../src/up2date_client/rhncli.py:99
+#: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
 msgstr "예상하지 못한 운영 체제 오류 발생: %s\n"
 
-#: ../src/up2date_client/rhncli.py:104
+#: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
 msgstr "잘못된 URI에 연결을 시도함.\n"
 
-#: ../src/up2date_client/rhncli.py:106
+#: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
 msgstr "잘못된 URI에 연결을 시도함: %s.\n"
 
-#: ../src/up2date_client/rhncli.py:108
+#: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
 msgstr "입/출력 오류 발생: %s\n"
@@ -236,8 +236,8 @@ msgid ""
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
-"{PRODUCT_NAME} 서버의 위치 및 SSL 인증서를 입력하십시오. SSL 인증서는 https를 통해 연결하는 경우에만 "
-"필요합니다(권장)."
+"{PRODUCT_NAME} 서버의 위치 및 SSL 인증서를 입력하십시오. SSL 인증서는 https"
+"를 통해 연결하는 경우에만 필요합니다(권장)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
@@ -578,10 +578,11 @@ msgid ""
 msgstr ""
 "이 시스템은 Red Hat 구독 관리를 사용하여 이미 등록되었습니다.\n"
 "\n"
-"Red Hat Satellite 또는 Red Hat Satellite Proxy 기술을 사용하여 시스템을 다시 등록하는 중입니다. Red "
-"Hat은 고객이 한 번만 등록할 것을 권장합니다.\n"
+"Red Hat Satellite 또는 Red Hat Satellite Proxy 기술을 사용하여 시스템을 다시 "
+"등록하는 중입니다. Red Hat은 고객이 한 번만 등록할 것을 권장합니다.\n"
 "\n"
-"RHN Classic/Red Hat Satellite 등록 및 기술에 대한 자세한 정보는 다음 Knowledge Base 자료 참조:\n"
+"RHN Classic/Red Hat Satellite 등록 및 기술에 대한 자세한 정보는 다음 "
+"Knowledge Base 자료 참조:\n"
 "https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
@@ -724,10 +725,12 @@ msgid ""
 "subscribe this system to software channels via the software > software "
 "channels tab."
 msgstr ""
-"이 시스템은 소프트웨어 채널에 가입할 수 없습니다. 보안 및 지원을 유지하기 위해 시스템이 소프트웨어 업데이트를 수신하지 않습니다. 이 "
-"문제에 대해서는 {PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독을 수행한 후에는 "
-"{PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보고 소프트웨어 > 소프트웨어 채널 탭에서 이 시스템에 가입하여 "
-"소프트웨어 채널에 가입할 수 있습니다."
+"이 시스템은 소프트웨어 채널에 가입할 수 없습니다. 보안 및 지원을 유지하기 위"
+"해 시스템이 소프트웨어 업데이트를 수신하지 않습니다. 이 문제에 대해서는 "
+"{PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독을 수행"
+"한 후에는 {PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보고 소프"
+"트웨어 > 소프트웨어 채널 탭에서 이 시스템에 가입하여 소프트웨어 채널에 가입"
+"할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
@@ -740,8 +743,8 @@ msgid ""
 "you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
 "types associated with this system:"
 msgstr ""
-"시스템에 연결된 {PRODUCT_NAME} 시스템 유형에 따라, 다른 혜택이 제공됩니다. 이 시스템에 연결된 {PRODUCT_NAME} "
-"시스템 유형:"
+"시스템에 연결된 {PRODUCT_NAME} 시스템 유형에 따라, 다른 혜택이 제공됩니다. "
+"이 시스템에 연결된 {PRODUCT_NAME} 시스템 유형:"
 
 #: ../src/up2date_client/rhnreg_constants.py:204
 #, fuzzy, python-brace-format
@@ -798,10 +801,11 @@ msgid ""
 "account, you may browse to this system's profile in the {PRODUCT_NAME} web "
 "interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
 msgstr ""
-"이 시스템을 {PRODUCT_NAME} 시스템 유형에 연결할 수 없습니다. 보안 및 지원을 유지하기 위해 시스템이 소프트웨어 업데이트를 "
-"수신하지 않습니다. 이 문제에 대해서는 {PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독을 수행한 후에는 "
-"{PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보고 프로파일을 삭제하며 이 시스템을 {PRODUCT_NAME}에 "
-"다시 연결할 수 있습니다."
+"이 시스템을 {PRODUCT_NAME} 시스템 유형에 연결할 수 없습니다. 보안 및 지원을 "
+"유지하기 위해 시스템이 소프트웨어 업데이트를 수신하지 않습니다. 이 문제에 대"
+"해서는 {PRODUCT_NAME} 관리자에게 문의하십시오. 계정에서 이용할 수 있는 구독"
+"을 수행한 후에는 {PRODUCT_NAME} 웹 인터페이스에서 시스템의 프로파일을 찾아보"
+"고 프로파일을 삭제하며 이 시스템을 {PRODUCT_NAME}에 다시 연결할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
 #, python-format, python-brace-format
@@ -816,9 +820,11 @@ msgid ""
 "Universal Default activation key: %s"
 msgstr ""
 "범용 기본 활성화 키 감지됨\n"
-"계정에서 범용 기본 활성화 키가 감지되었습니다. 즉, {PRODUCT_NAME} 서버 또는 {PRODUCT_NAME} 프록시에 시스템을 "
-"연결하기 위한 속성 집합(소프트웨어 채널 구독, 패키지 설치, 시스템 그룹 구성원 등)이 설치 번호가 아닌 활성화 키로 결정되었습니다. "
-"활성화 키에 대한 자세한 내용은 {PRODUCT_NAME} 참조 안내서도 참조하십시오.\n"
+"계정에서 범용 기본 활성화 키가 감지되었습니다. 즉, {PRODUCT_NAME} 서버 또는 "
+"{PRODUCT_NAME} 프록시에 시스템을 연결하기 위한 속성 집합(소프트웨어 채널 구"
+"독, 패키지 설치, 시스템 그룹 구성원 등)이 설치 번호가 아닌 활성화 키로 결정되"
+"었습니다. 활성화 키에 대한 자세한 내용은 {PRODUCT_NAME} 참조 안내서도 참조하"
+"십시오.\n"
 "범용 기본 활성화 키:"
 
 #. Error Messages.
@@ -908,9 +914,10 @@ msgid ""
 "can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
 "rhn, and ensure sslCACert points to it."
 msgstr ""
-"/etc/sysconfig/rhn/up2date에서 sslCACert 및 serverURL의 값을 확인하십시오. serverURL에서 "
-"https가 아닌 http를 사용하도록 설정하거나 {PRODUCT_NAME}에서 SSL 인증서를 다운로드하여 /usr/share/rhn에 "
-"넣은 후 sslCACert가 이를 가리키는지 확인할 수 있습니다."
+"/etc/sysconfig/rhn/up2date에서 sslCACert 및 serverURL의 값을 확인하십시오. "
+"serverURL에서 https가 아닌 http를 사용하도록 설정하거나 {PRODUCT_NAME}에서 "
+"SSL 인증서를 다운로드하여 /usr/share/rhn에 넣은 후 sslCACert가 이를 가리키는"
+"지 확인할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:278
 #, fuzzy, python-brace-format
@@ -1469,7 +1476,7 @@ msgstr ""
 "    전체 디폴트 상태라면, 이 키를 비활성화시키고 다시 시도하면, 추가로 관리\n"
 "    인타이틀먼트를 요청하지 않아도 될 수 있습니다. "
 
-#: ../src/bin/rhn_check.py:428
+#: ../src/bin/rhn_check.py:426
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
 msgstr ""
@@ -2129,8 +2136,8 @@ msgid ""
 msgstr ""
 "<b>%s</b>와(과) 호환되는 보안 인증서를 이 시스템에서 찾을 수 없습니다.\n"
 "\n"
-"이 시스템과 Spacewalk(로그인 및 비밀번호 포함) 사이에서 통신되는 데이터가 안전한지 확인하려면 SSL 기술을 사용하는 보안 "
-"인증서가 필요합니다."
+"이 시스템과 Spacewalk(로그인 및 비밀번호 포함) 사이에서 통신되는 데이터가 안"
+"전한지 확인하려면 SSL 기술을 사용하는 보안 인증서가 필요합니다."
 
 #: ../data/rh_register.glade.h:88
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
@@ -2160,7 +2167,9 @@ msgstr "시스템에 소프트웨어 업데이트가 설정되지 않았습니�
 msgid ""
 "You won't be able to receive software updates, including security updates, "
 "for this system."
-msgstr "보안 업데이트를 포함하여 이 시스템의 소프트웨어 업데이트를 수신할 수 없습니다."
+msgstr ""
+"보안 업데이트를 포함하여 이 시스템의 소프트웨어 업데이트를 수신할 수 없습니"
+"다."
 
 #: ../data/rh_register.glade.h:94
 msgid "Proxy Configuration"
@@ -2322,7 +2331,9 @@ msgstr "시스템이 이미 RHN 인증서 기반 기술을 사용하여 RHN에 �
 msgid ""
 "Your system is being registered again using RHN Classic technology. Red Hat "
 "recommends that customers only register once."
-msgstr "RHN Classic 기술을 사용하여 시스템을 다시 등록하는 중입니다. Red Hat은 고객이 1회만 등록할 것을 권장합니다."
+msgstr ""
+"RHN Classic 기술을 사용하여 시스템을 다시 등록하는 중입니다. Red Hat은 고객"
+"이 1회만 등록할 것을 권장합니다."
 
 #: ../data/rh_register.glade.h:135
 msgid ""
