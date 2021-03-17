@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-12 13:00+0000\n"
+"POT-Creation-Date: 2021-03-12 12:49+0000\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -82,19 +82,19 @@ msgstr ""
 msgid "No upcoming maintenance windows"
 msgstr "次のメンテナンスウィンドウはありません"
 
-#: ../html/src/components/action-schedule.tsx:242
+#: ../html/src/components/action-schedule.tsx:244
 msgid "Earliest:"
 msgstr "指定時刻以降にスケジュール:"
 
-#: ../html/src/components/action-schedule.tsx:242
+#: ../html/src/components/action-schedule.tsx:244
 msgid "Maintenance Window:"
 msgstr "メンテナンスウィンドウ:"
 
-#: ../html/src/components/action-schedule.tsx:272
+#: ../html/src/components/action-schedule.tsx:274
 msgid "Add to:"
 msgstr "以下に追加:"
 
-#: ../html/src/components/action-schedule.tsx:290
+#: ../html/src/components/action-schedule.tsx:292
 msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
@@ -111,10 +111,10 @@ msgid "Configuration Channel: {0}"
 msgstr "設定チャンネル: {0}"
 
 #: ../html/src/components/config-channels.tsx:78
-#: ../html/src/manager/images/image-profiles.tsx:206
-#: ../html/src/manager/images/image-stores.tsx:203
-#: ../html/src/manager/images/image-view-overview.tsx:322
-#: ../html/src/manager/images/image-view-overview.tsx:347
+#: ../html/src/manager/images/image-profiles.js:160
+#: ../html/src/manager/images/image-stores.js:157
+#: ../html/src/manager/images/image-view-overview.js:207
+#: ../html/src/manager/images/image-view-overview.js:215
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
@@ -160,8 +160,8 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
 #: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
-#: ../html/src/manager/images/image-view.tsx:794
-#: ../html/src/manager/images/image-view.tsx:796
+#: ../html/src/manager/images/image-view.js:683
+#: ../html/src/manager/images/image-view.js:685
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
@@ -273,10 +273,10 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
-#: ../html/src/manager/images/image-view-overview.tsx:691
-#: ../html/src/manager/images/image-view-overview.tsx:692
-#: ../html/src/manager/images/image-view-overview.tsx:762
-#: ../html/src/manager/images/image-view-overview.tsx:763
+#: ../html/src/manager/images/image-view-overview.js:467
+#: ../html/src/manager/images/image-view-overview.js:468
+#: ../html/src/manager/images/image-view-overview.js:526
+#: ../html/src/manager/images/image-view-overview.js:527
 #: ../html/src/manager/systems/delete-system.js:74
 #: ../html/src/manager/systems/delete-system.js:75
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
@@ -289,13 +289,13 @@ msgstr "取り消し"
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/images/image-profiles.tsx:137
-#: ../html/src/manager/images/image-profiles.tsx:212
-#: ../html/src/manager/images/image-stores.tsx:140
-#: ../html/src/manager/images/image-stores.tsx:209
-#: ../html/src/manager/images/image-view.tsx:353
-#: ../html/src/manager/images/image-view.tsx:363
-#: ../html/src/manager/images/image-view.tsx:684
+#: ../html/src/manager/images/image-profiles.js:106
+#: ../html/src/manager/images/image-profiles.js:166
+#: ../html/src/manager/images/image-stores.js:109
+#: ../html/src/manager/images/image-stores.js:163
+#: ../html/src/manager/images/image-view.js:316
+#: ../html/src/manager/images/image-view.js:320
+#: ../html/src/manager/images/image-view.js:607
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -438,7 +438,7 @@ msgid "Remove"
 msgstr "削除"
 
 #: ../html/src/components/input/Password.stories.js:26
-#: ../html/src/manager/images/image-store-edit.tsx:189
+#: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
@@ -884,9 +884,9 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.tsx:142
-#: ../html/src/manager/images/image-stores.tsx:145
-#: ../html/src/manager/images/image-view.tsx:377
+#: ../html/src/manager/images/image-profiles.js:109
+#: ../html/src/manager/images/image-stores.js:112
+#: ../html/src/manager/images/image-view.js:326
 #: ../html/src/manager/notifications/notification-messages.tsx:426
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:247
 msgid "Refresh"
@@ -897,7 +897,7 @@ msgid "Please be patient, this might take several minutes."
 msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:184
-#: ../html/src/manager/images/image-view-overview.tsx:139
+#: ../html/src/manager/images/image-view-overview.js:79
 msgid "Completed"
 msgstr "完了しました"
 
@@ -906,8 +906,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "操作は成功しませんでした: サーバからの応答が空です"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
-#: ../html/src/manager/images/image-view-patches.tsx:92
-#: ../html/src/manager/images/image-view.tsx:675
+#: ../html/src/manager/images/image-view-patches.js:81
+#: ../html/src/manager/images/image-view.js:600
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.js:113
@@ -1001,7 +1001,7 @@ msgstr "製品説明"
 #: ../html/src/manager/admin/setup/products/products.tsx:626
 #: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
-#: ../html/src/manager/images/image-view-packages.tsx:49
+#: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "アーキテクチャ"
@@ -1187,7 +1187,7 @@ msgstr "経過時間"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
-#: ../html/src/manager/images/image-view-runtime.tsx:129
+#: ../html/src/manager/images/image-view-runtime.js:97
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
 msgid "Status"
 msgstr "状態"
@@ -1245,7 +1245,7 @@ msgstr "監査イメージ"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
-#: ../html/src/manager/images/image-view.tsx:629
+#: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
@@ -1258,9 +1258,9 @@ msgid "Name"
 msgstr "名前"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
-#: ../html/src/manager/images/image-profiles.tsx:192
-#: ../html/src/manager/images/image-stores.tsx:197
-#: ../html/src/manager/images/image-view.tsx:669
+#: ../html/src/manager/images/image-profiles.js:147
+#: ../html/src/manager/images/image-stores.js:152
+#: ../html/src/manager/images/image-view.js:595
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.js:178
@@ -1731,11 +1731,10 @@ msgstr "プロパティの編集"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
-#: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/images/image-profile-edit.tsx:526
-#: ../html/src/manager/images/image-profiles.tsx:179
-#: ../html/src/manager/images/image-store-edit.tsx:268
-#: ../html/src/manager/images/image-stores.tsx:182
+#: ../html/src/manager/images/image-profile-edit.js:381
+#: ../html/src/manager/images/image-profiles.js:134
+#: ../html/src/manager/images/image-store-edit.js:193
+#: ../html/src/manager/images/image-stores.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
@@ -1771,7 +1770,7 @@ msgid "Action has been "
 msgstr "動作を "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.tsx:223
+#: ../html/src/manager/images/image-build.js:178
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
@@ -1784,7 +1783,7 @@ msgid " successfully."
 msgstr "成功"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.tsx:217
+#: ../html/src/manager/images/image-build.js:175
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
@@ -1820,7 +1819,7 @@ msgstr ""
 "す"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:57
 msgid "Overview"
 msgstr "概要"
@@ -1889,9 +1888,9 @@ msgstr "クラスタ"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
-#: ../html/src/manager/images/image-stores.tsx:189
-#: ../html/src/manager/images/image-view-patches.tsx:84
-#: ../html/src/manager/images/image-view.tsx:628
+#: ../html/src/manager/images/image-stores.js:144
+#: ../html/src/manager/images/image-view-patches.js:72
+#: ../html/src/manager/images/image-view.js:538
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
@@ -1943,12 +1942,10 @@ msgid "Create project"
 msgstr "プロジェクトの作成"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
-#: ../html/src/manager/images/image-profile-edit.tsx:501
-#: ../html/src/manager/images/image-profiles.tsx:148
-#: ../html/src/manager/images/image-profiles.tsx:149
-#: ../html/src/manager/images/image-store-edit.tsx:234
-#: ../html/src/manager/images/image-stores.tsx:151
-#: ../html/src/manager/images/image-stores.tsx:152
+#: ../html/src/manager/images/image-profile-edit.js:367
+#: ../html/src/manager/images/image-profiles.js:111
+#: ../html/src/manager/images/image-store-edit.js:170
+#: ../html/src/manager/images/image-stores.js:114
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.js:49
@@ -2048,7 +2045,7 @@ msgstr "マッチャー"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
-#: ../html/src/manager/images/image-view-packages.tsx:48
+#: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "パッケージ名"
@@ -2064,8 +2061,7 @@ msgstr "エポック"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
-#: ../html/src/manager/images/image-build.tsx:386
-#: ../html/src/manager/images/image-view.tsx:630
+#: ../html/src/manager/images/image-view.js:549
 msgid "Version"
 msgstr "バージョン"
 
@@ -2097,7 +2093,7 @@ msgstr "発行済み"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
-#: ../html/src/manager/images/image-view-patches.tsx:97
+#: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "概要"
 
@@ -2305,11 +2301,11 @@ msgstr "ビルド ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
-#: ../html/src/manager/images/image-build.tsx:416
-#: ../html/src/manager/images/image-profiles.tsx:200
-#: ../html/src/manager/images/image-view-overview.tsx:578
-#: ../html/src/manager/images/image-view-overview.tsx:675
-#: ../html/src/manager/images/image-view.tsx:657
+#: ../html/src/manager/images/image-build.js:287
+#: ../html/src/manager/images/image-profiles.js:154
+#: ../html/src/manager/images/image-view-overview.js:375
+#: ../html/src/manager/images/image-view-overview.js:457
+#: ../html/src/manager/images/image-view.js:581
 msgid "Build"
 msgstr "ビルド"
 
@@ -2374,13 +2370,13 @@ msgid "Generating repositories data"
 msgstr "リポジトリデータを生成しています"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.js:420
 msgid "Built"
 msgstr "構築済み"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
-#: ../html/src/manager/images/image-view-overview.tsx:79
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view-overview.js:37
+#: ../html/src/manager/images/image-view.js:422
 msgid "Failed"
 msgstr "失敗"
 
@@ -2535,7 +2531,7 @@ msgid "Sources edited successfully"
 msgstr "ソースを編集しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
-#: ../html/src/manager/images/image-build.tsx:299
+#: ../html/src/manager/images/image-build.js:221
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
 
@@ -2611,15 +2607,15 @@ msgstr "ターゲットタイプが正しくありません。"
 msgid "Formula saved. Apply the "
 msgstr "formula を保存しました。下記を適用します "
 
-#: ../html/src/manager/images/image-build.tsx:35
+#: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
 msgstr "不明なエラーが発生しました。"
 
-#: ../html/src/manager/images/image-build.tsx:36
+#: ../html/src/manager/images/image-build.js:28
 msgid "The image build has been scheduled."
 msgstr "イメージの構築をスケジュールしました。"
 
-#: ../html/src/manager/images/image-build.tsx:38
+#: ../html/src/manager/images/image-build.js:29
 #: ../html/src/manager/images/image-import.tsx:18
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
@@ -2628,51 +2624,25 @@ msgstr ""
 "タスクをスケジュールする際にエラーが発生しました。タスクスケジューラが動作し"
 "ていることをご確認ください。"
 
-#: ../html/src/manager/images/image-build.tsx:222
+#: ../html/src/manager/images/image-build.js:177
 msgid "Building the image has been "
 msgstr "イメージの構築を "
 
-#: ../html/src/manager/images/image-build.tsx:253
-#, fuzzy
-msgid "Profile Summary"
-msgstr "概要"
-
-#: ../html/src/manager/images/image-build.tsx:263
+#: ../html/src/manager/images/image-build.js:207
 msgid "No profile selected"
 msgstr "プロファイルが選択されていません"
 
-#: ../html/src/manager/images/image-build.tsx:274
-#: ../html/src/manager/images/image-profile-edit.tsx:535
+#: ../html/src/manager/images/image-build.js:212
+#: ../html/src/manager/images/image-profile-edit.js:382
 msgid "Image Type"
 msgstr "イメージタイプ"
 
-#: ../html/src/manager/images/image-build.tsx:278
-#: ../html/src/manager/images/image-import.tsx:264
-msgid "Image Store"
-msgstr "イメージストア"
-
-#: ../html/src/manager/images/image-build.tsx:282
+#: ../html/src/manager/images/image-build.js:214
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr "パス"
 
-#: ../html/src/manager/images/image-build.tsx:286
-#: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:392
-msgid "Activation Key"
-msgstr "アクティベーションキー"
-
-#: ../html/src/manager/images/image-build.tsx:355
-#, fuzzy
-msgid "Build Image"
-msgstr "イメージの再ビルド"
-
-#: ../html/src/manager/images/image-build.tsx:371
-#, fuzzy
-msgid "Image Profile"
-msgstr "イメージプロファイル"
-
-#: ../html/src/manager/images/image-build.tsx:392
+#: ../html/src/manager/images/image-build.js:271
 #: ../html/src/manager/images/image-import.tsx:302
 msgid "Build Host"
 msgstr "構築ホスト"
@@ -2686,9 +2656,14 @@ msgid "The image import has been scheduled."
 msgstr "イメージの取り込みをスケジュールしました。"
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:385
+#: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
 msgstr "このキーに割り当てられているチャンネルはありません。"
+
+#: ../html/src/manager/images/image-import.tsx:239
+#: ../html/src/manager/images/image-profile-edit.js:305
+msgid "Activation Key"
+msgstr "アクティベーションキー"
 
 #: ../html/src/manager/images/image-import.tsx:252
 msgid "Import Image"
@@ -2699,6 +2674,10 @@ msgid "You can import Container images only using this feature."
 msgstr ""
 "この機能を利用することによってのみ、コンテナイメージを取り込むことができま"
 "す。"
+
+#: ../html/src/manager/images/image-import.tsx:264
+msgid "Image Store"
+msgstr "イメージストア"
 
 #: ../html/src/manager/images/image-import.tsx:283
 msgid "Image name"
@@ -2717,63 +2696,57 @@ msgid "Image version is required."
 msgstr "イメージバージョンを指定する必要があります。"
 
 #: ../html/src/manager/images/image-import.tsx:318
-#: ../html/src/manager/images/image-view.tsx:372
+#: ../html/src/manager/images/image-view.js:324
 msgid "Import"
 msgstr "取り込み"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:479
-#: ../html/src/manager/images/image-store-edit.tsx:211
+#: ../html/src/manager/images/image-profile-edit.js:362
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:202
 msgid "Clear fields"
 msgstr "項目の消去"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:293
+#: ../html/src/manager/images/image-profile-edit.js:256
 msgid "Target Image Store"
 msgstr "ターゲットのイメージストア"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:317
-#, fuzzy
-msgid "Dockerfile URL"
-msgstr "docker ファイル"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:343
+#: ../html/src/manager/images/image-profile-edit.js:276
 msgid "Config URL"
 msgstr "設定 URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:393
+#: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation key is required for kiwi images."
 msgstr "kiwi イメージに対してはアクティベーションキーが必要です。"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:433
+#: ../html/src/manager/images/image-profile-edit.js:334
 msgid "Remove entry"
 msgstr "項目の削除"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:448
+#: ../html/src/manager/images/image-profile-edit.js:342
 msgid "Custom Info Values"
 msgstr "独自の info 値"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:462
+#: ../html/src/manager/images/image-profile-edit.js:352
 msgid "Create additional custom info keys"
 msgstr "追加の独自 info 鍵の作成"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:490
-#: ../html/src/manager/images/image-store-edit.tsx:223
+#: ../html/src/manager/images/image-profile-edit.js:365
+#: ../html/src/manager/images/image-store-edit.js:168
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Edit Image Profile: '"
 msgstr "イメージプロファイルの編集: '"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.js:375
 msgid "Create Image Profile"
 msgstr "イメージプロファイルの作成"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:529
+#: ../html/src/manager/images/image-profile-edit.js:381
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2781,479 +2754,459 @@ msgstr ""
 "ラベルを指定する必要があります。ラベルは他と重複しない文字列で、コロン (:) を"
 "含めることはできません。"
 
-#: ../html/src/manager/images/image-profiles.tsx:23
+#: ../html/src/manager/images/image-profiles.js:21
 msgid "Dockerfile"
 msgstr "docker ファイル"
 
-#: ../html/src/manager/images/image-profiles.tsx:24
+#: ../html/src/manager/images/image-profiles.js:22
 msgid "Kiwi"
 msgstr "kiwi"
 
-#: ../html/src/manager/images/image-profiles.tsx:28
+#: ../html/src/manager/images/image-profiles.js:26
 msgid "Image profile cannot be found."
 msgstr "イメージプロファイルが見つかりませんでした。"
 
-#: ../html/src/manager/images/image-profiles.tsx:29
+#: ../html/src/manager/images/image-profiles.js:27
 msgid "Image profile has been deleted."
 msgstr "イメージプロファイルを削除しました。"
 
-#: ../html/src/manager/images/image-profiles.tsx:30
+#: ../html/src/manager/images/image-profiles.js:28
 msgid "Image profiles have been deleted."
 msgstr "イメージプロファイルを削除しました。"
 
-#: ../html/src/manager/images/image-profiles.tsx:138
-#: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:354
+#: ../html/src/manager/images/image-profiles.js:107
+#: ../html/src/manager/images/image-stores.js:110
+#: ../html/src/manager/images/image-view.js:317
 msgid "Delete selected"
 msgstr "削除を選択しました"
 
-#: ../html/src/manager/images/image-profiles.tsx:159
+#: ../html/src/manager/images/image-profiles.js:117
 msgid "Image Profiles"
 msgstr "イメージプロファイル"
 
-#: ../html/src/manager/images/image-profiles.tsx:186
+#: ../html/src/manager/images/image-profiles.js:141
 msgid "Build Type"
 msgstr "ビルドタイプ"
 
-#: ../html/src/manager/images/image-profiles.tsx:228
+#: ../html/src/manager/images/image-profiles.js:180
 #: ../html/src/manager/systems/delete-system-confirm.js:12
 msgid "Delete Profile"
 msgstr "プロファイルの削除"
 
-#: ../html/src/manager/images/image-profiles.tsx:231
+#: ../html/src/manager/images/image-profiles.js:181
 msgid "Are you sure you want to delete profile"
 msgstr "プロファイルを削除してよろしいですか"
 
-#: ../html/src/manager/images/image-profiles.tsx:241
+#: ../html/src/manager/images/image-profiles.js:187
 msgid "Delete Selected Profile(s)"
 msgstr "選択したプロファイルの削除"
 
-#: ../html/src/manager/images/image-profiles.tsx:245
+#: ../html/src/manager/images/image-profiles.js:190
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "選択したプロファイルを削除してよろしいですか？"
 
-#: ../html/src/manager/images/image-profiles.tsx:247
+#: ../html/src/manager/images/image-profiles.js:190
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr ""
 "選択したプロファイルを削除してよろしいですか？ ({0} 個のプロファイルが選択さ"
 "れています)"
 
-#: ../html/src/manager/images/image-store-edit.tsx:174
-msgid "Use credentials"
-msgstr ""
-
-#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/images/image-store-edit.js:151
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "ユーザ名"
 
-#: ../html/src/manager/images/image-store-edit.tsx:246
+#: ../html/src/manager/images/image-store-edit.js:178
 msgid "Edit Image Store: '"
 msgstr "イメージストアの編集: '"
 
-#: ../html/src/manager/images/image-store-edit.tsx:246
+#: ../html/src/manager/images/image-store-edit.js:178
 msgid "Create Image Store"
 msgstr "イメージストアの作成"
 
-#: ../html/src/manager/images/image-store-edit.tsx:260
+#: ../html/src/manager/images/image-store-edit.js:187
 msgid "Store Type"
 msgstr "ストアの種類"
 
-#: ../html/src/manager/images/image-store-edit.tsx:271
+#: ../html/src/manager/images/image-store-edit.js:193
 msgid "Label is required and must be unique."
 msgstr ""
 "ラベルを設定する必要があります。ラベルは他と重複しないものでなければなりませ"
 "ん。"
 
-#: ../html/src/manager/images/image-store-edit.tsx:277
+#: ../html/src/manager/images/image-store-edit.js:194
 msgid "Store URI"
 msgstr "ストア URI"
 
-#: ../html/src/manager/images/image-stores.tsx:23
+#: ../html/src/manager/images/image-stores.js:21
 msgid "Image store cannot be found."
 msgstr "イメージストアが見つかりません。"
 
-#: ../html/src/manager/images/image-stores.tsx:24
+#: ../html/src/manager/images/image-stores.js:22
 msgid "Image store has been deleted."
 msgstr "イメージストアを削除しました。"
 
-#: ../html/src/manager/images/image-stores.tsx:25
+#: ../html/src/manager/images/image-stores.js:23
 msgid "Image stores have been deleted."
 msgstr "イメージストアを削除しました。"
 
-#: ../html/src/manager/images/image-stores.tsx:162
+#: ../html/src/manager/images/image-stores.js:120
 msgid "Image Stores"
 msgstr "イメージストア"
 
-#: ../html/src/manager/images/image-stores.tsx:224
+#: ../html/src/manager/images/image-stores.js:176
 msgid "Delete Store"
 msgstr "ストアの削除"
 
-#: ../html/src/manager/images/image-stores.tsx:227
+#: ../html/src/manager/images/image-stores.js:177
 msgid "Are you sure you want to delete store"
 msgstr "ストアを削除してよろしいですか"
 
-#: ../html/src/manager/images/image-stores.tsx:237
+#: ../html/src/manager/images/image-stores.js:183
 msgid "Delete Selected Store(s)"
 msgstr "選択したストアの削除"
 
-#: ../html/src/manager/images/image-stores.tsx:241
+#: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete the selected store?"
 msgstr "選択したストアを削除してよろしいですか？"
 
-#: ../html/src/manager/images/image-stores.tsx:243
+#: ../html/src/manager/images/image-stores.js:186
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr ""
 "選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
 
-#: ../html/src/manager/images/image-view-overview.tsx:36
-#: ../html/src/manager/images/image-view-overview.tsx:37
-#: ../html/src/manager/images/image-view-overview.tsx:91
-#: ../html/src/manager/images/image-view-overview.tsx:92
-#: ../html/src/manager/images/image-view-overview.tsx:251
-#: ../html/src/manager/images/image-view-overview.tsx:252
-#: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view-overview.tsx:466
-#: ../html/src/manager/images/image-view-runtime.tsx:68
-#: ../html/src/manager/images/image-view-runtime.tsx:105
-#: ../html/src/manager/images/image-view.tsx:480
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view-overview.js:29
+#: ../html/src/manager/images/image-view-overview.js:39
+#: ../html/src/manager/images/image-view-overview.js:158
+#: ../html/src/manager/images/image-view-overview.js:294
+#: ../html/src/manager/images/image-view-runtime.js:44
+#: ../html/src/manager/images/image-view-runtime.js:79
+#: ../html/src/manager/images/image-view.js:397
+#: ../html/src/manager/images/image-view.js:439
 msgid "No information"
 msgstr "情報無し"
 
-#: ../html/src/manager/images/image-view-overview.tsx:43
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view-overview.js:31
+#: ../html/src/manager/images/image-view.js:416
 msgid "Queued"
 msgstr "キュー済み"
 
-#: ../html/src/manager/images/image-view-overview.tsx:45
-#: ../html/src/manager/images/image-view-overview.tsx:57
-#: ../html/src/manager/images/image-view-overview.tsx:69
-#: ../html/src/manager/images/image-view-overview.tsx:81
+#: ../html/src/manager/images/image-view-overview.js:31
+#: ../html/src/manager/images/image-view-overview.js:33
+#: ../html/src/manager/images/image-view-overview.js:35
+#: ../html/src/manager/images/image-view-overview.js:37
 msgid "Go to event"
 msgstr "イベントに移動"
 
-#: ../html/src/manager/images/image-view-overview.tsx:48
+#: ../html/src/manager/images/image-view-overview.js:31
 msgid " is queued"
 msgstr " はキューに入っています"
 
-#: ../html/src/manager/images/image-view-overview.tsx:55
+#: ../html/src/manager/images/image-view-overview.js:33
 msgid "In progress"
 msgstr "処理中です"
 
-#: ../html/src/manager/images/image-view-overview.tsx:60
+#: ../html/src/manager/images/image-view-overview.js:33
 msgid " in progress"
 msgstr " は処理中です"
 
-#: ../html/src/manager/images/image-view-overview.tsx:67
+#: ../html/src/manager/images/image-view-overview.js:35
 msgid "Successful"
 msgstr "成功"
 
-#: ../html/src/manager/images/image-view-overview.tsx:72
+#: ../html/src/manager/images/image-view-overview.js:35
 msgid " is successful"
 msgstr " は成功しました"
 
-#: ../html/src/manager/images/image-view-overview.tsx:84
+#: ../html/src/manager/images/image-view-overview.js:37
 msgid " has failed"
 msgstr " は失敗しました"
 
-#: ../html/src/manager/images/image-view-overview.tsx:103
-#: ../html/src/manager/images/image-view-overview.tsx:104
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view-overview.js:48
+#: ../html/src/manager/images/image-view.js:414
 msgid "Built externally"
 msgstr "外部で構築済み"
 
-#: ../html/src/manager/images/image-view-overview.tsx:126
+#: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
 msgstr " ステータス"
 
-#: ../html/src/manager/images/image-view-overview.tsx:131
+#: ../html/src/manager/images/image-view-overview.js:73
 msgid "Picked Up"
 msgstr "ピックアップ済み"
 
-#: ../html/src/manager/images/image-view-overview.tsx:184
-#: ../html/src/manager/images/image-view.tsx:555
+#: ../html/src/manager/images/image-view-overview.js:107
+#: ../html/src/manager/images/image-view.js:460
 msgid "Cluster"
 msgstr "クラスタ"
 
-#: ../html/src/manager/images/image-view-overview.tsx:185
-#: ../html/src/manager/images/image-view.tsx:556
-#: ../html/src/manager/images/image-view.tsx:608
+#: ../html/src/manager/images/image-view-overview.js:108
+#: ../html/src/manager/images/image-view.js:461
+#: ../html/src/manager/images/image-view.js:515
 msgid "Instances"
 msgstr "インスタンス"
 
-#: ../html/src/manager/images/image-view-overview.tsx:195
-#: ../html/src/manager/images/image-view-overview.tsx:232
-#: ../html/src/manager/images/image-view.tsx:517
-#: ../html/src/manager/images/image-view.tsx:566
+#: ../html/src/manager/images/image-view-overview.js:120
+#: ../html/src/manager/images/image-view-overview.js:151
+#: ../html/src/manager/images/image-view.js:432
+#: ../html/src/manager/images/image-view.js:473
 msgid "Waiting for update ..."
 msgstr "更新を待っています..."
 
-#: ../html/src/manager/images/image-view-overview.tsx:212
-#: ../html/src/manager/images/image-view.tsx:583
+#: ../html/src/manager/images/image-view-overview.js:134
+#: ../html/src/manager/images/image-view.js:487
 msgid "View cluster summary"
 msgstr "クラスタ概要の表示"
 
-#: ../html/src/manager/images/image-view-overview.tsx:243
-#: ../html/src/manager/images/image-view-overview.tsx:245
-#: ../html/src/manager/images/image-view.tsx:525
+#: ../html/src/manager/images/image-view-overview.js:156
+#: ../html/src/manager/images/image-view.js:437
 msgid "All instances are consistent with SUSE Manager"
 msgstr "全てのインスタンスが SUSE Manager と同期できています"
 
-#: ../html/src/manager/images/image-view-overview.tsx:258
-#: ../html/src/manager/images/image-view-overview.tsx:259
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view-overview.js:160
+#: ../html/src/manager/images/image-view.js:441
 msgid "Outdated instances found"
 msgstr "古いインスタンスが見つかりました"
 
-#: ../html/src/manager/images/image-view-overview.tsx:323
+#: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
 msgstr "プロファイルの編集"
 
-#: ../html/src/manager/images/image-view-overview.tsx:348
+#: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
 msgstr "ストアの編集"
 
-#: ../html/src/manager/images/image-view-overview.tsx:417
-#: ../html/src/manager/images/image-view.tsx:729
+#: ../html/src/manager/images/image-view-overview.js:258
+#: ../html/src/manager/images/image-view.js:636
 msgid "Instance Details for '{0}'"
 msgstr "'{0}' に対するインスタンスの詳細"
 
-#: ../html/src/manager/images/image-view-overview.tsx:472
-#: ../html/src/manager/images/image-view-overview.tsx:473
-#: ../html/src/manager/images/image-view.tsx:482
+#: ../html/src/manager/images/image-view-overview.js:296
+#: ../html/src/manager/images/image-view.js:399
 msgid "Critical updates available"
 msgstr "重大な更新があります"
 
-#: ../html/src/manager/images/image-view-overview.tsx:479
-#: ../html/src/manager/images/image-view-overview.tsx:480
-#: ../html/src/manager/images/image-view.tsx:485
+#: ../html/src/manager/images/image-view-overview.js:298
+#: ../html/src/manager/images/image-view.js:401
 msgid "Non-critical updates available"
 msgstr "重大ではない更新があります"
 
-#: ../html/src/manager/images/image-view-overview.tsx:486
-#: ../html/src/manager/images/image-view-overview.tsx:487
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view-overview.js:300
+#: ../html/src/manager/images/image-view.js:403
 msgid "Package updates available"
 msgstr "パッケージの更新があります"
 
-#: ../html/src/manager/images/image-view-overview.tsx:493
-#: ../html/src/manager/images/image-view-overview.tsx:494
-#: ../html/src/manager/images/image-view.tsx:490
+#: ../html/src/manager/images/image-view-overview.js:302
+#: ../html/src/manager/images/image-view.js:405
 msgid "Image is up to date"
 msgstr "イメージは最新の状態です"
 
-#: ../html/src/manager/images/image-view-overview.tsx:562
+#: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
 msgstr "イメージの状態"
 
-#: ../html/src/manager/images/image-view-overview.tsx:565
+#: ../html/src/manager/images/image-view-overview.js:365
 msgid "Image Info"
 msgstr "イメージの情報"
 
-#: ../html/src/manager/images/image-view-overview.tsx:576
+#: ../html/src/manager/images/image-view-overview.js:373
 msgid "Build Status"
 msgstr "ビルド状態"
 
-#: ../html/src/manager/images/image-view-overview.tsx:584
-#: ../html/src/manager/images/image-view-overview.tsx:752
+#: ../html/src/manager/images/image-view-overview.js:381
+#: ../html/src/manager/images/image-view-overview.js:516
 msgid "Inspect"
 msgstr "検査"
 
-#: ../html/src/manager/images/image-view-overview.tsx:593
+#: ../html/src/manager/images/image-view-overview.js:390
 msgid "Rebuild"
 msgstr "再ビルド"
 
-#: ../html/src/manager/images/image-view-overview.tsx:594
+#: ../html/src/manager/images/image-view-overview.js:391
 msgid "Reschedule the build"
 msgstr "ビルドの再スケジュール"
 
-#: ../html/src/manager/images/image-view-overview.tsx:602
+#: ../html/src/manager/images/image-view-overview.js:399
 msgid "Reinspect"
 msgstr "再検査"
 
-#: ../html/src/manager/images/image-view-overview.tsx:603
+#: ../html/src/manager/images/image-view-overview.js:400
 msgid "Reschedule the inspect"
 msgstr "検査の再スケジュール"
 
-#: ../html/src/manager/images/image-view-overview.tsx:616
+#: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
 msgstr "カスタムイメージの情報"
 
-#: ../html/src/manager/images/image-view-overview.tsx:630
-#: ../html/src/manager/images/image-view.tsx:364
-#: ../html/src/manager/images/image-view.tsx:698
+#: ../html/src/manager/images/image-view-overview.js:426
+#: ../html/src/manager/images/image-view.js:321
+#: ../html/src/manager/images/image-view.js:619
 msgid "Delete Image"
 msgstr "イメージの削除"
 
-#: ../html/src/manager/images/image-view-overview.tsx:633
-#: ../html/src/manager/images/image-view.tsx:701
+#: ../html/src/manager/images/image-view-overview.js:427
+#: ../html/src/manager/images/image-view.js:620
 msgid "Are you sure you want to delete image"
 msgstr "イメージを削除してよろしいですか"
 
-#: ../html/src/manager/images/image-view-overview.tsx:676
+#: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
 msgstr "ビルドのスケジュール"
 
-#: ../html/src/manager/images/image-view-overview.tsx:718
+#: ../html/src/manager/images/image-view-overview.js:489
 msgid "Rebuild Image"
 msgstr "イメージの再ビルド"
 
-#: ../html/src/manager/images/image-view-overview.tsx:753
+#: ../html/src/manager/images/image-view-overview.js:517
 msgid "Schedule inspect"
 msgstr "検査のスケジュール"
 
-#: ../html/src/manager/images/image-view-overview.tsx:789
+#: ../html/src/manager/images/image-view-overview.js:548
 msgid "Reinspect Image"
 msgstr "インストール済み"
 
-#: ../html/src/manager/images/image-view-packages.tsx:53
+#: ../html/src/manager/images/image-view-packages.js:54
 #: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
 msgstr "インストール済み"
 
-#: ../html/src/manager/images/image-view-patches.tsx:20
+#: ../html/src/manager/images/image-view-patches.js:12
 msgid "fa fa-shield fa-1-5x"
 msgstr "fa fa-shield fa-1-5x"
 
-#: ../html/src/manager/images/image-view-patches.tsx:21
+#: ../html/src/manager/images/image-view-patches.js:13
 msgid "fa fa-bug fa-1-5x"
 msgstr "fa fa-bug fa-1-5x"
 
-#: ../html/src/manager/images/image-view-patches.tsx:22
+#: ../html/src/manager/images/image-view-patches.js:14
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
 msgstr "fa spacewalk-icon-enhancement fa-1-5x"
 
-#: ../html/src/manager/images/image-view-patches.tsx:23
+#: ../html/src/manager/images/image-view-patches.js:15
 msgid "fa fa-refresh fa-1-5x"
 msgstr "fa fa-refresh fa-1-5x"
 
-#: ../html/src/manager/images/image-view-patches.tsx:24
+#: ../html/src/manager/images/image-view-patches.js:16
 msgid "fa fa-archive fa-1-5"
 msgstr "fa fa-archive fa-1-5"
 
-#: ../html/src/manager/images/image-view-patches.tsx:28
+#: ../html/src/manager/images/image-view-patches.js:20
 msgid "Security advisory"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/manager/images/image-view-patches.tsx:29
+#: ../html/src/manager/images/image-view-patches.js:21
 msgid "Bug fix advisory"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/images/image-view-patches.tsx:30
+#: ../html/src/manager/images/image-view-patches.js:22
 msgid "Product enhancement advisory"
 msgstr "製品の機能強化アドバイザリ"
 
-#: ../html/src/manager/images/image-view-patches.tsx:31
+#: ../html/src/manager/images/image-view-patches.js:23
 msgid "Reboot required"
 msgstr "要再起動"
 
-#: ../html/src/manager/images/image-view-patches.tsx:32
+#: ../html/src/manager/images/image-view-patches.js:24
 msgid "Affects package management stack"
 msgstr "パッケージ管理スタックに影響があります"
 
-#: ../html/src/manager/images/image-view-patches.tsx:90
+#: ../html/src/manager/images/image-view-patches.js:78
 msgid "Advisory"
 msgstr "アドバイザリ"
 
-#: ../html/src/manager/images/image-view-patches.tsx:101
+#: ../html/src/manager/images/image-view-patches.js:92
 msgid "Updated"
 msgstr "更新済み"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:31
-#, fuzzy
-msgid "Loading runtime information..."
-msgstr "追加情報"
-
-#: ../html/src/manager/images/image-view-runtime.tsx:65
+#: ../html/src/manager/images/image-view-runtime.js:42
 msgid "Instance is consistent with SUSE Manager"
 msgstr "インスタンスは SUSE Manager と同期されています"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:70
+#: ../html/src/manager/images/image-view-runtime.js:46
 msgid "Instance is outdated"
 msgstr "インスタンスは古くなっています"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:102
+#: ../html/src/manager/images/image-view-runtime.js:77
 msgid "Cluster is consistent with SUSE Manager"
 msgstr "クラスタは SUSE Manager と同期されています"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:107
+#: ../html/src/manager/images/image-view-runtime.js:81
 msgid "Cluster is outdated"
 msgstr "クラスタは古くなっています"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:127
+#: ../html/src/manager/images/image-view-runtime.js:95
 msgid "Pod"
 msgstr "ポッド"
 
-#: ../html/src/manager/images/image-view-runtime.tsx:128
+#: ../html/src/manager/images/image-view-runtime.js:96
 msgid "Namespace"
 msgstr "ネームスペース"
 
-#: ../html/src/manager/images/image-view.tsx:307
+#: ../html/src/manager/images/image-view.js:282
 msgid "Deleted successfully."
 msgstr "削除を行ないました。"
 
-#: ../html/src/manager/images/image-view.tsx:323
+#: ../html/src/manager/images/image-view.js:294
 msgid "Image inspect has been scheduled."
 msgstr "イメージの検査をスケジュールしました。"
 
-#: ../html/src/manager/images/image-view.tsx:339
+#: ../html/src/manager/images/image-view.js:307
 msgid "Image build has been scheduled."
 msgstr "イメージの構築をスケジュールしました。"
 
-#: ../html/src/manager/images/image-view.tsx:387
+#: ../html/src/manager/images/image-view.js:334
 msgid "Images"
 msgstr "イメージ"
 
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.js:418
 msgid "Building"
 msgstr "構築しています"
 
-#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/images/image-view.js:424
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:305
 msgid "Unknown"
 msgstr "不明"
 
-#: ../html/src/manager/images/image-view.tsx:603
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.js:508
+#: ../html/src/manager/images/image-view.js:670
 msgid "Runtime"
 msgstr "実行時間"
 
-#: ../html/src/manager/images/image-view.tsx:633
+#: ../html/src/manager/images/image-view.js:555
 msgid "Revision"
 msgstr "リビジョン"
 
-#: ../html/src/manager/images/image-view.tsx:637
+#: ../html/src/manager/images/image-view.js:561
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-view.tsx:640
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.js:566
+#: ../html/src/manager/images/image-view.js:669
 msgid "Patches"
 msgstr "パッチ"
 
-#: ../html/src/manager/images/image-view.tsx:653
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.js:575
+#: ../html/src/manager/images/image-view.js:669
 msgid "Packages"
 msgstr "パッケージ"
 
-#: ../html/src/manager/images/image-view.tsx:661
+#: ../html/src/manager/images/image-view.js:587
 msgid "Last Modified"
 msgstr "最終変更"
 
-#: ../html/src/manager/images/image-view.tsx:714
+#: ../html/src/manager/images/image-view.js:626
 msgid "Delete Selected Image(s)"
 msgstr "選択したイメージの削除"
 
-#: ../html/src/manager/images/image-view.tsx:718
+#: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete the selected image?"
 msgstr "選択したイメージを削除してよろしいですか？"
 
-#: ../html/src/manager/images/image-view.tsx:720
+#: ../html/src/manager/images/image-view.js:629
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr ""
 "選択したイメージを削除してよろしいですか？ ({0} 個のイメージが選択されていま"
