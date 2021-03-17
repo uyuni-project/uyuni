@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/bin/spacecmd:60
+#: ../src/bin/spacecmd:59
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 17:39+0000\n"
+"POT-Creation-Date: 2021-02-05 11:22+0100\n"
 "PO-Revision-Date: 2020-10-16 10:51+0200\n"
 "Last-Translator: Pascal Arlt <parlt@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
@@ -7509,6 +7509,6 @@ msgstr ""
 msgid "Parameter {} not a string type, but {}."
 msgstr ""
 
-#: ../src/bin/spacecmd:75
+#: ../src/bin/spacecmd:74
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr ""
