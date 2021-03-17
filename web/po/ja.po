@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-14 11:56+0000\n"
+"PO-Revision-Date: 2021-03-18 00:57+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -503,7 +503,6 @@ msgid "No flavors"
 msgstr "フレーバー無し"
 
 #: ../html/src/components/input/Select.test.tsx:72
-#, fuzzy
 msgid "No flavor"
 msgstr "フレーバー無し"
 
@@ -533,9 +532,8 @@ msgid "Next"
 msgstr "次へ"
 
 #: ../html/src/components/pagination.tsx:33
-#, fuzzy
 msgid "Last"
-msgstr "姓"
+msgstr "最後"
 
 #: ../html/src/components/pagination.tsx:88
 msgid "Page"
@@ -720,32 +718,24 @@ msgstr "モニタリングの無効化が正常に完了しました。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
+msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
+msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
-"います。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押"
-"して Prometheus エクスポータを停止してください。"
+msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
-"います。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押"
-"して Prometheus エクスポータを開始してください。"
+msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -783,9 +773,8 @@ msgid "Disabled"
 msgstr "無効"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:147
-#, fuzzy
 msgid "Server Monitoring"
-msgstr "サーバ自己監視"
+msgstr "サーバ監視"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
 msgid "The server uses "
@@ -797,7 +786,7 @@ msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
-msgstr ""
+msgstr " エクスポータを利用して、お使いの環境に関するメトリックを開示します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Refer to the "
@@ -809,7 +798,7 @@ msgstr "ドキュメンテーション"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
-msgstr ""
+msgstr " をお読みください。メトリックの消費方法が書かれています。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:242
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:262
@@ -869,7 +858,6 @@ msgid "Monitoring"
 msgstr "モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:393
-#, fuzzy
 msgid "Restarting"
 msgstr "再起動"
 
@@ -962,22 +950,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:362
-#, fuzzy
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
-"(ミラークレデンシャル) に直接結びついています。"
+msgstr "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 (ミラークレデンシャル) に直接結びついています。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
-#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr ""
-"存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
-"報を追加していることをご確認ください。"
+msgstr "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -1386,9 +1368,8 @@ msgid "Messages"
 msgstr "メッセージ"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
-#, fuzzy
 msgid "Pins"
-msgstr "ピン "
+msgstr "ピン"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
@@ -1429,7 +1410,6 @@ msgid "Part number"
 msgstr "パーツ番号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
-#, fuzzy
 msgid "Subscription"
 msgstr "サブスクリプション"
 
@@ -1446,13 +1426,12 @@ msgid "End date"
 msgstr "終了日"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
-#, fuzzy
 msgid "Delete Pin"
-msgstr "プロファイルの削除"
+msgstr "ピンの削除"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
+msgstr "ピンが設定されていません。下記のボタンで作成できます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
@@ -1465,9 +1444,8 @@ msgid "pending next run"
 msgstr "次回の実行まで待機しています"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
-#, fuzzy
 msgid "satisfied"
-msgstr "満たされていません"
+msgstr "満たされています"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
 msgid "not satisfied"
@@ -1601,26 +1579,23 @@ msgstr "一致しないシステム"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
-msgstr ""
+msgstr "CSV のダウンロード"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
-msgstr ""
+msgstr "物理配置のみ"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
-#, fuzzy
 msgid "Unlimited Virtual Machines"
-msgstr "仮想マシンの作成"
+msgstr "無制限の仮想マシン"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
-#, fuzzy
 msgid "1-2 Sockets or 1-2 Virtual Machines"
-msgstr "仮想マシンの作成"
+msgstr "1〜2 ソケットまたは 1〜2 台の仮想マシン"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
-#, fuzzy
 msgid "Per-instance"
-msgstr "インスタンス"
+msgstr "インスタンスごと"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1781,9 +1756,8 @@ msgid "scheduled"
 msgstr "スケジュールしました"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:27
-#, fuzzy
 msgid " successfully."
-msgstr "成功"
+msgstr " 。"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
@@ -1798,9 +1772,8 @@ msgid "Cluster "
 msgstr "クラスタ "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:40
-#, fuzzy
 msgid " has been added successfully."
-msgstr "削除を行ないました。"
+msgstr " を追加しました。"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:90
 #: ../html/src/manager/clusters/cluster/cluster.tsx:102
@@ -1877,9 +1850,8 @@ msgid "Join"
 msgstr "参加"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
-#, fuzzy
 msgid " has been deleted successfully."
-msgstr "削除を行ないました。"
+msgstr " を削除しました。"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:46
 msgid "Add an existing cluster"
@@ -2547,35 +2519,31 @@ msgstr "ページが見つかりません"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "The page you requested, {0}, was not found."
-msgstr ""
+msgstr "リクエストされたページ {0} が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:11
-#, fuzzy
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr ""
-"このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤り"
-"がないかを再度確認してください。コピーしているアドレスが古いために使われてい"
-"ない可能性もあるかもしれません。"
+msgstr "このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
+msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンを押して戻ってください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
+msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
+msgstr "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージと共にご連絡ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -2636,9 +2604,8 @@ msgid "Building the image has been "
 msgstr "イメージの構築を "
 
 #: ../html/src/manager/images/image-build.tsx:253
-#, fuzzy
 msgid "Profile Summary"
-msgstr "概要"
+msgstr "プロファイル概要"
 
 #: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
@@ -2666,12 +2633,10 @@ msgid "Activation Key"
 msgstr "アクティベーションキー"
 
 #: ../html/src/manager/images/image-build.tsx:355
-#, fuzzy
 msgid "Build Image"
-msgstr "イメージの再ビルド"
+msgstr "イメージの構築"
 
 #: ../html/src/manager/images/image-build.tsx:371
-#, fuzzy
 msgid "Image Profile"
 msgstr "イメージプロファイル"
 
@@ -2736,9 +2701,8 @@ msgid "Target Image Store"
 msgstr "ターゲットのイメージストア"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:317
-#, fuzzy
 msgid "Dockerfile URL"
-msgstr "docker ファイル"
+msgstr "Docker ファイル URL"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
