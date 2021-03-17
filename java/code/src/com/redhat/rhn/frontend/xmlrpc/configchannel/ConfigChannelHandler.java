@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.configchannel;
 
+import static java.util.Optional.empty;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -65,8 +67,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.empty;
 
 /**
  * ConfigHandler
@@ -158,7 +158,7 @@ public class ConfigChannelHandler extends BaseHandler {
             ConfigChannel cc = helper.create(user, ct);
             helper.update(cc, name, label, description);
             ConfigurationManager.getInstance().save(cc, empty());
-            cc  = (ConfigChannel) HibernateFactory.reload(cc);
+            cc  = HibernateFactory.reload(cc);
             String contents = "";
             if (data.containsKey(ConfigRevisionSerializer.CONTENTS)) {
                 try {
@@ -244,7 +244,7 @@ public class ConfigChannelHandler extends BaseHandler {
                 "Could not find configuration file with filePath=: " + filePath);
         }
 
-        return (ArrayList<ConfigRevision>) cm.lookupConfigRevisions(cf);
+        return cm.lookupConfigRevisions(cf);
     }
 
     /**
