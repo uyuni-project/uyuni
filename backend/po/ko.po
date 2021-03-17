@@ -11,31 +11,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-05 11:22+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "미완료 프록시 인증 토큰: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "거부된 프록시 인증"
 
 #: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -70,10 +56,21 @@ msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
 msgid "Invalid system_id/action_id pair."
 msgstr "유효하지 않은 system_id/action_id 쌍입니다."
 
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "다음이 아닌 패키지 이름이 필요: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "다음이 아닌 패키지 필요: %s"
+
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
+msgstr ""
+"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -82,16 +79,6 @@ msgstr "유효하지 않은 세션 키"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "이 서버 ID는 더 이상 존재하지 않음"
-
-#: ../server/handlers/xmlrpc/queue.py:433
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "유효하지 않은 작업 값 유형 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:464
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "%s 작업은 %s 서버에 속하지 않음"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -112,7 +99,9 @@ msgstr "유효하지 않은 시스템 릴리스 버전 요청됨"
 #: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr "유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾을 수 없습니다."
+msgstr ""
+"유효한 네트워크 인터페이스를 찾을 수 없습니다. ipaddr 및 ip6addr를 모두 찾을 "
+"수 없습니다."
 
 #: ../server/handlers/xmlrpc/registration.py:1117
 #, python-brace-format
@@ -137,15 +126,15 @@ msgstr "%s(%s)에 유효하지 않은 값 '%s'"
 msgid "Invalid value %s (%s)"
 msgstr "유효하지 않은 값 %s(%s)"
 
-#: ../server/handlers/xmlrpc/errata.py:64
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Expected a package name, not: %s"
-msgstr "다음이 아닌 패키지 이름이 필요: %s"
+msgid "Invalid action value type %s (%s)"
+msgstr "유효하지 않은 작업 값 유형 %s(%s)"
 
-#: ../server/handlers/xmlrpc/errata.py:115
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "Expected a package, not: %s"
-msgstr "다음이 아닌 패키지 필요: %s"
+msgid "Action %s does not belong to server %s"
+msgstr "%s 작업은 %s 서버에 속하지 않음"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -176,15 +165,6 @@ msgstr ""
 "\n"
 "               %s 계정이 이 서버에서 비활성화되었습니다.\n"
 "               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -234,6 +214,15 @@ msgstr "킥스타트 세션 불일치"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "재등록 토큰 스택은 지원되지 않습니다."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -295,14 +284,56 @@ msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
 msgid "Cannot register usernames ending with %s"
 msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
 
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "미완료 프록시 인증 토큰: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "거부된 프록시 인증"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"중요 메시지:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"'%s' 실행 중: 다음이 catch됨:\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "유효하지 않은 URI %s"
+
 #: ../server/rhnChannel.py:1999
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 일치하는 채널에 액세스할 "
-"수 있는 권한이 없습니다."
+"귀하의 계정은 (릴리스='%(release)s', 아키텍처='%(arch)s')%(www_activation)에 "
+"일치하는 채널에 액세스할 수 있는 권한이 없습니다."
 
 #: ../server/rhnChannel.py:2014
 #, python-format
@@ -372,44 +403,6 @@ msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
 msgstr "패키지를 찾을 수 없음"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"중요 메시지:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"'%s' 실행 중: 다음이 catch됨:\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "유효하지 않은 URI %s"
-
-#: ../common/rhnTB.py:205
-#, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "오류: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, python-format
-msgid "TRACEBACK: %s"
-msgstr "역추적: %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -620,7 +613,8 @@ msgstr ""
 "     사용자 그룹 구성원 한도에 도달했습니다..\n"
 "\n"
 "     계정의 현재 설정에서 다른 시스템 프로파일 추가를 허용하지 않습니다.\n"
-"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파일 수를\n"
+"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파"
+"일 수를\n"
 "     수정해야 하는지 확인하십시오.\n"
 "     "
 
@@ -652,7 +646,8 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    이 시스템은 이미 Salt Minion으로 등록되었습니다. 기존 클라이언트로 등록하려면\n"
+"    이 시스템은 이미 Salt Minion으로 등록되었습니다. 기존 클라이언트로 등록하"
+"려면\n"
 "    우선 웹 UI 또는 API를 통해 삭제한 후 기존 도구를 사용하여 등록하십시오.\n"
 "    "
 
@@ -710,7 +705,9 @@ msgstr "이 등록 토큰을 사용하여 등록한 시스템이 너무 많습�
 
 #: ../common/rhnException.py:145
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr "토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 있습니다."
+msgstr ""
+"토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 "
+"있습니다."
 
 #: ../common/rhnException.py:146
 msgid "Conflicting activation tokens"
@@ -802,7 +799,8 @@ msgstr "최소 비밀번호 길이 위반"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr "이 사용자에는 API 읽기 전용 액세스 권한이 있습니다. 작업이 거부되었습니다."
+msgstr ""
+"이 사용자에는 API 읽기 전용 액세스 권한이 있습니다. 작업이 거부되었습니다."
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
@@ -860,7 +858,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     이 SUSE Manager 서버는 이 서버에서 서버 간 동기화를 사용하도록 허용되지 않습니다.\n"
+"     이 SUSE Manager 서버는 이 서버에서 서버 간 동기화를 사용하도록 허용되지 "
+"않습니다.\n"
 "     "
 
 #: ../common/rhnException.py:209
@@ -998,7 +997,8 @@ msgstr "SCAP 결과 파일 전달이 잘못되거나 완전하지 않습니다."
 
 #: ../common/rhnException.py:248
 msgid "Error composing directory path for detailed SCAP results"
-msgstr "자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류가 발생했습니다."
+msgstr ""
+"자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류가 발생했습니다."
 
 #: ../common/rhnException.py:249
 msgid "Error composing file path for detailed SCAP results"
@@ -1047,11 +1047,245 @@ msgstr "오류 클래스 정보: %s\n"
 msgid "Explanation: %s"
 msgstr "설명: %s"
 
+#: ../common/rhnTB.py:205
+#, python-format
+msgid "ERROR: %s %s: %s"
+msgstr "오류: %s %s: %s"
+
+#: ../common/rhnTB.py:207
+#, python-format
+msgid "TRACEBACK: %s"
+msgstr "역추적: %s"
+
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"오류: %s 단계 실행 중. 오류:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니"
+"다.\n"
+"       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
+"       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
+"       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"오류: 정보를 동기화하는 동안 오류가 발생했습니다.\n"
+"       오류 메시지: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"오류: ISS Master와 통신하는 동안 오류가 발생했습니다.\n"
+"       오류 세부 정보에 따라, 구성, 기본 네트워크 연결 및/또는 이름 확인을 검"
+"토한 후\n"
+"       다시 시도하십시오.\n"
+"       오류 메시지: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
+"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화"
+"되어야 합니다.\n"
+"       이 트랜잭션에서 누락된 상위 채널:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"오류: 이 채널 집합의 채널을 동기화할 권한이 없습니다.\n"
+"SUSE Manager 담당자에게 문의하십시오.\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  오류: 장치의 여유 공간(%sKB)이 부족합니다."
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s 패치 성공: %s(%s바이트)"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    비활성 패키지:  %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   총 크기: %s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      %s/%s 다운로드 완료. 예상 남은 시간: %s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    패치 실패: %s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   RPM 패치 요약: %s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       성공: %d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       실패:  %d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       비활성: %d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   *관련* 패키지 메타데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   오류 데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   킥스타트 데이터 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   킥스타트 트리 파일 검색 중/구문 분석 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   *관련* 패키지 메타데이터 가져오는 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * 경고: 시간이 오래 걸리는 프로세스일 수 있습니다."
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "패키지를 채널에 연결"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   *관련* 오류 가져오는 중: %s(%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   가져올 새 킥스타트 가능 트리 없음"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "킥스타트 가능 트리 가져오기(%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "가져온 킥스타트 가능 트리(%d)"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\"(명령줄에 지정됨)\n"
+"열거나 읽을 수 없음:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\"을(를) 열거나\n"
+"쓸 수 없는 대상:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 로그를 이메일로 전송 +++"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s의 %s 동기화 보고서"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1104,8 +1338,8 @@ msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
 msgstr ""
-"오류: 덤프에서 패키지 데이터가 누락되었습니다. --no-rpms를 사용하여 이 단계를 건너뛰거나 패키지 데이터를 포함하도록 컨텐트를 "
-"수정하십시오."
+"오류: 덤프에서 패키지 데이터가 누락되었습니다. --no-rpms를 사용하여 이 단계"
+"를 건너뛰거나 패키지 데이터를 포함하도록 컨텐트를 수정하십시오."
 
 #. the orgs() method doesn't exist; that's fine we just
 #. won't sync the orgs
@@ -1117,18 +1351,10 @@ msgstr "SUSE Manager는 조직 데이터 동기화를 지원하지 않습니다.
 msgid "Skipping..."
 msgstr "건너뛰는 중..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
-msgid "+++ sending log as an email +++"
-msgstr "+++ 로그를 이메일로 전송 +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "%s의 SUSE Manager 내부 서버 동기화 보고서"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -1147,9 +1373,11 @@ msgid ""
 "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
 "content on disk via Channel Dump ISOs."
 msgstr ""
-"오류: RHN Classic Hosted와의 라이브 컨텐트 동기화는 더 이상 지원되지 않습니다.\n"
-"Inter-Server-Sync(ISS)를 통해 다른 {PRODUCT_NAME}에서 또는 채널 덤프 ISO를 통해 디스크의 로컬 "
-"컨텐트에서 동기화를 시도 중인 경우를 제외하고 cdn-sync 명령을 대신 사용하십시오."
+"오류: RHN Classic Hosted와의 라이브 컨텐트 동기화는 더 이상 지원되지 않습니"
+"다.\n"
+"Inter-Server-Sync(ISS)를 통해 다른 {PRODUCT_NAME}에서 또는 채널 덤프 ISO를 통"
+"해 디스크의 로컬 컨텐트에서 동기화를 시도 중인 경우를 제외하고 cdn-sync 명령"
+"을 대신 사용하십시오."
 
 #: ../satellite_tools/satsync.py:541
 #, python-format
@@ -1478,8 +1706,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "mgr-inter-sync\" for more information."
 msgstr ""
-"디버그 전용: XML/데이터베이스-가져오기 처리(1..%s)를 위한 최대 배치 크기입니다. 자세한 정보는 \"man mgr-inter-"
-"sync\"를 참조하십시오."
+"디버그 전용: XML/데이터베이스-가져오기 처리(1..%s)를 위한 최대 배치 크기입니"
+"다. 자세한 정보는 \"man mgr-inter-sync\"를 참조하십시오."
 
 #: ../satellite_tools/satsync.py:2221
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1493,7 +1721,9 @@ msgstr "이 채널의 데이터만 처리"
 msgid ""
 "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
 "for more information."
-msgstr "디스크 덤프는 전체 내보내기로 간주됩니다. 자세한 내용은 \"man mgr-inter-sync\"를 참조하십시오."
+msgstr ""
+"디스크 덤프는 전체 내보내기로 간주됩니다. 자세한 내용은 \"man mgr-inter-sync"
+"\"를 참조하십시오."
 
 #: ../satellite_tools/satsync.py:2228
 msgid "existing custom channels will also be synced (unless -c is used)"
@@ -1603,8 +1833,8 @@ msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
-"마스터 Satellite의 정규화된 도메인 이름입니다. --mount-point에만 유효합니다. 조직 데이터 및 채널 권한을 가져올 때 "
-"필요합니다."
+"마스터 Satellite의 정규화된 도메인 이름입니다. --mount-point에만 유효합니다. "
+"조직 데이터 및 채널 권한을 가져올 때 필요합니다."
 
 #: ../satellite_tools/satsync.py:2288
 #, python-format
@@ -1648,7 +1878,8 @@ msgstr "  4+ - 로깅/메시지 너무 많음."
 
 #: ../satellite_tools/satsync.py:2355
 msgid "ERROR: The --master option is only valid with the --mount-point option"
-msgstr "오류: --master 옵션은 --mount-point 옵션과 함께 사용할 때만 사용할 수 있음"
+msgstr ""
+"오류: --master 옵션은 --mount-point 옵션과 함께 사용할 때만 사용할 수 있음"
 
 #: ../satellite_tools/satsync.py:2365
 #, python-format
@@ -1658,21 +1889,25 @@ msgstr "오류: 조직 ID %s을(를) 조회할 수 없음"
 #: ../satellite_tools/satsync.py:2374
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
-msgstr "경고: --list-channels 옵션은 모든 --step 옵션을 재정의합니다. --step가 무시되었습니다."
+msgstr ""
+"경고: --list-channels 옵션은 모든 --step 옵션을 재정의합니다. --step가 무시되"
+"었습니다."
 
 #: ../satellite_tools/satsync.py:2389
 #, python-format
 msgid ""
 "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-msgstr "오류: '%s'은(는) 유효한 단계가 아닙니다. 자세한 내용은 'man mgr-inter-sync'를 참조하십시오."
+msgstr ""
+"오류: '%s'은(는) 유효한 단계가 아닙니다. 자세한 내용은 'man mgr-inter-"
+"sync'를 참조하십시오."
 
 #: ../satellite_tools/satsync.py:2421
 msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"오류: 현재 가져온 채널이 없습니다. mgr-inter-sync --list-channels을 사용한 후 mgr-inter-sync -c "
-"chn0 -c chn1를 사용하십시오..."
+"오류: 현재 가져온 채널이 없습니다. mgr-inter-sync --list-channels을 사용한 "
+"후 mgr-inter-sync -c chn0 -c chn1를 사용하십시오..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
@@ -1699,7 +1934,8 @@ msgstr "  0  - 사용자 인터럽트됨 또는 미리 계획된 종료"
 
 #: ../satellite_tools/satsync.py:2490
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
-msgstr "  1  - mgr-inter-sync의 인스턴스를 1개 이상 실행하기 위해 시도하는 중입니다."
+msgstr ""
+"  1  - mgr-inter-sync의 인스턴스를 1개 이상 실행하기 위해 시도하는 중입니다."
 
 #: ../satellite_tools/satsync.py:2491
 msgid "  2  - Unable to find synchronization tools."
@@ -1811,216 +2047,3 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"오류: %s 단계 실행 중. 오류:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니다.\n"
-"       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
-"       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
-"       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"오류: 정보를 동기화하는 동안 오류가 발생했습니다.\n"
-"       오류 메시지: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"오류: ISS Master와 통신하는 동안 오류가 발생했습니다.\n"
-"       오류 세부 정보에 따라, 구성, 기본 네트워크 연결 및/또는 이름 확인을 검토한 후\n"
-"       다시 시도하십시오.\n"
-"       오류 메시지: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
-"       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화되어야 합니다.\n"
-"       이 트랜잭션에서 누락된 상위 채널:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"오류: 이 채널 집합의 채널을 동기화할 권한이 없습니다.\n"
-"SUSE Manager 담당자에게 문의하십시오.\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  오류: 장치의 여유 공간(%sKB)이 부족합니다."
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s 패치 성공: %s(%s바이트)"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    비활성 패키지:  %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr "   총 크기: %s"
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      %s/%s 다운로드 완료. 예상 남은 시간: %s"
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    패치 실패: %s"
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   RPM 패치 요약: %s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr "       성공: %d"
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr "       실패:  %d"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr "       비활성: %d"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   *관련* 패키지 메타데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   오류 데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   킥스타트 데이터 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   킥스타트 트리 파일 검색 중/구문 분석 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   *관련* 패키지 메타데이터 가져오는 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * 경고: 시간이 오래 걸리는 프로세스일 수 있습니다."
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr "패키지를 채널에 연결"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   *관련* 오류 가져오는 중: %s(%s)"
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr "   가져올 새 킥스타트 가능 트리 없음"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "킥스타트 가능 트리 가져오기(%d)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "가져온 킥스타트 가능 트리(%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\"(명령줄에 지정됨)\n"
-"열거나 읽을 수 없음:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\"을(를) 열거나\n"
-"쓸 수 없는 대상:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s의 %s 동기화 보고서"
