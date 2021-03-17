@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 15:33+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -106,10 +106,8 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/images/image-stores.js:157
 #: ../html/src/manager/images/image-view-overview.js:207
 #: ../html/src/manager/images/image-view-overview.js:215
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/maintenance/list/calendar-list.js:82
+#: ../html/src/manager/maintenance/list/schedule-list.js:68
 #: ../html/src/manager/state/recurring-states-list.js:119
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
@@ -151,9 +149,9 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.js:683
 #: ../html/src/manager/images/image-view.js:685
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:27
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:29
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:44
 #: ../html/src/manager/state/recurring-states-details.js:140
 #: ../html/src/manager/state/recurring-states-details.js:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
@@ -163,16 +161,16 @@ msgid "Back"
 msgstr "上一步"
 
 #: ../html/src/components/config-channels.tsx:401
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:167
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
 msgstr "确认"
 
 #: ../html/src/components/config-channels.tsx:409
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:171
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.js:181
+#: ../html/src/manager/maintenance/details/schedule-details.js:188
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -204,7 +202,7 @@ msgstr "搜索"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:47
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.js:206
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -283,10 +281,10 @@ msgstr "取消"
 #: ../html/src/manager/images/image-view.js:316
 #: ../html/src/manager/images/image-view.js:320
 #: ../html/src/manager/images/image-view.js:607
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:87
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:72
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:42
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.js:45
+#: ../html/src/manager/maintenance/list/calendar-list.js:89
+#: ../html/src/manager/maintenance/list/schedule-list.js:75
 #: ../html/src/manager/salt/keys/key-management.js:35
 #: ../html/src/manager/state/recurring-states-details.js:154
 #: ../html/src/manager/state/recurring-states-details.js:156
@@ -530,8 +528,8 @@ msgid "Page {0} of {1}"
 msgstr "第 {0} 页，共 {1} 页"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:32
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:85
+#: ../html/src/manager/maintenance/list/schedule-list.js:37
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
 msgstr "日程安排名称"
@@ -876,8 +874,8 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
 #: ../html/src/manager/images/image-view-patches.js:81
 #: ../html/src/manager/images/image-view.js:600
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:69
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:54
+#: ../html/src/manager/maintenance/list/calendar-list.js:75
+#: ../html/src/manager/maintenance/list/schedule-list.js:61
 #: ../html/src/manager/state/recurring-states-list.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
@@ -1220,8 +1218,8 @@ msgstr "名称"
 #: ../html/src/manager/images/image-profiles.js:147
 #: ../html/src/manager/images/image-stores.js:152
 #: ../html/src/manager/images/image-view.js:595
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:64
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:49
+#: ../html/src/manager/maintenance/list/calendar-list.js:70
+#: ../html/src/manager/maintenance/list/schedule-list.js:56
 #: ../html/src/manager/salt/keys/key-management.js:178
 #: ../html/src/manager/state/recurring-states-list.js:108
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
@@ -1707,7 +1705,7 @@ msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.js:669
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.js:61
 msgid "Overview"
 msgstr "概览"
 
@@ -1774,7 +1772,7 @@ msgstr "群集"
 #: ../html/src/manager/images/image-stores.js:144
 #: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/images/image-view.js:538
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:88
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
@@ -1829,8 +1827,8 @@ msgstr "创建项目"
 #: ../html/src/manager/images/image-profiles.js:111
 #: ../html/src/manager/images/image-store-edit.js:170
 #: ../html/src/manager/images/image-stores.js:114
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:30
 #: ../html/src/manager/state/recurring-states-list.js:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
@@ -2597,7 +2595,7 @@ msgstr "创建更多自定义信息键"
 
 #: ../html/src/manager/images/image-profile-edit.js:365
 #: ../html/src/manager/images/image-store-edit.js:168
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:36
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
@@ -3110,279 +3108,274 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:33
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:99
+#: ../html/src/manager/maintenance/details/calendar-details.js:34
+#: ../html/src/manager/maintenance/list/calendar-list.js:100
 msgid "Delete maintenance calendar"
 msgstr "删除维护日历"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:36
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:49
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:102
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:87
+#: ../html/src/manager/maintenance/details/calendar-details.js:37
+#: ../html/src/manager/maintenance/details/schedule-details.js:51
+#: ../html/src/manager/maintenance/list/calendar-list.js:103
+#: ../html/src/manager/maintenance/list/schedule-list.js:89
 #: ../html/src/manager/state/recurring-states-list.js:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:37
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:50
+#: ../html/src/manager/maintenance/details/calendar-details.js:38
+#: ../html/src/manager/maintenance/details/schedule-details.js:52
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:104
+#: ../html/src/manager/maintenance/details/calendar-details.js:39
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:163
+#: ../html/src/manager/maintenance/list/calendar-list.js:105
 msgid "Cancel affected actions?"
 msgstr "取消受影响的操作？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:66
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:47
+#: ../html/src/manager/maintenance/details/calendar-details.js:65
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:115
+#: ../html/src/manager/maintenance/list/calendar-list.js:52
 msgid "Calendar Name"
 msgstr "日历名称"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:67
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:52
+#: ../html/src/manager/maintenance/details/calendar-details.js:66
+#: ../html/src/manager/maintenance/list/calendar-list.js:59
 msgid "Used by Schedule"
 msgstr "已由日程安排使用"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:69
+#: ../html/src/manager/maintenance/details/calendar-details.js:68
 msgid "Url"
 msgstr "URL"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:73
+#: ../html/src/manager/maintenance/details/calendar-details.js:72
 msgid "Calendar Details"
 msgstr "日历细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:84
+#: ../html/src/manager/maintenance/details/schedule-details.js:48
+#: ../html/src/manager/maintenance/list/schedule-list.js:86
 msgid "Delete maintenance schedule"
 msgstr "删除维护日程安排"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:60
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:159
+#: ../html/src/manager/maintenance/details/schedule-details.js:66
+#: ../html/src/manager/maintenance/details/schedule-details.js:169
 msgid "Assigned Systems"
 msgstr "指派的系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:89
+#: ../html/src/manager/maintenance/details/schedule-details.js:99
 msgid "Schedule name"
 msgstr "日程安排名称"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:90
+#: ../html/src/manager/maintenance/details/schedule-details.js:100
 msgid "Assigned calendar"
 msgstr "指派的日历"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.js:101
 msgid "Schedule type"
 msgstr "日程安排类型"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
+#: ../html/src/manager/maintenance/details/schedule-details.js:101
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:90
 msgid "Single"
 msgstr "单个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
+#: ../html/src/manager/maintenance/details/schedule-details.js:101
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:91
 msgid "Multi"
 msgstr "多个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.js:106
 #: ../html/src/manager/state/recurring-states-details.js:92
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:103
+#: ../html/src/manager/maintenance/details/schedule-details.js:118
 msgid "Upcoming Maintenance Windows"
 msgstr "即将到来的维护时段"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:109
+#: ../html/src/manager/maintenance/details/schedule-details.js:124
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "开始"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:110
+#: ../html/src/manager/maintenance/details/schedule-details.js:125
 msgid "End"
 msgstr "结束"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:144
+#: ../html/src/manager/maintenance/details/schedule-details.js:155
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "已将维护日程安排指派到 {0} 个系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:163
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
+#: ../html/src/manager/maintenance/details/schedule-details.js:173
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:118
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:95
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:16
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:144
 msgid "Cancel affected actions"
 msgstr "取消受影响的操作"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
+#: ../html/src/manager/maintenance/details/schedule-details.js:197
 msgid "Search systems"
 msgstr "搜索系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:202
+#: ../html/src/manager/maintenance/details/schedule-details.js:212
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:114
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:109
 msgid "Url '{0}' is invalid"
 msgstr "URL '{0}' 无效"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:134
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:122
 msgid "Calendar data"
 msgstr "日历数据"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:128
 msgid "Enter Url to ical file"
 msgstr "编辑 ical 文件的 URL"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:156
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:139
 msgid "Attach file"
 msgstr "附加文件"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:162
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:145
 msgid "Remove file"
 msgstr "去除文件"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:172
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:154
 msgid "Refresh data from url"
 msgstr "从 URL 刷新数据"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:177
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:158
 msgid "Confirm calendar refresh"
 msgstr "确认日历刷新"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:180
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:161
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "刷新日历会重安排所有受影响的操作。"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:181
+#: ../html/src/manager/maintenance/edit/calendar-edit.js:162
 msgid "Confirm if you want to proceed."
 msgstr "请确认是否继续。"
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "日程安排"
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:136
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:37
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:37
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:111
+#: ../html/src/manager/maintenance/list/schedule-list.js:44
 msgid "Calendar"
 msgstr "日历"
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.js:50
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Maintenance"
 msgstr "维护"
 
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:120
-#: ../html/src/manager/maintenance/edit/schedule-edit.tsx:128
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:100
+#: ../html/src/manager/maintenance/edit/schedule-edit.js:105
 msgid "Add Calendar"
 msgstr "添加日历"
 
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:45
+#: ../html/src/manager/maintenance/list/calendar-list.js:48
 msgid "No calendars created. Use Create to add a calendar."
 msgstr "未创建日历。请使用 \"创建\" 添加日历。"
 
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:103
+#: ../html/src/manager/maintenance/list/calendar-list.js:104
 msgid "This will unassign all schedules from this calendar."
 msgstr "这会取消指派此日历中的所有日程安排。"
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:31
 msgid "Create a new maintenance schedule"
 msgstr "创建新的维护日程安排"
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Schedules"
 msgstr "日程安排"
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:37
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:39
 msgid "Calendars"
 msgstr "日历"
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.js:44
 msgid "schedule"
 msgstr "日程安排"
 
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:30
+#: ../html/src/manager/maintenance/list/schedule-list.js:33
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
 
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:88
+#: ../html/src/manager/maintenance/list/schedule-list.js:90
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除日程安排。"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:113
+#: ../html/src/manager/maintenance/maintenance-windows.js:104
 msgid "successfully"
 msgstr "成功"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:138
+#: ../html/src/manager/maintenance/maintenance-windows.js:128
 msgid "Error when deleting the "
 msgstr "删除以下项时出错： "
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:147
+#: ../html/src/manager/maintenance/maintenance-windows.js:143
 msgid "Calendar successfully refreshed"
 msgstr "已成功刷新日历"
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:23
 msgid ""
 "Any pending maintenance-only actions for these systems will be cancelled "
 "unless they are inside the new maintenance windows."
 msgstr "除非这些系统的任何仅维护等待中操作处于新维护时段，否则会取消这些操作。"
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:24
 msgid "Are you sure you want to proceed?"
 msgstr "您确定要继续吗？"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:37
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:43
 msgid "Maintenance schedule has been cleared"
 msgstr "已清除维护日程安排"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
-#, fuzzy
-msgid "Maintenance schedule has been assigned"
-msgstr "已清除维护日程安排"
-
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:90
 msgid "Clear All"
 msgstr "全部清除"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:81
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:91
 msgid "fa-times"
 msgstr "fa-times"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:91
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:99
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:101
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:108
 msgid "Assign All"
 msgstr "全部指派"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:92
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:100
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:102
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:109
 msgid "fa-edit"
 msgstr "fa-edit"
 
-#: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:122
+#: ../html/src/manager/maintenance/ssm/schedule-picker.js:137
 #, fuzzy
 msgid "None - clear schedule"
 msgstr "选择日程安排"
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:16
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:18
 msgid "Maintenance Schedules"
 msgstr "维护日程安排"
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:20
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:22
 msgid "Assign a maintenance schedule to {0} system(s)"
 msgstr "将维护日程安排指派到 {0} 个系统"
 
-#: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
+#: ../html/src/manager/maintenance/ssm/system-assignment.js:23
 msgid ""
 "Assigning a schedule will replace any prior assignments in all of the "
 "systems in the set."
