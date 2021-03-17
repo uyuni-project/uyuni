@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-11 09:51+0000\n"
+"POT-Creation-Date: 2021-03-11 09:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3733,33 +3733,33 @@ msgstr ""
 msgid "Fingerprint"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:196
+#: ../html/src/manager/shared/menu/menu.js:169
 msgid "Clear Menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:198
+#: ../html/src/manager/shared/menu/menu.js:171
 msgid "Filter menu"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:235
-#: ../html/src/manager/shared/menu/menu.tsx:238
+#: ../html/src/manager/shared/menu/menu.js:206
+#: ../html/src/manager/shared/menu/menu.js:209
 msgid "Uyuni homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:236
+#: ../html/src/manager/shared/menu/menu.js:207
 msgid "Uyuni"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:245
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.js:213
+#: ../html/src/manager/shared/menu/menu.js:216
 msgid "SUSE Manager homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:248
+#: ../html/src/manager/shared/menu/menu.js:214
 msgid "SUSE"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:250
+#: ../html/src/manager/shared/menu/menu.js:214
 msgid "Manager"
 msgstr ""
 
