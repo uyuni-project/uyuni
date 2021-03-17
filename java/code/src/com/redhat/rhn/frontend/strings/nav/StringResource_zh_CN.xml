@@ -163,41 +163,6 @@
         </context-group>
         <target state="translated">系统货币</target>
       </trans-unit>
-      <trans-unit id="software.crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target state="translated">软件崩溃</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.overview" xml:space="preserve">
-        <source>Software Crashes Overview</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target state="translated">软件崩溃概览</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.overview.summary" xml:space="preserve">
-        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target state="translated">下表列出了您系统中发生的软件崩溃（按 UUID 分组）。相同的崩溃 UUID 可能表示具有类似或相同的软件崩溃类型。</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.by.uuid.summary" xml:space="preserve">
-        <source>The table below lists systems where a crash with the above UUID occurred.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target state="translated">下表列出了发生具有上述 UUID 的崩溃的系统。</target>
-      </trans-unit>
-      <trans-unit id="software.crashes.uuid.header" xml:space="preserve">
-        <source>Summary for crashes with identical UUID</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-        <target state="translated">具有相同 UUID 的崩溃摘要</target>
-      </trans-unit>
       <trans-unit id="ssm.nav.config" xml:space="preserve">
         <source>Configuration</source>
         <context-group name="ctx">
