@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-20 12:55+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-07 03:27+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/susemanager/"
@@ -77,8 +77,9 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
-"<p>SSL 인증서를 생성하기 위해 필요한 데이터를 여기에 입력하십시오. 인증서는 SUSE Manager Proxy 서버로 연결, "
-"브라우저의 HTTPS 프로토콜 등과 같은 다양한 목적으로 사용됩니다."
+"<p>SSL 인증서를 생성하기 위해 필요한 데이터를 여기에 입력하십시오. 인증서는 "
+"SUSE Manager Proxy 서버로 연결, 브라우저의 HTTPS 프로토콜 등과 같은 다양한 목"
+"적으로 사용됩니다."
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
@@ -130,7 +131,9 @@ msgstr "데이터베이스 비밀번호(&P)"
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
-msgstr "<p>기본적으로 SUSE Manager는 이름이 다음과 같은 내부 postgresql 데이터베이스를 사용합니다."
+msgstr ""
+"<p>기본적으로 SUSE Manager는 이름이 다음과 같은 내부 postgresql 데이터베이스"
+"를 사용합니다."
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
@@ -160,7 +163,9 @@ msgstr "SLP를 통한 #{@product_name} 알림"
 msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
-msgstr "관리자 이메일 주소를 <p>입력<b>하십시오</b>. #{@product_name}의 알림에서 사용됩니다.</p>"
+msgstr ""
+"관리자 이메일 주소를 <p>입력<b>하십시오</b>. #{@product_name}의 알림에서 사용"
+"됩니다.</p>"
 
 #: ../yast/susemanager_manager.rb:152
 msgid "The Administrator e-mail address is not valid."
@@ -206,7 +211,9 @@ msgstr "이미 설정됨"
 msgid ""
 "#{@product_name} is already set up. Do you want to delete the existing setup "
 "and start all over again?"
-msgstr "#{@product_name}이(가) 이미 설정되었습니다. 기존 설정을 삭제하고 모두 다시 시작하시겠습니까?"
+msgstr ""
+"#{@product_name}이(가) 이미 설정되었습니다. 기존 설정을 삭제하고 모두 다시 시"
+"작하시겠습니까?"
 
 #: ../yast/susemanager_reqs.rb:71
 msgid "Continue"
@@ -229,8 +236,8 @@ msgid ""
 "#{@product_name} requires 8G of memory to be installed and 16G for good "
 "perfomance. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name}을(를) 설치하려면 8G의 메모리가 필요하고 원활하게 작동하려면 16G가 필요합니다. 계속하면 제품이 "
-"올바르게 작동하지 않습니다."
+"#{@product_name}을(를) 설치하려면 8G의 메모리가 필요하고 원활하게 작동하려면 "
+"16G가 필요합니다. 계속하면 제품이 올바르게 작동하지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
 #: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
@@ -249,16 +256,16 @@ msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name}의 설치를 위해서는 /var/spacewalk에 100G의 여유 디스크 공간이 필요합니다. 계속하면 제품이 "
-"올바르게 작동하지 않습니다."
+"#{@product_name}의 설치를 위해서는 /var/spacewalk에 100G의 여유 디스크 공간"
+"이 필요합니다. 계속하면 제품이 올바르게 작동하지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:142
 msgid ""
 "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name}의 설치를 위해서는 /var/lib/pgsq에 50G의 여유 디스크 공간이 필요합니다. 계속하면 제품이 "
-"올바르게 작동하지 않습니다."
+"#{@product_name}의 설치를 위해서는 /var/lib/pgsq에 50G의 여유 디스크 공간이 "
+"필요합니다. 계속하면 제품이 올바르게 작동하지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:158
 msgid "Hostname command failed"
@@ -268,7 +275,8 @@ msgstr "호스트 이름 명령 실패"
 msgid ""
 "The execution of 'hostname -f' failed. The product will not install "
 "correctly."
-msgstr "'hostname -f'를 실행하지 못했습니다. 제품이 올바르게 설치되지 않습니다."
+msgstr ""
+"'hostname -f'를 실행하지 못했습니다. 제품이 올바르게 설치되지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
@@ -279,19 +287,24 @@ msgstr "잘못된 FQHN"
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
-msgstr "FQHN에는 점이 2개 이상 포함되어야 합니다. 제품이 올바르게 작동하지 않습니다."
+msgstr ""
+"FQHN에는 점이 2개 이상 포함되어야 합니다. 제품이 올바르게 작동하지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
-msgstr "FQHN에는 '_'(밑줄) 문자를 포함할 수 없습니다. 제품이 올바르게 작동하지 않습니다."
+msgstr ""
+"FQHN에는 '_'(밑줄) 문자를 포함할 수 없습니다. 제품이 올바르게 작동하지 않습니"
+"다."
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
-msgstr "'hostname -f'의 출력이 실제 호스트 이름과 일치하지 않습니다. 제품이 올바르게 설치되지 않습니다."
+msgstr ""
+"'hostname -f'의 출력이 실제 호스트 이름과 일치하지 않습니다. 제품이 올바르게 "
+"설치되지 않습니다."
 
 #: ../yast/susemanager_reqs.rb:254
 msgid "Illegal Hostname"
@@ -301,7 +314,8 @@ msgstr "잘못된 호스트 이름"
 msgid ""
 "Your hostname contains upper case characters. The product will not function "
 "correctly."
-msgstr "호스트 이름에 대문자가 포함되어 있습니다. 제품이 올바르게 작동하지 않습니다."
+msgstr ""
+"호스트 이름에 대문자가 포함되어 있습니다. 제품이 올바르게 작동하지 않습니다."
 
 #: ../yast/susemanager_write.rb:54
 msgid "Setup is prepared."
@@ -317,7 +331,8 @@ msgstr "오류 출력"
 
 #: ../yast/susemanager_write.rb:83
 msgid "Now you can start the migration process using the mgr-setup script.\n"
-msgstr "이제 mgr-setup 스크립트를 사용하여 마이그레이션 처리를 시작할 수 있습니다.\n"
+msgstr ""
+"이제 mgr-setup 스크립트를 사용하여 마이그레이션 처리를 시작할 수 있습니다.\n"
 
 #: ../yast/susemanager_write.rb:107
 msgid ""
@@ -327,7 +342,8 @@ msgid ""
 "</p>"
 msgstr ""
 "<p>현재 구성 스크립트가 실행 중이며 잠시 시간이 걸립니다.</p>\n"
-"<p>스크립트 출력 및 발생할 수 있는 오류 출력은 이 화면에서 확인할 수 있습니다."
+"<p>스크립트 출력 및 발생할 수 있는 오류 출력은 이 화면에서 확인할 수 있습니"
+"다."
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
