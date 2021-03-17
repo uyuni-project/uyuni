@@ -100,6 +100,41 @@ def do_configchannel_listsystems(self, args):
 ####################
 
 
+def help_configchannel_listgroups(self):
+    print(_('configchannel_listgroups: List the groups subscribed to a'))
+    print(_('                           configuration channel'))
+    print(_('usage: configchannel_listgroups CHANNEL'))
+
+
+def complete_configchannel_listgroups(self, text, line, beg, end):
+    return tab_completer(self.do_configchannel_list('', True), text)
+
+
+def do_configchannel_listgroups(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_configchannel_listgroups()
+        return 1
+
+    channel = args[0]
+    groups = self.client.configchannel.listAssignedSystemGroups(self.session, channel)
+    groups = sorted([g.get('name') for g in groups])
+
+    if groups:
+        print('\n'.join(groups))
+        return 0
+    else:
+        return 1
+
+####################
+
+
 def help_configchannel_listfiles(self):
     print(_('configchannel_listfiles: List the files in a config channel'))
     print(_('usage: configchannel_listfiles CHANNEL ...'))
