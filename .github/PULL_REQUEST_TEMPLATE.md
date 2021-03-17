@@ -1,7 +1,7 @@
 ## ☢ 4.1: do not merge during Hackweek ☢
 
 Everyone will be busy with Hackweek and we want to keep the testsuite for 4.1 as green as possible.
-Unless urgent and well tested, please do not merge to 4.1 while the Hackweek is happening: Mar 22->Mar 26 (included).
+Unless urgent and well tested, please do not merge to Manager-4.1 between Mar 19 and Mar 26 (included).
 If you decide to merge, it is your responsibility to have a look at the testsuite and rollback if the PR caused tests to fail.
 
 ## Maintenance Update status
