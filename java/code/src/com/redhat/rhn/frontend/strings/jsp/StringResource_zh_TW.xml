@@ -176,6 +176,13 @@
         </context-group>
         <target>沒有系統。</target>
       </trans-unit>
+      <trans-unit id="nocrashes.message" xml:space="preserve">
+        <source>No software crashes.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview</context>
+        </context-group>
+        <target>無軟體當機。</target>
+      </trans-unit>
       <trans-unit id="none.message" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
@@ -413,6 +420,13 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="lookup.jsp.title.crash" xml:space="preserve">
+          <source>We're sorry, but the software crash could not be found.</source>
+          <target>對不起，找不到軟體當機資料。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
           <target>對不起，找不到必要的資料物件。</target>
@@ -559,6 +573,13 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.crash" xml:space="preserve">
+          <source>The software crash requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+          <target>您請求的軟體當機資料不存在。這很可能是因為您透過書籤或其它非超連結連上這網頁。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="lookup.default.reason1" xml:space="preserve">
           <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
           <target>所需的資料物件並不存在。這很可能是因為您透過書籤或其他非超連結來連上此網頁。</target>
@@ -639,6 +660,13 @@
         <trans-unit id="lookup.jsp.reason2.system" xml:space="preserve">
           <source>You do not have permission to view this system.</source>
           <target>您沒有檢視這系統的權限。</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="lookup.jsp.reason2.crash" xml:space="preserve">
+          <source>You do not have permission to view this software crash.</source>
+          <target>您沒有檢視這個軟體當機資訊的權限。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1007,7 +1035,7 @@
         <target>如果您在瀏覽器中輸入這位址，請確認拼字與大小寫是否正確。您所複製的網址可能已無效。</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
-        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
+        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1015,10 +1043,9 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
-      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
-        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
+        <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1026,7 +1053,6 @@
               page may have moved
           </context>
         </context-group>
-      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -4454,18 +4480,16 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>組織配置</target>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
-        <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
+        <source>Below you configure your organization to use staging content, errata e-mail notifications, software crash reporting (Crash file upload limit is a non negative number, zero means no limit) and SCAP settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
-        <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
+        <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications, software crash reporting and SCAP settings are configured.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
@@ -4513,6 +4537,27 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.crash-reporting.jsp" xml:space="preserve">
+        <source>Enable Software Crash Reporting</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+        <target>啟用軟體當機回報</target>
+      </trans-unit>
+      <trans-unit id="org-config.crashfile-upload.jsp" xml:space="preserve">
+        <source>Enable Upload Of Crash Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+        <target>啟用當機檔案的上傳</target>
+      </trans-unit>
+      <trans-unit id="org-config.crashfile-sizelimit.jsp" xml:space="preserve">
+        <source>Crash File Upload Size Limit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+        <target>當機檔案上傳大小限制</target>
       </trans-unit>
       <trans-unit id="org-config.sizelimit-hint.jsp" xml:space="preserve">
         <source>Enter the limit size in bytes. Zero means no limit.</source>
@@ -6344,6 +6389,13 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
         <target>權利</target>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.crashes" xml:space="preserve">
+        <source>Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+        <target>當機</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.nosystems" xml:space="preserve">
         <source>No Systems</source>
@@ -23340,6 +23392,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="exportcolumn.crash" xml:space="preserve">
+          <source>Scratch</source>
+          <target>草稿</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="exportcolumn.component" xml:space="preserve">
           <source>Component</source>
           <target>元件</target>
@@ -23350,6 +23409,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="exportcolumn.modified" xml:space="preserve">
           <source>Modified</source>
           <target>已修改</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.count" xml:space="preserve">
+          <source>Crash Count</source>
+          <target>當機計數</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -23382,7 +23448,42 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="virtualization.provision.first.jsp.no.profiles" xml:space="preserve">
+        <trans-unit id="exportcolumn.totalCrashCount" xml:space="preserve">
+          <source>Total Crash Count</source>
+          <target>當機計數總數</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.lastCrashReport" xml:space="preserve">
+          <source>Last Crash Occurrence</source>
+          <target>最後當機發生時間</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.crashCount" xml:space="preserve">
+          <source>Crash Count</source>
+          <target>當機計數</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.crashComponent" xml:space="preserve">
+          <source>Crash Component</source>
+          <target>當機元件</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="exportcolumn.lastReport" xml:space="preserve">
+          <source>Last Crash Occurrence</source>
+          <target>最後當機發生時間</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
+        </context-group>
+        </trans-unit>
+      <trans-unit id="virtualization.provision.first.jsp.no.profiles" xml:space="preserve">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
@@ -24094,6 +24195,266 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target>啟用 rhn-applet 來使用 @@PRODUCT_NAME@@。"</target>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.crashes.application" xml:space="preserve">
+        <source>Application Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target>應用程式當機</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.crashes.nodata" xml:space="preserve">
+        <source>No crash data has been reported for this system yet.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target>此系統尚未回報過當機資料。</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.crashes.lastreport" xml:space="preserve">
+        <source>Last Report:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target>最後一項回報：</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.crashes.uniquecrashcount" xml:space="preserve">
+        <source>Unique Crash Count:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target>獨特當機計數：</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.crashes.totalcrashcount" xml:space="preserve">
+        <source>Total Crash Count:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target>當機計數總數：</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.totalcrashcount" xml:space="preserve">
+        <source>Total Crash Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/softwarecrashesoverview.do</context>
+        </context-group>
+        <target>當機計數總數</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.affectedsystemscount" xml:space="preserve">
+        <source>Affected Systems Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+        <target>受影響的系統數</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.lastoccurence" xml:space="preserve">
+        <source>Last Crash Occurrence</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+        <target>最後當機發生時間</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crashcount" xml:space="preserve">
+        <source>Crash Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>當機計數</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nevra" xml:space="preserve">
+        <source>Package</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>套件</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crash" xml:space="preserve">
+        <source>Crash</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>當機</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crashes" xml:space="preserve">
+        <source>Software Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>軟體當機</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.component" xml:space="preserve">
+        <source>Component</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>元件</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete.button" xml:space="preserve">
+        <source>Delete Crash(es)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+        <target>刪除當機</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.summary" xml:space="preserve">
+        <source>Software crashes reported for this system.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+        <target>此系統回報的軟體當機。</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nocrashes" xml:space="preserve">
+        <source>There are no software crashes reported for this system.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+        <target>此系統尚未回報過軟體當機報告。</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nocrashfiles" xml:space="preserve">
+        <source>There are no crash files associated with this software crash.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+        <target>沒有與此軟體當機相聯的當機檔案。</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.details" xml:space="preserve">
+        <source>Software Crash Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+        <target>軟體當機詳細資料</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.details.summary" xml:space="preserve">
+        <source>Below are the Software Crash details.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>以下為軟體的當機詳細資料。</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete" xml:space="preserve">
+        <source>Delete Software Crash</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>刪除軟體當機</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete.summary" xml:space="preserve">
+        <source>The Software Crash will be deleted.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDelete.do</context>
+        </context-group>
+        <target>軟體當機將會被刪除。</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.path" xml:space="preserve">
+        <source>Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>路徑</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.uuid" xml:space="preserve">
+        <source>Crash UUID</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+        <target>當機 UUID</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.analyzer" xml:space="preserve">
+        <source>Analyzer</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>分析程式</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.cmdline" xml:space="preserve">
+        <source>Command Line</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>指令列</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.executable" xml:space="preserve">
+        <source>Executable</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>可執行檔</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.kernel" xml:space="preserve">
+        <source>Kernel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>Kernel</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.reason" xml:space="preserve">
+        <source>Reason</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>原因</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.username" xml:space="preserve">
+        <source>Username</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>使用者名稱</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.storagepath" xml:space="preserve">
+        <source>Storage Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>儲存裝置路徑</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.filename" xml:space="preserve">
+        <source>Filename</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>檔案名稱</target>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.filesize" xml:space="preserve">
+        <source>File Size</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>檔案大小</target>
+      </trans-unit>
+      <trans-unit id="toolbar.create.crashnote" xml:space="preserve">
+        <source>Create Crash Note</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>建立當機備註</target>
+      </trans-unit>
+      <trans-unit id="details.crashnotes.nonotes" xml:space="preserve">
+        <source>No Crash Notes were entered for this Software Crash.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>尚未為此軟體當機輸入當機備註。</target>
+      </trans-unit>
+      <trans-unit id="details.crashnotes.createnote" xml:space="preserve">
+        <source>Create a new note.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>新建備註。</target>
+      </trans-unit>
+      <trans-unit id="details.crashnotes.delete.confirm" xml:space="preserve">
+        <source>Are you certain you wish to delete this software crash note?</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/DeleteCrashNote.do</context>
+        </context-group>
+        <target>您是否確定要刪除此軟體當機備註？</target>
+      </trans-unit>
+      <trans-unit id="crashfiles.jsp.header" xml:space="preserve">
+        <source>Crash Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+        <target>當機檔案</target>
+      </trans-unit>
       <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
         <source>Migrate System Between Organizations</source>
         <context-group name="ctx">
@@ -24608,11 +24969,10 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>IPv6 位址：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
-        <source>Primary FQDN:</source>
+        <source>FQDNs:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id" xml:space="preserve">
         <source>Machine ID:</source>
