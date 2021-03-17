@@ -163,6 +163,41 @@
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="software.crashes" xml:space="preserve">
+        <source>Software Crashes</source>
+        <target>Zlyhania softvéru</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="software.crashes.overview" xml:space="preserve">
+        <source>Software Crashes Overview</source>
+        <target>Prehľad zlyhaní softvéru</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="software.crashes.overview.summary" xml:space="preserve">
+        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
+        <target>V tabuľke nižšie sú uvedené zlyhania softvéru zoskupené podľa UUID, ku ktorým došlo na vašich systémoch. Identické UUID zrútení môže potenciálne naznačovať podobné alebo rovnaké typy zlyhania softvéru.</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="software.crashes.by.uuid.summary" xml:space="preserve">
+        <source>The table below lists systems where a crash with the above UUID occurred.</source>
+        <target>V nasledujúcej tabuľke sú uvedené systémy, v ktorých došlo k zlyhaniu s vyššie uvedeným UUID.</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="software.crashes.uuid.header" xml:space="preserve">
+        <source>Summary for crashes with identical UUID</source>
+        <target>Súhrn pre zlyhania s identickým UUID</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Systems Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ssm.nav.config" xml:space="preserve">
         <source>Configuration</source>
         <target>Konfigurácia</target>
