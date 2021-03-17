@@ -8,15 +8,11 @@
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:100
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-09 18:06+0000\n"
+"POT-Creation-Date: 2021-03-04 12:27+0000\n"
 "PO-Revision-Date: 2021-01-06 12:38+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -367,7 +363,6 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/FormMultiInput.stories.js:75
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
-#: ../html/src/components/input/FormMultiInput.stories.js:262
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -377,7 +372,6 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.js:45
 msgid "Submit"
 msgstr "提交"
 
@@ -388,7 +382,6 @@ msgstr "时间"
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 #: ../html/src/components/input/FormMultiInput.stories.js:94
 #: ../html/src/components/input/FormMultiInput.stories.js:151
-#: ../html/src/components/input/FormMultiInput.stories.js:207
 msgid "Users"
 msgstr "用户"
 
@@ -401,8 +394,6 @@ msgstr "名字"
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/FormMultiInput.stories.js:120
-#: ../html/src/components/input/FormMultiInput.stories.js:236
-#: ../html/src/components/input/FormMultiInput.stories.js:244
 #: ../html/src/components/input/InputBase.test.tsx:41
 #: ../html/src/components/input/InputBase.test.tsx:67
 #: ../html/src/components/input/InputBase.test.tsx:95
@@ -421,7 +412,12 @@ msgstr "姓氏"
 msgid "Login"
 msgstr "登录"
 
-#: ../html/src/components/input/FormMultiInput.tsx:146
+#: ../html/src/components/input/FormMultiInput.tsx:128
+#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
+msgid "Add"
+msgstr "添加"
+
+#: ../html/src/components/input/FormMultiInput.tsx:139
 #: ../html/src/manager/clusters/remove-node/remove-node.js:82
 msgid "Remove"
 msgstr "去除"
@@ -482,17 +478,11 @@ msgid "Flavor"
 msgstr "风格"
 
 #: ../html/src/components/input/Select.stories.js:64
-#: ../html/src/components/input/Select.test.tsx:71
 msgid "Start typing..."
 msgstr "开始键入..."
 
 #: ../html/src/components/input/Select.stories.js:65
 msgid "No flavors"
-msgstr "无风格"
-
-#: ../html/src/components/input/Select.test.tsx:72
-#, fuzzy
-msgid "No flavor"
 msgstr "无风格"
 
 #: ../html/src/components/pagination.tsx:19
@@ -611,7 +601,6 @@ msgstr "全选"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
-#: ../html/src/manager/virtualization/nets/network-properties.js:438
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "正在装载..."
@@ -815,7 +804,6 @@ msgstr "设置 SUSE Manager 服务器监视。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/nets/network-properties.js:160
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "常规"
@@ -1221,10 +1209,7 @@ msgstr "审计映像"
 #: ../html/src/manager/images/image-view.js:544
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:49
-#: ../html/src/manager/virtualization/nets/network-properties.js:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:50
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
 #: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
@@ -1605,10 +1590,6 @@ msgstr "管理节点："
 msgid "Add cluster"
 msgstr "添加群集"
 
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
-msgid "Add"
-msgstr "添加"
-
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:80
 msgid "Name:"
 msgstr "名称："
@@ -1904,7 +1885,6 @@ msgstr "创建项目"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
-#: ../html/src/manager/virtualization/nets/create/nets-create.js:38
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
 msgid "Create"
 msgstr "创建"
@@ -3268,7 +3248,7 @@ msgstr "即将到来的维护时段"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:109
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:21
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:88
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:89
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "开始"
@@ -3337,7 +3317,6 @@ msgstr "请确认是否继续。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/nets/network-properties.js:407
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "日程安排"
@@ -3499,7 +3478,7 @@ msgstr "软件包状态"
 #: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.js:171
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:55
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "州/省"
@@ -4366,7 +4345,6 @@ msgid "Action Status"
 msgstr "操作状态"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/nets/network-properties.js:167
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr "不能包含以下字符：/\\"
@@ -4538,7 +4516,6 @@ msgid "Network"
 msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:90
 msgid "MAC address"
 msgstr "MAC 地址"
 
@@ -4551,15 +4528,9 @@ msgid "Networks"
 msgstr "网络"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/nets/network-properties.js:431
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "清除字段"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.js:34
-#, fuzzy
-msgid "Create Virtual Network"
-msgstr "虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
@@ -4570,376 +4541,19 @@ msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "这是配置为在此主机上运行的虚拟网络列表。"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:61
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "自动启动"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:68
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:69
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "持久"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:77
-#: ../html/src/manager/virtualization/nets/network-properties.js:210
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:78
 msgid "Bridge"
 msgstr "网桥"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:157
-#, fuzzy
-msgid "network properties"
-msgstr "编辑属性"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:175
-#, fuzzy
-msgid "Network type"
-msgstr "网络"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:187
-msgid "Macvtap mode"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:196
-#: ../html/src/manager/virtualization/pools/pool-properties.js:259
-msgid "Start during virtual host boot"
-msgstr "在虚拟主机引导期间启动"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:204
-msgid "Connectivity"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:219
-msgid "Maximum Transmission Unit (MTU)"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
-msgid "The value has to be a positive integer"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:231
-#, fuzzy
-msgid "Virtual Port Type"
-msgstr "虚拟机类型"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:251
-msgid "Select interfaces"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:257
-msgid "By physical function"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
-msgid "By virtual functions"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
-msgid "By interfaces"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:268
-msgid "Interfaces"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:290
-msgid "Physical Function"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:305
-#, fuzzy
-msgid "Virtual Functions"
-msgstr "虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:329
-msgid "VLAN tag"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:333
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
-msgid "Integer between 0 and 4095"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:340
-msgid "VLAN tags trunking"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:350
-#: ../html/src/manager/virtualization/nets/network-properties.js:351
-msgid "NAT IPv4 range"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:360
-msgid "Both values has to be IPv4 addresses"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:364
-#: ../html/src/manager/virtualization/nets/network-properties.js:365
-#, fuzzy
-msgid "NAT port range"
-msgstr "端口范围：1 - 65535"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:375
-msgid "Both values has to be positive integers"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:385
-#, fuzzy
-msgid "Addressing"
-msgstr "MAC 地址"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:391
-#, fuzzy
-msgid "Enable IPv6"
-msgstr "启用"
-
-#: ../html/src/manager/virtualization/nets/network-properties.js:397
-#, fuzzy
-msgid "Domain name"
-msgstr "映像名称"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
-msgid "DNS"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
-msgid "Forwarders"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
-msgid "Domain"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
-msgid "DNS server address"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
-msgid "Has to be a valid qualified host name"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
-#, fuzzy
-msgid "Has to be an IP address"
-msgstr "适配器父项 PCI 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
-#: ../html/src/manager/virtualization/pools/pool-properties.js:283
-msgid "Hosts"
-msgstr "主机"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
-#, fuzzy
-msgid "Address"
-msgstr "MAC 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
-msgid "hostnames (comma-separated)"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
-msgid "Has to be a comma-separated list of host names"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
-msgid "SRV records"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
-#, fuzzy
-msgid "Service name"
-msgstr "源名称"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
-msgid "Protocol"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
-#, fuzzy
-msgid "Service domain name"
-msgstr "源名称"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
-#, fuzzy
-msgid "Target hostname"
-msgstr "目标类型"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
-#: ../html/src/manager/virtualization/pools/pool-properties.js:214
-msgid "Port"
-msgstr "端口"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
-#, fuzzy
-msgid "Target priority"
-msgstr "目标类型"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
-#, fuzzy
-msgid "Target weight"
-msgstr "目标类型"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
-msgid "TXT records"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
-msgid "Value"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
-#, fuzzy
-msgid "Network address"
-msgstr "网络"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
-msgid "v6"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
-#, fuzzy
-msgid "IP address"
-msgstr "MAC 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
-#, fuzzy
-msgid "Needs to be a MAC address"
-msgstr "保留空白会生成 MAC 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
-#, fuzzy
-msgid "BOOTP image file"
-msgstr "映像配置文件"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
-msgid "BOOTP server"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
-msgid "TFTP root path"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
-msgid "Parameters"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
-#, fuzzy
-msgid "By profile id"
-msgstr "编辑配置文件"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
-msgid "Profile id"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
-msgid "Interface id"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
-#, fuzzy
-msgid "VSI manager id"
-msgstr "不受管"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
-msgid "VSI type id"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
-#, fuzzy
-msgid "VSI type id version"
-msgstr "映像版本"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
-#, fuzzy
-msgid "VSI instance id"
-msgstr "实例"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
-msgid "Value needs to be a valid UUID"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
-msgid "VLANs"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
-#, fuzzy
-msgid "Tag"
-msgstr "目标"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
-#, fuzzy
-msgid "Native mode"
-msgstr "收集器模块"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
-msgid "Tagged"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
-msgid "Untagged"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
-#, fuzzy
-msgid "Could not get network devices from the server. Please try again."
-msgstr "无法从服务器获取储存池功能。请重试。"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
@@ -4992,13 +4606,25 @@ msgstr "分区分隔符"
 msgid "Host name"
 msgstr "主机名"
 
+#: ../html/src/manager/virtualization/pools/pool-properties.js:214
+msgid "Port"
+msgstr "端口"
+
 #: ../html/src/manager/virtualization/pools/pool-properties.js:248
 msgid "Pool Type"
 msgstr "池类型"
 
+#: ../html/src/manager/virtualization/pools/pool-properties.js:259
+msgid "Start during virtual host boot"
+msgstr "在虚拟主机引导期间启动"
+
 #: ../html/src/manager/virtualization/pools/pool-properties.js:267
 msgid "Source"
 msgstr "源"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:283
+msgid "Hosts"
+msgstr "主机"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:315
 msgid "Devices"
