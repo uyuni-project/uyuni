@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-17 11:59+0000\n"
+"PO-Revision-Date: 2021-03-17 18:56+0000\n"
 "Last-Translator: Frantisek Kobzik <fkobzik@suse.com>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -5083,7 +5083,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
-msgstr ""
+msgstr "Sítě VLAN"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
 #, fuzzy
