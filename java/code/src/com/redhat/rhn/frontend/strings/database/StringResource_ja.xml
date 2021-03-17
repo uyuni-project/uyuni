@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="add-on" xml:space="preserve">
           <source>Add-On</source>
-        <target>追加</target>
+        <target>アドオン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -101,7 +101,7 @@
       </trans-unit>
       <trans-unit id="virtualization_host" xml:space="preserve">
           <source>Virtualization Host</source>
-        <target>仮想化</target>
+        <target>仮想化ホスト</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -261,7 +261,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+1200) ニュージーランド</target>
+        <target>(GMT+1200) ニュージーランド (ウォリス)</target>
       </trans-unit>
       <trans-unit id="Pacific/Auckland" xml:space="preserve">
         <source>(GMT+1200) New Zealand (Auckland)</source>
@@ -690,7 +690,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: ディスク分別比率</target>
+        <target>重大: ディスクソート比率</target>
       </trans-unit>
       <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve">
         <source>Critical ESTABLISHED Connections</source>
@@ -830,14 +830,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: 開放表</target>
+        <target>重大: オープンテーブル</target>
       </trans-unit>
       <trans-unit id="Critical Opened Tables" xml:space="preserve">
         <source>Critical Opened Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: 開放中の表</target>
+        <target>重大: オープンしたテーブル</target>
       </trans-unit>
       <trans-unit id="Critical Output Rate" xml:space="preserve">
         <source>Critical Output Rate</source>
@@ -956,7 +956,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大: 周回合計</target>
+        <target>重大: 周回平均</target>
       </trans-unit>
       <trans-unit id="Critical SYN_RCVD Connections" xml:space="preserve">
         <source>Critical SYN_RCVD Connections</source>
@@ -1348,7 +1348,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>PID ファイル (コマンド名を無視)</target>
+        <target>PID ファイル (コマンド名を上書き)</target>
       </trans-unit>
       <trans-unit id="Packets to send" xml:space="preserve">
         <source>Packets to send</source>
@@ -1376,14 +1376,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>重大レベル、使用可能なエクステント数が次より大きい場合</target>
+        <target>重大レベル、使用可能なエクステント率が次より大きい場合</target>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
         <source>Percent of Available Extents Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告レベル、使用可能なエクステント数が次より大きい場合</target>
+        <target>警告レベル、使用可能なエクステント率が次より大きい場合</target>
       </trans-unit>
       <trans-unit id="Port" xml:space="preserve">
         <source>Port</source>
@@ -1530,21 +1530,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>表名</target>
+        <target>テーブル名</target>
       </trans-unit>
       <trans-unit id="Table Owner" xml:space="preserve">
         <source>Table Owner</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>表オーナー</target>
+        <target>テーブルオーナー</target>
       </trans-unit>
       <trans-unit id="Tablespace Name" xml:space="preserve">
         <source>Tablespace Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>表スペース名</target>
+        <target>テーブルスペース名</target>
       </trans-unit>
       <trans-unit id="Time Blocking (seconds)" xml:space="preserve">
         <source>Time Blocking (seconds)</source>
@@ -1908,14 +1908,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告: 開放表</target>
+        <target>警告: オープンテーブル</target>
       </trans-unit>
       <trans-unit id="Warning Opened Tables" xml:space="preserve">
         <source>Warning Opened Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告: 開放中の表</target>
+        <target>警告: オープンしたテーブル</target>
       </trans-unit>
       <trans-unit id="Warning Output Rate" xml:space="preserve">
         <source>Warning Output Rate</source>
@@ -2013,14 +2013,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>要求: 周回平均</target>
+        <target>警告: 周回平均</target>
       </trans-unit>
       <trans-unit id="Warning Round-trip Avg" xml:space="preserve">
         <source>Warning Round-trip Avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>警告: 周回合計</target>
+        <target>警告: 周回平均</target>
       </trans-unit>
       <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve">
         <source>Warning SYN_RCVD Connections</source>
@@ -2217,7 +2217,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU ロード 1 分合計</target>
+        <target>CPU ロード 1 分平均</target>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve">
         <source>CPU load 15-min ave</source>
@@ -2231,7 +2231,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU ロード 15 分合計</target>
+        <target>CPU ロード 15 分平均</target>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve">
         <source>CPU load 5-min ave</source>
@@ -2245,7 +2245,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU ロード 5 分合計</target>
+        <target>CPU ロード 5 分平均</target>
       </trans-unit>
       <trans-unit id="metrics.CPU pct used" xml:space="preserve">
         <source>CPU pct used</source>
@@ -2329,7 +2329,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>ディスク分別率</target>
+        <target>ディスクソート率</target>
       </trans-unit>
       <trans-unit id="metrics.Disk sort ratio" xml:space="preserve">
         <source>Disk sort ratio</source>
@@ -2483,7 +2483,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>メモリー分別率</target>
+        <target>メモリーソート率</target>
       </trans-unit>
       <trans-unit id="metrics.Open objects" xml:space="preserve">
         <source>Open objects</source>
@@ -2637,7 +2637,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>周回合計</target>
+        <target>周回平均</target>
       </trans-unit>
       <trans-unit id="metrics.SYN_RCVD conns" xml:space="preserve">
         <source>SYN_RCVD conns</source>
@@ -3208,14 +3208,14 @@
       </trans-unit>
       <trans-unit id="Open Tables" xml:space="preserve">
           <source>Open Tables</source>
-        <target>開放表</target>
+        <target>オープンテーブル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Opened Tables" xml:space="preserve">
           <source>Opened Tables</source>
-        <target>開放した表</target>
+        <target>オープンしたテーブル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3523,7 +3523,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.started" xml:space="preserve">
           <source>The initial files required for autoinstallation have been downloaded.</source>
-        <target>anaconda に必要な初期ファイルがダウンロードされています。</target>
+        <target>キックスタートに必要な初期ファイルがダウンロードされています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>

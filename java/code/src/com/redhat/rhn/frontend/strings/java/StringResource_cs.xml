@@ -762,224 +762,224 @@
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
-        <target />
+        <target>Mapování distribučního kanálu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Monitoring" xml:space="preserve">
         <source>Monitoring</source>
-        <target />
+        <target>Monitorování</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="name" xml:space="preserve">
         <source>name</source>
-        <target />
+        <target>název</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="arch" xml:space="preserve">
         <source>architecture</source>
-        <target />
+        <target>architektura</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.evr" xml:space="preserve">
         <source>this system</source>
-        <target />
+        <target>tento systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="other.evr" xml:space="preserve">
         <source>profile</source>
-        <target />
+        <target>profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="comparison" xml:space="preserve">
         <source>difference</source>
-        <target />
+        <target>diference</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Notification Methods" xml:space="preserve">
         <source>Notification Methods</source>
-        <target />
+        <target>Metody upozornění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Notification" xml:space="preserve">
         <source>Notification</source>
-        <target />
+        <target>Upozornění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Out of Date" xml:space="preserve">
         <source>Out of Date</source>
-        <target />
+        <target>Zastaralé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Overview" xml:space="preserve">
         <source>Overview</source>
-        <target />
+        <target>Přehled</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Migrate" xml:space="preserve">
         <source>Migrate</source>
-        <target />
+        <target>Migrovat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
-        <target />
+        <target>Balíčky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata Details Navigation Tabs</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Package Search" xml:space="preserve">
         <source>Package Search</source>
-        <target />
+        <target>Hledání balíčků</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Pending Actions" xml:space="preserve">
         <source>Pending Actions</source>
-        <target />
+        <target>Probíhají akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target />
+        <target>Předvolby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locale Preferences" xml:space="preserve">
         <source>Locale Preferences</source>
-        <target />
+        <target>Místní předvolby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Profiles" xml:space="preserve">
         <source>Profiles</source>
-        <target />
+        <target>Profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Proxy Guide" xml:space="preserve">
         <source>Proxy Quick Start</source>
-        <target />
+        <target>Rychlý start proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Proxy" xml:space="preserve">
         <source>Proxy</source>
-        <target />
+        <target>Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
-        <target />
+        <target>@@PRODUCT_NAME@@ Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
-        <target />
+        <target>@@PRODUCT_NAME@@ Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Published" xml:space="preserve">
         <source>Published</source>
-        <target />
+        <target>Vydáno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscription Management" xml:space="preserve">
         <source>Subscription Management</source>
-        <target />
+        <target>Správa odběrů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organization Trusts" xml:space="preserve">
         <source>Organization Trusts</source>
-        <target />
+        <target state="translated">Trusty organizací</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Quota" xml:space="preserve">
         <source>Quota</source>
-        <target />
+        <target>Kvóta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reference Guide" xml:space="preserve">
         <source>Reference Guide</source>
-        <target />
+        <target>Referenční průvodce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Release Notes" xml:space="preserve">
         <source>Release Notes</source>
-        <target />
+        <target>Poznámky k vydání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Relevant" xml:space="preserve">
         <source>Relevant</source>
-        <target />
+        <target>Relevantní</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reviews" xml:space="preserve">
         <source>Reviews</source>
-        <target />
+        <target>Přehledy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="request" xml:space="preserve">
         <source>Request</source>
-        <target />
+        <target>Žádost</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Schedule" xml:space="preserve">
         <source>Schedule</source>
-        <target />
+        <target>Rozvrh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10791,86 +10791,86 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Execute action chains on minions</source>
         <target state="new" />
       </trans-unit>
-    <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
+      <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
         <source>The following module streams will be enabled: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="needs-adaptation" />
-  </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
         <source>Filter {0} created successfully</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new" />
+      </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
-        <source>No such FQDN: {0}.</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="virt.network_create" xml:space="preserve">
+        <target state="new" />
+      </trans-unit>
+    <trans-unit id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
       <target state="new" />
   </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">

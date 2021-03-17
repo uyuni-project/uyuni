@@ -95,6 +95,7 @@
       </trans-unit>
       <trans-unit id="Bare Metal Systems" xml:space="preserve">
         <source>Unprovisioned Systems</source>
+        <target>프로비저닝되지 않은 시스템</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -206,6 +207,7 @@
       </trans-unit>
       <trans-unit id="ssm.nav.status" xml:space="preserve">
         <source>Task Log</source>
+        <target>작업 로그</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
@@ -481,110 +483,111 @@
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
           <source>List Scans</source>
-          <target>검사 목록 </target>
+        <target>검사 목록 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
           <source>Schedule</source>
-          <target>스케줄 </target>
+        <target>스케줄 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
           <source>Overview</source>
-          <target>개요</target>
+        <target>개요</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
           <source>View/Modify Files</source>
-          <target>파일 보기/수정</target>
+        <target>파일 보기/수정</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
           <source>View Files</source>
+        <target>파일 보기</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
           <source>Compare Files</source>
-          <target>파일 비교</target>
+        <target>파일 비교</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
           <source>Manage Configuration Channels</source>
-          <target>설정 채널 관리</target>
+        <target>설정 채널 관리</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
           <source>List/Unsubscribe from Channels</source>
-          <target>채널에서 나열/등록 해제</target>
+        <target>채널에서 나열/등록 해제</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
           <source>Subscribe to Channels</source>
-          <target>채널에 등록</target>
+        <target>채널에 등록</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
           <source>View/Modify Rankings</source>
-          <target>순위 보기/수정</target>
+        <target>순위 보기/수정</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
           <source>Centrally-Managed Files</source>
-          <target>중앙 관리 파일</target>
+        <target>중앙 관리 파일</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
           <source>Locally-Managed Files</source>
-          <target>로컬 관리 파일</target>
+        <target>로컬 관리 파일</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
           <source>Local Sandbox</source>
-          <target>로컬 Sandbox</target>
+        <target>로컬 Sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <!-- END config file nav -->
       <trans-unit id="system.detail.nav.list" xml:space="preserve">
           <source>List</source>
-          <target>목록</target>
+        <target>목록</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.detail.nav.remove" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="system.detail.nav.remove" xml:space="preserve">
           <source>List / Remove</source>
-          <target>목록 / 삭제</target>
+        <target>목록 / 삭제</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="Add" xml:space="preserve">
         <source>Add</source>
         <context-group name="ctx">
@@ -678,18 +681,21 @@
       </trans-unit>
       <trans-unit id="External Authentication" xml:space="preserve">
         <source>External Authentication</source>
+        <target>외부 인증</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping" xml:space="preserve">
         <source>Group Role Mapping</source>
+        <target>그룹 역할 매핑</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration" xml:space="preserve">
         <source>System Group Configuration</source>
+        <target>시스텝 그룹 구성</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -717,12 +723,14 @@
       </trans-unit>
       <trans-unit id="Power Management Configuration" xml:space="preserve">
         <source>Power Management Configuration</source>
+        <target>전원 관리 구성</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations" xml:space="preserve">
         <source>Power Management Operations</source>
+        <target>전원 관리 작업</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -764,6 +772,7 @@
       </trans-unit>
       <trans-unit id="Patch List" xml:space="preserve">
         <source>Patch List</source>
+        <target>패치 목록</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1142,53 +1151,55 @@
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
           <source>Child Channels</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>자식 채널 </target>
-        </trans-unit>
-        <trans-unit id="Chat" xml:space="preserve">
+        <target>자식 채널 </target>
+      </trans-unit>
+      <trans-unit id="Chat" xml:space="preserve">
           <source>Chat</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
-          <target>채팅 </target>
-        </trans-unit>
-        <trans-unit id="Base Channels" xml:space="preserve">
+        <target>채팅 </target>
+      </trans-unit>
+      <trans-unit id="Base Channels" xml:space="preserve">
           <source>Base Channels</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>기본 채널 </target>
-        </trans-unit>
+        <target>기본 채널 </target>
+      </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
           <source>Activated Systems</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-          <target>활성화된 시스템 </target>
-        </trans-unit>
+        <target>활성화된 시스템 </target>
+      </trans-unit>
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
           <source>Manage</source>
-          <target>관리 </target>
+        <target>관리 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="clear" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="clear" xml:space="preserve">
           <source>Clear</source>
-          <target>삭제 </target>
+        <target>삭제 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="Deployment" xml:space="preserve">
         <source>Deployment</source>
+        <target>배포</target>
       </trans-unit>
       <trans-unit id="Image List" xml:space="preserve">
         <source>Image List</source>
+        <target>이미지 목록</target>
       </trans-unit>
     </body>
   </file>
