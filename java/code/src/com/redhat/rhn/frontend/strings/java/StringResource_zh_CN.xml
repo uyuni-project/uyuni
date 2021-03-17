@@ -1019,13 +1019,6 @@
         </context-group>
         <target state="translated">软件频道</target>
       </trans-unit>
-      <trans-unit id="Software Crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target state="translated">软件崩溃</target>
-      </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
@@ -1838,11 +1831,11 @@
         <target state="translated">您已成功为 &lt;strong&gt;{0}&lt;/strong&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt;硬件配置文件刷新。</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="translated">主网络接口设为 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="needs-adaptation">主网络接口设为 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2990,13 +2983,6 @@ and try again.
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
         <target state="translated">删除配置文件</target>
-      </trans-unit>
-      <trans-unit id="toolbar.delete.crash" xml:space="preserve">
-        <source>Delete Software Crash</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target state="translated">删除软件崩溃</target>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; system.</source>
@@ -6002,27 +5988,6 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">引导脚本</target>
       </trans-unit>
-      <trans-unit id="Crash Details" xml:space="preserve">
-        <source>Crash Details</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target state="translated">崩溃细节</target>
-      </trans-unit>
-      <trans-unit id="Crash Files" xml:space="preserve">
-        <source>Crash Files</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target state="translated">崩溃文件</target>
-      </trans-unit>
-      <trans-unit id="Crash Notes" xml:space="preserve">
-        <source>Crash Notes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target state="translated">崩溃备注</target>
-      </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
         <context-group name="ctx">
@@ -8382,13 +8347,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">系统已暂停。</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.guest.already.crashed" xml:space="preserve">
-        <source>This system is crashed.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
-        </context-group>
-        <target state="translated">系统已崩溃。</target>
-      </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
         <context-group name="ctx">
@@ -8871,14 +8829,6 @@ Follow this url to see the full list of inactive systems:
         <source>The specified server is not a member of the specified group</source>
         <target state="translated">指定的服务器不是指定组的成员</target>
       </trans-unit>
-      <trans-unit id="api.system.crash.nocrashesfound" xml:space="preserve">
-        <source>No crashes recorded for the specified system.</source>
-        <target state="translated">指定系统没有崩溃记录。</target>
-      </trans-unit>
-      <trans-unit id="api.system.crash.nosuchcrash" xml:space="preserve">
-        <source>No such crash found.</source>
-        <target state="translated">未找到这样的崩溃。</target>
-      </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target state="translated">没有 {0} 网络接口。</target>
@@ -8898,10 +8848,6 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
         <target state="translated">请求的文件过大，无法通过 XMLRPC 下载。</target>
-      </trans-unit>
-      <trans-unit id="api.crashfile.download.toolarge" xml:space="preserve">
-        <source>The requested crash file is too large to download over XMLRPC.</source>
-        <target state="translated">请求的崩溃文件过大，无法通过 XMLRPC 下载。</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
@@ -9799,22 +9745,6 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
         <target state="translated">请设置新日程安排的频率。</target>
-      </trans-unit>
-      <trans-unit id="message.crashdeleted" xml:space="preserve">
-        <source>Software crash {0} was successfully deleted.</source>
-        <target state="translated">已成功删除软件崩溃 {0}。</target>
-      </trans-unit>
-      <trans-unit id="message.crashesdeleted" xml:space="preserve">
-        <source>{0} software crashes were successfully deleted.</source>
-        <target state="translated">已成功删除 {0} 个软件崩溃。</target>
-      </trans-unit>
-      <trans-unit id="message.crashnotecreated" xml:space="preserve">
-        <source>Crash Note was successfully created.</source>
-        <target state="translated">已成功创建崩溃备注。</target>
-      </trans-unit>
-      <trans-unit id="message.crashnoteupdated" xml:space="preserve">
-        <source>Crash Note was successfully updated.</source>
-        <target state="translated">已成功更新崩溃备注。</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
@@ -11026,6 +10956,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
         <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
+    <trans-unit id="virt.network_create" xml:space="preserve">
+        <source>Virtual network creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
+        <source>Cannot read/write '{0}'. Please check permissions.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
+        <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
+        <source>Error during applying the bootstrap state, message: {0}</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>
