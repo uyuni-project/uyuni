@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/bin/spacecmd:59
+#: ../src/bin/spacecmd:60
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-05 11:22+0100\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-07 19:00+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
-"\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
+">\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -174,7 +174,8 @@ msgstr "사용법: activationkey_removeconfigchannels KEY <CHANNEL ...>"
 msgid ""
 "activationkey_setconfigchannelorder: Set the ranked order of configuration "
 "channels"
-msgstr "activationkey_setconfigchannelorder: 순위가 지정된 구성 채널의 순서 설정"
+msgstr ""
+"activationkey_setconfigchannelorder: 순위가 지정된 구성 채널의 순서 설정"
 
 #: ../src/spacecmd/activationkey.py:669
 msgid "usage: activationkey_setconfigchannelorder KEY"
@@ -371,7 +372,9 @@ msgstr "사용법: activationkey_setbasechannel KEY CHANNEL"
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
-msgstr "activationkey_setusagelimit: 활성화 키의 사용 제한 설정, 숫자 또는 \"무제한\"일 수 있음"
+msgstr ""
+"activationkey_setusagelimit: 활성화 키의 사용 제한 설정, 숫자 또는 \"무제한"
+"\"일 수 있음"
 
 #: ../src/spacecmd/activationkey.py:1101
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
@@ -414,9 +417,11 @@ msgstr ""
 "사용법: activationkey_export [options] [<KEY> ...])\n"
 "\n"
 "옵션:\n"
-"    -f outfile.json : 출력 파일의 이름을 지정합니다. 기본 값은 단일 키를 내보내는 경우\n"
+"    -f outfile.json : 출력 파일의 이름을 지정합니다. 기본 값은 단일 키를 내보"
+"내는 경우\n"
 "                      <KEY>.json이고, 여러 키의 경우 akeys.json이며,\n"
-"                      키가 지정되지 않은 경우 akey_all.json(모두 내보내기)입니다.\n"
+"                      키가 지정되지 않은 경우 akey_all.json(모두 내보내기)입"
+"니다.\n"
 "\n"
 "참고: 키 목록은 선택 사항이며, 기본값을 모든 키 내보내기입니다. "
 
@@ -621,7 +626,9 @@ msgstr "사용법: activationkey_setdescription KEY DESCRIPTION"
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
-msgstr "activationkey_setcontactmethod: 이 키로 등록된 시스템에서 사용할 연락 방법을 설정합니다."
+msgstr ""
+"activationkey_setcontactmethod: 이 키로 등록된 시스템에서 사용할 연락 방법을 "
+"설정합니다."
 
 #: ../src/spacecmd/activationkey.py:1778 ../src/spacecmd/system.py:4150
 msgid "Available contact methods: "
@@ -656,7 +663,8 @@ msgstr ""
 "사용법: api [옵션] API_STRING)\n"
 "\n"
 "옵션:\n"
-"  -A, --args  쉼표로 구분된 문자열 또는 JSON 식으로 세션 ID를 제외한 API를 위한 인수\n"
+"  -A, --args  쉼표로 구분된 문자열 또는 JSON 식으로 세션 ID를 제외한 API를 위"
+"한 인수\n"
 "  -F, --format   출력 형식\n"
 "  -o, --output   출력 파일\n"
 "\n"
@@ -1095,8 +1103,8 @@ msgid ""
 "auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
-"사용법: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
-"LOCAL_FILE_PATH [OPTIONS])\n"
+"사용법: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -"
+"f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
 "옵션:\n"
 "  -c 채널\n"
@@ -1227,8 +1235,10 @@ msgid ""
 msgstr ""
 "사용법: configchannel_export <CHANNEL>... [옵션])\n"
 "옵션:\n"
-"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값을 단일 채널을 내보내는 경우\n"
-"                      <CHANNEL>.json이고 여러 채널을 내보내는 경우 ccs.json이며\n"
+"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값을 단일 채널을 내보"
+"내는 경우\n"
+"                      <CHANNEL>.json이고 여러 채널을 내보내는 경우 ccs.json이"
+"며\n"
 "                      채널을 지정하지 않은 경우 cc_all.json입니다.\n"
 "                      예: (모두 내보내기)\n"
 "\n"
@@ -1272,7 +1282,9 @@ msgstr "모든 구성 채널을 %s(으)로 내보내는 중"
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
-msgstr "오류, 유효한 구성 채널이 전달되지 않음, spacecmd configchannel_list를 사용하여 이름이 올바른지 확인"
+msgstr ""
+"오류, 유효한 구성 채널이 전달되지 않음, spacecmd configchannel_list를 사용하"
+"여 이름이 올바른지 확인"
 
 #: ../src/spacecmd/configchannel.py:1207
 #, python-format
@@ -2376,7 +2388,8 @@ msgstr "파일 이름은 필수입니다."
 #: ../src/spacecmd/kickstart.py:310
 msgid ""
 "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
-msgstr "kickstart_import_raw: Raw 킥스타트 또는 autoyast 프로파일을 파일에서 가져오기"
+msgstr ""
+"kickstart_import_raw: Raw 킥스타트 또는 autoyast 프로파일을 파일에서 가져오기"
 
 #: ../src/spacecmd/kickstart.py:311
 msgid ""
@@ -2538,7 +2551,8 @@ msgstr "사용법: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
-msgstr "kickstart_listactivationkeys: 킥스타트 프로파일과 연결된 활성화 키 나열"
+msgstr ""
+"kickstart_listactivationkeys: 킥스타트 프로파일과 연결된 활성화 키 나열"
 
 #: ../src/spacecmd/kickstart.py:711
 msgid "usage: kickstart_listactivationkeys PROFILE"
@@ -2570,7 +2584,8 @@ msgstr "이 키 제거 [y/N]:"
 msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
-msgstr "kickstart_enableconfigmanagement: 킥스타트 프로파일에서 구성 관리 활성화"
+msgstr ""
+"kickstart_enableconfigmanagement: 킥스타트 프로파일에서 구성 관리 활성화"
 
 #: ../src/spacecmd/kickstart.py:815
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
@@ -2580,7 +2595,8 @@ msgstr "사용법: kickstart_enableconfigmanagement PROFILE"
 msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
-msgstr "kickstart_disableconfigmanagement: 킥스타트 프로파일에서 구성 관리 비활성화"
+msgstr ""
+"kickstart_disableconfigmanagement: 킥스타트 프로파일에서 구성 관리 비활성화"
 
 #: ../src/spacecmd/kickstart.py:848
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
@@ -2599,7 +2615,8 @@ msgstr "사용법: kickstart_enableremotecommands PROFILE"
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
-msgstr "kickstart_disableremotecommands: 킥스타트 프로파일에서 원격 명령 비활성화"
+msgstr ""
+"kickstart_disableremotecommands: 킥스타트 프로파일에서 원격 명령 비활성화"
 
 #: ../src/spacecmd/kickstart.py:914
 msgid "usage: kickstart_disableremotecommands PROFILE"
@@ -2718,7 +2735,8 @@ msgstr "사용법: kickstart_listcustomoptions PROFILE"
 
 #: ../src/spacecmd/kickstart.py:1483
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
-msgstr "kickstart_setcustomoptions: 킥스타트 프로파일에 대한 사용자 정의 옵션 설정"
+msgstr ""
+"kickstart_setcustomoptions: 킥스타트 프로파일에 대한 사용자 정의 옵션 설정"
 
 #: ../src/spacecmd/kickstart.py:1485
 msgid "usage: kickstart_setcustomoptions PROFILE"
@@ -2763,7 +2781,8 @@ msgstr "사용법: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
-msgstr "kickstart_removefilepreservations: 킥스타트 프로파일에서 파일 보존 제거"
+msgstr ""
+"kickstart_removefilepreservations: 킥스타트 프로파일에서 파일 보존 제거"
 
 #: ../src/spacecmd/kickstart.py:1713
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
@@ -2963,9 +2982,11 @@ msgid ""
 msgstr ""
 "사용법: kickstart_export <KSPROFILE>... [옵션])\n"
 "options:\n"
-"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 킥스타트를 내보내는 경우\n"
+"    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 킥스타트를 "
+"내보내는 경우\n"
 "                      <KSPROFILE>.json, 여러 킥스타트의 경우 profiles.json\n"
-"                      또는 KSPROFILE이 지정되지 않은 경우 ks_all.json입니다.\n"
+"                      또는 KSPROFILE이 지정되지 않은 경우 ks_all.json입니"
+"다.\n"
 "                      예: (export ALL)\n"
 "\n"
 "참고 : KSPROFILE 목록은 선택 사항이며, 기본값은 export ALL입니다."
@@ -2979,7 +3000,9 @@ msgstr "모든 킥스타트 프로파일을 %s(으)로 내보내는 중"
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
-msgstr "오류, 유효한 킥스타트 프로파일이 전달되지 않음, spacecmd kickstart_list을 사용하여 이름이 올바른지 확인"
+msgstr ""
+"오류, 유효한 킥스타트 프로파일이 전달되지 않음, spacecmd kickstart_list을 사"
+"용하여 이름이 올바른지 확인"
 
 #: ../src/spacecmd/kickstart.py:2301
 #, python-format
@@ -3060,7 +3083,9 @@ msgstr "GPG/SSL 키 %s이(가) Spacewalk 서버에 없음, 건너뛰는 중"
 msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
-msgstr "API 누락으로 인해 일부 설정을 가져올 수 없습니다. 필요한 경우 확인한 후 수동으로 수정하십시오."
+msgstr ""
+"API 누락으로 인해 일부 설정을 가져올 수 없습니다. 필요한 경우 확인한 후 수동"
+"으로 수정하십시오."
 
 #: ../src/spacecmd/kickstart.py:2474
 msgid " * Details->Preserve ks.cfg"
@@ -3102,7 +3127,8 @@ msgstr "사용법: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/kickstart.py:2572
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
-msgstr "kickstart_getupdatetype: 킥스타트 프로파일에 대한 업데이트 유형 가져오기"
+msgstr ""
+"kickstart_getupdatetype: 킥스타트 프로파일에 대한 업데이트 유형 가져오기"
 
 #: ../src/spacecmd/kickstart.py:2573
 msgid "usage: kickstart_getupdatetype PROFILE"
@@ -3148,7 +3174,8 @@ msgstr "업데이트 유형 [없음]:"
 
 #: ../src/spacecmd/kickstart.py:2671
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
-msgstr "kickstart_getsoftwaredetails: 킥스타트 프로파일 소프트웨어 세부 사항 가져오기"
+msgstr ""
+"kickstart_getsoftwaredetails: 킥스타트 프로파일 소프트웨어 세부 사항 가져오기"
 
 #: ../src/spacecmd/kickstart.py:2672
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
@@ -3185,12 +3212,15 @@ msgstr "ignoreMissing:   %s"
 
 #: ../src/spacecmd/kickstart.py:2722
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
-msgstr "kickstart_setsoftwaredetails: 킥스타트 프로파일 소프트웨어 세부 사항을 설정합니다."
+msgstr ""
+"kickstart_setsoftwaredetails: 킥스타트 프로파일 소프트웨어 세부 사항을 설정합"
+"니다."
 
 #: ../src/spacecmd/kickstart.py:2723
 msgid ""
 "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
-msgstr "사용법: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
+msgstr ""
+"사용법: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 
 #: ../src/spacecmd/kickstart.py:2724
 msgid ""
@@ -3845,7 +3875,9 @@ msgstr "고급 검색:"
 #: ../src/spacecmd/package.py:129
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
-msgstr "사용할 수 있는 필드: name, epoch, version, release, arch, description, summary"
+msgstr ""
+"사용할 수 있는 필드: name, epoch, version, release, arch, description, "
+"summary"
 
 #: ../src/spacecmd/package.py:130
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
@@ -4292,7 +4324,8 @@ msgid ""
 "scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
 "OpenSCAP XCCDF scan"
 msgstr ""
-"scap_getxccdfscanruleresults: 지정된 OpenSCAP XCCDF 스캔에 대한 전체 RuleResults 목록 반환"
+"scap_getxccdfscanruleresults: 지정된 OpenSCAP XCCDF 스캔에 대한 전체 "
+"RuleResults 목록 반환"
 
 #: ../src/spacecmd/scap.py:98
 msgid "usage: scap_getxccdfscanruleresults <XID>"
@@ -4310,7 +4343,8 @@ msgstr "IDref: %s 결과: %s Idents: (%s)"
 
 #: ../src/spacecmd/scap.py:133
 msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
-msgstr "scap_getxccdfscandetails: 지정된 OpenSCAP XCCDF 스캔의 세부 사항 가져오기"
+msgstr ""
+"scap_getxccdfscandetails: 지정된 OpenSCAP XCCDF 스캔의 세부 사항 가져오기"
 
 #: ../src/spacecmd/scap.py:134
 msgid "usage: scap_getxccdfscandetails <XID>"
@@ -4370,7 +4404,8 @@ msgstr "scap_schedulexccdfscan: Scap XCCDF 스캔 예약"
 
 #: ../src/spacecmd/scap.py:177
 msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
-msgstr "사용법: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
+msgstr ""
+"사용법: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 
 #: ../src/spacecmd/scap.py:178
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
@@ -4768,7 +4803,9 @@ msgstr "softwarechannel_listchildchannels : 모든 하위 채널 나열"
 msgid ""
 "softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
 "channel"
-msgstr "softwarechannel_listchildchannels CHANNEL : 비특이 기본 채널에 대한 하위 채널 나열"
+msgstr ""
+"softwarechannel_listchildchannels CHANNEL : 비특이 기본 채널에 대한 하위 채"
+"널 나열"
 
 #: ../src/spacecmd/softwarechannel.py:179
 msgid ""
@@ -4814,7 +4851,8 @@ msgstr "사용법: softwarechannel_listallpackages CHANNEL"
 msgid ""
 "softwarechannel_listlatestpackages: List the newest version of all packages "
 "in a channel"
-msgstr "softwarechannel_listlatestpackages: 모든 채널 내 패키지의 최신 버전 나열"
+msgstr ""
+"softwarechannel_listlatestpackages: 모든 채널 내 패키지의 최신 버전 나열"
 
 #: ../src/spacecmd/softwarechannel.py:342
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
@@ -5028,7 +5066,8 @@ msgstr "                            소프트웨어 채널"
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
-"사용법: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+"사용법: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd "
+"[to=yyyymmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:682
 msgid "softwarechannel_listarches: lists the potential software"
@@ -5366,8 +5405,8 @@ msgid ""
 msgstr ""
 "사용법: softwarechannel_clonetree [옵션])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\""
-"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "옵션:\n"
@@ -5426,7 +5465,8 @@ msgstr "이 패키지 추가 [y/N]:"
 msgid ""
 "softwarechannel_mergepackages: Merge packages from one software channel into "
 "another"
-msgstr "softwarechannel_mergepackages: 한 소프트웨어 채널에서 다른 채널로 패키지 병합"
+msgstr ""
+"softwarechannel_mergepackages: 한 소프트웨어 채널에서 다른 채널로 패키지 병합"
 
 #: ../src/spacecmd/softwarechannel.py:1408
 msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
@@ -5476,14 +5516,17 @@ msgstr "제거할 패키지 없음"
 msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
-msgstr "softwarechannel_adderratabydate: 날짜 범위에 따라 한 채널에서 다른 채널로 오류 추가"
+msgstr ""
+"softwarechannel_adderratabydate: 날짜 범위에 따라 한 채널에서 다른 채널로 오"
+"류 추가"
 
 #: ../src/spacecmd/softwarechannel.py:1594
 msgid ""
 "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
 "ENDDATE"
 msgstr ""
-"사용법: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"
+"사용법: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
+"ENDDATE"
 
 #: ../src/spacecmd/softwarechannel.py:1595
 #: ../src/spacecmd/softwarechannel.py:1670
@@ -5523,7 +5566,8 @@ msgstr "%s 오류를 %s에 게시 중"
 msgid ""
 "softwarechannel_listerratabydate: list errata from channelbased on a date "
 "range"
-msgstr "softwarechannel_listerratabydate: 날짜 범위에 따라 채널에서 제공된 오류 나열"
+msgstr ""
+"softwarechannel_listerratabydate: 날짜 범위에 따라 채널에서 제공된 오류 나열"
 
 #: ../src/spacecmd/softwarechannel.py:1669
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
@@ -5576,12 +5620,15 @@ msgstr "기존 errata.clone 함수 사용 중"
 msgid ""
 "If you have base channels for multiple OS versions, check no unexpected "
 "packages have been added"
-msgstr "여러 OS 버전에 대한 기본 채널이 있는 경우 예기치 못한 패키지가 추가되지 않았는지 확인하십시오."
+msgstr ""
+"여러 OS 버전에 대한 기본 채널이 있는 경우 예기치 못한 패키지가 추가되지 않았"
+"는지 확인하십시오."
 
 #: ../src/spacecmd/softwarechannel.py:1860
 msgid ""
 "softwarechannel_getorgaccess: Get the org-access for the software channel"
-msgstr "softwarechannel_getorgaccess: 소프트웨어 채널에 대한 조직 액세스 가져오기"
+msgstr ""
+"softwarechannel_getorgaccess: 소프트웨어 채널에 대한 조직 액세스 가져오기"
 
 #: ../src/spacecmd/softwarechannel.py:1861
 msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
@@ -5603,7 +5650,8 @@ msgstr ""
 "사용법 : softwarechannel_setorgaccess <CHANNEL> [옵션])\n"
 "-d,--disable : 조직 액세스 비활성화(비공개, 조직 공유 없음)\n"
 "-e,--enable : enable org access (트러스트된 모든 조직에 대한 공용 액세스)\n"
-"-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스가 허용됨)"
+"-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스"
+"가 허용됨)"
 
 #: ../src/spacecmd/softwarechannel.py:1940
 #, python-format
@@ -5634,7 +5682,9 @@ msgstr "채널에 대한 %s 액세스 비활성화: %s "
 msgid ""
 "softwarechannel_getorgaccesstree: Get the org-access for a software base "
 "channel and its children"
-msgstr "softwarechannel_getorgaccesstree: 소프트웨어 기본 채널 및 하위 채널에 대한 조직 액세스 가져오기"
+msgstr ""
+"softwarechannel_getorgaccesstree: 소프트웨어 기본 채널 및 하위 채널에 대한 조"
+"직 액세스 가져오기"
 
 #: ../src/spacecmd/softwarechannel.py:1975
 msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
@@ -5644,7 +5694,9 @@ msgstr "사용법: softwarechannel_getorgaccesstree [CHANNEL]"
 msgid ""
 "softwarechannel_setorgaccesstree: set the org-access for a software base "
 "channel and its children"
-msgstr "softwarechannel_setorgaccesstree: 소프트웨어 기본 채널 및 하위 채널에 대한 조직 액세스 설정"
+msgstr ""
+"softwarechannel_setorgaccesstree: 소프트웨어 기본 채널 및 하위 채널에 대한 조"
+"직 액세스 설정"
 
 #: ../src/spacecmd/softwarechannel.py:2009
 msgid ""
@@ -5657,7 +5709,8 @@ msgstr ""
 "사용법: softwarechannel_setorgaccesstree <CHANNEL> [옵션])\n"
 "-d,--disable : 조직 액세스 비활성화(비공개, 조직 공유 없음)\n"
 "-e,--enable : enable org access (트러스트된 모든 조직에 대한 공용 액세스)\n"
-"-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스가 허용됨)"
+"-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스"
+"가 허용됨)"
 
 #: ../src/spacecmd/softwarechannel.py:2048
 msgid "softwarechannel_regenerateneededcache: "
@@ -5859,8 +5912,8 @@ msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
 msgstr ""
-"사용법:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE]"
-" [TO_DATE]"
+"사용법:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
+"[FROM_DATE] [TO_DATE]"
 
 #: ../src/spacecmd/softwarechannel.py:2503
 msgid ""
@@ -5967,7 +6020,9 @@ msgstr "일정은 따옴표로 감싸지 않고 Quartz CronTrigger 형식으로 
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
-msgstr "예를 들어, 매일 오전 1시에 예약을 설정하려면 <SCHEDULE>은 0 0 1 * * 이어야 합니다."
+msgstr ""
+"예를 들어, 매일 오전 1시에 예약을 설정하려면 <SCHEDULE>은 0 0 1 * * 이어야 합"
+"니다."
 
 #: ../src/spacecmd/softwarechannel.py:2670
 msgid "If <SCHEDULE> is left empty, it will be disabled."
@@ -5989,7 +6044,8 @@ msgstr "사용법: softwarechannel_removesyncschedule <CHANNEL>"
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
-msgstr "softwarechannel_listsyncschedule: 모든 소프트웨어 채널의 동기화 일정 나열"
+msgstr ""
+"softwarechannel_listsyncschedule: 모든 소프트웨어 채널의 동기화 일정 나열"
 
 #: ../src/spacecmd/softwarechannel.py:2735
 msgid "softwarechannel_listsyncschedule : List all channels"
@@ -6701,8 +6757,10 @@ msgstr ""
 "  -f 파일 컨텐트의 로컬 경로\n"
 "\n"
 "  참고 바이너리/base64: 일부 텍스트 파일, 특히 후행 줄 바꿈이 포함된 파일,\n"
-"  ASCII 이스케이프 문자가 포함된 파일(또는 XML에서 허용되지 않는 기타 문자)은\n"
-"  바이너리(-b)로 전송해야 합니다. 이러한 작업이 필요한 파일을 자동 감지하기 위한\n"
+"  ASCII 이스케이프 문자가 포함된 파일(또는 XML에서 허용되지 않는 기타 문자)"
+"은\n"
+"  바이너리(-b)로 전송해야 합니다. 이러한 작업이 필요한 파일을 자동 감지하기 "
+"위한\n"
 "  일부 작업이 수행되었지만, 사용자가 명시적으로 지정해야 할 수 있습니다.\n"
 
 #: ../src/spacecmd/system.py:1488
@@ -6812,7 +6870,8 @@ msgstr ""
 "          -c TYPE - 사용할 수 있는 값:\n"
 "             *  'FAIL_ON_CLEANUP_ERR' - 정리 오류의 경우 실패,\n"
 "             *  'NO_CLEANUP' - 정리하지 않음, 삭제만 수행,\n"
-"             *  'FORCE_DELETE' - 우선 정리를 시도하지만 오류 발생 시 서버를 삭제\n"
+"             *  'FORCE_DELETE' - 우선 정리를 시도하지만 오류 발생 시 서버를 "
+"삭제\n"
 "    "
 
 #: ../src/spacecmd/system.py:1851
@@ -7061,7 +7120,9 @@ msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 �
 msgid ""
 "system_listcrashedsystems: List all systems that have experienced a crash "
 "and reported by spacewalk-abrt"
-msgstr "system_listcrashedsystems: 충돌이 발생하고 spacewalk-abrt로 보고된 모든 시스템 나열"
+msgstr ""
+"system_listcrashedsystems: 충돌이 발생하고 spacewalk-abrt로 보고된 모든 시스"
+"템 나열"
 
 #: ../src/spacecmd/system.py:2763
 msgid "usage: system_listcrashedsystems"
@@ -7079,20 +7140,25 @@ msgstr "system_deletecrashes: spacewalk-abrt로 보고된 충돌을 삭제합니
 msgid ""
 "usage: Delete all crashes for all systems    : system_deletecrashes [--"
 "verbose]"
-msgstr "사용법: 모든 시스템에 대한 모든 충돌 삭제    : system_deletecrashes [--verbose]"
+msgstr ""
+"사용법: 모든 시스템에 대한 모든 충돌 삭제    : system_deletecrashes [--"
+"verbose]"
 
 #: ../src/spacecmd/system.py:2787
 msgid ""
 "usage: Delete all crashes for a single system: system_deletecrashes -i "
 "sys_id [--verbose]"
-msgstr "사용법: 단일 시스템에 대한 모든 충돌 삭제: system_deletecrashes -i sys_id [--verbose]"
+msgstr ""
+"사용법: 단일 시스템에 대한 모든 충돌 삭제: system_deletecrashes -i sys_id [--"
+"verbose]"
 
 #: ../src/spacecmd/system.py:2788
 msgid ""
 "usage: Delete a single crash record          : system_deletecrashes -c "
 "crash_id [--verbose]"
 msgstr ""
-"사용법: 단일 충돌 레코드 삭제         : system_deletecrashes -c crash_id [--verbose]"
+"사용법: 단일 충돌 레코드 삭제         : system_deletecrashes -c crash_id [--"
+"verbose]"
 
 #: ../src/spacecmd/system.py:2808
 #, python-format
@@ -7143,8 +7209,8 @@ msgid ""
 "usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
 "verbose]"
 msgstr ""
-"사용법: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] "
-"[--verbose]"
+"사용법: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
+"verbose]"
 
 #: ../src/spacecmd/system.py:2886
 msgid "# Crash id must be provided."
@@ -7500,7 +7566,8 @@ msgstr ""
 msgid ""
 "system_schedulepackagerefresh: Schedule a software package refresh for a "
 "system"
-msgstr "system_schedulepackagerefresh: 시스템에 대한 소프트웨어 패키지 새로 고침 예약"
+msgstr ""
+"system_schedulepackagerefresh: 시스템에 대한 소프트웨어 패키지 새로 고침 예약"
 
 #: ../src/spacecmd/system.py:4035
 msgid ""
@@ -7540,7 +7607,9 @@ msgstr "사용법: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
-msgstr "system_scheduleapplyconfigchannels: 시스템에 할당된 구성 파일 적용 예약(Minion 전용)"
+msgstr ""
+"system_scheduleapplyconfigchannels: 시스템에 할당된 구성 파일 적용 예약"
+"(Minion 전용)"
 
 #: ../src/spacecmd/system.py:4201
 msgid ""
@@ -7562,7 +7631,9 @@ msgstr "이 시스템에 구성 채널 적용 예약 [y/N]:"
 msgid ""
 "system_listmigrationtargets: List possible migration targets for given "
 "systems."
-msgstr "system_listmigrationtargets: 지정된 시스템에서 가능한 마이그레이션 대상을 나열합니다."
+msgstr ""
+"system_listmigrationtargets: 지정된 시스템에서 가능한 마이그레이션 대상을 나"
+"열합니다."
 
 #: ../src/spacecmd/system.py:4270
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
@@ -7595,7 +7666,9 @@ msgstr "    식별 이름: "
 #: ../src/spacecmd/system.py:4315
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
-msgstr "system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니다."
+msgstr ""
+"system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니"
+"다."
 
 #: ../src/spacecmd/system.py:4316
 msgid ""
@@ -7612,7 +7685,8 @@ msgid ""
 msgstr ""
 "사용법: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [옵션] \n"
-"    MIGRATION_TARGET 파라미터의 경우 system_listmigrationtargets를 참조하십시오. \n"
+"    MIGRATION_TARGET 파라미터의 경우 system_listmigrationtargets를 참조하십시"
+"오. \n"
 "    MIGRATION_TARGET 파라미터의 경우 다음 형식으로 전달되어야 함: "
 "[3143,3146,3147,3145,3144,3148,3062]. \n"
 "    옵션: \n"
@@ -7991,6 +8065,6 @@ msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 
-#: ../src/bin/spacecmd:74
+#: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
