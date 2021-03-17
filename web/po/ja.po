@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/Range.tsx:45
-#: ../html/src/components/input/Range.tsx:46
-#: ../html/src/components/input/Range.tsx:58
-#: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:100
+#: ../html/src/components/input/Range.js:68
+#: ../html/src/components/input/Range.js:69
+#: ../html/src/components/input/Range.js:83
+#: ../html/src/components/input/Range.js:84
+#: ../html/src/manager/content-management/list-filters/list-filters.js:94
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-02 14:23+0000\n"
+"POT-Creation-Date: 2021-02-05 11:22+0100\n"
 "PO-Revision-Date: 2021-01-13 00:38+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -35,36 +35,11 @@ msgstr ""
 "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいず"
 "れかをお使いください"
 
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"formula を保存しました。この formula に対する highstate の適用は不要です。"
-
-#: ../html/src/components/FormulaForm.tsx:151
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "必須の項目に入力を行なってください: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:154
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "項目の書式が正しくありません: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:199
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
-"を行なうことができます。"
-
-#: ../html/src/components/action-schedule.tsx:47
+#: ../html/src/components/action-schedule.js:53
 msgid "new action chain"
 msgstr "新しい動作チェーン"
 
-#: ../html/src/components/action-schedule.tsx:188
+#: ../html/src/components/action-schedule.js:196
 msgid ""
 "There are multiple maintenance schedules for selected systems. Make sure "
 "that systems in the set use at most 1 maintenance schedule if you want to "
@@ -74,39 +49,39 @@ msgstr ""
 "ンテナンスウィンドウでスケジュールを設定したい場合は、システムに対して最大で"
 "も 1 つのメンテナンススケジュールのみを設定してください。"
 
-#: ../html/src/components/action-schedule.tsx:195
+#: ../html/src/components/action-schedule.js:203
 msgid "No upcoming maintenance windows"
 msgstr "次のメンテナンスウィンドウはありません"
 
-#: ../html/src/components/action-schedule.tsx:244
+#: ../html/src/components/action-schedule.js:248
 msgid "Earliest:"
 msgstr "指定時刻以降にスケジュール:"
 
-#: ../html/src/components/action-schedule.tsx:244
+#: ../html/src/components/action-schedule.js:248
 msgid "Maintenance Window:"
 msgstr "メンテナンスウィンドウ:"
 
-#: ../html/src/components/action-schedule.tsx:274
+#: ../html/src/components/action-schedule.js:273
 msgid "Add to:"
 msgstr "以下に追加:"
 
-#: ../html/src/components/action-schedule.tsx:292
+#: ../html/src/components/action-schedule.js:289
 msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
-#: ../html/src/components/config-channels.tsx:29
+#: ../html/src/components/config-channels.js:22
 msgid "State Configuration Channel"
 msgstr "状態設定チャンネル"
 
-#: ../html/src/components/config-channels.tsx:32
+#: ../html/src/components/config-channels.js:25
 msgid "Normal Configuration Channel"
 msgstr "通常設定チャンネル"
 
-#: ../html/src/components/config-channels.tsx:68
+#: ../html/src/components/config-channels.js:50
 msgid "Configuration Channel: {0}"
 msgstr "設定チャンネル: {0}"
 
-#: ../html/src/components/config-channels.tsx:78
+#: ../html/src/components/config-channels.js:54
 #: ../html/src/manager/images/image-profiles.js:160
 #: ../html/src/manager/images/image-stores.js:157
 #: ../html/src/manager/images/image-view-overview.js:207
@@ -121,39 +96,37 @@ msgstr "設定チャンネル: {0}"
 msgid "Edit"
 msgstr "編集"
 
-#: ../html/src/components/config-channels.tsx:79
+#: ../html/src/components/config-channels.js:55
 msgid "Edit Configuration Channel"
 msgstr "設定チャンネルの編集"
 
-#: ../html/src/components/config-channels.tsx:155
+#: ../html/src/components/config-channels.js:107
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "保存されていない変更があります。続行してもよろしいですか？"
 
-#: ../html/src/components/config-channels.tsx:193
+#: ../html/src/components/config-channels.js:145
 msgid "State assignments have been saved."
 msgstr "状態の割り当てが保存されました。"
 
-#: ../html/src/components/config-channels.tsx:202
+#: ../html/src/components/config-channels.js:154
 msgid "An error occurred on save."
 msgstr "保存時にエラーが発生しました。"
 
-#: ../html/src/components/config-channels.tsx:339
+#: ../html/src/components/config-channels.js:277
 #: ../html/src/manager/minion/packages/package-states.js:271
 msgid "No current changes."
 msgstr "現時点での変更はありません。"
 
-#: ../html/src/components/config-channels.tsx:340
+#: ../html/src/components/config-channels.js:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
 "てください。"
 
-#: ../html/src/components/config-channels.tsx:399
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:93
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
-#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
+#: ../html/src/components/config-channels.js:337
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:51
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:86
+#: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.js:53
 #: ../html/src/manager/images/image-view.js:683
 #: ../html/src/manager/images/image-view.js:685
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.js:27
@@ -167,7 +140,7 @@ msgstr ""
 msgid "Back"
 msgstr "戻る"
 
-#: ../html/src/components/config-channels.tsx:401
+#: ../html/src/components/config-channels.js:338
 #: ../html/src/manager/maintenance/edit/calendar-edit.js:167
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.js:18
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
@@ -175,40 +148,40 @@ msgstr "戻る"
 msgid "Confirm"
 msgstr "確認"
 
-#: ../html/src/components/config-channels.tsx:409
+#: ../html/src/components/config-channels.js:345
 #: ../html/src/manager/maintenance/details/schedule-details.js:181
 #: ../html/src/manager/maintenance/details/schedule-details.js:188
 msgid "Save Changes"
 msgstr "変更点の保存"
 
-#: ../html/src/components/config-channels.tsx:422
+#: ../html/src/components/config-channels.js:351
 msgid "Apply"
 msgstr "適用"
 
-#: ../html/src/components/config-channels.tsx:429
+#: ../html/src/components/config-channels.js:356
 msgid "Reorder"
 msgstr "並べ替え"
 
-#: ../html/src/components/config-channels.tsx:440
-#: ../html/src/components/config-channels.tsx:444
+#: ../html/src/components/config-channels.js:368
+#: ../html/src/components/config-channels.js:372
 msgid "Changes"
 msgstr "変更"
 
-#: ../html/src/components/config-channels.tsx:442
+#: ../html/src/components/config-channels.js:370
 msgid "1 Change"
 msgstr "1 個の変更"
 
-#: ../html/src/components/config-channels.tsx:452
-#: ../html/src/components/config-channels.tsx:489
+#: ../html/src/components/config-channels.js:379
+#: ../html/src/components/config-channels.js:408
 #: ../html/src/manager/minion/packages/package-states.js:240
 msgid "Search"
 msgstr "検索"
 
-#: ../html/src/components/config-channels.tsx:462
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/components/config-channels.js:385
+#: ../html/src/manager/admin/config/monitoring-admin.js:44
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:47
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:228
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:309
 #: ../html/src/manager/maintenance/details/schedule-details.js:206
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
@@ -216,54 +189,54 @@ msgstr "検索"
 msgid "System"
 msgstr "システム"
 
-#: ../html/src/components/config-channels.tsx:473
+#: ../html/src/components/config-channels.js:395
 msgid "Configuration Channels"
 msgstr "設定チャンネル"
 
-#: ../html/src/components/config-channels.tsx:484
+#: ../html/src/components/config-channels.js:405
 msgid "Search in configuration channels"
 msgstr "設定チャンネル内での検索"
 
-#: ../html/src/components/config-channels.tsx:500
+#: ../html/src/components/config-channels.js:419
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "設定チャンネルの順位を変更するには、それらをドラッグしてください。"
 
-#: ../html/src/components/config-channels.tsx:504
+#: ../html/src/components/config-channels.js:420
 msgid "There are no states assigned."
 msgstr "状態が何も割り当てられていません。"
 
-#: ../html/src/components/config-channels.tsx:512
+#: ../html/src/components/config-channels.js:427
 msgid "Channel Name"
 msgstr "チャンネル名"
 
-#: ../html/src/components/config-channels.tsx:513
+#: ../html/src/components/config-channels.js:428
 msgid "Channel Label"
 msgstr "チャンネルラベル"
 
-#: ../html/src/components/config-channels.tsx:514
+#: ../html/src/components/config-channels.js:429
 msgid "Assign"
 msgstr "割り当て"
 
-#: ../html/src/components/config-channels.tsx:540
-#: ../html/src/components/table/TableDataHandler.tsx:323
+#: ../html/src/components/config-channels.js:451
+#: ../html/src/components/table/TableDataHandler.js:289
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:71
+#: ../html/src/components/dialog/ActionConfirm.js:71
 msgid "Are you sure you want to {0} {1} "
 msgstr "{1} を {0} してよろしいですか "
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:83
+#: ../html/src/components/dialog/ActionConfirm.js:81
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr ""
 "選択した {1} に対して {0} してよろしいですか？ ({2} 個の {1} が選択されていま"
 "す)"
 
-#: ../html/src/components/dialog/DangerDialog.tsx:49
-#: ../html/src/components/dialog/DangerDialog.tsx:50
-#: ../html/src/components/panels/CreatorPanel.tsx:112
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
+#: ../html/src/components/dialog/DangerDialog.js:44
+#: ../html/src/components/dialog/DangerDialog.js:45
+#: ../html/src/components/panels/CreatorPanel.js:113
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:166
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:134
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -278,9 +251,9 @@ msgstr ""
 msgid "Cancel"
 msgstr "取り消し"
 
-#: ../html/src/components/dialog/DeleteDialog.tsx:22
-#: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/components/dialog/DeleteDialog.js:23
+#: ../html/src/components/panels/CreatorPanel.js:99
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:113
 #: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/images/image-profiles.js:106
@@ -316,11 +289,49 @@ msgstr "プロジェクトの削除"
 msgid "Are you sure you want to delete project "
 msgstr "下記のプロジェクトを削除してよろしいですか "
 
-#: ../html/src/components/formula-selection.tsx:145
+#: ../html/src/components/FormulaForm.js:17
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+"formula を保存しました。この formula に対する highstate の適用は不要です。"
+
+#: ../html/src/components/FormulaForm.js:79
+msgid ""
+"Multiple Group formulas detected. Only one formula for \"{0}\" can be used "
+"on each system!"
+msgstr ""
+"複数のグループ formula が検出されました。各システムに対しては 1 つの \"{0}\" "
+"向け formula のみを設定できます！"
+
+#: ../html/src/components/FormulaForm.js:107
+#: ../html/src/manager/clusters/cluster/cluster-config.js:50
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:61
+msgid "Please input required fields: {0}"
+msgstr "必須の項目に入力を行なってください: {0}"
+
+#: ../html/src/components/FormulaForm.js:110
+#: ../html/src/manager/clusters/cluster/cluster-config.js:53
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:64
+msgid "Invalid format of fields: {0}"
+msgstr "項目の書式が正しくありません: {0}"
+
+#: ../html/src/components/FormulaForm.js:157
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
+"を行なうことができます。"
+
+#: ../html/src/components/formulas/EditGroup.js:266
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
+
+#: ../html/src/components/formula-selection.js:128
 msgid " No group"
 msgstr " グループ無し"
 
-#: ../html/src/components/formula-selection.tsx:283
+#: ../html/src/components/formula-selection.js:228
 msgid ""
 "On this page you can select Salt Formulas for this group/system, which can "
 "then be configured on group and system level. This allows you to "
@@ -330,40 +341,30 @@ msgstr ""
 "できます。設定後、グループやシステムのレベルで設定を行なうことができるように"
 "なります。これはソフトウェアの自動インストールや設定を行なうためのものです。"
 
-#: ../html/src/components/formula-selection.tsx:290
-#: ../html/src/components/panels/CreatorPanel.tsx:123
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
+#: ../html/src/components/formula-selection.js:234
+#: ../html/src/components/panels/CreatorPanel.js:124
+#: ../html/src/manager/clusters/cluster/cluster-config.js:81
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:174
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:147
 #: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
 msgstr "保存"
 
-#: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
+#: ../html/src/components/formula-selection.js:242
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 msgid "Formulas"
 msgstr "Formula"
 
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
-
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
-msgid "Reset"
-msgstr "リセット"
-
-#: ../html/src/components/formulas/PasswordInput.tsx:72
+#: ../html/src/components/formulas/PasswordInput.js:52
 msgid "Generate new password"
 msgstr "新しいパスワードの生成"
 
-#: ../html/src/components/formulas/PasswordInput.tsx:79
+#: ../html/src/components/formulas/PasswordInput.js:55
 msgid "Show/hide password"
 msgstr "パスワードの表示／非表示"
 
-#: ../html/src/components/formulas/SectionToggle.tsx:23
+#: ../html/src/components/formulas/SectionToggle.js:15
 msgid "Toggle section visibility"
 msgstr "セクション表示の切り替え"
 
@@ -372,6 +373,7 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/FormMultiInput.stories.js:75
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -380,13 +382,22 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
 msgid "Submit"
 msgstr "送信"
 
 #: ../html/src/components/input/DateTime.stories.js:27
 msgid "Time"
 msgstr "時刻"
+
+#: ../html/src/components/input/FormMultiInput.js:122
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:59
+msgid "Add"
+msgstr "追加"
+
+#: ../html/src/components/input/FormMultiInput.js:134
+#: ../html/src/manager/clusters/remove-node/remove-node.js:82
+msgid "Remove"
+msgstr "削除"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 #: ../html/src/components/input/FormMultiInput.stories.js:94
@@ -395,20 +406,20 @@ msgid "Users"
 msgstr "ユーザー"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
 #: ../html/src/components/input/form.stories.js:26
+#: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
 msgstr "名"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
 #: ../html/src/components/input/FormMultiInput.stories.js:120
-#: ../html/src/components/input/InputBase.test.tsx:41
-#: ../html/src/components/input/InputBase.test.tsx:67
-#: ../html/src/components/input/InputBase.test.tsx:95
+#: ../html/src/components/input/form.stories.js:28
+#: ../html/src/components/input/InputBase.test.js:43
+#: ../html/src/components/input/InputBase.test.js:71
+#: ../html/src/components/input/InputBase.test.js:99
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr "最低 2 文字"
 
@@ -417,24 +428,13 @@ msgid "Last Name"
 msgstr "姓"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:118
-#: ../html/src/manager/login/login.tsx:126
+#: ../html/src/manager/login/login.js:125
 msgid "Login"
 msgstr "ログイン"
 
-#: ../html/src/components/input/FormMultiInput.tsx:128
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
-msgid "Add"
-msgstr "追加"
-
-#: ../html/src/components/input/FormMultiInput.tsx:139
-#: ../html/src/manager/clusters/remove-node/remove-node.js:82
-msgid "Remove"
-msgstr "削除"
-
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
 msgstr "パスワード"
@@ -478,7 +478,7 @@ msgid "Port range"
 msgstr "ポート範囲: 1 - 65535"
 
 #: ../html/src/components/input/Range.stories.js:36
-#: ../html/src/components/input/Range.test.tsx:70
+#: ../html/src/components/input/Range.test.js:71
 msgid "Both values need to be positive integers"
 msgstr ""
 
@@ -494,187 +494,146 @@ msgstr "入力してください..."
 msgid "No flavors"
 msgstr "フレーバー無し"
 
-#: ../html/src/components/pagination.tsx:19
+#: ../html/src/components/pagination.js:14
 msgid "First"
 msgstr "最初"
 
-#: ../html/src/components/pagination.tsx:23
-#: ../html/src/manager/admin/setup/products/products.js:351
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
-msgid "Prev"
-msgstr "前へ"
-
-#: ../html/src/components/pagination.tsx:28
+#: ../html/src/components/pagination.js:16
 #: ../html/src/manager/admin/setup/products/products.js:357
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:26
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:102
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:112
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:45
+#: ../html/src/manager/clusters/add-cluster/select-provider.js:27
+#: ../html/src/manager/clusters/shared/ui/formula-config.js:134
+#: ../html/src/manager/clusters/shared/ui/select-server.js:99
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:44
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:970
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
 msgstr "次へ"
 
-#: ../html/src/components/pagination.tsx:33
-#, fuzzy
-msgid "Last"
-msgstr "姓"
-
-#: ../html/src/components/pagination.tsx:88
+#: ../html/src/components/pagination.js:54
 msgid "Page"
 msgstr "ページ"
 
-#: ../html/src/components/pagination.tsx:103
+#: ../html/src/components/pagination.js:63
 #: ../html/src/manager/admin/setup/products/products.js:362
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
 msgstr "／"
 
-#: ../html/src/components/pagination.tsx:109
+#: ../html/src/components/pagination.js:72
 msgid "Page {0} of {1}"
 msgstr "{0} / {1} ページ"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:309
+#: ../html/src/components/picker/recurring-event-picker.js:303
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:85
 #: ../html/src/manager/maintenance/list/schedule-list.js:37
 #: ../html/src/manager/state/recurring-states-list.js:88
 msgid "Schedule Name"
 msgstr "スケジュール名"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:316
+#: ../html/src/components/picker/recurring-event-picker.js:307
 msgid "Select a Schedule"
 msgstr "スケジュールの選択:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:331
+#: ../html/src/components/picker/recurring-event-picker.js:314
 msgid "Hourly:"
 msgstr "毎時:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:348
+#: ../html/src/components/picker/recurring-event-picker.js:320
 msgid "The action will be executed every hour at the specified minute"
 msgstr "動作は 1 時間に 1 回、指定された分に実行されます"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:363
+#: ../html/src/components/picker/recurring-event-picker.js:326
 msgid "Daily:"
 msgstr "毎日:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:387
+#: ../html/src/components/picker/recurring-event-picker.js:335
 msgid "Weekly:"
 msgstr "毎週:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:421
+#: ../html/src/components/picker/recurring-event-picker.js:351
 msgid "Monthly:"
 msgstr "毎月:"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:446
+#: ../html/src/components/picker/recurring-event-picker.js:364
 msgid ""
 "Days are limited to 28 to have a recurring schedule available for all the "
 "months"
 msgstr "日は必ず毎月実行できるよう、最大でも 28 までの範囲で指定します"
 
-#: ../html/src/components/picker/recurring-event-picker.tsx:461
+#: ../html/src/components/picker/recurring-event-picker.js:370
 msgid "Custom Quartz format:"
 msgstr "独自のクォーツ書式:"
 
-#: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
+#: ../html/src/components/picker/recurring-event-picker.js:373
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr "例: \"0 15 2 ? * 7\""
+
+#: ../html/src/components/systems.js:45
+#: ../html/src/manager/content-management/list-filters/filter-form.js:205
 msgid "Security Advisory"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/components/systems.tsx:56
+#: ../html/src/components/systems.js:58
 msgid "System Locked"
 msgstr "システムはロック済み"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchPanel.js:39
 msgid "Items {0} - {1} of {2}"
 msgstr "項目 {0} - {1} ／ {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.js:42
 msgid "({0} selected)"
 msgstr "({0} 個を選択しています)"
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.js:43
 #: ../html/src/manager/admin/setup/products/products.js:287
 msgid "Clear"
 msgstr "消去"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.js:48
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:324
+#: ../html/src/components/table/TableDataHandler.js:290
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:355
+#: ../html/src/components/table/TableDataHandler.js:318
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
-#: ../html/src/components/tree/tree.tsx:109
+#: ../html/src/components/tree/tree.js:117
 msgid "Invalid data"
 msgstr "データが正しくありません"
 
-#: ../html/src/components/tree/tree.tsx:117
+#: ../html/src/components/tree/tree.js:125
 msgid "No data"
 msgstr "データがありません"
 
-#: ../html/src/components/utils/HelpLink.tsx:20
+#: ../html/src/components/utils/HelpLink.js:20
 msgid "Help"
 msgstr "ヘルプ"
 
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:13
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
-msgid "Base channel not found or not authorized."
-msgstr "ベースチャンネルが見つからないか、認可されていません。"
-
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:14
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
-msgid "Child channel not found or not authorized."
-msgstr "子チャンネルが見つからないか、認可されていません。"
-
-#: ../html/src/core/channels/api/use-mandatory-channels-api.ts:15
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
-msgid "Invalid channel id"
-msgstr "チャンネル ID が正しくありません"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:29
-msgid "Required channels"
-msgstr "必要なチャンネル"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:31
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:35
-msgid "none"
-msgstr "なし"
-
-#: ../html/src/core/channels/utils/channels-dependencies.utils.ts:33
-msgid "Require this channel"
-msgstr "このチャンネルが必要"
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:17
+#: ../html/src/manager/admin/config/monitoring-admin.js:18
 msgid "Restart is needed for the configuration changes to take effect."
 msgstr "変更した設定を反映させるには、再起動が必要です。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:20
+#: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "An internal error has occured. See the server logs for details."
 msgstr "内部エラーが発生しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:21
+#: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
 "モニタリングの有効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:23
+#: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
@@ -682,12 +641,12 @@ msgstr ""
 "全てのモニタリングサービスの有効化に失敗しました。いくつかのサービスが無効化"
 "されています。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:25
+#: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
 "モニタリングの無効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:27
+#: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
@@ -695,211 +654,166 @@ msgstr ""
 "全てのモニタリングサービスの無効化に失敗しました。いくつかのサービスが有効化"
 "されています。詳細はサーバ内のログをお読みください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:29
+#: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring enabled successfully."
 msgstr "モニタリングの有効化が正常に完了しました。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:30
+#: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid "Monitoring disabled successfully."
 msgstr "モニタリングの無効化が正常に完了しました。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:32
+#: ../html/src/manager/admin/config/monitoring-admin.js:28
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+"Click the Enable button to enable the JMX configuration or click Disable to "
+"stop the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されていま"
+"す。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押し"
+"て Prometheus エクスポータを停止してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:36
+#: ../html/src/manager/admin/config/monitoring-admin.js:30
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+"Click the Disable button to disable the JMX configuration or click Enable to "
+"start the Prometheus exporter."
 msgstr ""
+"Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されていま"
+"す。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押し"
+"て Prometheus エクスポータを開始してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:40
-#, fuzzy
+#: ../html/src/manager/admin/config/monitoring-admin.js:32
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
+"disabled. Click the Enable button to enable the JMX configuration of click "
+"Disable to stop the Prometheus exporter."
 msgstr ""
 "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
 "います。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタンを押"
 "して Prometheus エクスポータを停止してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
+#: ../html/src/manager/admin/config/monitoring-admin.js:34
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
+"enabled. Click the Disable button to disable the JMX configuration of click "
+"Enable to start the Prometheus exporter."
 msgstr ""
 "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
 "います。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタンを押"
 "して Prometheus エクスポータを開始してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:50
+#: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "Monitoring status hasn't changed."
 msgstr "モニタリング状態は変更されていません。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:51
+#: ../html/src/manager/admin/config/monitoring-admin.js:40
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr ""
 "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:56
+#: ../html/src/manager/admin/config/monitoring-admin.js:45
 msgid "Tomcat (Java JMX)"
 msgstr "Tomcat (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:57
+#: ../html/src/manager/admin/config/monitoring-admin.js:46
 msgid "Taskomatic (Java JMX)"
 msgstr "Taskomatic (Java JMX)"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:58
+#: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "PostgreSQL database"
 msgstr "PostgreSQL データベース"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:59
+#: ../html/src/manager/admin/config/monitoring-admin.js:48
 msgid "Server self monitoring"
 msgstr "サーバ自己監視"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:75
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:77
+#: ../html/src/manager/admin/config/monitoring-admin.js:57
+#: ../html/src/manager/admin/config/monitoring-admin.js:59
 msgid "Enabled"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:86
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:88
+#: ../html/src/manager/admin/config/monitoring-admin.js:65
+#: ../html/src/manager/admin/config/monitoring-admin.js:67
 msgid "Disabled"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:147
-#, fuzzy
-msgid "Server Monitoring"
-msgstr "サーバ自己監視"
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:149
+#: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "The server uses "
 msgstr "サーバは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:151
+#: ../html/src/manager/admin/config/monitoring-admin.js:110
 msgid "Prometheus"
 msgstr "Prometheus"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:153
-msgid " exporters to expose metrics about your environment."
-msgstr ""
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:156
+#: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "Refer to the "
 msgstr "詳しくは "
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:162
+#: ../html/src/manager/admin/config/monitoring-admin.js:113
 msgid "documentation"
 msgstr "ドキュメンテーション"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:164
-msgid " to learn how to to consume these metrics."
-msgstr ""
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:242
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:262
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:282
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:304
+#: ../html/src/manager/admin/config/monitoring-admin.js:171
+#: ../html/src/manager/admin/config/monitoring-admin.js:180
+#: ../html/src/manager/admin/config/monitoring-admin.js:189
+#: ../html/src/manager/admin/config/monitoring-admin.js:202
 msgid "Enable"
 msgstr "有効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:249
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:269
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:289
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:312
+#: ../html/src/manager/admin/config/monitoring-admin.js:173
+#: ../html/src/manager/admin/config/monitoring-admin.js:182
+#: ../html/src/manager/admin/config/monitoring-admin.js:191
+#: ../html/src/manager/admin/config/monitoring-admin.js:207
 msgid "Disable"
 msgstr "無効"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:325
+#: ../html/src/manager/admin/config/monitoring-admin.js:219
 msgid "SUSE Manager Configuration - Monitoring"
 msgstr "SUSE Manager 設定 - モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:330
+#: ../html/src/manager/admin/config/monitoring-admin.js:225
 msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:336
+#: ../html/src/manager/admin/config/monitoring-admin.js:230
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "全般"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:341
+#: ../html/src/manager/admin/config/monitoring-admin.js:231
 msgid "Bootstrap Script"
 msgstr "ブートストラップスクリプト"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:346
+#: ../html/src/manager/admin/config/monitoring-admin.js:232
 msgid "Organizations"
 msgstr "組織"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:351
+#: ../html/src/manager/admin/config/monitoring-admin.js:233
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Restart"
 msgstr "再起動"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:356
+#: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.js:235
 msgid "Bare-metal systems"
 msgstr "ベアメタルシステム"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:365
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:371
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
+#: ../html/src/manager/admin/config/monitoring-admin.js:236
+#: ../html/src/manager/admin/config/monitoring-admin.js:241
+#: ../html/src/manager/admin/config/monitoring-admin.js:253
 msgid "Monitoring"
 msgstr "モニタリング"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:393
-#, fuzzy
-msgid "Restarting"
-msgstr "再起動"
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.js:264
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
 msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が必要です。"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
-msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr "SUSE カスタマーセンターから製品カタログを更新"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.js:109
-#: ../html/src/manager/images/image-stores.js:112
-#: ../html/src/manager/images/image-view.js:326
-#: ../html/src/manager/notifications/notification-messages.js:356
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
-msgid "Refresh"
-msgstr "更新"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
-msgid "Please be patient, this might take several minutes."
-msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
-#: ../html/src/manager/images/image-view-overview.js:79
-msgid "Completed"
-msgstr "完了しました"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
-msgid "Operation not successful: Empty reply from the server"
-msgstr "操作は成功しませんでした: サーバからの応答が空です"
-
-#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
-#: ../html/src/manager/images/image-view-patches.js:81
-#: ../html/src/manager/images/image-view.js:600
-#: ../html/src/manager/maintenance/list/calendar-list.js:75
-#: ../html/src/manager/maintenance/list/schedule-list.js:61
-#: ../html/src/manager/state/recurring-states-list.js:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
-msgid "Details"
-msgstr "詳細"
 
 #: ../html/src/manager/admin/setup/products/products.js:114
 msgid ""
@@ -972,6 +886,13 @@ msgstr ""
 "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
 "スター上でのみ管理することができます。"
 
+#: ../html/src/manager/admin/setup/products/products.js:351
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
+msgid "Prev"
+msgstr "前へ"
+
 #: ../html/src/manager/admin/setup/products/products.js:401
 msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
@@ -986,7 +907,7 @@ msgstr "製品説明"
 
 #: ../html/src/manager/admin/setup/products/products.js:539
 #: ../html/src/manager/admin/setup/products/products.js:865
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
+#: ../html/src/manager/content-management/list-filters/filter-form.js:149
 #: ../html/src/manager/images/image-view-packages.js:48
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1088,6 +1009,43 @@ msgstr "同期済み"
 msgid "sync failed"
 msgstr "同期が失敗しました"
 
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:130
+msgid "Refresh the product catalog from SUSE Customer Center"
+msgstr "SUSE カスタマーセンターから製品カタログを更新"
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:163
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:213
+#: ../html/src/manager/images/image-profiles.js:109
+#: ../html/src/manager/images/image-stores.js:112
+#: ../html/src/manager/images/image-view.js:326
+#: ../html/src/manager/notifications/notification-messages.js:356
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
+msgid "Refresh"
+msgstr "更新"
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:167
+msgid "Please be patient, this might take several minutes."
+msgstr "この処理にはしばらくの時間がかかります。お待ちください。"
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:171
+#: ../html/src/manager/images/image-view-overview.js:79
+msgid "Completed"
+msgstr "完了しました"
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:175
+msgid "Operation not successful: Empty reply from the server"
+msgstr "操作は成功しませんでした: サーバからの応答が空です"
+
+#: ../html/src/manager/admin/setup/products/products-scc-dialog.js:176
+#: ../html/src/manager/images/image-view.js:600
+#: ../html/src/manager/images/image-view-patches.js:81
+#: ../html/src/manager/maintenance/list/calendar-list.js:75
+#: ../html/src/manager/maintenance/list/schedule-list.js:61
+#: ../html/src/manager/state/recurring-states-list.js:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
+msgid "Details"
+msgstr "詳細"
+
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:86
 msgid " running"
 msgstr " 実行しています"
@@ -1144,7 +1102,7 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:228
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:135
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
+#: ../html/src/manager/content-management/list-filters/list-filters.js:72
 #: ../html/src/manager/virtualization/ListTab.js:239
 msgid "Filter by name"
 msgstr "名前でフィルタ"
@@ -1200,7 +1158,6 @@ msgstr ""
 #: ../html/src/manager/notifications/notification-messages.js:468
 #: ../html/src/manager/notifications/notifications.js:101
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
-#: ../html/src/utils/network.ts:64
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
 
@@ -1222,13 +1179,13 @@ msgstr "監査イメージ"
 
 #. ref={nameInputRef}
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:245
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:151
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:82
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:146
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:252
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:87
+#: ../html/src/manager/clusters/shared/ui/select-server.js:135
+#: ../html/src/manager/content-management/list-filters/list-filters.js:79
+#: ../html/src/manager/content-management/list-projects/list-projects.js:90
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:90
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
@@ -1254,6 +1211,31 @@ msgstr "名前"
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "動作"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
+msgid "Edit Virtual Host Managers"
+msgstr "仮想ホストマネージャの編集"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
+msgid "Subscription Matching"
+msgstr "サブスクリプションマッチング"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Subscriptions"
+msgstr "サブスクリプション"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
+msgid "Unmatched Products"
+msgstr "該当のない製品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Pins "
+msgstr "ピン "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
+msgid "Messages "
+msgstr "メッセージ "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
@@ -1456,9 +1438,9 @@ msgstr "パーツ番号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:319
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:70
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:153
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:256
+#: ../html/src/manager/content-management/list-projects/list-projects.js:102
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
@@ -1520,11 +1502,6 @@ msgstr "システム一覧の表示"
 msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:95
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
-msgid "Unmatched Products"
-msgstr "該当のない製品"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:140
 msgid "System name"
 msgstr "システム名"
@@ -1533,130 +1510,146 @@ msgstr "システム名"
 msgid "Unmatched systems"
 msgstr "一致しないシステム"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
-msgid "Edit Virtual Host Managers"
-msgstr "仮想ホストマネージャの編集"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
-msgid "Subscription Matching"
-msgstr "サブスクリプションマッチング"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
-msgid "Subscriptions"
-msgstr "サブスクリプション"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
-msgid "Pins "
-msgstr "ピン "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
-msgid "Messages "
-msgstr "メッセージ "
-
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:39
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:44
 msgid "Add Cluster"
 msgstr "クラスタの追加"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:56
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:53
 msgid "Select management node"
 msgstr "管理ノードの選択"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:74
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:102
-#: ../html/src/manager/clusters/cluster/cluster.tsx:124
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:62
+#: ../html/src/manager/clusters/cluster/cluster.js:103
 msgid "Provider Settings"
 msgstr "プロバイダの設定"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:97
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:77
 msgid "Provider:"
 msgstr "プロバイダ:"
 
-#: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:101
+#: ../html/src/manager/clusters/add-cluster/add-cluster.js:81
 msgid "Management Node:"
 msgstr "管理ノード:"
 
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:47
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:45
 msgid "Add cluster"
 msgstr "クラスタの追加"
 
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:80
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:69
 msgid "Name:"
 msgstr "名前:"
 
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:92
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
 msgid "Label:"
 msgstr "ラベル:"
 
-#: ../html/src/manager/clusters/add-cluster/finish-add.tsx:106
+#: ../html/src/manager/clusters/add-cluster/finish-add.js:82
 msgid "Description:"
 msgstr "説明:"
 
-#: ../html/src/manager/clusters/add-cluster/select-provider.tsx:20
+#: ../html/src/manager/clusters/add-cluster/select-provider.js:21
 msgid "Available cluster providers"
 msgstr "利用可能なクラスタプロバイダ"
 
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:61
+#: ../html/src/manager/clusters/cluster/cluster-config.js:59
 msgid "Settings saved successfully"
 msgstr "設定の保存が完了しました"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
+#: ../html/src/manager/clusters/cluster/cluster.js:24
+msgid "Action has been "
+msgstr "動作を "
+
+#: ../html/src/manager/clusters/cluster/cluster.js:24
+#: ../html/src/manager/images/image-build.js:178
+#: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
+#: ../html/src/manager/minion/packages/use-package-states.api.js:61
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
+msgid "scheduled"
+msgstr "スケジュールしました"
+
+#: ../html/src/manager/clusters/cluster/cluster.js:25
+#: ../html/src/manager/images/image-build.js:175
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
+msgid "Action has been successfully added to the Action Chain "
+msgstr "動作を動作チェーンに追加しました "
+
+#: ../html/src/manager/clusters/cluster/cluster.js:26
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:22
+msgid "Cluster "
+msgstr "クラスタ "
+
+#: ../html/src/manager/clusters/cluster/cluster.js:74
+#: ../html/src/manager/clusters/cluster/cluster.js:85
+msgid "Delete cluster"
+msgstr "クラスタの削除"
+
+#: ../html/src/manager/clusters/cluster/cluster.js:75
+msgid "Delete Cluster"
+msgstr "クラスタの削除"
+
+#: ../html/src/manager/clusters/cluster/cluster.js:86
+msgid "Are you sure you want to delete cluster?"
+msgstr "クラスタを削除してよろしいですか？"
+
+#: ../html/src/manager/clusters/cluster/cluster.js:86
+msgid "This will not destroy the cluster. It will only remove it from Uyuni"
+msgstr ""
+"これはクラスタそのものを削除する処理ではありません。 Uyuni から削除するだけで"
+"す"
+
+#: ../html/src/manager/clusters/cluster/cluster.js:98
+#: ../html/src/manager/images/image-view.js:669
+#: ../html/src/manager/maintenance/details/schedule-details.js:61
+msgid "Overview"
+msgstr "概要"
+
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:32
 #: ../html/src/manager/virtualization/pools/pool-properties.js:179
 msgid "Yes"
 msgstr "はい"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.js:179
-msgid "No"
-msgstr "いいえ"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
-msgid "(none)"
-msgstr "(なし)"
-
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:88
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:87
 msgid "System group refresh action scheduled successfully"
 msgstr "システムグループの更新処理をスケジュールしました"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:113
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:112
 msgid "Cluster properties updated successfully"
 msgstr "クラスタのプロパティを更新しました"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:186
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:253
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:185
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:241
 msgid "Edit cluster details"
 msgstr "クラスタ詳細の編集"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:199
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:198
 msgid "Join node"
 msgstr "ノードの参加"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:209
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:207
 #: ../html/src/manager/clusters/remove-node/remove-node.js:47
 msgid "Remove node"
 msgstr "ノードの削除"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:226
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:221
 msgid "Upgrade cluster"
 msgstr "クラスタのアップグレード"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:236
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:228
 msgid "Refresh system group"
 msgstr "システムグループの更新"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:246
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:235
 msgid "Cluster Properties"
 msgstr "クラスタのプロパティ"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:252
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:240
 msgid "Edit properties"
 msgstr "プロパティの編集"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:248
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
@@ -1670,98 +1663,45 @@ msgstr "プロパティの編集"
 msgid "Label"
 msgstr "ラベル"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:276
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:260
 msgid "Cluster provider"
 msgstr "クラスタのプロバイダ"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:280
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:115
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:264
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:108
 msgid "Management node"
 msgstr "管理ノード"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:286
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:268
 msgid "System group"
 msgstr "システムグループ"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:302
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:87
-#: ../html/src/manager/clusters/shared/ui/select-server.tsx:125
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:89
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:285
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:80
+#: ../html/src/manager/clusters/shared/ui/select-server.js:114
+#: ../html/src/manager/content-management/list-projects/list-projects.js:83
 msgid "Filter by any value"
 msgstr "任意の値でフィルタ"
 
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:322
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:303
 msgid "Node Hostname"
 msgstr "ノードのホスト名"
 
-#: ../html/src/manager/clusters/cluster/cluster.tsx:25
-msgid "Action has been "
-msgstr "動作を "
+#: ../html/src/manager/clusters/cluster/cluster-overview.js:310
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
+msgid "(none)"
+msgstr "(なし)"
 
-#: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.js:178
-#: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
-#: ../html/src/manager/minion/packages/use-package-states.api.js:61
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
-msgid "scheduled"
-msgstr "スケジュールしました"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:27
-#, fuzzy
-msgid " successfully."
-msgstr "成功"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.js:175
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
-msgid "Action has been successfully added to the Action Chain "
-msgstr "動作を動作チェーンに追加しました "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:38
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:23
-msgid "Cluster "
-msgstr "クラスタ "
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:40
-#, fuzzy
-msgid " has been added successfully."
-msgstr "削除を行ないました。"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:90
-#: ../html/src/manager/clusters/cluster/cluster.tsx:102
-msgid "Delete cluster"
-msgstr "クラスタの削除"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:91
-msgid "Delete Cluster"
-msgstr "クラスタの削除"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:105
-msgid "Are you sure you want to delete cluster?"
-msgstr "クラスタを削除してよろしいですか？"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:106
-msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"これはクラスタそのものを削除する処理ではありません。 Uyuni から削除するだけで"
-"す"
-
-#: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.js:669
-#: ../html/src/manager/maintenance/details/schedule-details.js:61
-msgid "Overview"
-msgstr "概要"
-
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:46
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:38
 msgid "Join "
 msgstr "参加: "
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:51
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:41
 msgid "NOTE: before joining a new node, make sure that the node has:"
 msgstr "注意: 新しいノードを参加させる前に、下記をご確認ください:"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:55
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:43
 msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
@@ -1769,57 +1709,52 @@ msgstr ""
 "Container as a Service Platform (CaaSP) チャンネル、もしくは CaaSP の子チャン"
 "ネルを割り当てていること"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:58
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:44
 msgid ""
 "The management node can access the node as root via ssh without password"
 msgstr ""
 "管理ノードから対象のノードに対して、パスワード無しの ssh で root アクセスでき"
 "ること"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:66
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:51
 msgid "Select system to join"
 msgstr "参加させるシステムの選択"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:81
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:59
 msgid "New node configuration"
 msgstr "新しいノードの設定"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:101
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:72
 msgid "Schedule join node"
 msgstr "ノード参加のスケジュール"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:105
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:76
 #: ../html/src/manager/clusters/remove-node/remove-node.js:63
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:64
 msgid "Cluster:"
 msgstr "クラスタ:"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:109
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:80
 msgid "Node to join:"
 msgstr "参加するノード:"
 
-#: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:119
+#: ../html/src/manager/clusters/join-cluster/join-cluster.js:88
 msgid "Join"
 msgstr "参加"
 
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
-#, fuzzy
-msgid " has been deleted successfully."
-msgstr "削除を行ないました。"
-
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:46
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
 msgid "Add an existing cluster"
 msgstr "既存のクラスタの追加"
 
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:78
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:70
 msgid "Clusters"
 msgstr "クラスタ"
 
-#: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
+#: ../html/src/manager/clusters/list-clusters/list-clusters.js:99
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
 #: ../html/src/manager/images/image-stores.js:144
-#: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/images/image-view.js:538
+#: ../html/src/manager/images/image-view-patches.js:72
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:88
 #: ../html/src/manager/notifications/notification-messages.js:410
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
@@ -1838,10 +1773,6 @@ msgstr "ノート削除のスケジュール"
 msgid "Nodes to remove:"
 msgstr "削除するノード:"
 
-#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:40
-msgid "Upgrade plan"
-msgstr "アップグレードプラン"
-
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:34
 msgid "Upgrade "
 msgstr "アップグレード "
@@ -1857,6 +1788,10 @@ msgstr "クラスタのアップグレードのスケジュール"
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster.js:70
 msgid "Upgrade"
 msgstr "アップグレード"
+
+#: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.js:39
+msgid "Upgrade plan"
+msgstr "アップグレードプラン"
 
 #: ../html/src/manager/content-management/create-project/create-project.js:30
 msgid "You do not have permissions to perform this action"
@@ -1885,34 +1820,34 @@ msgstr "プロジェクトの作成"
 msgid "Create"
 msgstr "作成"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:31
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:24
 msgid "Module"
 msgstr "モジュール"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:36
 msgid "Select a module..."
 msgstr "モジュールを選択してください..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:34
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:37
 msgid "No modules available"
 msgstr "利用可能なモジュールがありません"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:43
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:148
 msgid "Stream"
 msgstr "ストリーム"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:48
 msgid "Select a stream..."
 msgstr "ストリームを選択してください..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:48
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.js:49
 msgid "No streams available"
 msgstr "利用可能なストリームがありません"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
+#: ../html/src/manager/content-management/list-filters/appstreams/select-input.js:34
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
 msgid "Channel"
 msgstr "チャンネル"
@@ -1921,35 +1856,35 @@ msgstr "チャンネル"
 msgid "Module Name"
 msgstr "モジュール名"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:21
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:23
 msgid "Updating the filter..."
 msgstr "フィルタを更新しています..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:74
 msgid "Filter Details"
 msgstr "フィルタの詳細"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:75
 msgid "Create a new filter"
 msgstr "新しいフィルタの作成"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:114
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:119
 msgid "Filter deleted successfully"
 msgstr "フィルタを削除しました"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:146
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:151
 msgid "Check the required fields below"
 msgstr "下記の必要な項目にチェックを入れてください"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:160
 msgid "Filter updated successfully"
 msgstr "フィルタを更新しました"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
+#: ../html/src/manager/content-management/list-filters/filter-edit.js:175
 msgid "Filter created successfully"
 msgstr "フィルタを作成しました"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:63
+#: ../html/src/manager/content-management/list-filters/filter-form.js:65
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
@@ -1957,34 +1892,34 @@ msgstr ""
 "フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要が"
 "あることに注意してください"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-form.js:72
 msgid "Filter Name"
 msgstr "フィルタ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:79
+#: ../html/src/manager/content-management/list-filters/filter-form.js:82
 msgid "Filter Type"
 msgstr "フィルタタイプ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:92
+#: ../html/src/manager/content-management/list-filters/filter-form.js:96
 msgid "Matcher"
 msgstr "マッチャー"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
+#: ../html/src/manager/content-management/list-filters/filter-form.js:111
+#: ../html/src/manager/content-management/list-filters/filter-form.js:123
+#: ../html/src/manager/content-management/list-filters/filter-form.js:161
+#: ../html/src/manager/content-management/list-filters/filter-form.js:257
 #: ../html/src/manager/images/image-view-packages.js:42
 #: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "パッケージ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:126
+#: ../html/src/manager/content-management/list-filters/filter-form.js:130
+#: ../html/src/manager/content-management/list-filters/filter-form.js:168
 msgid "Epoch"
 msgstr "エポック"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
+#: ../html/src/manager/content-management/list-filters/filter-form.js:135
+#: ../html/src/manager/content-management/list-filters/filter-form.js:173
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -1993,85 +1928,85 @@ msgstr "エポック"
 msgid "Version"
 msgstr "バージョン"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
+#: ../html/src/manager/content-management/list-filters/filter-form.js:142
+#: ../html/src/manager/content-management/list-filters/filter-form.js:180
 msgid "Release"
 msgstr "リリース"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:135
+#: ../html/src/manager/content-management/list-filters/filter-form.js:192
 msgid "Advisory name"
 msgstr "アドバイザリ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:148
+#: ../html/src/manager/content-management/list-filters/filter-form.js:206
 msgid "Bug Fix Advisory"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:149
+#: ../html/src/manager/content-management/list-filters/filter-form.js:207
 msgid "Product Enhancement Advisory"
 msgstr "製品の機能強化アドバイザリ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
+#: ../html/src/manager/content-management/list-filters/filter-form.js:209
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:108
 msgid "Advisory Type"
 msgstr "アドバイザリタイプ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-form.js:218
 msgid "Issued"
 msgstr "発行済み"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
+#: ../html/src/manager/content-management/list-filters/filter-form.js:230
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:114
 #: ../html/src/manager/images/image-view-patches.js:86
 msgid "Synopsis"
 msgstr "概要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
+#: ../html/src/manager/content-management/list-filters/filter-form.js:243
 msgid "Reboot Required"
 msgstr "要再起動"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.js:244
 msgid "Package Manager Restart Required"
 msgstr "要パッケージマネージャの再起動"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.js:247
 msgid "Advisory Keywords"
 msgstr "アドバイザリキーワード"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
+#: ../html/src/manager/content-management/list-filters/filter-form.js:277
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
 msgstr "拒否"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+#: ../html/src/manager/content-management/list-filters/filter-form.js:278
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
 msgstr "許可"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
+#: ../html/src/manager/content-management/list-filters/filter-form.js:280
 msgid "Rule"
 msgstr "ルール"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:67
+#: ../html/src/manager/content-management/list-filters/list-filters.js:63
 msgid "Content Lifecycle Filters"
 msgstr "コンテンツライフサイクルのフィルタ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:87
+#: ../html/src/manager/content-management/list-filters/list-filters.js:84
 msgid "Projects in use"
 msgstr "使用しているプロジェクト"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
+#: ../html/src/manager/content-management/list-projects/list-projects.js:65
 msgid "Create a new content lifecycle project"
 msgstr "新しいコンテンツライフサイクルプロジェクトの作成"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:70
+#: ../html/src/manager/content-management/list-projects/list-projects.js:66
 msgid "Create Project"
 msgstr "プロジェクトの作成"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:79
+#: ../html/src/manager/content-management/list-projects/list-projects.js:74
 msgid "Content Lifecycle Projects"
 msgstr "コンテンツライフサイクルプロジェクト"
 
-#: ../html/src/manager/content-management/list-projects/list-projects.tsx:109
+#: ../html/src/manager/content-management/list-projects/list-projects.js:107
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
 msgid "Environment Lifecycle"
 msgstr "環境ライフサイクル"
@@ -2092,12 +2027,12 @@ msgstr "プロジェクトの削除"
 msgid "Are you sure you want to delete project"
 msgstr "プロジェクトを削除してよろしいですか"
 
-#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:69
-#: ../html/src/manager/login/use-login-api.ts:58
-#: ../html/src/manager/virtualization/ActionApi.tsx:51
+#: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.js:70
+#: ../html/src/manager/login/use-login-api.js:54
+#: ../html/src/manager/virtualization/ActionApi.js:47
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
 #: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.js:30
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -2105,121 +2040,121 @@ msgstr ""
 "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。やり"
 "直してください。"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:16
 msgid "Package"
 msgstr "パッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:30
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:20
 msgid "Patch"
 msgstr "パッチ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:31
 msgid "contains"
 msgstr "含む"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:42
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:32
 msgid "containing"
 msgstr "含む"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:36
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:81
 msgid "matches"
 msgstr "該当する"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:37
 msgid "regular expression matches package name"
 msgstr "パッケージ名に対する正規表現"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:41
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:71
 msgid "equals"
 msgstr "等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:42
 msgid "contains package name equals"
 msgstr "一致するパッケージ名"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:46
 msgid "version lower than"
 msgstr "バージョン上限"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:47
 msgid "contains package with epoch/version/release lower than"
 msgstr "指定したエポック／バージョン／リリースよりも古いパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:51
 msgid "version lower or equal than"
 msgstr "バージョン上限 (等しいものを含む)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:52
 msgid "contains package with epoch/version/release lower or equal than"
 msgstr ""
 "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも古いパッ"
 "ケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:56
 msgid "version equal"
 msgstr "バージョン一致"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:57
 msgid "contains package with epoch/version/release equal than"
 msgstr "指定したエポック／バージョン／リリースと等しいパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:61
 msgid "version greater or equal than"
 msgstr "バージョン下限 (等しいものを含む)"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:62
 msgid "contains package with epoch/version/release greater or equal than"
 msgstr ""
 "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも新しいパッ"
 "ケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:67
 msgid "contains package with epoch/version/release greater than"
 msgstr "指定したエポック／バージョン／リリースよりも新しいパッケージ"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:72
 msgid "equal"
 msgstr "等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:86
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:76
 msgid "later or equal"
 msgstr "新しいか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:77
 msgid "later or equal than"
 msgstr "指定したものよりも新しいか等しい"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:82
 msgid "matches regular expression"
 msgstr "正規表現にマッチするもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:105
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:96
 msgid "NEVRA"
 msgstr "NEVRA"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:102
 msgid "Advisory Name"
 msgstr "アドバイザリ名"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:129
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:120
 msgid "Keyword"
 msgstr "キーワード"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:135
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:126
 msgid "Issue date"
 msgstr "発行日"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:141
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:132
 msgid "Contains Package Name"
 msgstr "パッケージ名を含むもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:147
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:138
 msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
+#: ../html/src/manager/content-management/shared/business/filters.enum.js:169
 msgid "enable module"
 msgstr "モジュールの有効化"
 
@@ -2231,9 +2166,9 @@ msgstr "ビルド ({0})"
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
 #: ../html/src/manager/images/image-build.js:287
 #: ../html/src/manager/images/image-profiles.js:154
+#: ../html/src/manager/images/image-view.js:581
 #: ../html/src/manager/images/image-view-overview.js:375
 #: ../html/src/manager/images/image-view-overview.js:457
-#: ../html/src/manager/images/image-view.js:581
 msgid "Build"
 msgstr "ビルド"
 
@@ -2277,11 +2212,11 @@ msgstr "環境を作成しています..."
 msgid "No environments created"
 msgstr "何も環境を作成していません"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:108
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:107
 msgid "Environment updated successfully"
 msgstr "環境を更新しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:124
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:123
 msgid "Environment {0} deleted successfully"
 msgstr "環境 {0} を削除しました"
 
@@ -2303,8 +2238,8 @@ msgid "Built"
 msgstr "構築済み"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
-#: ../html/src/manager/images/image-view-overview.js:37
 #: ../html/src/manager/images/image-view.js:422
+#: ../html/src/manager/images/image-view-overview.js:37
 msgid "Failed"
 msgstr "失敗"
 
@@ -2316,18 +2251,6 @@ msgstr "未構築"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
 msgstr "ビルド時間"
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr "グローバルフィルタを読み込んでいます..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr "プロジェクトフィルタを更新しています..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
-msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
@@ -2361,6 +2284,18 @@ msgstr "除外"
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "deny で既に除外している場合でも、完全なソースから選択します"
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr "グローバルフィルタを読み込んでいます..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr "プロジェクトフィルタを更新しています..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
+msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
@@ -2404,11 +2339,11 @@ msgstr "(ドラフト - 未構築) - 下記の変更をご確認ください"
 msgid "Edit Properties"
 msgstr "プロパティの編集"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:68
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:67
 msgid "Project properties updated successfully"
 msgstr "プロジェクトのプロパティを更新しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:87
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:86
 msgid "Editing properties.."
 msgstr "プロパティを編集しています.."
 
@@ -2463,41 +2398,30 @@ msgstr "ソースを編集しました"
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
 
-#: ../html/src/manager/errors/not-found.tsx:6
+#: ../html/src/manager/errors/not-found.js:11
 msgid "Page Not Found"
 msgstr "ページが見つかりません"
 
-#: ../html/src/manager/errors/not-found.tsx:7
-msgid "The page you requested, {0}, was not found."
-msgstr ""
-
-#: ../html/src/manager/errors/not-found.tsx:11
-#, fuzzy
+#: ../html/src/manager/errors/not-found.js:16
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
-"capitalization."
+"capitalization. The address you are copying may also be outdated."
 msgstr ""
 "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤り"
 "がないかを再度確認してください。コピーしているアドレスが古いために使われてい"
 "ない可能性もあるかもしれません。"
 
-#: ../html/src/manager/errors/not-found.tsx:17
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
-msgstr ""
-
-#: ../html/src/manager/errors/not-found.tsx:24
+#: ../html/src/manager/errors/not-found.js:25
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
+"since the bookmark was created. Use the top (or left) navigation bars to "
+"find the page you are looking for, and if you find the document be sure to "
+"update your bookmark."
 msgstr ""
-
-#: ../html/src/manager/errors/not-found.tsx:31
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
-msgstr ""
+"ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページ"
+"が移動していることがあります。このような場合は、上部 (もしくは左) のナビゲー"
+"ションバーをお使いのうえ、必要なページを検索してブックマークを更新してくださ"
+"い。"
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -2506,6 +2430,25 @@ msgid ""
 msgstr ""
 "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
 "た"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
+msgid "Formula saved. Apply the "
+msgstr "formula を保存しました。下記を適用します "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
+msgid "Invalid target type."
+msgstr "ターゲットタイプが正しくありません。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
@@ -2516,25 +2459,6 @@ msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
-msgid "Invalid target type."
-msgstr "ターゲットタイプが正しくありません。"
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
-msgid "Formula saved. Apply the "
-msgstr "formula を保存しました。下記を適用します "
-
 #: ../html/src/manager/images/image-build.js:27
 msgid "An unknown error has occurred."
 msgstr "不明なエラーが発生しました。"
@@ -2544,7 +2468,7 @@ msgid "The image build has been scheduled."
 msgstr "イメージの構築をスケジュールしました。"
 
 #: ../html/src/manager/images/image-build.js:29
-#: ../html/src/manager/images/image-import.tsx:18
+#: ../html/src/manager/images/image-import.js:24
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
 "scheduler is running."
@@ -2571,66 +2495,66 @@ msgid "Path"
 msgstr "パス"
 
 #: ../html/src/manager/images/image-build.js:271
-#: ../html/src/manager/images/image-import.tsx:302
+#: ../html/src/manager/images/image-import.js:266
 msgid "Build Host"
 msgstr "構築ホスト"
 
-#: ../html/src/manager/images/image-import.tsx:15
+#: ../html/src/manager/images/image-import.js:20
 msgid "Image store not found"
 msgstr "イメージストアが見つかりませんでした"
 
-#: ../html/src/manager/images/image-import.tsx:16
+#: ../html/src/manager/images/image-import.js:22
 msgid "The image import has been scheduled."
 msgstr "イメージの取り込みをスケジュールしました。"
 
-#: ../html/src/manager/images/image-import.tsx:232
+#: ../html/src/manager/images/image-import.js:231
 #: ../html/src/manager/images/image-profile-edit.js:301
 msgid "There are no channels assigned to this key."
 msgstr "このキーに割り当てられているチャンネルはありません。"
 
-#: ../html/src/manager/images/image-import.tsx:239
+#: ../html/src/manager/images/image-import.js:235
 #: ../html/src/manager/images/image-profile-edit.js:305
 msgid "Activation Key"
 msgstr "アクティベーションキー"
 
-#: ../html/src/manager/images/image-import.tsx:252
+#: ../html/src/manager/images/image-import.js:244
 msgid "Import Image"
 msgstr "イメージの取り込み"
 
-#: ../html/src/manager/images/image-import.tsx:254
+#: ../html/src/manager/images/image-import.js:249
 msgid "You can import Container images only using this feature."
 msgstr ""
 "この機能を利用することによってのみ、コンテナイメージを取り込むことができま"
 "す。"
 
-#: ../html/src/manager/images/image-import.tsx:264
+#: ../html/src/manager/images/image-import.js:254
 msgid "Image Store"
 msgstr "イメージストア"
 
-#: ../html/src/manager/images/image-import.tsx:283
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name"
 msgstr "イメージ名"
 
-#: ../html/src/manager/images/image-import.tsx:285
+#: ../html/src/manager/images/image-import.js:262
 msgid "Image name is required."
 msgstr "イメージ名を指定する必要があります。"
 
-#: ../html/src/manager/images/image-import.tsx:292
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version"
 msgstr "イメージバージョン"
 
-#: ../html/src/manager/images/image-import.tsx:294
+#: ../html/src/manager/images/image-import.js:264
 msgid "Image version is required."
 msgstr "イメージバージョンを指定する必要があります。"
 
-#: ../html/src/manager/images/image-import.tsx:318
+#: ../html/src/manager/images/image-import.js:274
 #: ../html/src/manager/images/image-view.js:324
 msgid "Import"
 msgstr "取り込み"
 
-#: ../html/src/manager/images/image-import.tsx:325
+#: ../html/src/manager/images/image-import.js:275
 #: ../html/src/manager/images/image-profile-edit.js:362
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:202
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Clear fields"
 msgstr "項目の消去"
 
@@ -2805,21 +2729,163 @@ msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr ""
 "選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
 
+#: ../html/src/manager/images/image-view.js:282
+msgid "Deleted successfully."
+msgstr "削除を行ないました。"
+
+#: ../html/src/manager/images/image-view.js:294
+msgid "Image inspect has been scheduled."
+msgstr "イメージの検査をスケジュールしました。"
+
+#: ../html/src/manager/images/image-view.js:307
+msgid "Image build has been scheduled."
+msgstr "イメージの構築をスケジュールしました。"
+
+#: ../html/src/manager/images/image-view.js:321
+#: ../html/src/manager/images/image-view.js:619
+#: ../html/src/manager/images/image-view-overview.js:426
+msgid "Delete Image"
+msgstr "イメージの削除"
+
+#: ../html/src/manager/images/image-view.js:334
+msgid "Images"
+msgstr "イメージ"
+
+#: ../html/src/manager/images/image-view.js:397
+#: ../html/src/manager/images/image-view.js:439
 #: ../html/src/manager/images/image-view-overview.js:29
 #: ../html/src/manager/images/image-view-overview.js:39
 #: ../html/src/manager/images/image-view-overview.js:158
 #: ../html/src/manager/images/image-view-overview.js:294
 #: ../html/src/manager/images/image-view-runtime.js:44
 #: ../html/src/manager/images/image-view-runtime.js:79
-#: ../html/src/manager/images/image-view.js:397
-#: ../html/src/manager/images/image-view.js:439
 msgid "No information"
 msgstr "情報無し"
 
-#: ../html/src/manager/images/image-view-overview.js:31
+#: ../html/src/manager/images/image-view.js:399
+#: ../html/src/manager/images/image-view-overview.js:296
+msgid "Critical updates available"
+msgstr "重大な更新があります"
+
+#: ../html/src/manager/images/image-view.js:401
+#: ../html/src/manager/images/image-view-overview.js:298
+msgid "Non-critical updates available"
+msgstr "重大ではない更新があります"
+
+#: ../html/src/manager/images/image-view.js:403
+#: ../html/src/manager/images/image-view-overview.js:300
+msgid "Package updates available"
+msgstr "パッケージの更新があります"
+
+#: ../html/src/manager/images/image-view.js:405
+#: ../html/src/manager/images/image-view-overview.js:302
+msgid "Image is up to date"
+msgstr "イメージは最新の状態です"
+
+#: ../html/src/manager/images/image-view.js:414
+#: ../html/src/manager/images/image-view-overview.js:48
+msgid "Built externally"
+msgstr "外部で構築済み"
+
 #: ../html/src/manager/images/image-view.js:416
+#: ../html/src/manager/images/image-view-overview.js:31
 msgid "Queued"
 msgstr "キュー済み"
+
+#: ../html/src/manager/images/image-view.js:418
+msgid "Building"
+msgstr "構築しています"
+
+#: ../html/src/manager/images/image-view.js:424
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
+msgid "Unknown"
+msgstr "不明"
+
+#: ../html/src/manager/images/image-view.js:432
+#: ../html/src/manager/images/image-view.js:473
+#: ../html/src/manager/images/image-view-overview.js:120
+#: ../html/src/manager/images/image-view-overview.js:151
+msgid "Waiting for update ..."
+msgstr "更新を待っています..."
+
+#: ../html/src/manager/images/image-view.js:437
+#: ../html/src/manager/images/image-view-overview.js:156
+msgid "All instances are consistent with SUSE Manager"
+msgstr "全てのインスタンスが SUSE Manager と同期できています"
+
+#: ../html/src/manager/images/image-view.js:441
+#: ../html/src/manager/images/image-view-overview.js:160
+msgid "Outdated instances found"
+msgstr "古いインスタンスが見つかりました"
+
+#: ../html/src/manager/images/image-view.js:460
+#: ../html/src/manager/images/image-view-overview.js:107
+msgid "Cluster"
+msgstr "クラスタ"
+
+#: ../html/src/manager/images/image-view.js:461
+#: ../html/src/manager/images/image-view.js:515
+#: ../html/src/manager/images/image-view-overview.js:108
+msgid "Instances"
+msgstr "インスタンス"
+
+#: ../html/src/manager/images/image-view.js:487
+#: ../html/src/manager/images/image-view-overview.js:134
+msgid "View cluster summary"
+msgstr "クラスタ概要の表示"
+
+#: ../html/src/manager/images/image-view.js:508
+#: ../html/src/manager/images/image-view.js:670
+msgid "Runtime"
+msgstr "実行時間"
+
+#: ../html/src/manager/images/image-view.js:555
+msgid "Revision"
+msgstr "リビジョン"
+
+#: ../html/src/manager/images/image-view.js:561
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
+msgid "Updates"
+msgstr "更新"
+
+#: ../html/src/manager/images/image-view.js:566
+#: ../html/src/manager/images/image-view.js:669
+msgid "Patches"
+msgstr "パッチ"
+
+#: ../html/src/manager/images/image-view.js:575
+#: ../html/src/manager/images/image-view.js:669
+msgid "Packages"
+msgstr "パッケージ"
+
+#: ../html/src/manager/images/image-view.js:587
+msgid "Last Modified"
+msgstr "最終変更"
+
+#: ../html/src/manager/images/image-view.js:620
+#: ../html/src/manager/images/image-view-overview.js:427
+msgid "Are you sure you want to delete image"
+msgstr "イメージを削除してよろしいですか"
+
+#: ../html/src/manager/images/image-view.js:626
+msgid "Delete Selected Image(s)"
+msgstr "選択したイメージの削除"
+
+#: ../html/src/manager/images/image-view.js:629
+msgid "Are you sure you want to delete the selected image?"
+msgstr "選択したイメージを削除してよろしいですか？"
+
+#: ../html/src/manager/images/image-view.js:629
+msgid "Are you sure you want to delete selected images? ({0} images selected)"
+msgstr ""
+"選択したイメージを削除してよろしいですか？ ({0} 個のイメージが選択されていま"
+"す)"
+
+#: ../html/src/manager/images/image-view.js:636
+#: ../html/src/manager/images/image-view-overview.js:258
+msgid "Instance Details for '{0}'"
+msgstr "'{0}' に対するインスタンスの詳細"
 
 #: ../html/src/manager/images/image-view-overview.js:31
 #: ../html/src/manager/images/image-view-overview.js:33
@@ -2852,11 +2918,6 @@ msgstr " は成功しました"
 msgid " has failed"
 msgstr " は失敗しました"
 
-#: ../html/src/manager/images/image-view-overview.js:48
-#: ../html/src/manager/images/image-view.js:414
-msgid "Built externally"
-msgstr "外部で構築済み"
-
 #: ../html/src/manager/images/image-view-overview.js:68
 msgid " Status"
 msgstr " ステータス"
@@ -2865,39 +2926,6 @@ msgstr " ステータス"
 msgid "Picked Up"
 msgstr "ピックアップ済み"
 
-#: ../html/src/manager/images/image-view-overview.js:107
-#: ../html/src/manager/images/image-view.js:460
-msgid "Cluster"
-msgstr "クラスタ"
-
-#: ../html/src/manager/images/image-view-overview.js:108
-#: ../html/src/manager/images/image-view.js:461
-#: ../html/src/manager/images/image-view.js:515
-msgid "Instances"
-msgstr "インスタンス"
-
-#: ../html/src/manager/images/image-view-overview.js:120
-#: ../html/src/manager/images/image-view-overview.js:151
-#: ../html/src/manager/images/image-view.js:432
-#: ../html/src/manager/images/image-view.js:473
-msgid "Waiting for update ..."
-msgstr "更新を待っています..."
-
-#: ../html/src/manager/images/image-view-overview.js:134
-#: ../html/src/manager/images/image-view.js:487
-msgid "View cluster summary"
-msgstr "クラスタ概要の表示"
-
-#: ../html/src/manager/images/image-view-overview.js:156
-#: ../html/src/manager/images/image-view.js:437
-msgid "All instances are consistent with SUSE Manager"
-msgstr "全てのインスタンスが SUSE Manager と同期できています"
-
-#: ../html/src/manager/images/image-view-overview.js:160
-#: ../html/src/manager/images/image-view.js:441
-msgid "Outdated instances found"
-msgstr "古いインスタンスが見つかりました"
-
 #: ../html/src/manager/images/image-view-overview.js:207
 msgid "Edit profile"
 msgstr "プロファイルの編集"
@@ -2905,31 +2933,6 @@ msgstr "プロファイルの編集"
 #: ../html/src/manager/images/image-view-overview.js:215
 msgid "Edit store"
 msgstr "ストアの編集"
-
-#: ../html/src/manager/images/image-view-overview.js:258
-#: ../html/src/manager/images/image-view.js:636
-msgid "Instance Details for '{0}'"
-msgstr "'{0}' に対するインスタンスの詳細"
-
-#: ../html/src/manager/images/image-view-overview.js:296
-#: ../html/src/manager/images/image-view.js:399
-msgid "Critical updates available"
-msgstr "重大な更新があります"
-
-#: ../html/src/manager/images/image-view-overview.js:298
-#: ../html/src/manager/images/image-view.js:401
-msgid "Non-critical updates available"
-msgstr "重大ではない更新があります"
-
-#: ../html/src/manager/images/image-view-overview.js:300
-#: ../html/src/manager/images/image-view.js:403
-msgid "Package updates available"
-msgstr "パッケージの更新があります"
-
-#: ../html/src/manager/images/image-view-overview.js:302
-#: ../html/src/manager/images/image-view.js:405
-msgid "Image is up to date"
-msgstr "イメージは最新の状態です"
 
 #: ../html/src/manager/images/image-view-overview.js:359
 msgid "Image Status"
@@ -2967,17 +2970,6 @@ msgstr "検査の再スケジュール"
 #: ../html/src/manager/images/image-view-overview.js:413
 msgid "Custom Image Information"
 msgstr "カスタムイメージの情報"
-
-#: ../html/src/manager/images/image-view-overview.js:426
-#: ../html/src/manager/images/image-view.js:321
-#: ../html/src/manager/images/image-view.js:619
-msgid "Delete Image"
-msgstr "イメージの削除"
-
-#: ../html/src/manager/images/image-view-overview.js:427
-#: ../html/src/manager/images/image-view.js:620
-msgid "Are you sure you want to delete image"
-msgstr "イメージを削除してよろしいですか"
 
 #: ../html/src/manager/images/image-view-overview.js:458
 msgid "Schedule build"
@@ -3072,75 +3064,7 @@ msgstr "ポッド"
 msgid "Namespace"
 msgstr "ネームスペース"
 
-#: ../html/src/manager/images/image-view.js:282
-msgid "Deleted successfully."
-msgstr "削除を行ないました。"
-
-#: ../html/src/manager/images/image-view.js:294
-msgid "Image inspect has been scheduled."
-msgstr "イメージの検査をスケジュールしました。"
-
-#: ../html/src/manager/images/image-view.js:307
-msgid "Image build has been scheduled."
-msgstr "イメージの構築をスケジュールしました。"
-
-#: ../html/src/manager/images/image-view.js:334
-msgid "Images"
-msgstr "イメージ"
-
-#: ../html/src/manager/images/image-view.js:418
-msgid "Building"
-msgstr "構築しています"
-
-#: ../html/src/manager/images/image-view.js:424
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
-msgid "Unknown"
-msgstr "不明"
-
-#: ../html/src/manager/images/image-view.js:508
-#: ../html/src/manager/images/image-view.js:670
-msgid "Runtime"
-msgstr "実行時間"
-
-#: ../html/src/manager/images/image-view.js:555
-msgid "Revision"
-msgstr "リビジョン"
-
-#: ../html/src/manager/images/image-view.js:561
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
-msgid "Updates"
-msgstr "更新"
-
-#: ../html/src/manager/images/image-view.js:566
-#: ../html/src/manager/images/image-view.js:669
-msgid "Patches"
-msgstr "パッチ"
-
-#: ../html/src/manager/images/image-view.js:575
-#: ../html/src/manager/images/image-view.js:669
-msgid "Packages"
-msgstr "パッケージ"
-
-#: ../html/src/manager/images/image-view.js:587
-msgid "Last Modified"
-msgstr "最終変更"
-
-#: ../html/src/manager/images/image-view.js:626
-msgid "Delete Selected Image(s)"
-msgstr "選択したイメージの削除"
-
-#: ../html/src/manager/images/image-view.js:629
-msgid "Are you sure you want to delete the selected image?"
-msgstr "選択したイメージを削除してよろしいですか？"
-
-#: ../html/src/manager/images/image-view.js:629
-msgid "Are you sure you want to delete selected images? ({0} images selected)"
-msgstr ""
-"選択したイメージを削除してよろしいですか？ ({0} 個のイメージが選択されていま"
-"す)"
-
-#: ../html/src/manager/login/login.tsx:52
+#: ../html/src/manager/login/login.js:45
 msgid ""
 "A schema upgrade is required. Please upgrade your schema at your earliest "
 "convenience to receive latest bug fixes and avoid potential problems."
@@ -3149,11 +3073,11 @@ msgstr ""
 "グの回避を行なったりできるよう、できる限り速やかにスキーマをアップグレードす"
 "ることをお勧めします。"
 
-#: ../html/src/manager/login/login.tsx:62
+#: ../html/src/manager/login/login.js:54
 msgid "Signing in ..."
 msgstr "サインインしています..."
 
-#: ../html/src/manager/login/login.tsx:106
+#: ../html/src/manager/login/login.js:103
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3161,30 +3085,25 @@ msgstr ""
 "Discover はサーバやパッケージ、パッチなどを 1 つのインターフェイスから管理で"
 "きる新しい方式です。"
 
-#: ../html/src/manager/login/login.tsx:109
-msgid "Learn more about"
-msgstr ""
-
-#: ../html/src/manager/login/login.tsx:118
-#: ../html/src/manager/login/login.tsx:145
+#: ../html/src/manager/login/login.js:144
 msgid "Sign In"
 msgstr "サインイン"
 
-#: ../html/src/manager/login/use-login-api.ts:12
+#: ../html/src/manager/login/use-login-api.js:14
 msgid "Either the password or username is incorrect."
 msgstr "パスワードまたはユーザー名が正しくありません。"
 
-#: ../html/src/manager/login/use-login-api.ts:13
+#: ../html/src/manager/login/use-login-api.js:15
 msgid "Your account has been deactivated."
 msgstr "ご使用のアカウントは停止されています。"
 
-#: ../html/src/manager/login/use-login-api.ts:14
+#: ../html/src/manager/login/use-login-api.js:16
 msgid "This user has read only API access. WebUI login is denied."
 msgstr ""
 "このユーザーには読み取り専用の API アクセスしか提供されていません。 WebUI ロ"
 "グインが拒否されました。"
 
-#: ../html/src/manager/login/use-login-api.ts:28
+#: ../html/src/manager/login/use-login-api.js:28
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
@@ -3475,8 +3394,8 @@ msgstr ""
 msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 msgid "Configuration"
 msgstr "設定"
 
@@ -3656,7 +3575,6 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications.js:98
 #: ../html/src/manager/salt/cmd/remote-commands.js:503
-#: ../html/src/utils/network.ts:60
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
@@ -3800,33 +3718,33 @@ msgstr "拒否済み"
 msgid "Fingerprint"
 msgstr "フィンガープリント"
 
-#: ../html/src/manager/shared/menu/menu.js:169
+#: ../html/src/manager/shared/menu/menu.js:168
 msgid "Clear Menu"
 msgstr "メニューの消去"
 
-#: ../html/src/manager/shared/menu/menu.js:171
+#: ../html/src/manager/shared/menu/menu.js:170
 msgid "Filter menu"
 msgstr "フィルタメニュー"
 
-#: ../html/src/manager/shared/menu/menu.js:206
-#: ../html/src/manager/shared/menu/menu.js:209
+#: ../html/src/manager/shared/menu/menu.js:205
+#: ../html/src/manager/shared/menu/menu.js:208
 msgid "Uyuni homepage"
 msgstr "Uyuni ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.js:207
+#: ../html/src/manager/shared/menu/menu.js:206
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.js:213
-#: ../html/src/manager/shared/menu/menu.js:216
+#: ../html/src/manager/shared/menu/menu.js:212
+#: ../html/src/manager/shared/menu/menu.js:215
 msgid "SUSE Manager homepage"
 msgstr "SUSE Manager ホームページ"
 
-#: ../html/src/manager/shared/menu/menu.js:214
+#: ../html/src/manager/shared/menu/menu.js:213
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.js:214
+#: ../html/src/manager/shared/menu/menu.js:213
 msgid "Manager"
 msgstr "Manager"
 
@@ -3916,6 +3834,16 @@ msgstr "このスケジュールを削除してよろしいですか？"
 msgid "Test mode"
 msgstr "テストモード"
 
+#: ../html/src/manager/state/recurring-states.js:115
+msgid "Schedule successfully"
+msgstr "スケジュールしました"
+
+#: ../html/src/manager/state/recurring-states.js:140
+msgid "Error when deleting the action. Check if Taskomatic is running"
+msgstr ""
+"動作の削除時にエラーが発生しました。 Taskomatic が動作しているかご確認くださ"
+"い"
+
 #: ../html/src/manager/state/recurring-states-list.js:58
 msgid "Recurring States"
 msgstr "繰り返し状態"
@@ -3932,15 +3860,20 @@ msgstr "頻度"
 msgid "Target Type"
 msgstr "ターゲットタイプ"
 
-#: ../html/src/manager/state/recurring-states.js:115
-msgid "Schedule successfully"
-msgstr "スケジュールしました"
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+msgid "Base channel not found or not authorized."
+msgstr "ベースチャンネルが見つからないか、認可されていません。"
 
-#: ../html/src/manager/state/recurring-states.js:140
-msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
-"動作の削除時にエラーが発生しました。 Taskomatic が動作しているかご確認くださ"
-"い"
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+msgid "Child channel not found or not authorized."
+msgstr "子チャンネルが見つからないか、認可されていません。"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+msgid "Invalid channel id"
+msgstr "チャンネル ID が正しくありません"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
@@ -3955,7 +3888,7 @@ msgstr "子チャンネル:"
 msgid "mandatory"
 msgstr "必須"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:164
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:163
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -3963,40 +3896,40 @@ msgstr ""
 "リクエストが中断されたか、もしくはサーバから不正な応答を受け取りました。お使"
 "いの minion が正しくブートストラップされているかどうかをご確認ください。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "ホストをブートストラップしました。システムは"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "systems"
 msgstr "システム"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:183
 msgid "shortly"
 msgstr "しばらくすると現われるはずです"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:192
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:191
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "システムをブートストラップしています: 応答を待っています.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:196
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:195
 msgid "Loading SSH Private Key.."
 msgstr "SSH 機密鍵を読み込んでいます.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:200
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:211
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:210
 msgid "e.g., ••••••••••••"
 msgstr "例: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:217
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:276
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:216
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:275
 msgid "SSH Private Key"
 msgstr "SSH 機密鍵"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:221
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:220
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4004,19 +3937,19 @@ msgstr ""
 "ファイルはサーバ内の一時ファイルとして保存されています。ブートストラップ処理"
 "が完了すると削除されます"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:226
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:225
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 機密鍵のパスフレーズ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:228
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:227
 msgid "Leave empty for no passphrase"
 msgstr "パスフレーズが無い場合は何も入力しないでください"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:233
 msgid "Bootstrap Minions"
 msgstr "minion のブートストラップ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:235
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4024,24 +3957,24 @@ msgstr ""
 "SSH の資格情報のみを提供することで、管理対象のシステムを追加することができま"
 "す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:241
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:240
 msgid "e.g., host.domain.com"
 msgstr "例: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:249
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:248
 msgid "Port range: 1 - 65535"
 msgstr "ポート範囲: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:286
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:299
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:285
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:298
 msgid "None"
 msgstr "なし"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:296
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:295
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:311
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4354,10 +4287,6 @@ msgstr "現在のコンテキスト"
 msgid "Kubeconfig file"
 msgstr "Kubeconfig ファイル"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
-msgid "No Virtual Host Managers."
-msgstr "仮想ホストマネージャがありません。"
-
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
 msgstr "ファイルベース"
@@ -4402,17 +4331,21 @@ msgstr "仮想ホストマネージャ"
 msgid "Add a virtual host manager"
 msgstr "仮想ホストマネージャの追加"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr "libvirt python モジュールをインストールしてください。"
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
+msgid "No Virtual Host Managers."
+msgstr "仮想ホストマネージャがありません。"
 
-#: ../html/src/manager/virtualization/ListTab.js:143
-msgid "{0} selected"
-msgstr "{0} 個を選択しました"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
+msgid "Toggle full size"
+msgstr "フルサイズの切り替え"
 
-#: ../html/src/manager/virtualization/ListTab.js:246
-msgid "Action Status"
-msgstr "動作の状態"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
+msgid "Something went wrong, connection is closed"
+msgstr "何らかの問題が発生しています。接続が閉じられました"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
+msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
@@ -4456,18 +4389,6 @@ msgstr "カーネルオプション"
 msgid "Graphics"
 msgstr "グラフィック"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
-msgid "Toggle full size"
-msgstr "フルサイズの切り替え"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
-msgid "Something went wrong, connection is closed"
-msgstr "何らかの問題が発生しています。接続が閉じられました"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
-msgstr "仮想マシンの作成"
-
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr "開始／再開"
@@ -4481,6 +4402,10 @@ msgstr "停止"
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Force off"
 msgstr "強制停止"
+
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
+msgid "Reset"
+msgstr "リセット"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:34
 msgid "Suspend"
@@ -4561,6 +4486,10 @@ msgstr "ファイル"
 msgid "Format"
 msgstr "フォーマット"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
+msgstr "ディスク"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "ソースストレージプール"
@@ -4576,10 +4505,6 @@ msgstr "ディスクサイズ (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "ソーステンプレートのイメージ URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr "ディスク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
@@ -4601,6 +4526,18 @@ msgstr "ネットワーク"
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "項目の消去"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr "libvirt python モジュールをインストールしてください。"
+
+#: ../html/src/manager/virtualization/ListTab.js:143
+msgid "{0} selected"
+msgstr "{0} 個を選択しました"
+
+#: ../html/src/manager/virtualization/ListTab.js:246
+msgid "Action Status"
+msgstr "動作の状態"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:38
 msgid "Virtual Networks"
@@ -4673,6 +4610,10 @@ msgstr "プールまたはボリューム名でフィルタ"
 #: ../html/src/manager/virtualization/pools/pool-properties.js:175
 msgid "Partition separator"
 msgstr "パーティションの区切り"
+
+#: ../html/src/manager/virtualization/pools/pool-properties.js:179
+msgid "No"
+msgstr "いいえ"
 
 #: ../html/src/manager/virtualization/pools/pool-properties.js:205
 msgid "Host name"
@@ -4909,56 +4850,23 @@ msgstr "システムグループの選択"
 msgid "Split into groups"
 msgstr "グループに分割"
 
-#: ../html/src/utils/network.ts:58
-msgid "Session expired, please reload the page."
-msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
+#~ msgid "Required channels"
+#~ msgstr "必要なチャンネル"
 
-#: ../html/src/utils/network.ts:62
-msgid "Resource not found."
-msgstr "リソースが見つかりませんでした。"
+#~ msgid "none"
+#~ msgstr "なし"
 
-#: ../html/src/utils/network.ts:66
-msgid "HTTP Error code "
-msgstr "HTTP エラーコード "
+#~ msgid "Require this channel"
+#~ msgstr "このチャンネルが必要"
 
-#~ msgid ""
-#~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
-#~ "used on each system!"
-#~ msgstr ""
-#~ "複数のグループ formula が検出されました。各システムに対しては 1 つの "
-#~ "\"{0}\" 向け formula のみを設定できます！"
+#~ msgid "Session expired, please reload the page."
+#~ msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
 
-#~ msgid "e.g. \"0 15 2 ? * 7\""
-#~ msgstr "例: \"0 15 2 ? * 7\""
+#~ msgid "Resource not found."
+#~ msgstr "リソースが見つかりませんでした。"
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is up but the JMX configuration is "
-#~ "disabled. Click the Enable button to enable the JMX configuration or "
-#~ "click Disable to stop the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
-#~ "います。有効化ボタンを押して JMX 設定を有効化するか、もしくは無効化ボタン"
-#~ "を押して Prometheus エクスポータを停止してください。"
-
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is down but the JMX configuration is "
-#~ "enabled. Click the Disable button to disable the JMX configuration or "
-#~ "click Enable to start the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
-#~ "います。無効化ボタンを押して JMX 設定を無効化するか、もしくは有効化ボタン"
-#~ "を押して Prometheus エクスポータを開始してください。"
-
-#~ msgid ""
-#~ "If you used a bookmark, the page may have moved to a different location "
-#~ "since the bookmark was created. Use the top (or left) navigation bars to "
-#~ "find the page you are looking for, and if you find the document be sure "
-#~ "to update your bookmark."
-#~ msgstr ""
-#~ "ブックマークを使用している場合、ブックマークを作成した後に異なる場所にペー"
-#~ "ジが移動していることがあります。このような場合は、上部 (もしくは左) のナビ"
-#~ "ゲーションバーをお使いのうえ、必要なページを検索してブックマークを更新して"
-#~ "ください。"
+#~ msgid "HTTP Error code "
+#~ msgstr "HTTP エラーコード "
 
 #~ msgid "Select a channel to browse available modules"
 #~ msgstr "利用可能なモジュールを表示するチャンネルを選択してください"
