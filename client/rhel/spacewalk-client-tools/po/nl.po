@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 08:14+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2018-03-16 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/spacewalk/language/"
@@ -71,37 +71,37 @@ msgstr "U dient rhn_register als root op te starten."
 msgid "There was some sort of I/O error: %s"
 msgstr "Er deed zich een soort I/O fout voor: %s"
 
-#: ../src/up2date_client/hardware.py:1064
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "Fout bij het inlezen van de processorinformatie:"
 
-#: ../src/up2date_client/hardware.py:1071
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "Fout bij het inlezen van de systeemgeheugeninformatie:"
 
-#: ../src/up2date_client/hardware.py:1081
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "Fout bij het inlezen van de netwerkinformatie:"
 
-#: ../src/up2date_client/hardware.py:1102
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "Fout bij het inlezen van de installatiemethode-informatie:"
 
-#: ../src/up2date_client/hardware.py:1110
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "Fout bij het inlezen van de netwerkinterface-informatie:"
 
-#: ../src/up2date_client/hardware.py:1118
+#: ../src/up2date_client/hardware.py:1086
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "Fout bij het inlezen van de netwerkinformatie:"
 
-#: ../src/up2date_client/hardware.py:1125
+#: ../src/up2date_client/hardware.py:1093
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "Fout bij het inlezen van de systeemgeheugeninformatie:"
 
-#: ../src/up2date_client/hardware.py:1132
+#: ../src/up2date_client/hardware.py:1100
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "Fout bij het inlezen van de processorinformatie:"

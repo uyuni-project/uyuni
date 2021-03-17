@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 08:14+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/spacewalk/"
@@ -70,37 +70,37 @@ msgstr "Ohjelma rhn_register täytyy suorittaa pääkäyytäjänä."
 msgid "There was some sort of I/O error: %s"
 msgstr "Tapahtui I/O-virhe: %s"
 
-#: ../src/up2date_client/hardware.py:1064
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "Virhe luettaessa cpu tietoa:"
 
-#: ../src/up2date_client/hardware.py:1071
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "Virhe luettaessa järjestelmän muistitietoa:"
 
-#: ../src/up2date_client/hardware.py:1081
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "Virhe luettaessa verkkotietoa:"
 
-#: ../src/up2date_client/hardware.py:1102
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "Virhe luettaessa asennustapatietoja:"
 
-#: ../src/up2date_client/hardware.py:1110
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "Virhe luettaessa verkkoliitännän tietoja:"
 
-#: ../src/up2date_client/hardware.py:1118
+#: ../src/up2date_client/hardware.py:1086
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "Virhe luettaessa verkkotietoa:"
 
-#: ../src/up2date_client/hardware.py:1125
+#: ../src/up2date_client/hardware.py:1093
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "Virhe luettaessa järjestelmän muistitietoa:"
 
-#: ../src/up2date_client/hardware.py:1132
+#: ../src/up2date_client/hardware.py:1100
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "Virhe luettaessa cpu tietoa:"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 08:14+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Serbian (http://www.transifex.com/projects/p/spacewalk/"
@@ -63,37 +63,37 @@ msgstr "Морате да покренете Агента за ажурирањ�
 msgid "There was some sort of I/O error: %s"
 msgstr "Јавила се нека врста I/O грешке: %s"
 
-#: ../src/up2date_client/hardware.py:1064
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "Грешка при читању података о процесору:"
 
-#: ../src/up2date_client/hardware.py:1071
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "Грешка при читању података о системској меморији:"
 
-#: ../src/up2date_client/hardware.py:1081
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "Грешка при читању података о умрежавању:"
 
-#: ../src/up2date_client/hardware.py:1102
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "Грешка при читању података о методу инсталације:"
 
-#: ../src/up2date_client/hardware.py:1110
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "Грешка при читању података о мрежном уређају:"
 
-#: ../src/up2date_client/hardware.py:1118
+#: ../src/up2date_client/hardware.py:1086
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "Грешка при читању података о умрежавању:"
 
-#: ../src/up2date_client/hardware.py:1125
+#: ../src/up2date_client/hardware.py:1093
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "Грешка при читању података о системској меморији:"
 
-#: ../src/up2date_client/hardware.py:1132
+#: ../src/up2date_client/hardware.py:1100
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "Грешка при читању података о процесору:"

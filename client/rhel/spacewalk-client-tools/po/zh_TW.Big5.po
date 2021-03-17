@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 08:14+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2013-02-06 09:40+0000\n"
 "Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,37 +53,37 @@ msgstr "您必須是 root 才能執行 rhn_register。"
 msgid "There was some sort of I/O error: %s"
 msgstr "發生某種 I/O 錯誤：%s"
 
-#: ../src/up2date_client/hardware.py:1064
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "讀取處理器資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1071
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "讀取系統記憶體資訊時發生錯誤："
 
-#: ../src/up2date_client/hardware.py:1081
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "讀取網路資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1102
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "讀取安裝方法的資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1110
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "讀取網路介面資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1118
+#: ../src/up2date_client/hardware.py:1086
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "讀取網路資訊時發生問題："
 
-#: ../src/up2date_client/hardware.py:1125
+#: ../src/up2date_client/hardware.py:1093
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "讀取系統記憶體資訊時發生錯誤："
 
-#: ../src/up2date_client/hardware.py:1132
+#: ../src/up2date_client/hardware.py:1100
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "讀取處理器資訊時發生問題："

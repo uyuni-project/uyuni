@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 08:14+0000\n"
+"POT-Creation-Date: 2021-03-02 14:23+0000\n"
 "PO-Revision-Date: 2012-11-21 07:36+0000\n"
 "Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,37 +54,37 @@ msgstr "你必须作为根用户运行更新代理。"
 msgid "There was some sort of I/O error: %s"
 msgstr "出现了某种 I/O 错误：%s"
 
-#: ../src/up2date_client/hardware.py:1064
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1071
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1081
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1102
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1110
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1118
+#: ../src/up2date_client/hardware.py:1086
 #, fuzzy
 msgid "Error reading network FQDNs information:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1125
+#: ../src/up2date_client/hardware.py:1093
 #, fuzzy
 msgid "Error reading system info:"
 msgstr "显示程序版本信息"
 
-#: ../src/up2date_client/hardware.py:1132
+#: ../src/up2date_client/hardware.py:1100
 #, fuzzy
 msgid "Error reading machine info:"
 msgstr "显示程序版本信息"
