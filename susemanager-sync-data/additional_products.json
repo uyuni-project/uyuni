@@ -126,7 +126,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -149,6 +149,116 @@
                 "installer_updates" : false
             },
             {
+                "id" : -236,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/multiverse/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-multiverse",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Multiverse",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -237,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/restricted/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-restricted",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Restricted",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -213,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -238,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-backports/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -239,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-backports/multiverse/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-multiverse-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Multiverse Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -240,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-backports/restricted/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-restricted-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Restricted Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -241,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-backports/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe-backports",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe Backports",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -248,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -242,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/focal-security/multiverse/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-multiverse-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Multiverse Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -243,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/focal-security/restricted/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-restricted-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Restricted Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -244,
+                "url" : "http://security.ubuntu.com/ubuntu/dists/focal-security/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe Security",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
                 "id" : -211,
                 "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/binary-amd64/",
                 "name" : "ubuntu-2004-amd64-main-updates",
@@ -159,22 +269,32 @@
                 "installer_updates" : false
             },
             {
-                "id" : -212,
-                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/",
-                "name" : "ubuntu-2004-amd64-main-security",
+                "id" : -245,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/multiverse/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-multiverse-updates",
                 "distro_target" : "amd64",
-                "description" : "Ubuntu 20.04 LTS AMD64 Main Security",
-                "enabled" : true,
+                "description" : "Ubuntu 20.04 LTS AMD64 Multiverse Updates",
+                "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
             {
-                "id" : -213,
-                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/universe/binary-amd64/",
-                "name" : "ubuntu-2004-amd64-universe",
+                "id" : -246,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/restricted/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-restricted-updates",
                 "distro_target" : "amd64",
-                "description" : "Ubuntu 20.04 LTS AMD64 Universe",
-                "enabled" : true,
+                "description" : "Ubuntu 20.04 LTS AMD64 Restricted Updates",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -247,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe Updates",
+                "enabled" : false,
                 "autorefresh" : true,
                 "installer_updates" : false
             }
@@ -193,7 +313,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -205,6 +325,26 @@
         "extensions" : [
         ],
         "repositories" : [
+            {
+                "id" : -254,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/RDMA/x86_64/",
+                "name" : "oraclelinux8-uek-r6-rdma",
+                "distro_target" : "x86_64",
+                "description" : "Latest RDMA packages for Unbreakable Enterprise Kernel Release 6 packages on Oracle Linux 8 for the Oracle Integrated Stack.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -253,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/x86_64/",
+                "name" : "oraclelinux8-uek-r6",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
             {
                 "id" : -203,
                 "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/",
@@ -484,7 +624,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "alpha",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
@@ -512,6 +652,46 @@
                 "name" : "oraclelinux7-addons",
                 "distro_target" : "x86_64",
                 "description" : "Addons for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -252,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR5/RDMA/x86_64/",
+                "name" : "oraclelinux7-uek-r5-rdma",
+                "distro_target" : "x86_64",
+                "description" : "Latest RDMA packages for Unbreakable Enterprise Kernel Release 5 packages on Oracle Linux 7 for the Oracle Integrated Stack.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -251,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/RDMA/x86_64/",
+                "name" : "oraclelinux7-uek-r6-rdma",
+                "distro_target" : "x86_64",
+                "description" : "Latest RDMA packages for Unbreakable Enterprise Kernel Release 6 packages on Oracle Linux 7 for the Oracle Integrated Stack.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -250,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/x86_64/",
+                "name" : "oraclelinux7-uek-r6",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -249,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR5/x86_64/",
+                "name" : "oraclelinux7-uek-r5",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 5 for Oracle Linux 7",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
