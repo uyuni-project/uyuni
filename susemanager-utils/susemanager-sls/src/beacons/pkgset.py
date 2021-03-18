@@ -20,7 +20,8 @@ def __virtual__():
         os.path.exists("/usr/lib/zypp/plugins/commit/susemanager") or  # Remove this once 2015.8.7 not in use
         os.path.exists("/usr/lib/zypp/plugins/commit/zyppnotify") or
         os.path.exists("/usr/share/yum-plugins/susemanagerplugin.py") or  # Remove this once 2015.8.7 not in use
-        os.path.exists("/usr/share/yum-plugins/yumnotify.py")
+        os.path.exists("/usr/share/yum-plugins/yumnotify.py") or
+        os.path.exists("/usr/bin/dpkgnotify")
     ) and __virtualname__ or False
 
 
