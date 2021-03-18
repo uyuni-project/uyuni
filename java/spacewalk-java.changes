@@ -1,3 +1,4 @@
+- Add support for notify beacon for Debian/Ubuntu systems
 - Check if the directory exists prior to modular data cleanup (bsc#1184311)
 - define dependencies for salt-netapi-client and DB schema version
 - assign right base product for res8 (bsc#1184005)

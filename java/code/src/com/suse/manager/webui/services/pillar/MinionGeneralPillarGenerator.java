@@ -43,12 +43,19 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
 
     public static final MinionGeneralPillarGenerator INSTANCE = new MinionGeneralPillarGenerator();
 
-    private static final Map<String, Object> PKGSET_BEACON_PROPS = new HashMap<>();
-    private static final String PKGSET_COOKIE_PATH = "/var/cache/salt/minion/rpmdb.cookie";
     private static final int PKGSET_INTERVAL = 5;
+
+    private static final Map<String, Object> RPM_PKGSET_BEACON_PROPS = new HashMap<>();
+    private static final String RPM_PKGSET_COOKIE_PATH = "/var/cache/salt/minion/rpmdb.cookie";
     static {
-        PKGSET_BEACON_PROPS.put("cookie", PKGSET_COOKIE_PATH);
-        PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
+        RPM_PKGSET_BEACON_PROPS.put("cookie", RPM_PKGSET_COOKIE_PATH);
+        RPM_PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
+    }
+    private static final Map<String, Object> DPK_PKGSET_BEACON_PROPS = new HashMap<>();
+    private static final String DPK_PKGSET_COOKIE_PATH = "/var/cache/salt/minion/dpkg.cookie";
+    static {
+        DPK_PKGSET_BEACON_PROPS.put("cookie", DPK_PKGSET_COOKIE_PATH);
+        DPK_PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
     }
 
     /**
@@ -81,7 +88,10 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         // minion packages are modified locally
         if (minion.getOsFamily().toLowerCase().equals("suse") ||
                 minion.getOsFamily().toLowerCase().equals("redhat")) {
-            beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
+            beaconConfig.put("pkgset", RPM_PKGSET_BEACON_PROPS);
+        }
+        if (minion.getOsFamily().toLowerCase().equals("debian")) {
+            beaconConfig.put("pkgset", DPK_PKGSET_BEACON_PROPS);
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);

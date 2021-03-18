@@ -1,3 +1,4 @@
+- Add support for notify beacon for Debian/Ubuntu systems
 - Automatically start needed networks and storage pools when creating/starting a VM
 - Avoid conflicts with running ioloop on mgr_events engine (bsc#1172711)
 - Require new kiwi-systemdeps packages (bsc#1184271)
@@ -7,7 +8,7 @@
 - Provide Custom Info as Pillar data
 - Add support for Amazon Linux 2
 - Add support for Alibaba Cloud Linux 2
-- add allow vendor change option to pathing via salt 
+- add allow vendor change option to pathing via salt
 - Prevent useless package list refresh actions on zypper minions (bsc#1183661)
 - Skip removed product classes with satellite-sync
 - add grain for virt module features
