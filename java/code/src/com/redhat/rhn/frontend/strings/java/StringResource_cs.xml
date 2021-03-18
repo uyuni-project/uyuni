@@ -2524,9 +2524,9 @@ and try again.
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="script.run" xml:space="preserve">
+      <trans-unit id="script.run" xml:space="preserve" approved="yes">
         <source>Run an arbitrary script</source>
-        <target />
+        <target>Spustit libovolný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -2647,9 +2647,9 @@ and try again.
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="errataconfirm.nosystems" xml:space="preserve">
+      <trans-unit id="errataconfirm.nosystems" xml:space="preserve" approved="yes">
         <source>You must select at least one system.</source>
-        <target />
+        <target>Musíte vybrat alespoň jeden systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
