@@ -113,6 +113,10 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -143,11 +147,6 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -1370,6 +1369,10 @@ public class SaltServerActionService {
             return result;
         }
         else {
+            List<ImageStore> imageStores = new LinkedList<>();
+            imageStores.add(store);
+            Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
+            pillar.put("docker-registries", dockerRegistries);
             pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
             LocalCall<Map<String, ApplyResult>> apply = State.apply(
                     Collections.singletonList("images.profileupdate"),
