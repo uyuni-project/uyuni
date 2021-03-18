@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2008--2020 Red Hat, Inc.
-# Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuremberg, Germany.
 # Copyright (c) 2020--2021  Stefan Bluhm, Germany.
 #
 # This software is licensed to you under the GNU General Public License,

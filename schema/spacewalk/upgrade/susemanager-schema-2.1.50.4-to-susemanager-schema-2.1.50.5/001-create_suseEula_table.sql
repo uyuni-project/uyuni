@@ -1,6 +1,6 @@
 --
 
--- Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
+-- Copyright (c) 2014 SUSE LINUX Products GmbH, Nuremberg, Germany.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or

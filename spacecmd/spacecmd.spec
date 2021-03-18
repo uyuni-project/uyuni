@@ -1,7 +1,7 @@
 #
 # spec file for package spacecmd
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2019 SUSE LINUX GmbH, Nuremberg, Germany.
 # Copyright (c) 2008-2018 Red Hat, Inc.
 # Copyright (c) 2011 Aron Parsons <aronparsons@gmail.com>
 #

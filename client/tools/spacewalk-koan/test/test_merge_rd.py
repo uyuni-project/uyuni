@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2015 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (C) 2015 SUSE LINUX Products GmbH, Nuremberg, Germany.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
 # License as published by the Free Software Foundation.
