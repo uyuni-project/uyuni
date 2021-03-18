@@ -1,3 +1,6 @@
+- enhance config channel API with list assigned groups
+- enhance server group API with config channel and formula
+  access methods
 - Fix: populate docker-registries on inspection (bsc#1178179)
 - Raise length limit for kernel options (bsc#1182916)
 - optionally allow vendor change when patching
