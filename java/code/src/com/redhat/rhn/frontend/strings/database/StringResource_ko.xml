@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="base" xml:space="preserve">
           <source>Base</source>
-        <target>기본 </target>
+        <target>기본</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="add-on" xml:space="preserve">
           <source>Add-On</source>
-        <target>애드-온 </target>
+        <target>추가 기능</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -101,7 +101,7 @@
       </trans-unit>
       <trans-unit id="virtualization_host" xml:space="preserve">
           <source>Virtualization Host</source>
-        <target>가상화 </target>
+        <target>가상화 호스트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -135,7 +135,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+0900) 한국 </target>
+        <target>(GMT+0900) 한국</target>
       </trans-unit>
       <trans-unit id="Australia/Perth" xml:space="preserve">
         <source>(GMT+0800) Australia (Western)</source>
@@ -408,7 +408,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+0300) 사우디아라비아 </target>
+        <target>(GMT+0300) 사우디아라비아</target>
       </trans-unit>
       <trans-unit id="Asia/Tehran" xml:space="preserve">
         <source>(GMT+0330) Iran</source>
@@ -437,21 +437,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 관리자 이메일 </target>
+        <target>@@PRODUCT_NAME@@ 관리자 전자 메일</target>
       </trans-unit>
       <trans-unit id="RHN_SAT_HOSTNAME" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 호스트 이름 (FQDN) </target>
+        <target>@@PRODUCT_NAME@@ 호스트 이름(FQDN)</target>
       </trans-unit>
       <trans-unit id="RHN_SAT_WEB_PORT" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 웹서버 포트 (http는 80, https는 443) </target>
+        <target>@@PRODUCT_NAME@@ 웹서버 포트(http는 80, https는 443)</target>
       </trans-unit>
       <trans-unit id="XPROTO" xml:space="preserve">
         <source>External protocol ('http' or 'https')</source>
@@ -466,7 +466,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>어플리케이션 프로토콜</target>
+        <target>응용 프로그램 프로토콜</target>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
@@ -522,49 +522,49 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>프로세스 그룹의 수 </target>
+        <target>프로세스 그룹 수</target>
       </trans-unit>
       <trans-unit id="Critical 1 min" xml:space="preserve">
         <source>Critical 1 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical 1 분</target>
+        <target>중요 1분</target>
       </trans-unit>
       <trans-unit id="Critical 15 min" xml:space="preserve">
         <source>Critical 15 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical 15 분 </target>
+        <target>중요 15분</target>
       </trans-unit>
       <trans-unit id="Critical 5 min" xml:space="preserve">
         <source>Critical 5 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical 5 분 </target>
+        <target>중요 5분</target>
       </trans-unit>
       <trans-unit id="Critical Accesses" xml:space="preserve">
         <source>Critical Accesses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical 액세스 </target>
+        <target>중요 액세스</target>
       </trans-unit>
       <trans-unit id="Critical Active Locks" xml:space="preserve">
         <source>Critical Active Locks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Active Locks</target>
+        <target>중요 활성 잠금</target>
       </trans-unit>
       <trans-unit id="Critical Active Sessions" xml:space="preserve">
         <source>Critical Active Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Active Sessions</target>
+        <target>중요 활성 세션</target>
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
@@ -1425,7 +1425,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>SSH 배너 (행의 수) </target>
+        <target>SSH 배너(행 수)</target>
       </trans-unit>
       <trans-unit id="Remote IP Address" xml:space="preserve">
         <source>Remote IP Address</source>
@@ -2322,7 +2322,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>좀비(Defunct) 프로세스</target>
+        <target>현존하지 않는 프로세스</target>
       </trans-unit>
       <trans-unit id="metrics.Disk sort rate" xml:space="preserve">
         <source>Disk sort rate</source>
@@ -2476,7 +2476,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>한 슬롯 당 전송되는 최대 데이터</target>
+        <target>한 슬롯당 전송되는 최대 데이터</target>
       </trans-unit>
       <trans-unit id="metrics.Memory sort rate" xml:space="preserve">
         <source>Memory sort rate</source>
@@ -2497,7 +2497,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>Opened objects</target>
+        <target>열린 객체</target>
       </trans-unit>
       <trans-unit id="metrics.Output rate" xml:space="preserve">
         <source>Output rate</source>
@@ -2574,14 +2574,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>질의 비율</target>
+        <target>쿼리 비율</target>
       </trans-unit>
       <trans-unit id="metrics.Query time" xml:space="preserve">
         <source>Query time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>질의 시간</target>
+        <target>쿼리 시간</target>
       </trans-unit>
       <trans-unit id="metrics.Queue length" xml:space="preserve">
         <source>Queue length</source>
@@ -2749,7 +2749,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>가용 가상 메모리 비율</target>
+        <target>가상 메모리 pct 무료</target>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
@@ -2805,14 +2805,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
-        <target>표준 통지 리다이렉트</target>
+        <target>표준 통지 리디렉션</target>
       </trans-unit>
       <trans-unit id="CRITICAL" xml:space="preserve">
         <source>CRITICAL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>위험 (CRITICAL)</target>
+        <target>위험(CRITICAL)</target>
       </trans-unit>
       <trans-unit id="OK" xml:space="preserve">
         <source>OK</source>
@@ -2826,21 +2826,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>알수없음 (UNKNOWN)</target>
+        <target>알 수 없음(UNKNOWN)</target>
       </trans-unit>
       <trans-unit id="PENDING" xml:space="preserve">
         <source>PENDING</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>보류 (PENDING)</target>
+        <target>보류(PENDING)</target>
       </trans-unit>
       <trans-unit id="WARNING" xml:space="preserve">
         <source>WARNING</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>경고 (WARNING)</target>
+        <target>경고(WARNING)</target>
       </trans-unit>
       <trans-unit id="npunix" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check.</source>
@@ -2914,7 +2914,7 @@
       </trans-unit>
       <trans-unit id="Linux" xml:space="preserve">
           <source>Linux</source>
-        <target>리눅스</target>
+        <target>Linux</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3194,7 +3194,7 @@
       </trans-unit>
       <trans-unit id="Mail Transfer (SMTP)" xml:space="preserve">
           <source>Mail Transfer (SMTP)</source>
-        <target>메일 전송 (SMTP)</target>
+        <target>메일 전송(SMTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3243,7 +3243,7 @@
       </trans-unit>
       <trans-unit id="Process Count Total" xml:space="preserve">
           <source>Process Count Total</source>
-        <target>총 프로브 계수</target>
+        <target>총 프로세스 계수</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3285,7 +3285,7 @@
       </trans-unit>
       <trans-unit id="Query Rate" xml:space="preserve">
           <source>Query Rate</source>
-        <target>질의 비율</target>
+        <target>쿼리 비율</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3348,7 +3348,7 @@
       </trans-unit>
       <trans-unit id="Secure Web server (HTTPS)" xml:space="preserve">
           <source>Secure Web server (HTTPS)</source>
-        <target>보안 웹 서버 (HTTPS)</target>
+        <target>보안 웹 서버(HTTPS)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3362,7 +3362,7 @@
       </trans-unit>
       <trans-unit id="Servlet" xml:space="preserve">
           <source>Servlet</source>
-        <target>서블릿(Servlet)</target>
+        <target>서블릿</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3439,7 +3439,7 @@
       </trans-unit>
       <trans-unit id="Uptime (SNMP)" xml:space="preserve">
           <source>Uptime (SNMP)</source>
-        <target>업타임 (SNMP)</target>
+        <target>업타임(SNMP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3460,7 +3460,7 @@
       </trans-unit>
       <trans-unit id="Web server (HTTP)" xml:space="preserve">
           <source>Web server (HTTP)</source>
-        <target>웹 서버 (HTTP)</target>
+        <target>웹 서버(HTTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3488,42 +3488,42 @@
       </trans-unit>
       <trans-unit id="kickstart.state.created" xml:space="preserve">
           <source>Autoinstallation session created but has not yet been used.</source>
-        <target>킥스타트 세션은 생성되었으나 아직 사용되고 있지 않습니다.</target>
+        <target>자동 설치 세션은 생성되었으나 아직 사용되고 있지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.deployed" xml:space="preserve">
           <source>Files required for autoinstallation action have been installed.</source>
-        <target>킥스타트 작업에 필요한 파일이 설치되었습니다.</target>
+        <target>자동 설치 작업에 필요한 파일이 설치되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.injected" xml:space="preserve">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target>시스템 설정은 다음 부팅시에 킥스타트가 실행되도록 수정되었습니다.</target>
+        <target>시스템 설정은 다음 부팅시에 자동 설치가 실행되도록 수정되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.restarted" xml:space="preserve">
           <source>The system has been restarted in order to begin the autoinstallation process.</source>
-        <target>시스템은 킥스타트 과정을 수행하기 위해서 다시 시작되었습니다.</target>
+        <target>시스템은 자동 설치 프로세스를 수행하기 위해서 다시 시작되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.configuration_accessed" xml:space="preserve">
           <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-        <target>시스템은 @@PRODUCT_NAME@@에서 킥스타트 설정 파일을 다운로드하였습니다. </target>
+        <target>시스템은 @@PRODUCT_NAME@@에서 자동 설치 설정 파일을 다운로드했습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.started" xml:space="preserve">
           <source>The initial files required for autoinstallation have been downloaded.</source>
-        <target>anaconda에 사용되는 초기 파일은 다운로드되었습니다.</target>
+        <target>자동 설치에 필요한 초기 파일은 다운로드되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3537,7 +3537,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.registered" xml:space="preserve">
           <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
-        <target>시스템은 킥스타트 후에 @@PRODUCT_NAME@@에 성공적으로 등록되었습니다.  </target>
+        <target>시스템은 자동 설치 후에 @@PRODUCT_NAME@@에 성공적으로 등록되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3565,14 +3565,14 @@
       </trans-unit>
       <trans-unit id="kickstart.state.complete" xml:space="preserve">
           <source>Autoinstallation complete.</source>
-        <target>킥스타트가 완료되었습니다.</target>
+        <target>자동 설치가 완료되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.failed" xml:space="preserve">
           <source>Autoinstallation failed.</source>
-        <target>킥스타트가 실패하였습니다.</target>
+        <target>자동 설치가 실패하였습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
