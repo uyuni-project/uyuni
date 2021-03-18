@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-20 12:55+0100\n"
-"PO-Revision-Date: 2021-03-07 12:40+0000\n"
+"PO-Revision-Date: 2021-03-18 09:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/"
 "ko/>\n"
@@ -52,7 +52,7 @@ msgstr "인수가 잘못되었습니다"
 
 #: ../rhnsd.c:142
 msgid "already running"
-msgstr "이미 실행중입니다"
+msgstr "이미 실행 중입니다"
 
 #: ../rhnsd.c:254
 #, c-format
@@ -62,4 +62,4 @@ msgstr "Copyright (C) %s Red Hat, Inc.\n"
 #: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
-msgstr "%s에 의해 쓰여졌습니다.\n"
+msgstr "%s에 의해 작성되었습니다.\n"
