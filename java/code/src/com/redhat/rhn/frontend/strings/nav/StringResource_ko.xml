@@ -77,7 +77,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target>호스트없는 게스트</target>
+        <target>호스트 없는 게스트</target>
       </trans-unit>
       <trans-unit id="Virtualization" xml:space="preserve">
         <source>Virtualization</source>
@@ -105,14 +105,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>물리 시스템 </target>
+        <target>물리 시스템</target>
       </trans-unit>
       <trans-unit id="Duplicate Systems" xml:space="preserve">
         <source>Duplicate Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>중복 시스템 </target>
+        <target>중복 시스템</target>
       </trans-unit>
       <trans-unit id="Requiring Reboot" xml:space="preserve">
         <source>Requiring Reboot</source>
@@ -126,14 +126,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>추가 패키지</target>
+        <target>미준수</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips" xml:space="preserve">
         <source>Duplicate IP Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
-        <target>중복 IP 주소 </target>
+        <target>중복 IP 주소</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ip6s" xml:space="preserve">
         <source>Duplicate IPv6 Address</source>
@@ -154,7 +154,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>중복된 호스트 이름 </target>
+        <target>중복된 호스트 이름</target>
       </trans-unit>
       <trans-unit id="System Currency" xml:space="preserve">
         <source>System Currency</source>
@@ -175,7 +175,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>파일 디플로이</target>
+        <target>파일 배포</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.diff" xml:space="preserve">
         <source>Compare Files</source>
@@ -217,14 +217,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>진행 중 </target>
+        <target>진행 중</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.completed" xml:space="preserve">
         <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>완료 </target>
+        <target>완료</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all" xml:space="preserve">
         <source>All</source>
@@ -238,42 +238,42 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>모든 채널 </target>
+        <target>전체</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared" xml:space="preserve">
         <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>공유 채널   </target>
+        <target>공유됨</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor" xml:space="preserve">
         <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Red Hat 채널 </target>
+        <target>@@VENDOR_NAME@@</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular" xml:space="preserve">
         <source>Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>많이 사용되는 채널 </target>
+        <target>인기 있는 채널</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom" xml:space="preserve">
         <source>My Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>내 채널  </target>
+        <target>내 채널</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired" xml:space="preserve">
         <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>더이상 사용되지 않는 채널 </target>
+        <target>더 이상 사용되지 않는 채널</target>
       </trans-unit>
       <trans-unit id="config.nav.managed" xml:space="preserve">
         <source>Managed</source>
@@ -301,14 +301,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>설정 채널</target>
+        <target>채널</target>
       </trans-unit>
       <trans-unit id="config.nav.files" xml:space="preserve">
         <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>설정 파일</target>
+        <target>파일</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles" xml:space="preserve">
         <source>Centrally Managed</source>
@@ -372,7 +372,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>파일 배포 </target>
+        <target>파일 배포</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems" xml:space="preserve">
         <source>Systems</source>
@@ -416,7 +416,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDeploy.do</context>
         </context-group>
-        <target>파일 디플로이</target>
+        <target>파일 배포</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy" xml:space="preserve">
         <source>Copy File</source>
@@ -444,7 +444,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target>시스템 Sandbox에 복사</target>
+        <target>시스템 샌드박스에 복사</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare" xml:space="preserve">
         <source>Compare File</source>
@@ -465,32 +465,32 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>기타 다른 개정판</target>
+        <target>기타 개정판</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.copy" xml:space="preserve">
         <source>Other Copies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>기타 다른 복사본</target>
+        <target>기타 복사본</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.file" xml:space="preserve">
         <source>Other Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>기타 다른 파일</target>
+        <target>기타 파일</target>
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
           <source>List Scans</source>
-        <target>검사 목록 </target>
+        <target>검사 목록</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
           <source>Schedule</source>
-        <target>스케줄 </target>
+        <target>스케줄</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
@@ -568,7 +568,7 @@
       </trans-unit>
       <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
           <source>Local Sandbox</source>
-        <target>로컬 Sandbox</target>
+        <target>로컬 샌드박스</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -583,7 +583,7 @@
       </trans-unit>
       <trans-unit id="system.detail.nav.remove" xml:space="preserve">
           <source>List / Remove</source>
-        <target>목록 / 삭제</target>
+        <target>목록/삭제</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
@@ -614,7 +614,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>설치 가이드  </target>
+        <target>설치 가이드</target>
       </trans-unit>
       <trans-unit id="Software" xml:space="preserve">
         <source>Software</source>
@@ -656,7 +656,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Sandbox</target>
+        <target>샌드박스</target>
       </trans-unit>
       <trans-unit id="Spacewalk" xml:space="preserve">
         <source>@@PRODUCT_NAME@@</source>
@@ -670,7 +670,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 설정 </target>
+        <target>관리자 설정</target>
       </trans-unit>
       <trans-unit id="ISS Configuration" xml:space="preserve">
         <source>ISS Configuration</source>
@@ -740,7 +740,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>시스템 태그 </target>
+        <target>시스템 태그</target>
       </trans-unit>
       <trans-unit id="Reactivation" xml:space="preserve">
         <source>Reactivation</source>
@@ -761,7 +761,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>보류 중 </target>
+        <target>보류 중</target>
       </trans-unit>
       <trans-unit id="Patches" xml:space="preserve">
         <source>Patches</source>
@@ -803,21 +803,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>목록 / 삭제</target>
+        <target>나열/삭제</target>
       </trans-unit>
       <trans-unit id="Add / Remove" xml:space="preserve">
         <source>Add / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>추가 / 제거 </target>
+        <target>추가/삭제</target>
       </trans-unit>
       <trans-unit id="List / Leave" xml:space="preserve">
         <source>List / Leave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>목록 / 남김</target>
+        <target>나열/남김</target>
       </trans-unit>
       <trans-unit id="History" xml:space="preserve">
         <source>History</source>
@@ -845,7 +845,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>고객 정보</target>
+        <target>사용자 정의 정보</target>
       </trans-unit>
       <trans-unit id="Configuration" xml:space="preserve">
         <source>Configuration</source>
@@ -887,7 +887,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>더이상 사용되지 않음</target>
+        <target>더 이상 사용되지 않음</target>
       </trans-unit>
       <trans-unit id="Connection" xml:space="preserve">
         <source>Connection</source>
@@ -915,28 +915,28 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>헬프 데스크 </target>
+        <target>헬프 데스크</target>
       </trans-unit>
       <trans-unit id="Kickstart Details" xml:space="preserve">
         <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>킥스타트 정보</target>
+        <target>자동 설치 정보</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>편집 </target>
+        <target>편집</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.nav" xml:space="preserve">
         <source>Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>매개 변수 </target>
+        <target>변수</target>
       </trans-unit>
       <trans-unit id="System Details" xml:space="preserve">
         <source>System Details</source>
@@ -957,7 +957,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>킥스타트 파일</target>
+        <target>자동 설치 파일</target>
       </trans-unit>
       <trans-unit id="Operating System" xml:space="preserve">
         <source>Operating System</source>
@@ -971,14 +971,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>베어 메탈(Bare Metal) 킥스타트</target>
+        <target>프로비저닝되지 않은 자동 설치</target>
       </trans-unit>
       <trans-unit id="Bare Metal" xml:space="preserve">
         <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
-        <target>베어 메탈(Bare Metal) </target>
+        <target>프로비저닝되지 않음</target>
       </trans-unit>
       <trans-unit id="Advanced Options" xml:space="preserve">
         <source>Advanced Options</source>
@@ -999,7 +999,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>파티션하기</target>
+        <target>파티셔닝</target>
       </trans-unit>
       <trans-unit id="GPG_SSL" xml:space="preserve">
         <source>GPG &amp; SSL</source>
@@ -1034,21 +1034,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target>치명적</target>
+        <target>중요</target>
       </trans-unit>
       <trans-unit id="Unknown" xml:space="preserve">
         <source>Unknown</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target>알 수 없는</target>
+        <target>알 수 없음</target>
       </trans-unit>
       <trans-unit id="Recently Registered" xml:space="preserve">
         <source>Recently Registered</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>최근 등록  </target>
+        <target>최근 등록</target>
       </trans-unit>
       <trans-unit id="Target Systems" xml:space="preserve">
         <source>Target Systems</source>
@@ -1062,7 +1062,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/*.do</context>
         </context-group>
-        <target>관리 </target>
+        <target>관리</target>
       </trans-unit>
       <trans-unit id="Subscribed Systems" xml:space="preserve">
         <source>Subscribed Systems</source>
@@ -1076,7 +1076,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>리포지터리 </target>
+        <target>리포지토리</target>
       </trans-unit>
       <trans-unit id="Managers" xml:space="preserve">
         <source>Managers</source>
@@ -1104,49 +1104,49 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>라이센스</target>
+        <target>라이선스</target>
       </trans-unit>
       <trans-unit id="Sync" xml:space="preserve">
         <source>Sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/SyncErrata.do</context>
         </context-group>
-        <target>동기화 </target>
+        <target>동기화</target>
       </trans-unit>
       <trans-unit id="Organizations" xml:space="preserve">
         <source>Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target>조직  </target>
+        <target>조직</target>
       </trans-unit>
       <trans-unit id="Trusts" xml:space="preserve">
         <source>Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target>신뢰도 </target>
+        <target>신뢰도</target>
       </trans-unit>
       <trans-unit id="Channels Consumed" xml:space="preserve">
         <source>Channels Consumed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target>채널 사용 </target>
+        <target>채널 사용</target>
       </trans-unit>
       <trans-unit id="Channels Provided" xml:space="preserve">
         <source>Channels Provided</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target>채널 제공 </target>
+        <target>채널 제공</target>
       </trans-unit>
       <trans-unit id="Subscriptions" xml:space="preserve">
         <source>Subscriptions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Subscriptions.do</context>
         </context-group>
-        <target>서브스크립션 </target>
+        <target>서브스크립션</target>
       </trans-unit>
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
@@ -1154,21 +1154,21 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target>자식 채널 </target>
+        <target>하위 채널</target>
       </trans-unit>
       <trans-unit id="Chat" xml:space="preserve">
           <source>Chat</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
-        <target>채팅 </target>
+        <target>채팅</target>
       </trans-unit>
       <trans-unit id="Base Channels" xml:space="preserve">
           <source>Base Channels</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-        <target>기본 채널 </target>
+        <target>기본 채널</target>
       </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
@@ -1176,19 +1176,19 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-        <target>활성화된 시스템 </target>
+        <target>활성화된 시스템</target>
       </trans-unit>
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
           <source>Manage</source>
-        <target>관리 </target>
+        <target>관리</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clear" xml:space="preserve">
           <source>Clear</source>
-        <target>삭제 </target>
+        <target>삭제</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
