@@ -527,7 +527,7 @@
         "product_class": "SLE-LP",
         "cpe": "cpe:/o:suse:sle-live-patching:12",
         "free": false,
-        "description": "<p> SUSE Linux Enterprise Live Patching provides packages to update critical kernel modules live in SUSE Linux Enterprise. With SUSE Linux Enterprise Live Patching, you can perform critical kernel patching without shutting down your system, reducing the need for planned downtime and increasing service availability. <p>",
+        "description": "<p> SUSE Linux Enterprise Live Patching provides packages to update critical kernel modules live in SUSE Linux Enterprise. With SUSE Linux Enterprise Live Patching, you can perform critical kernel patching without shutting down your system, reducing the need for planned downtime and increasing service availability. </p>",
         "release_stage": "released",
         "eula_url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product.license/",
         "product_type": "extension",
