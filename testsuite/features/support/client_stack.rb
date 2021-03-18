@@ -69,15 +69,14 @@ def get_os_version(node)
     ['6', 'centos']
   end
 end
-# rubocop:enable Metrics/AbcSize
 
 def get_gpg_keys(node, target = $server)
   os_version, os_family = get_os_version(node)
   if os_family =~ /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
     os_version = 12 if os_version =~ /^15/
-    # SLE11 key doesn't contain service pack string
-    os_version = 11 if os_version =~ /^11/
+    # SLE11 and SLE12 gpg keys don't contain service pack strings
+    os_version = os_version.split('-')[0] if os_version =~ /^1[12]/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", false)
   elsif os_family =~ /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", false)
@@ -86,6 +85,7 @@ def get_gpg_keys(node, target = $server)
   end
   gpg_keys.lines.map(&:strip)
 end
+# rubocop:enable Metrics/AbcSize
 
 def sle11family?(node)
   _out, code = node.run('pidof systemd', false)
