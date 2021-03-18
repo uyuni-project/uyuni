@@ -1008,13 +1008,6 @@
         </context-group>
         <target>Canales de sóftwer</target>
       </trans-unit>
-      <trans-unit id="Software Crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Fallos de software</target>
-      </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
@@ -1825,11 +1818,11 @@
         <target>Ha programado refrescar el perfil de hardware para {0}.</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>Interfaz de red primaria establecida a &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target state="needs-adaptation">Interfaz de red primaria establecida a &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2959,13 +2952,6 @@ and try again.
         <target>Eliminar perfil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="toolbar.delete.crash" xml:space="preserve">
-        <source>Delete Software Crash</source>
-        <target>Borrar Cuelgue del Sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
@@ -5972,27 +5958,6 @@ de este usuario antes de intentar desactivar esta cuenta.</target>
         </context-group>
         <target>Script Bootstrap </target>
       </trans-unit>
-      <trans-unit id="Crash Details" xml:space="preserve">
-        <source>Crash Details</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Información sobre la falla</target>
-      </trans-unit>
-      <trans-unit id="Crash Files" xml:space="preserve">
-        <source>Crash Files</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Archivos de la falla</target>
-      </trans-unit>
-      <trans-unit id="Crash Notes" xml:space="preserve">
-        <source>Crash Notes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Notas sobre la falla</target>
-      </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
         <context-group name="ctx">
@@ -6450,11 +6415,11 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         <target>La distribución kickstart no es válida debido a un error en la ruta base del kernel o la imagen initrd. Para hacer que su distribución personalizada sea válida, seleccione la distribución y modifique apropiadamente su ruta base .</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target>Los parámetros adicionales del kernel no pueden tener más de 128 caracteres.</target>
+        <target state="needs-adaptation">Los parámetros adicionales del kernel no pueden tener más de 128 caracteres.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -8222,13 +8187,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         </context-group>
         <target>Este sistema ya está en pausa.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.guest.already.crashed" xml:space="preserve">
-        <source>This system is crashed.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
-        </context-group>
-        <target>Este sistema está colgado.</target>
-      </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
         <context-group name="ctx">
@@ -8701,14 +8659,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         <source>The specified server is not a member of the specified group</source>
         <target>El servidor especificado no es miembro del grupo especificado</target>
       </trans-unit>
-      <trans-unit id="api.system.crash.nocrashesfound" xml:space="preserve">
-        <source>No crashes recorded for the specified system.</source>
-        <target>No hay fallos registrados para el sistema especificado.</target>
-      </trans-unit>
-      <trans-unit id="api.system.crash.nosuchcrash" xml:space="preserve">
-        <source>No such crash found.</source>
-        <target>No se encontró dicho fallo.</target>
-      </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target>La existe dicha interfaz de red: {0}</target>
@@ -8728,10 +8678,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
         <target>El archivo solicitado es demasiado largo para descargar en XMLRPC.</target>
-      </trans-unit>
-      <trans-unit id="api.crashfile.download.toolarge" xml:space="preserve">
-        <source>The requested crash file is too large to download over XMLRPC.</source>
-        <target>El archivo de fallos solicitado es demasiado largo para descargar en XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
@@ -9604,22 +9550,6 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
         <target>Por favor establezca la frecuencia para la nueva programación.</target>
-      </trans-unit>
-      <trans-unit id="message.crashdeleted" xml:space="preserve">
-        <source>Software crash {0} was successfully deleted.</source>
-        <target>El fallo de software {0} fue borrado con éxito.</target>
-      </trans-unit>
-      <trans-unit id="message.crashesdeleted" xml:space="preserve">
-        <source>{0} software crashes were successfully deleted.</source>
-        <target>Los fallos de software {0} han sido borrados con éxito.</target>
-      </trans-unit>
-      <trans-unit id="message.crashnotecreated" xml:space="preserve">
-        <source>Crash Note was successfully created.</source>
-        <target>La nota de fallo ha sido creada con éxito.</target>
-      </trans-unit>
-      <trans-unit id="message.crashnoteupdated" xml:space="preserve">
-        <source>Crash Note was successfully updated.</source>
-        <target>La nota de fallo ha sido actualizada con éxito.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
@@ -10676,6 +10606,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
       <target state="new" />
   </trans-unit>
-      </body>
+      <trans-unit id="virt.network_create" xml:space="preserve">
+        <source>Virtual network creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
+        <source>Cannot read/write '{0}'. Please check permissions.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
+        <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
+        <source>Error during applying the bootstrap state, message: {0}</source>
+      <target state="new" />
+  </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 
 /**
  * KickstartEditCommandTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
 

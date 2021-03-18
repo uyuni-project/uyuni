@@ -19,7 +19,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
  * KickstartParsingException
- * @version $Rev$
  */
 public class KickstartParsingException extends RhnRuntimeException {
 

@@ -45,7 +45,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.2.8
+Version:        4.2.9
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -112,6 +112,8 @@ Requires:       postfix
 # mgr-setup want to call mksubvolume
 Requires:       reprepro
 Requires:       snapper
+# mgr-setup calls dig
+Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -266,6 +268,10 @@ fi
 if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
     chmod 600 /SWAPFILE
 fi
+
+%if !0%{?suse_version}
+sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
+%endif
 
 %posttrans
 # make sure our database will use correct encoding

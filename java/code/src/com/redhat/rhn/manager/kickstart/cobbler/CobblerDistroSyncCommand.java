@@ -34,7 +34,6 @@ import java.util.Map;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class CobblerDistroSyncCommand extends CobblerCommand {
 

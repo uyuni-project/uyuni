@@ -25,7 +25,6 @@ import java.util.Map;
  * ErrataFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.errata.Errata objects from the
  * database.
- * @version $Rev$
  */
 public class CveFactory extends HibernateFactory {
 

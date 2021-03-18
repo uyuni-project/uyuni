@@ -47,7 +47,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class CustomPackageListAction extends RhnAction {
 

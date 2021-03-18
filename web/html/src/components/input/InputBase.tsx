@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import _isNil from "lodash/isNil";
+
 import { Label } from "./Label";
 import { FormGroup } from "./FormGroup";
 import { FormContext } from "./Form";
@@ -22,6 +24,12 @@ export type InputBaseProps<ValueType = string> = {
   /** Label to display for the field */
   label?: string;
 
+  /** title of the field */
+  title?: string;
+
+  /** Hide the label even if the label property is defined */
+  hideLabel?: boolean;
+
   /** Hint string to display */
   hint?: React.ReactNode;
 
@@ -30,6 +38,9 @@ export type InputBaseProps<ValueType = string> = {
 
   /** CSS class to use for the <div> element wrapping the field input part */
   divClass?: string;
+
+  /** CSS class to use for the field group */
+  className?: string;
 
   /** Function rendering the children in the value <div>.
    * Takes two parameters:
@@ -47,7 +58,7 @@ export type InputBaseProps<ValueType = string> = {
   disabled?: boolean;
 
   /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
-  validators?: Validator[];
+  validators?: Validator | Validator[];
 
   /** Hint to display on a validation error */
   invalidHint?: React.ReactNode;
@@ -75,6 +86,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     hint: undefined,
     labelClass: undefined,
     divClass: undefined,
+    className: undefined,
     required: false,
     disabled: false,
     invalidHint: undefined,
@@ -157,6 +169,13 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     return this.state.isValid;
   }
 
+  isEmptyValue(input: any) {
+    if (typeof input === 'string') {
+      return input.trim() === '';
+    }
+    return _isNil(input);
+  }
+
   /**
    * Validate the input, updating state and errors if necessary.
    *
@@ -173,7 +192,9 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     }
 
     if (!this.props.disabled && (value || this.props.required)) {
-      if (this.props.required && !value) {
+      const noValue = this.isEmptyValue(value) ||
+        (Array.isArray(this.props.name) && Object.values(value).filter(v => !this.isEmptyValue(v)).length === 0);
+      if (this.props.required && noValue) {
         isValid = false;
       } else if (this.props.validators) {
         const validators = Array.isArray(this.props.validators) ? this.props.validators : [this.props.validators];
@@ -232,20 +253,23 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   render() {
     const isError = this.state.showErrors && !this.state.isValid;
+    const requiredHint = this.props.label ? t(`${this.props.label} is required.`) : t('required')
     const invalidHint =
-      isError && (this.props.invalidHint || (this.props.required && `${this.props.label} is required.`));
+      isError && (this.props.invalidHint || (this.props.required && requiredHint));
     const hints: React.ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
 
-    const errors = this.state.errors && Array.isArray(this.state.errors) ? this.state.errors : [this.state.errors];
-    if (errors) {
+    const errors = Array.isArray(this.state.errors) ?
+      this.state.errors :
+      this.state.errors ? [this.state.errors] : [];
+    if (errors.length > 0) {
       errors.forEach(error => this.pushHint(hints, error));
     } else {
       this.pushHint(hints, invalidHint);
     }
 
     return (
-      <FormGroup isError={isError} key={`${this.props.name}-group`}>
+      <FormGroup isError={isError} key={`${this.props.name}-group`} className={this.props.className}>
         {this.props.label && (
           <Label
             name={this.props.label}

@@ -49,7 +49,6 @@ import java.util.Set;
 
 /**
  * KickstartLister
- * @version $Rev$
  */
 public class KickstartLister extends BaseManager {
 

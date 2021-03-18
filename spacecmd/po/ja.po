@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/bin/spacecmd:59
+#: ../src/bin/spacecmd:60
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2020-12-16 12:27+0000\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"PO-Revision-Date: 2021-03-14 11:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -3897,9 +3897,8 @@ msgid "Configuration Channels: %i"
 msgstr "設定チャンネル数: %i"
 
 #: ../src/spacecmd/package.py:48
-#, fuzzy
 msgid "Show the details of a software package"
-msgstr "softwarechannel_details: ソフトウェアチャンネルの詳細を表示"
+msgstr "ソフトウェアパッケージの詳細を表示"
 
 #: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
 #: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
@@ -3951,14 +3950,14 @@ msgid "Available From Channels"
 msgstr "提供されているチャンネル"
 
 #: ../src/spacecmd/package.py:124
-#, fuzzy, python-format
+#, python-format
 msgid "usage: %s NAME|QUERY"
-msgstr "使用方法: package_search 名前|検索文字列"
+msgstr "使用方法: %s 名前|検索文字列"
 
 #: ../src/spacecmd/package.py:126
-#, fuzzy, python-format
+#, python-format
 msgid "Example: %s kernel"
-msgstr "例: package_search kernel"
+msgstr "例: %s kernel"
 
 #: ../src/spacecmd/package.py:128
 msgid "Advanced Search:"
@@ -4030,21 +4029,16 @@ msgid "No packages were removed"
 msgstr "何もパッケージを削除しませんでした"
 
 #: ../src/spacecmd/package.py:282
-#, fuzzy
 msgid "List the systems with a package installed"
-msgstr ""
-"package_listinstalledsystems: パッケージがインストールされているシステムを表"
-"示"
+msgstr "パッケージがインストールされているシステムを表示"
 
 #: ../src/spacecmd/package.py:329
-#, fuzzy
 msgid "List the errata that provide this package"
-msgstr "package_listerrata: このパッケージを提供するエラータを表示"
+msgstr "このパッケージを提供するエラータを表示"
 
 #: ../src/spacecmd/package.py:375
-#, fuzzy
 msgid "List the dependencies for a package"
-msgstr "package_listdependencies: パッケージの依存関係を表示"
+msgstr "パッケージの依存関係を表示"
 
 #: ../src/spacecmd/package.py:406
 #, python-format
@@ -7273,12 +7267,12 @@ msgstr "使用方法: system_addchildchannels <システム> <チャンネル ..
 #: ../src/spacecmd/system.py:2755
 #, python-format
 msgid "This method was removed since API version %s"
-msgstr ""
+msgstr "このメソッドは API バージョン %s で削除されました"
 
 #: ../src/spacecmd/system.py:2758
 #, python-format
 msgid "This method is deprecated and will be removed in API version %s"
-msgstr ""
+msgstr "このメソッドは廃止予定であり、 API バージョン %s で削除される予定です"
 
 #: ../src/spacecmd/system.py:2762
 msgid ""
@@ -8250,7 +8244,7 @@ msgstr ""
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 
-#: ../src/bin/spacecmd:74
+#: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN を取得している際に未処理の例外が発生しました:"
 

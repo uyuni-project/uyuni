@@ -45,7 +45,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * PackageTest
- * @version $Rev$
  */
 public class PackageTest extends BaseTestCaseWithUser {
 

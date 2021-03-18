@@ -43,7 +43,6 @@ import org.apache.log4j.Logger;
 /**
  *
  * AbstractSetHelper
- * @version $Rev$
  */
 public class BaseSetHelper {
     protected HttpServletRequest request;

@@ -36,7 +36,6 @@ import java.util.Set;
 
 /**
  * ActivationKey
- * @version $Rev$
  */
 public class ActivationKey extends BaseDomainHelper {
 

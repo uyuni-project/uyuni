@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2010--2021 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -11,9 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-/*
- * Copyright (c) 2010 SUSE LLC
  */
 package com.redhat.rhn.manager.errata;
 
@@ -38,6 +36,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1611,7 +1610,26 @@ public class ErrataManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant)
+                                               List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant)
+            throws TaskomaticApiException {
+        return applyErrataHelper(loggedInUser, systemIds, errataIds, earliestOccurrence, onlyRelevant, false);
+    }
+
+    /**
+     * Apply errata updates to a system list at a specified time.
+     * @param loggedInUser The logged in user
+     * @param systemIds list of system IDs
+     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
+     * @param allowVendorChange true if vendor change allowed
+     * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
+            List<Long> errataIds, Date earliestOccurrence, boolean onlyRelevant, boolean allowVendorChange)
         throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
@@ -1623,7 +1641,7 @@ public class ErrataManager extends BaseManager {
 
         // at this point all errata is applicable to all systems, so let's apply
         return applyErrata(loggedInUser, errataIds, earliestOccurrence,
-                null, systemIds, onlyRelevant);
+                null, systemIds, onlyRelevant, allowVendorChange);
     }
 
     /**
@@ -1658,7 +1676,7 @@ public class ErrataManager extends BaseManager {
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
             ActionChain actionChain, List<Long> serverIds)
         throws TaskomaticApiException {
-        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true, false);
     }
 
     /**
@@ -1676,12 +1694,13 @@ public class ErrataManager extends BaseManager {
      *        Systems get only the erratas relevant for them.
      *        If false, InvalidErrataException is thrown if an errata does not apply
      *        to a system.
+     * @param allowVendorChange true if vendor change allowed
      * @return list of action ids
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    private static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
-            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
+    public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
+            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant, boolean allowVendorChange)
         throws TaskomaticApiException {
 
         // compute server id to applicable errata id map
@@ -1811,10 +1830,16 @@ public class ErrataManager extends BaseManager {
             concat(updateStackActions,
             nonUpdateStackActions))
             .collect(toList());
-        traditionalErrataActions.stream().forEach(ea-> actionIds.add(ActionManager.storeAction(ea).getId()));
+        traditionalErrataActions.stream().forEach(ea-> {
+            ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
+            Action action = ActionManager.storeAction(ea);
+            actionIds.add(action.getId());
+        });
+
         List<ErrataAction> minionErrataActions = minionActions.collect(toList());
         List<Action> minionTaskoActions = new ArrayList<>();
         minionErrataActions.stream().forEach(ea-> {
+           ea.setDetails(new ActionPackageDetails(ea, allowVendorChange));
            Action action = ActionManager.storeAction(ea);
            minionTaskoActions.add(action);
            actionIds.add(action.getId());

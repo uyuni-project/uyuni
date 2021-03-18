@@ -1004,13 +1004,6 @@
         </context-group>
         <target>Каналы</target>
       </trans-unit>
-      <trans-unit id="Software Crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Программные сбои</target>
-      </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
@@ -1811,11 +1804,11 @@
         <target>Назначено обновление профиля для {0}.</target>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>Основной сетевой интерфейс определен как &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target state="needs-adaptation">Основной сетевой интерфейс определен как &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -2920,13 +2913,6 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="toolbar.delete.crash" xml:space="preserve">
-        <source>Delete Software Crash</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-        <target>Удалить конфликт</target>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; unscheduled for &lt;strong&gt;{1}&lt;/strong&gt; system.</source>
@@ -5926,27 +5912,6 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>Сценарий Bootstrap</target>
       </trans-unit>
-      <trans-unit id="Crash Details" xml:space="preserve">
-        <source>Crash Details</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Сведения о сбое</target>
-      </trans-unit>
-      <trans-unit id="Crash Files" xml:space="preserve">
-        <source>Crash Files</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Файлы сбоев</target>
-      </trans-unit>
-      <trans-unit id="Crash Notes" xml:space="preserve">
-        <source>Crash Notes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Примечания</target>
-      </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
         <context-group name="ctx">
@@ -6402,11 +6367,11 @@ Follow this url to see the full list of inactive systems:
         <target>Неверный или несуществующий путь к ядру или initrd привел к ошибкам в дистрибутивах кикстарта. Выберите дистрибутив и откорректируйте путь.</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target>Дополнительные параметры ядра не должны превышать 128 символов.</target>
+        <target state="needs-adaptation">Дополнительные параметры ядра не должны превышать 128 символов.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -8165,13 +8130,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>Система уже приостановлена.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.guest.already.crashed" xml:space="preserve">
-        <source>This system is crashed.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
-        </context-group>
-        <target>Сбой работы системы.</target>
-      </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
         <context-group name="ctx">
@@ -8641,14 +8599,6 @@ Follow this url to see the full list of inactive systems:
         <source>The specified server is not a member of the specified group</source>
         <target>Указанный сервер не входит в состав этой группы</target>
       </trans-unit>
-      <trans-unit id="api.system.crash.nocrashesfound" xml:space="preserve">
-        <source>No crashes recorded for the specified system.</source>
-        <target>Нет сбоев.</target>
-      </trans-unit>
-      <trans-unit id="api.system.crash.nosuchcrash" xml:space="preserve">
-        <source>No such crash found.</source>
-        <target>Нет сбоя.</target>
-      </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target>Нет интерфейса: {0}.</target>
@@ -8668,10 +8618,6 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
         <target>Размер запрошенного файла слишком велик для загрузки по XMLRPC.</target>
-      </trans-unit>
-      <trans-unit id="api.crashfile.download.toolarge" xml:space="preserve">
-        <source>The requested crash file is too large to download over XMLRPC.</source>
-        <target>Размер запрошенного файла сбоя слишком большой для загрузки по XMLRPC.</target>
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
         <source>There was a general IO Error, check permissions on the requested file.</source>
@@ -9540,22 +9486,6 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
         <target>Определите частоту.</target>
-      </trans-unit>
-      <trans-unit id="message.crashdeleted" xml:space="preserve">
-        <source>Software crash {0} was successfully deleted.</source>
-        <target>Сбой {0} удален.</target>
-      </trans-unit>
-      <trans-unit id="message.crashesdeleted" xml:space="preserve">
-        <source>{0} software crashes were successfully deleted.</source>
-        <target>Удаление сбоев завершено успешно (всего {0}).</target>
-      </trans-unit>
-      <trans-unit id="message.crashnotecreated" xml:space="preserve">
-        <source>Crash Note was successfully created.</source>
-        <target>Примечание создано.</target>
-      </trans-unit>
-      <trans-unit id="message.crashnoteupdated" xml:space="preserve">
-        <source>Crash Note was successfully updated.</source>
-        <target>Примечание обновлено.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
         <source>Red Hat Enterprise Linux 7 and higher guests require at least 1024 MB of memory.</source>
@@ -10599,6 +10529,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
       <target state="new" />
   </trans-unit>
-      </body>
+      <trans-unit id="virt.network_create" xml:space="preserve">
+        <source>Virtual network creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
+        <source>Cannot read/write '{0}'. Please check permissions.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
+        <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
+        <source>Error during applying the bootstrap state, message: {0}</source>
+      <target state="new" />
+  </trans-unit>
+    </body>
   </file>
 </xliff>

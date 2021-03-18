@@ -4,11 +4,6 @@
 Feature: Bootstrap a Salt build host via the GUI
 
 @buildhost
-  Scenario: Create the bootstrap repository for a Salt client build host
-     Given I am authorized
-     When I create the "x86_64" bootstrap repository for "build_host" on the server
-
-@buildhost
   Scenario: Bootstrap a SLES build host
      Given I am authorized
      When I go to the bootstrapping page

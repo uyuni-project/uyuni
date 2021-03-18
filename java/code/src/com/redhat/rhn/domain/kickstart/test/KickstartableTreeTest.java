@@ -49,7 +49,6 @@ import java.util.List;
 
 /**
  * KickstartableTreeTest
- * @version $Rev$
  */
 public class KickstartableTreeTest extends BaseTestCaseWithUser {
 

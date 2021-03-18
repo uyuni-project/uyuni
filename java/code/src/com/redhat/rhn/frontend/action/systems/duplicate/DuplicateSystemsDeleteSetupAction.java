@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DuplicateSystemsDeleteSetupAction
- * @version $Rev$
  */
 public class DuplicateSystemsDeleteSetupAction extends RhnAction implements Listable {
     /**

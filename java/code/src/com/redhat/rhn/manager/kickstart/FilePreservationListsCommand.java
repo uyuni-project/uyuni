@@ -25,7 +25,6 @@ import java.util.Set;
 
 /**
  * KickstartFilePreservationListsCommand
- * @version $Rev$
  */
 public class FilePreservationListsCommand extends BaseKickstartCommand {
 

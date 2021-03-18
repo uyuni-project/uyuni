@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.kickstart;
 
 /**
  * KickstartScheduleSyncAction
- * @version $Rev$
  */
 public class KickstartScheduleSyncAction extends KickstartAction {
 

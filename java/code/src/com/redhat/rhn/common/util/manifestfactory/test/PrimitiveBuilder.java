@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * PrimitiveBuilder
- * @version $Rev$
  */
 
 public class PrimitiveBuilder implements ManifestFactoryBuilder {

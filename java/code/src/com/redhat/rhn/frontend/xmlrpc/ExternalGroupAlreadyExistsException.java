@@ -21,7 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * ExternalGroupAlreadyExists Exception
  *
- * @version $Rev$
  */
 public class ExternalGroupAlreadyExistsException extends FaultException  {
 

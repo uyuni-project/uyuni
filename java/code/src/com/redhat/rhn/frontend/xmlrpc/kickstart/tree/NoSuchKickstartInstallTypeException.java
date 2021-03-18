@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * Thrown if the the KickstartInstallType is not found.
- * @version $Rev$
  */
 public class NoSuchKickstartInstallTypeException extends FaultException {
 

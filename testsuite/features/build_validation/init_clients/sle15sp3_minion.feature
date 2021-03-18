@@ -2,17 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 @sle15sp3_minion
-Feature: Be able to bootstrap a SLES 15 SP3 Salt minion
+Feature: Bootstrap a SLES 15 SP3 Salt minion
 
   Scenario: Clean up sumaform leftovers on a SLES 15 SP3 Salt minion
     When I perform a full salt minion cleanup on "sle15sp3_minion"
 
-  Scenario: Create the bootstrap repository for a Salt client
-    Given I am authorized
-    And I create the "x86_64" bootstrap repository for "sle15sp3_minion" on the server
-
   Scenario: Bootstrap a SLES 15 SP3 minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle15sp3_minion" as "hostname"
@@ -26,8 +22,8 @@ Feature: Be able to bootstrap a SLES 15 SP3 Salt minion
     And I wait until onboarding is completed for "sle15sp3_minion"
 
   Scenario: Check the new bootstrapped SLES 15 SP3 minion in System Overview page
-    Given I am authorized
-    And I go to the minion onboarding page
+    Given I am authorized as "admin" with password "admin"
+    When I go to the minion onboarding page
     Then I should see a "accepted" text
     And the Salt master can reach "sle15sp3_minion"
 

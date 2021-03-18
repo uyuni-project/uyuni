@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * AbstractLabelNameHelperTest
- * @version $Rev$
  */
 public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
 

@@ -33,7 +33,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *  <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
  *  <rl:radiocolumn value="${current.selectionKey}" styleclass="first-column"/>
  * }</pre>
- * @version $Rev$
  */
 public class RadioColumnTag extends TagSupport {
 

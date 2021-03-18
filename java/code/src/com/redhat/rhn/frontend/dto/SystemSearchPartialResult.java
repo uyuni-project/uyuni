@@ -18,7 +18,6 @@ import java.io.Serializable;
 
 /**
  * SystemSearchResult
- * @version $Rev$
  */
 public class SystemSearchPartialResult implements Serializable  {
 

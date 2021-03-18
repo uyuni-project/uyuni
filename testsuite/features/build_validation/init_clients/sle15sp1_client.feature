@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp1_client
@@ -14,8 +14,8 @@ Feature: Bootstrap a SLES 15 SP1 traditional client
     Then I should see "sle15sp1_client" via spacecmd
 
   Scenario: The onboarding of SLES 15 SP1 traditional client is completed
-    Given I am authorized
-    Then I wait until onboarding is completed for "sle15sp1_client"
+    Given I am authorized as "admin" with password "admin"
+    When I wait until onboarding is completed for "sle15sp1_client"
 
   Scenario: Check registration values of SLES 15 SP1 traditional
     Given I update the profile of "sle15sp1_client"

@@ -25,7 +25,6 @@ import java.util.List;
  * UpdateErrataCacheEvent - publish even to update the errata cache for an Org
  * or a set of Channels.
  *
- * @version $Rev$
  */
 public class UpdateErrataCacheEvent implements EventDatabaseMessage {
 

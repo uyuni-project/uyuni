@@ -19,7 +19,6 @@ import com.redhat.rhn.common.db.DatabaseException;
 
 /**
  * DuplicateObjectException
- * @version $Rev$
  */
 public class DuplicateObjectException extends DatabaseException {
 

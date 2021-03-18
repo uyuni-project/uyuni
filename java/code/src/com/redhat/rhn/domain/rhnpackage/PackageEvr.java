@@ -23,7 +23,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * PackageEvr
- * @version $Rev$
  */
 public class PackageEvr implements Comparable<PackageEvr> {
 

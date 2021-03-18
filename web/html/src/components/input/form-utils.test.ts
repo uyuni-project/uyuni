@@ -1,4 +1,4 @@
-import { flattenModel } from "./form-utils";
+import { convertNumbers, flattenModel, stripBlankValues } from "./form-utils";
 import { unflattenModel } from "./form-utils";
 
 describe("Testing flattenModel", () => {
@@ -72,6 +72,7 @@ describe("Test unflattenModel", () => {
       target_path: "/foo/bar",
       target_permission_owner: 123,
       target_permission_group: 456,
+      array: ["one", "two"],
     };
 
     expect(unflattenModel(flat)).toEqual({
@@ -83,6 +84,7 @@ describe("Test unflattenModel", () => {
           group: 456,
         },
       },
+      array: ["one", "two"],
     });
   });
 
@@ -106,5 +108,59 @@ describe("Test unflattenModel", () => {
         ],
       },
     });
+  });
+});
+
+describe("Test stripBlankValues", () => {
+  test("test stripping blank values", () => {
+    const flat = {
+      name: 'mine',
+      foo: '',
+      bar: null,
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts0_foo: undefined,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: 456,
+      source_hosts2_name: 'three.example.com',
+      source_hosts2_foo: '',
+    };
+
+    expect(stripBlankValues(flat)).toEqual({
+      name: 'mine',
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: 456,
+      source_hosts2_name: 'three.example.com',
+    })
+  });
+});
+
+describe("Test convertNumbers", () => {
+  test("test converting strings to numbers", () => {
+    const flat = {
+      name: 'mine',
+      foo: '789',
+      bar: null,
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts0_foo: undefined,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: "456.34",
+      source_hosts2_name: '192.168.122.2',
+    };
+
+    expect(convertNumbers(flat)).toEqual({
+      name: 'mine',
+      foo: 789,
+      bar: null,
+      source_hosts0_name: 'one.example.com',
+      source_hosts0_port: 123,
+      source_hosts0_foo: undefined,
+      source_hosts1_name: 'two.example.com',
+      source_hosts1_port: 456.34,
+      source_hosts2_name: '192.168.122.2',
+    })
   });
 });

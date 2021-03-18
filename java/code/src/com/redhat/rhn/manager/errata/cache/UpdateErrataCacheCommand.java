@@ -33,7 +33,6 @@ import java.util.Map;
 
 /**
  * UpdateErrataCacheCommand
- * @version $Rev$
  */
 public class UpdateErrataCacheCommand extends BaseTransactionCommand {
     private static Logger log = Logger

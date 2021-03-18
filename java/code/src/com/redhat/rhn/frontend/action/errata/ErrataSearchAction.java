@@ -52,7 +52,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 /**
  * SearchAction
- * @version $Rev$
  */
 public class ErrataSearchAction extends BaseSearchAction {
 

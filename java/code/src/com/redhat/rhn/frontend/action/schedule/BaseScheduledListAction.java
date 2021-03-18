@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * Base action for scheduled action lists
- * @version $Rev$
  */
 public abstract class BaseScheduledListAction extends RhnAction implements Listable {
 

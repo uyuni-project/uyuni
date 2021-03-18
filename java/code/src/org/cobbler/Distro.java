@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class Distro extends CobblerObject {
     private static final String KERNEL = "kernel";

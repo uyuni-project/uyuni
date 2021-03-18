@@ -18,7 +18,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * RhnActionMapping
- * @version $Rev$
  */
 public class RhnActionMapping extends ActionMapping {
 

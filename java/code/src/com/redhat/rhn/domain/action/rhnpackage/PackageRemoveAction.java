@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.rhnpackage;
 
 /**
  * PackageRemoveAction
- * @version $Rev$
  */
 public class PackageRemoveAction extends PackageAction {
 

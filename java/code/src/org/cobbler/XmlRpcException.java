@@ -18,7 +18,6 @@ package org.cobbler;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class XmlRpcException extends RuntimeException {
     /**

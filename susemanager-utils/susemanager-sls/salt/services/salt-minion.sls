@@ -20,6 +20,18 @@ mgr_remove_activation_key_grains:
     - repl: ''
     - onlyif: grep 'activation_key:' /etc/salt/minion.d/susemanager.conf
 
+{# add SALT_RUNNING env variable in case it's not present on the configuration #}
+mgr_append_salt_running_env_configuration:
+  file.append:
+    - name: /etc/salt/minion.d/susemanager.conf
+    - text: |
+        system-environment:
+          modules:
+            pkg:
+              _:
+                SALT_RUNNING: 1
+    - unless: grep 'system-environment' /etc/salt/minion.d/susemanager.conf
+
 mgr_salt_minion:
   pkg.installed:
     - name: salt-minion

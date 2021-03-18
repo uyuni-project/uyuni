@@ -11,7 +11,7 @@ Feature: Bootstrap a Ubuntu 16.04 Salt SSH minion
     When I perform a full salt minion cleanup on "ubuntu1604_ssh_minion"
 
   Scenario: Bootstrap a SSH-managed Ubuntu 16.04 minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu1604_ssh_minion" as "hostname"
@@ -22,7 +22,7 @@ Feature: Bootstrap a Ubuntu 16.04 Salt SSH minion
     And I select the hostname of "proxy" from "proxies"
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1604_ssh_minion"
 
   # WORKAROUND bsc#1181847

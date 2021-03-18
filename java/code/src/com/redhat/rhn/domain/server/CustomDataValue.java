@@ -27,7 +27,6 @@ import java.util.Date;
 
 /**
  * CustomDataValue
- * @version $Rev$
  */
 public class CustomDataValue implements Serializable {
 

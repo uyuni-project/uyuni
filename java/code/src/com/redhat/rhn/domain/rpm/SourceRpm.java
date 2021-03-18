@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.rpm;
 
 /**
  * SourceRpm
- * @version $Rev$
  */
 public class SourceRpm {
 

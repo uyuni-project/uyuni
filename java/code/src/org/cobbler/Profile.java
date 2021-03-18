@@ -29,7 +29,6 @@ import java.util.Set;
 
 /**
  * @author paji
- * @version $Rev$
  */
 
 public class Profile extends CobblerObject {

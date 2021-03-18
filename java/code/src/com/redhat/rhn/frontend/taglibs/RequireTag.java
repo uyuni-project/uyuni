@@ -29,7 +29,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *     Otherwise, everything between the tag will be ignored.
  * &lt;/rhn:require&gt;
  * </pre>
- * @version $Rev$
  */
 public class RequireTag extends TagSupport {
 

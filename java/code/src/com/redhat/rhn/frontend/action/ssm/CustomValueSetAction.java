@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ListSystemsAction
- * @version $Rev$
  */
 public class CustomValueSetAction extends RhnAction {
 

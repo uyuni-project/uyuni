@@ -33,7 +33,6 @@ import java.util.TimeZone;
 
 /**
  * ErrataConfirmActionTest
- * @version $Rev$
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
@@ -77,6 +76,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
             UserFactory.save(user);
         }
         RhnSetManager.store(errata); //save the set
+        addRequestParameter("allowVendorChange", new String("false"));
 
         addRequestParameter("sid", server.getId().toString());
         addSubmitted();
@@ -112,6 +112,8 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter("sid", server.getId().toString());
 
         addSubmitted();
+
+        addRequestParameter("allowVendorChange", new String("false"));
         addRequestParameter("dispatch", "dispatch");
         // Execute the Action
         actionPerform();

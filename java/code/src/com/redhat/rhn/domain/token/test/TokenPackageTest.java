@@ -27,7 +27,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * TokenPackageTest
- * @version $Rev$
  */
 public class TokenPackageTest extends BaseTestCaseWithUser {
 

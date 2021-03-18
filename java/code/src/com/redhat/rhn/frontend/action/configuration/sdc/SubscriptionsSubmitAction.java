@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SubscriptionsSubmitAction
- * @version $Rev$
  */
 public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsAction {
 

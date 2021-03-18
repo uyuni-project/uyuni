@@ -3,10 +3,6 @@
 
 Feature: Bootstrap a Salt minion via the GUI
 
-  Scenario: Create the bootstrap repository for a Salt client
-     Given I am authorized
-     And I create the "x86_64" bootstrap repository for "sle_minion" on the server
-
   Scenario: Bootstrap a SLES minion
      Given I am authorized
      When I go to the bootstrapping page
@@ -49,6 +45,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "SP Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
     And I click on "Select Channels"
+    And I check "allowVendorChange"
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I click on "Schedule Migration"
     And I should see a "Service Pack Migration - Confirm" text
@@ -63,6 +60,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I wait at most 600 seconds until event "Service Pack Migration scheduled by admin" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
+    And vendor change should be enabled for "SP migration" on "sle_spack_migrated_minion"
 
 @service_pack_migration
   Scenario: Install the latest Salt on this minion

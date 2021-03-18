@@ -1,3 +1,12 @@
+- add warning about missing salt feature for virtual networks
+- add virtual network create action
+
+-------------------------------------------------------------------
+Fri Mar 05 15:43:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.11-1
+- Get rid of validator global variable
+
 -------------------------------------------------------------------
 Thu Feb 25 12:10:18 CET 2021 - jgonzalez@suse.com
 

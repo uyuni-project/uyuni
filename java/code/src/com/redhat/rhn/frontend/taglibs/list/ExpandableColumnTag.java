@@ -23,7 +23,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 /**
  * List tag construct to render expandable columns
  * ExpandableColumnTag
- * @version $Rev$
  */
 public class ExpandableColumnTag  extends BodyTagSupport {
     /**

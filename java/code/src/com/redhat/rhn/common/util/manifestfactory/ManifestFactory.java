@@ -28,7 +28,6 @@ import java.util.Map;
  * ManifestFactory, a generic factory system to load other factories
  * based on an xml manifest
  *
- * @version $Rev$
  */
 
 public class ManifestFactory {

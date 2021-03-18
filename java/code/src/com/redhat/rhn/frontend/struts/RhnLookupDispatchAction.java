@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * RhnLookupDispatchAction
  * This is our own implementation of LookupDispatchAction
- * @version $Rev$
  */
 public abstract class RhnLookupDispatchAction extends LookupDispatchAction {
 

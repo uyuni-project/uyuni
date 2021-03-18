@@ -22,8 +22,10 @@ Feature: Smoke tests for <client>
 @skip_for_ubuntu
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I select "Non-Critical" from "type"
+    And I click on "Show"
     When I check the first patch in the list
     And I click on "Apply Patches"
     And I click on "Confirm"

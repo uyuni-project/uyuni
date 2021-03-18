@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:41:59 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- Fallback to sysfs when reading info from python-dmidecode fails (bsc#1182603)
+- log an error when product detection failed (bsc#1182339)
+
+-------------------------------------------------------------------
 Thu Feb 25 12:05:05 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.6-1

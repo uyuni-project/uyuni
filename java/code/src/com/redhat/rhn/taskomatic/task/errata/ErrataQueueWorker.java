@@ -34,7 +34,6 @@ import java.util.Map;
  * has already been updated before scheduling the errata notifications.
  * TODO: consolidate this job with Errata Mailer.
  * ErrataQueueWorker
- * @version $Rev$
  */
 class ErrataQueueWorker implements QueueWorker {
 

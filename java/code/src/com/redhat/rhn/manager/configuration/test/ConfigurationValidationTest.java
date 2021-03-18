@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * ConfigurationValidationTest
- * @version $Rev$
  */
 public class ConfigurationValidationTest extends RhnBaseTestCase {
 

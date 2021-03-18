@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import junit.framework.TestCase;
@@ -75,5 +76,20 @@ public class VirtManagerSaltTest extends TestCase {
         assertEquals("running", vm2infos.getGuestProperties().getState());
         assertEquals("98eef4f7-eb7f-4be8-859d-11658506c496", vm2infos.getGuestProperties().getUuid());
         assertEquals(VirtualInstanceManager.EVENT_TYPE_EXISTS, vm2infos.getEventType());
+    }
+
+    public void testGetFeatures() {
+        SaltApi testSaltApi = new TestSaltApi() {
+            @Override
+            public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
+                return SaltTestUtils.<R>getSaltResponse(
+                        "/com/suse/manager/virtualization/test/virt.features.json",
+                        Collections.emptyMap(),
+                        new TypeToken<R>() { });
+            }
+        };
+        VirtManager virtManager = new VirtManagerSalt(testSaltApi);
+        Optional<Map<String, Boolean>> actual = virtManager.getFeatures("minion0");
+        assertTrue(actual.get().get("enhanced_network"));
     }
 }

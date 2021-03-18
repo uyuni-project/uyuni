@@ -37,7 +37,6 @@ import redstone.xmlrpc.XmlRpcFault;
  * a mock implementation to our unit tests so they don't require an actual cobbler
  * server.
  *
- * @version $Rev$
  */
 public class CobblerXMLRPCHelper implements XMLRPCInvoker {
 

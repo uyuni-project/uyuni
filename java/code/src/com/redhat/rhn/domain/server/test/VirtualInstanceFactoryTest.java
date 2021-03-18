@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * VirtualInstanceFactoryTest
- * @version $Rev$
  */
 public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 

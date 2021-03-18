@@ -29,7 +29,6 @@ import org.hibernate.Session;
  * GuestBuilder is a class based on the GoF Builder pattern that constructs
  * VirtualInstance guests.
  *
- * @version $Rev$
  */
 public class GuestBuilder {
 

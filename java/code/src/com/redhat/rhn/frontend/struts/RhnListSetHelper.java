@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * RhnListSetHelper
- * @version $Rev$
  */
 public class RhnListSetHelper extends BaseSetHelper {
 

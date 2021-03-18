@@ -31,7 +31,6 @@ import java.util.Map;
 
 /**
  * PackageHelper
- * @version $Rev$
  */
 public class PackageHelper {
 

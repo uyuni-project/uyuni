@@ -19,7 +19,6 @@ import com.redhat.rhn.common.security.acl.AclHandler;
 /**
  * Test AclHandler so we can test Mixins
  *
- * @version $Rev$
  */
 public class MixinTestHandler implements AclHandler {
 

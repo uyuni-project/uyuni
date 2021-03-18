@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 /**
  *
  * HistoryEventSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *  #struct_begin("History Event")

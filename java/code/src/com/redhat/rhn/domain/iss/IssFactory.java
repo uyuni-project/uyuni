@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.org.Org;
 /**
  * IssSlaveFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.IssSlave objects from the database.
- * @version $Rev$
  */
 public class IssFactory extends HibernateFactory {
 

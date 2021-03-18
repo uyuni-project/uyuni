@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * RenderGuardComposite
- * @version $Rev$
  */
 public class RenderGuardComposite implements RenderGuard {
 

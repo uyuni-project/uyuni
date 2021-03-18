@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * DistChannelMapSetupAction
- * @version $Rev$
  */
 public class DistChannelMapSetupAction extends RhnAction implements Listable {
 

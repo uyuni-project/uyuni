@@ -51,6 +51,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                 <many-to-many column="errata_id" outer-join="false"
                                         class="com.redhat.rhn.domain.errata.Errata" />
                         </set>
+                        <one-to-one name="details"
+                            class="com.redhat.rhn.domain.action.errata.ActionPackageDetails"
+                            outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
                 </subclass>
         <subclass name="com.redhat.rhn.domain.action.image.DeployImageAction"
             lazy="true" discriminator-value="500">
@@ -578,6 +581,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction"
+                  discriminator-value="520" lazy="true">
+            <join table="rhnActionVirtNetworkCreate">
+                <key column="action_id"/>
+                <property name="networkName" type="string" column="network_name"/>
+                <property name="definitionAsString" type="string" column="definition"/>
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
@@ -648,7 +660,9 @@ select {ra.*}
     (select NULL as cluster_id,
             NULL as json_params from dual) ra_21_,
     (select NULL as network_name,
-            NULL as state from dual) ra_22_
+            NULL as state from dual) ra_22_,
+    (select NULL as network_name,
+            NULL as definition from dual) ra_23_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -790,7 +804,9 @@ select sa.server_id
                      (select NULL as cluster_id,
                              NULL as json_params from dual) ra_21_,
                      (select NULL as network_name,
-                             NULL as state from dual) ra_22_
+                             NULL as state from dual) ra_22_,
+                     (select NULL as network_name,
+                             NULL as definition from dual) ra_23_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

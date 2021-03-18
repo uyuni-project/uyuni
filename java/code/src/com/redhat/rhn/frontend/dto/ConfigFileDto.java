@@ -22,7 +22,6 @@ import java.util.Date;
 /**
  * ConfigFileDto - represents all the revisions of a configuration file
  * in a single channel.
- * @version $Rev$
  */
 public class ConfigFileDto extends BaseDto {
     private Long id;

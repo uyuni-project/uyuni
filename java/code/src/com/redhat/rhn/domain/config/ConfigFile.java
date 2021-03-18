@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 
 /**
  * ConfigFile - Class representation of the table rhnConfigFile.
- * @version $Rev$
  */
 public class ConfigFile extends BaseDomainHelper {
 

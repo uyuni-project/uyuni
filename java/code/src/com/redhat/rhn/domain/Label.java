@@ -44,7 +44,6 @@ import java.util.Date;
  *
  * @see com.redhat.rhn.domain.server.VirtualInstanceType
  *
- * @version $Rev$
  */
 public abstract class Label {
 

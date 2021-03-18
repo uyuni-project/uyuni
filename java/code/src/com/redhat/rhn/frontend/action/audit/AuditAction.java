@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * AuditAction
- * @version $Rev$
  */
 public class AuditAction extends RhnAction implements Listable {
 

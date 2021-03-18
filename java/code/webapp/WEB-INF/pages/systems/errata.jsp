@@ -34,6 +34,14 @@
                     <bean:message key="errata.jsp.apply"/>
                 </html:submit>
             </div>
+            <div class="action-button-wrapper btn-group">
+                <c:if test="${supported}" >
+                <label>
+                    <bean:message key="spmigration.jsp.allow.vendor.change" />
+                </label>
+                <input  name="allowVendorChange" type="checkbox" />
+                </c:if>
+            </div>
         </div>
     </c:if>
     <br/>

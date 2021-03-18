@@ -31,7 +31,6 @@ import java.util.Map;
  *
  * This constraint extends LengthConstraint so it can include min/max lengths.
  *
- * @version $Rev$
  */
 public class RequiredIfConstraint extends ParsedConstraint {
 

@@ -24,7 +24,6 @@ import java.util.Map;
 
 /**
  * ColumnFilter
- * @version $Rev$
  */
 public class ColumnFilter extends BaseListFilter {
     private String key;

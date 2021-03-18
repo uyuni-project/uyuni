@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.listview;
 
 /**
  * PaginationUtil, contains utility functions for calcuating pagination.
- * @version $Rev$
  */
 
 public class PaginationUtil {

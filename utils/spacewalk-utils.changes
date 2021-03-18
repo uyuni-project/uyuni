@@ -1,3 +1,8 @@
+- Add current UEK repos to Oracle Linux
+- Add multiverse, restricted and backports to Ubuntu 20.04
+- Add the Universe Security repositories for Ubuntu
+- Complete the fix arch handling in spacewalk-common-channels
+
 -------------------------------------------------------------------
 Wed Jan 27 13:06:52 CET 2021 - jgonzalez@suse.com
 

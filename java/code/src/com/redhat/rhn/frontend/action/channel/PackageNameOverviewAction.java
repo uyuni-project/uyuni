@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackageNameOverviewAction
- * @version $Rev$
  */
 public class PackageNameOverviewAction extends RhnAction {
     private static Logger log = Logger.getLogger(PackageNameOverviewAction.class);

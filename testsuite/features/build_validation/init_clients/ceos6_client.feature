@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ceos6_client
@@ -8,7 +8,7 @@ Feature: Bootstrap a CentOS 6 traditional client
     When I perform a full salt minion cleanup on "ceos6_client"
 
   Scenario: Prepare a CentOS 6 traditional client
-    And I enable the repositories "centos_base_backup centos_updates_backup tools_pool_repo" on this "ceos6_client" without error control
+    When I enable the repositories "centos_base_backup centos_updates_backup tools_pool_repo" on this "ceos6_client" without error control
     And I run "/usr/bin/update-ca-trust force-enable" on "ceos6_client"
     And I bootstrap traditional client "ceos6_client" using bootstrap script with activation key "1-ceos6_client_key" from the proxy
     And I install the traditional stack utils on "ceos6_client"
@@ -16,8 +16,8 @@ Feature: Bootstrap a CentOS 6 traditional client
     Then I should see "ceos6_client" via spacecmd
 
   Scenario: The onboarding of CentOS 6 traditional client is completed
-    Given I am authorized
-    And I wait until onboarding is completed for "ceos6_client"
+    Given I am authorized as "admin" with password "admin"
+    When I wait until onboarding is completed for "ceos6_client"
 
 @proxy
   Scenario: Check connection from CentOS 6 traditional client to proxy

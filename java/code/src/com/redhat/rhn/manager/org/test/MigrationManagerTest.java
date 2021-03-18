@@ -51,7 +51,6 @@ import java.util.Set;
 
 /**
  * MigrationManagerTest
- * @version $Rev$
  */
 public class MigrationManagerTest extends BaseTestCaseWithUser {
 

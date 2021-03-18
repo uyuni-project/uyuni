@@ -42,7 +42,6 @@ import java.util.ResourceBundle;
  * look for the key <code>Bar.msg</code>.
  *
  *
- * @version $Rev$
  */
 public final class XmlMessages {
 

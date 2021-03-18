@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * ElaborationDecorator
- * @version $Rev$
  */
 public class ElaborationDecorator extends BaseListDecorator {
 

@@ -45,7 +45,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemGroupListSetupAction
- * @version $Rev$
  */
 public class SystemGroupListSetupAction extends RhnAction
     implements Listable<SystemGroupOverview> {

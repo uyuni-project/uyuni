@@ -36,7 +36,6 @@ import java.util.Map;
  * Oracle 10g introduces this feature natively.  When we migrate to 10g,
  * we should move to Oracle's version.
  *
- * @version $Rev$
  */
 public final class NamedPreparedStatement {
 

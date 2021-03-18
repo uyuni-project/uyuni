@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * UnsubscribeConfirmAction, for ssm config management
- * @version $Rev$
  */
 public class UnsubscribeConfirmAction extends BaseListAction {
 

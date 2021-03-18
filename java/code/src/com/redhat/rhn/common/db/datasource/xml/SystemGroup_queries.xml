@@ -50,7 +50,7 @@ ORDER BY UPPER(NAME)
   <elaborator name="most_severe_errata" />
 </mode>
 <query name="most_severe_errata" params="">
-    WITH groupAdvisoryTypes AS NOT MATERIALIZED (
+    WITH groupAdvisoryTypes AS (
         SELECT sgm.server_group_id, e.advisory_type
           FROM rhnServerNeededCache snpc
               INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id

@@ -956,7 +956,6 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Default POJO imple of EnterpriseUser done as an internal
      * class to facilitate compatibility between hosted/sat.
      * EnterpriseUserImpl
-     * @version $Rev$
      */
     class EnterpriseUserImpl extends BaseDomainHelper
                 implements EnterpriseUser {

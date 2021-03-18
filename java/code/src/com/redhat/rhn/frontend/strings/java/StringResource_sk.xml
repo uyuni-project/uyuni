@@ -1026,13 +1026,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Software Crashes" xml:space="preserve">
-        <source>Software Crashes</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Status" xml:space="preserve">
         <source>Status</source>
         <target />
@@ -1845,8 +1838,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="message.interfaceSet" xml:space="preserve">
-        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target />
+        <source>Networking properties updated.</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -2953,13 +2946,6 @@ and try again.
         <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="toolbar.delete.crash" xml:space="preserve">
-        <source>Delete Software Crash</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.unscheduled.system" xml:space="preserve">
@@ -5966,27 +5952,6 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Crash Details" xml:space="preserve">
-        <source>Crash Details</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Crash Files" xml:space="preserve">
-        <source>Crash Files</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Crash Notes" xml:space="preserve">
-        <source>Crash Notes</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Restart" xml:space="preserve">
         <source>Restart</source>
         <target />
@@ -6434,8 +6399,8 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
-        <target />
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <target state="needs-adaptation" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
@@ -8336,13 +8301,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systems.details.virt.guest.already.crashed" xml:space="preserve">
-        <source>This system is crashed.</source>
-        <target />
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="systems.details.virt.vcpu.limit.msg" xml:space="preserve">
         <source>Virtual CPUs limited to {0} on {1}.</source>
         <target />
@@ -8895,14 +8853,6 @@ Follow this url to see the full list of inactive systems:
         <source>The specified server is not a member of the specified group</source>
         <target />
       </trans-unit>
-      <trans-unit id="api.system.crash.nocrashesfound" xml:space="preserve">
-        <source>No crashes recorded for the specified system.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="api.system.crash.nosuchcrash" xml:space="preserve">
-        <source>No such crash found.</source>
-        <target />
-      </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target />
@@ -8921,10 +8871,6 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.package.download.toolarge" xml:space="preserve">
         <source>The requested file is too large to download over XMLRPC.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="api.crashfile.download.toolarge" xml:space="preserve">
-        <source>The requested crash file is too large to download over XMLRPC.</source>
         <target />
       </trans-unit>
       <trans-unit id="api.package.download.ioerror" xml:space="preserve">
@@ -9820,22 +9766,6 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.scheduledisabled" xml:space="preserve">
         <source>Please set frequency for the new schedule.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="message.crashdeleted" xml:space="preserve">
-        <source>Software crash {0} was successfully deleted.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="message.crashesdeleted" xml:space="preserve">
-        <source>{0} software crashes were successfully deleted.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="message.crashnotecreated" xml:space="preserve">
-        <source>Crash Note was successfully created.</source>
-        <target />
-      </trans-unit>
-      <trans-unit id="message.crashnoteupdated" xml:space="preserve">
-        <source>Crash Note was successfully updated.</source>
         <target />
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.notenoughmemory" xml:space="preserve">
@@ -10932,6 +10862,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
         <target state="new" />
       </trans-unit>
+    <trans-unit id="virt.network_create" xml:space="preserve">
+        <source>Virtual network creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+        <source>No such FQDN: {0}.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
+        <source>Cannot read/write '{0}'. Please check permissions.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
+        <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
+        <source>Error during applying the bootstrap state, message: {0}</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>

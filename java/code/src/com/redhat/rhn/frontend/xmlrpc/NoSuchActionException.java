@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * NoSuchActionException
- * @version $Rev$
  */
 public class NoSuchActionException extends FaultException  {
 

@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.dto;
 /**
  * FilePreservationDto
- * @version $Rev$
  */
 
 public class HardwareDeviceDto extends BaseDto {

@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 /**
  * Authentication failure exception
  *
- * @version $Rev$
  */
 public class AuthenticationException extends FaultException {
 

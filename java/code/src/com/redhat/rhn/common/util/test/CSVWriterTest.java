@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * CSVWriterTest
- * @version $Rev$
  */
 public class CSVWriterTest extends RhnBaseTestCase {
 

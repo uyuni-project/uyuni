@@ -466,6 +466,18 @@ class ContentSource:
         self.num_excluded = 0
         self.gpgkey_autotrust = None
         self.groupsfile = None
+
+        # configure network connection
+        try:
+            # bytes per second
+            self.minrate = int(CFG.REPOSYNC_MINRATE)
+        except ValueError:
+            self.minrate = 1000
+        try:
+            # seconds
+            self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+        except ValueError:
+            self.timeout = 300
         # set config component back to original
         initCFG(comp)
 
@@ -1159,6 +1171,8 @@ type=rpm-md
         params['proxy_username'] = self.proxy_user
         params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.http_headers
+        params["timeout"] = self.timeout
+        params["minrate"] = self.minrate
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
 

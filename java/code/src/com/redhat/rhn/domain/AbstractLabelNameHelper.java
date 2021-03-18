@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * that are basic name/label pairs.  This class can be used by these tables
  * to represent them.
  *
- * @version $Rev$
  */
 public class AbstractLabelNameHelper extends BaseDomainHelper {
 

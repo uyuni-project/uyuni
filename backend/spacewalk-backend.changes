@@ -1,5 +1,15 @@
 - deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)
 - Fixing improper exception handling causing another exception in ThreadedDownloader
+- Add minrate/timeout configuration values for downloading DEB/RPM packages
+- add allow vendor change with patching via rhnstack 
+- Fixed kickstart tree permissions to a+r.
+- Avoid race condition due multiple reposync import threads (bsc#1183151)
+
+-------------------------------------------------------------------
+Fri Mar 05 15:41:07 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Fix for UnicodeDecodeError in satellite-sync: Opening RPM file in binary mode (bsc#1181274)
 
 -------------------------------------------------------------------
 Thu Feb 25 12:03:17 CET 2021 - jgonzalez@suse.com

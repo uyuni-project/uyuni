@@ -288,6 +288,18 @@ sub setup_cobbler {
     # Cobbler 2.0 can use the old helper script
     system(COBBLER_20_COMMAND);
   } else {
+
+    # Add bootloaders_dir to cobbler configuration if not there.
+    my $settings_file = "/etc/cobbler/settings";
+    open(SETTINGS_FILE_HANDLE, $settings_file);
+    my @settings_data = <SETTINGS_FILE_HANDLE>;
+    close SETTINGS_FILE_HANDLE;
+    if (grep(/bootloaders_dir:/,@settings_data) eq 0) {
+        open(SETTINGS_FILE_HANDLE, ">>", $settings_file);
+        print SETTINGS_FILE_HANDLE "\n" . 'bootloaders_dir: "/usr/share/syslinux"';
+        close SETTINGS_FILE_HANDLE;
+    }
+
     system(COBBLER_COMMAND, '--macros', "hostname:$answers->{'hostname'}");
 
     my $skip_rhnconf = 0;

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ActionMessage
- * @version $Rev$
  */
 public class ActionMessage {
     private String type;

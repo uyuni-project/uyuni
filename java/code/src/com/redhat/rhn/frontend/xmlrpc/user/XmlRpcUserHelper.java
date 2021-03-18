@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.user.UserManager;
 
 /**
  * XmlRpcUserHelper
- * @version $Rev$
  */
 public class XmlRpcUserHelper {
 

@@ -20,7 +20,6 @@ import java.util.Optional;
 
 /**
  * ClonedChannel
- * @version $Rev$
  */
 public class ClonedChannel extends Channel {
 

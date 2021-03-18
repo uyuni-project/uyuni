@@ -77,6 +77,7 @@ import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
@@ -119,6 +120,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
 import com.redhat.rhn.frontend.xmlrpc.NoPushClientException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchCobblerSystemRecordException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchFQDNException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchNetworkInterfaceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSnapshotTagException;
@@ -1853,6 +1855,7 @@ public class SystemHandler extends BaseHandler {
      *       #prop_desc("string", "ip", "IPv4 address of system")
      *       #prop_desc("string", "ip6", "IPv6 address of system")
      *       #prop_desc("string", "hostname", "Hostname of system")
+     *       #prop_desc("string", "primary_fqdn", "Primary FQDN of system")
      *     #struct_end()
      *   #array_end()
      */
@@ -1867,6 +1870,8 @@ public class SystemHandler extends BaseHandler {
             network.put("ip", StringUtils.defaultString(server.getIpAddress()));
             network.put("ip6", StringUtils.defaultString(server.getIp6Address()));
             network.put("hostname", StringUtils.defaultString(server.getHostname()));
+            ServerFQDN fqdn = server.findPrimaryFqdn();
+            network.put("primary_fqdn", StringUtils.defaultString(fqdn != null ? fqdn.getName() : null));
             result.add(network);
         }
         return result;
@@ -3307,10 +3312,12 @@ public class SystemHandler extends BaseHandler {
      *          "Allow this API call, despite modular content being present")
      * @xmlrpc.param #param_desc("boolean", "onlyRelevant",
      *          "If true not all erratas are applied to all systems. Systems get only the erratas relevant for them.")
+     * @param allowVendorChange boolean
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn, List<Integer> errataIdsIn,
-                                          Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
+                                          Date earliestOccurrence, Boolean allowModules,
+                                          Boolean onlyRelevant, boolean allowVendorChange) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = serverIdsIn.stream()
@@ -3333,7 +3340,7 @@ public class SystemHandler extends BaseHandler {
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
-                    serverIds, errataIds, earliestOccurrence, onlyRelevant);
+                    serverIds, errataIds, earliestOccurrence, onlyRelevant, allowVendorChange);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -3462,6 +3469,34 @@ public class SystemHandler extends BaseHandler {
         return scheduleApplyErrata(loggedInUser, serverIds, errataIds, earliestOccurrence, allowModules);
     }
 
+   /**
+     * Schedules an action to apply errata updates to a a list of systems at a specified time.
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param allowModules Allow this API call, despite modular content being present
+     * @param onlyRelevant boolean
+     * @return list of action ids, exception thrown otherwise
+     * @since 24
+     *
+     * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
+     * given date/time.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("int", "errataId")
+     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
+     * @xmlrpc.param #param_desc("boolean", "allowModules",
+     *          "Allow this API call, despite modular content being present")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.returntype #array_single("int", "actionId")
+     */
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sid, List<Integer> errataIds,
+                                         Date earliestOccurrence, Boolean allowModules, boolean onlyRelevant) {
+        return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
+                onlyRelevant, false);
+
+}
     /**
      * Compares the packages installed on two systems.
      *
@@ -6603,6 +6638,27 @@ public class SystemHandler extends BaseHandler {
                     interfaceName);
         }
         server.setPrimaryInterfaceWithName(interfaceName);
+        return 1;
+    }
+
+    /**
+     * Sets new primary FQDN
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @param fqdn Primary FQDN
+     * @return 1 if success, exception thrown otherwise
+     * @throws Exception If FQDN does not exist Exception is thrown
+     *
+     * @xmlrpc.doc Sets new primary FQDN
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "fqdn")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setPrimaryFqdn(User loggedInUser, Integer serverId, String fqdn) {
+        Server server = lookupServer(loggedInUser, serverId);
+        server.lookupFqdn(fqdn).orElseThrow(() -> new NoSuchFQDNException(fqdn));
+        server.setPrimaryFQDNWithName(fqdn);
         return 1;
     }
 

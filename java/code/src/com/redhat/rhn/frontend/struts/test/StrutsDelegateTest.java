@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 /**
  * StrutsDelegateImplTest
- * @version $Rev$
  */
 public class StrutsDelegateTest extends TestCase {
 

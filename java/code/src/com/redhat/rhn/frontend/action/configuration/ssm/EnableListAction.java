@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SSM enabling systems for config management.
  * EnableListAction
- * @version $Rev$
  */
 public class EnableListAction extends RhnListAction implements MaintenanceWindowsAware {
 

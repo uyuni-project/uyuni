@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackagePushAction
- * @version $Rev$
  */
 public class PackagePushAction extends RhnSetAction {
 

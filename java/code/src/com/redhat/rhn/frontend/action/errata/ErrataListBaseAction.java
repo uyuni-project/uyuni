@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
  * Base action for all pages that display an errata list. Subclasses simply implement
  * the {@link #getErrataFilter()} method to indicate what data to return.
  *
- * @version $Rev$
  */
 public abstract class ErrataListBaseAction extends RhnAction implements Listable {
 

@@ -52,7 +52,6 @@ import org.hibernate.query.Query;
  * UserFactory  - the singleton class used to fetch and store
  * com.redhat.rhn.domain.user.User objects from the
  * database.
- * @version $Rev$
  */
 public  class UserFactory extends HibernateFactory {
 

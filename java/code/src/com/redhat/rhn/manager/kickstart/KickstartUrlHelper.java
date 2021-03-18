@@ -37,7 +37,6 @@ import java.util.Date;
  * Simple helper class to ecapsulate logic around determining
  * kickstart file and media urls.
  *
- * @version $Rev$
  */
 public class KickstartUrlHelper {
 

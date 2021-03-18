@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * PackageIndexActionTest
- * @version $Rev$
  */
 public class PackageIndexActionTest extends RhnBaseTestCase {
 

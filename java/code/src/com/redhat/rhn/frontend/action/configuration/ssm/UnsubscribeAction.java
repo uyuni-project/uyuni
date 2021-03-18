@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * UnsubscribeAction extends RhnAction.
- * @version $Rev$
  */
 public class UnsubscribeAction extends BaseSetListAction {
 

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ProfileDto
- * @version $Rev$
  */
 public class ProfileDto extends BaseDto {
 

@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * ServerUuidTest
- * @version $Rev$
  */
 public class ServerUuidTest extends RhnBaseTestCase {
 

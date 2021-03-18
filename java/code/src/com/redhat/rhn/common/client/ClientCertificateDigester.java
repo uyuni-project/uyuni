@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 /**
  * ClientCertificateDigester
- * @version $Rev$
  */
 public class ClientCertificateDigester {
 

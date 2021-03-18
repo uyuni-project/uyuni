@@ -27,23 +27,21 @@ import java.util.Iterator;
 
 /**
  * ErrataSetupActionTest
- * @version $Rev$
  */
 public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/ErrataList");
-
     }
     public void testInvalidParamCase() {
         addRequestParameter(RequestContext.SID, "-9999");
         actionPerform();
         assertPermissionException();
-
     }
 
     public void testNormalCase() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
+        addRequestParameter("allowVendorChange", "false");
         addRequestParameter("sid", server.getId().toString());
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
@@ -65,7 +63,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
         assertTrue(request.getAttribute("showApplyErrata").equals("true"));
         clearRequestParameters();
         addRequestParameter("sid", server.getId().toString());
-
+        addRequestParameter("allowVendorChange", new String[]{ "false" });
         for (Iterator itr = e.getPackages().iterator(); itr.hasNext();) {
             Package pkg = (Package) itr.next();
             ErrataCacheManager.deleteNeededCache(server.getId(),

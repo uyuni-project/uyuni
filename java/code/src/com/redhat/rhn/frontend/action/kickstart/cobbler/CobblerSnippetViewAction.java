@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * CobblerSnippetDetailsAction
- * @version $Rev$
  */
 public class CobblerSnippetViewAction extends RhnAction {
     private static final Logger LOG =

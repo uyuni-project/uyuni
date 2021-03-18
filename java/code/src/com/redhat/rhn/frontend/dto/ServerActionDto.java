@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * ServerActionDto - represents an action for a single server
- * @version $Rev$
  */
 public class ServerActionDto extends BaseDto {
 

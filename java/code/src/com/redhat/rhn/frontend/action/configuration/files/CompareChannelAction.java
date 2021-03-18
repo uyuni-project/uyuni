@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * CompareChannelAction extends RhnAction - Class representation of the table ###TABLE###.
- * @version $Rev$
  */
 public class CompareChannelAction extends BaseListAction {
 

@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * CPUArchTest
- * @version $Rev$
  */
 public class CPUArchTest extends RhnBaseTestCase {
 

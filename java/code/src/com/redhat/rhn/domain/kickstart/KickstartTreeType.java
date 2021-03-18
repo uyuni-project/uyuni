@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * KickstartTreeType
- * @version $Rev$
  */
 public class KickstartTreeType extends BaseDomainHelper {
 

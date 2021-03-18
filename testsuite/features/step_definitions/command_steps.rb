@@ -188,6 +188,12 @@ When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   end
 end
 
+When(/^vendor change should be enabled for "(?:[^"]*)" on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  _result, return_code = node.run("grep -- --allow-vendor-change /var/log/zypper.log")
+  raise 'Vendor change option not found in logs' unless return_code.zero?
+end
+
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   if host.include? 'ssh_minion'
@@ -258,12 +264,37 @@ When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
+# This function waits for all the reposyncs to complete.
+#
+# This function is written as a state machine. It bails out if no process is seen during
+# 30 seconds in a row.
+When(/^I wait until all spacewalk\-repo\-sync finished$/) do
+  reposync_not_running_streak = 0
+  reposync_left_running_streak = 0
+  while reposync_not_running_streak <= 30
+    command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
+    if command_output.empty?
+      reposync_not_running_streak += 1
+      reposync_left_running_streak = 0
+      sleep 1
+      next
+    end
+    reposync_not_running_streak = 0
+
+    process = command_output.split("\n")[0]
+    channel = process.split(' ')[5]
+    STDOUT.puts "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
+    reposync_left_running_streak += 1
+    sleep 1
+  end
+end
+
 # This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones needed to bootstrap$/) do
+When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
@@ -304,7 +335,8 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+      _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", false)
+      break if code.zero?
       sleep 10
     end
   rescue StandardError => e
@@ -782,7 +814,7 @@ When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
     pattern.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 106])
 end
@@ -792,7 +824,7 @@ When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
     pattern.gsub! "suma", "uyuni"
   end
   node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  node.run('zypper ref')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
@@ -893,26 +925,23 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the "([^"]*)" bootstrap repository for "([^"]*)" on the server$/) do |arch, host|
-  node = get_target(host)
-  os_version, _os_family = get_os_version(node)
-  cmd = 'false'
-  if (os_version.include? '15') && (host.include? 'proxy')
-    proxy_version = '40'
-    if os_version.include? 'SP3'
-      proxy_version = '42'
-    elsif os_version.include? 'SP2'
-      proxy_version = '41'
-    end
-    cmd = "mgr-create-bootstrap-repo -c SUMA-#{proxy_version}-PROXY-#{arch}"
-  elsif (os_version.include? '12') || (os_version.include? '15')
-    cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}"
-  elsif os_version.include? '11'
-    sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
-    cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}"
-  end
-  puts 'Creating the boostrap repository on the server: ' + cmd
-  $server.run(cmd, false)
+# WORKAROUND: --flush option does not seem to work in case of hash mismatch with same version
+When(/^I clean up all bootstrap repositories on the server$/) do
+  $server.run('rm -rf /srv/www/htdocs/pub/repositories/*')
+end
+
+When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
+  base_channel = BASE_CHANNEL_BY_CLIENT[host]
+  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  cmd = if parent_channel.nil?
+          "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
+        else
+          "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
+        end
+  STDOUT.puts 'Creating the boostrap repository on the server:'
+  STDOUT.puts '  ' + cmd
+  $server.run(cmd)
 end
 
 When(/^I open avahi port on the proxy$/) do
@@ -1341,6 +1370,26 @@ Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host
   repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
     _output, code = node.run("virsh net-info #{vm}", fatal = false)
     break if code == 1
+    sleep 3
+  end
+end
+
+Then(/^I should see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still doesn't exist") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code.zero?
+    sleep 3
+  end
+end
+
+Then(/^"([^"]*)" virtual network on "([^"]*)" should have "([^"]*)" IPv4 address with ([0-9]+) prefix$/) do |net, host, ip, prefix|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{net} virtual net on #{host} never got #{ip}/#{prefix} IPv4 address") do
+    output, _code = node.run("virsh net-dumpxml #{net}")
+    tree = Nokogiri::XML(output)
+    ips = tree.xpath('//ip[@family="ipv4"]')
+    break if !ips.empty? && ips[0]['address'] == ip and ips[0]['prefix'] == prefix
     sleep 3
   end
 end

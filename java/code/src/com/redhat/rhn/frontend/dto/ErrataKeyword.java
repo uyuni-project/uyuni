@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ErrataKeyword
- * @version $Rev$
  */
 public class ErrataKeyword {
 

@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * Class representing a navigation tree
- * @version $Rev$
  */
 
 public class NavTree {

@@ -34,7 +34,6 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 /**
  * ErrataActionTest
- * @version $Rev$
  */
 public class ErrataActionTest extends RhnPostMockStrutsTestCase {
     public void testEmptySelection() throws Exception {
@@ -59,6 +58,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
         addSubmitted();
         addRequestParameter(RequestContext.DISPATCH,
                 LocalizationService.getInstance().getMessage("errata.jsp.apply"));
+        addRequestParameter("allowVendorChange", "true");
 
         // Create System
         Server server = ServerFactoryTest.createTestServer(user, true);

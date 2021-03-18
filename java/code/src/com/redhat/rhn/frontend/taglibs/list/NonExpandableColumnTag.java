@@ -18,7 +18,6 @@ import javax.servlet.jsp.JspException;
 /**
  * List tag construct to render expandable columns
  * NonExpandableColumnTag
- * @version $Rev$
  */
 public class NonExpandableColumnTag  extends ExpandableColumnTag {
 

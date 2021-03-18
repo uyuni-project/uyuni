@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidGPGUrlException
- * @version $Rev$
  */
 public class InvalidGPGUrlException extends FaultException {
 

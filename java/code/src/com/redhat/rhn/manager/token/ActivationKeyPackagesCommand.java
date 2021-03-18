@@ -34,7 +34,6 @@ import java.util.StringTokenizer;
  * ActivationKeyPackagesCommand - command for handling activation key
  * packages.
  *
- * @version $Rev$
  */
 public class ActivationKeyPackagesCommand {
 

@@ -220,6 +220,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(device.getIPv4Addresses(), dev.getIPv4Addresses());
     }
 
+    public void testGetNetworkForSystems() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.addFqdn("domain1.test.local");
+        server.addFqdn("domain2.test.local");
+        ServerFactory.save(server);
+
+        List<Map<String, Object>> returned = handler.getNetworkForSystems(admin,
+                Collections.singletonList(server.getId().intValue()));
+
+        assertEquals(1, returned.size());
+        assertEquals("domain1.test.local", returned.get(0).get("primary_fqdn"));
+    }
+
     public void testObtainReactivationKey() throws Exception {
         Server server = ServerFactoryTest.createUnentitledTestServer(admin, true,
                 ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());

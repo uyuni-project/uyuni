@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * StateChange
- * @version $Rev$
  */
 public class StateChange implements Comparable<StateChange> {
 

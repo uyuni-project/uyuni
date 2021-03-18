@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 /**
  * ChangeLogCleanUp
- * @version $Rev$
  */
 public class ChangeLogCleanUp extends RhnJavaJob {
 

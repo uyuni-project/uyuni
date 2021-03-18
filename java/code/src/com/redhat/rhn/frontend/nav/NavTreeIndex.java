@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 /**
  * NavTreeIndex
- * @version $Rev$
  */
 
 public class NavTreeIndex {

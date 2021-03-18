@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelPackagesAction
- * @version $Rev$
  */
 public class ChannelSubscribedAction extends RhnAction {
 

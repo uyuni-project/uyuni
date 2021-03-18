@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.Expandable;
  * RlTagFunctions - class to encapsulate the set of static methods that
  * a JSP can interact with.  See rl-taglib.tld for list of {@literal <function>}
  * definitions
- * @version $Rev$
  */
 public class RhnListTagFunctions {
     // Pure util class.  No need for construction.

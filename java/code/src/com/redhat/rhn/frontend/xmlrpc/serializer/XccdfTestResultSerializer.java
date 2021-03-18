@@ -31,7 +31,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * XccdfTestResultSerializer
- * @version $Rev$
  * @xmlrpc.doc
  * #struct_begin("OpenSCAP XCCDF Scan")
  *   #prop_desc("int", "xid", "XCCDF TestResult id")

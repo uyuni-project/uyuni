@@ -62,6 +62,11 @@ public class TestVirtManager implements VirtManager {
     }
 
     @Override
+    public List<JsonObject> getHostDevices(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Map<String, JsonObject> getPools(String minionId) {
         throw new UnsupportedOperationException();
     }
@@ -83,6 +88,11 @@ public class TestVirtManager implements VirtManager {
 
     @Override
     public Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<Map<String, Boolean>> getFeatures(String minionId) {
         throw new UnsupportedOperationException();
     }
 }

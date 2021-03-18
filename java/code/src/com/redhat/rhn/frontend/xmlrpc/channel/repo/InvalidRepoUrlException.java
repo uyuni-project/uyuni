@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidRepoUrlException
- * @version $Rev$
  */
 public class InvalidRepoUrlException extends FaultException {
 

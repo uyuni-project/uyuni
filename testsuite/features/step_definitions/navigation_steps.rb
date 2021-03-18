@@ -147,8 +147,8 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//div[@id='#{arg2}']"
-  if has_xpath?(xpath)
+  xpath = "//input[@name='#{arg2}']/.."
+  if all(:xpath, xpath, wait: 0).any?
     find(:xpath, xpath).click
     find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
   else
@@ -825,7 +825,7 @@ When(/^I enter "([^"]*)" as the filtered XCCDF result type$/) do |input|
   find("input[placeholder='Filter by Result: ']").set(input)
 end
 
-When(/^I enter the package for "([^"]*)" as the filtered package states name$/) do |host|
+When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
   step %(I enter "#{PACKAGE_BY_CLIENT[host]}" as the filtered package name)
 end
 
@@ -886,9 +886,9 @@ end
 # Test if an option is selected
 #
 Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//div[@id='#{arg2}']"
+  xpath = "//input[@id='#{arg2}']"
   if has_xpath?(xpath)
-    xpath = "//div[@id='#{arg2}']/div/div/div[normalize-space(text())='#{arg1}']"
+    xpath = "//input[@id='#{arg2}']/../../../../../div/div/div[normalize-space(text())='#{arg1}']"
     raise "#{arg1} is not selected as #{arg2}" unless has_xpath?(xpath)
   else
     raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
@@ -900,7 +900,7 @@ end
 #
 When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
   repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
-    xpath = "//div[@id='#{arg2}']"
+    xpath = "//input[@id='#{arg2}']/../../../../.."
     if has_xpath?(xpath)
       find(:xpath, xpath).click
       has_option = has_xpath?("#{xpath}/div/div/div[normalize-space(text())='#{arg1}']")

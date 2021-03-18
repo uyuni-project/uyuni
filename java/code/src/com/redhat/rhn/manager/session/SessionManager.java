@@ -35,7 +35,6 @@ import java.util.Calendar;
 /**
  * SessionManager is the helper class used to fetch configuration
  * about com.redhat.rhn.domain.session.Session objects.
- * @version $Rev$
  */
 public class SessionManager extends BaseManager {
 

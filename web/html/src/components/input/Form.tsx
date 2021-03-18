@@ -39,6 +39,9 @@ type Props = {
    * Takes a single parameter indicating whether the form is valid or not.
    */
   onValidate?: (valid: boolean) => void;
+
+  /** Accessible title of the form */
+  title?: string;
 };
 
 type FormContextType = {
@@ -161,7 +164,7 @@ export class Form extends React.Component<Props> {
           validateForm: this.validateForm.bind(this),
         }}
       >
-        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
+        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className} title={this.props.title}>
           <div className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}>
             {this.props.children}
           </div>

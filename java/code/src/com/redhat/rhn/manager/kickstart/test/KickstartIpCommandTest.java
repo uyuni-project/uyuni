@@ -18,7 +18,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartIpCommandTest extends RhnBaseTestCase {
 

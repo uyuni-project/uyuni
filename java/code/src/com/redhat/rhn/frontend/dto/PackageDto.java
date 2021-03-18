@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.TimeZone;
 /**
  * PackageDto
- * @version $Rev$
  *
  * DTO for a specific set of package data returned from some data source
  * package queries.

@@ -36,7 +36,6 @@ import java.util.Optional;
  *    This is because it a system may have a package installed that the
  *    satellite does not have.
  *    This object is an instance of a package that is installed on a server
- * @version $Rev$
  */
 public class InstalledPackage implements Serializable, Comparable<InstalledPackage> {
 

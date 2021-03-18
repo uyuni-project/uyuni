@@ -28,7 +28,6 @@ import org.apache.struts.action.Action;
 
 /**
  * VisibleSystemsListActionTest
- * @version $Rev$
  */
 public class VisibleSystemsListActionTest extends RhnBaseTestCase {
 

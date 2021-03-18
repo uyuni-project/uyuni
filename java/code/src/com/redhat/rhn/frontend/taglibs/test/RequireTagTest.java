@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * RequireTagTest
- * @version $Rev$
  */
 public class RequireTagTest extends RhnBaseTestCase {
 

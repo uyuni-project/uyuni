@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * BooleanWrapperTest
- * @version $Rev$
  */
 public class BooleanWrapperTest extends RhnBaseTestCase {
 

@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ScheduleActionSerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *

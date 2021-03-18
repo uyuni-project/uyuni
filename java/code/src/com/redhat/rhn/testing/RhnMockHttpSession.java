@@ -25,7 +25,6 @@ import java.util.Map;
  * Override MockHttpSession's implementation of get/setAttribute so we
  * don't have to define ahead of time all the attributes that will be set
  * on the session.
- * @version $Rev$
  */
 public class RhnMockHttpSession extends MockHttpSession {
 

@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 /**
  * KickstartTroubleshootingCommand - for editing the pre and post steps
  * in a kickstart.
- * @version $Rev$
  */
 public class KickstartTroubleshootingCommand extends BaseKickstartCommand {
 

@@ -20,7 +20,6 @@ import com.suse.salt.netapi.utils.Xor;
 
 /**
  * The result of applying a channel selection on a server
- * @version $Rev$
  */
 public class ChannelSelectionResult {
 

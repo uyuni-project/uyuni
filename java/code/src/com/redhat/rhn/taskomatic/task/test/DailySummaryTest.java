@@ -25,7 +25,6 @@ import java.util.Map;
 
 /**
  * DailySummaryTest
- * @version $Rev$
  */
 public class DailySummaryTest extends RhnBaseTestCase {
 

@@ -33,7 +33,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * BaseErrataSetupActionTest
- * @version $Rev$
  */
 public class BaseErrataSetupActionTest extends RhnBaseTestCase {
 

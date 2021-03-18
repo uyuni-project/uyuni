@@ -21,6 +21,7 @@ CREATE TABLE rhnServerFQDN
     server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_serverfqdn_sid_fk
                        REFERENCES rhnServer (id),
+    is_primary CHAR(1) DEFAULT ('N') NOT NULL,
     created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
     modified   TIMESTAMPTZ

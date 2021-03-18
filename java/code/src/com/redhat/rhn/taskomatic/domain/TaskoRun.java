@@ -27,7 +27,6 @@ import java.util.Date;
 
 /**
  * TaskoRun
- * @version $Rev$
  */
 public class TaskoRun {
 

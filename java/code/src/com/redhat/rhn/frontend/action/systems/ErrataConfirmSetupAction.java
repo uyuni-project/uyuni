@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -61,6 +62,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ErrataConfirmSetupAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 
+    public static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
     /** Logger instance */
     private static Logger log = Logger.getLogger(ErrataConfirmSetupAction.class);
 
@@ -73,7 +75,6 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
-
 
         Long sid = requestContext.getRequiredParam("sid");
         RhnSet set = ErrataSetupAction.getSetDecl(sid).get(user);
@@ -92,9 +93,10 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         //Setup the Action Chain widget
         ActionChainHelper.prepopulateActionChains(request);
-
+        boolean allowVendorChange = BooleanUtils.toBoolean(request.getParameter(ALLOW_VENDOR_CHANGE));
         request.setAttribute("date", picker);
         request.setAttribute("system", server);
+        request.setAttribute(ALLOW_VENDOR_CHANGE, allowVendorChange);
         request.setAttribute(ListTagHelper.PARENT_URL,
                 request.getRequestURI() + "?sid=" + sid);
 
@@ -133,6 +135,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         RhnSet set = ErrataSetupAction.getSetDecl(sid).get(user);
+        boolean allowVendorChange = BooleanUtils.toBoolean(request.getParameterValues(ALLOW_VENDOR_CHANGE)[0]);
 
         // Get the errata IDs
         Set<Long> errataList = set.getElementValues();
@@ -143,7 +146,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
             List<Long> errataIds = new ArrayList<Long>(errataList);
             try {
                 ErrataManager.applyErrata(user, errataIds, earliest, actionChain,
-                        serverIds);
+                        serverIds, true, allowVendorChange);
 
                 ActionMessages msg = new ActionMessages();
                 Object[] args = null;

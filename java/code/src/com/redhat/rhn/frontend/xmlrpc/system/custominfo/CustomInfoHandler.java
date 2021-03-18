@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * CustomInfoHandler
- * @version $Rev$
  * @xmlrpc.namespace system.custominfo
  * @xmlrpc.doc Provides methods to access and modify custom system information.
  */

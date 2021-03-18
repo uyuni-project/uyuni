@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action;
 
 /**
  * Up2DateConfigUpdateAction - Class representing TYPE_UP2DATE_CONFIG_UPDATE
- * @version $Rev$
  */
 public class Up2DateConfigUpdateAction extends Action {
 

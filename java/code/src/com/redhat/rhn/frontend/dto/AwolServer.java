@@ -18,7 +18,6 @@ import java.util.Date;
 
 /**
  * AwolServer
- * @version $Rev$
  */
 public class AwolServer {
 

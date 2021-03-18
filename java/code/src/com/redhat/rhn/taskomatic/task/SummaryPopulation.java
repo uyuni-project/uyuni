@@ -35,7 +35,6 @@ import java.util.Set;
 /**
  * SummaryPopulation figures out what orgs might be candidates for sending
  * daily summary email
- * @version $Rev$
  */
 public class SummaryPopulation extends RhnJavaJob {
 

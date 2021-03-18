@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.struts.Expandable;
 
 /**
  * ListFilterHelper
- * @version $Rev$
  */
 public class ListFilterHelper {
 

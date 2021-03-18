@@ -26,7 +26,6 @@ import java.util.Map;
  * addition to decorating a forward, this class adds the capability of getting
  * parameters from the forward's path with {@link #getParam} and
  * {@link #getLongParam}.
- * @version $Rev$
  */
 public class ForwardWrapper extends ActionForward {
 

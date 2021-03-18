@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 
 /**
  * SSM OpenSCAP XCCDF scanning.
- * @version $Rev$
  */
 public class SsmScheduleXccdfAction extends BaseSsmScheduleXccdfAction {
 

@@ -27,7 +27,6 @@ import java.util.Iterator;
 /**
  * KickstartCryptoKeysSetupAction - setup action to show the list of CryptoKeys
  * associated with this KickstartData
- * @version $Rev$
  */
 public class KickstartCryptoKeysSetupAction extends BaseKickstartListSetupAction {
 

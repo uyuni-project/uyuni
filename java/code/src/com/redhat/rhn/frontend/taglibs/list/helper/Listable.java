@@ -25,7 +25,6 @@ import java.util.List;
  * the data to show on the page.
  * <p>
  * See the Spacewalk wiki for more information on how to work with ListTag 3.0.
- * @version $Rev$
  * @param <T> Type of objects to be listed.
  */
 public interface Listable<T> {

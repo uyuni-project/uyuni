@@ -31,7 +31,6 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  * UserPrefActionTest
- * @version $Rev$
  */
 public class UserPrefActionTest extends RhnBaseTestCase {
 

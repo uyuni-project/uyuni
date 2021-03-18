@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ActionSystemsSetupAction - abstract class containing common logic
  * for a setupaction to display listviews with servers/actions
- * @version $Rev$
  */
 public abstract class ActionSystemsSetupAction extends RhnListAction {
 

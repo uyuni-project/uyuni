@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * PackageSourceOverview
- * @version $Rev$
  */
 public class PackageSourceOverview extends BaseDto {
 

@@ -25,7 +25,6 @@ import java.util.Date;
 
 /**
  * ProvisionVirtualInstanceCommandTest
- * @version $Rev$
  */
 public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTestCase {
 

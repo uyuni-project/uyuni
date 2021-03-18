@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 
 /**
  * ReportingUser
- * @version $Rev$
  */
 public class ReportingUser {
 

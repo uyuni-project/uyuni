@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidChecksumLabelException
- * @version $Rev$
  */
 public class InvalidChecksumLabelException extends FaultException {
 

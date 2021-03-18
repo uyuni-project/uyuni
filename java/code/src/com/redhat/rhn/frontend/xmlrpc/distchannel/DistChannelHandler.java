@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * DistChannelHandler - provides methods to access distribution channel information.
- * @version $Rev$
  * @xmlrpc.namespace distchannel
  * @xmlrpc.doc Provides methods to access and modify distribution channel information
  */

@@ -25,7 +25,6 @@ import java.util.List;
 
 /**
  * TaskoSerializerFactory
- * @version $Rev$
  */
 // Note: Cannot extend SerializerRegistry, had to define a new class
 // it's not possible to override static methods / attributes

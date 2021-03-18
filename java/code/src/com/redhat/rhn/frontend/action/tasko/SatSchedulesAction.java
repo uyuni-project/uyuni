@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SatSchedulesAction
- * @version $Rev$
  */
 public class SatSchedulesAction extends RhnAction implements Listable {
 

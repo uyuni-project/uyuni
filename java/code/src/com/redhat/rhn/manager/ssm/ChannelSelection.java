@@ -25,7 +25,6 @@ import java.util.Set;
 
 /**
  * Represents a channel selection to be applied
- * @version $Rev$
  */
 public class ChannelSelection {
 

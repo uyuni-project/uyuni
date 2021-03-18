@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * ChangeEmailActionTest
- * @version $Rev$
  */
 public class ChangeEmailActionTest extends RhnBaseTestCase {
 

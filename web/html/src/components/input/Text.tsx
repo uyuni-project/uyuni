@@ -34,12 +34,14 @@ export const Text = (props: Props) => {
             className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
             type={type || "text"}
             name={props.name}
+            id={props.name}
             value={fieldValue}
             onChange={onChange}
             disabled={props.disabled}
             onBlur={onBlur}
             placeholder={placeholder}
             maxLength={maxLength}
+            title={props.title}
           />
         );
       }}
@@ -57,6 +59,7 @@ Text.defaultProps = {
   hint: undefined,
   labelClass: undefined,
   divClass: undefined,
+  className: undefined,
   required: false,
   disabled: false,
   invalidHint: undefined,

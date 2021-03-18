@@ -18,7 +18,6 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
  * KickstartOverviewSummaryDto
- * @version $Rev$
  */
 public class KickstartOverviewSummaryDto extends BaseDto {
     private String name;

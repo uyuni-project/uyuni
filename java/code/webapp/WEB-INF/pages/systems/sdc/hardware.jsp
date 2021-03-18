@@ -171,9 +171,11 @@
                           <tr>
                             <th><bean:message key="sdc.details.hardware.fqdns" /></th>
                             <td>
-                              <c:forEach items="${fqdns}" var="fqdn" varStatus="loop">
-                                  ${fqdn.name}<br />
-                              </c:forEach>
+                              <c:if test="${not empty fqdns}">
+                                <html:select property="primaryFQDN" styleId="primaryFQDN">
+                                  <html:options collection="fqdns" property="name" labelProperty="name" />
+                                </html:select>
+                              </c:if>
                             </td>
                           </tr>
                         </c:if>
@@ -186,8 +188,8 @@
 
         <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
             <div class="text-right margin-bottom-sm">
-              <c:if test="${not empty networkInterfaces}">
-                <html:submit property="update_interface" styleClass="btn btn-default">
+              <c:if test="${not empty networkInterfaces || not empty fqdns}">
+                <html:submit property="update_networking_properties" styleClass="btn btn-default">
                     <bean:message key="sdc.details.edit.update" />
                 </html:submit>
               </c:if>

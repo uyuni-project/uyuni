@@ -23,7 +23,6 @@ import java.util.Date;
 
 /**
  * HistoryEvent
- * @version $Rev$
  */
 public class HistoryEvent extends BaseDto {
 

@@ -15,7 +15,8 @@
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">127.0.0.1</xsl:attribute>
     <xsl:attribute name="maxThreads">150</xsl:attribute>
-    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">900000</xsl:attribute>
+    <xsl:attribute name="keepAliveTimeout">300000</xsl:attribute>
     <xsl:attribute name="secretRequired">false</xsl:attribute>
   </xsl:element>
   <xsl:if test="not(../Connector[@port='8009' and @address='::1'])">
@@ -25,7 +26,8 @@
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">::1</xsl:attribute>
     <xsl:attribute name="maxThreads">150</xsl:attribute>
-    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">900000</xsl:attribute>
+    <xsl:attribute name="keepAliveTimeout">300000</xsl:attribute>
     <xsl:attribute name="secretRequired">false</xsl:attribute>
   </xsl:element>
   </xsl:if>
@@ -37,7 +39,8 @@
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">::1</xsl:attribute>
     <xsl:attribute name="maxThreads">150</xsl:attribute>
-    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">900000</xsl:attribute>
+    <xsl:attribute name="keepAliveTimeout">300000</xsl:attribute>
     <xsl:attribute name="secretRequired">false</xsl:attribute>
   </xsl:element>
 </xsl:template>
@@ -54,7 +57,8 @@
       <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
       <xsl:attribute name="address">127.0.0.1</xsl:attribute>
       <xsl:attribute name="maxThreads">150</xsl:attribute>
-      <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
+      <xsl:attribute name="connectionTimeout">900000</xsl:attribute>
+      <xsl:attribute name="keepAliveTimeout">300000</xsl:attribute>
       <xsl:attribute name="secretRequired">false</xsl:attribute>
     </xsl:element>
     <xsl:text>
@@ -66,7 +70,8 @@
       <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
       <xsl:attribute name="address">::1</xsl:attribute>
       <xsl:attribute name="maxThreads">150</xsl:attribute>
-      <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
+      <xsl:attribute name="connectionTimeout">900000</xsl:attribute>
+      <xsl:attribute name="keepAliveTimeout">300000</xsl:attribute>
       <xsl:attribute name="secretRequired">false</xsl:attribute>
     </xsl:element>
   <xsl:apply-templates select="node()"/>

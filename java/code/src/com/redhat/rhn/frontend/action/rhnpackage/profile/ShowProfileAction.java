@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ShowProfileAction
- * @version $Rev$
  */
 public class ShowProfileAction extends RhnAction {
 

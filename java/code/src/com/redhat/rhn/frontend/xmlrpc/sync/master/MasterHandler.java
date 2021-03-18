@@ -36,7 +36,6 @@ import com.redhat.rhn.frontend.xmlrpc.IssDuplicateMasterException;
 /**
  * MasterHandler
  *
- * @version $Rev$
  *
  * @xmlrpc.namespace sync.master
  * @xmlrpc.doc Contains methods to set up information about known-"masters", for use

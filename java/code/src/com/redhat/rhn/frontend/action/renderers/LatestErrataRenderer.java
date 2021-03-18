@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Renders YourRhn fragment for latest errata
  *
- * @version $Rev$
  */
 public class LatestErrataRenderer extends BaseFragmentRenderer {
 

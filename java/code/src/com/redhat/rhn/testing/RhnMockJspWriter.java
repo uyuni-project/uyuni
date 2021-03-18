@@ -21,7 +21,6 @@ import java.io.IOException;
 /**
  * JMockJspWriter - Simple abstract class that defines a default no arg constructor so
  * JMock will be happy.
- * @version $Rev$
  */
 public class RhnMockJspWriter extends MockJspWriter {
 

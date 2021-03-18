@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
 
 /**
  * ChannelFactory
- * @version $Rev$
  */
 public class ChannelFactory extends HibernateFactory {
 
@@ -1038,6 +1037,24 @@ public class ChannelFactory extends HibernateFactory {
         params.put("channel", c);
         return singleton.listObjectsByNamedQuery(
                 "DistChannelMap.findByChannel", params);
+    }
+
+    /**
+     * All channels (including children) based on the following rules
+     *
+     * 1) Base channels are listed first
+     * 2) Parent channels are ordered by label
+     * 3) Child channels are listed right after the corresponding parent, and ordered by label
+     * 4) Channels are included only if user has access to them
+     * 5) Child channels are included only if the user has access to the corresponding parent channel
+     *
+     * @param user The user to check channel access
+     * @return List of channels (including children) accessible for the provided user
+     */
+    public static List<Channel> findAllByUserOrderByChild(User user) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", user.getId());
+        return singleton.listObjectsByNamedQuery("Channel.findAllByUserOrderByChild", params);
     }
 
     /**

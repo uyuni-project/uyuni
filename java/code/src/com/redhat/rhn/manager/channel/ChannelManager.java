@@ -109,7 +109,6 @@ import java.util.stream.Stream;
 
 /**
  * ChannelManager
- * @version $Rev$
  */
 public class ChannelManager extends BaseManager {
 

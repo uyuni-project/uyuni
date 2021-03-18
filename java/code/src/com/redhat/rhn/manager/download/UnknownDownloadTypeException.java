@@ -21,7 +21,6 @@ package com.redhat.rhn.manager.download;
  * initialized.  If not, why not just throw a RuntimeException and be
  * done with it?
  *
- * @version $Rev$
  */
 public class UnknownDownloadTypeException extends RuntimeException {
 

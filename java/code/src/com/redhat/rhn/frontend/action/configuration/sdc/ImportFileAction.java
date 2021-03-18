@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
  * ImportFileAction
- * @version $Rev$
  */
 public class ImportFileAction extends BaseSetListAction {
 

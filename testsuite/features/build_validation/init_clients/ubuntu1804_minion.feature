@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Ubuntu minion
@@ -11,7 +11,7 @@ Feature: Bootstrap a Ubuntu 18.04 Salt minion
     When I perform a full salt minion cleanup on "ubuntu1804_minion"
 
   Scenario: Bootstrap a Ubuntu 18.04 minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu1804_minion" as "hostname"
@@ -21,7 +21,7 @@ Feature: Bootstrap a Ubuntu 18.04 Salt minion
     And I select "1-ubuntu1804_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu1804_minion"
 
 @proxy

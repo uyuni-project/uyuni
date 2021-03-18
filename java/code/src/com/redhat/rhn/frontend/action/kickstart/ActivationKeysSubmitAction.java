@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ActivationKeysSubmitAction.
- * @version $Rev$
  */
 public class ActivationKeysSubmitAction extends BaseKickstartListSubmitAction {
 

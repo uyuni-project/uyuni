@@ -36,7 +36,6 @@ import java.util.Map;
 /**
  * Builds a single OVAL XML file out of individual OVAL files
  *
- * @version $Rev$
  */
 public class OvalFileAggregator {
 

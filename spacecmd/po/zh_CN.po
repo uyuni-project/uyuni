@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/bin/spacecmd:59
+#: ../src/bin/spacecmd:60
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-05 11:22+0100\n"
-"PO-Revision-Date: 2021-01-15 09:38+0000\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -3795,9 +3795,8 @@ msgid "Configuration Channels: %i"
 msgstr "配置频道：%i"
 
 #: ../src/spacecmd/package.py:48
-#, fuzzy
 msgid "Show the details of a software package"
-msgstr "softwarechannel_details：显示软件频道的细节"
+msgstr "显示软件包细节"
 
 #: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
 #: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
@@ -3849,14 +3848,14 @@ msgid "Available From Channels"
 msgstr "从频道提供"
 
 #: ../src/spacecmd/package.py:124
-#, fuzzy, python-format
+#, python-format
 msgid "usage: %s NAME|QUERY"
-msgstr "用法：package_search NAME|QUERY"
+msgstr "用法：%s NAME|QUERY"
 
 #: ../src/spacecmd/package.py:126
-#, fuzzy, python-format
+#, python-format
 msgid "Example: %s kernel"
-msgstr "示例：package_search kernel"
+msgstr "示例：%s kernel"
 
 #: ../src/spacecmd/package.py:128
 msgid "Advanced Search:"
@@ -3926,19 +3925,16 @@ msgid "No packages were removed"
 msgstr "未去除任何软件包"
 
 #: ../src/spacecmd/package.py:282
-#, fuzzy
 msgid "List the systems with a package installed"
-msgstr "package_listinstalledsystems：列出装有某个软件包的系统"
+msgstr "列出装有某个软件包的系统"
 
 #: ../src/spacecmd/package.py:329
-#, fuzzy
 msgid "List the errata that provide this package"
-msgstr "package_listerrata：列出提供此软件包的勘误"
+msgstr "列出提供此软件包的勘误"
 
 #: ../src/spacecmd/package.py:375
-#, fuzzy
 msgid "List the dependencies for a package"
-msgstr "package_listdependencies：列出软件包的依赖项"
+msgstr "列出软件包的依赖项"
 
 #: ../src/spacecmd/package.py:406
 #, python-format
@@ -7079,12 +7075,12 @@ msgstr "用法：system_addchildchannels <系统> <频道 ...>"
 #: ../src/spacecmd/system.py:2755
 #, python-format
 msgid "This method was removed since API version %s"
-msgstr ""
+msgstr "从 API 版本 %s 开始，已去除此方法"
 
 #: ../src/spacecmd/system.py:2758
 #, python-format
 msgid "This method is deprecated and will be removed in API version %s"
-msgstr ""
+msgstr "API 版本 %s 中已弃用并将去除此方法"
 
 #: ../src/spacecmd/system.py:2762
 msgid ""
@@ -8022,7 +8018,7 @@ msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
-#: ../src/bin/spacecmd:74
+#: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
 

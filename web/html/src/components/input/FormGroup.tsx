@@ -1,10 +1,14 @@
 import * as React from "react";
 
 type Props = {
-  isError: boolean;
+  isError?: boolean;
   children: React.ReactNode;
+
+  /** CSS class name to apply to the component */
+  className?: string;
 };
 
 export function FormGroup(props: Props) {
-  return <div className={`form-group${props.isError ? " has-error" : ""}`}>{props.children}</div>;
+  const className = props.className != null ? props.className : '';
+  return <div className={`form-group${props.isError ? " has-error" : ""} ${className}`}>{props.children}</div>;
 }

@@ -26,11 +26,25 @@ import java.util.Set;
 
 /**
  * ErrataAction - Class representation of the table rhnAction.
- * @version $Rev$
  */
 public class ErrataAction extends Action {
 
     private Set<Errata> errata;
+    private ActionPackageDetails details;
+
+    /**
+     * @return Returns ActionPackageDetails
+     */
+    public ActionPackageDetails getDetails() {
+        return details;
+    }
+
+    /**
+     * @param detailsIn ActionPackageDetails
+     */
+    public void setDetails(ActionPackageDetails detailsIn) {
+        this.details = detailsIn;
+    }
 
     /**
      * @return Returns the errata.

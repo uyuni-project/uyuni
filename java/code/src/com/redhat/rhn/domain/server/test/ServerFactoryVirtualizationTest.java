@@ -25,7 +25,6 @@ import org.apache.commons.collections.CollectionUtils;
 
 /**
  * ServerFactoryVirtualizationTest
- * @version $Rev$
  */
 public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
 

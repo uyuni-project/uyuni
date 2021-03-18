@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * Simple class to create many packages in parallel
  * PackageCreateTestThread
- * @version $Rev$
  */
 class PackageCreateTestThread implements Runnable {
 

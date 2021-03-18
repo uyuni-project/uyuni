@@ -23,6 +23,7 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.State;
 
 import com.google.gson.JsonElement;
@@ -143,6 +144,16 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    public List<JsonObject> getHostDevices(String minionId) {
+        LocalCall<List<JsonObject>> call =
+                new LocalCall<>("virt.node_devices", Optional.empty(), Optional.empty(),
+                        new TypeToken<List<JsonObject>>() { });
+        return saltApi.callSync(call, minionId).orElse(new ArrayList<>());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, JsonObject> getPools(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
@@ -241,5 +252,13 @@ public class VirtManagerSalt implements VirtManager {
                 return plan;
             }
         );
+    }
+
+    @Override
+    public Optional<Map<String, Boolean>> getFeatures(String minionId) {
+        String grainName = "virt_features";
+        Optional<Map<String, Map<String, Boolean>>> data = saltApi.callSync(Grains.item(false,
+                new TypeToken<Map<String, Map<String, Boolean>>>() { }, grainName), minionId);
+        return data.map(features -> features.get(grainName));
     }
 }

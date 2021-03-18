@@ -18,7 +18,6 @@ package com.redhat.rhn.common.messaging;
 /**
  * A interface to implemenent sending mail messages
  *
- * @version $Rev$
  */
 public interface Mail {
 

@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  *
  * ViewModifyPathsFilter
- * @version $Rev$
  */
 public class PackageFilter extends BaseListFilter {
 

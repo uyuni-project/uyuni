@@ -20,7 +20,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 /**
  * SnapshotLookupException
- * @version $Rev$
  */
 public class SnapshotLookupException extends FaultException {
 

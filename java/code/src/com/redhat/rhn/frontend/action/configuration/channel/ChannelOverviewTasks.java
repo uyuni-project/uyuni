@@ -55,7 +55,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ChannelOverviewTasks
- * @version $Rev$
  */
 public class ChannelOverviewTasks extends RhnAction {
 

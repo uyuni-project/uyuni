@@ -36,7 +36,6 @@ import java.util.Set;
 
 /**
  * FileListConfirmSetupAction, for sdc configuration
- * @version $Rev$
  */
 public abstract class FileListConfirmSetupAction extends BaseListAction implements MaintenanceWindowsAware {
     public static final String SELECT_ALL = "selectall";

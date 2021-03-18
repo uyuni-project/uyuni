@@ -22,7 +22,6 @@ import java.io.Serializable;
 
 /**
  * RhnSetElement
- * @version $Rev$
  */
 public class RhnSetElement implements Serializable {
     private Long userid;

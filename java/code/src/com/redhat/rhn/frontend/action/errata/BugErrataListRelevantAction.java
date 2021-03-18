@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * BugErrataListRelevantAction
- * @version $Rev$
  */
 public class BugErrataListRelevantAction extends ErrataListRelevantAction {
 

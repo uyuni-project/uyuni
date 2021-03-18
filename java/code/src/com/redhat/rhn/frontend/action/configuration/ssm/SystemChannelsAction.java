@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * SystemChannelsAction
- * @version $Rev$
  */
 public class SystemChannelsAction extends BaseListAction {
 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 05 15:40:27 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- Fix 'list_modules' JSON serialization (bsc#1182492)
+
+-------------------------------------------------------------------
 Wed Jan 27 12:53:13 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.3-1

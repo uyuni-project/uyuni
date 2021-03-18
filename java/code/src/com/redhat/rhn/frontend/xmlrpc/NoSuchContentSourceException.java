@@ -18,7 +18,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * NoSuchContentSourceException
- * @version $Rev$
  */
 public class NoSuchContentSourceException extends FaultException {
 

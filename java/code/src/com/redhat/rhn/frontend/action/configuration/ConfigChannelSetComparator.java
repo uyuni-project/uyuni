@@ -23,7 +23,6 @@ import java.util.Comparator;
  * ConfigSetComparator
  * Used to order RhnSetElements based on the elementTwo which
  * stands for position in this context.
- * @version $Rev$
  */
 public class ConfigChannelSetComparator implements Comparator {
     /**

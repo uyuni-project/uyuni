@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * Device represents a hardware device on a server.
- * @version $Rev$
  */
 public class Device extends BaseDomainHelper {
     /** Constants for BUS types */

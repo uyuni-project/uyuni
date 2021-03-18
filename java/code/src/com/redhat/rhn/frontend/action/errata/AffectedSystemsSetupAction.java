@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * AffectedSystemsSetupAction
- * @version $Rev$
  */
 public class AffectedSystemsSetupAction extends RhnListAction {
     public static final String DISPATCH = "dispatch";

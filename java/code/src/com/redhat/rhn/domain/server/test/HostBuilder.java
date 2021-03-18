@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * HostBuilder is a class based on the GoF Builder pattern that constructs systems that are
  * virtual hosts. That is, systems with one of the virtualization entitlements.
- * @version $Rev$
  */
 public class HostBuilder {
 

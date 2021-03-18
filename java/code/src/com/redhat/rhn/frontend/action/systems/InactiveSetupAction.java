@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionForm;
 
 /**
  * InactiveSetupAction
- * @version $Rev$
  */
 public class InactiveSetupAction  extends BaseSystemsAction {
 

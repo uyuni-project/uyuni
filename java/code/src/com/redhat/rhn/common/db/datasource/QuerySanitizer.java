@@ -18,7 +18,6 @@ package com.redhat.rhn.common.db.datasource;
  * This interface defines api for sanitizing input values used in database
  * queries.
  *
- * @version $Rev$
  */
 public interface QuerySanitizer {
 

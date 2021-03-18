@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * RetiredChannelTreeSetupAction
- * @version $Rev$
  */
 public class RetiredChannelTreeAction extends BaseChannelTreeAction {
 

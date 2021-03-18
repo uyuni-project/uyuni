@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * For ssm config channel subscriptions.
- * @version $Rev$
  */
 public class SubscribeSetup extends RhnListAction {
 

@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.TestUtils;
 /**
  * SessionCleanupTest
  * JUnit test for SessionCleanup
- * @version $Rev$
  */
 public class SessionCleanupTest extends RhnBaseTestCase {
 

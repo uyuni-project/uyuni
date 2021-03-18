@@ -1,3 +1,22 @@
+- Fix: populate docker-registries on inspection (bsc#1178179)
+- Raise length limit for kernel options (bsc#1182916)
+- optionally allow vendor change when patching
+- Speed up the system groups page (bsc#1182132)
+- Log shell command output on failure when checking known_hosts file permissions
+- adapt logging for testing accessability of URLs (bsc#1182817)
+- add warning about missing salt feature for virtual networks
+- add virtual network create action
+
+-------------------------------------------------------------------
+Fri Mar 05 15:42:30 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.11-1
+- Allow setting a primary FQDN per system, either via WebUI or XMLRPC-API
+- Speed up pages to compare or add packages to channels (bsc#1178767)
+- Remove validator.js from jade templates
+- Homogenizes style in filter buttons, facilitating testability
+- improve fromdir with better mapping of URL to local files
+
 -------------------------------------------------------------------
 Thu Feb 25 12:06:49 CET 2021 - jgonzalez@suse.com
 

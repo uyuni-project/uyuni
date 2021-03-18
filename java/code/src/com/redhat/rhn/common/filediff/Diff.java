@@ -22,7 +22,6 @@ import java.util.List;
  * Manages the action of diffing files and displaying the result using
  * an API of recipes.  Differ is the actual file diff tool and implementers
  * of DiffVisitor and DiffWriter are used to write results.
- * @version $Rev$
  */
 public class Diff {
 

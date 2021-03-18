@@ -21,7 +21,6 @@ import java.util.Date;
 /**
  * DamonConfigAction - Class representation of the table rhnActionDaemonConfig.
  *
- * @version $Rev$
  */
 public class DaemonConfigDetails extends ActionChild {
 

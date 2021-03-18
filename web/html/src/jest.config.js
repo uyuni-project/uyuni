@@ -13,6 +13,7 @@ module.exports = {
     "^core/(.*)$": "<rootDir>/core/$1",
     "^manager/(.*)$": "<rootDir>/manager/$1",
     "^utils/(.*)$": "<rootDir>/utils/$1",
+    "\\.(css|less)$": "identity-obj-proxy",
   },
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],

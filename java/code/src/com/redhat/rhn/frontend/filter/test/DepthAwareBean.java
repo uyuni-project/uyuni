@@ -22,7 +22,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * DepthAwareBean
- * @version $Rev$
  */
 public class DepthAwareBean implements DepthAware {
     private long depth;

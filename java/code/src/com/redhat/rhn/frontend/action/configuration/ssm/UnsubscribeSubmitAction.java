@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * UnsubscribeSubmitAction, for ssm config management
- * @version $Rev$
  */
 public class UnsubscribeSubmitAction extends BaseSetOperateOnSelectedItemsAction {
 

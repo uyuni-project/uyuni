@@ -34,7 +34,6 @@ import java.util.Set;
 
 /**
  * ServerGroupManagerTest
- * @version $Rev$
  */
 public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     private static final String NAME = "Foo1";

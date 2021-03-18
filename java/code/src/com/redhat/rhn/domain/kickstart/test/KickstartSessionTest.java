@@ -35,7 +35,6 @@ import java.util.Date;
 
 /**
  * KickstartSessionTest
- * @version $Rev$
  */
 public class KickstartSessionTest extends BaseTestCaseWithUser {
     private KickstartData k;

@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 /**
  * ErrataConfirmSetupActionTest
- * @version $Rev$
  */
 public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
@@ -31,6 +30,7 @@ public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
         // Create Server
         Server server = ServerFactoryTest.createTestServer(user, true);
         addRequestParameter("sid", server.getId().toString());
+        addRequestParameter("allowVendorChange", new String( "false" ));
 
         //Note: 2 invocations of getParameter("schedule_type") will be called by DatePicker
         addRequestParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());

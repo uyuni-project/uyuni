@@ -21,7 +21,6 @@ import java.util.Date;
 
 /**
  * ConfigFileNameDto
- * @version $Rev$
  */
 public class ConfigFileNameDto extends BaseDto {
 

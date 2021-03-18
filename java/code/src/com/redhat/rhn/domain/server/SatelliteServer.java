@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 /**
  * SatelliteServer
- * @version $Rev$
  */
 public class SatelliteServer extends Server {
     private String product;

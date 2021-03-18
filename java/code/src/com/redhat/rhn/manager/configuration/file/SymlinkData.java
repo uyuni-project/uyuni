@@ -27,7 +27,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 
 /**
  * SymlinkData
- * @version $Rev$
  */
 public class SymlinkData extends DirectoryData {
     private static final String VALIDATION_XSD =

@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
  * <p>
  * This class is thread-safe.
  *
- * @version $Rev$
  */
 public class PxtCookieManager {
 

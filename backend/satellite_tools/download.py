@@ -115,7 +115,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         (url, parts) = opts.urlparser.parse(url, opts)
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
-        PyCurlFileObject.__init__(self, str(url), filename, opts)
+        super().__init__(str(url), filename, opts)
 
     def _do_open(self):
         self.curl_obj = self.curl_cache
@@ -132,17 +132,11 @@ class PyCurlFileObjectThread(PyCurlFileObject):
             if self.parent.first_in_queue_done:
                 self.parent.first_in_queue_lock.release()
         try:
-            PyCurlFileObject._do_perform(self)
+            super()._do_perform()
         finally:
             if not self.parent.first_in_queue_done:
                 self.parent.first_in_queue_done = True
                 self.parent.first_in_queue_lock.release()
-
-    def _set_opts(self, opts=None):
-        if not opts:
-            opts = {}
-        PyCurlFileObject._set_opts(self, opts=opts)
-        self.curl_obj.setopt(pycurl.FORBID_REUSE, 0) # pylint: disable=E1101
 
 
 class FailedDownloadError(Exception):
@@ -151,7 +145,7 @@ class FailedDownloadError(Exception):
 
 class DownloadThread(Thread):
     def __init__(self, parent, queue):
-        Thread.__init__(self)
+        super().__init__()
         self.parent = parent
         self.queue = queue
         # pylint: disable=E1101
@@ -205,11 +199,21 @@ class DownloadThread(Thread):
                                    checksum=params['checksum']):
                 return True
 
-        opts = URLGrabberOptions(ssl_ca_cert=params['ssl_ca_cert'], ssl_cert=params['ssl_client_cert'],
-                                 ssl_key=params['ssl_client_key'], range=params['bytes_range'],
-                                 proxy=params['proxy'], username=params['proxy_username'],
-                                 password=params['proxy_password'], proxies=params['proxies'],
-                                 http_headers=tuple(params['http_headers'].items()))
+        opts = URLGrabberOptions(
+            ssl_ca_cert=params["ssl_ca_cert"],
+            ssl_cert=params["ssl_client_cert"],
+            ssl_key=params["ssl_client_key"],
+            range=params["bytes_range"],
+            proxy=params["proxy"],
+            username=params["proxy_username"],
+            password=params["proxy_password"],
+            proxies=params["proxies"],
+            http_headers=tuple(params["http_headers"].items()),
+            timeout=params["timeout"],
+            minrate=params["minrate"],
+            keepalive=True,
+        )
+
         mirrors = len(params['urls'])
         for retry in range(max(self.parent.retries, mirrors)):
             fo = None
@@ -278,15 +282,35 @@ class ThreadedDownloader:
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
         comp = CFG.getComponent()
-        initCFG('server.satellite')
+        initCFG("server.satellite")
         try:
-            self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
-        except ValueError:
-            raise ValueError("Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS)
+            try:
+                self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
+            except ValueError:
+                raise ValueError(
+                    "Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS
+                )
+            try:
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                raise ValueError(
+                    "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT
+                )
+            try:
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                raise ValueError(
+                    "Minimal transfer rate in bytes pre second expected, found: '%s'"
+                    % CFG.REPOSYNC_MINRATE
+                )
+        except Exception as e:
+            raise e from None
         finally:
             initCFG(comp)
+
         if self.threads < 1:
             raise ValueError("Invalid number of threads: %d" % self.threads)
+
         self.retries = retries
         self.log_obj = log_obj
         self.force = force
@@ -317,6 +341,8 @@ class ThreadedDownloader:
             if ssl_set not in self.queues:
                 self.queues[ssl_set] = Queue()
             queue = self.queues[ssl_set]
+            params["timeout"] = self.timeout
+            params["minrate"] = self.minrate
             queue.put(params)
 
     def run(self):

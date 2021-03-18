@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * BaseSessionTestCase
- * @version $Rev$
  */
 public class BaseSessionTestCase extends RhnMockStrutsTestCase {
 

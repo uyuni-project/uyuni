@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * BaseSystemListSetupAction
- * @version $Rev$
  */
 public abstract class BaseSystemListSetupAction extends RhnListAction {
     public static final String SHOW_NO_SYSTEMS = "showNoSystems";

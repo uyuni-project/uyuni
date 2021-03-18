@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-25 10:58+0100\n"
-"PO-Revision-Date: 2020-11-09 14:50+0000\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"PO-Revision-Date: 2021-03-10 13:38+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/yum-"
 "rhn-plugin/zh_CN/>\n"
@@ -73,7 +73,7 @@ msgstr "此系统未注册到 RHN Classic 或 {PRODUCT_NAME}。"
 
 #: ../rhnplugin.py:130 ../rhnplugin.py:146
 msgid "You can use rhn_register to register."
-msgstr "可以使用 rhn_register 来注册。"
+msgstr "可以使用 rhn_register 注册。"
 
 #: ../rhnplugin.py:136
 #, python-brace-format

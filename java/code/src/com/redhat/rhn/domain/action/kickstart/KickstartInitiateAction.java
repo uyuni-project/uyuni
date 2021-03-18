@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.action.kickstart;
 
 /**
  * KickstartInitiateAction
- * @version $Rev$
  */
 public class KickstartInitiateAction extends KickstartAction {
 

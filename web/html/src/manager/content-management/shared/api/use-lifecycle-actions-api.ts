@@ -8,7 +8,7 @@ type Props = {
 };
 
 type returnUseProjectActionsApi = {
-  onAction: (actionBodyRequest: any, action: string, id?: string | null) => Promise<any>;
+  onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: string | null) => Promise<any>;
   cancelAction: () => void;
   isLoading: boolean;
 };
@@ -21,7 +21,8 @@ const networkAction = {
   delete: Network.del,
 };
 
-type NetworkMethod = typeof networkAction[keyof typeof networkAction]
+type NetworkActionKey = keyof typeof networkAction;
+type NetworkMethod = typeof networkAction[NetworkActionKey]
 
 const getApiUrl = (resource: string, nestedResource?: string, id?: string) => {
   if (!id) {
@@ -44,13 +45,18 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
   const [isLoading, setIsLoading] = useState(false);
   const [onGoingNetworkRequest, setOnGoingNetworkRequest] = useState<Cancelable | null>(null);
 
-  const onAction = (actionBodyRequest, action, id) => {
+  const onAction = (actionBodyRequest, action: NetworkActionKey, id) => {
     if (!isLoading) {
       setIsLoading(true);
 
       const apiUrl = getApiUrl(props.resource, props.nestedResource, id);
-      const networkMethod: NetworkMethod = networkAction[action] || networkAction["get"];
-      const networkRequest = networkMethod(apiUrl, JSON.stringify(actionBodyRequest), "application/json");
+
+      let networkRequest: ReturnType<NetworkMethod>;
+      if (action === "get" || !networkAction[action]) {
+        networkRequest = networkAction.get(apiUrl, "application/json");
+      } else {
+        networkRequest = networkAction[action](apiUrl, JSON.stringify(actionBodyRequest), "application/json");
+      }
       setOnGoingNetworkRequest(networkRequest);
 
       return networkRequest.promise

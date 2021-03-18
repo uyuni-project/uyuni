@@ -35,7 +35,6 @@ import java.util.List;
 
 /**
  * KickstartSessionCreateCommand - Command to create a KickstartSession object
- * @version $Rev$
  */
 public class KickstartSessionCreateCommand {
 

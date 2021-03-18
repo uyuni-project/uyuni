@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * RegisteredSetupAction
- * @version $Rev$
  */
 public class RegisteredSetupAction extends BaseSystemsAction {
     public static final String[] OPTIONS = {"oneday",

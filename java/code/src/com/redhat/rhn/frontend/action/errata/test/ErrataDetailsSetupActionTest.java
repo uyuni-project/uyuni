@@ -22,7 +22,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * ErrataDetailsSetupActionTest
- * @version $Rev$
  */
 public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
 

@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * GlobalConfigFileList
- * @version $Rev$
  */
 public class GlobalConfigFileList extends BaseListAction {
 

@@ -31,7 +31,6 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * NoScriptTagTest
- * @version $Rev$
  */
 public class NoScriptTagTest  extends RhnBaseTestCase {
 

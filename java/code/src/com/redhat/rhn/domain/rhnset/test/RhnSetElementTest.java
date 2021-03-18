@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * RhnSetElementTest
- * @version $Rev$
  */
 public class RhnSetElementTest extends RhnBaseTestCase {
 

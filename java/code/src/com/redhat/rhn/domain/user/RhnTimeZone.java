@@ -18,7 +18,6 @@ import java.util.TimeZone;
 
 /**
  * TimeZone
- * @version $Rev$
  */
 public class RhnTimeZone {
     private int timeZoneId;

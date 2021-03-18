@@ -24,7 +24,6 @@ import java.util.Map;
  *  The <code>ValidatorResult</code> class is a container intended to be used
  *  by validation methods that return both errors and warnings.
  * </p>
- * @version $Rev$
  */
 public class ValidatorResult {
     private List<ValidatorError> validationErrors = new LinkedList<>();

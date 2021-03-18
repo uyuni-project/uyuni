@@ -35,7 +35,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *       #prop("boolean", "trustEnabled")
  *     #struct_end()
  *   #array_end()
- * @version $Rev$
  */
 public class OrgTrustOverviewSerializer extends RhnXmlRpcCustomSerializer {
 

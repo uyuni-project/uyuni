@@ -26,7 +26,6 @@ import java.util.Map;
 
 /**
  * ActionAclHandlerTest
- * @version $Rev$
  */
 public class ActionAclHandlerTest extends RhnBaseTestCase {
 

@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 
 /**
  * CryptoKeyCommand
- * @version $Rev$
  */
 public class EditCryptoKeyCommand extends BaseCryptoKeyCommand {
 

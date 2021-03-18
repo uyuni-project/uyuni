@@ -18,7 +18,6 @@ package com.redhat.rhn.common.filediff;
 /**
  * A single edit for a file diff.
  * One part of a tree of edits in which children point to their parents.
- * @version $Rev$
  */
 public class Edit {
 

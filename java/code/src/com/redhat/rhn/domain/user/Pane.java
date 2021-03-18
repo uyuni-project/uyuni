@@ -23,7 +23,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * data represented by a Pane observed by a user.
  * Note this class directly maps to RHNINFOPANE
  * thorough hibernate
- * @version $Rev$ This object represents
  */
 public class Pane {
 

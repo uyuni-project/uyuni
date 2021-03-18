@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ceos7_client
@@ -8,15 +8,15 @@ Feature: Bootstrap a CentOS 7 traditional client
     When I perform a full salt minion cleanup on "ceos7_client"
 
   Scenario: Prepare a CentOS 7 traditional client
-    And I enable repository "CentOS-Base tools_pool_repo" on this "ceos7_client" without error control
+    When I enable repository "CentOS-Base tools_pool_repo" on this "ceos7_client" without error control
     And I bootstrap traditional client "ceos7_client" using bootstrap script with activation key "1-ceos7_client_key" from the proxy
     And I install the traditional stack utils on "ceos7_client"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
     Then I should see "ceos7_client" via spacecmd
 
   Scenario: The onboarding of CentOS 7 traditional client is completed
-    Given I am authorized
-    And I wait until onboarding is completed for "ceos7_client"
+    Given I am authorized as "admin" with password "admin"
+    When I wait until onboarding is completed for "ceos7_client"
 
 @proxy
   Scenario: Check connection from CentOS 7 traditional client to proxy

@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 
 /**
  * KickstartPackage
- * @version $Rev$
  */
 public class KickstartPackage
         implements Serializable, Comparable<KickstartPackage> {

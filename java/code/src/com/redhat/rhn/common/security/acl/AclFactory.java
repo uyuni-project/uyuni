@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
  * TODO - consider caching the Acl instances within the Factory so we don't have to
  * instantiate new ones each time. Not sure how to do this yet.
  *
- * @version $Rev$
  */
 public class AclFactory {
 

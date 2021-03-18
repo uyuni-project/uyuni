@@ -25,7 +25,6 @@ import java.util.LinkedHashSet;
 
 /**
  * KickstartCloneCommandTest
- * @version $Rev$
  */
 public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 

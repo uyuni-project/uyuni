@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class ListRemoveSystemsAction extends BaseListAction {
 

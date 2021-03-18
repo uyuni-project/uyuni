@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
  * that provides a framework for performing specified business
  * operations on the currently selected items in the list.
  *
- * @version $Rev$
  */
 public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
 

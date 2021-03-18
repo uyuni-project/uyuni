@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * PackageMetadataTest
- * @version $Rev$
  */
 public class PackageMetadataTest extends RhnBaseTestCase {
 

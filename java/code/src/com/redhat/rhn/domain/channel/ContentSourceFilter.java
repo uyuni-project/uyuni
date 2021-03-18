@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ContentSourceFilter
- * @version $Rev$
  */
 public class ContentSourceFilter extends BaseDomainHelper {
     private Long id;

@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * ActionStatusTest
- * @version $Rev$
  */
 public class ActionStatusTest extends RhnBaseTestCase {
 

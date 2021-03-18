@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Java file diff using Eugene W. Myers's algorithm as described in
  * "An O(ND) Difference Algorithm and Its Variations".
- * @version $Rev$
  */
 public class Differ {
     private final Trace head;

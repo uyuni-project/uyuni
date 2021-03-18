@@ -7,7 +7,7 @@ import styles from "./Radio.css";
 
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<{ label: string; value: string }>;
+  items: Array<{ label: React.ReactNode; value: string }>;
 
   /** Show the choices in a line or not */
   inline?: boolean;
@@ -43,10 +43,11 @@ export function Radio(props: Props) {
         return (
           <span className={styles.radio}>
             {props.items.map(({ label, value }) => (
-              <label className={radioClass}>
+              <label className={radioClass} key={`${props.name}_${value}`}>
                 <input
                   type="radio"
                   name={props.name}
+                  title={`${props.title} ${value}`}
                   value={value}
                   checked={fieldValue === value}
                   className={inputClass}
@@ -75,6 +76,7 @@ export function Radio(props: Props) {
                   disabled={!isOpenOption}
                   value={isOpenOption ? fieldValue : ""}
                   onChange={event => onChange(event.target.name, event.target.value)}
+                  title={t(`${props.title} other`)}
                 />
               </div>
             )}

@@ -11,7 +11,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
     When I perform a full salt minion cleanup on "ceos6_ssh_minion"
 
   Scenario: Bootstrap a CentOS 6 Salt SSH minion
-    Given I am authorized
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -20,7 +20,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
     And I select "1-ceos6_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    Then I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos6_ssh_minion"
 
   # WORKAROUND bsc#1181847

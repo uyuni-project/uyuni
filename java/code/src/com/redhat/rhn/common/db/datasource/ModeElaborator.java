@@ -22,7 +22,6 @@ import java.util.Map;
 
 /**
  * ModeElaborator
- * @version $Rev$
  */
 public class ModeElaborator implements Elaborator, Serializable {
     private SelectMode mode;

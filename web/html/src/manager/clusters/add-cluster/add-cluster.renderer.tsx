@@ -5,10 +5,11 @@ import { UserLocalizationProvider } from "core/user-localization/user-localizati
 import { MessagesContainer } from "components/toastr/toastr";
 
 import AddCluster from "./add-cluster";
+import { ServerMessageType } from "components/messages";
 
 type RendererProps = {
   contentAdd?: string;
-  flashMessage?: string;
+  flashMessage?: ServerMessageType;
 };
 
 export const renderer = (id: string, { contentAdd, flashMessage }: RendererProps = {}) => {

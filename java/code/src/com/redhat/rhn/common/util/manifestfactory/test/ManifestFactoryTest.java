@@ -24,7 +24,6 @@ import java.util.List;
  * ManifestFactory, a class to assist in turning manifest xml files
  * into factories of other classes
  *
- * @version $Rev$
  */
 
 public class ManifestFactoryTest extends RhnBaseTestCase {

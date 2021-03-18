@@ -33,7 +33,7 @@ CREATE TABLE rhnActionVirtCreate
     remove_interfaces    CHAR(1),
     cobbler_system       VARCHAR(256),
     kickstart_host       VARCHAR(256),
-    kernel_options       VARCHAR(256)
+    kernel_options       VARCHAR(2048)
 )
 
 ;

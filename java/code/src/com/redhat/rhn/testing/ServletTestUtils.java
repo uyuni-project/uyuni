@@ -24,7 +24,6 @@ import junit.framework.Assert;
 
 /**
  * ServletTestUtils
- * @version $Rev$
  */
 public class ServletTestUtils extends Assert {
 

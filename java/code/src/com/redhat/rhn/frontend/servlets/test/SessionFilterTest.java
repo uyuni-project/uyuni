@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SessionFilterTest
- * @version $Rev$
  */
 public class SessionFilterTest extends MockObjectTestCase {
 

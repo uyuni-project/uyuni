@@ -54,6 +54,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -943,6 +944,36 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return ni.getIPv4Addresses().stream().findFirst().map(ServerNetAddress4::getAddress).orElse(null);
         }
         return null;
+    }
+
+    /**
+     * Return the ServerFQDN which is considered the primary.
+     *
+     * If primary FQDN is not explicitly set, the first one
+     * is returned, based on the alphabetic order.
+     *
+     * @return The primary FQDN for this server
+     */
+    public ServerFQDN findPrimaryFqdn() {
+        return this.fqdns.stream()
+                .filter(ServerFQDN::isPrimary)
+                .findFirst()
+                .orElseGet(() -> {
+                    if (!fqdns.isEmpty()) {
+                        return Collections.min(fqdns, Comparator.comparing(ServerFQDN::getName));
+                    }
+                    return null;
+                });
+    }
+
+    /**
+     * @param fqdnName The FQDN to be obtained
+     * @return The fqdn with the specified name
+     */
+    public Optional<ServerFQDN> lookupFqdn(String fqdnName) {
+        return this.fqdns.stream()
+                .filter((fqdn) -> fqdn.getName().equals(fqdnName))
+                .findFirst();
     }
 
     /**
@@ -1936,7 +1967,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
             n.setPrimary(null);
         }
         SystemManager.storeServer(this);
-        primaryInterface.setPrimary("Y");
+        if (primaryInterface != null) {
+            primaryInterface.setPrimary("Y");
+        }
     }
 
     /**
@@ -1953,6 +1986,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
             }
         }
         return null;
+    }
+
+    /**
+     * @param fqdnName name of the primary FQDN
+     */
+    public void setPrimaryFQDNWithName(String fqdnName) {
+        ServerFQDN newPrimaryFQDN = null;
+        for (ServerFQDN fqdn: fqdns) {
+            fqdn.setPrimary(false);
+            if (fqdn.getName().equals(fqdnName)) {
+                newPrimaryFQDN = fqdn;
+            }
+        }
+        SystemManager.storeServer(this);
+        if (newPrimaryFQDN != null) {
+            newPrimaryFQDN.setPrimary(true);
+        }
     }
 
     /**

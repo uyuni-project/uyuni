@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * ActivationKeyPackagesCommandTest
- * @version $Rev$
  */
 public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 

@@ -20,7 +20,6 @@ package com.redhat.rhn.domain.config;
  * when to return base64 encoded content
  * in the ConfigRevisionSerializer
  * EncodedConfigRevision
- * @version $Rev$
  */
 public class EncodedConfigRevision extends ConfigRevision {
 

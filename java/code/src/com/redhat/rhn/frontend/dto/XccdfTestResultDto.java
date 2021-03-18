@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
 
 /**
  * Simple DTO for transferring data from the DB to the UI through datasource.
- * @version $Rev$
  */
 public class XccdfTestResultDto extends XccdfTestResultCounts {
 

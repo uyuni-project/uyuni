@@ -29,7 +29,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * TaskoScheduleSerializer
- * @version $Rev$
  */
 public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
 

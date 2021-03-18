@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * GroupDetailAction
- * @version $Rev$
  */
 public class GroupDetailAction extends RhnAction {
 

@@ -23,7 +23,6 @@ import java.util.Iterator;
 /**
  * Converts a list of hunks from a file diff into an html string that represents
  * the view of a diff.
- * @version $Rev$
  */
 public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
 

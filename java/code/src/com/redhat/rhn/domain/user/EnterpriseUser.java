@@ -20,7 +20,6 @@ import java.util.Iterator;
 /**
  * The interface definition of the enterprise user.
  * EnterpriseUser
- * @version $Rev$
  */
 public interface EnterpriseUser {
     /**

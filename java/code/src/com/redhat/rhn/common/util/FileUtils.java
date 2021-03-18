@@ -37,7 +37,6 @@ import java.nio.file.Path;
 /**
  * Simple file utilities to read/write strings to a file on disk.
  *
- *@version $Rev$
  */
 public class FileUtils {
 

@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * OverviewAction
- * @version $Rev$
  */
 public class NoteListAction extends RhnListAction {
 

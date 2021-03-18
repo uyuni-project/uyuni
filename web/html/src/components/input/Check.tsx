@@ -2,12 +2,15 @@ import * as React from "react";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = InputBaseProps & {
+type Props = Omit<InputBaseProps, 'label'> & {
   /** CSS class for the <input> element */
   inputClass?: string;
 
   /** name of the field to map in the form model */
   name: string;
+
+  /** for historical reasons, label handles differently here  */
+  label: React.ReactNode;
 };
 
 export function Check(props: Props) {
@@ -33,6 +36,7 @@ export function Check(props: Props) {
                 onChange={setChecked}
                 onBlur={onBlur}
                 disabled={props.disabled}
+                title={props.title}
               />
               <span>{label}</span>
             </label>

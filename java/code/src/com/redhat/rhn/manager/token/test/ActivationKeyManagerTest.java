@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * ActivationKeyManagerTest
- * @version $Rev$
  */
 public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     private ActivationKeyManager manager;

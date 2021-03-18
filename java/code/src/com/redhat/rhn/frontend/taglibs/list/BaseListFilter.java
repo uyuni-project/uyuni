@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * BaseListFilter
- * @version $Rev$
  */
 public abstract class BaseListFilter implements ListFilter {
 

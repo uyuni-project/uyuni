@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  *
  * ErrataFilter
- * @version $Rev$
  */
 public class ErrataFilter extends BaseListFilter {
 

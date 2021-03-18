@@ -18,12 +18,9 @@ require 'multi_test'
 
 server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
-$long_tests_enabled = true if ENV['LONG_TESTS']
+$long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
 puts "Executing long running tests" if $long_tests_enabled
-$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION']
-# To disable SP migration, comment the previous line, uncoment the next one
-# and adjust testsuite/run_sets/init_clients.yml
-# $service_pack_migration_enabled = false
+$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION'] == 'true'
 puts "Executing service pack migrations" if $service_pack_migration_enabled
 
 # maximal wait before giving up
@@ -40,7 +37,7 @@ if File.exist?(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
   $build_validation = true
   # HACK
-  # QAM and Build Validations will require longer timeouts due to the low performance of our VMs
+  # Build Validations will require longer timeouts due to the low performance of our VMs
   # if we ever improve this fact, we can reduce these timeouts.
   Capybara.default_max_wait_time = 30
   DEFAULT_TIMEOUT = 1800

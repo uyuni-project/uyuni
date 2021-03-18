@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 /**
  * DiffSystemsAction
- * @version $Rev$
  */
 public class DiffSystemsAction extends BaseListAction {
 

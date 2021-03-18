@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2020-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -17,8 +17,7 @@ Feature: Setup SUSE Manager proxy
     # End of WORKAROUND
 
   Scenario: Bootstrap the proxy as a Salt minion
-    Given I am authorized
-    And I create the "x86_64" bootstrap repository for "proxy" on the server
+    Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy" as "hostname"

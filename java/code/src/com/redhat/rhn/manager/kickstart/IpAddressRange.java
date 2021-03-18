@@ -19,7 +19,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * IpAddressRange
- * @version $Rev$
  */
 public class IpAddressRange {
 

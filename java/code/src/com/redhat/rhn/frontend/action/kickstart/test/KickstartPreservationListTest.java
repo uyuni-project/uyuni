@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.TestUtils;
 
 /**
  * KickstartKeysEditActionTest
- * @version $Rev$
  */
 public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
 

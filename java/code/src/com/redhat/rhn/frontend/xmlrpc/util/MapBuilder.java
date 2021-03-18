@@ -29,7 +29,6 @@ import java.util.Set;
  * Builds a map that could be used to
  * convert a bean object to xml rpc
  * MapBuilder
- * @version $Rev$
  */
 public class MapBuilder {
     private Set excludes = new HashSet();

@@ -43,7 +43,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * BunchDetailAction
- * @version $Rev$
  */
 public class BunchDetailAction extends RhnAction implements Listable {
 

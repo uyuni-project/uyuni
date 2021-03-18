@@ -69,6 +69,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDis
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
@@ -112,11 +113,19 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.DnsHostDef;
+import com.suse.manager.virtualization.DnsTxtDef;
+import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.VirtStatesHelper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -125,8 +134,8 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -138,11 +147,6 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -216,6 +220,7 @@ public class SaltServerActionService {
 
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
+    public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
 
     private boolean commitTransaction = true;
 
@@ -286,7 +291,7 @@ public class SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
-            return errataAction(minions, errataIds);
+            return errataAction(minions, errataIds, errataAction.getDetails().getAllowVendorChange());
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -431,6 +436,10 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.equals(actionType)) {
             VirtualizationNetworkStateChangeAction networkAction = (VirtualizationNetworkStateChangeAction) actionIn;
             return virtNetworkStateChangeAction(minions, networkAction.getNetworkName(), networkAction.getState());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE.equals(actionType)) {
+            VirtualizationNetworkCreateAction networkAction = (VirtualizationNetworkCreateAction)actionIn;
+            return virtNetworkCreateAction(minions, networkAction.getNetworkName(), networkAction.getDefinition());
         }
         else if (ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES.equals(actionType)) {
             ClusterGroupRefreshNodesAction clusterAction =
@@ -1021,10 +1030,11 @@ public class SaltServerActionService {
      *
      * @param minionSummaries list of minion summaries to target
      * @param errataIds list of errata ids
+     * @param allowVendorChange true if vendor change allowed
      * @return minion summaries grouped by local call
      */
     public Map<LocalCall<?>, List<MinionSummary>> errataAction(List<MinionSummary> minionSummaries,
-            Set<Long> errataIds) {
+            Set<Long> errataIds, boolean allowVendorChange) {
         Set<Long> minionServerIds = minionSummaries.stream().map(MinionSummary::getServerId)
                 .collect(Collectors.toSet());
 
@@ -1051,6 +1061,7 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
+                params.put("allowVendorChange", allowVendorChange);
                 params.put(PARAM_UPDATE_STACK_PATCHES,
                     entry.getKey().stream()
                         .filter(e -> e.isUpdateStack())
@@ -1358,6 +1369,10 @@ public class SaltServerActionService {
             return result;
         }
         else {
+            List<ImageStore> imageStores = new LinkedList<>();
+            imageStores.add(store);
+            Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
+            pillar.put("docker-registries", dockerRegistries);
             pillar.put("imagename", store.getUri() + "/" + details.getName() + ":" + details.getVersion());
             LocalCall<Map<String, ApplyResult>> apply = State.apply(
                     Collections.singletonList("images.profileupdate"),
@@ -1997,6 +2012,110 @@ public class SaltServerActionService {
 
                             return State.apply(
                                     Collections.singletonList("virt.network-statechange"),
+                                    Optional.of(pillar));
+                        },
+                        Collections::singletonList
+                ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtNetworkCreateAction(List<MinionSummary> minionSummaries,
+                                                                           String networkName,
+                                                                           NetworkDefinition def) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+                            Map<String, Object> pillar = new HashMap<>();
+                            pillar.put("network_name", networkName);
+                            def.getBridge().ifPresent(bridge -> pillar.put("bridge", bridge));
+                            pillar.put("forward", def.getForwardMode());
+                            pillar.put("autostart", def.isAutostart());
+                            def.getMtu().ifPresent(mtu -> pillar.put("mtu", mtu));
+                            def.getDomain().ifPresent(domain -> pillar.put("domain", domain));
+                            def.getPhysicalFunction().ifPresent(pf -> pillar.put("physical_function", pf));
+                            if (!def.getVirtualFunctions().isEmpty()) {
+                                pillar.put("addresses", String.join(" ", def.getVirtualFunctions()));
+                            }
+                            if (!def.getInterfaces().isEmpty()) {
+                                pillar.put("interfaces", String.join(" ", def.getInterfaces()));
+                            }
+                            if (!def.getVlans().isEmpty()) {
+                                Map<String, Object> tag = new HashMap<>();
+                                def.getVlanTrunk().ifPresent(trunk -> tag.put("trunk", trunk));
+                                tag.put("tags",
+                                        def.getVlans().stream().map(vlan -> {
+                                            HashMap<String, Object> vlanPillar = new HashMap<>();
+                                            vlanPillar.put("id", vlan.getTag());
+                                            vlan.getNativeMode().ifPresent(mode -> vlanPillar.put("nativeMode", mode));
+                                            return vlanPillar;
+                                        }).collect(Collectors.toList())
+                                );
+                                pillar.put("tag", tag);
+                            }
+                            def.getVirtualPort().ifPresent(vportData -> {
+                                Map<String, Object> vport = new HashMap<>();
+                                vport.put("type", vportData.getType());
+                                Map<String, String> params = new HashMap<>();
+                                vportData.getInstanceId().ifPresent(id -> params.put("instanceid", id));
+                                vportData.getInterfaceId().ifPresent(id -> params.put("interfaceid", id));
+                                vportData.getManagerId().ifPresent(id -> params.put("managerid", id));
+                                vportData.getTypeId().ifPresent(id -> params.put("typeid", id));
+                                vportData.getTypeIdVersion().ifPresent(v -> params.put("typeidversion", v));
+                                vportData.getProfileId().ifPresent(id -> params.put("profileid", id));
+                                vport.put("params", params);
+                                pillar.put("vport", vport);
+                            });
+                            def.getNat().ifPresent(natData -> {
+                                Map<String, Object> nat = new HashMap<>();
+                                natData.getAddress().ifPresent(range ->
+                                        nat.put("address", VirtStatesHelper.rangeToPillar(range)));
+                                natData.getPort().ifPresent(ports ->
+                                        nat.put("port", VirtStatesHelper.rangeToPillar(ports)));
+                                pillar.put("nat", nat);
+                            });
+                            def.getIpv4().ifPresent(ipDef ->
+                                    pillar.put("ipv4_config", VirtStatesHelper.ipToPillar(ipDef)));
+                            def.getIpv6().ifPresent(ipDef ->
+                                    pillar.put("ipv6_config", VirtStatesHelper.ipToPillar(ipDef)));
+                            def.getDns().ifPresent(dnsData -> {
+                                Map<String, Object> dns = new HashMap<>();
+                                if (!dnsData.getForwarders().isEmpty()) {
+                                    dns.put("forwarders", dnsData.getForwarders().stream().map(fwd -> {
+                                        Map<String, Object> out = new HashMap<>();
+                                        fwd.getAddress().ifPresent(addr -> out.put("addr", addr));
+                                        fwd.getDomain().ifPresent(domain -> out.put("domain", domain));
+                                        return out;
+                                    }).collect(Collectors.toList()));
+                                }
+                                if (!dnsData.getHosts().isEmpty()) {
+                                    dns.put("hosts", dnsData.getHosts().stream()
+                                        .collect(Collectors.toMap(DnsHostDef::getAddress, DnsHostDef::getNames)));
+                                }
+                                if (!dnsData.getTxts().isEmpty()) {
+                                    dns.put("txt", dnsData.getTxts().stream()
+                                        .collect(Collectors.toMap(DnsTxtDef::getName, DnsTxtDef::getValue)));
+                                }
+                                if (!dnsData.getSrvs().isEmpty()) {
+                                    dns.put("srvs", dnsData.getSrvs().stream().map(srv -> {
+                                        Map<String, Object> out = new HashMap<>();
+                                        out.put("name", srv.getName());
+                                        out.put("protocol", srv.getProtocol());
+                                        srv.getTarget().ifPresent(target -> out.put("target", target));
+                                        srv.getPort().ifPresent(port -> out.put("port", port));
+                                        srv.getPriority().ifPresent(priority -> out.put("priority", priority));
+                                        srv.getDomain().ifPresent(domain -> out.put("domain", domain));
+                                        srv.getWeight().ifPresent(weight -> out.put("weight", weight));
+                                        return out;
+                                    }).collect(Collectors.toList()));
+                                }
+                                pillar.put("dns", dns);
+                            });
+
+                            return State.apply(
+                                    Collections.singletonList("virt.network-create"),
                                     Optional.of(pillar));
                         },
                         Collections::singletonList

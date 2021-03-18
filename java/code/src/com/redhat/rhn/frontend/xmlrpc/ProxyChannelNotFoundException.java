@@ -20,7 +20,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * @author paji
- * @version $Rev$
  */
 public class ProxyChannelNotFoundException extends FaultException {
 

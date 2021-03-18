@@ -29,7 +29,6 @@ import java.util.Set;
 
 /**
  * Driver for the threaded errata cache update queue
- * @version $Rev$
  */
 public class ErrataCacheDriver implements QueueDriver {
 

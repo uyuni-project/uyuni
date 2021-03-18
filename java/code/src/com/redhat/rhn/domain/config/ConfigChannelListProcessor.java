@@ -25,7 +25,6 @@ import java.util.List;
 /**
  *
  * ConfigChannelListProcessor
- * @version $Rev$
  */
 public class ConfigChannelListProcessor {
 

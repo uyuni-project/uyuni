@@ -19,7 +19,6 @@ import com.redhat.rhn.FaultException;
 
 /**
  * InvalidParameterException
- * @version $Rev$
  */
 public class InvalidParameterException extends FaultException {
 

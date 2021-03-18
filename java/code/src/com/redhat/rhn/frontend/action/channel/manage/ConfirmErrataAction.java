@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * ConfirmErrataAction
- * @version $Rev$
  */
 public class ConfirmErrataAction extends RhnListAction {
 

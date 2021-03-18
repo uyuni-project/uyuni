@@ -74,7 +74,7 @@ public class KickstartTroubleshootingEditAction extends BaseKickstartEditAction 
         tscmd.setBootloaderType(form.getString(BOOTLOADER));
 
         String kernelParams = form.getString(KERNEL_PARAMS);
-        if (kernelParams.length() > 128) {
+        if (kernelParams.length() > 2048) {
             retval = new ValidatorError("kickstart.troubleshooting." +
                                         "validation.kernelparams.too_long");
         }

@@ -1,5 +1,7 @@
 declare global {
   interface Window {
+    // See java/code/webapp/WEB-INF/includes/leftnav.jsp
+    JSONMenu: any[];
     _IS_UYUNI: boolean;
 
     // CSRF loopback
@@ -27,7 +29,6 @@ declare global {
       };
     };
 
-    // Table data handler
     userPrefPageSize?: number;
   }
 
@@ -43,12 +44,15 @@ declare global {
   var onDocumentReadyInitOldJS: Function;
   var Loggerhead: any;
   var ace: any;
-  var validator: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
 
   // Used by section-toolbar, defined in spacewalk-essentials.js
   var handleSst: Function;
+
+  // Used by cveaudit and spacewalk-checkall.js
+  var DWRItemSelector: any;
+  var dwr: any;
 
   /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
   var localTime: string | undefined;

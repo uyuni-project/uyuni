@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
  * RhnValidationHelper contains helpful to be used by Struts actions to interact
  * with the ValidationService
  *
- * @version $Rev$
  */
 public class RhnValidationHelper {
 

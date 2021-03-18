@@ -1,3 +1,15 @@
+- add allow vendor change option to pathing via salt 
+- Add SALT_RUNNING config in case it's not present on the minion (bsc#1183661)
+- Skip removed product classes with satellite-sync
+- add grain for virt module features
+- add virtual network creation action
+
+-------------------------------------------------------------------
+Fri Mar 05 15:45:18 CET 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
+- handle GPG keys when bootstrapping ssh minions (bsc#1181847)
+
 -------------------------------------------------------------------
 Thu Feb 25 12:12:31 CET 2021 - jgonzalez@suse.com
 

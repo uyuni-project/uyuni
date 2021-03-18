@@ -25,7 +25,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * CustomDataValueTest
- * @version $Rev$
  */
 public class CustomDataValueTest extends RhnBaseTestCase {
 

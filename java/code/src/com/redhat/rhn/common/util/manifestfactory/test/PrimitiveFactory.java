@@ -23,7 +23,6 @@ import java.util.Collection;
  * PrimitiveFactory, a ManifestFactory based fatory for creating
  * primitive types of things.  used in testcase.
  *
- * @version $Rev$
  */
 
 public class PrimitiveFactory {

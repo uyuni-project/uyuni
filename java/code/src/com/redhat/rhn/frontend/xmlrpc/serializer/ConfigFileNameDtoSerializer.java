@@ -29,7 +29,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * ConfigFileDtoSerializer
- * @version $Rev$
  * @xmlrpc.doc
  * #struct_begin("Configuration File information")
  *   #prop("string", "type")

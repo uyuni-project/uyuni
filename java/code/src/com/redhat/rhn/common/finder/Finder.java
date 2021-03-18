@@ -20,7 +20,6 @@ import java.util.List;
 /**
  * An interface to find classes that implement a given interface.
  *
- * @version $Rev$
  */
 public interface Finder {
 

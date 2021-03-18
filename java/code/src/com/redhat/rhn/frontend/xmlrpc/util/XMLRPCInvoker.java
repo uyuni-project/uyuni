@@ -25,7 +25,6 @@ import redstone.xmlrpc.XmlRpcFault;
  * that calls either a real or mock xmlrpc server.  Can make xmlrpc testing
  * easier.
  *
- * @version $Rev$
  */
 public interface XMLRPCInvoker {
 

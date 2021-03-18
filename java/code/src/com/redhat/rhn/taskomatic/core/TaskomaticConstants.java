@@ -16,7 +16,6 @@ package com.redhat.rhn.taskomatic.core;
 
 /**
  * Various constants used by the Taskomatic daemon
- * @version $Rev$
  */
 public class TaskomaticConstants {
 

@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PreservationListDeleteSingleAction
- * @version $Rev$
  */
 public class PreservationListDeleteSingleAction extends RhnAction {
 

@@ -30,7 +30,6 @@ import java.util.Set;
 
 /**
  * KickstartDetailsCommand
- * @version $Rev$
  */
 public class KickstartOptionsCommand  extends BaseKickstartCommand {
 

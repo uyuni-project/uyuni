@@ -285,6 +285,20 @@ class ContentSource:
         if query:
             self.authtoken = query
 
+        # configure network connection
+        try:
+            # bytes per second
+            self.minrate = int(CFG.REPOSYNC_MINRATE)
+        except ValueError:
+            self.minrate = 1000
+        try:
+            # seconds
+            self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+        except ValueError:
+            self.timeout = 300
+        finally:
+            initCFG(comp)
+
     def get_md_checksum_type(self):
         pass
 
@@ -437,6 +451,8 @@ class ContentSource:
         params['proxy_username'] = self.proxy_user
         params['proxy_password'] = self.proxy_pass
         params['http_headers'] = self.repo.http_headers
+        params["timeout"] = self.timeout
+        params["minrate"] = self.minrate
         # Older urlgrabber compatibility
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)

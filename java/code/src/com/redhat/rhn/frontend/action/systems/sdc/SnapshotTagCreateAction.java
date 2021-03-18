@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 
 /**
  * SnapshotTagCreateAction
- * @version $Rev$
  */
 public class SnapshotTagCreateAction extends RhnAction {
 

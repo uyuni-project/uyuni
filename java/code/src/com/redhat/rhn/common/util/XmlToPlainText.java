@@ -28,7 +28,6 @@ import java.io.StringReader;
 
 /**
  * XmlToPlainText - Helper class that uses StringResources XML
- * @version $Rev$
  */
 class XmlToPlainText {
     private static Logger log = Logger.getLogger(XmlToPlainText.class);

@@ -13,11 +13,13 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)
 end
 
-When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |mountpoint, url|
-  iso_path = "/tmp/#{mountpoint}.iso"
+When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
+  iso_path = "/tmp/#{name}.iso"
+  mount_point = "/srv/www/htdocs/#{name}"
   $server.run("wget --no-check-certificate -O #{iso_path} #{url}", true, 500, 'root')
-  $server.run("mkdir /srv/www/htdocs/#{mountpoint}")
-  $server.run("mount -o loop #{iso_path} /srv/www/htdocs/#{mountpoint}", true, 500, 'root')
+  $server.run("mkdir -p #{mount_point}")
+  $server.run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro  0 0' >> /etc/fstab")
+  $server.run("umount #{iso_path}; mount #{iso_path}")
 end
 
 When(/^I download the SSL certificate$/) do

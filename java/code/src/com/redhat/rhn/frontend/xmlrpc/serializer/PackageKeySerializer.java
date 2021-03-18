@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 /**
  * PackageKeySerializer
- * @version $Rev$
  *
  * @xmlrpc.doc
  *   #struct_begin("package security key")
