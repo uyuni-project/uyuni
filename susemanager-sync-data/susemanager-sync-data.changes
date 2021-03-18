@@ -1,3 +1,6 @@
+- define missing ubuntu universe update channels (bsc#1182842)
+- define UEK repositories for Oracle Linux
+
 -------------------------------------------------------------------
 Fri Jan 15 16:54:33 CET 2021 - jgonzalez@suse.com
 
