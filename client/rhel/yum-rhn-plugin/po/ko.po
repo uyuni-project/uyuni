@@ -14,10 +14,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-07 07:32+0000\n"
+"PO-Revision-Date: 2021-03-18 09:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/yum-rhn-"
-"plugin/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"yum-rhn-plugin/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,29 +26,28 @@ msgstr ""
 "X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnplugin.py:49
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error communicating with {PRODUCT_NAME} ."
-msgstr "RHN과 통신하는 도중 오류가 발생했습니다."
+msgstr "{PRODUCT_NAME}와(과) 통신하는 도중 오류가 발생했습니다."
 
 #: ../rhnplugin.py:64
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} or RHN Classic support will be disabled."
-msgstr "RHN 채널 지원은 비활성화됩니다."
+msgstr "{PRODUCT_NAME} 또는 RHN 기본 지원은 비활성화됩니다."
 
 #. If non-root notify user Spacewalk repo not accessible
 #: ../rhnplugin.py:71
-#, fuzzy
 msgid ""
 "*Note* Spacewalk repositories are not listed below. You must run this "
 "command as root to access Spacewalk repositories."
 msgstr ""
-"*알림* Red Hat Network 리포지터리가 아래 목록에 없습니다. RHN 리포지터리에 액"
-"세스하기 위해 이 명령을 root로 실행해야 합니다.  "
+"*참조* Spacewalk 리포지토리가 아래 목록에 없습니다. Spacewalk 리포지토리에 액세스하기 위해 이 명령을 root로 "
+"실행해야 합니다."
 
 #: ../rhnplugin.py:87
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "There was an error parsing the {PRODUCT_NAME} Proxy settings."
-msgstr "RHN Proxy 설정을 읽는 도중 오류가 발생했습니다."
+msgstr "{PRODUCT_NAME} Proxy 설정을 구문 분석하는 도중 오류가 발생했습니다."
 
 #: ../rhnplugin.py:99
 msgid "Either --version, --help or no commands entered"
@@ -73,9 +72,9 @@ msgid "You can use rhn_register to register."
 msgstr "rhn_register를 사용하여 등록할 수 있습니다."
 
 #: ../rhnplugin.py:136
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{PRODUCT_NAME} channel support will be disabled."
-msgstr "RHN 채널 지원은 비활성화됩니다."
+msgstr "{PRODUCT_NAME} 채널 지원은 비활성화됩니다."
 
 #: ../rhnplugin.py:140
 msgid "This system is not subscribed to any channels."
@@ -102,13 +101,13 @@ msgstr "패키지 프로파일 정보를 보낼 수 없습니다."
 
 #: ../rhnplugin.py:276
 msgid "Error Message:"
-msgstr "오류 메세지: "
+msgstr "오류 메시지:"
 
 #: ../rhnplugin.py:277
 msgid "Please run rhn_register as root on this client"
 msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
 
 #: ../rhnplugin.py:356
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "Missing required login information for {PRODUCT_NAME}: %s"
-msgstr "RHN에 로그인하기 위해 필요한 정보가 없습니다: %s"
+msgstr "{PRODUCT_NAME}에 로그인하기 위해 필요한 정보가 누락: %s"
