@@ -82,4 +82,15 @@
         where cc.org_id= :orgId and cc.id = :channelId
         and (srvrev.entity_id is not null or grprev.entity_id is not null or orgrev.entity_id is not null)
     </sql-query>
+
+    <sql-query name="StateRevision.findGroupsAssignedToChannel">
+        <return-scalar column="group_id" type="long"/>
+        select latest.group_id
+          from (
+                select max(gsr.state_revision_id) state_revision_id, gsr.group_id
+                  from suseServerGroupStateRevision gsr
+              group by gsr.group_id) latest
+          join susestaterevisionconfigchannel cc on latest.state_revision_id = cc.state_revision_id
+         where cc.config_channel_id = :channelId
+    </sql-query>
 </hibernate-mapping>

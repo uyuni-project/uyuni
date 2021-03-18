@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -44,11 +45,13 @@ import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -590,6 +593,47 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
             assertTrue(revisions.get(gcc1.getId()).contains(cra.getConfigRevision()));
         }
 
+    }
+
+    public void testListAssignedGroups() throws Exception {
+        String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
+        String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
+
+        ConfigChannel cc1 = handler.create(admin,
+                ccLabel1,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+        ConfigChannel cc2 = handler.create(admin,
+                ccLabel2,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+
+        ManagedServerGroup group1 = ServerGroupTestUtils.createManaged(admin);
+        ManagedServerGroup group2 = ServerGroupTestUtils.createManaged(admin);
+
+        group1.subscribeConfigChannels(Arrays.asList(cc1), admin);
+        group2.subscribeConfigChannels(Arrays.asList(cc2, cc1), admin);
+
+        List<ManagedServerGroup> systemGroups = handler.listAssignedSystemGroups(admin, ccLabel1);
+        assertContains(systemGroups, group1);
+        assertContains(systemGroups, group2);
+
+        systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
+        assertFalse("Unexpected group found", systemGroups.contains(group1));
+        assertContains(systemGroups, group2);
+
+        group1.subscribeConfigChannels(Arrays.asList(cc2), admin);
+        group2.unsubscribeConfigChannels(Arrays.asList(cc1), admin);
+
+        systemGroups = handler.listAssignedSystemGroups(admin, ccLabel1);
+        assertContains(systemGroups, group1);
+        assertFalse("Unexpected group found", systemGroups.contains(group2));
+
+        systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
+        assertContains(systemGroups, group1);
+        assertContains(systemGroups, group2);
     }
 
     private void store(Map<Long, Set<ConfigRevision>> revisions, Long ccid,

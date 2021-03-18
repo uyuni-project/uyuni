@@ -481,3 +481,45 @@ def do_group_details(self, args, short=False):
             print('\n'.join(sorted(systems)))
 
     return 0
+
+####################
+
+def help_group_listconfigchannels(self):
+    print(_('group_listconfigchannels: List configuration channels assigned to a system group'))
+    print(_('usage: group_listconfigchannels GROUP'))
+
+def complete_group_listconfigchannels(self, text, line, beg, end):
+    return tab_completer(self.do_group_list('', True), text)
+
+def do_group_listconfigchannels(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_group_details()
+        return 1
+
+    add_separator = False
+
+    for group in args:
+        try:
+            channels = self.client.systemgroup.listAssignedConfigChannels(self.session, group)
+        except xmlrpclib.Fault:
+            logging.warning(_N('The group "%s" is invalid') % group)
+            return 1
+        for details in channels:
+            if add_separator:
+                print(self.SEPARATOR)
+            add_separator = True
+
+            print(_('Label:       %s') % details.get('label'))
+            print(_('Name:        %s') % details.get('name'))
+            print(_('Description: %s') % details.get('description'))
+            print(_('Type:        %s') % details.get('configChannelType', {}).get('label'))
+
+    return 0

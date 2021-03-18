@@ -18,7 +18,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
-
 import com.redhat.rhn.domain.server.ServerGroup;
 
 import org.apache.log4j.Logger;
@@ -245,5 +244,16 @@ public class StateFactory extends HibernateFactory {
             }
         }
         return usage;
+    }
+
+    /**
+     * List group ids where a given channel is assigned to
+     * @param channel the channel
+     * @return list of group ids
+     */
+    public static List<Long> listConfigChannelsSubscribedGroupIds(ConfigChannel channel) {
+        return getSession().getNamedQuery("StateRevision.findGroupsAssignedToChannel")
+                .setParameter("channelId", channel.getId())
+                .list();
     }
 }

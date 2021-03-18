@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
@@ -24,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
+import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -365,5 +368,100 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         assertEquals(server.getId().toString(), list.get(0).toString());
     }
 
+    public void testSubscribeAndListAssignedConfigChannels() throws Exception {
+        ConfigChannelHandler ccHandler = new ConfigChannelHandler();
+        String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
+        String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
 
+        ConfigChannel cc1 = ccHandler.create(admin,
+                ccLabel1,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+        ConfigChannel cc2 = ccHandler.create(admin,
+                ccLabel2,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+
+        ManagedServerGroup group1 = ServerGroupTestUtils.createManaged(admin);
+        ManagedServerGroup group2 = ServerGroupTestUtils.createManaged(admin);
+
+        handler.subscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1));
+        handler.subscribeConfigChannel(admin, group2.getName(), Arrays.asList(ccLabel2));
+        List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
+        List<ConfigChannel> assignedChannels2 = handler.listAssignedConfigChannels(admin, group2.getName());
+
+        assertContains(assignedChannels1, cc1);
+        assertContains(assignedChannels2, cc2);
+    }
+
+    public void testSubscribeAndListAssignedConfigChannels2() throws Exception {
+        ConfigChannelHandler ccHandler = new ConfigChannelHandler();
+        String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
+        String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
+
+        ConfigChannel cc1 = ccHandler.create(admin,
+                ccLabel1,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+        ConfigChannel cc2 = ccHandler.create(admin,
+                ccLabel2,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+
+        ManagedServerGroup group1 = ServerGroupTestUtils.createManaged(admin);
+        ManagedServerGroup group2 = ServerGroupTestUtils.createManaged(admin);
+
+        handler.subscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1, ccLabel2));
+        List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
+        List<ConfigChannel> assignedChannels2 = handler.listAssignedConfigChannels(admin, group2.getName());
+
+        assertContains(assignedChannels1, cc1);
+        assertContains(assignedChannels1, cc2);
+        assertTrue("Unexpected assigned channels", assignedChannels2.isEmpty());
+    }
+
+    public void testUnsubscribeConfigChannels() throws Exception {
+        ConfigChannelHandler ccHandler = new ConfigChannelHandler();
+        String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
+        String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
+
+        ConfigChannel cc1 = ccHandler.create(admin,
+                ccLabel1,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+        ConfigChannel cc2 = ccHandler.create(admin,
+                ccLabel2,
+                "CC NAME " + TestUtils.randomString(),
+                "CC DESCRIPTION " + TestUtils.randomString(),
+                "state");
+
+        ManagedServerGroup group1 = ServerGroupTestUtils.createManaged(admin);
+
+        handler.subscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1, ccLabel2));
+        List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
+
+        assertContains(assignedChannels1, cc1);
+        assertContains(assignedChannels1, cc2);
+
+        handler.unsubscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1));
+        assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
+        assertContains(assignedChannels1, cc2);
+        assertFalse("Unexpected channel found", assignedChannels1.contains(cc1));
+    }
+
+    /*
+     * Just check that we do not crash
+     */
+    public void testListAssignedFormulas() throws Exception {
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
+
+        List<Formula> assignedFormulas = handler.listAssignedFormuals(admin, group.getName());
+
+        assertTrue("Unexpected assigned formulas found", assignedFormulas.isEmpty());
+    }
 }
