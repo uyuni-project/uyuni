@@ -22,13 +22,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Ubuntu 18.04" product has been added
 
-#  Scenario: Add Ubuntu 20.04
-#    Given I am on the Products page
-#    When I enter "Ubuntu 20.04" as the filtered product description
-#    And I select "Ubuntu 20.04" as a product
-#    Then I should see the "Ubuntu 20.04" selected
-#    When I click the Add Product button
-#    And I wait until I see "Ubuntu 20.04" product has been added
+  Scenario: Add Ubuntu 20.04
+    Given I am on the Products page
+    When I enter "Ubuntu 20.04" as the filtered product description
+    And I select "Ubuntu 20.04" as a product
+    Then I should see the "Ubuntu 20.04" selected
+    When I click the Add Product button
+    And I wait until I see "Ubuntu 20.04" product has been added
 
   Scenario: SUSE Linux Enterprise Server 11 SP3
     Given I am on the Products page
