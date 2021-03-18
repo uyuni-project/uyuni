@@ -1,3 +1,4 @@
+- define dependency for DB schema version
 - Improve config component switching to initial on exceptions
 - deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)
 - Fixing improper exception handling causing another exception in ThreadedDownloader
