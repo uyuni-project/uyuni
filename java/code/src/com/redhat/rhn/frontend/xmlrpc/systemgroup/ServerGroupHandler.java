@@ -651,7 +651,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
      * #array_begin()
-     * $FormualSerializer
+     * $FormulaSerializer
      * #array_end()
      */
     public List<Formula> listAssignedFormuals(User loggedInUser, String systemGroupName) {
