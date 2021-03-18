@@ -770,14 +770,14 @@ end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  node.run('zypper ref')
   cmd = "zypper --non-interactive install -t pattern #{pattern}"
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 106])
 end
 
 When(/^I remove pattern "([^"]*)" from this "([^"]*)"$/) do |pattern, host|
   node = get_target(host)
-  raise 'Not found: zypper' unless file_exists?(node, '/usr/bin/zypper')
+  node.run('zypper ref')
   cmd = "zypper --non-interactive remove -t pattern #{pattern}"
   node.run(cmd, true, DEFAULT_TIMEOUT, 'root', [0, 100, 101, 102, 103, 104, 106])
 end
