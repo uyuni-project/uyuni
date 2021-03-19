@@ -1,3 +1,5 @@
+- deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)
+- Fixing improper exception handling causing another exception in ThreadedDownloader
 - Add minrate/timeout configuration values for downloading DEB/RPM packages
 - add allow vendor change with patching via rhnstack 
 - Fixed kickstart tree permissions to a+r.

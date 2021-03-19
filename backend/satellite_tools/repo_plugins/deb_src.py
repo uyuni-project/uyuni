@@ -274,6 +274,7 @@ class ContentSource:
         self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
                             self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
+        initCFG(comp)
         self.repo.verify()
 
         self.num_packages = 0
@@ -295,7 +296,8 @@ class ContentSource:
             self.timeout = int(CFG.REPOSYNC_TIMEOUT)
         except ValueError:
             self.timeout = 300
-        initCFG(comp)
+        finally:
+            initCFG(comp)
 
     def get_md_checksum_type(self):
         pass

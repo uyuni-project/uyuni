@@ -284,29 +284,33 @@ class ThreadedDownloader:
         comp = CFG.getComponent()
         initCFG("server.satellite")
         try:
-            self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
-        except ValueError:
-            raise ValueError(
-                "Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS
-            )
-        try:
-            self.timeout = int(CFG.REPOSYNC_TIMEOUT)
-        except ValueError:
-            raise ValueError(
-                "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT
-            )
-        try:
-            self.minrate = int(CFG.REPOSYNC_MINRATE)
-        except ValueError:
-            raise ValueError(
-                "Minimal transfer rate in bytes pre second expected, found: '%s'"
-                % CFG.REPOSYNC_MINRATE
-            )
+            try:
+                self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
+            except ValueError:
+                raise ValueError(
+                    "Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS
+                )
+            try:
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                raise ValueError(
+                    "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT
+                )
+            try:
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                raise ValueError(
+                    "Minimal transfer rate in bytes pre second expected, found: '%s'"
+                    % CFG.REPOSYNC_MINRATE
+                )
+        except Exception as e:
+            raise e from None
+        finally:
+            initCFG(comp)
 
         if self.threads < 1:
             raise ValueError("Invalid number of threads: %d" % self.threads)
 
-        initCFG(comp)
         self.retries = retries
         self.log_obj = log_obj
         self.force = force
