@@ -1475,6 +1475,7 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
 end
 
+# WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
 When(/^I set correct product for "(proxy|branch server)"$/) do |product|
   if product.include? 'proxy'
     prod = 'SUSE-Manager-Proxy'
@@ -1483,6 +1484,6 @@ When(/^I set correct product for "(proxy|branch server)"$/) do |product|
   else
     raise 'Incorrect product used.'
   end
-  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
-  puts "Setting correct product: #{out}"
+  out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting proper product: #{out}"
 end
