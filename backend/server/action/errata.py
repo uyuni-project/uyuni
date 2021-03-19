@@ -40,7 +40,7 @@ def update(serverId, actionId, dry_run=0):
         raise InvalidAction("errata.update: Unknown action id "
                             "%s for server %s" % (actionId, serverId))
 
-    if ret[0]['allow_vendor_change'] is null or ret[0]['allow_vendor_change'] is False:
+    if ret[0]['allow_vendor_change'] is None or ret[0]['allow_vendor_change'] is False:
         return [x['errata_id'] for x in ret]
 
     return {
