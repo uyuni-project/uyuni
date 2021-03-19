@@ -1129,7 +1129,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>&lt;p&gt; &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} 시스템&lt;/a&gt;&lt;/strong&gt;에 필요한 인타이틀먼트가 충분하지 않습니다.&lt;/p&gt; </target>
+        <target>&lt;p&gt;&lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} 시스템&lt;/a&gt;&lt;/strong&gt;에 필요한 인타이틀먼트가 충분하지 않습니다.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="traceback message header" xml:space="preserve">
         <source>The following exception occurred while executing this request:</source>
@@ -1283,7 +1283,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target state="needs-adaptation">{0}로 추가된 Satellite 관리자 역할 </target>
+        <target state="translated">{0}(으)로 추가된 @@PRODUCT_NAME@@ 관리자 역할</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin" xml:space="preserve">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1297,7 +1297,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target state="needs-adaptation">마지막으로 남아있는 satellite 관리자는 삭제할 수 없습니다. </target>
+        <target state="translated">마지막으로 남아있는 @@PRODUCT_NAME@@ 관리자는 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
@@ -1835,7 +1835,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target state="needs-adaptation">주요 네트워크 인터페이스는 &lt;strong&gt;{0}&lt;/strong&gt;로 설정되어 있습니다. </target>
+        <target state="translated">네트워킹 속성이 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="prefix" xml:space="preserve">
         <source>Prefix</source>
@@ -1953,7 +1953,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>거르기:</target>
+        <target>필터링 기준: </target>
       </trans-unit>
       <trans-unit id="message.range" xml:space="preserve">
         <source>{0} - {1} of {2}</source>
@@ -2339,42 +2339,42 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>킥스타트 시작</target>
+        <target>자동 설치 시작</target>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation of a guest system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>게스트 시스템의 킥스타트 시작</target>
+        <target>게스트 시스템의 자동 설치 시작</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync" xml:space="preserve">
         <source>Schedule a package sync for autoinstallations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>킥스타트를 위한 패키지 동기화 스케줄</target>
+        <target>자동 설치를 위한 패키지 동기화 스케줄</target>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel" xml:space="preserve">
         <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>지정하신 킥스타트 레이블을 사용할 수 없습니다, 이는 다음과 같은 문자가 포함된 최소 {0} 개의 문자이어야 합니다: A-Z, a-z, 0-9, _, - </target>
+        <target>선택한 자동 설치 레이블을 사용할 수 없습니다. 이는 다음과 같은 문자가 포함된 최소 {0}개의 문자이어야 합니다: A-Z, a-z, 0-9, _, - </target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists" xml:space="preserve">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 레이블이 이미 존재합니다: '{0}'. 다른 레이블을 선택해주십시오.</target>
+        <target>자동 설치 레이블이 이미 존재합니다. '{0}'. 고유한 킥스타트 레이블을 선택하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstart.details.success" xml:space="preserve">
         <source>Autoinstallation details successfully updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 정보가 성공적으로 업데이트되었습니다.</target>
+        <target>자동 설치 세부 정보가 성공적으로 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile" xml:space="preserve">
         <source>Please specify only file contents or a file to upload but not both.</source>
@@ -2388,14 +2388,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 프로파일 레이블이 필요합니다. </target>
+        <target>자동 설치 프로파일 레이블이 필요합니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.delete.success" xml:space="preserve">
         <source>Autoinstallation was deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
-        <target>킥스타트가 성공적으로 삭제되었습니다.</target>
+        <target>자동 설치가 성공적으로 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.options.success" xml:space="preserve">
         <source>Kickstart advanced options successfully updated.</source>
@@ -2409,11 +2409,11 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 기본값 @@PRODUCT_NAME@@ 킥스타트 URL은 파일 경로로 저장되기 때문에 @@PRODUCT_NAME@@이 킥스타트 파일에서 렌더링되는 URL의 호스트이름을 동적으로 조장할 수 있습니다 (프록시의 경우). 파일 경로를 정규화된 URL로 변경하여 이 값을 사용자 정의할 수 있으며, 이 경우 정규화된 URL은 킥스타트 파일에 나타나게 됩니다.        </target>
+        <target>&lt;strong&gt;참고:&lt;/strong&gt; 기본값 @@PRODUCT_NAME@@ 킥스타트 URL은 파일 경로로 저장되기 때문에 @@PRODUCT_NAME@@이 킥스타트 파일에서 렌더링되는 URL의 호스트이름을 동적으로 조장할 수 있습니다(프록시의 경우). 파일 경로를 정규화된 URL로 변경하여 이 값을 사용자 정의할 수 있으며, 이 경우 정규화된 URL은 킥스타트 파일에 나타나게 됩니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
-        <target>&lt;strong&gt;NOTE:&lt;/strong&gt; 이 필드에는 알고리즘(이 운영 체제에서 지원하는 알고리즘)으로 해시된 비밀번호를 설정할 수 있습니다. &lt;strong&gt;인증&lt;/strong&gt; 옵션의 해시 알고리즘은 향후 생성되는 비밀번호에 영향을 주며, 여기에서 사용하는 알고리즘과 동일한 알고리즘을 사용할 수 있습니다. 일반 텍스트 비밀번호를 입력하는 경우 위에 있는 &lt;strong&gt;암호화&lt;/strong&gt;를 선택하여 암호화해야 하며, 사용하지 않는 경우에는 킥스타트가 종료되면 로그인할 수 없습니다.</target>
+        <target>&lt;strong&gt;참고:&lt;/strong&gt; 이 필드에는 알고리즘(이 운영 체제에서 지원하는 알고리즘)으로 해시된 비밀번호를 설정할 수 있습니다. &lt;strong&gt;인증&lt;/strong&gt; 옵션의 해시 알고리즘은 향후 생성되는 비밀번호에 영향을 주며, 여기에서 사용하는 알고리즘과 동일한 알고리즘을 사용할 수 있습니다. 일반 텍스트 비밀번호를 입력하는 경우 위에 있는 &lt;strong&gt;암호화&lt;/strong&gt;를 선택하여 암호화해야 하며, 사용하지 않는 경우에는 킥스타트가 종료되면 로그인할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
@@ -2423,7 +2423,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 프로파일 {0}에 IP 범위를 성공적으로 추가하였습니다</target>
+        <target>자동 설치 프로파일 {0}에 IP 범위를 성공적으로 추가하였습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_conflict.failure" xml:space="preserve">
         <source>Error: The IP range you entered conflicts with another IP range. Please choose a different IP range.</source>
@@ -2444,56 +2444,56 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 프로파일 {0}에서 IP 범위를 성공적으로 삭제하였습니다</target>
+        <target>자동 설치 프로파일 {0}에서 IP 범위를 성공적으로 삭제하였습니다</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure" xml:space="preserve">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 프로파일 {0}에서 IP 범위를 삭제하는데 오류가 발생했습니다. 다시 시도하시기 바랍니다.</target>
+        <target>자동 설치 프로파일 {0}에서 IP 범위를 삭제하는데 오류가 발생했습니다. 다시 시도하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
-        <target>킥스타트 Snippet &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 업데이트되었습니다.  </target>
+        <target>자동 설치 코드 조각 &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
-        <target>킥스타트 Snippet &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 생성되었습니다.     </target>
+        <target>자동 설치 코드 조각 &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 생성되었습니다.</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success" xml:space="preserve">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
-        <target>킥스타트 Snippet &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 삭제되었습니다.    </target>
+        <target>자동 설치 코드 조각 &lt;strong&gt;{0}&lt;/strong&gt;이 성공적으로 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.couldnotdelete.message" xml:space="preserve">
         <source>An error occurred when attempting to delete the snippet &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart snippet Delete Confirm pages.</context>
         </context-group>
-        <target>snippet &lt;strong&gt;{0}&lt;/strong&gt;을 삭제 시도할 경우 오류가 발생합니다.   </target>
+        <target>코드 조각 &lt;strong&gt;{0}&lt;/strong&gt;을 삭제 시도할 경우 오류가 발생합니다.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.rename-error" xml:space="preserve">
         <source>An error occurred when attempting to rename the snippet &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>snippet &lt;strong&gt;{0}&lt;/strong&gt;을 &lt;strong&gt;{1}&lt;/strong&gt;로 이름 변경 시도할 경우 오류가 발생합니다.      </target>
+        <target>코드 조각 &lt;strong&gt;{0}&lt;/strong&gt;을 &lt;strong&gt;{1}&lt;/strong&gt;로 이름 변경 시도할 경우 오류가 발생합니다.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.filenameexists.message" xml:space="preserve">
         <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt;라는 이름을 갖는 킥스타트 snippet이 이미 존재합니다.  </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt;라는 이름을 갖는 코드 조각이 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message" xml:space="preserve">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
@@ -2514,14 +2514,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
-        <target>snippet 삭제  </target>
+        <target>코드 조각 삭제</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 첨가하시면 새로운 시스템의 IP 주소에 기반하여 킥스타트를 실행할 수 있습니다. </target>
+        <target>자동 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 첨가하시면 새로운 시스템의 IP 주소에 기반하여 자동 설치를 실행할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
@@ -2549,7 +2549,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>활성키를 위한 설정 디플로이 작업 스케줄</target>
+        <target>활성키를 위한 설정 배포 작업 스케줄</target>
       </trans-unit>
       <trans-unit id="configfiles.mtime_upload" xml:space="preserve">
         <source>Upload config file data based upon mtime to server</source>
@@ -2563,14 +2563,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>임의 스크립터 실행</target>
+        <target>임의 스크립트 실행</target>
       </trans-unit>
       <trans-unit id="rhnsd.configure" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daemon Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 데몬 설정  </target>
+        <target>@@PRODUCT_NAME@@ 데몬 설정</target>
       </trans-unit>
       <trans-unit id="packages.verify" xml:space="preserve">
         <source>Verify deployed packages</source>
@@ -2584,7 +2584,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@과 함께 rhn-applet 사용 허용 RHN Satellite에서 rhn-applet 사용 허용</target>
+        <target>@@PRODUCT_NAME@@와(과) 함께 rhn-applet 사용 허용</target>
       </trans-unit>
       <trans-unit id="rollback.rollback" xml:space="preserve">
         <source>Rollback a transaction</source>
@@ -2639,7 +2639,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
         </context-group>
-        <target>에라타 업데이트: {0} - {1}</target>
+        <target>패치 업데이트: {0} - {1}</target>
       </trans-unit>
       <trans-unit id="errata.swstack" xml:space="preserve">
         <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
@@ -2647,7 +2647,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
         </context-group>
-        <target>에라타 업데이트: 소프트웨어 업데이트 스택의 통합된 업데이트 ({0} 에라타)</target>
+        <target>패치 업데이트: 소프트웨어 업데이트 스택의 통합된 업데이트({0} 패치)</target>
       </trans-unit>
       <trans-unit id="errata.schedule" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
@@ -2728,7 +2728,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystemsSubmit</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt;가 성공적으로 재스케줄되었습니다.</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt;이(가) 성공적으로 다시 계획되었습니다.</target>
       </trans-unit>
       <trans-unit id="cert_admin" xml:space="preserve">
         <source>Certificate Administrator</source>
@@ -2742,21 +2742,21 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>조직 관리자 </target>
+        <target>조직 관리자</target>
       </trans-unit>
       <trans-unit id="satellite_admin" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 관리자  </target>
+        <target>@@PRODUCT_NAME@@ 관리자</target>
       </trans-unit>
       <trans-unit id="org_applicant" xml:space="preserve">
         <source>Organization Applicant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>조직 신청자 </target>
+        <target>조직 신청자</target>
       </trans-unit>
       <trans-unit id="channel_admin" xml:space="preserve">
         <source>Channel Administrator</source>
@@ -2777,21 +2777,21 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>Coma CMS 저자 </target>
+        <target>Coma CMS 저자</target>
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>Coma CMS 게시자 </target>
+        <target>Coma CMS 게시자</target>
       </trans-unit>
       <trans-unit id="rhn_support" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Support Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 지원 관리자  </target>
+        <target>@@PRODUCT_NAME@@ 지원 관리자</target>
       </trans-unit>
       <trans-unit id="config_admin" xml:space="preserve">
         <source>Configuration Administrator</source>
@@ -2805,7 +2805,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>모니터링 (Monitoring) 관리자  </target>
+        <target>모니터링 관리자</target>
       </trans-unit>
       <trans-unit id="system_group_admin" xml:space="preserve">
         <source>System Group Administrator</source>
@@ -2854,7 +2854,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>킥스타트 파일 업로드  </target>
+        <target>킥스타트/Autoyast 파일 업로드</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -2868,7 +2868,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>킥스타트 생성</target>
+        <target>자동 설치 생성</target>
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart" xml:space="preserve">
         <source>Clone Autoinstallation</source>
@@ -2896,7 +2896,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Errata</context>
         </context-group>
-        <target>에라타 생성</target>
+        <target>패치 생성</target>
       </trans-unit>
       <trans-unit id="toolbar.create.group" xml:space="preserve">
         <source>Create Group</source>
@@ -2910,14 +2910,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
-        <target>외부 그룹 생성 </target>
+        <target>외부 그룹 생성</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.extgroup" xml:space="preserve">
         <source>Delete External Group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
-        <target>외부 그룹 삭제 </target>
+        <target>외부 그룹 삭제</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.user" xml:space="preserve">
         <source>Delete User</source>
@@ -3036,28 +3036,28 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>보안 권고 (아주 중요)</target>
+        <target>보안 권고(아주 중요)</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.imp" xml:space="preserve">
         <source>Security Advisory (Important)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>보안 권고 (중요)</target>
+        <target>보안 권고(중요)</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.mod" xml:space="preserve">
         <source>Security Advisory (Moderate)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>보안 권고 (중간)</target>
+        <target>보안 권고(중간)</target>
       </trans-unit>
       <trans-unit id="errata.create.securityadvisory.low" xml:space="preserve">
         <source>Security Advisory (Low)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Create.do</context>
         </context-group>
-        <target>보안 권고 (낮음)</target>
+        <target>보안 권고(낮음)</target>
       </trans-unit>
       <trans-unit id="packages.search.both" xml:space="preserve">
         <source>Name and Summary</source>
@@ -3071,28 +3071,28 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>이름</target>
+        <target>이름만</target>
       </trans-unit>
       <trans-unit id="packages.search.name_and_desc" xml:space="preserve">
         <source>Name and Description</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>이름 및 설명 </target>
+        <target>이름 및 설명</target>
       </trans-unit>
       <trans-unit id="packages.search.free_form" xml:space="preserve">
         <source>Free form</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>자유 형식 </target>
+        <target>자유 형식</target>
       </trans-unit>
       <trans-unit id="packages.search.use_free_form" xml:space="preserve">
         <source>Searching by fields can ONLY be done with Free Form search.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>영역에 의한 검색은 자유 형식으로만 검색할 수 있습니다. </target>
+        <target>필드별 검색은 자유 형식으로만 검색할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="packages.search.need_one_arch" xml:space="preserve">
         <source>When searching by architecture you must select at least one architecture.</source>
@@ -3106,14 +3106,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>서버 검색을 위해 연결할 수 없습니다. </target>
+        <target>검색 서버에 연결할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="packages.search.could_not_parse_query" xml:space="preserve">
         <source>Could not parse query '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>'{0}' 질의를 구문 분석할 수 없습니다. </target>
+        <target>'{0}' 쿼리를 구문 분석할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing" xml:space="preserve">
         <source>Index files missing from search-server.  Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
@@ -3784,7 +3784,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target>현재 @@PRODUCT_NAME@@ 시간:   </target>
+        <target>현재 @@PRODUCT_NAME@@ 시간:</target>
       </trans-unit>
       <trans-unit id="timetag.awol" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; This system has not checked into the @@PRODUCT_NAME@@ recently. Since a system cannot be updated if it does not check in to @@PRODUCT_NAME@@, it is unlikely that this action will succeed.&lt;br/&gt;&lt;br/&gt; Please check the system logs.</source>
@@ -6085,7 +6085,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾으실 수 있습니다</target>
+        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾으실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -6301,14 +6301,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
-        <target>마지막 시스템 체크인:</target>
+        <target>마지막 체크인</target>
       </trans-unit>
       <trans-unit id="taskomatic.daily.errata" xml:space="preserve">
         <source>Patch Synopses:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
-        <target>에라타 기본 설명:이</target>
+        <target>패치 개요:</target>
       </trans-unit>
       <trans-unit id="taskomatic.notavailable" xml:space="preserve">
         <source>Taskomatic is not available.</source>
@@ -7323,7 +7323,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>RHN Applet @@PRODUCT_NAME@@ 활성이 &lt;a href="{0}"&gt;스케줄됨&lt;/a&gt; </target>
+        <target>RHN Applet @@PRODUCT_NAME@@ 활성이 &lt;a href="{0}"&gt;스케줄됨&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none" xml:space="preserve">
         <source>None</source>
@@ -8991,7 +8991,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="lastCheckin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target>마지막 시스템 체크인:</target>
+        <target>마지막 체크인</target>
       </trans-unit>
       <trans-unit id="entitlement" xml:space="preserve">
         <source>System Types</source>
@@ -10514,7 +10514,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
-        <target>채널 상태 자동 적용이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;예약&lt;/a&gt;됨</target>
+        <target>채널 상태 자동 적용이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;예약됨&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -10954,29 +10954,29 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
         <target state="translated">저장소 레이블 '{0}'이(가) 잘못되었습니다. 저장소 레이블은 문자로 시작해야 하며 소문자, 하이픈('-'), 마침표('.'), 밑줄('_'), 숫자, 공백, 괄호 및 슬래시('/')만 포함되어야 합니다.</target>
       </trans-unit>
-    <trans-unit id="virt.network_create" xml:space="preserve">
+      <trans-unit id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
     </body>
   </file>
 </xliff>
