@@ -991,9 +991,9 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Search" xml:space="preserve">
+      <trans-unit id="Search" xml:space="preserve" approved="yes">
         <source>Search</source>
-        <target />
+        <target>Hledat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
