@@ -43,6 +43,19 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     Then the SLE12 SP5 product should be added
 
+
+@scc_credentials
+  Scenario: Add the initial product for the service pack migration
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
+    And I select "x86_64" in the dropdown list of the architecture filter
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
+    Then I should see a "Basesystem Module 15 SP1 x86_64" text
+    When I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
+    And I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
+    Then the SLE15 SP1 products should be added
+
 @scc_credentials
   Scenario: Add a product with recommended enabled
     Given I am on the Products page
@@ -62,26 +75,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP2 product should be added
 
 @scc_credentials
-@service_pack_migration
-  Scenario: Add the initial product for the service pack migration
-    Given I am on the Products page
-    When I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
-    And I select "x86_64" in the dropdown list of the architecture filter
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
-    Then I should see a "Basesystem Module 15 SP1 x86_64" text
-    When I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
-    And I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
-    Then the SLE15 SP1 products should be added
-
-@service_pack_migration
-@scc_credentials
-  Scenario: Installer update channels got enabled when products were added for the SP migration
-    When I execute mgr-sync "list channels" with user "admin" and password "admin"
-    Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
-    And I should get "    [I] SLE15-SP2-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle15-sp2-installer-updates-x86_64]"
-
-@scc_credentials
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     Then I should get "    [I] SLES12-SP5-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP5 x86_64 [sles12-sp5-installer-updates-x86_64]"
+    And I should get "    [I] SLE15-SP1-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP1 x86_64 [sle15-sp1-installer-updates-x86_64]"
+    And I should get "    [I] SLE15-SP2-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle15-sp2-installer-updates-x86_64]"
