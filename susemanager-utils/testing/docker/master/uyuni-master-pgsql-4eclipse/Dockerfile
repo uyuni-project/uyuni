@@ -8,7 +8,8 @@ MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 #RUN zypper --non-interactive in -n spacewalk-admin susemanager-schema smdba
 RUN zypper --non-interactive in -n spacewalk-admin smdba
 
-RUN zypper --non-interactive in /root/susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm
+#RUN zypper --non-interactive in /root/susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm
+RUN zypper --non-interactive in /root/susemanager-schema-4.2.2-1.1.uyuni.noarch.rpm
 
 RUN /usr/bin/rhn-config-schema.pl --source=/etc/sysconfig/rhn/postgres/main.sql --target=/etc/sysconfig/rhn/postgres/deploy.sql --tablespace-name=None
 
