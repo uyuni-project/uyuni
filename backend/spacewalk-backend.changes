@@ -1,3 +1,5 @@
+- deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)
+- Fixing improper exception handling causing another exception in ThreadedDownloader
 - Avoid race condition due multiple reposync import threads (bsc#1183151)
 - Fix for UnicodeDecodeError in satellite-sync: Opening RPM file in binary mode (bsc#1181274)
 - Open repomd files as binary (bsc#1173893)

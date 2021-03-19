@@ -228,6 +228,7 @@ class ContentSource(object):
         else:
             self.org = "NULL"
 
+        comp = CFG.getComponent()
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
@@ -243,6 +244,8 @@ class ContentSource(object):
         root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
         self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'), self.proxy_addr, self.proxy_user, self.proxy_pass)
+        initCFG(comp)
+        self.repo.verify()
 
         self.num_packages = 0
         self.num_excluded = 0
