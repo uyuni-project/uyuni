@@ -92,7 +92,6 @@ Feature: Action chains on several systems at once
     Then I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
-    Given I am authorized as "admin" with password "admin"
     When I run "rhn_check -vvv" on "sle_client"
     And I wait until file "/tmp/action_chain_done" exists on "sle_client"
     And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
