@@ -112,47 +112,50 @@ class ContentSource(zypper_ContentSource):
         # /etc/rhn/rhn.conf has more priority than yum.conf
         initCFG('server.satellite')
 
-        # keep authtokens for mirroring
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
-        if query:
-            self.authtoken = query
+        # ensure the config namespace will be switched back in any case
+        try:
+            # keep authtokens for mirroring
+            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+            if query:
+                self.authtoken = query
 
-        # load proxy configuration based on the url
-        self._load_proxy_settings(self.url)
+            # load proxy configuration based on the url
+            self._load_proxy_settings(self.url)
 
-        # perform authentication if implemented
-        self._authenticate(url)
+            # perform authentication if implemented
+            self._authenticate(url)
 
-        # Check for settings in yum configuration files (for custom repos/channels only)
-        if org:
-            repos = self.dnfbase.repos
-        else:
-            repos = None
-        if repos and name in repos:
-            repo = repos[name]
-        elif repos and channel_label in repos:
-            repo = repos[channel_label]
-            # In case we are using Repo object based on channel config, override it's id to name of the repo
-            # To not create channel directories in cache directory
-            repo.id = name
-        else:
-            # Not using values from config files
-            repo = dnf.repo.Repo(name,self.dnfbase.conf)
-            repo.repofile = yumsrc_conf
-            # pylint: disable=W0212
-            repo._populate(self.configparser, name, yumsrc_conf)
-        self.repo = repo
+            # Check for settings in yum configuration files (for custom repos/channels only)
+            if org:
+                repos = self.dnfbase.repos
+            else:
+                repos = None
+            if repos and name in repos:
+                repo = repos[name]
+            elif repos and channel_label in repos:
+                repo = repos[channel_label]
+                # In case we are using Repo object based on channel config, override it's id to name of the repo
+                # To not create channel directories in cache directory
+                repo.id = name
+            else:
+                # Not using values from config files
+                repo = dnf.repo.Repo(name,self.dnfbase.conf)
+                repo.repofile = yumsrc_conf
+                # pylint: disable=W0212
+                repo._populate(self.configparser, name, yumsrc_conf)
+            self.repo = repo
 
-        self.yumbase = self.dnfbase # for compatibility
+            self.yumbase = self.dnfbase # for compatibility
 
-        self.setup_repo(repo, no_mirrors, ca_cert_file, client_cert_file, client_key_file)
-        self.num_packages = 0
-        self.num_excluded = 0
-        self.groupsfile = None
-        self.repo = self.dnfbase.repos[self.repoid]
-        self.get_metadata_paths()
-        # set config component back to original
-        initCFG(comp)
+            self.setup_repo(repo, no_mirrors, ca_cert_file, client_cert_file, client_key_file)
+            self.num_packages = 0
+            self.num_excluded = 0
+            self.groupsfile = None
+            self.repo = self.dnfbase.repos[self.repoid]
+            self.get_metadata_paths()
+        finally:
+            # set config component back to original
+            initCFG(comp)
 
 
     def __del__(self):
