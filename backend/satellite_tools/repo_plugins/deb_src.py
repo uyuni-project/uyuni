@@ -274,6 +274,7 @@ class ContentSource:
         self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
                             self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
+        initCFG(comp)
         self.repo.verify()
 
         self.num_packages = 0
@@ -283,7 +284,6 @@ class ContentSource:
         (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
         if query:
             self.authtoken = query
-        initCFG(comp)
 
     def get_md_checksum_type(self):
         pass
