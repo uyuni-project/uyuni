@@ -38,8 +38,7 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-@service_pack_migration
-  Scenario: Migrate this minion to SLE 15 SP2
+  Scenario: Migrate this normal minion to SLE 15 SP2
     Given I am on the Systems overview page of this "sle_spack_migrated_minion"
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
@@ -52,7 +51,6 @@ Feature: Bootstrap a Salt minion via the GUI
     And I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
-@service_pack_migration
   Scenario: Check the migration is successful for this minion
     Given I am on the Systems overview page of this "sle_spack_migrated_minion"
     When I follow "Events"
@@ -62,7 +60,6 @@ Feature: Bootstrap a Salt minion via the GUI
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
     And vendor change should be enabled for "SP migration" on "sle_spack_migrated_minion"
 
-@service_pack_migration
   Scenario: Install the latest Salt on this minion
     When I enable repositories before installing Salt on this "sle_spack_migrated_minion"
     And I install Salt packages from "sle_spack_migrated_minion"
