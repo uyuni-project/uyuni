@@ -1380,6 +1380,7 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   end
 end
 
+# WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
 When(/^I set correct product for "(proxy|branch server)"$/) do |product|
   if product.include? 'proxy'
     prod = 'SUSE-Manager-Proxy'
@@ -1388,6 +1389,6 @@ When(/^I set correct product for "(proxy|branch server)"$/) do |product|
   else
     raise 'Incorrect product used.'
   end
-  out, = $proxy.run("zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
-  puts "Setting correct product: #{out}"
+  out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
+  puts "Setting proper product: #{out}"
 end
