@@ -20,6 +20,8 @@ server = ENV['SERVER']
 $debug_mode = true if ENV['DEBUG']
 $long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
 puts "Executing long running tests" if $long_tests_enabled
+$service_pack_migration_enabled = true if ENV['SERVICE_PACK_MIGRATION'] == 'true'
+puts "Executing service pack migrations" if $service_pack_migration_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -339,6 +341,16 @@ end
 # do test only if we want to run long tests
 Before('@long_test') do
   skip_this_scenario unless $long_tests_enabled
+end
+
+# do test only if we want to run service pack migration
+Before('@service_pack_migration') do
+  skip_this_scenario unless $service_pack_migration_enabled
+end
+
+# do test only if we don't want to run service pack migration
+Before('@skip_service_pack_migration') do
+  skip_this_scenario if $service_pack_migration_enabled
 end
 
 # have more infos about the errors

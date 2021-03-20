@@ -83,8 +83,10 @@ def compute_list_to_leave_running
     raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP1', '15-SP2', '15-SP3'].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
-  do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
-  do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_TO]
+  if $service_pack_migration_enabled
+    do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]
+    do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_TO]
+  end
   do_not_kill.uniq
 end
 
