@@ -1,9 +1,9 @@
 # Copyright (c) 2016-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@ssh_minion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
+@ssh_minion
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page
@@ -19,6 +19,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until onboarding is completed for "ssh_minion"
 
 @proxy
+@ssh_minion
   Scenario: Check connection from SSH minion to proxy
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Details" in the content area
@@ -26,12 +27,14 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see "proxy" short hostname
 
 @proxy
+@ssh_minion
   Scenario: Check registration on proxy of SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ssh_minion" hostname
 
+@ssh_minion
   Scenario: Subscribe the SSH-managed SLES minion to a base channel
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
@@ -45,6 +48,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
+@ssh_minion
   Scenario: Check events history for failures on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page
