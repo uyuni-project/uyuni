@@ -55,7 +55,7 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I should see a "SLE-Manager-Tools15-Updates for x86_64 SP2" text
-    And I should see a "SLES12-SP5-Updates for x86_64" text
+    And I should see a "SLES15-SP2-Updates for x86_64" text
     And I should see a "SLE-Manager-Tools15-Pool for x86_64 SP2" text
     And I should see a "Build (4)" text
 
