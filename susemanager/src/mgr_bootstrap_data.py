@@ -1237,11 +1237,6 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
-    'amazonlinux-2-x86_64' : {
-        # We will need to update the IDs when we have the definitions for SUSE Manager
-        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
-        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
-    },
     'amazonlinux-2-x86_64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2-core-x86_64', 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
         'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
@@ -1269,6 +1264,10 @@ DATA = {
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
+    },
+    'almalinux-8-x86_64-uyuni' : {
+        'BASECHANNEL' : 'almalinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
         'PDID' : [-2, 1917], 'BETAPDID' : [2061], 'PKGLIST' : PKGLISTUBUNTU1604,
