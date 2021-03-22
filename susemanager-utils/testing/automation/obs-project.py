@@ -29,6 +29,7 @@ if (not os.path.exists(config_file)):
     print("ERROR: config file {} not found".format(config_file))
     sys.exit(-1)
 
+config = configparser.ConfigParser()
 try:
     config.read(config_file)
 except IOError as e:
