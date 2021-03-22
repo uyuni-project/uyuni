@@ -1,3 +1,4 @@
+- Add support for AlmaLinux 8
 - Provide Custom Info as Pillar data
 - Add support for Amazon Linux 2
 - Add support for Alibaba Cloud Linux 2

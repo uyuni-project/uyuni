@@ -42,6 +42,9 @@ mgr_server_localhost_alias_absent:
 {%- elif salt['file.file_exists']('/etc/system-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/amzn/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
+{%- elif salt['file.file_exists']('/etc/almalinux-release') %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/almalinux/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+
 {%- elif salt['file.file_exists']('/etc/centos-release') %}
 {# We try CentOS bootstrap repository first, if not available then fallback to RES #}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/centos/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}

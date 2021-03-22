@@ -19,6 +19,10 @@ amazonrelease:
   cmd.run:
     - name: cat /etc/system-release
     - onlyif: test -f /etc/system-release
+almalinux:
+  cmd.run:
+    - name: cat /etc/almalinux-release
+    - onlyif: test -f /etc/almalinux-release
 respkgquery:
   cmd.run:
     - name: rpm -q --whatprovides 'sles_es-release-server'
