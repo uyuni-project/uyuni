@@ -39,7 +39,7 @@ except IOError as e:
 auth_user = config[api]["user"]
 auth_passwd = config[api]["pass"]
 
-if (auth_user == "" || auth_passwd == ""):
+if (auth_user == "" or auth_passwd == ""):
     print("ERROR: could not find user or password in config file")
     sys.exit(-1)
 
