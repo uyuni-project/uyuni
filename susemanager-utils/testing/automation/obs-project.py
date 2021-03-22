@@ -21,7 +21,6 @@ api = args.api
 project = args.project
 pr_project = args.prproject
 pull_number = args.pullnumber
-auth_user = args.username
 maintainer=args.setmaintainer
 pr_project = pr_project + ":" + pull_number
 config_file = args.configfile
