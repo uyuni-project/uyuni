@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-17 18:56+0000\n"
+"PO-Revision-Date: 2021-03-22 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -501,9 +501,8 @@ msgid "No flavors"
 msgstr "Žiadne druhy"
 
 #: ../html/src/components/input/Select.test.tsx:72
-#, fuzzy
 msgid "No flavor"
-msgstr "Žiadne druhy"
+msgstr "Žiadny druh"
 
 #: ../html/src/components/pagination.tsx:19
 msgid "First"
@@ -531,9 +530,8 @@ msgid "Next"
 msgstr "Nasledujúca"
 
 #: ../html/src/components/pagination.tsx:33
-#, fuzzy
 msgid "Last"
-msgstr "Priezvisko"
+msgstr "Posledná"
 
 #: ../html/src/components/pagination.tsx:88
 msgid "Page"
@@ -731,24 +729,20 @@ msgstr ""
 "povolená. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
 msgstr ""
 "Exportér Taskomatic Prometheus je pripravený, ale konfigurácia JMX je "
-"zakázaná. Kliknutím na tlačidlo Povoliť sa povolí konfigurácia JMX alebo "
-"kliknutím na Zakázať sa zastaví exportér Prometheus."
+"zakázaná. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
 msgstr ""
 "Exportér Taskomatic Prometheus nie je pripravený, ale konfigurácia JMX je "
-"povolená. Kliknutím na tlačidlo Zakázať sa zakáže konfigurácia JMX alebo "
-"kliknutím na Povoliť sa spustí exportér Prometheus."
+"povolená. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -785,9 +779,8 @@ msgid "Disabled"
 msgstr "Zakázané"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:147
-#, fuzzy
 msgid "Server Monitoring"
-msgstr "Vlastné monitorovanie servera"
+msgstr "Monitorovanie servera"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
 msgid "The server uses "
@@ -871,9 +864,8 @@ msgid "Monitoring"
 msgstr "Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:393
-#, fuzzy
 msgid "Restarting"
-msgstr "Reštart"
+msgstr "Reštartovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:394
 msgid ""
@@ -965,24 +957,21 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:362
-#, fuzzy
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
-"Produkty zobrazené v tomto zozname sú priamo spojené s "
-"vašimi                   prihlasovacími údajmi organizácie (prihlasovacími "
-"údajmi zrkadla) ako aj vaším predplatným SUSE."
+"Produkty zobrazené v tomto zozname sú priamo spojené s prihlasovacími údajmi "
+"vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi "
+"predplatnými SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
-#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
-"správne                   prihlasovacie údaje organizácie v predchádzajúcom "
-"kroku sprievodcu."
+"správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -1394,9 +1383,8 @@ msgid "Messages"
 msgstr "Správy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
-#, fuzzy
 msgid "Pins"
-msgstr "Pripnutia "
+msgstr "Pripnutia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
@@ -1438,7 +1426,6 @@ msgid "Part number"
 msgstr "Číslo časti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
-#, fuzzy
 msgid "Subscription"
 msgstr "Predplatné"
 
