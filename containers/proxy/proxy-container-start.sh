@@ -10,8 +10,8 @@ if [ -z $UYUNI_MASTER ]; then
 	echo "Unknown master. Please set UYUNI_MASTER as environment variable"
 	exit 1
 fi
-if [ -z $UYUNI_PROXY_MINION_ID ]; then
-	$UYUNI_PROXY_MINION_ID=$HOSTNAME
+if [ -z $UYUNI_MINION_ID ]; then
+	$UYUNI_MINION_ID=$HOSTNAME
 fi
 if [ -n $UYUNI_MACHINE_ID ]; then
 	echo "$UYUNI_MACHINE_ID" > /etc/machine-id
@@ -23,7 +23,7 @@ SUSEMANAGER_MASTER_FILE=/etc/salt/minion.d/susemanager.conf
 UP2DATE_FILE=/etc/sysconfig/rhn/up2date
 SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
 
-echo "$UYUNI_PROXY_MINION_ID" > "$MINION_ID_FILE"
+echo "$UYUNI_MINION_ID" > "$MINION_ID_FILE"
 
 echo "master: $UYUNI_MASTER" > "$SUSEMANAGER_MASTER_FILE"
 echo "log_level: debug" >> "$SUSEMANAGER_MASTER_FILE"
