@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# get product name, default: SUSE Manager
+IFS=" = "
+DEFAULT_RHN_CONF="/usr/share/rhn/config-defaults/rhn.conf"
+
+if [ -f "$DEFAULT_RHN_CONF" ]; then
+    while read -r name value
+    do
+        if [ $name == "product_name" ]; then
+            PRODUCT_NAME=$value
+        fi
+    done < $DEFAULT_RHN_CONF
+fi
+if [ ! -n "$PRODUCT_NAME" ]; then
+    PRODUCT_NAME="SUSE Manager"
+fi
+
 DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
