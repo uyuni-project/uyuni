@@ -24,13 +24,7 @@ cont_minion_conf:
 cont_start_minion:
   cmd.run:
     - name: /usr/bin/salt-minion -d
-    - require:
-      - file: cont_setup_machine_id
-      - file: cont_setup_minion_id
-      - file: cont_minion_conf
 
 cont_fetch_system_id:
   cmd.run:
     - name: /usr/sbin/fetch-certificate {{ system_id }}
-    - require:
-      - cmd: cont_start_minion
