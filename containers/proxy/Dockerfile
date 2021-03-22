@@ -14,5 +14,7 @@ RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:
 
 RUN zypper --gpg-auto-import-keys --non-interactive in --auto-agree-with-licenses patterns-uyuni_proxy salt-minion
 
-# TODO: change to some startup script
-CMD [ "/bin/bash" ]
+ADD proxy-container-start.sh /usr/bin/proxy-container-start.sh
+RUN chmod 755 /usr/bin/proxy-container-start.sh
+
+CMD [ "/usr/bin/proxy-container-start.sh" ]
