@@ -16,10 +16,28 @@ cont_setup_minion_id:
 
 cont_minion_conf:
   file.managed:
-    - name: /etc/salt/minion.d/susemanager.conf
-    - source: salt://proxy/susemanager.conf.templ
+    - name: /etc/salt/minion.d/master.conf
     - template: jinja
     - mode: 644
+    - contents: |
+        master: {{ master }}
+        server_id_use_crc: adler32
+        enable_legacy_startup_events: False
+        enable_fqdns_grains: False
+        {% if activation_key %}
+        grains:
+          susemanager:
+            activation_key: {{ activation_key }}
+        {% endif %}
+        start_event_grains:
+          - machine_id
+          - saltboot_initrd
+          - susemanager
+        system-environment:
+          modules:
+            pkg:
+              _:
+                SALT_RUNNING: 1
 
 cont_start_minion:
   cmd.run:
