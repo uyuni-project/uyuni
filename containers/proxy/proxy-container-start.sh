@@ -26,6 +26,7 @@ SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/
 echo "$UYUNI_PROXY_MINION_ID" > "$MINION_ID_FILE"
 
 echo "master: $UYUNI_MASTER" > "$SUSEMANAGER_MASTER_FILE"
+echo "log_level: debug" >> "$SUSEMANAGER_MASTER_FILE"
 echo "server_id_use_crc: adler32" >> "$SUSEMANAGER_MASTER_FILE"
 echo "enable_legacy_startup_events: False" >> "$SUSEMANAGER_MASTER_FILE"
 echo "enable_fqdns_grains: False" >> "$SUSEMANAGER_MASTER_FILE"
@@ -41,19 +42,9 @@ EOF
 fi
 
 /usr/bin/salt-minion -d
-if [ $? -eq 0 ]; then
-	/usr/sbin/fetch-certificate $SYSTEMID_PATH
-else
+if [ $? -ne 0 ]; then
 	echo "salt-minion not running"
 	exit 1
 fi
-
-if [ ! -r $SYSTEMID_PATH ]; then
-    echo ERROR: This machine does not appear to be registered with SUSE Manager Server or Uyuni
-    exit 2
-fi
-
-SYSTEM_ID=$(/usr/bin/xsltproc /usr/share/rhn/get_system_id.xslt $SYSTEMID_PATH | cut -d- -f2)
-
 
 /bin/bash
