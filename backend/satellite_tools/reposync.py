@@ -1269,6 +1269,19 @@ class RepoSync(object):
                     # Set to_link to False, no need to link again
                     to_process[index] = (pack, True, False)
 
+            except KeyboardInterrupt:
+                raise
+            except rhnSQL.SQLError:
+                raise
+            except Exception:
+                failed_packages += 1
+                e = str(sys.exc_info()[1])
+                if e:
+                    log2(0, 1, e, stream=sys.stderr)
+                if self.fail:
+                    raise
+                to_process[index] = (pack, False, False)
+            finally:
                 # importing packages by batch or if the current packages is the last
                 if mpm_bin_batch and (import_count == to_download_count
                                       or len(mpm_bin_batch) % self.import_batch_size == 0):
@@ -1290,19 +1303,6 @@ class RepoSync(object):
                     del mpm_src_batch
                     mpm_src_batch = importLib.Collection()
 
-            except KeyboardInterrupt:
-                raise
-            except rhnSQL.SQLError:
-                raise
-            except Exception:
-                failed_packages += 1
-                e = str(sys.exc_info()[1])
-                if e:
-                    log2(0, 1, e, stream=sys.stderr)
-                if self.fail:
-                    raise
-                to_process[index] = (pack, False, False)
-            finally:
                 if is_non_local_repo and stage_path:
                     if os.path.exists(stage_path):
                         os.remove(stage_path)
