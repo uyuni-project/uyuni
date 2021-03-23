@@ -88,7 +88,6 @@ def add(args):
         print("DEBUG: Adding setting repository {} to use path {}".format(repo.get("name"), project))
         new_path = ET.fromstring("<path project=\"{}\" repository=\"{}\" />".format(project, repo.get("name")))
         repo.append(new_path)
-                
 
     print("DEBUG: creating new project: {}".format(pr_project))
     passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
@@ -110,7 +109,7 @@ def print_usage(args):
 
 parser = argparse.ArgumentParser(description="This utility helps you manage an obs project for a Pull Request")
 parser.add_argument('--api', help="Build Service API, defaults to https://api.opensuse.org", default="https://api.opensuse.org")
-parser.add_argument('--configfile', help="Config file where username and password are store, by default ~/.oscrc", default="~/.oscrc")
+parser.add_argument('--configfile', help="Config file where username and password are store, by default $HOME/.oscrc", default=os.environ["HOME"] + "/.oscrc")
 parser.set_defaults(func=print_usage)
 
 
