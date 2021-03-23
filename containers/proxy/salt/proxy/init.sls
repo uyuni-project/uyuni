@@ -119,6 +119,15 @@ cont_store_salt_master_pub_key:
     - require:
       - file: wait_for_keys
 
+{%- if salt['file.file_exists']('/config/sysconfig/rhn/systemid') %}
+
+cont_copy_system_id:
+  file.copy:
+    - name: /etc/sysconfig/rhn/systemid
+    - source: /config/sysconfig/rhn/systemid
+
+{%- else %}
+
 cont_fetch_system_id:
   cmd.run:
     - name: /usr/sbin/fetch-certificate {{ system_id }}
@@ -133,9 +142,21 @@ cont_activate:
     - require:
       - cmd: cont_fetch_system_id
 
+{# we store the systemid after successful activation #}
+cont_store_system_id:
+  file.copy:
+    - name: /config/sysconfig/rhn/systemid
+    - source: /etc/sysconfig/rhn/systemid
+    - mode: 644
+    - makedirs: True
+    - require:
+      - cmd: cont_activate
+
+{%- endif %}
+
 cont_inst_srv_cert:
-  pkg.installed:
-    - name: {{ srv_cert_rpm }}
+  cmd.run:
+    - name: rpm -Uv {{ srv_cert_rpm }}
 
 cont_deploy_ca:
   file.copy:
