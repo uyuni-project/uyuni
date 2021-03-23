@@ -213,4 +213,48 @@ cont_rhn_conf:
         
         # Destination of all tracebacks, etc.
         traceback_mail = {{ email }}
- 
+
+cont_cobbler_proxy_conf:
+  file.managed:
+    - name: /etc/apache2/conf.d/cobbler-proxy.conf
+    - source: salt://proxy/cobbler-proxy.conf.templ
+    - template: jinja
+
+cont_ssl_conf:
+  file.managed:
+    - name: /etc/apache2/vhosts.d/ssl.conf
+    - source: salt://proxy/ssl.conf
+
+
+{%- if salt['file.file_exists']('/config/sshpush/id_susemanager_ssh_push') and salt['file.file_exists']('/config/sshpush/id_susemanager_ssh_push.pub') %}
+cont_ssh_push_key_existing:
+  cmd.run:
+    - name: /usr/sbin/mgr-proxy-ssh-push-init -k /config/sshpush/id_susemanager_ssh_push
+{% else %}
+cont_ssh_push_key:
+  cmd.run:
+    - name: /usr/sbin/mgr-proxy-ssh-push-init
+
+cont_store_dir:
+  file.directory:
+    - name: /config/sshpush/
+    - mode: 700
+
+cont_store_ssh_push_key:
+  file.copy:
+    - name: /config/sshpush/id_susemanager_ssh_push
+    - source: /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push
+    - mode: 600
+    - require:
+      - cmd: cont_ssh_push_key
+
+cont_store_ssh_push_key_pub:
+  file.copy:
+    - name: /config/sshpush/id_susemanager_ssh_push.pub
+    - source: /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push.pub
+    - require:
+      - cmd: cont_ssh_push_key
+
+{% endif %}
+
+
