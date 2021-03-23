@@ -83,6 +83,10 @@ def add(args):
             continue
         for child in repo.findall("path"):
             repo.remove(child)
+        for child in repo.findall("arch"):
+            if child.text != "x86_64":
+                print("DEBUG skipping arch " + child.text)
+                repo.remove(child)
         for child in repo.findall("releasetarget"):
             repo.remove(child)
         print("DEBUG: Adding setting repository {} to use path {}".format(repo.get("name"), project))
