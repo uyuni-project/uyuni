@@ -13,7 +13,7 @@ $RUNNER run --rm=true -ti \
 	-e UYUNI_MINION_ID='mc-proxy.suse.de' \
 	-e UYUNI_MACHINE_ID='488de1bd7b08472cba12c6e3c775d4bb' \
 	-e UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT' \
-	-e UYUNI_SRV_CERT='/config/rhn-org-httpd-ssl-key-pair-proxy-1.0-1.noarch.rpm' \
+	-e UYUNI_SRV_CERT='/config/'`find $CONFIG_DIR -name "rhn-org-httpd-ssl-key-pair-proxy-*.rpm" -printf "%f"` \
 	-v $CONFIG_DIR:/config \
 	--name uyuni_proxy \
         $IMAGE \
