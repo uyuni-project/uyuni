@@ -23,16 +23,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2018-03-16 11:00+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/spacewalk/"
-"language/fi/)\n"
+"PO-Revision-Date: 2021-03-23 15:57+0000\n"
+"Last-Translator: Tommi Nieminen <software@legisign.org>\n"
+"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -53,34 +53,33 @@ msgstr "Muodostetaan luetteloa järjestelmään asennetuista paketeista"
 #. self.druid.finish.set_label(_("_Finish"))
 #: ../src/up2date_client/gui.py:273
 msgid "Finish setting up software updates"
-msgstr ""
+msgstr "Viimeistele ohjelmapäivitysten asetus"
 
 #. self.druid.finish.set_label(_("_Exit"))
 #: ../src/up2date_client/gui.py:276
-#, fuzzy
 msgid "Software updates setup unsuccessful"
-msgstr "Käynnistetään up2date päivitysohjelma uudelleen"
+msgstr "Ohjelmapäivitysten asetus epäonnistui"
 
 #: ../src/up2date_client/gui.py:283
 msgid "You must run rhn_register as root."
-msgstr "Ohjelma rhn_register täytyy suorittaa pääkäyytäjänä."
+msgstr "Pääkäyttäjänä pitää ajaa rhn_register."
 
 #: ../src/up2date_client/gui.py:308
 #, python-format
 msgid "There was some sort of I/O error: %s"
-msgstr "Tapahtui I/O-virhe: %s"
+msgstr "Tapahtui jokin I/O-virhe: %s"
 
 #: ../src/up2date_client/hardware.py:1064
 msgid "Error reading cpu information:"
-msgstr "Virhe luettaessa cpu tietoa:"
+msgstr "Virhe luettaessa suoritintietoja:"
 
 #: ../src/up2date_client/hardware.py:1071
 msgid "Error reading system memory information:"
-msgstr "Virhe luettaessa järjestelmän muistitietoa:"
+msgstr "Virhe luettaessa järjestelmän muistitietoja:"
 
 #: ../src/up2date_client/hardware.py:1081
 msgid "Error reading networking information:"
-msgstr "Virhe luettaessa verkkotietoa:"
+msgstr "Virhe luettaessa verkkotietoja:"
 
 #: ../src/up2date_client/hardware.py:1102
 msgid "Error reading install method information:"
@@ -91,19 +90,16 @@ msgid "Error reading network interface information:"
 msgstr "Virhe luettaessa verkkoliitännän tietoja:"
 
 #: ../src/up2date_client/hardware.py:1118
-#, fuzzy
 msgid "Error reading network FQDNs information:"
-msgstr "Virhe luettaessa verkkotietoa:"
+msgstr "Virhe luettaessa verkon FQDN-tietoja:"
 
 #: ../src/up2date_client/hardware.py:1125
-#, fuzzy
 msgid "Error reading system info:"
-msgstr "Virhe luettaessa järjestelmän muistitietoa:"
+msgstr "Virhe luettaessa järjestelmätietoja:"
 
 #: ../src/up2date_client/hardware.py:1132
-#, fuzzy
 msgid "Error reading machine info:"
-msgstr "Virhe luettaessa cpu tietoa:"
+msgstr "Virhe luettaessa konetietoja:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -119,26 +115,23 @@ msgstr "SystemId:tä ei löydetä"
 
 #: ../src/up2date_client/rhnChannel.py:119
 msgid "This system may not be updated until it is associated with a channel."
-msgstr "Järjestelmää ei voida päivittää ennenkuin se on liitetty kanavaan."
+msgstr "Järjestelmää ei voi päivittää ennenkuin se on liitetty kanavaan."
 
 #: ../src/up2date_client/rhncli.py:65
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "Näytä ylimääräinen tuloste"
+msgstr "Näytä lisätuloste. Toista saadaksesi lisää tietoa."
 
 #: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
-msgstr "Määrittele käytettävä http-välityspalvelin"
+msgstr "Määritä käytettävä http-välityspalvelin"
 
 #: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
-msgstr ""
-"Määritä käyttäjänimi käytettäväksi todennetun http-välityspalvelimen kanssa"
+msgstr "Määritä http-välityspalvelimessa käytettävä käyttäjätunnus"
 
 #: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
-msgstr ""
-"Määritä salasana käytettäväksi todennetun http-välityspalvelimen kanssa"
+msgstr "Määritä http-välityspalvelimessa käytettävä salasana"
 
 #: ../src/up2date_client/rhncli.py:93
 msgid ""
@@ -151,39 +144,39 @@ msgstr ""
 #: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
-msgstr "Odottamaton OS virhe: %s\n"
+msgstr "Sattui odottamaton käyttöjärjestelmävirhe: %s\n"
 
 #: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
-msgstr "Yhteyttä yritettiin väärän muotoisella URI:lla.\n"
+msgstr "Yhteyttä yritettiin virheellisellä URIlla.\n"
 
 #: ../src/up2date_client/rhncli.py:103
 #, python-format
 msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr "Yhteyttä yritettiin väärän muotoisella URI:lla: %s.\n"
+msgstr "Yhteyttä yritettiin virheellisellä URIlla: %s.\n"
 
 #: ../src/up2date_client/rhncli.py:105
 #, python-format
 msgid "There was some sort of I/O error: %s\n"
-msgstr "I/O-virhe: %s\n"
+msgstr "Sattui jokin I/O-virhe: %s\n"
 
 #: ../src/up2date_client/rhncli.py:111
 #, python-format
 msgid "There was an SSL error: %s\n"
-msgstr "SSL-virhe: %s\n"
+msgstr "Sattui SSL-virhe: %s\n"
 
 #: ../src/up2date_client/rhncli.py:112
 msgid ""
 "A common cause of this error is the system time being incorrect. Verify that "
 "the time on this system is correct.\n"
 msgstr ""
-"Yleinen syy tähän virheilmoitukseen on väärä järjestelmän aika. Tarkista "
-"että aika järjestelmässä on oikein.\n"
+"Usein tämän virheilmoituksen aiheuttaa väärä järjestelmän aika. Tarkista "
+"että järjestelmän aika on oikein.\n"
 
 #: ../src/up2date_client/rhncli.py:119
 #, python-format
 msgid "There was a SSL crypto error: %s\n"
-msgstr "SSL-salausvirhe: %s\n"
+msgstr "Sattui jokin SSL-salausvirhe: %s\n"
 
 #: ../src/up2date_client/rhncli.py:123
 #, python-format
@@ -197,7 +190,7 @@ msgstr "Ohjelma %s täytyy suorittaa pääkäyttäjänä"
 
 #: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
 msgid "Unable to open gui. Try `up2date --nox`"
-msgstr "Ei voida käyttää graafista tilaa. Kokeile `up2date --nox`"
+msgstr "Graafista käyttöliittymä ei voida avata. Kokeile ”up2date --nox”"
 
 #: ../src/up2date_client/rhncli.py:211
 #, python-format
@@ -206,28 +199,31 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Tekijänoikeudet © 1999--2014 Red Hat, Inc.\n"
+"Lisensoitu GPLv2:n ehtojen mukaisesti."
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
-msgstr "Virhe on tapahtunut:"
+msgstr "Sattui virhe:"
 
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
-msgstr "Katso lisätietoja tiedostosta /var/log/up2date"
+msgstr "Lisätietoja löytyy tiedostosta /var/log/up2date"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "Copyright © 2006--2014 Red Hat, Inc. Kaikki oikeudet pidätetään."
+msgstr "Tekijänoikeudet © 2006--2014 Red Hat, Inc. Kaikki oikeudet pidätetään."
 
 #. Satellite URL Window
 #: ../src/up2date_client/rhnreg_constants.py:24
 #, python-brace-format
 msgid "Enter your {PRODUCT_NAME} URL."
-msgstr ""
+msgstr "Anna tuotteen {PRODUCT_NAME} verkko-osoite."
 
 #: ../src/up2date_client/rhnreg_constants.py:25
 #, python-brace-format
@@ -236,50 +232,52 @@ msgid ""
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
+"Anna {PRODUCT_NAME} -palvelimen ja sen SSL-varmenteen sijainti. SSL-"
+"varmennetta vaaditaan vain, jos käytetään https-yhteyttä (suositeltavaa)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
 msgid "{PRODUCT_NAME} URL:"
-msgstr ""
+msgstr "{PRODUCT_NAME} -verkko-osoite:"
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid "SSL certificate:"
-msgstr ""
+msgstr "SSL-varmenne:"
 
 #: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "Käyttäjätunnus on annettava."
+msgstr "Kelvollinen {PRODUCT_NAME} -verkko-osoite on annettava."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
 msgstr ""
+"Jos käytössä on https, on annettava kelvollisen SSL-varmenteen sijainti."
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
 msgid "Attempting to contact the Spacewalk server."
-msgstr "Yritetään yhdistää Red Hatin verkkopalvelimeen."
+msgstr "Yritetään yhdistää Spacewalk-palvelimeen."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "Yritämme yhdistää Red Hatin verkkopalvelimeen osoitteessa %s."
+msgstr "Yritetään yhdistää {PRODUCT_NAME} -palvelimeen osoitteessa %s."
 
 #: ../src/up2date_client/rhnreg_constants.py:39
 #, python-format
 msgid "A proxy was specified at %s."
-msgstr "Välityspalvelin on määritetty osoitteeseen %s."
+msgstr "Välityspalvelinosoitteeksi on asetettu %s."
 
 #. Start Window
 #: ../src/up2date_client/rhnreg_constants.py:42
 msgid "System Registration"
-msgstr "rekisteröintiNumero"
+msgstr "Järjestelmän rekisteröinti"
 
 #: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This assistant will guide you through connecting your system to "
 "{PRODUCT_NAME} to receive software updates, including security updates, to "
@@ -291,20 +289,20 @@ msgid ""
 " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
-"Tämä avustaja opastaa sinua järjestelmäsi yhdistämisessä Red Hat Networkiin "
-"(RHN) saadaksesi ohjelmapäivityksiä, sisältäen turvallisuuspäivityksiä, "
-"pitääksesi järjestelmäsi tuettuna ja yhteensopivana.  Tarvitset seuraavia:\n"
+"Tämä opastettu toiminto ohjaa yhdistämään järjestelmän {PRODUCT_NAME} -"
+"verkkoon ohjelma- ja tietoturvapäivitysten saamiseksi ja järjestelmän "
+"pitämiseksi tuettuna ja yhteensopivana. Tässä vaiheessa arvitset:\n"
 "\n"
-" * Verkkoyhteys\n"
-" * Red Hat -käyttäjätunnuksesi ja -salasanasi\n"
-" * Red Hat Networkin satelliitin tai välityspalvelimen sijainti "
-"(valinnainen)\n"
+" * verkkoyhteyden\n"
+" * {PRODUCT_NAME} -käyttäjätunnuksen ja -salasanan\n"
+" * {PRODUCT_NAME} -palvelimen tai välityspalvelimen sijainnin\n"
+"\n"
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "Miksi yhdistäisin RHN:ään? ..."
+msgstr "Miksi rekisteröityä {PRODUCT_NAME} -verkkoon? …"
 
 #: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
 msgid "Why Register"
