@@ -9960,15 +9960,19 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
       </trans-unit>
       <trans-unit id="sdc.channels.edit.deploy.warning" xml:space="preserve">
         <source>Changes to channel assignments will take effect at next highstate application</source>
+        <target>Le modifiche alle assegnazioni dei canali avranno effetto alla prossima applicazione di alto stato</target>
       </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip" xml:space="preserve">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
+        <target>Permette varie funzionalità avanzate come l'autoinstallazione e il caricamento dei file di configurazione.</target>
       </trans-unit>
       <trans-unit id="sys_entitlements.description" xml:space="preserve">
         <source>The following is a list of all system entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
+        <target>Il seguente è un elenco di tutti i certificati di sistema su questo @@PRODUCT_NAME@@, attraverso le organizzazioni, e il loro utilizzo. Clicca sul nome del certificato per maggiori dettagli su di esso.</target>
       </trans-unit>
       <trans-unit id="help.jsp.refguide.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
+        <target>Guida di riferimento di @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="help.jsp.detailed" xml:space="preserve">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
@@ -9998,147 +10002,186 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
       </trans-unit>
       <trans-unit id="image_admin" xml:space="preserve">
         <source>Image Administrator</source>
+        <target>Amministratore dell'immagine</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <target>Il tuo certificato di @@PRODUCT_NAME@@ è scaduto. Contatta @@VENDOR_NAME@@ per un nuovo certificato.</target>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Il tuo certificato di @@PRODUCT_NAME@@ è scaduto. Il tuo @@PRODUCT_NAME@@ è al giorno {0} di {1} giorno di limitazione e smetterà presto di funzionare. Contatta @@VENDOR_NAME@@ per un nuovo certificato.</target>
       </trans-unit>
       <trans-unit id="satellite.graceperiod" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Il tuo certificato di @@PRODUCT_NAME@@ è scaduto. Contatta @@VENDOR_NAME@@ per un nuovo certificato. Il tuo @@PRODUCT_NAME@@ diventerà inattivo tra {0} giorno/i.</target>
       </trans-unit>
       <trans-unit id="restricted.forbidden" xml:space="preserve">
         <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Non ti è consentito eseguire questa azione fino a quando il tuo certificato di @@PRODUCT_NAME@@ non sarà rinnovato. Il tuo @@PRODUCT_NAME@@ è al giorno {0} del periodo limitato {1} e presto smetterà di funzionare. Contatta @@VENDOR_NAME@@ per un nuovo certificato.</target>
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg" xml:space="preserve">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
+        <target>Non puoi aggiornare i certificati nell'organizzazione predefinita. Questi diritti sono determinati in base al tuo certificato di @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
         <source>Service Pack Migration</source>
+        <target>Migrazione del pacchetto di servizio</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <target>Questo sistema è &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;programmato&lt;/a&gt; per essere migrato a &lt;strong&gt;{2}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Questo sistema è programmato per una migrazione di prova su &lt;strong&gt;{2}&lt;/strong&gt;. Una volta che l'azione sarà completata con successo, potrai programmare la migrazione completa &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;qui&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
+        <target>Esegui mgr-register</target>
       </trans-unit>
       <trans-unit id="task.status.repo-sync" xml:space="preserve">
         <source>Repository Sync</source>
+        <target>Sincronizzazione del deposito</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
+        <target>SSH Server Push</target>
       </trans-unit>
       <trans-unit id="task.status.cve-server-channels" xml:space="preserve">
         <source>CVE Server Channels</source>
+        <target>Canali server CVE</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-sync-refresh" xml:space="preserve">
         <source>Refresh mgr-sync data</source>
+        <target>Aggiorna i dati di mgr-sync</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-chain-cleanup" xml:space="preserve">
         <source>Cleanup action-chains on minions</source>
+        <target>Pulizia delle catene di azioni sui minion</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-executor" xml:space="preserve">
         <source>Execute actions on minions</source>
+        <target>Esegui azioni sui minion</target>
       </trans-unit>
       <trans-unit id="task.status.notifications-cleanup" xml:space="preserve">
         <source>Cleanup notifications</source>
+        <target>Pulisci le notifiche</target>
       </trans-unit>
       <trans-unit id="task.status.minion-checkin" xml:space="preserve">
         <source>Execute check-in for minions</source>
+        <target>Esegui il check-in per i minion</target>
       </trans-unit>
       <trans-unit id="task.status.token-cleanup" xml:space="preserve">
         <source>Cleanup channel tokens</source>
+        <target>Pulisci i token del canale</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch" xml:space="preserve">
         <source>Registers @@PRODUCT_NAME@@ clients</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Registra i client di @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-      <target state="needs-adaptation" />
+        <target state="translated">Sincronizza i depositi di @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
+        <target>Gestisci i client tramite SSH Server Push</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
+        <target>Genera i dati necessari per eseguire le ricerche di controllo CVE</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch" xml:space="preserve">
         <source>Refreshes data about channels, products and subscriptions</source>
+        <target>Aggiorna i dati su canali, prodotti e sottoscrizioni</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.gatherer-matcher-bunch" xml:space="preserve">
         <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
+        <target>Esegue la raccolta di host virtuali sui gestori di host virtuali ed elabora i suoi risultati. Dopo questo, viene eseguito il processo di abbinamento delle sottoscrizioni.</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch" xml:space="preserve">
         <source>Cleanup actions for Minions</source>
+        <target>Operazioni di pulizia per i Minion</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.notifications-cleanup-bunch" xml:space="preserve">
         <source>Cleanup expired notification messages</source>
+        <target>Elimina i messaggi di notifica scaduti</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-checkin-bunch" xml:space="preserve">
         <source>Perform a regular check-in on minions</source>
+        <target>Eseguire un controllo regolare dei minion</target>
       </trans-unit>
       <trans-unit id="server.contact-method.default" xml:space="preserve">
         <source>Default</source>
+        <target>Predefinito</target>
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push" xml:space="preserve">
         <source>Push via SSH</source>
+        <target>Push tramite SSH</target>
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push-tunnel" xml:space="preserve">
         <source>Push via SSH tunnel</source>
+        <target>Push tramite tunnel SSH</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.title" xml:space="preserve">
         <source>Content Lifecycle</source>
+        <target>Ciclo di vita del prodotto</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.projects" xml:space="preserve">
         <source>Projects</source>
+        <target>Progetti</target>
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters" xml:space="preserve">
         <source>Filters</source>
+        <target>Filtri</target>
       </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
+        <target>Verifica CVE</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmitool" xml:space="preserve">
         <source>IPMI</source>
+        <target>IPMI</target>
       </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
+        <target>Avanti</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.empty" xml:space="preserve">
         <source>No credentials</source>
+        <target>Assenza di credenziali</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions" xml:space="preserve">
         <source>Actions</source>
+        <target>Azioni</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
+        <target>verifica delle credenziali</target>
       </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
+        <target>Abbinamento della sottoscrizione</target>
       </trans-unit>
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
+        <target>Esterno</target>
       </trans-unit>
       <trans-unit id="visualization.nav.title" xml:space="preserve">
         <source>Visualization</source>
+        <target>Visualizzazione</target>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
+        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Aggiungi o Rimuovi&lt;/a&gt; tipi di sistema aggiuntivi</target>
       </trans-unit>
       <trans-unit id="system_entitlements.invalid" xml:space="preserve">
         <source>Invalid system type selected.</source>
+        <target>Tipo di sistema selezionato non valido.</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
