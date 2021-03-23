@@ -106,20 +106,29 @@ def add(args):
 def print_usage(args):
     print("Use -h for help")
 
+def remove(args):
+    print("TO BE IMPLEMENTED")
+
 
 parser = argparse.ArgumentParser(description="This utility helps you manage an obs project for a Pull Request")
 parser.add_argument('--api', help="Build Service API, defaults to https://api.opensuse.org", default="https://api.opensuse.org")
 parser.add_argument('--configfile', help="Config file where username and password are store, by default $HOME/.oscrc", default=os.environ["HOME"] + "/.oscrc")
+parser.add_argument('--prproject', help="Parent project for Pull Requests, defaults to systemsmanagement:Uyuni:Master:PR", default="systemsmanagement:Uyuni:Master:PR")
 parser.set_defaults(func=print_usage)
 
 
 subparser = parser.add_subparsers()
 parser_add = subparser.add_parser("add", help="add project")
 parser_add.add_argument('--project', help="Project from which to \"branch\" from, defaults to systemsmanagement:Uyuni:Master", default="systemsmanagement:Uyuni:Master")
-parser_add.add_argument('--prproject', help="Project to branch to \"branch\", defaults to systemsmanagement:Uyuni:Master:PR", default="systemsmanagement:Uyuni:Master:PR")
 parser_add.add_argument('pullnumber', help="Pull Request number, for example 1")
 parser_add.add_argument('--setmaintainer', help="Set maintainer", default="")
 parser_add.set_defaults(func=add)
+
+parser_remove = subparser.add_parser("remove", help="remove project")
+parser_add.add_argument('--prproject', help="Project to remove from, defaults to systemsmanagement:Uyuni:Master:PR", default="systemsmanagement:Uyuni:Master:PR")
+parser_remove.add_argument('pullnumber', help="Pull Request number, for example 1")
+parser_remove.set_defaults(func=remove)
+
 
 args = parser.parse_args()
 args.func(args)
