@@ -112,6 +112,7 @@ def remove(args):
     pull_number = args.pullnumber
     pr_project = pr_project + ":" + pull_number
     config_file = args.configfile
+    interactive = not args.noninteractive
 
     if (not os.path.exists(config_file)):
         print("ERROR: config file {} not found".format(config_file))
@@ -141,11 +142,12 @@ def remove(args):
 
     print("DEBUG: removing project {}".format(pr_project))
     answer = ""
-    while (answer!="y" and answer!="n"):
-        answer = input("Are you sure you want to remove it?(y/n)")
-    if (answer == "n"):
-        print("OK. Maybe another day. Bye!")
-        sys.exit(-1)
+    if (interactive):
+        while (answer!="y" and answer!="n"):
+            answer = input("Are you sure you want to remove it?(y/n)")
+        if (answer == "n"):
+            print("OK. Maybe another day. Bye!")
+            sys.exit(-1)
     passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     url = api + "/source/" + pr_project 
     passman.add_password(None, url, auth_user, auth_passwd)
@@ -176,6 +178,7 @@ parser_add.set_defaults(func=add)
 
 parser_remove = subparser.add_parser("remove", help="remove project")
 parser_remove.add_argument('pullnumber', help="Pull Request number, for example 1")
+parser_remove.add_argument('--noninteractive', help="Non interactive. This is yes by default!", action="store_true", default=False)
 parser_remove.set_defaults(func=remove)
 
 
