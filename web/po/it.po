@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2020-12-19 14:26+0000\n"
+"PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -141,7 +141,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: ../html/src/components/config-channels.tsx:401
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -250,7 +250,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
@@ -513,7 +513,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
-msgstr ""
+msgstr "Avanti"
 
 #: ../html/src/components/pagination.tsx:33
 msgid "Last"
@@ -1480,11 +1480,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
 msgid "Subscription Matching"
-msgstr ""
+msgstr "Abbinamento della sottoscrizione"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
 msgid "Subscriptions"
-msgstr ""
+msgstr "Sottoscrizioni"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
