@@ -2,7 +2,17 @@
 {% set master = salt['environ.get']('UYUNI_MASTER') %}
 {% set minion_id = salt['environ.get']('UYUNI_MINION_ID') %}
 {% set activation_key = salt['environ.get']('UYUNI_ACTIVATION_KEY') %}
+{% set ca_certs = salt['environ.get']('UYUNI_CA_CERTS') %}
+{% set srv_cert_rpm = salt['environ.get']('UYUNI_SRV_CERT') %}
 {% set system_id = '/etc/sysconfig/rhn/systemid' %}
+
+cont_check_ca_certs:
+  file.exists:
+    - name: {{ ca_certs }}
+
+cont_check_srv_cert:
+  file.exists:
+    - name: {{ srv_cert_rpm }}
 
 cont_setup_machine_id:
   file.managed:
@@ -114,9 +124,41 @@ cont_fetch_system_id:
     - name: /usr/sbin/fetch-certificate {{ system_id }}
     - require:
       - cmd: cont_start_minion
+      - file: cont_check_ca_certs
+      - file: cont_check_srv_cert
 
 cont_activate:
   cmd.run:
-    - name: rhn-proxy-activate --non-interactive --server={{ master }}
+    - name: rhn-proxy-activate --non-interactive --server={{ master }} --ca-cert="{{ ca_certs }}"
     - require:
       - cmd: cont_fetch_system_id
+
+cont_inst_srv_cert:
+  pkg.installed:
+    - name: {{ srv_cert_rpm }}
+
+cont_deploy_ca:
+  file.copy:
+    - name: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+    - source: {{ ca_certs }}
+
+cont_link_ca:
+  file.symlink:
+    - name: /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
+    - target: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+    - force: True
+    - makedirs: True
+
+cont_update_ca_certs:
+  cmd.run:
+    - name: /usr/sbin/update-ca-certificates
+    - onchanges:
+      - file: cont_deploy_ca
+
+cont_squid_conf:
+  file.managed:
+    - name: /etc/squid/squid.conf
+    - source: salt://proxy/squid.conf.templ
+    - template: jinja
+
+
