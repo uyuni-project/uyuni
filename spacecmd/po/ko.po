@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-23 08:26+0000\n"
+"PO-Revision-Date: 2021-03-23 10:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -2814,7 +2814,7 @@ msgstr "사용법: kickstart_removepackages PROFILE <PACKAGE ...>"
 
 #: ../src/spacecmd/kickstart.py:1871
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
-msgstr "kickstart_listscripts: 킥스사트 프로파일을 위한 스크립트 나열"
+msgstr "kickstart_listscripts: 킥스타트 프로파일을 위한 스크립트 나열"
 
 #: ../src/spacecmd/kickstart.py:1873
 msgid "usage: kickstart_listscripts PROFILE"
@@ -4415,7 +4415,7 @@ msgid ""
 "To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
 msgstr ""
 "\n"
-"ssm에서 시스템을 사용하여면 앞에 \"ssm\" 키워드를 전달하십시오. 예:"
+"ssm에서 시스템을 사용하려면 앞에 \"ssm\" 키워드를 전달하십시오. 예:"
 
 #: ../src/spacecmd/schedule.py:89
 msgid "ID      Date                 C    F    P     Action"
@@ -5282,7 +5282,7 @@ msgstr "GPG 확인"
 
 #: ../src/spacecmd/softwarechannel.py:972
 msgid "Disable GPG Check [y/N]? "
-msgstr "GPG 확인을 비호라성화하시겠습니까? [y/N] "
+msgstr "GPG 확인을 비활성화하시겠습니까? [y/N] "
 
 #: ../src/spacecmd/softwarechannel.py:1024
 #: ../src/spacecmd/softwarechannel.py:1122
@@ -5600,7 +5600,7 @@ msgstr "소스 채널 %s이(가) 없습니다!"
 #: ../src/spacecmd/softwarechannel.py:1760
 #, python-format
 msgid "dest channel %s does not exist!"
-msgstr "대상 채널  %s이(가) 이미 있습니다!"
+msgstr "대상 채널 %s이(가) 이미 있습니다!"
 
 #: ../src/spacecmd/softwarechannel.py:1813
 msgid "No patch to add"
