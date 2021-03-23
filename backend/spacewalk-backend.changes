@@ -1,3 +1,4 @@
+- Check if batch needs to be imported even after failure (bsc#1183151)
 - fix downloading comps files by matching type in repomd.xml (bsc#1186653)
 - Added logging for dpkg repository detection
 
