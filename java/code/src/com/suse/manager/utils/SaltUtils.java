@@ -1365,13 +1365,13 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
-        Optional<String> alibabaReleaseFile =
-                Optional.ofNullable(result.getAlibabaReleaseFile())
+        Optional<String> oracleReleaseFile =
+                Optional.ofNullable(result.getOracleReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
-        Optional<String> oracleReleaseFile =
-                Optional.ofNullable(result.getOracleReleaseFile())
+        Optional<String> alibabaReleaseFile =
+                Optional.ofNullable(result.getAlibabaReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);

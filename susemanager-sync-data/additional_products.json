@@ -2,7 +2,7 @@
         {
         "id" : -21,
         "name" : "Alibaba Cloud Linux (Aliyun Linux) 2",
-        "identifier" : "alibaba-2",
+        "identifier" : "alibaba",
         "former_identifier" : "",
         "version" : "2",
         "release_type" : null,
