@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2020-12-31 00:37+0000\n"
+"PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
-"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/"
-">\n"
+"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/>"
+"\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,12 +113,12 @@ msgstr "Tietosuojailmoitus"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Tuoteparametriksi odotettiin sanastoa"
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Virheellinen arvo ”%s” kohteelle %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
@@ -137,22 +137,24 @@ msgstr "Toiminto %s ei kuulu palvelimeen %s"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "Sinulla ei ole käyttöoikeuksia tyhjän organisaation paketinhallintaan"
 
 #: ../server/importlib/userAuth.py:103
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgstr "Sinulla ei ole käyttöoikeuksia paketinhallintaan alueella %s"
 
 #: ../server/importlib/userAuth.py:121
 msgid "You are not allowed to perform administrative tasks"
-msgstr ""
+msgstr "Sinulla ei ole käyttöoikeuksia ylläpitotehtäviin"
 
 #: ../server/importlib/userAuth.py:144
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
+"Sinulla ei ole käyttöoikeuksia kanavan %s hallintaan tai kanavaa ei ole "
+"olemassa"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -161,124 +163,128 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               Tili %s on passivoitu tässä palvelimessa.\n"
+"               Tarvitessasi lisätietoa ota yhteyttä verkkoalueen ylläpitoon."
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "Arkkitehtuuria ”%s” ei tueta"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "Merkkiin ”%s” on kytketty useampi peruskanava"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Ristiriitaisia peruskanavia"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Palvelinta ei voitu lisätä ryhmään %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Kohteen %s enimmäiskäyttömäärä saavutettu"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"Eri pohjaoikeuksisten uudelleenrekisteröintimerkkien pinoamista ei tueta"
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Merkkiä ”%s” ei löydy"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Merkkien verkkoalueet eivät sovi yhteen"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "Epäjohdonmukaisuus Kickstart-istunnossa"
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "Uudelleenrekisteröintimerkkien pinoamista ei tueta"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Aja tälle asiakkaalle pääkäyttäjänä rhn_register"
 
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Palvelua ei ole otettu järjestelmäprofiilissa käyttöön: ”%s”"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Virheellinen käyttäjätunnuksen ja salasanan yhdistelmä"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "Käyttäjätunnusta ”%s” ei ole varattu"
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:473
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Sähköpostiosoitetta ei ole määritetty"
 
 #: ../server/rhnUser.py:509
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "käyttäjätunnuksen tulee olla vähintään %d merkkiä pitkä"
 
 #: ../server/rhnUser.py:512
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "käyttäjätunnus ei saa olla yli %d merkkiä pitkä"
 
 #: ../server/rhnUser.py:523
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "käyttäjätunnus = ”%s”, virheellinen merkki ”%s”"
 
 #: ../server/rhnUser.py:542
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "Rajoita sähköpostiosoitteesi %s merkkiin"
 
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "salasanan tulisi olla vähintään %d merkkiä pitkä"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "Salasana ei saa olla yli %d merkkiä pitkä"
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "salasana sisältää merkin ”%s”"
 
 #: ../server/rhnUser.py:651
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "käyttäjätunnuksen tulisi olla vähintään %d merkkiä pitkä"
 
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "Käyttäjätunnuksia, jotka päättyvät %s, ei voi rekisteröidä"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -297,7 +303,7 @@ msgstr "hylätty välityspalvelintodennus"
 #: ../server/apacheRequest.py:59
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "Vastaanotettiin virheellinen pyyntö (%s)."
 
 #: ../server/apacheRequest.py:120
 #, python-format
@@ -305,6 +311,8 @@ msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
+"TÄRKEÄ VIESTI:\n"
+"%s"
 
 #: ../server/apacheRequest.py:149
 #, python-format
@@ -312,11 +320,13 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Suoritettaessa ”%s” saatiin\n"
+"%s: %s\n"
 
 #: ../server/apacheRequest.py:606
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "Virheellinen URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -324,11 +334,13 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"Tililläsi ei ole pääsyä yhteenkään sopivaan kanavaan (julkaisu=”%(release)s”"
+", arkkitehtuuri=”%(arch)s”)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Tilauskäyttöoikeudet eivät riitä julkaisuun (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -336,7 +348,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Järjestelmä on rekisteröity mutta passiivinen"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -347,6 +359,11 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Virheellinen arkkitehtuurin ja käyttöjärjestelmäjulkaisun yhdistelmä (%s, "
+"%s).\n"
+"Järjestelmä on rekisteröity mutta ei saa päivityksiä, koska peruskanavaa\n"
+"ei voitu tilata. Saadaksesi apua ota yhteyttä verkkoalueen ylläpitoon.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -357,6 +374,11 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Järjestelmän rekisteröinti onnistui, mutta palveluun ei ole vielä\n"
+"  oikeutta. Oikeuttaaksesi järjestelmälle palvelun, kirjaudu sivustoon:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -368,97 +390,102 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Järjestelmän rekisteröinti onnistui mutta palveluoikeuksia ei ollut\n"
+"  saatavilla. Oikeuttaaksesi järjestelmälle palvelun, kirjaudu sivustoon:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "Pyydettiin virheellistä RPM-pakettia %s"
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
-msgstr ""
+msgstr "Pakettia ei löytynyt"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Tämä ei vaikuta kelvolliselta käyttäjätunnukselta."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Virheellinen käyttäjätunnuksen ja salasanan yhdistelmä."
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Tunnus on jo varattu tai salasana on virheellinen."
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
-msgstr ""
+msgstr "Käyttöoikeus hylätty."
 
 #: ../common/rhnException.py:57
 msgid "Object not found."
-msgstr ""
+msgstr "Kohdetta ei löytynyt."
 
 #: ../common/rhnException.py:58
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "Virheellinen järjestelmän digitaalinen tunniste."
 
 #: ../common/rhnException.py:59
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Virheelliset käyttöoikeustiedot."
 
 #: ../common/rhnException.py:60
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "Tietokannasta ei saatu käyttäjän tietoja."
 
 #: ../common/rhnException.py:61
 msgid "Valid username required."
-msgstr ""
+msgstr "Vaaditaan kelvollinen käyttäjätunnus."
 
 #: ../common/rhnException.py:62
 msgid "Valid password required."
-msgstr ""
+msgstr "Vaaditaan kelvollinen salasana."
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Käyttäjätunnuksen vähimmäispituuden rikkomus."
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Salasanan vähimmäispituuden rikkomus."
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
-msgstr ""
+msgstr "Käyttäjätunnuksessa on virheellisiä merkkejä."
 
 #: ../common/rhnException.py:66
 msgid "File not found."
-msgstr ""
+msgstr "Tiedostoa ei löytynyt."
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
+msgstr "Arkkitehtuurin ja käyttöjärjestelmäversion yhdistelmää ei tueta."
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "Tietokannasta ei saatu järjestelmän tietoja."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "Funktiolle välitettiin virheellisiä parametreja."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "Pyydettyä tietuetta ei saatu."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
-msgstr ""
+msgstr "Tietokantatietuetta ei voitu päivittää."
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr ""
+msgstr "Ei-tuettu palvelinarkkitehtuuri."
 
 #: ../common/rhnException.py:73
 #, python-format
