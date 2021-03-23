@@ -480,96 +480,111 @@
         <target>Altri file</target>
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
-          <source>List Scans</source> <target>Elenco scansioni</target>
+          <source>List Scans</source>
+        <target>Elenco scansioni</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
-          <source>Schedule</source> <target>Programmazione</target>
+      </trans-unit>
+      <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
+          <source>Schedule</source>
+        <target>Programmazione</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
-          <source>Overview</source> <target>Panoramica</target>
+          <source>Overview</source>
+        <target>Panoramica</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
-          <source>View/Modify Files</source> <target>Visualizza/Modifica file</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
+          <source>View/Modify Files</source>
+        <target>Visualizza/Modifica file</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
-          <source>View Files</source> <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
-          <source>Compare Files</source> <target>Confronta file</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
+          <source>View Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
-          <source>Manage Configuration Channels</source> <target>Gestisci Canali di Configurazione</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
+          <source>Compare Files</source>
+        <target>Confronta file</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
-          <source>List/Unsubscribe from Channels</source> <target>Elenca/Rimuovi sottoscrizione dai canali</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
+          <source>Manage Configuration Channels</source>
+        <target>Gestisci Canali di Configurazione</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
-          <source>Subscribe to Channels</source> <target>Sottoscrivi sui canali</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
+          <source>List/Unsubscribe from Channels</source>
+        <target>Elenca/Rimuovi sottoscrizione dai canali</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
-          <source>View/Modify Rankings</source> <target>Visualizza/Modifica posizione</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
+          <source>Subscribe to Channels</source>
+        <target>Sottoscrivi sui canali</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
-          <source>Centrally-Managed Files</source> <target>File gestiti centralmente</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
+          <source>View/Modify Rankings</source>
+        <target>Visualizza/Modifica posizione</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
-          <source>Locally-Managed Files</source> <target>File gestiti localmente</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
+          <source>Centrally-Managed Files</source>
+        <target>File gestiti centralmente</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
-          <source>Local Sandbox</source> <target>Sandbox locale</target>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
+          <source>Locally-Managed Files</source>
+        <target>File gestiti localmente</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
+      <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
+          <source>Local Sandbox</source>
+        <target>Sandbox locale</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <!-- END config file nav -->
       <trans-unit id="system.detail.nav.list" xml:space="preserve">
-          <source>List</source> <target>Elenco</target>
+          <source>List</source>
+        <target>Elenco</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.detail.nav.remove" xml:space="preserve">
-          <source>List / Remove</source> <target>Elenca / Rimuovi</target>
+      </trans-unit>
+      <trans-unit id="system.detail.nav.remove" xml:space="preserve">
+          <source>List / Remove</source>
+        <target>Elenca / Rimuovi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="Add" xml:space="preserve">
         <source>Add</source>
         <context-group name="ctx">
@@ -891,7 +906,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Help Desk</target>
+        <target>Assistenza tecnica</target>
       </trans-unit>
       <trans-unit id="Kickstart Details" xml:space="preserve">
         <source>Autoinstallation Details</source>
@@ -1126,43 +1141,49 @@
       </trans-unit>
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
-          <source>Child Channels</source> <context-group name="ctx">
+          <source>Child Channels</source>
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>Canali figlio</target>
-        </trans-unit>
-        <trans-unit id="Chat" xml:space="preserve">
-          <source>Chat</source> <context-group name="ctx">
+        <target>Canali figlio</target>
+      </trans-unit>
+      <trans-unit id="Chat" xml:space="preserve">
+          <source>Chat</source>
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
-          <target>Chat</target>
-        </trans-unit>
-        <trans-unit id="Base Channels" xml:space="preserve">
-          <source>Base Channels</source> <context-group name="ctx">
+        <target>Chat</target>
+      </trans-unit>
+      <trans-unit id="Base Channels" xml:space="preserve">
+          <source>Base Channels</source>
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>Canali di base</target>
-        </trans-unit>
+        <target>Canali di base</target>
+      </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
-          <source>Activated Systems</source> <context-group name="ctx">
+          <source>Activated Systems</source>
+        <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-          <target>Sistemi attivati</target>
-        </trans-unit>
+        <target>Sistemi attivati</target>
+      </trans-unit>
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
-          <source>Manage</source> <target>Gestisci</target>
+          <source>Manage</source>
+        <target>Gestisci</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="clear" xml:space="preserve">
-          <source>Clear</source> <target>Annulla</target>
+      </trans-unit>
+      <trans-unit id="clear" xml:space="preserve">
+          <source>Clear</source>
+        <target>Annulla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="Deployment" xml:space="preserve">
         <source>Deployment</source>
       </trans-unit>
