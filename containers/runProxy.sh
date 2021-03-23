@@ -15,6 +15,10 @@ $RUNNER run --rm=true -ti \
 	-e UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT' \
 	-e UYUNI_SRV_CERT='/config/'`find $CONFIG_DIR -name "rhn-org-httpd-ssl-key-pair-proxy-*.rpm" -printf "%f"` \
 	-v $CONFIG_DIR:/config \
+	-p 80:80 \
+	-p 443:443 \
+	-p 4505:4505 \
+	-p 4506:4506 \
 	--name uyuni_proxy \
         $IMAGE \
 		/bin/bash
