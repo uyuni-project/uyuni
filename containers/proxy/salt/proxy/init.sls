@@ -63,6 +63,10 @@ cont_copy_salt_master_pub_key:
 cont_start_minion:
   cmd.run:
     - name: /usr/bin/salt-minion -d
+    - require:
+      - file: cont_setup_machine_id
+      - file: cont_setup_minion_id
+      - file: cont_minion_conf
 
 {# store the salt keys to re-use them for the next start of the container #}
 wait_for_keys:
@@ -108,3 +112,5 @@ cont_store_salt_master_pub_key:
 cont_fetch_system_id:
   cmd.run:
     - name: /usr/sbin/fetch-certificate {{ system_id }}
+    - require:
+      - cmd: cont_start_minion
