@@ -1,4 +1,4 @@
-- Add SALT_RUNNING config in case it's not present on the minion (bsc#1183661)
+- Prevent useless package list refresh actions on zypper minions (bsc#1183661)
 - Skip removed product classes with satellite-sync
 - handle GPG keys when bootstrapping ssh minions (bsc#1181847)
 - Ubuntu 18 has version of apt which does not correctly support
