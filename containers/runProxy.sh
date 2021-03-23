@@ -3,11 +3,11 @@
 set -x
 CURDIR=$(dirname $(realpath $0))
 
-IMAGE=proxy
+IMAGE=localhost/proxy
 CONFIG_DIR="$CURDIR/proxy-config"
+RUNNER=podman
 
-
-docker run --rm=true -ti \
+$RUNNER run --rm=true -ti \
 	-e UYUNI_MASTER='suma-refhead-srv.mgr.suse.de' \
 	-e UYUNI_ACTIVATION_KEY='1-proxy' \
 	-e UYUNI_MINION_ID='mc-proxy.suse.de' \
