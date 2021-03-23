@@ -175,7 +175,6 @@ parser_add.add_argument('--setmaintainer', help="Set maintainer", default="")
 parser_add.set_defaults(func=add)
 
 parser_remove = subparser.add_parser("remove", help="remove project")
-parser_add.add_argument('--prproject', help="Project to remove from, defaults to systemsmanagement:Uyuni:Master:PR", default="systemsmanagement:Uyuni:Master:PR")
 parser_remove.add_argument('pullnumber', help="Pull Request number, for example 1")
 parser_remove.set_defaults(func=remove)
 
