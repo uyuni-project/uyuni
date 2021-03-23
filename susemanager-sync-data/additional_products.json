@@ -1,4 +1,91 @@
 [
+        {
+        "id" : -21,
+        "name" : "Alibaba Cloud Linux (Aliyun Linux) 2",
+        "identifier" : "alibaba-2",
+        "former_identifier" : "",
+        "version" : "2",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Alibaba Cloud Linux (Aliyun Linux) 2 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -260,
+                "url" : "https://mirrors.aliyun.com/alinux/2/os/x86_64/",
+                "name" : "alibaba-2",
+                "distro_target" : "x86_64",
+                "description" : "Alibaba Cloud Linux (Aliyun Linux) release 2",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -261,
+                "url" : "https://mirrors.aliyun.com/alinux/2/exp/x86_64/",
+                "name" : "alibaba-2-exp",
+                "distro_target" : "x86_64",
+                "description" : "Development Packages for Alibaba Cloud Linux (Aliyun Linux) release 2",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -262,
+                "url" : "https://mirrors.aliyun.com/alinux/2/extras/x86_64/",
+                "name" : "alibaba-2-extras",
+                "distro_target" : "x86_64",
+                "description" : "Extras for Alibaba Cloud Linux (Aliyun Linux) release 2",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -263,
+                "url" : "https://mirrors.aliyun.com/alinux/2/kernels/x86_64/",
+                "name" : "alibaba-2-kernels",
+                "distro_target" : "x86_64",
+                "description" : "Additional kernels for Alibaba Cloud Linux (Aliyun Linux) release 2",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -264,
+                "url" : "https://mirrors.aliyun.com/alinux/2/plus/x86_64/",
+                "name" : "alibaba-2-plus",
+                "distro_target" : "x86_64",
+                "description" : "Alibaba Cloud Linux (Aliyun Linux) release 2 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -265,
+                "url" : "https://mirrors.aliyun.com/alinux/2/updates/x86_64/",
+                "name" : "alibaba-2-updates",
+                "distro_target" : "x86_64",
+                "description" : "Alibaba Cloud Linux (Aliyun Linux) release 2 Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
     {
         "id" : -20,
         "name" : "Debian 10",

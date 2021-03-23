@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015--2020 SUSE LLC
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -788,7 +788,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         String osRelease = grains.getValueAsString("osrelease");
 
         if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
+                "centos".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "oel".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "alibaba".equalsIgnoreCase(grains.getValueAsString("os")) ) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = saltApi.runRemoteCommand(target,
                     "rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release")

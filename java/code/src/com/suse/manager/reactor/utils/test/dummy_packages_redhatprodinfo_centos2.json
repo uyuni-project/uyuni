@@ -46,5 +46,15 @@
     "skip_watch": true,
     "changes": {},
     "result": true
+  },
+  "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
+    "comment": "Command \"cat /etc/alinux-release\" run",
+    "name": "cat /etc/alinux-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
   }
 }

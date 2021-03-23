@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -40,6 +40,8 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
     public static final String PKG_PROFILE_ORACLE_RELEASE =
             "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run";
+    public static final String PKG_PROFILE_ALIBABA_RELEASE =
+            "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
@@ -64,6 +66,9 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_ORACLE_RELEASE)
     private StateApplyResult<CmdResult> oracleReleaseFile;
+
+    @SerializedName(PKG_PROFILE_ALIBABA_RELEASE)
+    private StateApplyResult<CmdResult> alibabaReleaseFile;
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesResReleasePkg;
@@ -120,6 +125,11 @@ public class PkgProfileUpdateSlsResult {
     public StateApplyResult<CmdResult> getOracleReleaseFile() {
         return oracleReleaseFile;
     }
+
+    /**
+     * @return the content of the file /etc/alinux-release
+     */
+    public StateApplyResult<CmdResult> getAlibabaReleaseFile() { return alibabaReleaseFile; }
 
     /**
      * @return the package that provides 'sles_es-release-server'

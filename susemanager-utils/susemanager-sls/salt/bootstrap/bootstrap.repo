@@ -11,6 +11,7 @@ gpgcheck=0
 enabled=1
 autorefresh=1
 keeppackages=0
+priority=1
 {%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 8 %}
 module_hotfixes=1
 {%- endif %}

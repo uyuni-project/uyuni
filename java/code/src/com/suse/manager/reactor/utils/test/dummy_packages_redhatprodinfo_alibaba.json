@@ -2,20 +2,20 @@
   "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
     "comment": "onlyif execution failed",
     "name": "rpm -q --whatprovides 'sles_es-release-server'",
-    "start_time": "07:57:57.503534",
+    "start_time": "14:04:57.901731",
     "skip_watch": true,
     "result": true,
-    "duration": 138.323,
+    "duration": 139.57,
     "__run_num__": 2,
     "changes": {}
   },
   "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
     "comment": "onlyif execution failed",
     "name": "cat /etc/centos-release",
-    "start_time": "07:57:57.381446",
+    "start_time": "14:04:57.667941",
     "skip_watch": true,
     "result": true,
-    "duration": 121.715,
+    "duration": 233.474,
     "__run_num__": 1,
     "changes": {}
   },
@@ -23,11 +23,15 @@
     "comment": "Command \"cat /etc/oracle-release\" run",
     "name": "cat /etc/oracle-release",
     "start_time": "14:04:57.667941",
-    "skip_watch": true,
     "result": true,
     "duration": 233.474,
     "__run_num__": 3,
-    "changes": {}
+    "changes": {
+      "pid": 862,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "Oracle Linux Server release 8.2"
+    }
   },
   "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
     "comment": "Command \"cat /etc/alinux-release\" run",
@@ -37,20 +41,25 @@
     "result": true,
     "duration": 233.474,
     "__run_num__": 3,
-    "changes": {}
+    "changes": {
+      "pid": 860,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "Alibaba Cloud Linux (Aliyun Linux) release 2.1903 LTS (Hunting Beagle)"
+    }
   },
   "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
     "comment": "Command \"cat /etc/redhat-release\" run",
     "name": "cat /etc/redhat-release",
-    "start_time": "07:57:57.138995",
+    "start_time": "14:04:57.435091",
     "result": true,
-    "duration": 242.195,
+    "duration": 232.599,
     "__run_num__": 0,
     "changes": {
-      "pid": 784,
+      "pid": 860,
       "retcode": 0,
       "stderr": "",
-      "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+      "stdout": "CentOS Linux release 7.2.1511 (Core)"
     }
   }
 }

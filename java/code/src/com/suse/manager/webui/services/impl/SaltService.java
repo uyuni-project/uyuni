@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -1020,12 +1020,15 @@ public class SaltService implements SystemQuery, SaltApi {
                     Optional<String> rhelReleaseContent = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
+                    Optional<String> alibabaReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_ALIBABA_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
                     Optional<String> whatProvidesRes = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
 
                     return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent,
-                            oracleReleaseContent, whatProvidesRes);
+                            oracleReleaseContent, alibabaReleaseContent, whatProvidesRes);
                 });
     }
 

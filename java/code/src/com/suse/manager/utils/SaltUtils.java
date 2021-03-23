@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -1281,6 +1281,11 @@ public class SaltUtils {
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
                                 .map(CmdResult::getStdout);
+                Optional<String> alibabaReleaseFile =
+                        Optional.ofNullable(ret.getAlibabaReleaseFile())
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdResult::getStdout);
                 Optional<String> oracleReleaseFile =
                         Optional.ofNullable(ret.getOracleReleaseFile())
                                 .map(StateApplyResult::getChanges)
@@ -1292,10 +1297,11 @@ public class SaltUtils {
                                 .filter(res -> res.getStdout() != null)
                                 .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                        oracleReleaseFile.isPresent() || resReleasePkg.isPresent()) {
+                        oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
+                        resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
                             imageInfo, resReleasePkg,
-                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile);
+                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile);
                     imageInfo.setInstalledProducts(products);
                 }
             }
@@ -1359,6 +1365,11 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
+        Optional<String> alibabaReleaseFile =
+                Optional.ofNullable(result.getAlibabaReleaseFile())
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
         Optional<String> oracleReleaseFile =
                 Optional.ofNullable(result.getOracleReleaseFile())
                 .map(StateApplyResult::getChanges)
@@ -1373,10 +1384,11 @@ public class SaltUtils {
         ValueMap grains = new ValueMap(result.getGrains());
 
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                oracleReleaseFile.isPresent() || resReleasePkg.isPresent()) {
+                oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
+                resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
                     server, resReleasePkg,
-                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile);
+                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile);
             server.setInstalledProducts(products);
         }
         else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString("os"))) {
@@ -1780,11 +1792,13 @@ public class SaltUtils {
            Optional<String> resPackage,
            Optional<String> rhelReleaseFile,
            Optional<String> centosRelaseFile,
-           Optional<String> oracleReleaseFile) {
+           Optional<String> oracleReleaseFile,
+           Optional<String> alibabaReleaseFile) {
 
         Optional<RhelUtils.RhelProduct> rhelProductInfo =
                 RhelUtils.detectRhelProduct(server, resPackage,
-                        rhelReleaseFile, centosRelaseFile, oracleReleaseFile);
+                        rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
+                        alibabaReleaseFile);
 
         if (!rhelProductInfo.isPresent()) {
             LOG.warn("Could not determine RHEL product type for minion: " +
@@ -1816,12 +1830,14 @@ public class SaltUtils {
             ImageInfo image,
             Optional<String> resPackage,
             Optional<String> rhelReleaseFile,
-            Optional<String> centosRelaseFile,
-            Optional<String> oracleReleaseFile) {
+            Optional<String> centosReleaseFile,
+            Optional<String> oracleReleaseFile,
+            Optional<String> alibabaReleaseFile) {
 
          Optional<RhelUtils.RhelProduct> rhelProductInfo =
                  RhelUtils.detectRhelProduct(image, resPackage,
-                         rhelReleaseFile, centosRelaseFile, oracleReleaseFile);
+                         rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
+                         alibabaReleaseFile);
 
          if (!rhelProductInfo.isPresent()) {
              LOG.warn("Could not determine RHEL product type for image: " +

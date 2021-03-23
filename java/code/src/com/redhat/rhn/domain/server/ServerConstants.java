@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2013--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -27,6 +28,7 @@ public class ServerConstants {
     public static final String LEAP = "Leap";
     public static final String UBUNTU = "Ubuntu";
     public static final String REDHAT = "RedHat";
+    public static final String ALIBABA = "Alibaba";
 
     private ServerConstants() {
 

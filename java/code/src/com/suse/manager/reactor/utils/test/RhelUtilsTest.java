@@ -59,6 +59,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
             "CentOS Linux release 7.2.1511 (Core)";
     private static String ORACLE_RELEASE =
             "Oracle Linux Server release 8.2";
+    private static String ALIBABA_RELEASE =
+            "Alibaba Cloud Linux (Aliyun Linux) release 2.1903 LTS (Hunting Beagle)";
 
     @FunctionalInterface
     private interface SetupMinionConsumer {
@@ -109,6 +111,15 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("", os.get().getRelease());
     }
 
+    public void testParseReleaseFileAlibaba() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALIBABA_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("Alibaba Cloud Linux (Aliyun Linux)", os.get().getName());
+        assertEquals("2", os.get().getMajorVersion());
+        assertEquals("1903", os.get().getMinorVersion());
+        assertEquals("", os.get().getRelease());
+    }
+
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -119,6 +130,9 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
                 TestUtils.readAll(TestUtils.findTestData(json)));
         String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
+        String alibabaReleaseContent = map.get("cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
         String oracleReleaseContent = map.get("cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run")
@@ -138,7 +152,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 Optional.ofNullable(whatProvidesRes),
                 Optional.ofNullable(rhelReleaseContent),
                 Optional.ofNullable(centosReleaseContent),
-                Optional.ofNullable(oracleReleaseContent));
+                Optional.ofNullable(oracleReleaseContent),
+                Optional.ofNullable(alibabaReleaseContent));
         assertTrue(prod.isPresent());
         response.accept(prod);
 
@@ -207,6 +222,17 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
         });
+    }
+
+    public void testDetectRhelProductAlibaba() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_alibaba.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("Alibaba Cloud Linux (Aliyun Linux)", prod.get().getName());
+                    assertEquals("2.1903", prod.get().getRelease());
+                    assertEquals("2", prod.get().getVersion());
+                });
     }
 
     public static Channel createResChannel(User user, String version) throws Exception {

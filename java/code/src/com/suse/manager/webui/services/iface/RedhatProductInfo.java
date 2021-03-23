@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,6 +21,7 @@ import java.util.Optional;
  */
 public class RedhatProductInfo {
 
+    private final Optional<String> alibabaReleaseContent;
     private final Optional<String> oracleReleaseContent;
     private final Optional<String> centosReleaseContent;
     private final Optional<String> rhelReleaseContent;
@@ -30,15 +31,23 @@ public class RedhatProductInfo {
      * @param centosReleaseContentIn centos release content
      * @param rhelReleaseContentIn rhel release content
      * @param oracleReleaseContentIn oracle release content
+     * @param alibabaReleaseContentIn alibaba release content
      * @param whatProvidesResIn what provides res result
      */
     public RedhatProductInfo(Optional<String> centosReleaseContentIn, Optional<String> rhelReleaseContentIn,
-            Optional<String> oracleReleaseContentIn, Optional<String> whatProvidesResIn) {
+            Optional<String> oracleReleaseContentIn, Optional<String> alibabaReleaseContentIn,
+            Optional<String> whatProvidesResIn) {
+        this.alibabaReleaseContent = alibabaReleaseContentIn;
         this.oracleReleaseContent = oracleReleaseContentIn;
         this.centosReleaseContent = centosReleaseContentIn;
         this.rhelReleaseContent = rhelReleaseContentIn;
         this.whatProvidesRes = whatProvidesResIn;
     }
+
+    /**
+     * @return alinux (Alibaba) release content
+     */
+    public Optional<String> getAlibabaReleaseContent() { return alibabaReleaseContent; }
 
     /**
      * @return oracle release content

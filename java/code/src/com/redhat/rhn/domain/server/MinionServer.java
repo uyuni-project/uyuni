@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -152,7 +152,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isRedHat6() ||
-                isRedHat7() || isRedHat8();
+                isRedHat7() || isRedHat8() || isAlibaba2();
     }
 
     /**
@@ -209,6 +209,8 @@ public class MinionServer extends Server implements SaltConfigurable {
     private boolean isRedHat8() {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
     }
+
+    private boolean isAlibaba2() { return ServerConstants.ALIBABA.equals(getOsFamily()) && getRelease().equals("2"); }
 
     /**
      * {@inheritDoc}

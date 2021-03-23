@@ -355,13 +355,14 @@ public class RegistrationUtils {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "oel".equalsIgnoreCase(grains.getValueAsString(OS))) {
+                 "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                 "alibaba".equalsIgnoreCase(grains.getValueAsString(OS))) { // FIXME Use "alibaba cloud (aliyun)" ?
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
                             server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
-                            x.getOracleReleaseContent()));
+                            x.getOracleReleaseContent(), x.getAlibabaReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());
