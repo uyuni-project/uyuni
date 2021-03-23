@@ -32,7 +32,7 @@
 %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 # For making sure we can set the right args for deb distros
 %global is_deb 1
 %endif
@@ -43,7 +43,7 @@ License:        GPL-2.0-only
 Name:           rhnlib
 Version:        4.2.2
 Release:        1%{?dist}
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 Group:      python
 Packager:   Uyuni Project <uyuni-devel@opensuse.org>
 %else
@@ -65,7 +65,7 @@ rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk
 Summary:        Python libraries for the Spacewalk project
 Group:          Development/Libraries
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  python2-devel
 Requires:       python2-pyOpenSSL
@@ -84,7 +84,7 @@ Requires:       pyOpenSSL
 %endif # 0{?fedora} >= 28 || 0{?rhel} >= 8
 %endif # {_vendor} != "debbuild"
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 BuildRequires: python-dev
 BuildRequires: rpm
 Requires(preun): python-minimal
@@ -113,7 +113,7 @@ rhnlib is a collection of python modules used by the Spacewalk software.
 %package -n python3-rhnlib
 Summary:        Python libraries for the Spacewalk project
 
-%if %{_vendor} != "debbuild"
+%if "%{_vendor}" != "debbuild"
 BuildRequires:  python3-devel
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros
@@ -121,7 +121,7 @@ BuildRequires:  python-rpm-macros
 %endif
 Requires:       python3-pyOpenSSL
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 BuildRequires: python3-dev
 BuildRequires: rpm
 Requires(preun): python3-minimal
@@ -176,7 +176,7 @@ make -f Makefile.rhnlib PYTHON=%{__python3}
 %{python3_sitelib}/*
 %endif
 
-%if %{_vendor} == "debbuild"
+%if "%{_vendor}" == "debbuild"
 
 %post -n python2-rhnlib
 # Do late-stage bytecompilation, per debian policy
