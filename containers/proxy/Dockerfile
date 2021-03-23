@@ -1,3 +1,5 @@
+# rebuild with: docker build -t proxy .
+
 FROM registry.opensuse.org/opensuse/leap:15.2
 
 # Apache
