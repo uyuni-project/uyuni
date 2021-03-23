@@ -1,0 +1,28 @@
+Salt Keys:
+----------
+./salt
+./salt/pki
+./salt/pki/minion
+./salt/pki/minion/minion.pem
+./salt/pki/minion/minion.pub
+./salt/pki/minion/minion_master.pub
+
+SSL CA Certificate file (required):
+-----------------------------------
+./RHN-ORG-TRUSTED-SSL-CERT
+
+SSL Server Certificate RPM package (required):
+----------------------------------------------
+./rhn-org-httpd-ssl-key-pair-proxy-1.0-1.noarch.rpm
+
+SystemID file - automatically stored after the first start:
+-----------------------------------------------------------
+./sysconfig
+./sysconfig/rhn
+./sysconfig/rhn/systemid
+
+SSH Push Keys:
+--------------
+./sshpush
+./sshpush/id_susemanager_ssh_push
+./sshpush/id_susemanager_ssh_push.pub
