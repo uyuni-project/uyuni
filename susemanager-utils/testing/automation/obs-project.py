@@ -107,7 +107,57 @@ def print_usage(args):
     print("Use -h for help")
 
 def remove(args):
-    print("TO BE IMPLEMENTED")
+    api = args.api
+    pr_project = args.prproject
+    pull_number = args.pullnumber
+    pr_project = pr_project + ":" + pull_number
+    config_file = args.configfile
+
+    if (not os.path.exists(config_file)):
+        print("ERROR: config file {} not found".format(config_file))
+        sys.exit(-1)
+
+    config = configparser.ConfigParser()
+    try:
+        config.read(config_file)
+    except IOError as e:
+        print("ERROR: Can't read config file ".format(e))
+        sys.exit(-1)
+
+    auth_user = config[api]["user"]
+    auth_passwd = config[api]["pass"]
+
+    if (auth_user == "" or auth_passwd == ""):
+        print("ERROR: could not find user or password in config file")
+        sys.exit(-1)
+
+    print("DEBUG: getting api version for debugging purposes")
+    req = urllib.request.Request("{}/about".format(api))
+    with urllib.request.urlopen(req) as response:
+        data = response.read()
+    root = ET.fromstring(data)
+    revision = root.find("revision").text
+    print("DEBUG: API version: {}".format(revision))
+
+    print("DEBUG: removing project {}".format(pr_project))
+    answer = ""
+    while (answer!="y" and answer!="n"):
+        answer = input("Are you sure you want to remove it?(y/n)")
+    if (answer == "n"):
+        print("OK. Maybe another day. Bye!")
+        sys.exit(-1)
+    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+    url = api + "/source/" + pr_project 
+    passman.add_password(None, url, auth_user, auth_passwd)
+    authhandler = urllib.request.HTTPBasicAuthHandler(passman)
+    opener = urllib.request.build_opener(authhandler)
+    urllib.request.install_opener(opener)
+    data = ET.tostring(root)
+    req = urllib.request.Request(url, data = data, method="DELETE")
+    with urllib.request.urlopen(req) as response:
+        data = response.read()
+    root = ET.fromstring(data)
+    print("DEBUG: result: {}".format(root.get("code")))
 
 
 parser = argparse.ArgumentParser(description="This utility helps you manage an obs project for a Pull Request")
