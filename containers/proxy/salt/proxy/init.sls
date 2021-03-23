@@ -114,3 +114,9 @@ cont_fetch_system_id:
     - name: /usr/sbin/fetch-certificate {{ system_id }}
     - require:
       - cmd: cont_start_minion
+
+cont_activate:
+  cmd.run:
+    - name: rhn-proxy-activate --non-interactive --server={{ master }}
+    - require:
+      - cmd: cont_fetch_system_id
