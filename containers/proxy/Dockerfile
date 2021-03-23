@@ -19,4 +19,4 @@ RUN zypper --gpg-auto-import-keys --non-interactive install vim less
 RUN  mkdir -p /root/salt
 COPY salt /root/salt
 
-CMD [ "/bin/bash" ]
+CMD [ "salt-call --local --file-root=/root/salt/ state.highstate" ]

@@ -16,5 +16,5 @@ $RUNNER run --rm=true -ti \
 	-e UYUNI_SRV_CERT='/config/rhn-org-httpd-ssl-key-pair-proxy-1.0-1.noarch.rpm' \
 	-v $CONFIG_DIR:/config \
 	--name uyuni_proxy \
-        $IMAGE
-
+        $IMAGE \
+		/bin/bash
