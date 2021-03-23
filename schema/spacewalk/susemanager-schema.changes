@@ -1,3 +1,4 @@
+- Add support for Alibaba Cloud Linux 2
 - Raise length limit for kernel options (bsc#1182916)
 - add rhnactiondetails table for handling allow vendor change for errata/install/upgrade actions
 - add virtual network create action

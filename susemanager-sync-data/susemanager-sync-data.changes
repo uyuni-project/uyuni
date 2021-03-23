@@ -1,3 +1,4 @@
+- Add support for Alibaba Cloud Linux 2
 - define missing ubuntu universe update channels (bsc#1182842)
 - define UEK repositories for Oracle Linux
 

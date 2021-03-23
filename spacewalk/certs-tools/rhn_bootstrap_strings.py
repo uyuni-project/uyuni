@@ -385,6 +385,9 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/oracle-release ]; then
             grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
             VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/alinux-release ]; then
+            grep -v '^#' /etc/alinux-release | grep -q '\(Alibaba\)' && BASE="alibaba"
+            VERSION=`grep -v '^#' /etc/alinux-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/centos-release ]; then
             grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
             VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
