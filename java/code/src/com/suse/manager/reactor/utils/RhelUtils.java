@@ -166,7 +166,7 @@ public class RhelUtils {
             Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(releaseFile);
             if (amatcher.matches()) {
                 String name =
-                        amatcher.group(1).replaceAll("(?i)linux)", "").replaceAll(" ", "");
+                        amatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
                 String majorVersion = StringUtils.substringBefore(amatcher.group(2), ".");
                 String minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
                 String release = amatcher.group(3);
