@@ -1,7 +1,5 @@
 FROM registry.opensuse.org/opensuse/leap:15.2
 
-# SMTP. TODO: needed?
-EXPOSE 25
 # Apache
 EXPOSE 80
 EXPOSE 443
