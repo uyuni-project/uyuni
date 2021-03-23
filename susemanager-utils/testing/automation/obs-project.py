@@ -168,7 +168,6 @@ parser.add_argument('--configfile', help="Config file where username and passwor
 parser.add_argument('--prproject', help="Parent project for Pull Requests, defaults to systemsmanagement:Uyuni:Master:PR", default="systemsmanagement:Uyuni:Master:PR")
 parser.set_defaults(func=print_usage)
 
-
 subparser = parser.add_subparsers()
 parser_add = subparser.add_parser("add", help="add project")
 parser_add.add_argument('--project', help="Project from which to \"branch\" from, defaults to systemsmanagement:Uyuni:Master", default="systemsmanagement:Uyuni:Master")
