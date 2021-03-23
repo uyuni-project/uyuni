@@ -4,6 +4,7 @@
 {% set activation_key = salt['environ.get']('UYUNI_ACTIVATION_KEY') %}
 {% set ca_certs = salt['environ.get']('UYUNI_CA_CERTS') %}
 {% set srv_cert_rpm = salt['environ.get']('UYUNI_SRV_CERT') %}
+{% set email = salt['environ.get']('UYUNI_EMAIL', 'root@localhost') %}
 {% set system_id = '/etc/sysconfig/rhn/systemid' %}
 
 cont_check_ca_certs:
@@ -182,4 +183,34 @@ cont_squid_conf:
     - source: salt://proxy/squid.conf.templ
     - template: jinja
 
-
+cont_rhn_conf:
+  file.managed:
+    - name: /etc/rhn/rhn.conf
+    - mode: 640
+    - user: root
+    - group: www
+    - contents: |
+        # Automatically generated Spacewalk Proxy Server configuration file.
+        # -------------------------------------------------------------------------
+        
+        # SSL CA certificate location
+        proxy.ca_chain = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+        
+        # Corporate HTTP proxy, format: corp_gateway.example.com:8080
+        proxy.http_proxy = 
+        
+        # Username for that corporate HTTP proxy
+        proxy.http_proxy_username = 
+        
+        # Password for that corporate HTTP proxy
+        proxy.http_proxy_password = 
+        
+        # Location of locally built, custom packages
+        proxy.pkg_dir = /var/spool/rhn-proxy
+        
+        # Hostname of RHN Classic Server or Red Hat Satellite
+        proxy.rhn_parent = {{ master }}
+        
+        # Destination of all tracebacks, etc.
+        traceback_mail = {{ email }}
+ 
