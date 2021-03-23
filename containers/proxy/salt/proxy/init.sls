@@ -213,30 +213,6 @@ cont_store_ssh_push_key_pub:
 
 {% endif %}
 
-{# start the services #}
-
 cont_pre_start_squid:
   cmd.run:
     - name: /usr/lib64/squid/initialize_cache_if_needed.sh
-
-cont_start_squid:
-  cmd.run:
-    - name: /usr/sbin/squid -FC
-    - require:
-      - cmd: cont_pre_start_squid
-      - file: cont_squid_conf
-
-cont_start_apache:
-  cmd.run:
-    - name: /usr/sbin/start_apache2 -k start
-    - require:
-      - file: cont_cobbler_proxy_conf
-      - file: cont_ssl_conf
-      - file: cont_rhn_conf
-
-cont_start_salt_broker:
-  cmd.run:
-    - name: /usr/bin/salt-broker
-    - require:
-      - cmd: cont_start_squid
-      - cmd: cont_start_apache
