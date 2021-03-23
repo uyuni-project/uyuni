@@ -14289,6 +14289,7 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.diff" xml:space="preserve">
           <source>Diff</source>
+        <target>Diff</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
