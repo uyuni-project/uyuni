@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.log4j.Logger;
@@ -144,10 +143,6 @@ public class ProxyHandler extends BaseHandler {
         Server server = validateClientCertificate(clientcert);
         if (server.isProxy()) {
             throw new ProxyAlreadyRegisteredException();
-        }
-
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT) || server.hasEntitlement(EntitlementManager.SALT))) {
-            throw new ProxyMissingEntitlementException();
         }
 
         SystemManager.activateProxy(server, version);
