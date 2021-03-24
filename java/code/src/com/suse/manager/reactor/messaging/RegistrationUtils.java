@@ -389,6 +389,7 @@ public class RegistrationUtils {
                return Collections.singleton(product);
            }
         }
+        LOG.warn("No product match found. OS grain is " + grains.getValueAsString(OS) + ", arch is " + grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 
