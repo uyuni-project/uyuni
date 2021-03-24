@@ -1,0 +1,15 @@
+#!/bin/sh
+# TaskomaticDaemon start script
+. /etc/rhn/taskomatic.conf
+. /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+
+RHN_MEM=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+if [ "x$RHN_MEM" != "x" ]; then
+    TASKO_MAX_MEMORY=$RHN_MEM
+fi
+
+TASKO_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${TASKO_INIT_MEMORY}m -Xmx${TASKO_MAX_MEMORY}m ${TASKO_CRASH_PARAMS} ${TASKO_JAVA_OPTS}"
+TASKO_CLASSPATH="${TASKO_RHN_CLASSPATH}:${TASKO_RHN_JARS}:${TASKO_JARS}"
+
+# options sourced from /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf (do not touch). Add additional options to /etc/rhn/taskomatic.conf
+/usr/bin/java -Djava.library.path=${TASKO_LIBRARY_PATH} -classpath ${TASKO_CLASSPATH} ${TASKO_PARAMS} ${JAVA_OPTS} com.redhat.rhn.taskomatic.core.TaskomaticDaemon
