@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-24 16:57+0000\n"
+"PO-Revision-Date: 2021-03-24 19:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -190,7 +190,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: ../html/src/components/config-channels.tsx:473
 msgid "Configuration Channels"
@@ -3833,7 +3833,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"
-msgstr ""
+msgstr "Applica lo stato alto"
 
 #: ../html/src/manager/state/highstate.tsx:135
 msgid "Create Recurring"
@@ -3845,7 +3845,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
-msgstr ""
+msgstr "Gruppo"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
@@ -4351,7 +4351,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
-msgstr ""
+msgstr "Gestore dell'host virtuale"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
