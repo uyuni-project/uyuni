@@ -76,6 +76,7 @@ BuildRequires:  python-devel
 Requires:       python-pyOpenSSL
 %else
 Requires:       python-openssl
+Requires:       python-backports.ssl_match_hostname
 %endif # 0{?suse_version} > 1200
 %else
 Requires:       pyOpenSSL
