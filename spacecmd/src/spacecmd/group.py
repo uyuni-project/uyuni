@@ -501,7 +501,7 @@ def do_group_listconfigchannels(self, args):
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
-        self.help_group_details()
+        self.help_group_listconfigchannels()
         return 1
 
     add_separator = False
