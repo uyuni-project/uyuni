@@ -1,3 +1,5 @@
+- require missing python-backports.ssl_match_hostname on SLE 11 (bsc#1183959)
+
 -------------------------------------------------------------------
 Tue Feb 16 09:49:49 CET 2021 - jgonzalez@suse.com
 
