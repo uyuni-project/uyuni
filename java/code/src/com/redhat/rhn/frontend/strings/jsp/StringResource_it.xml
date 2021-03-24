@@ -71,7 +71,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
           </context-group>
-        <target>Nome del tag</target>
+        <target>Nome del contrassegno</target>
       </trans-unit>
       <trans-unit id="column.reason" xml:space="preserve">
           <source>Reason</source>
@@ -82,12 +82,14 @@
       </trans-unit>
       <trans-unit id="column.tagged-systems" xml:space="preserve">
           <source>Tagged Systems</source>
+        <target>Sistemi contrassegnati</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
       </trans-unit>
       <trans-unit id="column.tag-created" xml:space="preserve">
           <source>Tag Created</source>
+        <target>Contrassegno creato</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
@@ -223,6 +225,7 @@
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value" xml:space="preserve">
         <source>Only valid values for {0} are ({1})</source>
+        <target>I soli valori validi per {0} sono ({1})</target>
       </trans-unit>
       <trans-unit id="errors.suffix" xml:space="preserve">
         <source>&lt;/li&gt;</source>
@@ -262,6 +265,7 @@
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
+        <target>{0} contiene caratteri non validi. Oltre ai caratteri alfanumerici, sono ammessi '-' e '_'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with configuration channel label field</context>
         </context-group>
@@ -332,6 +336,7 @@
       </trans-unit>
       <trans-unit id="errors.integer.minmax" xml:space="preserve">
         <source>{0} must be a whole number between {1} and {2}.</source>
+        <target>{0} deve essere un numero intero tra {1} e {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -347,6 +352,7 @@
       </trans-unit>
       <trans-unit id="errors.float.minmax" xml:space="preserve">
         <source>{0} must be a decimal number between {1} and {2}.</source>
+        <target>{0} deve essere un numero decimale tra {1} e {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -354,6 +360,7 @@
       </trans-unit>
       <trans-unit id="errors.unexpected" xml:space="preserve">
         <source>An unexpected error has occurred during the request.</source>
+        <target>Si è verificato un errore imprevisto durante la richiesta.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page where an unexpected error occurred.</context>
         </context-group>
@@ -367,6 +374,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.title.actionchain" xml:space="preserve">
           <source>We're sorry, but the Action Chain could not be found.</source>
+        <target>Siamo spiacenti, ma non è stato possibile trovare la catena di azioni.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -499,6 +507,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.actionchain.reason1" xml:space="preserve">
           <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source>
+        <target>La catena di azioni richiesta non esiste. È molto probabile che ciò si verifichi qualora la catena d'azione sia già stata programmata e cancellata.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1015,7 +1024,7 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Se hai seguito un link, il link potrebbe essere errato o non aggiornato. Clicca sul pulsante indietro nel tuo browser per provare un altro link, o usa l'icona di navigazione superiore per navigare verso la homepage.</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
@@ -1026,7 +1035,7 @@
               page may have moved
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Se hai usato un segnalibro, la pagina potrebbe essersi spostata in una posizione diversa da quando il segnalibro è stato creato. Usa l'icona di navigazione superiore per navigare verso la pagina iniziale, e se dovessi trovare il documento assicurati di aggiornare il tuo segnalibro.</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -1065,6 +1074,7 @@
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
+        <target>Alcune funzioni richiedono JavaScript per funzionare correttamente. Assicurati di abilitare JavaScript nel tuo browser.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All pages</context>
         </context-group>
@@ -1302,6 +1312,7 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote" xml:space="preserve">
         <source> Receive taskomatic notifications</source>
+        <target> Ricevi le notifiche di taskomatic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1622,6 +1633,7 @@
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/help/Copyright.do"&gt;Informativa sul diritto d'autore&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1804,42 +1816,49 @@
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
         <source>Visualization Hierarchy</source>
+        <target>Visualizzazione della gerarchia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
         <source>System not checking in</source>
+        <target>Il sistema non effettua il check-in</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
         <source>Not patched system</source>
+        <target>Sistema non corretto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
         <source>SUSE Manager</source>
+        <target>SUSE Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
         <source>Virtual Host Manager</source>
+        <target>Gestore dell'host virtuale</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
         <source>Group</source>
+        <target>Gruppo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
         <source>System</source>
+        <target>Sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
@@ -2059,6 +2078,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="usercreate.names" xml:space="preserve">
         <source>First Name, Last Name</source>
+        <target>Nome, Cognome</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -2824,6 +2844,10 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           Note: For multi-system scheduled actions, the ability to cancel individual
           systems means that the number of clients mentioned in the Action column may not match the number in Total.
         </source>
+        <target>
+          Nota: per le azioni pianificate su più sistemi, la possibilità di cancellare 
+          i singoli sistemi vuol dire che il numero di client menzionati nella colonna Azione potrebbe non corrispondere al numero in Totale.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2958,6 +2982,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
             &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;.
             Both System Set Manager and single system actions are supported.
         </source>
+        <target>
+            Puoi creare una nuova catena di azioni programmando qualsiasi operazione supportata, come
+            &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installazione&lt;/a&gt; o
+            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;aggiornamento&lt;/a&gt; di un pacchetto, eseguire un
+            &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;comando remoto&lt;/a&gt; o
+            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;distribuire un file di configurazione&lt;/a&gt;.
+            Sono supportate sia la gestione di insiemi di sistemi sia le azioni sui singoli sistemi.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
@@ -3018,6 +3050,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
             installing or upgrading a package, running a remote command or deploying a configuration file.
             Both System Set Manager and single system actions are supported.
         </source>
+        <target>
+            Puoi aggiungere azioni a questa catena di azioni programmando qualsiasi operazione supportata, 
+            come installare o aggiornare un pacchetto, eseguire un comando remoto o distribuire un file di configurazione.
+            Sono supportate sia la gestione di insiemi di sistemi sia le azioni sui singoli sistemi.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3115,6 +3152,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.diff" xml:space="preserve">
         <source>Compare {0} on</source>
+        <target>Confronta {0} su</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3135,6 +3173,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="actionchain.jsp.states.apply" xml:space="preserve">
         <source>Apply Highstate</source>
+        <target>Applica lo stato alto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
