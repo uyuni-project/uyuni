@@ -117,7 +117,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("AlibabaCloud(Aliyun)", os.get().getName());
         assertEquals("2", os.get().getMajorVersion());
         assertEquals("1903", os.get().getMinorVersion());
-        assertEquals("", os.get().getRelease());
+        assertEquals("Hunting Beagle", os.get().getRelease());
     }
 
     public void testParseReleaseFileNonMatching() {
@@ -229,7 +229,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
-                    assertEquals("Alibaba Cloud (Aliyun)", prod.get().getName());
+                    assertEquals("AlibabaCloud(Aliyun)", prod.get().getName());
                     assertEquals("2.1903", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });
