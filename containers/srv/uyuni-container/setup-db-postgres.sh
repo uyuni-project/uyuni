@@ -5,7 +5,7 @@ MANAGER_USER="spacewalk"
 MANAGER_PASS="spacewalk"
 MANAGER_DB_NAME="susemanager"
 
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl initdb"
+su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl initdb -o --encoding=UTF8 -o --locale=en_US.UTF-8"
 su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl start"
 
 su - postgres -c "createdb $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
