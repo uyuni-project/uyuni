@@ -14,7 +14,7 @@ RUN zypper addrepo https://download.opensuse.org/repositories/systemsmanagement:
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses patterns-uyuni_proxy salt-minion openssh
 
 # only for development
-RUN zypper --gpg-auto-import-keys --non-interactive install vim less
+RUN zypper --gpg-auto-import-keys --non-interactive install vim less iputils
 
 RUN  mkdir -p /root/salt
 COPY salt /root/salt
