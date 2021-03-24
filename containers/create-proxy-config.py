@@ -16,7 +16,7 @@ def parse_arguments():
   parser.add_argument("-i", "--city", dest="city", help="City for auto-generation of SSL certificate", default="CITY")
   parser.add_argument("-o", "--organization", dest="organization", help="Organization for auto-generation of SSL certificate", default="ORGANIZATION")
   parser.add_argument("-u", "--organization-unit", dest="organization_unit", help="Organization unit for auto-generation of SSL certificate", default="ORGANIZATION UNIT")
-  parser.add_argument("-e", "--email", dest="email", help="E-mail for auto-generation of SSL certificate", default="name@example.com")
+  parser.add_argument("-e", "--email", dest="email", help="E-mail for auto-generation of SSL certificate", default="postmaster@localhost")
   results = parser.parse_args()
   return results
 
@@ -59,7 +59,8 @@ os.system(
 # Copy the CA file and the generated RPM
 ca_file = ssl_build_path + "/RHN-ORG-TRUSTED-SSL-CERT"
 shutil.copy(ca_file, config_path)
-shutil.copy(glob.glob('/root/ssl-build/{}/*.noarch.rpm'.format(subdir))[-1], config_path)
+srvcert_pkg = glob.glob('/root/ssl-build/{}/*.noarch.rpm'.format(subdir))[-1]
+shutil.copy(srvcert_pkg, config_path)
 
 # Generate minion keys and pre-accept
 os.system("salt-key --gen-keys={} --gen-keys-dir=/tmp".format(fqdn))
@@ -77,5 +78,11 @@ shutil.copy("/tmp/{}.pem".format(fqdn), minion_config_path + "minion.pem")
 shutil.copy("/etc/salt/pki/master/master.pub", minion_config_path + "/minion_master.pub")
 
 # Print some output and environment variables
+print("\n=======================================================\n\n")
 print("\nThe proxy config files were created, environment variables:")
-print("UYUNI_MASTER=%s" % socket.getfqdn())
+print("UYUNI_MASTER='{}'".format(socket.getfqdn()))
+print("UYUNI_MINION_ID='{}'".format(fqdn))
+print("UYUNI_CA_CERTS='/config/RHN-ORG-TRUSTED-SSL-CERT'")
+print("UYUNI_SRV_CERT='/config/{}'".format(os.path.basename(srvcert_pkg)))
+print("UYUNI_EMAIL='{}'".format(email))
+
