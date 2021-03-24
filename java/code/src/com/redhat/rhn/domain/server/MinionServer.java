@@ -210,7 +210,7 @@ public class MinionServer extends Server implements SaltConfigurable {
         return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
     }
 
-    private boolean isAlibaba2() { return ServerConstants.ALIBABA.equals(getOsFamily()) && getRelease().equals("2"); }
+    private boolean isAlibaba2() { return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("2"); }
 
     /**
      * {@inheritDoc}
