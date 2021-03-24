@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -389,7 +389,8 @@ public class RegistrationUtils {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is " + grains.getValueAsString(OS) + ", arch is " + grains.getValueAsString(OS_ARCH));
+        LOG.warn("No product match found. OS grain is " + grains.getValueAsString(OS) +
+                ", arch is " + grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 

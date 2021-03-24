@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -114,7 +114,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAlibaba() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALIBABA_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("Alibaba Cloud Linux (Aliyun Linux)", os.get().getName());
+        assertEquals("AlibabaCloud(Aliyun)", os.get().getName());
         assertEquals("2", os.get().getMajorVersion());
         assertEquals("1903", os.get().getMinorVersion());
         assertEquals("", os.get().getRelease());
@@ -229,7 +229,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
-                    assertEquals("Alibaba Cloud Linux (Aliyun Linux)", prod.get().getName());
+                    assertEquals("Alibaba Cloud (Aliyun)", prod.get().getName());
                     assertEquals("2.1903", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });

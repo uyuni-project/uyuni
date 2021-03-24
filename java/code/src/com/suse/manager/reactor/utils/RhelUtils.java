@@ -265,14 +265,16 @@ public class RhelUtils {
      * 2) if a RES release package (sles_es-release) is installed it is a RES.
      * 3) otherwise it is not a RES system
      * 4) if /etc/oracle-release exists it is a OracleLinux
-     * 5) is it a centos system? check if /etc/centos-release file exists
-     * 6) finally we can say it is a original RHEL (maybe:-)
+     * 5) if /etc/alinlux-release exists it is an Alibaba Cloud Linux
+     * 6) is it a centos system? check if /etc/centos-release file exists
+     * 7) finally we can say it is a original RHEL (maybe:-)
      *
      * @param image the image
      * @param resReleasePackage the package that provides 'sles_es-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
+     * @param alibabaReleaseFile the content of /etc/alinux-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(

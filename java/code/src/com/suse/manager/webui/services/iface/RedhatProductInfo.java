@@ -52,9 +52,7 @@ public class RedhatProductInfo {
     /**
      * @return oracle release content
      */
-    public Optional<String> getOracleReleaseContent() {
-        return oracleReleaseContent;
-    }
+    public Optional<String> getOracleReleaseContent() { return oracleReleaseContent; }
 
     /**
      * @return centos release content

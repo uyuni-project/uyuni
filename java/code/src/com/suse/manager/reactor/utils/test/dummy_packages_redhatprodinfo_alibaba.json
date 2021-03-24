@@ -23,15 +23,11 @@
     "comment": "Command \"cat /etc/oracle-release\" run",
     "name": "cat /etc/oracle-release",
     "start_time": "14:04:57.667941",
+    "skip_watch": true,
     "result": true,
     "duration": 233.474,
     "__run_num__": 3,
-    "changes": {
-      "pid": 862,
-      "retcode": 0,
-      "stderr": "",
-      "stdout": "Oracle Linux Server release 8.2"
-    }
+    "changes": {}
   },
   "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
     "comment": "Command \"cat /etc/alinux-release\" run",
