@@ -3486,7 +3486,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>Pacchetti aggiuntivi</target>
+        <target>Non conforme</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary" xml:space="preserve">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
@@ -6944,6 +6944,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.groups.manage.add" xml:space="preserve">
           <source>Add</source>
+        <target>Aggiungi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
@@ -23969,7 +23970,7 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Edificio</target>
+        <target>Creazione</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updatesavailable" xml:space="preserve">
         <source>Software Updates Available</source>
