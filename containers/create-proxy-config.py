@@ -9,7 +9,7 @@ import socket
 def parse_arguments():
   description = 'Creates a configuration directory for a Proxy container'
   parser = argparse.ArgumentParser(description=description)
-  parser.add_argument('fqdn', metavar='FQDN', type=str, nargs=1, help='FQDN of the Proxy')
+  parser.add_argument('fqdn', metavar='FQDN', type=str, help='FQDN of the Proxy')
   parser.add_argument('cnames', metavar='cnames', type=str, nargs='*', help='Additional CNAMES of the Proxy')
   parser.add_argument("-c", "--country", dest="country", help="Country for auto-generation of SSL certificate", default="US")
   parser.add_argument("-s", "--state", dest="state", help="State for auto-generation of SSL certificate", default="STATE")
@@ -21,7 +21,7 @@ def parse_arguments():
   return results
 
 args = parse_arguments()
-fqdn = args.fqdn.pop(0)
+fqdn = args.fqdn
 country = args.country
 state = args.state
 city = args.city
