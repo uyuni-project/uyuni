@@ -7,6 +7,12 @@
 {% set email = salt['environ.get']('UYUNI_EMAIL', 'root@localhost') %}
 {% set system_id = '/etc/sysconfig/rhn/systemid' %}
 
+cont_set_fqdn:
+  module.run:
+    - name: hosts.add_host
+    - ip: {{ salt['grains.get']('ip4_interfaces:eth0').pop() }}
+    - alias: {{ minion_id }}
+
 cont_check_ca_certs:
   file.exists:
     - name: {{ ca_certs }}
