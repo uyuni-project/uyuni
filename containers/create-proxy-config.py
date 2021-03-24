@@ -5,11 +5,14 @@ import glob
 import os
 import shutil
 import socket
+import xmlrpclib
 
 def parse_arguments():
   description = 'Creates a configuration directory for a Proxy container'
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('fqdn', metavar='FQDN', type=str, help='FQDN of the Proxy')
+  parser.add_argument('username', metavar='USERNAME', type=str, help='Name of user which will create the Proxy')
+  parser.add_argument('password', metavar='PASSWORD', type=str, help='Password of which will create the Proxy')
   parser.add_argument('cnames', metavar='cnames', type=str, nargs='*', help='Additional CNAMES of the Proxy')
   parser.add_argument("-c", "--country", dest="country", help="Country for auto-generation of SSL certificate", default="US")
   parser.add_argument("-s", "--state", dest="state", help="State for auto-generation of SSL certificate", default="STATE")
@@ -76,6 +79,20 @@ shutil.copy("/tmp/{}.pem".format(fqdn), minion_config_path + "minion.pem")
 
 # Copy the master pub key
 shutil.copy("/etc/salt/pki/master/master.pub", minion_config_path + "/minion_master.pub")
+
+client = xmlrpclib.Server("http://localhost/rpc/api", verbose=0)
+key = client.auth.login(args.username, args.password)
+
+# Create the system profile
+id = client.system.createSystemProfile(key, args.fqdn, {"hostname": args.fqdn})
+sid = client.system.downloadSystemId(key, id)
+client.proxy.activateProxy(sid, "5.2")
+
+# Save the systemid file
+os.mkdir(config_path + "/sysconfig")
+os.mkdir(config_path + "/sysconfig/rhn")
+with open(config_path + "/sysconfig/rhn/systemid", "w") as file:
+    file.write(sid)
 
 # Print some output and environment variables
 print("\n=======================================================\n\n")

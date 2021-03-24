@@ -74,48 +74,10 @@ cont_copy_salt_master_pub_key:
     - source: /config/salt/pki/minion/minion_master.pub
     - mode: 644
 
-cont_start_minion:
-  cmd.run:
-    - name: /usr/bin/salt-minion -d
-    - require:
-      - file: cont_setup_machine_id
-      - file: cont_setup_minion_id
-      - file: cont_minion_conf
-
-{%- if salt['file.file_exists']('/config/sysconfig/rhn/systemid') %}
-
 cont_copy_system_id:
   file.copy:
     - name: /etc/sysconfig/rhn/systemid
     - source: /config/sysconfig/rhn/systemid
-
-{%- else %}
-
-cont_fetch_system_id:
-  cmd.run:
-    - name: /usr/sbin/fetch-certificate {{ system_id }}
-    - require:
-      - cmd: cont_start_minion
-      - file: cont_check_ca_certs
-      - file: cont_check_srv_cert
-
-cont_activate:
-  cmd.run:
-    - name: rhn-proxy-activate --non-interactive --server={{ master }} --ca-cert="{{ ca_certs }}"
-    - require:
-      - cmd: cont_fetch_system_id
-
-{# we store the systemid after successful activation #}
-cont_store_system_id:
-  file.copy:
-    - name: /config/sysconfig/rhn/systemid
-    - source: /etc/sysconfig/rhn/systemid
-    - mode: 644
-    - makedirs: True
-    - require:
-      - cmd: cont_activate
-
-{%- endif %}
 
 cont_inst_srv_cert:
   cmd.run:
