@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-23 15:57+0000\n"
+"PO-Revision-Date: 2021-03-24 16:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -1573,7 +1573,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
 msgid "Add"
-msgstr ""
+msgstr "Aggiungi"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:80
 msgid "Name:"
@@ -2218,7 +2218,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:675
 #: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
-msgstr ""
+msgstr "Crea"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
 msgid "Build Project"
@@ -3089,11 +3089,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
-msgstr ""
+msgstr "Immagini"
 
 #: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
-msgstr ""
+msgstr "Creazione"
 
 #: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
@@ -3697,7 +3697,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:218
 msgid "Remote Commands"
-msgstr ""
+msgstr "Comandi remoti"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:231
 msgid "Type the command here"
@@ -4359,7 +4359,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
-msgstr ""
+msgstr "Gestori di host virtuali"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
@@ -4552,13 +4552,13 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
-msgstr ""
+msgstr "Reti"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/nets/network-properties.js:431
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
-msgstr ""
+msgstr "Cancella i campi"
 
 #: ../html/src/manager/virtualization/HypervisorCheck.js:19
 msgid "Please install libvirt python module."
