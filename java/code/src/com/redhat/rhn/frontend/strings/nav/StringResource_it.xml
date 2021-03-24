@@ -125,7 +125,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Pacchetti aggiuntivi</target>
+        <target>Non conforme</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips" xml:space="preserve">
         <source>Duplicate IP Address</source>
