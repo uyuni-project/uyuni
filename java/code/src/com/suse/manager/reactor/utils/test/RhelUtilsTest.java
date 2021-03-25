@@ -230,7 +230,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
                     assertEquals("AlibabaCloud(Aliyun)", prod.get().getName());
-                    assertEquals("2.1903", prod.get().getRelease());
+                    assertEquals("Hunting Beagle", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });
     }

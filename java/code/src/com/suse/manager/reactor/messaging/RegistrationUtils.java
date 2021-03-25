@@ -356,7 +356,7 @@ public class RegistrationUtils {
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "alibaba".equalsIgnoreCase(grains.getValueAsString(OS))) { // FIXME Use "alibaba cloud (aliyun)" ?
+                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS))) { // FIXME Use "alibaba cloud (aliyun)" ?
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
