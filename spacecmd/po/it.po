@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-24 19:58+0000\n"
+"PO-Revision-Date: 2021-03-25 12:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
 ">\n"
@@ -327,7 +327,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1575
 #: ../src/spacecmd/softwarechannel.py:1821
 msgid "Packages"
-msgstr ""
+msgstr "Pacchetti"
 
 #: ../src/spacecmd/activationkey.py:992
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
@@ -1924,7 +1924,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1476 ../src/spacecmd/system.py:1784
 #: ../src/spacecmd/system.py:4248
 msgid "Systems"
-msgstr ""
+msgstr "Sistemi"
 
 #: ../src/spacecmd/group.py:151
 msgid "Remove these systems [y/N]:"
