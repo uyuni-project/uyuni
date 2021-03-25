@@ -1,9 +1,7 @@
 #!/bin/bash
 set -e
 
-MANAGER_USER="spacewalk"
-MANAGER_PASS="spacewalk"
-MANAGER_DB_NAME="susemanager"
+. /root/setup_env.sh
 
 su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl initdb -o --encoding=UTF8 -o --locale=en_US.UTF-8"
 su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl start"

@@ -10,7 +10,7 @@ This is a fat and ugly container that runs mostly everything. It is an initial s
 
 ## Build the container
 
-`% sudo podman build  -t rmateus/uyuni .`
+`% sudo podman build -t uyuni .`
 
 ## Run the container
 
@@ -19,7 +19,7 @@ This is a fat and ugly container that runs mostly everything. It is an initial s
 ```
 sudo podman run --name hub-opensuse152 -ti --hostname hub-opensuse152 \
 -p 4505:4505 -p 4506:4506 -p 443:443 -p 5432:5432 \
-localhost/rmateus/uyuni
+localhost/uyuni
 ```
 You will get a shell prompt.
 
