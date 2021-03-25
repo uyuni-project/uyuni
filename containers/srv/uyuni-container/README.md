@@ -33,3 +33,8 @@ Type `% ip a show eth0` and visit either `https://localhost` or `https://<contai
 
 Vm in libvirt created by sumaform:
   - change `/etc/hosts` and puth the name without `.tf.local` first, to be used as primary fqdn
+
+
+sudo podman pod create -n uyuni -p 4505:4505 -p 4506:4506 -p 443:443 -p 5432:5432 --hostname uyuni  --name uyuni
+
+sudo podman run --pod uyuni -ti --name uyuni-server localhost/uyuni
