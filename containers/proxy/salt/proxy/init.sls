@@ -181,6 +181,53 @@ cont_store_ssh_push_key_pub:
 
 {% endif %}
 
+cont_perm_squid:
+  file.directory:
+    - name: /var/cache/squid
+    - user: squid
+    - group: root
+    - dir_mode: 750
+
+cont_perm_www:
+  file.directory:
+    - name: /srv/www/htdocs/pub
+    - user: root
+    - group: root
+    - dir_mode: 755
+
+cont_perm_proxy:
+  file.directory:
+    - name: /var/spool/rhn-proxy
+    - user: wwwrun
+    - group: www
+    - dir_mode: 750
+
+{% if salt['file.directory_exists']('/var/log_perm') %}
+cont_perm_log:
+  file.directory:
+    - name: /var/log_perm
+    - user: root
+    - group: root
+    - dir_mode: 755
+
+cont_init_log:
+  cmd.run:
+    - name: cp -a /var/log/* /var/log_perm/
+    - unless: test -d /var/log_perm/squid
+
+cont_mv_log:
+  file.rename:
+    - name: /var/log_orig
+    - source: /var/log
+
+cont_link_log:
+  file.symlink:
+    - name: /var/log
+    - target: /var/log_perm
+    - required:
+      - file: cont_mv_log
+{% endif %}
+
 cont_pre_start_squid:
   cmd.run:
     - name: /usr/lib64/squid/initialize_cache_if_needed.sh
