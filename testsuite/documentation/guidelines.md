@@ -16,6 +16,7 @@ In order to filter by team focus areas our test suite, we have a list of cucumbe
 
 You can see in the file `testsuite/config/cucumber.yml` the list of profiles.
 
+If you run the tests using the rake tasks, you can pass a list of profiles using the environment variable `PROFILE`. Example: `onboarding,spacecmd` 
 
 ### Grouping steps
 
