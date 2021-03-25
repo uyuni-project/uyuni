@@ -1,4 +1,5 @@
 base:
   '*':
+    - proxy.user
     - proxy
 

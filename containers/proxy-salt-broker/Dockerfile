@@ -16,4 +16,4 @@ RUN zypper --gpg-auto-import-keys --non-interactive install vim less iputils
 RUN  mkdir -p /root/salt
 COPY salt /root/salt
 
-CMD salt-call --local --log-level=debug --file-root=/root/salt/ state.apply proxy.broker && /usr/bin/salt-broker 
+CMD salt-call --local --log-level=debug --file-root=/root/salt/ state.apply proxy.user,proxy.broker && /usr/bin/salt-broker
