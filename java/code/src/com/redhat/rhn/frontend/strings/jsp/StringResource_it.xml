@@ -409,7 +409,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.title.errata" xml:space="preserve">
           <source>We're sorry, but the patch could not be found.</source>
-        <target>Siamo spiacenti, impossibile trovare l'erratum desiderata.</target>
+        <target>Siamo spiacenti, impossibile trovare la patch desiderata.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -549,7 +549,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
           <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>L'erratum richiesta non è esistente.  Molto probabilmente è dovuto alla visualizzazione di questa pagina attraverso i segnalibri o altri mezzi non-hyperlink.</target>
+        <target>La patch richiesta non esiste.  È molto probabile che tu sia arrivato a questa pagina attraverso i segnalibri o qualche altro tipo di collegamento non ipertestuale.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -633,7 +633,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.errata" xml:space="preserve">
           <source>You do not have permission to view this patch.</source>
-        <target>Non siete in possesso del permesso necessario per visualizzare questo erratum.</target>
+        <target>Non hai il permesso di visualizzare questa patch.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1611,7 +1611,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target>Errata</target>
+        <target>Patch</target>
       </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected" xml:space="preserve">
         <source>system selected</source>
@@ -3127,7 +3127,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target>Applica errata {0} </target>
+        <target>Applicare la/le patch {0} su</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.script.run" xml:space="preserve">
         <source>Run a remote command on</source>
@@ -3215,6 +3215,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong" xml:space="preserve">
         <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
+        <target>Impossibile salvare la catena di azioni, l'etichetta della catena è troppo lunga (&gt;= 256 caratteri).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3263,12 +3264,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="actionchain.jsp.channels.subscribe" xml:space="preserve">
         <source>Change channels subscription on</source>
+        <target>Modifica l'abbonamento ai canali su</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.virt.create" xml:space="preserve">
         <source>Create or update a virtual machine on</source>
+        <target>Crea o aggiorna una macchina virtuale su</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3413,7 +3416,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target>Le seguenti patch sono state installate su questo sistema. È possibile disinstallare la versione attuale delle patch ed utilizzare le versioni precedenti, utilizzando le caselle e facendo clic sul pulsante "Disinstalla". Se non è possibile selezionare una patch, ciò significa che non sarà possibile disinstallare la sua versione.</target>
+        <target>Le seguenti patch sono installate su questo sistema. Puoi ripristinare le patch a versioni precedenti usando le caselle di controllo e cliccando sul pulsante "Ripristina precedente" in basso. Se una patch non può essere selezionata, non può essere riportata indietro ulteriormente.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary" xml:space="preserve">
         <source>The following patches may be installed on this system.</source>
@@ -3536,7 +3539,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Almeno uno dei canali a cui questo sistema è abbonato contiene moduli. Se hai attivato dei moduli su questo sistema, evita di usare @@PRODUCT_NAME@@ per le operazioni sui pacchetti. Usa invece &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Gestione del ciclo di vita dei prodotti&lt;/a&gt; per &lt;strong&gt;creare canali regolari che includono pacchetti di moduli&lt;/strong&gt;.</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -3712,7 +3715,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="needs-adaptation">Nessun errata</target>
+        <target state="translated">Nessuna patch</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -4474,12 +4477,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
+        <target>Configurazione di @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satconfig.jsp.description" xml:space="preserve">
         <source>As @@PRODUCT_NAME@@ Admin you can configure, whether Organization Administrators may configure Organization Configuration. Organizaton Configuration settings may have huge impact on the @@PRODUCT_NAME@@ performance.</source>
+        <target>Come amministratore di @@PRODUCT_NAME@@ puoi definire se gli amministratori dell'organizzazione possono configurare la configurazione dell'organizzazione. Le impostazioni della configurazione dell'organizzazione possono avere un impatto notevole sulle prestazioni di @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4496,14 +4501,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Di seguito potrai configurare la tua organizzazione per utilizzare i contenuti di staging, le notifiche e-mail di errata e le impostazioni SCAP.</target>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Di seguito è elencata la configurazione della tua organizzazione. Controlla come sono configurati i contenuti di staging, le notifiche e-mail di errata e le impostazioni SCAP.</target>
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
@@ -4535,6 +4540,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.orgadm-mgmt.jsp" xml:space="preserve">
         <source>Allow Organization Admin to manage Organization Configuration</source>
+        <target>Consenti all'amministratore dell'organizzazione di gestire la configurazione dell'organizzazione</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4548,6 +4554,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp" xml:space="preserve">
         <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
+        <target>Abilita le notifiche e-mail di patch (per gli utenti che appartengono a questa organizzazione)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4659,6 +4666,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org.users.summary" xml:space="preserve">
         <source>The following is a list of all users in the {0} organization. Note that you will only have access to modify the details of these users if you are logged into the {0} organization and have organization administrator privileges.</source>
+        <target>Quella che segue è una lista di tutti gli utenti dell'organizzazione {0}. Ricorda che potrai modificare i dettagli di questi utenti solo se sei connesso all'organizzazione {0} e hai i privilegi di amministratore dell'organizzazione.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
@@ -4719,6 +4727,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
+        <target>&lt;strong&gt;Suggerimento:&lt;/strong&gt; Questa organizzazione è l'organizzazione predefinita del tuo @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
@@ -4864,7 +4873,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>Nessun errata.</target>
+        <target>Nessuna patch.</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip" xml:space="preserve">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
@@ -4897,7 +4906,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target state="needs-adaptation">Errata pubblicato</target>
+        <target state="translated">Patch</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
@@ -5051,6 +5060,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity" xml:space="preserve">
         <source>Advisory Severity:</source>
+        <target>Severità dell'avviso:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -5148,6 +5158,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="errata.create.jsp.channels" xml:space="preserve">
         <source>Channels to add:</source>
+        <target>Canali da aggiungere:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -5196,18 +5207,21 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="errata.channel.intersection.summary" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has the following packages in common with &lt;strong&gt;{1}&lt;/strong&gt;. If the version of the package from the erratum is newer than the one in your channel, you will have the opportunity to update the channel when you publish this erratum.</source>
+        <target>Il canale &lt;strong&gt;{0}&lt;/strong&gt; ha i seguenti pacchetti in comune con &lt;strong&gt;{1}&lt;/strong&gt;. Se la versione del pacchetto della patch è più recente di quella del tuo canale, avrai la possibilità di aggiornare il canale quando avrai pubblicato questa patch.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.channel_version" xml:space="preserve">
         <source>Channel Version</source>
+        <target>Versione del canale</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.errata_version" xml:space="preserve">
         <source>Errata Version</source>
+        <target>Versione della patch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
@@ -5357,13 +5371,14 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.overview.errata" xml:space="preserve">
           <source>Patches</source>
-        <target>Errata</target>
+        <target>Patch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
+        <target>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Pianifica gli aggiornamenti delle patch&lt;/a&gt; pertinenti per i sistemi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5384,18 +5399,21 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.overview.packages.install" xml:space="preserve">
           <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Installa&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.remove" xml:space="preserve">
           <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Rimuovi&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.verify" xml:space="preserve">
           <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verifica&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5458,6 +5476,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Contrassegna&lt;/a&gt; i sistemi per il &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;ripristino dell'istantanea&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5497,7 +5516,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
           </context-group>
-        <target state="needs-adaptation">&lt;strong&gt;NOTA BENE:&lt;/strong&gt; IPMI rappresenta l'unico metodo di gestione dell'alimentazione supportato e testato, ma altri metodi possono funzionare. Per abilitare altri metodi di gestione sovrascrivere l'opzione "java.power_management.types" in rhn.conf.</target>
+        <target state="translated">&lt;strong&gt;NOTA:&lt;/strong&gt; I diversi tipi di gestione dell'alimentazione elencati sono testati e supportati, ma altri potrebbero funzionare. Controlla la documentazione per maggiori dettagli.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5548,6 +5567,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.security_warning" xml:space="preserve">
           <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See cobbler documentation for more information and mitigation strategies.</source>
+        <target>&lt;strong&gt;AVVISO DI SICUREZZA:&lt;/strong&gt; Le informazioni memorizzate su questa pagina sono disponibili a chiunque sulla rete. Consulta la documentazione di cobbler per maggiori informazioni e strategie di mitigazione.</target>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5565,24 +5585,28 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
+        <target>Aggiorna i &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;profili hardware&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
+        <target>Aggiorna i &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;profili dei pacchetti&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
           <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
+        <target>Aggiorna le &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;preferenze di sistema&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.customvalues" xml:space="preserve">
           <source>Set and remove &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;custom values&lt;/a&gt; for selected systems</source>
+        <target>Imposta e rimuovi i &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;valori personalizzati&lt;/a&gt; per i sistemi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5797,12 +5821,14 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.preferences" xml:space="preserve">
           <source>Preferences</source>
+        <target>Preferenze</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.custom" xml:space="preserve">
           <source>Custom Values</source>
+        <target>Valori personalizzati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -6341,7 +6367,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Errata</target>
+        <target>Patch</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles" xml:space="preserve">
         <source>Config Diffs</source>
@@ -9273,7 +9299,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>Nessun errata</target>
+        <target>Nessuna patch</target>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary" xml:space="preserve">
         <source>The patches listed here will be cloned and added in the channels selected below. Once they are cloned, they will appear in each channel's patch list.</source>
@@ -9505,7 +9531,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>Configurazione @@PRODUCT_NAME@@</target>
+        <target>Configurazione di @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="general.jsp.summary" xml:space="preserve">
         <source>In this page, configure your @@PRODUCT_NAME@@. The HTTP proxy settings are for the communication with a @@PRODUCT_NAME@@ parent server, if there is any. The HTTP proxy should be of the form: hostname:port, but the default port 8080 will be used if none is explicitly provided. HTTP proxy settings for client systems to connect to this @@PRODUCT_NAME@@ can be different, and will be configured separately.</source>
@@ -13215,7 +13241,7 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/RelevantChannels.do</context>
         </context-group>
-        <target>Errata</target>
+        <target>Patch</target>
       </trans-unit>
       <trans-unit id="channels.overview.systems" xml:space="preserve">
         <source>Systems</source>
