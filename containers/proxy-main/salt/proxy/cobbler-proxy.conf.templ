@@ -1,0 +1,9 @@
+{% set master = salt['environ.get']('UYUNI_MASTER') %}
+ProxyPass /cobbler_api https://{{ master }}/download/cobbler_api
+ProxyPassReverse /cobbler_api https://{{ master }}/download/cobbler_api
+RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [P,L]
+RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [P,L]
+ProxyPass /cblr https://{{ master }}/cblr
+ProxyPassReverse /cblr https://{{ master }}/cblr
+ProxyPass /cobbler https://{{ master }}/cobbler
+ProxyPassReverse /cobbler https://{{ master }}/cobbler
