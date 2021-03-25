@@ -5954,12 +5954,14 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.misc.sysprefconfirm.header" xml:space="preserve">
           <source>Confirm System Preferences Changes</source>
+        <target>Conferma le modifiche alle preferenze di sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.sysprefconfirm.summary" xml:space="preserve">
           <source>You have chosen to alter the following preferences for your selected systems.</source>
+        <target>Hai scelto di modificare le seguenti preferenze per i sistemi selezionati.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -6099,6 +6101,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.misc.custom.title" xml:space="preserve">
           <source>Select Custom Info Key to modify</source>
+        <target>Seleziona la chiave informativa personalizzata da modificare</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
