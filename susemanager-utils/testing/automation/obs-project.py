@@ -6,8 +6,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 import datetime
 import configparser
-
-
+import re
 
 def add(args):
     api = args.api
@@ -16,6 +15,7 @@ def add(args):
     pull_number = args.pullnumber
     maintainer=args.setmaintainer
     pr_project = pr_project + ":" + pull_number
+    target_repo = args.repo
     config_file = args.configfile
 
     if (not os.path.exists(config_file)):
@@ -73,12 +73,8 @@ def add(args):
 
     print("DEBUG: adapting list of repositories")
     for repo in root.findall("repository"):
-        if repo.get("name") == "images":
-            print("DEBUG: skipping images repo")
-            root.remove(repo)
-            continue
-        if repo.get("name") == "images_pxe":
-            print("DEBUG: skipping images_pxe repo")
+        if not re.match(target_repo, repo.get("name")):
+            print("DEBUG: skipping {} repo".format(repo.get("name")))
             root.remove(repo)
             continue
         for child in repo.findall("path"):
@@ -175,6 +171,7 @@ parser.set_defaults(func=print_usage)
 subparser = parser.add_subparsers()
 parser_add = subparser.add_parser("add", help="add project")
 parser_add.add_argument('--project', help="Project from which to \"branch\" from, defaults to systemsmanagement:Uyuni:Master", default="systemsmanagement:Uyuni:Master")
+parser_add.add_argument('--repo', help="Repo to build for, defaults to openSUSE.*|SLE.*", default="openSUSE.*|SLE.*")
 parser_add.add_argument('pullnumber', help="Pull Request number, for example 1")
 parser_add.add_argument('--setmaintainer', help="Set maintainer", default="")
 parser_add.set_defaults(func=add)
