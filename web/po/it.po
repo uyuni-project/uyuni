@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-26 14:57+0000\n"
+"PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -421,7 +421,7 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
-msgstr ""
+msgstr "Rimuovi"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -429,7 +429,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
@@ -4086,12 +4086,12 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
 msgid "No Change"
-msgstr ""
+msgstr "Nessuna modifica"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:453
 msgid "Subscribe"
-msgstr ""
+msgstr "Sottoscrivi"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:42
 msgid "Unsubsribe"
