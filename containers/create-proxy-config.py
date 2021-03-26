@@ -5,7 +5,7 @@ import glob
 import os
 import shutil
 import socket
-import xmlrpclib
+import xmlrpc.client as xmlrpclib
 
 def parse_arguments():
   description = 'Creates a configuration directory for a Proxy container'
