@@ -6997,30 +6997,35 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       <!--- System groups pages -->
       <trans-unit id="ssm.groups.manage.title" xml:space="preserve">
           <source>Alter System Group Memberships</source>
+        <target>Modifica le appartenenze ai gruppi di sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.summary" xml:space="preserve">
           <source>Below is a listing of the system groups for your organization.</source>
+        <target>Di seguito è riportato un elenco dei gruppi di sistema per la tua organizzazione.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item1" xml:space="preserve">
           <source>To add the selected systems to a group, check &lt;strong&gt;Add&lt;/strong&gt; for that group.</source>
+        <target>Per aggiungere i sistemi selezionati a un gruppo, seleziona &lt;strong&gt;Aggiungi&lt;/strong&gt; per quel gruppo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item2" xml:space="preserve">
           <source>To remove the selected systems from a group, check &lt;strong&gt;Remove&lt;/strong&gt; for that group.</source>
+        <target>Per rimuovere i sistemi selezionati da un gruppo, spunta &lt;strong&gt;Rimuovi&lt;/strong&gt; for that group.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item3" xml:space="preserve">
           <source>Check &lt;strong&gt;No Change&lt;/strong&gt; to leave the selected systems unaffected relative to that group.</source>
+        <target>Seleziona &lt;strong&gt;Nessun cambiamento&lt;/strong&gt;  per mantenere inalterati i sistemi selezionati rispetto a quel gruppo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
@@ -7034,42 +7039,49 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="ssm.groups.manage.remove" xml:space="preserve">
           <source>Remove</source>
+        <target>Rimuovi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.nochange" xml:space="preserve">
           <source>No Change</source>
+        <target>Nessuna modifica</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.button" xml:space="preserve">
           <source>Alter Membership</source>
+        <target>Modifica appartenenza</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added" xml:space="preserve">
           <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected will be added to the following groups:</source>
+        <target>I &lt;strong&gt;{0} sistemi&lt;/strong&gt; che hai selezionato saranno aggiunti ai seguenti gruppi:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added.empty" xml:space="preserve">
           <source>No systems will be added to any groups.</source>
+        <target>Nessun sistema sarà aggiunto ad alcun gruppo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed" xml:space="preserve">
           <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected that are subscribed to the following groups will be removed from them:</source>
+        <target>I &lt;strong&gt;{0} sistemi&lt;/strong&gt; che hai selezionato e che sono iscritti ai seguenti gruppi saranno rimossi da essi:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed.empty" xml:space="preserve">
           <source>No systems will be removed from any groups.</source>
+        <target>Nessun sistema sarà rimosso da alcun gruppo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
@@ -7272,6 +7284,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systemgroup.details.someupdates" xml:space="preserve">
           <source>Software Updates Available</source>
+        <target>Aggiornamenti software disponibili</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7285,12 +7298,14 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systemgroup.details.updates.critical" xml:space="preserve">
           <source>&lt;strong&gt;&lt;a href="{0}"&gt;Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;Critico: &lt;/a&gt;&lt;/strong&gt; {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.updates.noncritical" xml:space="preserve">
           <source>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critico: &lt;/a&gt;&lt;/strong&gt; {1}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7339,6 +7354,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systemgroup.details.systems.systems" xml:space="preserve">
           <source>{0} System(s)</source>
+        <target>{0} Sistema/i</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7422,6 +7438,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systemgroup.create.summaryssm" xml:space="preserve">
           <source>This will create a new system group, and will place the selected systems into the new group. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <target>Questo creerà un nuovo gruppo di sistemi e inserirà i sistemi selezionati nel nuovo gruppo. Le voci contrassegnate da un asterisco (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sono &lt;strong&gt;obbligatorie&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
@@ -7492,6 +7509,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systementitlements.jsp.para1" xml:space="preserve">
         <source>System Types define the set of functionalities available for each system in @@PRODUCT_NAME@@ such as the ability of installing software or creating guest virtual machines.</source>
+        <target>I tipi di sistema definiscono l'insieme delle funzionalità disponibili per ogni sistema in @@PRODUCT_NAME@@ come la capacità di installare software o creare macchine virtuali guest.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -7561,6 +7579,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="systementitlements.jsp.entitlement_counts_message" xml:space="preserve">
           <source>{0} system(s).</source>
+        <target>{0} sistema/i.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -7708,7 +7727,7 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
       </trans-unit>
       <trans-unit id="Registered" xml:space="preserve">
           <source>Registered</source>
-        <target>R</target>
+        <target>Registrato</target>
       </trans-unit>
       <!--  System search -->
       <trans-unit id="search.alt.img" xml:space="preserve">
@@ -7716,16 +7735,18 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>Cerca Icona:</target>
+        <target>Icona di ricerca</target>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.toolbar" xml:space="preserve">
         <source>Advanced Search</source>
+        <target>Ricerca avanzata</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from all systems to which you have administrative access.</source>
+        <target>La ricerca avanzata restituirà risultati da tutti i sistemi a cui hai accesso amministrativo.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -28796,6 +28817,7 @@ caratteri.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.password" xml:space="preserve">
         <source>Password</source>
+        <target>Password</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
         <source>this is the primary credentials</source>
