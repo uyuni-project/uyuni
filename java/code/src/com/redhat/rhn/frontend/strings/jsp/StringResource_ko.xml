@@ -36,7 +36,7 @@
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/profiles/List</context>
           </context-group>
-        <target>성명</target>
+        <target>이름</target>
       </trans-unit>
       <trans-unit id="column.package" xml:space="preserve">
           <source>Package</source>
@@ -97,7 +97,7 @@
       <!-- Generic row labels. The intent is that these can be reused across multiple pages.-->
       <trans-unit id="row.name" xml:space="preserve">
           <source>Name</source>
-        <target>성명</target>
+        <target>이름</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details</context>
         </context-group>
@@ -158,7 +158,7 @@
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"6 systems"</context>
         </context-group>
-        <target>{0} 시스템 </target>
+        <target>{0} 시스템</target>
       </trans-unit>
       <trans-unit id="onesystem.message" xml:space="preserve">
         <source>1 system</source>
@@ -166,7 +166,7 @@
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"1 system"</context>
         </context-group>
-        <target>1 시스템 </target>
+        <target>1 시스템</target>
       </trans-unit>
       <trans-unit id="nosystems.message" xml:space="preserve">
         <source>No systems.</source>
@@ -191,7 +191,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">None.  Test message</context>
         </context-group>
-        <target>무시합니다</target>
+        <target>무시</target>
       </trans-unit>
       <!-- schedule-options.jspf -->
       <trans-unit id="schedule-options.date" xml:space="preserve">
@@ -240,7 +240,7 @@
           <context context-type="sourcefile">Any page with required fields</context>
           <context context-type="paramnotes">Login is required</context>
         </context-group>
-        <target>{0}은 필수 입력 항목입니다.</target>
+        <target>{0}은(는) 필수 입력 항목입니다.</target>
       </trans-unit>
       <trans-unit id="errors.ascii" xml:space="preserve">
         <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
@@ -276,7 +276,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target>{0}은 {1} 이상이어야 합니다.</target>
+        <target>{0}은(는) {1} 이상이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.maxsize" xml:space="preserve">
         <source>{0} cannot be greater than {1}.</source>
@@ -284,7 +284,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target>{0}은 {1} 이하이어야 합니다.</target>
+        <target>{0}은(는) {1} 이하이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.notanumber" xml:space="preserve">
         <source>{0} must be a valid number.</source>
@@ -292,7 +292,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target>{0}은 유효한 숫자여야 합니다.</target>
+        <target>{0}은(는) 유효한 숫자여야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.decimalvalue" xml:space="preserve">
         <source>{0} must not contain decimal values.</source>
@@ -308,7 +308,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be less than 4 characters</context>
         </context-group>
-        <target>{0}은 {1} 글자 이상이어야 합니다.</target>
+        <target>{0}은(는) {1}자 이상이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.maxlength" xml:space="preserve">
         <source>{0} cannot be greater than {1} characters (Note: double byte chars are not supported).</source>
@@ -316,7 +316,7 @@
           <context context-type="sourcefile">Any page that has required length fields</context>
           <context context-type="paramnotes">Email cannot be greater than 4 characters</context>
         </context-group>
-        <target>{0}은 {1}자 이하하이어야합니다 (알림: 2 바이트 문자는 지원되지 않습니다).  </target>
+        <target>{0}은(는) {1}자 이하이어야 합니다(참조: 2바이트 문자는 지원되지 않습니다).</target>
       </trans-unit>
       <trans-unit id="errors.invalid" xml:space="preserve">
         <source>{0} is invalid.</source>
@@ -324,7 +324,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Email is invalid</context>
         </context-group>
-        <target>잘못된 {0}을 입력하셨습니다.</target>
+        <target>{0}은(는) 유효하지 않습니다.</target>
       </trans-unit>
       <trans-unit id="errors.integer" xml:space="preserve">
         <source>{0} must be a whole number.</source>
@@ -332,7 +332,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
         </context-group>
-        <target>{0}는 정수이어야 합니다.</target>
+        <target>{0}은(는) 정수이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.integer.minmax" xml:space="preserve">
         <source>{0} must be a whole number between {1} and {2}.</source>
@@ -348,7 +348,7 @@
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
         </context-group>
-        <target>{0}는 float 유형이어야 합니다.</target>
+        <target>{0}은(는) 십진수여야 합니다.</target>
       </trans-unit>
       <trans-unit id="errors.float.minmax" xml:space="preserve">
         <source>{0} must be a decimal number between {1} and {2}.</source>
@@ -374,105 +374,105 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.title.actionchain" xml:space="preserve">
           <source>We're sorry, but the Action Chain could not be found.</source>
-        <target>죄송합니다. 작업 체인을 찾을 수 없습니다.</target>
+        <target>죄송하지만 작업 체인을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.user" xml:space="preserve">
           <source>We're sorry, but the user could not be found.</source>
-        <target>죄송합니다, 사용자를 찾을 수 없습니다.</target>
+        <target>죄송하지만 사용자를 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.profile" xml:space="preserve">
           <source>We're sorry, but the system profile could not be found.</source>
-        <target>죄송합니다, 시스템을 찾을 수 없습니다.</target>
+        <target>죄송하지만 시스템 프로파일을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.channel" xml:space="preserve">
           <source>We're sorry, but the channel could not be found.</source>
-        <target>죄송합니다, 채널을 찾을 수 없습니다.</target>
+        <target>죄송하지만 채널을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.action" xml:space="preserve">
           <source>We're sorry, but the action could not be found.</source>
-        <target>죄송합니다, 작업을 찾을 수 없습니다.</target>
+        <target>죄송하지만 작업을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.errata" xml:space="preserve">
           <source>We're sorry, but the patch could not be found.</source>
-        <target>죄송합니다, 에라타를 찾을 수 없습니다.</target>
+        <target>죄송하지만 패치를 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.system" xml:space="preserve">
           <source>We're sorry, but the system could not be found.</source>
-        <target>죄송합니다, 시스템을 찾을 수 없습니다.</target>
+        <target>죄송하지만 시스템을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.title" xml:space="preserve">
           <source>We're sorry, but a required data object could not be found.</source>
-        <target>죄송합니다, 필요한 데이터 객체를 찾을 수 없습니다.</target>
+        <target>죄송하지만 필요한 데이터 객체를 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.title" xml:space="preserve">
           <source>We're sorry, but the configuration channel could not be found.</source>
-        <target>죄송합니다, 설정 채널을 찾을 수 없습니다.</target>
+        <target>죄송하지만 설정 채널을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.title" xml:space="preserve">
           <source>We're sorry, but the configuration file could not be found.</source>
-        <target>죄송합니다, 설정 파일을 찾을 수 없습니다.</target>
+        <target>죄송하지만 설정 파일을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.title" xml:space="preserve">
           <source>We're sorry, but the configuration revision could not be found.</source>
-        <target>죄송합니다, 설정 버전을 찾을 수 없습니다.</target>
+        <target>죄송하지만 설정 버전을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.title" xml:space="preserve">
           <source>We're sorry, but the activation key could not be found.</source>
-        <target>죄송합니다, 활성키를 찾을 수 없습니다. </target>
+        <target>죄송하지만 활성키를 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.title" xml:space="preserve">
           <source>We're sorry, but the system group could not be found.</source>
-        <target>죄송합니다, 시스템 그룹을 찾을 수 없습니다. </target>
+        <target>죄송하지만 시스템 그룹을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.xccdfscan.title" xml:space="preserve">
           <source>We're sorry, but the XCCDF scan could not be found.</source>
-        <target>죄송합니다, XCCDF 검사를 찾을 수 없습니다.</target>
+        <target>죄송하지만 XCCDF 검사를 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.scapfile.title" xml:space="preserve">
           <source>We're sorry, but the requested SCAP results file could not be found.</source>
-        <target>죄송합니다. 요청한 SCAP 결과 파일을 찾을 수 없습니다.</target>
+        <target>죄송하지만 요청한 SCAP 결과 파일을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -500,7 +500,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.summary" xml:space="preserve">
           <source>This error may have occurred in one of three ways:</source>
-        <target>이 오류는 다음 셋 중 한가지 이유로 인해 발생했을 가능성이 높습니다:</target>
+        <target>이 오류는 다음 셋 중 한 가지 이유로 인해 발생했을 가능성이 높습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -514,84 +514,84 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.user" xml:space="preserve">
           <source>The user requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 사용자가 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 사용자가 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason1" xml:space="preserve">
           <source>The activation key requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 활성키가 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 활성키가 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason1" xml:space="preserve">
           <source>The system group requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 시스템 그룹이 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.   </target>
+        <target>요청한 시스템 그룹이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.profile" xml:space="preserve">
           <source>The system profile requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 시스템이 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 시스템 프로파일이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.channel" xml:space="preserve">
           <source>The channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 채널이 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 채널이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.errata" xml:space="preserve">
           <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 에라타가 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 패치가 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.action" xml:space="preserve">
           <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 작업이 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 작업이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.system" xml:space="preserve">
           <source>The system requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 시스템이 존재하지 않는 경우. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 시스템이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.default.reason1" xml:space="preserve">
           <source>The required data object does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>필요한 데이터 객체가 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>필요한 데이터 객체가 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configchan.reason1" xml:space="preserve">
           <source>The configuration channel requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 설정 채널이 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 설정 채널이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.reason1" xml:space="preserve">
           <source>The configuration file requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 설정 파일이 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.  </target>
+        <target>요청한 설정 파일이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.reason1" xml:space="preserve">
           <source>The configuration revision requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
-        <target>요청한 설정 버전이 존재하지 않습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
+        <target>요청한 설정 버전이 없습니다. 일부 다른 비-하이퍼링크나 북마크를 통해 이 페이지를 방문하셨을 경우 가장 흔히 발생합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -605,14 +605,14 @@
       </trans-unit>
       <trans-unit id="lookup.activationkey.reason2" xml:space="preserve">
           <source>You do not have permission to view this activation key.</source>
-        <target>이 활성키를 볼 수 있는 권한이 없습니다. </target>
+        <target>이 활성키를 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.servergroup.reason2" xml:space="preserve">
           <source>You do not have permission to view this system group.</source>
-        <target>이 시스템 그룹을 볼 수 있는 권한이 없습니다. </target>
+        <target>이 시스템 그룹을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -626,28 +626,28 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.channel" xml:space="preserve">
           <source>You do not have permission to view this channel.</source>
-        <target>이 채널 정보를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 채널을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.errata" xml:space="preserve">
           <source>You do not have permission to view this patch.</source>
-        <target>이 에라타를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 패치를 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.action" xml:space="preserve">
           <source>You do not have permission to view this action.</source>
-        <target>이 작업 정보를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 작업을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.system" xml:space="preserve">
           <source>You do not have permission to view this system.</source>
-        <target>이 시스템 정보를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 시스템을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -661,21 +661,21 @@
       </trans-unit>
       <trans-unit id="lookup.configchan.reason2" xml:space="preserve">
           <source>You do not have permission to view this configuration channel.</source>
-        <target>이 설정 채널 정보를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 설정 채널을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configfile.reason2" xml:space="preserve">
           <source>You do not have permission to view this configuration file.</source>
-        <target>이 설정 파일 정보를 볼 수 있는 권한이 없습니다.</target>
+        <target>이 설정 파일을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lookup.configrev.reason2" xml:space="preserve">
           <source>You do not have permission to view this configuration revision.</source>
-        <target>이 설정 버전을 볼 수 있는 권한이 없습니다.</target>
+        <target>이 설정 리버전을 볼 수 있는 권한이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -717,7 +717,7 @@
       </trans-unit>
       <trans-unit id="lookup.issmaster.local.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target>죄송합니다. 요청하신 조직을 찾을 수 없습니다  </target>
+        <target>죄송합니다. 요청하신 조직을 찾을 수 없습니다</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -731,7 +731,7 @@
       </trans-unit>
       <trans-unit id="lookup.issmasterorg.title" xml:space="preserve">
           <source>We're sorry, but the requested organization could not be found</source>
-        <target>죄송합니다. 요청하신 조직을 찾을 수 없습니다  </target>
+        <target>죄송합니다. 요청하신 조직을 찾을 수 없습니다</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -767,7 +767,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.package" xml:space="preserve">
           <source>Cannot view package.</source>
-        <target>패키지 정보를 볼 수 없습니다.</target>
+        <target>패키지를 볼 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -795,14 +795,14 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.enableuser" xml:space="preserve">
           <source>Cannot reactivate user.</source>
-        <target>사용자를 다시 활성화할 수 없습니다.  </target>
+        <target>사용자를 다시 활성화할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.userlist" xml:space="preserve">
           <source>Cannot display user list.</source>
-        <target>사용자 목록을 출력할 수 없습니다.</target>
+        <target>사용자 목록을 표시할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -830,7 +830,7 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.package" xml:space="preserve">
           <source>You cannot view package information for this package.</source>
-        <target>패키지 정보를 볼 수 없습니다.</target>
+        <target>이 패키지에 대한 패키지 정보를 볼 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -854,42 +854,42 @@
       </trans-unit>
       <trans-unit id="permission.jsp.summary.deleteuser" xml:space="preserve">
           <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
-        <target>satellite 조직 관리자만 사용자를 삭제할 권한이 있습니다.    </target>
+        <target>@@PRODUCT_NAME@@의 조직 관리자만 사용자를 삭제할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.disableuser" xml:space="preserve">
           <source>You must be an organization administrator to deactivate a user.</source>
-        <target>조직 관리자만 사용자를 비활성화할 수 있습니다.    </target>
+        <target>조직 관리자만 사용자를 비활성화할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.enableuser" xml:space="preserve">
           <source>You must be an organization administrator to reactivate a user.</source>
-        <target>조직 관리자만 사용자를 다시 활성화할 수 있습니다.      </target>
+        <target>조직 관리자만 사용자를 다시 활성화할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.userlist" xml:space="preserve">
           <source>You must be an organization administrator to view this page. Contact your organization administrator to get information on the users in this system.</source>
-        <target>조직 관리자만 이 페이지를 볼 수 있습니다. 이 시스템 상 사용자에 대한 정보를 보시려면 조직 관리자에게 문의하시기 바랍니다.      </target>
+        <target>조직 관리자만 이 페이지를 볼 수 있습니다. 이 시스템 상 사용자에 대한 정보를 보려면 조직 관리자에게 문의하시기 바랍니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.lookupuser" xml:space="preserve">
           <source>You must be an organization administrator to view information on users in this organization.</source>
-        <target>조직 관리자만 조직 내 사용자 정보를 볼 수 있습니다.     </target>
+        <target>조직 관리자만 이 조직 내 사용자 정보를 볼 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.header" xml:space="preserve">
           <source>You do not have the appropriate permission set to access the requested page. You may have reached this error page in one of several ways:</source>
-        <target>요청된 페이지에 액세스하실 수 있는 권한이 없습니다. 이와 같은 오류 페이지가 나타날 수 있습니다:</target>
+        <target>요청된 페이지에 액세스할 수 있는 권한이 없습니다. 여러 가지 방법 중 하나로 이와 같은 오류 페이지가 나타날 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -899,7 +899,7 @@
         <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-        <target>로그인 세션이 만료되었습니다. 보안 상의 이유로 @@PRODUCT_NAME@@는 {0}분 후에 로그인 세션을 종료합니다. 다시 로그인 하시려면 &lt;a href="{1}"&gt;여기&lt;/a&gt;를 클릭합니다. </target>
+        <target>로그인 세션이 만료되었습니다. 보안 상의 이유로 @@PRODUCT_NAME@@는 활동이 없는 경우 {0}분 후에 로그인 세션을 종료합니다. 다시 로그인 하려면 &lt;a href="{1}"&gt;여기&lt;/a&gt;를 클릭합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -909,14 +909,14 @@
         <context-group name="ctx">
             <context context-type="paramnotes">You've found an error in our site. Please help us by filling out _this form_ with details of how you received this message.</context>
           </context-group>
-        <target>발견하신 오류에 대한 자세한 정보를 저희 지원팀에게 보내주시면 감사하겠습니다. </target>
+        <target>사이트에서 오류를 발견했습니다. 이 메시지를 받은 방법에 대한 자세한 내용과 함께 지원 담당자에게 문의하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.acl.reason4" xml:space="preserve">
           <source>Your browser does not have cookies enabled. The @@PRODUCT_NAME@@ requires cookies in order to function; if you have disabled them, please re-enable them to use the site.</source>
-        <target>브라우저에 쿠키가 활성화되지 않았습니다. @@PRODUCT_NAME@@에서는 쿠키가 활성화되어 있어야 합니다. 비활성화되어 있을 경우, 이를 다시 활성화시켜 사이트를 사용하시기 바랍니다.</target>
+        <target>브라우저에 쿠키가 활성화되지 않았습니다. 작동하려면 @@PRODUCT_NAME@@에서는 쿠키가 활성화되어 있어야 합니다. 비활성화되어 있을 경우, 이를 다시 활성화시켜 사이트를 사용하시기 바랍니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -930,21 +930,21 @@
       </trans-unit>
       <trans-unit id="permission.jsp.title.orglist" xml:space="preserve">
           <source>Can not display Organization List</source>
-        <target>조직 목록을 출력할 수 없습니다.     </target>
+        <target>조직 목록을 표시할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.title.orgdetail" xml:space="preserve">
           <source>Can not display Organization Details</source>
-        <target>조직 정보를 출력할 수 없습니다.   </target>
+        <target>조직 정보를 표시할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permission.jsp.summary.general" xml:space="preserve">
           <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
-        <target>satellite 관리자만 이 페이지를 볼 수 있습니다. 이 시스템에 있는 조직에 대한 정보를 보시려면 satellite 관리자에게 문의하시기 바랍니다.   </target>
+        <target>@@PRODUCT_NAME@@ 관리자만 이 페이지를 볼 수 있습니다. 이 시스템에 있는 조직에 대한 정보를 보려면 @@PRODUCT_NAME@@ 관리자에게 문의하시기 바랍니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -961,7 +961,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target>변수가 부족하여 요청하신 페이지를 불러올 수 없습니다. 이 오류가 발생한 이유는 다음 중 한가지입니다:</target>
+        <target>파라미터를 누락하여 요청하신 페이지를 표시할 수 없습니다. 이 오류가 발생한 이유는 다음 중 하나입니다.</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason1" xml:space="preserve">
         <source>An incorrect or out-of-date bookmark.</source>
@@ -982,7 +982,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
-        <target>브라우저에 오류 처리 요청 변수가 나타났습니다.  계속 이 브라우저를 사용하시면 예상치 못한 결과를 초래할 수도 있습니다.</target>
+        <target>브라우저에 오류 처리 요청 파라미터가 나타났습니다.  계속 이 브라우저를 사용하면 예상치 못한 결과를 초래할 수도 있습니다.</target>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason4" xml:space="preserve">
         <source>You've found an error in our site.</source>
@@ -1013,7 +1013,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target>이 주소를 브라우저에 입력하셨다면, 철자나 대소문자를 제대로 입력하셨는지 확인해주십시오. 복사하신 주소가 더이상 유효하지 않은 주소일 수도 있습니다.</target>
+        <target>이 주소를 브라우저에 입력한 경우, 철자나 대소문자를 제대로 입력했는지 확인해 주십시오. 복사한 주소가 더 이상 유효하지 않은 주소일 수도 있습니다.</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
@@ -1042,7 +1042,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
         </context-group>
-        <target>이 페이지에서 오류를 발견한 경우 이 메세지를 받은 경위에 대한 자세한 정보를 저희에게 보내주십시오.</target>
+        <target>이 페이지에서 오류를 발견한 경우 이 메시지를 받은 경위에 대한 자세한 정보를 저희에게 보내주십시오.</target>
       </trans-unit>
       <trans-unit id="500.jsp.imgAlt" xml:space="preserve">
         <source>error</source>
@@ -1063,14 +1063,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target>서버에 문제가 발생하여 요청하신 정보를 기입할 수가 없습니다. 현재 이 작업을 실행하실 수 없습니다. </target>
+        <target>서버에 문제가 발생하여 요청하신 정보를 기입할 수가 없습니다. 현재 이 작업을 실행하실 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="500.jsp.message" xml:space="preserve">
         <source>Please help us correct this problem by contacting us with details of how you received this message.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target>이 메세지를 받은 상태 정보를 저희에게 알려주셔서 문제 해결에 도움을 주십시오.</target>
+        <target>이 메시지를 받은 상태 정보를 저희에게 알려주셔서 문제 해결에 도움을 주십시오.</target>
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
@@ -1084,14 +1084,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>조직 관리자?* </target>
+        <target>조직 관리자?*</target>
       </trans-unit>
       <trans-unit id="satadmin.displayname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Admin?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 관리자? </target>
+        <target>@@PRODUCT_NAME@@ 관리자?</target>
       </trans-unit>
       <trans-unit id="username.nopunc.displayname" xml:space="preserve">
         <source>Username</source>
@@ -1145,7 +1145,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedModeCreate.do</context>
         </context-group>
-        <target>생성  </target>
+        <target>생성</target>
       </trans-unit>
       <trans-unit id="confirm.displayname" xml:space="preserve">
         <source>Confirm</source>
@@ -1180,7 +1180,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>이메일:</target>
+        <target>전자 메일:</target>
       </trans-unit>
       <trans-unit id="prefix.displayname" xml:space="preserve">
         <source>Prefix:</source>
@@ -1294,14 +1294,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>이메일 통지</target>
+        <target>전자 메일 통지</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.leadin" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ offers email notifications for when patches relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@는 시스템과 관련된 에라타가 출시될 때 마다 이메일을 통해 알려드릴 뿐만 아니라 매일 시스템 이벤트가 요약된 이메일을 보내드립니다.   </target>
+        <target>@@PRODUCT_NAME@@은(는) 시스템과 관련된 패치가 출시될 때 마다 이메일을 통해 알려드릴 뿐만 아니라 매일 시스템 이벤트가 요약된 이메일을 보내드립니다.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote" xml:space="preserve">
         <source> Receive email notifications</source>
@@ -1322,21 +1322,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 목록 페이지 크기 </target>
+        <target>@@PRODUCT_NAME@@ 목록 페이지 크기</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.controlentry" xml:space="preserve">
         <source>This controls how many entries, like systems, would be displayed per page in a list context.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>목록에서 페이지 당 몇개의 항목 (예, 시스템)을 볼 것인지 결정합니다.</target>
+        <target>목록에서 페이지 당 몇 개의 항목(예, 시스템)을 볼 것인지 결정합니다.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.show" xml:space="preserve">
         <source>Show</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>페이지 당 </target>
+        <target>표시</target>
       </trans-unit>
       <!--Start of  the Pane entries Section-->
       <trans-unit id="preferences.tasks.name" xml:space="preserve">
@@ -1351,7 +1351,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 사용자 인터페이스의 다른 위치에 바로 연결하는 작업 중심적인 메뉴   </target>
+        <target> @@PRODUCT_NAME@@ 사용자 인터페이스의 다른 위치에 바로 연결하는 작업 중심적인 메뉴</target>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name" xml:space="preserve">
         <source>Most Critical Systems</source>
@@ -1365,7 +1365,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target> 중요 업데이트 및 시스템 상태에 대한 시스템 목록  </target>
+        <target> 중요 업데이트 및 건강 상태에 대한 시스템 목록</target>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.name" xml:space="preserve">
         <source>System Groups</source>
@@ -1407,7 +1407,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@에 등록된 시스템 중 최근에 접속 중지한 시스템 목록 보기  </target>
+        <target> @@PRODUCT_NAME@@에 등록된 시스템 중 최근에 접속 중지한 시스템 목록 보기</target>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.name" xml:space="preserve">
         <source>Recently Scheduled Actions</source>
@@ -1428,7 +1428,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>최근 등록된 시스템 </target>
+        <target>최근 등록된 시스템</target>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.description" xml:space="preserve">
         <source> A listing of the most recently registered systems within the past 30 days.</source>
@@ -1443,7 +1443,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target> 항목 보기</target>
+        <target> 목록 페이지당 항목 보기</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.tz" xml:space="preserve">
         <source>Time Zone</source>
@@ -1457,7 +1457,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>날짜와 시간(예. 시스템 접속 시간)이 선택하신 시간대에 맞게 나타납니다. </target>
+        <target>날짜와 시간(예: 시스템 접속 시간)이 선택하신 시간대에 맞게 나타납니다.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.displaytimesas" xml:space="preserve">
         <source>Display all times as</source>
@@ -1478,25 +1478,25 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target>다음의 언어 목록에서 원하시는 언어를 선택하여 주십시오. 선택된 언어는@@PRODUCT_NAME@@ 인터페이스에서 기본 언어로 됩니다. </target>
+        <target>다음의 언어 목록에서 원하는 언어를 선택해 주십시오. 선택된 언어는 @@PRODUCT_NAME@@ 인터페이스에서 기본 언어가 됩니다.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>"개요" 시작 페이지 </target>
+        <target>"개요" 시작 페이지</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc" xml:space="preserve">
         <source>Display the following information on my "Overview" page upon login:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>로그인할 때 "개요" 페이지에 다음과 같은 정보를 표시합니다:   </target>
+        <target>로그인할 때 "개요" 페이지에 다음과 같은 정보를 표시합니다.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle" xml:space="preserve">
         <source>CSV Files</source>
-        <target>SCV 파일</target>
+        <target>CSV 파일</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvdesc" xml:space="preserve">
         <source>Configure a separator character to be used in downloadable CSV files:</source>
@@ -1558,7 +1558,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target>조직: </target>
+        <target>조직:</target>
       </trans-unit>
       <trans-unit id="header.jsp.preferences" xml:space="preserve">
         <source>Preferences</source>
@@ -1596,7 +1596,7 @@
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>내 조직  </target>
+        <target>내 조직</target>
       </trans-unit>
       <trans-unit id="header.jsp.satellite_wide" xml:space="preserve">
         <source>@@PRODUCT_NAME@@-Wide</source>
@@ -1604,14 +1604,14 @@
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@-전역 </target>
+        <target>@@PRODUCT_NAME@@-전역</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata" xml:space="preserve">
         <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target>에라타</target>
+        <target>패치</target>
       </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected" xml:space="preserve">
         <source>system selected</source>
@@ -1660,7 +1660,7 @@
             @@PRODUCT_NAME@@ release 3.7.1
           </context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 릴리즈 &lt;a href="{0}"&gt;{1}&lt;/a&gt; </target>
+        <target>@@PRODUCT_NAME@@ 릴리즈 &lt;a href="{0}" target="_blank"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title" xml:space="preserve">
@@ -1668,7 +1668,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
-        <target>에라타 유형</target>
+        <target>패치 범례</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.security" xml:space="preserve">
         <source>Security</source>
@@ -1735,7 +1735,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target>킥스타트 중 </target>
+        <target>자동 설치 중</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.pending" xml:space="preserve">
         <source>Pending Actions</source>
@@ -1756,7 +1756,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target>인타이틀먼트가 없음</target>
+        <target>시스템 유형 없음</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.monitoring" xml:space="preserve">
         <source>Monitoring Status</source>
@@ -1798,7 +1798,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
-        <target>개요 설명  </target>
+        <target>개요 유형</target>
       </trans-unit>
       <trans-unit id="yourrhn-legend.jsp.failedactions" xml:space="preserve">
         <source>Failed Actions</source>
@@ -1877,7 +1877,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail</context>
         </context-group>
-        <target>아래에 새 이메일 주소를 입력해주세요.</target>
+        <target>아래에 새 이메일 주소를 입력해 주십시오.</target>
       </trans-unit>
       <!-- channelmanagementperms.jsp -->
       <trans-unit id="channelManagementPerms.title" xml:space="preserve">
@@ -1892,14 +1892,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target> 다음은 사용자 조직에서 사용 가능한 채널 목록입니다. 이 사용자에게 목록에 나온 각 채널에 대한 명확한 채널 관리 권한을 할당하실 수 있습니다.    </target>
+        <target> 다음은 사용자 조직에서 사용 가능한 채널 목록입니다. 이 사용자에게 목록에 나온 각 채널에 대한 명확한 채널 관리 권한을 할당하실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channelManagementPerms.granted" xml:space="preserve">
         <source> Management permission granted through org/channel admin status </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target> 관리(Managment) 권한은 조직/채널 관리 상태를 이용하여 허용할 수 있습니다.  </target>
+        <target> 관리 권한은 조직/채널 관리 상태를 이용하여 허용할 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="Channel admin status" xml:space="preserve">
         <source>Channel admin status</source>
@@ -1914,7 +1914,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 계정과 관련된 주소 목록은 다음과 같습니다.  </target>
+        <target> @@PRODUCT_NAME@@ 계정과 관련된 주소 목록은 다음과 같습니다. </target>
       </trans-unit>
       <trans-unit id="address.jsp.associated" xml:space="preserve">
         <source> The following addresses are associated with this user's account. </source>
@@ -1943,8 +1943,8 @@ to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 계정을 비활성화하실 수 있습니다.&lt;b&gt;계정을 비활성화하시면,
-@@PRODUCT_NAME@@에 로그인할 수 없게됩니다.&lt;/b&gt; </target>
+        <target>@@PRODUCT_NAME@@ 계정을 비활성화할 수 있습니다.&lt;b&gt;계정을 비활성화하면,
+@@PRODUCT_NAME@@에 로그인할 수 없게 됩니다.&lt;/b&gt;</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning" xml:space="preserve">
         <source>You will be logged out immediately after pressing the 'Deactivate Account'
@@ -1952,8 +1952,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target>아래에 위치한 '계정 비활성화' 버튼을 누르시는 즉시 로그 아웃되며
-&lt;b&gt;다시 로그인하실 수 없게 됩니다&lt;/b&gt;.</target>
+        <target>아래에 위치한 '계정 비활성화' 버튼을 누르는 즉시 로그아웃되며
+&lt;b&gt;다시 로그인할 수 없게 됩니다&lt;/b&gt;.</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning_question" xml:space="preserve">
         <source>Are you sure you want to deactivate your account?</source>
@@ -1974,14 +1974,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>사용자 계정 </target>
+        <target> 사용자 계정 </target>
       </trans-unit>
       <trans-unit id="details.jsp.personal_info" xml:space="preserve">
         <source> Personal Info </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target> 개인 신상 정보</target>
+        <target> 개인 정보 </target>
       </trans-unit>
       <!-- channelperms.jsp -->
       <trans-unit id="channelperms.jsp.title" xml:space="preserve">
@@ -1996,14 +1996,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target> 다음은 사용자 조직에서 사용 가능한 채널 목록입니다. 이 사용자에게 목록에 나온 각 채널에 대한 명확한 채널 서브스크립션 권한을 할당하실 수 있습니다.    </target>
+        <target>다음은 사용자 조직에서 사용 가능한 채널 목록입니다. 이 사용자에게 목록에 나온 각 채널에 대한 명확한 채널 서브스크립션 권한을 할당할 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGranted" xml:space="preserve">
         <source>Permission granted through org/channel admin status, or the channel is globally subscribable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
-        <target>조직/채널 관리 상태를 이용하여 권한을 할당하지 않으신 경우엔 채널을 누구나 등록 가능하게 됩니다.  </target>
+        <target>조직/채널 관리 상태를 이용하여 권한을 할당하지 않은 경우엔 채널을 누구나 등록 가능하게 됩니다.</target>
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGranted.short" xml:space="preserve">
         <source>Permission granted</source>
@@ -2103,21 +2103,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>PAM (Pluggable Authentication Modules): </target>
+        <target>PAM(Pluggable Authentication Modules): </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions" xml:space="preserve">
         <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>LDAP, Kerberos 및 기타 네트워크 기반 인증 시스템을 인증하기 위해 PAM을 사용</target>
+        <target>LDAP, Kerberos 및 기타 네트워크 기반 인증 시스템을 인증하기 위해 PAM 사용. </target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>알림: 이 상자가 선택된 경우 위 암호란은 필수 입력 사항은 아닙니다. 그러나 이 사용자 계정을 위한 PAM 인증 기능이 비활성화될 경우 사용될 암호를 입력하실 수 있습니다.</target>
+        <target>참조: 이 상자가 선택된 경우 위 암호란은 필수 입력 사항은 아닙니다. 그러나 이 사용자 계정을 위한 PAM 인증 기능이 비활성화될 경우 사용될 암호를 입력하실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
         <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
@@ -2167,14 +2167,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>사용자 다시 활성화 </target>
+        <target>사용자 다시 활성화</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.summary" xml:space="preserve">
         <source> This user's information may be edited using the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 필수 입력란입니다.</target>
+        <target> 아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다.  별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 필수 입력란입니다. </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
@@ -2188,14 +2188,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>관리 역할   </target>
+        <target>관리 역할</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.grantedByOrgAdmin" xml:space="preserve">
         <source>Above roles are granted via the Organization Administrator role.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>위의 역할은 조직 관리자 역할로 할당된 것입니다.  </target>
+        <target>위의 역할은 조직 관리자 역할로 할당된 것입니다.</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.temporaryroles" xml:space="preserve">
         <source>Roles granted temporarily due to external authentication configuration:</source>
@@ -2216,21 +2216,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>이 사용자는 마지막 조직 관리자로서 조직 관리자 역할에서	삭제할 수 없습니다. </target>
+        <target>이 사용자는 마지막 조직 관리자로서 조직 관리자 역할에서 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.lastsatadmin" xml:space="preserve">
         <source>The user {0} is the last @@PRODUCT_NAME@@ Administrator and cannot be removed from the @@PRODUCT_NAME@@ Administrator role.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>{0} 사용자는 마지막 @@PRODUCT_NAME@@ 관리자로서 @@PRODUCT_NAME@@ 관리자 역할에서 삭제할 수 없습니다.   </target>
+        <target>{0} 사용자는 마지막 @@PRODUCT_NAME@@ 관리자로서 @@PRODUCT_NAME@@ 관리자 역할에서 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.notsatadmin" xml:space="preserve">
         <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant  or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>{0} 사용자는 @@PRODUCT_NAME@@ 관리자가 아닙니다. @@PRODUCT_NAME@@ 관리자 역할을 갖는 사용자만이 다른 사용자에게서 @@PRODUCT_NAME@@ 관리자 역할을 부여받거나 박탈될 수 있습니다.  </target>
+        <target>{0} 사용자는 @@PRODUCT_NAME@@ 관리자가 아닙니다. @@PRODUCT_NAME@@ 관리자 역할을 갖는 사용자만이 다른 사용자에게서 @@PRODUCT_NAME@@ 관리자 역할을 부여받거나 박탈될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="userdetails.usepam" xml:space="preserve">
         <source>Use PAM: </source>
@@ -2245,7 +2245,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>사용자 기본 정보</target>
+        <target>사용자 개요</target>
       </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -2266,7 +2266,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>비활성화</target>
+        <target>비활성화됨</target>
       </trans-unit>
       <!-- activelist.jsp -->
       <trans-unit id="users.jsp.imgAlt" xml:space="preserve">
@@ -2333,7 +2333,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target>다시 활성화 </target>
+        <target>다시 활성화</target>
       </trans-unit>
       <!-- userconfirm.jsp -->
       <trans-unit id="userconfirm.jsp.header" xml:space="preserve">
@@ -2341,14 +2341,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target>사용자 다시 활성화 확인  </target>
+        <target>사용자 다시 활성화 확인</target>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary" xml:space="preserve">
         <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target>다음 사용자가 다시 활성화됩니다. 이 사용자는 @@PRODUCT_NAME@@에 액세스할 수 있으며 비활성화되기 전에 갖고 있던 모든 권한, 역할 및 데이터를 그대로 유지합니다.       </target>
+        <target>다음 사용자가 다시 활성화됩니다. 이 사용자는 @@PRODUCT_NAME@@에 액세스할 수 있으며 비활성화되기 전에 갖고 있던 모든 권한, 역할 및 데이터를 그대로 유지합니다.</target>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -4613,7 +4613,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target>킥스타트 프로파일</target>
+        <target>자동 설치 프로파일</target>
       </trans-unit>
       <trans-unit id="org.config.channels.jsp" xml:space="preserve">
         <source>Configuration Channels</source>
@@ -5469,7 +5469,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.kickstart" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
-        <target>시스템 &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;킥스타트&lt;/a&gt; </target>
+        <target>시스템 &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;자동 설치&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -6464,7 +6464,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target>킥스타트 진행 중</target>
+        <target>자동 설치 진행 중</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.bootstrap" xml:space="preserve">
         <source>Unprovisioned System</source>
@@ -9199,7 +9199,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
-        <target> 킥스타트 프로파일</target>
+        <target> 자동 설치 프로파일</target>
       </trans-unit>
       <trans-unit id="filtercreate.jsp.header2" xml:space="preserve">
         <source>Create the notification filter using the form provided.</source>
@@ -9633,7 +9633,7 @@ organization.
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target>조직은 @@PRODUCT_NAME@@을 사용하여 관리하는 모든 것 즉 일련의 시스템,
-시스템 그룹, 소프트웨어 채널, 서브스크립션, 인타이틀먼트, 킥스타트 프로파일, 활성키,
+시스템 그룹, 소프트웨어 채널, 서브스크립션, 인타이틀먼트, 자동 설치 프로파일, 활성키,
 설정 채널 및 파일, 사용자 등을 구분하는데 사용됩니다. 각 조직은 최소 하나의
 조직 관리자에 의해 관리되고 전체 @@PRODUCT_NAME@@은 @@PRODUCT_NAME@@ 관리자에
 의해 관리됩니다. 여러 조직을 갖는 하나의 @@PRODUCT_NAME@@에 있는 조직은
@@ -10462,7 +10462,7 @@ Please note that some manual configuration of these scripts may still be require
       <!--  SSM Kickstart -->
       <trans-unit id="ssm.kickstartable-systems.jsp.title" xml:space="preserve">
           <source>Autoinstallable Systems</source>
-        <target>킥스타트 가능한 시스템 </target>
+        <target>자동 설치 가능한 시스템</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -10476,28 +10476,28 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.kickstartable-systems.jsp.systems" xml:space="preserve">
           <source>Autoinstall Selected Systems</source>
-        <target>선택한 시스템을 킥스타트 </target>
+        <target>선택한 시스템을 자동 설치</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.kickstartable-systems.jsp.systems.summary" xml:space="preserve">
           <source>You may autoinstall the selected systems.</source>
-        <target>선택한 시스템을 킥스타트하게 됩니다.</target>
+        <target>선택한 시스템을 자동 설치하게 됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.kickstartable-systems.jsp.type" xml:space="preserve">
           <source>Autoinstallable Type</source>
-        <target>킥스타트 가능한 유형 </target>
+        <target>자동 설치 가능한 유형</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.kickstartable-systems.jsp.manual-summary" xml:space="preserve">
           <source>Select autoinstallation profile.</source>
-        <target>킥스타트 프로파일을 선택합니다. </target>
+        <target>자동 설치 프로파일을 선택합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -10518,7 +10518,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp" xml:space="preserve">
           <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source>
-        <target>선택한 시스템의 킥스타트 작업을 스케줄합니다. 이러한 동작은 지정된 킥스타트 옵션을 사용하여 선택한 시스템을 다시 설치합니다. </target>
+        <target> 선택한 시스템의 자동 설치 작업을 스케줄링합니다. 이러한 동작은 지정된 자동 설치 옵션을 사용하여 선택한 시스템을 다시 설치합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -10526,7 +10526,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.kickstart.schedule.heading2.text.jsp" xml:space="preserve">
           <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source>
-        <target>선택한 시스템을 킥스타트하기 위해 사용할 킥스타트 프로파일을 선택하십시오.</target>
+        <target>선택한 시스템을 자동 설치하기 위해 사용할 자동 설치 프로파일을 선택하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -10534,7 +10534,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp" xml:space="preserve">
           <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source>
-        <target>킥스타트 프로파일은 네트워크 설정에 따라 각 시스템에서 자동으로 선택됩니다. 일치하는 후보가 발견되지 않을 경우 설정 시 조직의 기본값 프로파일이 사용됩니다.</target>
+        <target>자동 설치 프로파일은 네트워크 설정에 따라 각 시스템에서 자동으로 선택됩니다. 일치하는 후보가 발견되지 않을 경우 설정 시 조직의 기본값 프로파일이 사용됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -10558,7 +10558,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
           <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
-        <target>@@PRODUCT_NAME@@에 의해 관리되지 않는 프로파일이 킥스타트 후에 시스템을 @@PRODUCT_NAME@@에 등록할 수 있는 것은 아닙니다. 킥스타트 후 선택한 시스템이 @@PRODUCT_NAME@@ 시스템 목록에 다시 나타나는지를 확인하기 위해 이러한 킥스타트를 다시 살펴보시고자 할 수 있습니다. (프로파일 이름을 클릭하는 등)      </target>
+        <target> @@PRODUCT_NAME@@에 의해 관리되지 않는 프로파일이 자동 설치 후에 시스템을 @@PRODUCT_NAME@@에 등록할 수 있는 것은 아닙니다. 자동 설치 후 선택한 시스템이 @@PRODUCT_NAME@@ 시스템 목록에 다시 나타나는지를 확인하기 위해 이러한 자동 설치를 다시 살펴보시고자 할 수 있습니다. (프로파일 이름을 클릭하는 등)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByProfile.do</context>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
@@ -10672,63 +10672,63 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 프로파일 아이콘</target>
+        <target>자동 설치 프로파일 아이콘</target>
       </trans-unit>
       <trans-unit id="kickstarts.jsp.toolbar" xml:space="preserve">
         <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 프로파일</target>
+        <target>자동 설치 프로파일</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header" xml:space="preserve">
         <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>킥스타트 파일</target>
+        <target>자동 설치 파일</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header.error" xml:space="preserve">
         <source>Autoinstallation File Error</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>킥스타트 파일 오류</target>
+        <target>자동 설치 파일 오류</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.summary" xml:space="preserve">
         <source>The autoinstallation file generated by this autoinstallation profile is viewable below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>이 킥스타트 프로파일에서 생성된 킥스타트 파일은 아래에서 보여집니다:</target>
+        <target>이 자동 설치 프로파일에서 생성된 자동 설치 파일은 아래에서 보여집니다.</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.invalidchannel" xml:space="preserve">
         <source>Due to packages missing from this autoinstallation profile's base channel, the autoinstallation file could not be generated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>킥스타트 프로파일의 기본 채널에 패키지가 없어서 킥스타트 파일을 생성할 수 없습니다.</target>
+        <target>자동 설치 프로파일의 기본 채널에 패키지가 없어서 자동 설치 파일을 생성할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.download" xml:space="preserve">
         <source>Download Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>킥스타트 파일 다운로드</target>
+        <target>자동 설치 파일 다운로드</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.overview" xml:space="preserve">
         <source>Autoinstallation Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 개요</target>
+        <target>자동 설치 개요</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.header" xml:space="preserve">
         <source>Autoinstallation Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 매개 변수 </target>
+        <target>자동 설치 매개 변수</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.update" xml:space="preserve">
         <source>Update Variables</source>
@@ -10743,7 +10743,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 변수를 사용하여 킥스타트 프로파일로 값을 대체할 수 있습니다. 변수를 정의하려면 'name=value'를 아래의 란에 추가합니다.
+        <target>자동 설치 변수를 사용하여 자동 설치 프로파일로 값을 대체할 수 있습니다. 변수를 정의하려면 'name=value'를 아래의 란에 추가합니다.
                     그 후 프로파일에 $name을 사용하여 값을 대체할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstarttree.variable.jsp.summary" xml:space="preserve">
@@ -10870,14 +10870,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>현재 킥스타트 중인 시스템</target>
+        <target>현재 자동 설치 중인 시스템</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.scheduled" xml:space="preserve">
         <source>Systems Scheduled to be Autoinstalled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 예정된 시스템</target>
+        <target>자동 설치 예정된 시스템</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.label" xml:space="preserve">
         <source>Label</source>
@@ -10898,49 +10898,49 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 내용 요약</target>
+        <target>자동 설치 내용 요약</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.system" xml:space="preserve">
         <source>Autoinstalling Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>킥스타트 중인 시스템 </target>
+        <target>자동 설치 중인 시스템</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.actions" xml:space="preserve">
         <source>Autoinstallation Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>킥스타트 작업</target>
+        <target>자동 설치 작업</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.viewprofiles" xml:space="preserve">
         <source>View a List of Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>킥스타트 프로파일 목록 보기</target>
+        <target>자동 설치 프로파일 목록 보기</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.createksprofile" xml:space="preserve">
         <source>Create a New Kickstart Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>새 킥스타트 프로파일 생성</target>
+        <target>새 자동 설치 프로파일 생성</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.uploadksfile" xml:space="preserve">
         <source>Upload a New Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>새 킥스타트 파일 업로드 </target>
+        <target>새 자동 설치/AutoYaST 파일 업로드</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.summary" xml:space="preserve">
         <source>The following autoinstallation profiles have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>사용자 조직을 위한 킥스타트 프로파일이 다음과 같이 생성되었습니다: </target>
+        <target>사용자 조직을 위한 킥스타트 프로파일이 다음과 같이 생성되었습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.inactive" xml:space="preserve">
         <source>Inactive</source>
@@ -10968,14 +10968,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>사용 가능한 킥스타트 프로파일이 없습니다</target>
+        <target>사용 가능한 자동 설치 프로파일이 없습니다</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.nocurrentlyks" xml:space="preserve">
         <source>There are no systems currently autoinstalling.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>현재 킥스타트 중인 시스템이 없습니다</target>
+        <target>현재 자동 설치 중인 시스템이 없습니다</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.noscheduledtobeks" xml:space="preserve">
         <source>To schedule an autoinstallation, go to the Systems tab above and select the system you would like to autoinstall. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
@@ -10996,7 +10996,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>킥스타트 프로파일</target>
+        <target>자동 설치 프로파일</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.postlog" xml:space="preserve">
         <source>Log custom post scripts:</source>
@@ -11052,14 +11052,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트: {0}</target>
+        <target>자동 설치: {0}</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header1" xml:space="preserve">
         <source>Delete Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>킥스타트 삭제: {0}</target>
+        <target>자동 설치 삭제: {0}</target>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.header1" xml:space="preserve">
         <source>Delete Organization: {0}</source>
@@ -11073,14 +11073,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 정보</target>
+        <target>자동 설치 정보</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header2" xml:space="preserve">
         <source>Confirm Autoinstallation Deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>킥스타트 삭제 확인</target>
+        <target>자동 설치 삭제 확인</target>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.header2" xml:space="preserve">
         <source>Confirm Organization Deletion</source>
@@ -11108,7 +11108,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>아래에 나온 입력란에서 킥스타트 프로파일을 수정하실 수 있습니다. 별표(*)로 표시된 항목은 필수 입력란입니다.</target>
+        <target>아래에 나온 입력란에서 자동 설치 프로파일을 수정하실 수 있습니다. 별표(*)로 표시된 항목은 필수 입력란입니다.</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.summary1" xml:space="preserve">
         <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
@@ -11122,14 +11122,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target state="needs-adaptation">&lt;span class="small-text"&gt; 조직 기본 프로파일 설정은 직접 생성한 킥스타트 파일이나 베어-메탈 킥스타트 파일과 함께 사용 가능합니다. 이 옵션을 선택하여 &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; 이 링크 &lt;/strong&gt; &lt;/a&gt;의 URL이 킥스타트 파일의 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 부분에 지정된 경우 조직의 어느 프로파일을 사용할 것인지 지정하실 수 있습니다. 조직 기본 프로파일이 지정되지 않은 경우 이 링크가 작동하지 않을 것입니다.&lt;/span&gt;</target>
+        <target state="translated">&lt;span class="small-text"&gt; 조직 기본 프로파일 설정은 직접 생성한 자동 설치 파일이나 베어-메탈 자동 설치 파일과 함께 사용 가능합니다. 이 옵션을 선택하여 &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; 이 링크 &lt;/strong&gt; &lt;/a&gt;의 URL이 자동 설치 파일의 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 부분에 지정된 경우 조직의 어느 프로파일을 사용할 것인지 지정하실 수 있습니다. 조직 기본 프로파일이 지정되지 않은 경우 이 링크가 작동하지 않을 것입니다.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription" xml:space="preserve">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>비활성 킥스타트 프로파일을 사용하여 @@PRODUCT_NAME@@에 등록된 시스템을 킥스타트할 수 없습니다. 하지만, 비활성 킥스타트 프로파일에 해당하는 킥스타트 프로파일을 수동으로 다운로드 가능하며 베어 메탈 킥스타트로 사용할 수 있습니다.  </target>
+        <target>비활성 자동 설치 프로파일을 사용하여 @@PRODUCT_NAME@@에 등록된 시스템을 자동 설치할 수 없습니다. 하지만, 비활성 자동 설치 프로파일에 해당하는 자동 설치 프로파일을 수동으로 다운로드 가능하며 베어 메탈 자동 설치로 사용할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartscript.jsp.type" xml:space="preserve">
         <source>Script Type</source>
@@ -11150,7 +11150,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
-        <target>킥스타트 스크립트</target>
+        <target>자동 설치 스크립트</target>
       </trans-unit>
       <trans-unit id="kickstartscript.jsp.scriptnum" xml:space="preserve">
         <source>Script #</source>
@@ -11192,11 +11192,11 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
-        <target>이 킥스타트 프로파일과 관련된 스크립트가 없습니다</target>
+        <target>이 자동 설치 프로파일과 관련된 스크립트가 없습니다</target>
       </trans-unit>
       <trans-unit id="kickstartscript.order.header" xml:space="preserve">
         <source>Update kickstart script order</source>
-        <target>킥스타트 스크립트 순서 업데이트</target>
+        <target>자동 설치 스크립트 순서 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptOrder</context>
         </context-group>
@@ -11234,14 +11234,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;p&gt;"베어 메탈 시스템"을 킥스타트하기 위해 킥스타트할 시스템의 운영 체제 버전과 호환 가능한 부트 이미지를 포함한 부트 CD를 이용하여 부팅하셔야 합니다. &lt;/p&gt; &lt;p&gt; 적절한 이미지를 이용하여 시스템이 부팅되면, 킥스타트 파일을 제공하셔야 합니다. 부트 CD 또는 PXE 설정에 다음 URL을 사용하여, 이 킥스타트 프로파일에 연관된 킥스타트 파일을 제공하시면 됩니다:&lt;/p&gt;</target>
+        <target>&lt;p&gt;"베어 메탈 시스템"을 자동 설치하기 위해 자동 설치할 시스템의 운영 체제 버전과 호환 가능한 부트 이미지를 포함한 부트 CD를 이용하여 부팅하셔야 합니다. &lt;/p&gt; &lt;p&gt; 적절한 이미지를 이용하여 시스템이 부팅되면, 자동 설치 파일을 제공하셔야 합니다. 부트 CD 또는 PXE 설정에 다음 URL을 사용하여, 이 자동 설치 프로파일에 연관된 자동 설치 파일을 제공하시면 됩니다. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal" xml:space="preserve">
         <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>베어 메탈(Bare Metal) 킥스타트</target>
+        <target>프로비저닝되지 않은 자동 설치</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.resource" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Reference Guide Kickstart section&lt;/span&gt;</source>
@@ -11255,42 +11255,42 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 조직의 킥스타트 프로파일에 연계된 IP 범위의 전체 목록을 보실 수 있습니다 &lt;/span&gt;     </target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 조직의 자동 설치 프로파일에 연계된 IP 범위의 전체 목록을 보실 수 있습니다 &lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2" xml:space="preserve">
         <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>또는 각 킥스타트 프로파일을 특정 IP 범위에 연계시키는 방법도 있습니다. 이 방법을 사용하시면 URL 하나 만으로도 베어 메탈 시스템의 각 시스템마다 해당 IP 주소에 연계된 칵스타트 파일을 제공할 수 있습니다. 다음에서 이 URL을 찾으실 수 있습니다:</target>
+        <target>또는 각 자동 설치 프로파일을 특정 IP 범위에 연계시키는 방법도 있습니다. 이 방법을 사용하시면 URL 하나 만으로도 베어 메탈 시스템의 각 시스템마다 해당 IP 주소에 연계된 자동 설치 파일을 제공할 수 있습니다. 다음에서 이 URL을 찾으실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal2" xml:space="preserve">
         <source>IP Address-Based Unprovisioned Autoinstallation URL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>IP 주소 기반 베어 메탈 킥스타트 URL</target>
+        <target>IP 주소 기반 베어 메탈 자동 설치 URL</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges" xml:space="preserve">
         <source>Associated IP Ranges with Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 프로파일에 연관된 IP 범위</target>
+        <target>자동 설치 프로파일에 연관된 IP 범위</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges_summary" xml:space="preserve">
         <source>You may add or delete IP ranges associated with the autoinstallation profile below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>아래에서 이 킥스타트 프로파일에 연계된 IP 범위를 추가하거나 삭제하실 수 있습니다.</target>
+        <target>아래에서 이 자동 설치 프로파일에 연계된 IP 범위를 추가하거나 삭제하실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.summary" xml:space="preserve">
         <source>The following IP Address ranges are associated with autoinstallation profiles.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>다음은 킥스타트 프로파일과 연계된 IP 주소 범위입니다.</target>
+        <target>다음은 자동 설치 프로파일과 연계된 IP 주소 범위입니다.</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.addrange" xml:space="preserve">
         <source>Add IP Range</source>
@@ -11318,7 +11318,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 레이블</target>
+        <target>자동 설치 레이블</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.labelwarning" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; The label field should not be easily guessable, since it could be used to expose information about this kickstart profile to a 3rd party.</source>
@@ -11335,10 +11335,10 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 가상화 유형을 변경하면 킥스타트 프로파일의
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; 가상화 유형을 변경하면 자동 설치 프로파일의
  부트로더 및 파티션 옵션을 변경해야 할 수 도 있으므로, 사용자 정의 내용을 덮어쓰기합니다.
 &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;파티션&lt;/a&gt;
- 탭을 선택하여 새 설정 사항을 확인하십시오.   </target>
+ 탭을 선택하여 새 설정 사항을 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active" xml:space="preserve">
         <source>Active:</source>
@@ -11419,14 +11419,14 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="kickstart.advanced.jsp.create" xml:space="preserve">
           <source>Create Autoinstallation Profile</source>
-        <target>킥스타트 프로파일 생성 </target>
+        <target>자동 설치 프로파일 생성</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.advanced.jsp.para1" xml:space="preserve">
           <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source>
-        <target>satellite에 업로드한 각각의 킥스타트 파일은 나중에 참조할 수 있도록 레이블화되어야 합니다. 킥스타트에 레이블을 선택하여 다음을 입력하십시오. 별표 (*)가 있는 항목은 필수 입력 항목입니다.       </target>
+        <target>satellite에 업로드한 각각의 자동 설치 파일은 나중에 참조할 수 있도록 레이블화되어야 합니다. 자동 설치에 레이블을 선택하여 다음을 입력하십시오. 별표 (*)가 있는 항목은 필수 입력 항목입니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -11447,7 +11447,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
           <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target> 기존의 킥스타트 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/rhn/kickstarts에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다. 이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
+        <target> 기존의 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/rhn/kickstarts에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다. 이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -11457,7 +11457,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>킥스타트 삭제</target>
+        <target>자동 설치 삭제</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.summary" xml:space="preserve">
         <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
@@ -11576,7 +11576,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>IP를 이용한 베어 메탈 킥스타트</target>
+        <target>IP를 이용한 프로비저닝되지 않은 자동 설치</target>
       </trans-unit>
       <trans-unit id="kickstart.systemdetails.jsp.header2" xml:space="preserve">
         <source>Software Preferences</source>
@@ -12566,7 +12566,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="snippets.jsp.toolbar" xml:space="preserve">
           <source>Autoinstallation Snippets</source>
-        <target>킥스타트 Snippets </target>
+        <target>자동 설치 Snippets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -12575,7 +12575,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="snippets.jsp.summary" xml:space="preserve">
           <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source>
-        <target>킥스타트 Snippets를 사용하여 @@PRODUCT_NAME@@ 내의 여러 킥스타트 프로파일에 걸쳐 공유할 수 있는 코드의 일반 블록을 저장합니다. 킥스타트 Snippet을 생성할 때 snippet이 포함된 모든 킥스타트 프로파일은 업데이트됩니다.    </target>
+        <target>자동 설치 Snippets를 사용하여 @@PRODUCT_NAME@@ 내의 여러 자동 설치 프로파일에 걸쳐 공유할 수 있는 코드의 일반 블록을 저장합니다. 자동 설치 Snippet을 생성할 때 snippet이 포함된 모든 자동 설치 프로파일은 업데이트됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -12620,7 +12620,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="cobbler.snippet.jsp.nosnippets" xml:space="preserve">
           <source>No autoinstallation snippets found.</source>
-        <target>킥스타트 snippets을 찾을 수 없습니다.  </target>
+        <target>자동 설치 snippets을 찾을 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -12629,7 +12629,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="cobbler.snippet.copy-paste-snippet-tip" xml:space="preserve">
           <source>Copy and paste the snippet macro into your profiles to make the full snippet appear in that profile.</source>
-        <target>snippet 매크로를 킥스타트 프로파일로 복사 및 붙이기하여 킥스타트 프로파일에 전체 snippet이 나타나게 합니다.     </target>
+        <target>snippet 매크로를 킥스타트 프로파일로 복사 및 붙이기하여 해당 프로파일에 전체 snippet이 나타나게 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -12639,7 +12639,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       <!--Cobbler Create/Edit/View/Delete pages -->
       <trans-unit id="snippetcreate.jsp.warning.tip" xml:space="preserve">
           <source>Changing this snippet's name will require updating any kickstart profiles that refer to it so that they can continue to access the content of this snippet.</source>
-        <target>snippet의 이름을 변경하면 이를 참조하는 킥스타트 프로파일을 업데이트하여 snippet의 내용에 지속적으로 액세스할 수 있도록 해야 합니다.    </target>
+        <target>snippet의 이름을 변경하면 이를 참조하는 킥스타트 프로파일을 업데이트하여 snippet의 내용에 지속적으로 액세스할 수 있도록 해야 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate.do</context>
@@ -12709,7 +12709,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="cobbler.snippet.default.tip" xml:space="preserve">
           <source>Default kickstart snippets are available to all organizations. These snippets cannot be modified.</source>
-        <target>기본값 킥스타트 snippets은 모든 조직에서 사용할 수 있습니다. 이러한 snippets은 수정할 수 없습니다.   </target>
+        <target>기본값 킥스타트 snippets은 모든 조직에서 사용할 수 있습니다. 이러한 snippets는 수정할 수 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate.do</context>
@@ -13305,7 +13305,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;킥스타트&lt;/strong&gt; 관리</target>
+        <target>&lt;strong&gt;자동 설치&lt;/strong&gt; 관리</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.configuration" xml:space="preserve">
         <source>Manage &lt;strong&gt;Configuration Files&lt;/strong&gt;</source>
@@ -13632,7 +13632,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
-        <target>킥스타트 트리</target>
+        <target>자동 설치 트리</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new_RH" xml:space="preserve">
         <source>Always use the newest Red Hat Tree for this base channel.</source>
@@ -21979,9 +21979,9 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
         <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt;
-킥스타트 과정에서 시스템을 적절한 소프트웨어 채널에 서브스크라이브하셔야,
-동기화하신 패키지 프로파일에 있는 패키지를 이용할 수 있습니다.
-킥스타트 과정에서 소프트웨어 채널에 시스템을 서브스크라이브하시려면
+킥스타트 과정에서 시스템을 적절한 소프트웨어 채널에 서브스크라이브해야,
+동기화한 패키지 프로파일에 있는 패키지를 이용할 수 있습니다.
+킥스타트 과정에서 소프트웨어 채널에 시스템을 서브스크라이브하려면
 &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;활성키&lt;/a&gt;
 탭으로 가십시오.&lt;/span&gt;</target>
       </trans-unit>
@@ -22032,7 +22032,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>킥스타트 스케줄</target>
+        <target>자동 설치 스케줄링</target>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.jsp" xml:space="preserve">
         <source>Configure Autoinstallation</source>
@@ -22046,7 +22046,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>시스템에 킥스타트 작업을 스케줄하실 수 있습니다. 선택된 킥스타트 옵션을 이용하여 시스템을 재설치하게 됩니다.</target>
+        <target>시스템에 자동 설치 작업을 스케줄링할 수 있습니다. 선택된 자동 설치 옵션을 이용하여 시스템을 재설치하게 됩니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.text.jsp" xml:space="preserve">
         <source>You can configure the autoinstallation of this system. This will install this system using the selected autoinstallation options as soon as it boots up.</source>
@@ -22060,35 +22060,35 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>킥스타트 프로파일 선택</target>
+        <target>자동 설치 프로파일 선택</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading2.text.jsp" xml:space="preserve">
         <source>Please select the autoinstallation profile you'd like to use to autoinstall this system:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>시스템을 킥스타트하기 위해 사용할 킥스타트 프로파일을 선택해 주십시오:</target>
+        <target>시스템을 자동 설치하기 위해 사용할 자동 설치 프로파일을 선택해 주십시오.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.jsp" xml:space="preserve">
         <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>킥스타트 스케줄</target>
+        <target>자동 설치 스케줄</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp" xml:space="preserve">
         <source>Schedule autoinstallation no sooner than:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>최대한 빨리 킥스타트 작업을 스케줄:</target>
+        <target>최대한 빨리 자동 설치 작업을 스케줄링:</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profiles.jsp" xml:space="preserve">
         <source>No profiles currently available for autoinstallation. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>현재 킥스타트 용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
+        <target>현재 자동 설치용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button0.jsp" xml:space="preserve">
         <source>Create PXE installation configuration</source>
@@ -22109,7 +22109,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>킥스타트 스케줄 후 완료</target>
+        <target>자동 설치 스케줄링 후 완료</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button3.jsp" xml:space="preserve">
         <source>Basic Options</source>
@@ -22354,7 +22354,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@에 의해 관리되지 않는 프로파일이 킥스타트 후에 시스템을 @@PRODUCT_NAME@@에 등록할 수 있는 것은 아닙니다. 킥스타트 후 시스템이 @@PRODUCT_NAME@@ 시스템 목록에 다시 나타나는지를 확인하기 위해 이러한 킥스타트를 다시 살펴보시고자 할 수 있습니다.. (프로파일 이름을 클릭하는 등)      </target>
+        <target> @@PRODUCT_NAME@@에 의해 관리되지 않는 프로파일이 자동 설치 후에 시스템을 @@PRODUCT_NAME@@에 등록할 수 있는 것은 아닙니다. 자동 설치 후 시스템이 @@PRODUCT_NAME@@ 시스템 목록에 다시 나타나는지를 확인하기 위해 이러한 자동 설치를 다시 검토하고자 할 수 있습니다(프로파일 이름을 클릭하는 등).</target>
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip" xml:space="preserve">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
@@ -22380,7 +22380,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       <!--KS schedule pages -->
       <trans-unit id="kickstart.schedule.heading4.jsp" xml:space="preserve">
           <source>Advanced Autoinstallation Configuration</source>
-        <target state="needs-adaptation">고급 킥스타트 설정</target>
+        <target state="translated">고급 자동 설치 설정</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -22474,49 +22474,49 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>킥스타트 복제</target>
+        <target>자동 설치 복제</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header2" xml:space="preserve">
         <source>Clone Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>킥스타트 프로파일 복제</target>
+        <target>자동 설치 프로파일 복제</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.summary" xml:space="preserve">
         <source>Please specify a new label for this Autoinstallation Profile.  All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>이 킥스타트 프로파일에 대한 새 레이블을 지정해주십시오.  소스 킥스타트 프로파일의 모든 옵션, 설정 및 스크립트가 새 프로파일로 복사될 것입니다. (IP 범위 설정 제외)</target>
+        <target>이 자동 설치 프로파일에 대한 새 레이블을 지정해주십시오. 소스 자동 설치 프로파일의 모든 옵션, 설정 및 스크립트가 새 프로파일로 복사될 것입니다(IP 범위 설정 제외).</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header1" xml:space="preserve">
         <source>Create a Clone of Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>킥스타트 복제 생성: {0}</target>
+        <target>자동 설치 복제 생성: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.summary2" xml:space="preserve">
         <source>This is current status of this system's Autoinstallation progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>이것은 이 시스템의 킥스타트 진행과정에 대한 현재 상태를 나타냅니다. &lt;strong&gt;알림:&lt;/strong&gt; 이 패키지는 매 15초 마다 재생됩니다.</target>
+        <target>이것은 이 시스템의 자동 설치 진행과정에 대한 현재 상태를 나타냅니다. &lt;strong&gt;알림:&lt;/strong&gt; 이 패키지는 매 15초 마다 새로 고침됩니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress" xml:space="preserve">
         <source>Autoinstallation Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>킥스타트 진행 상황</target>
+        <target>자동 설치 진행 상황</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.header2" xml:space="preserve">
         <source>Autoinstallation Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>킥스타트 상태</target>
+        <target>자동 설치 상태</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.activation" xml:space="preserve">
         <source>System Activation</source>
@@ -22579,7 +22579,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>킥스타트 개시</target>
+        <target>자동 설치 개시</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_reboot" xml:space="preserve">
         <source>Reboot System</source>
@@ -22614,14 +22614,14 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>킥스타트 실패</target>
+        <target>자동 설치 실패</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_complete" xml:space="preserve">
         <source>Autoinstallation complete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>킥스타트 완료</target>
+        <target>자동 설치 완료</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.none" xml:space="preserve">
         <source>none</source>
@@ -22642,7 +22642,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>킥스타트 세션</target>
+        <target>자동 설치 세션</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.state" xml:space="preserve">
         <source>State</source>
@@ -22656,19 +22656,19 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>이 킥스타트를 취소하시려면 아래 '킥스타트 취소'를 눌러주십시오.</target>
+        <target>이 킥스타트를 취소하시려면 아래 '자동 설치 취소'를 클릭하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.cancel" xml:space="preserve">
         <source>Cancel Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>킥스타트 취소</target>
+        <target>자동 설치 취소</target>
       </trans-unit>
       <!-- KS Distributions List Page -->
       <trans-unit id="kickstart.distributions.jsp.nolists" xml:space="preserve">
           <source>No autoinstallable distributions available.</source>
-        <target>킥스타트 가능한 배포판이 없습니다.</target>
+        <target>자동 설치 가능한 배포판이 없습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
@@ -22682,21 +22682,21 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
           <source>Autoinstallable Distributions</source>
-        <target>킥스타트 가능한 배포판</target>
+        <target>자동 설치 가능한 배포판</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.kickstartable_distributions_text.jsp" xml:space="preserve">
           <source>The following autoinstallable distributions are available.</source>
-        <target>다음에는 킥스타트 가능한 배포판이 있습니다.   </target>
+        <target>다음에는 자동 설치 가능한 배포판이 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstarts.distro.is-valid.tooltip" xml:space="preserve">
           <source>Autoinstallable distributions may be invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
-        <target>킥스타트 배포판은 커널이나 initrd 이미지로의 기본 경로가 잘못되었거나 경로가 존재하지 않기 때문에 유효하지 않습니다. 사용자 지정 배포판을 사용하려면 배포판을 선택하고 기본 경로를 적절하게 변경하십시오.</target>
+        <target>자동 설치 배포판은 커널이나 initrd 이미지로의 기본 경로가 잘못되었거나 경로가 존재하지 않기 때문에 유효하지 않습니다. 사용자 지정 배포판을 사용하려면 배포판을 선택하고 기본 경로를 적절하게 변경하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
@@ -22874,14 +22874,14 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>킥스타트 배포판 수정</target>
+        <target>자동 설치 배포판 수정</target>
       </trans-unit>
       <trans-unit id="treeedit.jsp.toolbar" xml:space="preserve">
         <source>Edit Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>킥스타트 배포판 수정</target>
+        <target>자동 설치 배포판 수정</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header1" xml:space="preserve">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
@@ -22895,13 +22895,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>킥스타트 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다. 킥스타트 RPM은 킥스타트 배포 스크립트가 포함된 rpm 이름이어야 합니다. 이 RPM은 @@PRODUCT_NAME@@에 의해 제공되며 @@PRODUCT_NAME@@ 도구 자식 채널에 있습니다.&lt;br/&gt;&lt;br/&gt;
+        <target>자동 설치 배포를 정의하려면 다음과 같은 정보가 필요합니다. 트리 경로 필드는 @@PRODUCT_NAME@@ 서버에 존재하는 설치 트리로의 유효한 경로여야 합니다.&lt;br/&gt;&lt;br/&gt;
 
 배포판 레이블 필드에서는 문자, 숫자, 하이픈, 마침표, 밑줄로 지정할 수 있습니다. 또한 최소 4자 이상의 문자로 지정해야 합니다.&lt;br/&gt;&lt;br/&gt;
 
-트리 경로, 킥스타트 RPM, 기본 채널, 설치 프로그램 생성기는 항상 일치해야 합니다. 일반적으로 이는 각 필드의 버전이 Red Hat Enterprise Linux의 버전과 동일한 버전이 되는 것을 의미합니다. &lt;br/&gt;&lt;br/&gt;
+트리 경로, 기본 채널, 설치 프로그램 생성기는 항상 일치해야 합니다. 일반적으로 이는 각 필드의 버전이 @@ENTERPRISE_LINUX_NAME@@의 버전과 동일한 버전이 되는 것을 의미합니다.&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;트리 경로는 커널, initrd, 리포지터리 정보가 포함된 (rpm 제외) 배포판의 전체 킥스타트 트리가 들어있는 @@PRODUCT_NAME@@ 서버의 로컬 디스크 경로여야 합니다. 이 디렉토리는 apache및 tomcat 사용자가 읽을 수 있어야 합니다. 지정된 트리 경로 내에서 커널은 "./images/pxeboot/vmlinuz"에서 initrd 이미지는 "./images/pxeboot/initrd.img"에서 사용 가능해야 합니다. 예를 들어, 미디어가 &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt;의 @@PRODUCT_NAME@@에 있는 경우 &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; 에서 커널 및 initrd을 확인할 수 있는 트리 경로 값으로 경로를 지정합니다.&lt;/p&gt;
+&lt;p&gt;트리 경로는 커널, initrd, 리포지터리 정보가 포함된 (rpm 제외) 배포판의 전체 자동 설치 가능한 트리가 들어있는 @@PRODUCT_NAME@@ 서버의 로컬 디스크 경로여야 합니다. 이 디렉토리는 apache및 tomcat 사용자가 읽을 수 있어야 합니다. 예를 들어, 미디어가 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt;의 @@PRODUCT_NAME@@에 있는 경우, 트리 경로 값으로 경로를 지정합니다. &lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -22909,28 +22909,28 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>킥스타트 배포판 생성</target>
+        <target>자동 설치 가능한 배포판 생성</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.toolbar" xml:space="preserve">
         <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>킥스타트 배포판 생성</target>
+        <target>자동 설치 가능한 배포판 생성</target>
       </trans-unit>
       <trans-unit id="edittree.jsp.submit" xml:space="preserve">
         <source>Update Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>킥스타트 배포판 업데이트</target>
+        <target>자동 설치 가능한 배포판 업데이트</target>
       </trans-unit>
       <trans-unit id="createtree.jsp.submit" xml:space="preserve">
         <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>킥스타트 배포판 생성</target>
+        <target>자동 설치 가능한 배포판 생성</target>
       </trans-unit>
       <trans-unit id="tree-form.jspf.label" xml:space="preserve">
         <source>Distribution Label</source>
@@ -23299,7 +23299,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 삭제하도록 선택하신 킥스타트 배포판는 다음의 킥스타트 프로파일에서 사용중입니다. 이 배포판을 삭제하시기 전에 아래의 프로파일에서 사용되는 배포판을 변경하셔야 합니다. 프로파일의 배포판을 편집하기 위해 링크의 레이블을 클릭하시기 바랍니다.</target>
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; 삭제하도록 선택한 자동 설치 가능한 배포판은 다음의 자동 설치 프로파일에서 사용중입니다. 이 배포판을 삭제하시기 전에 아래의 프로파일에서 사용되는 배포판을 변경하셔야 합니다. 프로파일의 배포판을 편집하기 위해 링크의 레이블을 클릭하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.cantdelete" xml:space="preserve">
         <source>This distribution cannot be deleted at this time.</source>
@@ -23313,7 +23313,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>킥스타트 프로파일 선택 </target>
+        <target>자동 설치 가능한 프로파일 선택</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
@@ -23341,7 +23341,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>메모리, cpu, 스토리지 할당과 같은 기본값 가상 게스트 설정은 킥스타트 프로파일에서 상속됩니다. 이러한 설정을 덮어쓰기하려면 아래의 &lt;strong&gt;{0}&lt;/strong&gt; 버튼을 클릭합니다.  </target>
+        <target>메모리, cpu, 스토리지 할당과 같은 기본값 가상 게스트 설정은 자동 설치 프로파일에서 상속됩니다. 이러한 설정을 덮어쓰기하려면 아래의 &lt;strong&gt;{0}&lt;/strong&gt; 버튼을 클릭합니다.</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.guest_name.header" xml:space="preserve">
         <source>Guest Name:</source>
@@ -23411,7 +23411,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>다음 항목은 빈 칸으로 둘 수 있습니다. (이러한 경우 선택한 킥스타트 프로파일에 정의된 기본값을 사용합니다). 각 항목은 개별적으로 설정할 수 있으며, 프로파일의 기본값은 덮어쓰기됩니다.   </target>
+        <target>다음 항목은 빈 칸으로 둘 수 있습니다. (이러한 경우 선택한 자동 설치 프로파일에 정의된 기본값을 사용합니다). 각 항목은 개별적으로 설정할 수 있으며, 프로파일의 기본값은 덮어쓰기됩니다.</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage.local.message" xml:space="preserve">
         <source>Size in gigabytes from the virtual host's disk space.</source>
@@ -23425,7 +23425,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/SystemDetailsEdit.do</context>
         </context-group>
-        <target>킥스타트 프로파일 옵션이 성공적으로 업데이트되었습니다.</target>
+        <target>자동 설치 프로파일 옵션이 성공적으로 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.filelist" xml:space="preserve">
         <source>delete file preservation list</source>
@@ -23629,7 +23629,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>현재 킥스타트 게스용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;가상화 유형을 사용하여 새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
+        <target>현재 자동 설치 게스용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;가상화 유형을 사용하여 새 자동 설치 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="info.alt.img" xml:space="preserve">
         <source>Information Icon</source>
@@ -26073,7 +26073,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>이는 조직의 기본값 킥스타트 프로파일입니다.  </target>
+        <target>이는 조직의 기본값 자동 설치 프로파일입니다.</target>
       </trans-unit>
       <trans-unit id="help.jsp.about.title" xml:space="preserve">
         <source>About @@PRODUCT_NAME@@</source>
@@ -27215,8 +27215,9 @@ given channel.</source>
 서버에 남아 있게 됩니다. 채널 삭제 후 패키지를 삭제하는 옵션을 선택할 수 있습니다.
 채널 관련 에라타는 더 이상 채널에 연결되지 않고 분리될 수 있습니다.
 채널이 자식 채널을 갖는 경우 이는 삭제할 수 없습니다. 자식 채널을 먼저
-삭제해야 합니다. 채널에 킥스타트 배포판이 있는 경우 이를 삭제할 수 없습니다.
-킥스타트 배포판을 채널에서 연결 해제하거나 이를 먼저 삭제해야 합니다.</target>
+삭제해야 합니다. 채널에 자동 설치 가능한 배포판이 있는 경우 이를 삭제할 수 없습니다.
+자동 설치 가능한 배포판을 채널에서 연결 해제하거나 이를 먼저 삭제해야 합니다.
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch" xml:space="preserve">
         <source>Architecture:</source>
@@ -28007,8 +28008,8 @@ given channel.</source>
       <trans-unit id="unknown.kickstart.message" xml:space="preserve">
         <source>The requested autoinstallation file could not be found.
          If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
-        <target>요청하신 킥스타트 파일을 찾을 수 없습니다.
-          조직의 기본값 킥스타트를 요청하신 경우, 킥스타트가 "조직 기본값"으로 선택되었는지를 확인합니다.  </target>
+        <target>요청하신 자동 설치 파일을 찾을 수 없습니다.
+          조직의 기본값 자동 설치를 요청하신 경우, 자동 설치가 "조직 기본값"으로 선택되었는지를 확인합니다.</target>
       </trans-unit>
       <trans-unit id="task.status.last.execution" xml:space="preserve">
         <source>Last Execution Times</source>
