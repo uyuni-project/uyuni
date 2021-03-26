@@ -676,7 +676,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Data Dictionary Hit Ratio Critico </target>
+        <target>Data Dictionary Hit Ratio Critico</target>
       </trans-unit>
       <trans-unit id="Critical Defunct Process Count" xml:space="preserve">
         <source>Critical Defunct Process Count</source>
