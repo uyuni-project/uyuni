@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-22 18:57+0000\n"
+"PO-Revision-Date: 2021-03-27 21:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1442,9 +1442,8 @@ msgid "End date"
 msgstr "Dátum konca"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
-#, fuzzy
 msgid "Delete Pin"
-msgstr "Vymazať profil"
+msgstr "Vymazať pripnutie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
@@ -1461,9 +1460,8 @@ msgid "pending next run"
 msgstr "čaká na ďalší beh"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
-#, fuzzy
 msgid "satisfied"
-msgstr "nespokojný"
+msgstr "spokojný"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
 msgid "not satisfied"
@@ -1604,19 +1602,16 @@ msgid "Physical deployment only"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
-#, fuzzy
 msgid "Unlimited Virtual Machines"
-msgstr "Vytvoriť virtuálny stroj"
+msgstr "Neobmedzené virtuálne stroje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
-#, fuzzy
 msgid "1-2 Sockets or 1-2 Virtual Machines"
-msgstr "Vytvoriť virtuálny stroj"
+msgstr "1-2 sokety alebo 1-2 virtuálne stroje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
-#, fuzzy
 msgid "Per-instance"
-msgstr "Inštancie"
+msgstr "Na inštanciu"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1777,9 +1772,8 @@ msgid "scheduled"
 msgstr "naplánované"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:27
-#, fuzzy
 msgid " successfully."
-msgstr "úspešne"
+msgstr " úspešne."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
@@ -1794,9 +1788,8 @@ msgid "Cluster "
 msgstr "Klaster "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:40
-#, fuzzy
 msgid " has been added successfully."
-msgstr "Úspešne vymazané."
+msgstr " bol úspešne pridaný."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:90
 #: ../html/src/manager/clusters/cluster/cluster.tsx:102
@@ -1870,9 +1863,8 @@ msgid "Join"
 msgstr "Pripojiť"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
-#, fuzzy
 msgid " has been deleted successfully."
-msgstr "Úspešne vymazané."
+msgstr " bol úspešne vymazaný."
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:46
 msgid "Add an existing cluster"
@@ -2540,13 +2532,12 @@ msgid "The page you requested, {0}, was not found."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:11
-#, fuzzy
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
 msgstr ""
 "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis "
-"a veľké písmená. Adresa, ktorú kopírujete, môže byť tiež zastaraná."
+"a veľké písmená."
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
@@ -2625,9 +2616,8 @@ msgid "Building the image has been "
 msgstr "Zostavenie obrazu bolo "
 
 #: ../html/src/manager/images/image-build.tsx:253
-#, fuzzy
 msgid "Profile Summary"
-msgstr "Súhrn"
+msgstr "Súhrn profilu"
 
 #: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
