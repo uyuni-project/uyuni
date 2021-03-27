@@ -42,9 +42,10 @@ if [ -z "${project}" ];then
     exit -1
 fi 
 
+echo "Waiting for $project to build"
+osc -A $api -c $config_file results $project -w --xml
+
 for i in $(osc -A $api -c $config_file ls $project);do
-    echo "Checking $project/$i"
-    osc -A $api -c $config_file results $project $i -w
     if [ $lock == "yes" ];then
       echo "Locking $project/$i so there are not further rebuilds"
       osc -A $api -c $config_file lock $project $i
