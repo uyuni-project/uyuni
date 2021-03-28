@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-27 21:57+0000\n"
+"PO-Revision-Date: 2021-03-28 20:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2645,14 +2645,12 @@ msgid "Activation Key"
 msgstr "Aktivačný kľúč"
 
 #: ../html/src/manager/images/image-build.tsx:355
-#, fuzzy
 msgid "Build Image"
-msgstr "Znovu zostaviť obraz"
+msgstr "Zostaviť obraz"
 
 #: ../html/src/manager/images/image-build.tsx:371
-#, fuzzy
 msgid "Image Profile"
-msgstr "Profily obrazov"
+msgstr "Profil obrazu"
 
 #: ../html/src/manager/images/image-build.tsx:392
 #: ../html/src/manager/images/image-import.tsx:302
@@ -2713,9 +2711,8 @@ msgid "Target Image Store"
 msgstr "Cieľové úložisko obrazov"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:317
-#, fuzzy
 msgid "Dockerfile URL"
-msgstr "Dockerfile"
+msgstr "URL Dockerfile"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
@@ -3138,9 +3135,8 @@ msgid "Updated"
 msgstr "Aktualizované"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:31
-#, fuzzy
 msgid "Loading runtime information..."
-msgstr "Ďalšie informácie"
+msgstr "Načítavajú sa behové informácie..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:65
 msgid "Instance is consistent with SUSE Manager"
@@ -3523,9 +3519,8 @@ msgid "Maintenance schedule has been cleared"
 msgstr "Plán údržby bol vymazaný"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
-#, fuzzy
 msgid "Maintenance schedule has been assigned"
-msgstr "Plán údržby bol vymazaný"
+msgstr "Plán údržby bol priradený"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
@@ -3860,9 +3855,8 @@ msgid "Accept"
 msgstr "Prijať"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:42
-#, fuzzy
 msgid "Reject"
-msgstr "zamietnuté"
+msgstr "Zamietnuť"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:67
 msgid "accepted"
@@ -3952,9 +3946,8 @@ msgid "Minion"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
-#, fuzzy
 msgid "Group"
-msgstr "ID skupiny"
+msgstr "Skupina"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
@@ -4017,23 +4010,20 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "Naozaj chcete vymazať tento plán?"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Update "
-msgstr "Aktualizácia"
+msgstr "Aktualizovať "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Create "
-msgstr "Vytvoriť"
+msgstr "Vytvoriť "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
-#, fuzzy
 msgid "Schedule Recurring Highstate"
-msgstr "Opakujúce sa stavy"
+msgstr "Naplánovať opakujúci sa Highstate"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
