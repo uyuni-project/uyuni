@@ -383,6 +383,27 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
+When(/^I increase Java log level to "([^"]*)" on server$/) do |log_level|
+  $server.run(
+    "cat >>/srv/tomcat/webapps/rhn/WEB-INF/classes/log4j.properties <<CONFIG
+log4j.logger.com.suse.manager.reactor=#{log_level.upcase}
+log4j.logger.com.suse.manager.webui.services.impl=#{log_level.upcase}
+CONFIG"
+  )
+end
+
+When(/^I restart the tomcat service$/) do
+  $server.run('systemctl restart tomcat.service')
+end
+
+When(/^I wait until tomcat restart is finished/) do
+  repeat_until_timeout(timeout: 300, message: "tomcat did not restart in 5 minutes.") do
+    _, code = $server.run("curl -k https://#{$server.full_hostname}")
+    break if code.zero?
+    sleep 20
+  end
+end
+
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
