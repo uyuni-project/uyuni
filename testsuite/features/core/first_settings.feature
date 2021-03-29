@@ -52,6 +52,10 @@ Feature: Very first settings
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
 
+  Scenario: Set up Java logging with level TRACE
+    When I increase Java log level to "trace" on server
+    And I restart the tomcat service
+
 @server_http_proxy
   Scenario: Setup HTTP proxy
     Given I am authorized for the "Admin" section
