@@ -11,7 +11,11 @@ Feature: Setup SUSE Manager proxy
   I want to register the proxy to the server and configure it also as branch server
 
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
-    When I perform a full salt minion cleanup on "proxy"
+    When I remove package "spacewalk-proxy-salt" from this "proxy" without error control
+    And I perform a full salt minion cleanup on "proxy"
+
+  Scenario: Install proxy pattern on the proxy
+    When I install pattern "suma_proxy" on this "proxy"
     # WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
     And I set correct product for "proxy"
     # End of WORKAROUND
