@@ -2377,7 +2377,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>&lt;p&gt;이 작업으로 이 사용자는 &lt;strong&gt;영원히&lt;/strong&gt; 삭제되게 됩니다.&lt;/p&gt;  &lt;p&gt;현재 이 사용자와 관련된 모든 스케쥴된 작업은 더 이상 이 사용자와 상관없도록 변경될 것입니다.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;버튼을 한번만 클릭하시기 바랍니다; 삭제 작업이 완료될 때 까지 약간의 시간이 소요될 수 있습니다.&lt;/strong&gt;&lt;/p&gt; </target>
+        <target>&lt;p&gt;이 작업으로 이 사용자는 &lt;strong&gt;영구적으로&lt;/strong&gt; 삭제되게 됩니다.&lt;/p&gt; &lt;p&gt;현재 이 사용자와 관련된 모든 스케쥴된 작업은 더 이상 이 사용자와 상관없도록 변경될 것입니다.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;버튼을 한번만 클릭하시기 바랍니다. 삭제 작업이 완료될 때 까지 약간의 시간이 소요될 수 있습니다.&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="disableuser.jsp.disable" xml:space="preserve">
@@ -2399,7 +2399,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>&lt;p&gt;이 작업을 수행하시면 이 사용자가 비활성화될 것입니다. 그 후 이 사용자는 재활성화될 때까지는 더이상 로그인하거나 작업을 수행할 수 없게 됩니다&lt;/p&gt;</target>
+        <target>&lt;p&gt;이 작업을 수행하면 이 사용자가 비활성화될 것입니다. 그 후 이 사용자는 재활성화될 때까지는 더 이상 로그인하거나 작업을 수행할 수 없게 됩니다.&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="enableuser.jsp.enable" xml:space="preserve">
@@ -2407,21 +2407,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target>사용자 다시 활성화 </target>
+        <target>사용자 다시 활성화</target>
       </trans-unit>
       <trans-unit id="enableuser.jsp.confirm" xml:space="preserve">
         <source>Confirm User Reactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target>사용자 다시 활성화 확인  </target>
+        <target>사용자 다시 활성화 확인</target>
       </trans-unit>
       <trans-unit id="enableuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@.  This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target>&lt;p&gt;이 작업을 수행하시면 이 사용자는 @@PRODUCT_NAME@@에 액세스할 수 있게 됩니다.  이 사용자는 비활성화되기 이전에 가졌던 모든 권한, 역할, 데이터를 다시 갖게됩니다.&lt;/p&gt;  </target>
+        <target>&lt;p&gt;이 작업을 수행하면 이 사용자는 @@PRODUCT_NAME@@에 액세스할 수 있게 됩니다.  이 사용자는 비활성화되기 이전에 가졌던 모든 권한, 역할, 데이터를 다시 갖게 됩니다.&lt;/p&gt;</target>
       </trans-unit>
       <!-- systemsadmin.jsp -->
       <trans-unit id="systemsadmined.jsp.header" xml:space="preserve">
@@ -2429,7 +2429,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target>관리 시스템 편집하기</target>
+        <target>관리 시스템 수정</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.summary" xml:space="preserve">
         <source>To modify this user's access levels, &lt;a href="{0}"&gt;change the groups&lt;/a&gt; to which this user is assigned.</source>
@@ -2453,7 +2453,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
-        <target>아래 시스템 목록에서 시스템 세트 관리자(System Set Manager)에서 사용할 시스템을 선택하실 수 있습니다.</target>
+        <target>아래 시스템에서 시스템 설정 관리자에서 사용할 시스템을 선택할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="Update List" xml:space="preserve">
         <source>Update List</source>
@@ -2481,7 +2481,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
-        <target>선택 항목을 SSM에 추가  </target>
+        <target>선택 항목을 SSM에 추가</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.access" xml:space="preserve">
         <source>Access Granted Through</source>
@@ -2511,7 +2511,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target>아래에 나온 입력란에서 사용자 정보를 수정할 수 있습니다. 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
@@ -2574,7 +2574,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target> 아래의 양식에 해당 정보를 입력해 주십시오.  별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target> 아래의 양식에 해당 정보를 입력해 주십시오.  별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2588,7 +2588,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target>아래의 양식에 해당 정보를 입력해주십시오.  별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target>아래의 양식에 해당 정보를 입력해주십시오.  별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header" xml:space="preserve">
@@ -2603,21 +2603,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target>시스템 그룹 목록이 나타날 것입니다. 체크박스를 이용하여 각 시스템 그룹에 대한 이 사용자의 액세스 권한을 설정하시기 바랍니다. 조직 관리자는 모든 시스템 그룹에 액세스 허가를 갖습니다. </target>
+        <target>시스템 그룹 목록이 나타날 것입니다. 체크박스를 이용하여 각 시스템 그룹에 대한 이 사용자의 액세스 권한을 설정하시기 바랍니다. 조직 관리자는 모든 시스템 그룹에 액세스 권한을 갖습니다. </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin" xml:space="preserve">
         <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target>사용자에게 시스템 그룹 관리자 권한이 주어진다면, 이 사용자는 선택된 시스템 그룹의 모든 부분을 수정할 수 있게됩니다.</target>
+        <target>사용자에게 시스템 그룹 관리자 권한이 주어진다면, 이 사용자는 선택된 시스템 그룹의 모든 부분을 수정할 수 있게 됩니다. </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.youcanselect" xml:space="preserve">
         <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*). </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target>사용자를 위한 기본 시스템 그룹을 한개 이상 선택하실 수 있습니다. 사용자가 시스템을 등록할 경우, 그 시스템에는 선택된 기본 그룹이 할당될 것입니다. 이렇게 함으로서 사용자가 시스템에 할당된 그룹에 대한 액세스 권한을 가지고 있는 경우, 새로 등록된 시스템을 즉시 사용 가능하게 됩니다. 사용자가 액세스 권한을 가지고 있는 시스템 그룹명 앞에는 별표 (*)가 나타납니다.</target>
+        <target>사용자를 위한 기본 시스템 그룹을 1개 이상 선택할 수 있습니다. 사용자가 시스템을 등록할 경우, 그 시스템에는 선택된 기본 그룹이 할당될 것입니다. 이렇게 함으로써 사용자가 시스템에 할당된 그룹에 대한 액세스 권한을 가지고 있는 경우, 새로 등록된 시스템을 즉시 사용 가능하게 됩니다. 사용자가 액세스 권한을 가지고 있는 시스템 그룹명 앞에는 별표 (*)가 나타납니다. </target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.defaultsysgroups" xml:space="preserve">
         <source>Default System Groups:</source>
@@ -2631,7 +2631,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
-        <target>시스템 그룹이 없음 </target>
+        <target>조직에 시스템 그룹이 없습니다.</target>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitpermissions" xml:space="preserve">
         <source>Update Permissions</source>
@@ -2666,7 +2666,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
-        <target>업데이트목록</target>
+        <target>업데이트 목록</target>
       </trans-unit>
       <trans-unit id="selectall" xml:space="preserve">
         <source>selectall</source>
@@ -2735,7 +2735,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>스케줄된 시간 </target>
+        <target>스케줄된 시간</target>
       </trans-unit>
       <trans-unit id="actions.jsp.succeeded" xml:space="preserve">
         <source>Succeeded</source>
@@ -2754,7 +2754,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>작업실패</target>
+        <target>작업 실패</target>
       </trans-unit>
       <trans-unit id="actions.jsp.inprogress" xml:space="preserve">
         <source>Pending</source>
@@ -2763,7 +2763,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>작업보류</target>
+        <target>작업 보류</target>
       </trans-unit>
       <trans-unit id="actions.jsp.total" xml:space="preserve">
         <source>Total</source>
@@ -2905,7 +2905,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
-        <target> 다음은 한개 이상의 시스템에서 실행 실패한 작업 목록입니다. 조직 관리자나 작업을 스케줄한 사용자만 이 작업을 저장할 수 있습니다. </target>
+        <target> 다음은 1개 이상의 시스템에서 실행 실패한 작업 목록입니다. 조직 관리자나 작업을 스케줄한 사용자만 이 작업을 저장할 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups" xml:space="preserve">
         <source>No failed actions.</source>
@@ -2949,7 +2949,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
-        <target> 다음 작업이 아카이브되었습니다.</target>
+        <target> 다음 작업이 아카이브되었습니다. </target>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.nogroups" xml:space="preserve">
         <source>No archived actions.</source>
@@ -3289,7 +3289,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>다음은 이 작업과 관련된 패키지 목록입니다:</target>
+        <target>다음은 이 작업과 관련된 패키지 목록입니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopackages" xml:space="preserve">
         <source>No packages.</source>
@@ -3325,7 +3325,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
-        <target>아키텍처 </target>
+        <target>아키텍처</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.notspecified" xml:space="preserve">
         <source>not specified</source>
@@ -3342,14 +3342,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>설치됨 </target>
+        <target>설치됨</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepagesummary" xml:space="preserve">
         <source>The following packages are installed on this system.  Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>이 시스템에 다음과 같은 패키지들이 설치되었습니다.  패키지를 삭제하시려면 삭제할 패키지를 선택 후 아래에 위치한 "패키지 삭제"를 클릭하시면 됩니다.</target>
+        <target>이 시스템에 다음과 같은 패키지가 설치되었습니다.  패키지를 삭제하려면 삭제할 패키지를 선택 후 아래에 위치한 "패키지 삭제"를 클릭하면 됩니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages" xml:space="preserve">
         <source>Removable Packages</source>
@@ -3370,7 +3370,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>다음은 이 시스템에 설치된 패키지 목록입니다:</target>
+        <target>다음은 이 시스템에 설치된 패키지 목록입니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installedpackages" xml:space="preserve">
         <source>Installed Packages</source>
@@ -3416,14 +3416,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target>다음과 같은 패치들이 이 시스템에 설치되었습니다. 현재 패치를 취소하고 이전 패치 버전으로 돌아가려면 체크상자를 사용하여 아래에 위치한 "백아웃"을 클릭하시면 됩니다. 패치를 선택할 수 없는 경우에는 이전 버전으로 취소가 불가능합니다.</target>
+        <target>다음과 같은 패치가 이 시스템에 설치되었습니다. 현재 패치를 취소하고 이전 패치 버전으로 돌아가려면 체크상자를 사용하여 아래에 위치한 "백아웃"을 클릭하면 됩니다. 패치를 선택할 수 없는 경우에는 이전 버전으로 취소가 불가능합니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary" xml:space="preserve">
         <source>The following patches may be installed on this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
-        <target>다음은 시스템에 설치되었을 패치 목록입니다:</target>
+        <target>다음은 시스템에 설치되었을 패치 목록입니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopatches" xml:space="preserve">
         <source>No patches.</source>
@@ -3500,35 +3500,35 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을(를) 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to back out the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을(를) 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary.plural" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirmInstall</context>
         </context-group>
-        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages" xml:space="preserve">
         <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>추가 패키지</target>
+        <target>비준수</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary" xml:space="preserve">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
@@ -3575,7 +3575,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>관련 에라타</target>
+        <target>관련 패치</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.upgrade" xml:space="preserve">
         <source>Upgrade Packages</source>
@@ -3642,7 +3642,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target>다음은 이 작업에 실패한 시스템 목록입니다. 작업을 다시 스케줄하실 수 있지만, 우선 실패를 초래한 원인을 밝혀내어 문제를 해결하신 후 재스케줄하시기 바랍니다.</target>
+        <target>다음은 이 작업에 실패한 시스템 목록입니다. 작업을 다시 스케줄할 수 있지만, 우선 실패를 초래한 원인을 밝혀내어 문제를 해결한 후 재스케줄하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.nosystems" xml:space="preserve">
         <source>No systems have failed this action.</source>
@@ -3656,7 +3656,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target>작업실패</target>
+        <target>작업 실패</target>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.message" xml:space="preserve">
         <source>Message</source>
@@ -3670,14 +3670,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
-        <target>전체 재스케쥴하기</target>
+        <target>전체 재스케줄하기</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.allerrata" xml:space="preserve">
         <source>All Types</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target>전체 에라타  </target>
+        <target>전체 유형</target>
       </trans-unit>
       <!-- == AUDIT == -->
       <trans-unit id="audit.overview.jsp.header" xml:space="preserve">
@@ -3685,21 +3685,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Overview.do</context>
         </context-group>
-        <target>감사 정보 </target>
+        <target>감사 정보</target>
       </trans-unit>
       <trans-unit id="audit.jsp.alt" xml:space="preserve">
         <source>Audit Icon</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Overview.do</context>
         </context-group>
-        <target>감사 아이콘 </target>
+        <target>감사 아이콘</target>
       </trans-unit>
       <trans-unit id="auditsearch.jsp.header" xml:space="preserve">
         <source>Audit Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
-        <target>감사 검색 </target>
+        <target>감사 검색</target>
       </trans-unit>
       <trans-unit id="auditview.jsp.norecords" xml:space="preserve">
         <source>No audit records found!</source>
@@ -3715,7 +3715,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="needs-adaptation">에라타 없음</target>
+        <target state="translated">패치 없음</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -3732,21 +3732,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target>개요 </target>
+        <target>개요</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.relevanterrata" xml:space="preserve">
         <source>Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target>사용자 시스템에 관련된 에라타</target>
+        <target>사용자 시스템에 관련된 패치</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.norelevanterrata" xml:space="preserve">
         <source>No Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target>사용자 시스템에 관련된 에라타가 없습니다.</target>
+        <target>사용자 시스템에 관련된 패치가 없습니다.</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.type" xml:space="preserve">
         <source>Type</source>
@@ -3809,14 +3809,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>관련 에라타</target>
+        <target>관련 패치</target>
       </trans-unit>
       <trans-unit id="errata.jsp.summary" xml:space="preserve">
         <source>The following patches may currently be applied to this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>다음과 같은 에라타가 시스템에 적용됩니다.</target>
+        <target>현재 이 시스템에 다음 패치가 적용될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -3830,14 +3830,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>에라타 적용</target>
+        <target>패치 적용</target>
       </trans-unit>
       <trans-unit id="errata.jsp.scheduled" xml:space="preserve">
         <source>Update Scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>업데이트 스케쥴됨</target>
+        <target>업데이트 스케줄링됨</target>
       </trans-unit>
       <trans-unit id="errata.jsp.affected" xml:space="preserve">
         <source>Affected</source>
@@ -3851,7 +3851,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target>에라타 업데이트 확인</target>
+        <target>패치 업데이트 확인</target>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -3865,14 +3865,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>{0}-{1} 에라타가 생성되었습니다.</target>
+        <target>{0}-{1} 패치가 생성되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar" xml:space="preserve">
         <source>Patch: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>에라타:</target>
+        <target>패치: </target>
       </trans-unit>
       <trans-unit id="errata.edit.editerrata" xml:space="preserve">
         <source>Edit Patch</source>
@@ -3880,21 +3880,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target>에라타 편집</target>
+        <target>패치 편집</target>
       </trans-unit>
       <trans-unit id="errata.edit.instructions" xml:space="preserve">
         <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>여기서 에라타를 수정하세요.  필수 항목은 별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시되어 있습니다.</target>
+        <target>여기서 패치를 수정하십시오.  필수 항목은 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시되어 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata" xml:space="preserve">
         <source>Update Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>에라타 업데이트</target>
+        <target>패치 업데이트</target>
       </trans-unit>
       <trans-unit id="errata.edit.submit" xml:space="preserve">
         <source>Submit</source>
@@ -3923,7 +3923,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>이 에라타에 대한 이메일 통지를 보내실 수 있습니다.</target>
+        <target>이 패치에 대한 이메일 통지를 보낼 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.senderratamail" xml:space="preserve">
         <source>Send Patch Mail</source>
@@ -3951,7 +3951,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 버그가 &lt;strong&gt;{1}&lt;/strong&gt; 에라타에서 삭제되었습니다.</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 버그가 &lt;strong&gt;{1}&lt;/strong&gt; 패치에서 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.commadelimited" xml:space="preserve">
         <source>(Comma delimited)</source>
@@ -3965,28 +3965,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>이 권고 이름을 가진 에라타가 이미 존재합니다.</target>
+        <target>이 권고 이름을 가진 패치가 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.rhAdvisoryName" xml:space="preserve">
         <source>A Patch Advisory cannot begin with the letters 'RH'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>에라타 권고 이름 첫글자는 'RH'으로 시작할 수 없습니다.</target>
+        <target>패치 권고 이름 첫글자는 'RH'으로 시작할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.id" xml:space="preserve">
         <source>Bug ID is required</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>버그 ID를 입력해주세요</target>
+        <target>버그 ID는 필수입니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.summary" xml:space="preserve">
         <source>Bug Summary is required</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>버그 요약 정보를 입력해주세요</target>
+        <target>버그 요약 정보는 필수입니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.idNonNumeric" xml:space="preserve">
         <source>Bug ID must be numeric</source>
@@ -4007,14 +4007,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>버그 요약 정보는 4000 글자 이하이어야 합니다.</target>
+        <target>버그 요약 정보는 4000자 이하이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.idLength" xml:space="preserve">
         <source>Bug Id cannot be greater than 18 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>버그 ID는 18 글자 이하이어야 합니다.</target>
+        <target>버그 ID는 18자 이하이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="errata.channels.updatechannels" xml:space="preserve">
         <source>Update Channels</source>
@@ -4028,7 +4028,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target>아래에서 이 에라타와 관련된 채널을 선택해주십시오. 이 채널에서 이 에라타에 영향을 받는 패키지 숫자는 채널명 다음에 나타납니다. 이 에라타가 특정 채널에 적용되는 것을 원치 않으신다면, 아래에서 선택 해제하시기 바랍니다. </target>
+        <target>아래에서 이 패치와 관련된 채널을 선택해주십시오. 이 채널에서 이 패치에 영향을 받는 패키지 숫자는 채널명 다음에 나타납니다. 이 패치가 특정 채널에 적용되는 것을 원치 않으신다면, 아래에서 선택 해제하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.singular" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
@@ -4037,7 +4037,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 1 channel.</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 에라타가 &lt;strong&gt;{1}&lt;/strong&gt; 채널에 성공적으로 할당되었습니다.</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 패치가 &lt;strong&gt;{1}&lt;/strong&gt; 채널에 할당되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
@@ -4046,7 +4046,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 3 channels.</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 에라타가 &lt;strong&gt;{1}&lt;/strong&gt; 개의 채널에 성공적으로 할당되었습니다.</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 패치가 &lt;strong&gt;{1}&lt;/strong&gt;개의 채널에 할당되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageaddition" xml:space="preserve">
         <source>Confirm Package Addition</source>
@@ -4064,7 +4064,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>아래는 이 에라타에 추가하도록 선택하신 패키지 목록입니다. </target>
+        <target>다음은 이 패치에 추가하기 위해 선택한 패키지 목록입니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
@@ -4082,7 +4082,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>아래는 이 에라타에서 삭제하도록 선택하신 패키지 목록입니다. 패키지를 삭제하시려면 '확인'을 클릭해주세요. </target>
+        <target>아래는 이 패치에서 삭제하도록 선택한 패키지 목록입니다. 패키지를 삭제하려면 '확인'을 클릭하십시오.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -4100,7 +4100,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target>에라타 패키지</target>
+        <target>패치 패키지</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
@@ -4118,7 +4118,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target>다음은 이 에라타와 관련된 패키지 목록입니다. 이 에라타에서 패키지를 삭제하시려면, 삭제할 패키지를 선택 후 아래에 위치한 '패키지 삭제'를 클릭해주세요. 이 에라타에 패키지를 추가하시려면, 위의 '추가'를 클릭하시기 바랍니다.</target>
+        <target>다음은 이 패치와 관련된 패키지 목록입니다. 이 패치에서 패키지를 삭제하려면, 삭제할 패키지를 선택 후 아래에 위치한 '패키지 삭제'를 클릭해 주십시오. 이 패치에 패키지를 추가하려면, 위의 '추가'를 클릭하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar" xml:space="preserve">
         <source>Publish Patch: </source>
@@ -4127,7 +4127,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>에라타 발표: </target>
+        <target>패치 발표: </target>
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
@@ -4136,7 +4136,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>이 에라타를 발표할 것인지 확인해주십시오. 이 에라타를 발표하시면 아래에 선택된 모든 채널에서 이 에라타가 사용 가능해집니다.</target>
+        <target>이 패치를 발표할 것인지 확인해 주십시오. 이 패치를 발표하면 아래에 선택된 모든 채널에서 이 패치를 사용할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.publish.channelname" xml:space="preserve">
         <source>Channel Name</source>
@@ -4163,7 +4163,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>에라타 발표</target>
+        <target>패치 발표</target>
       </trans-unit>
       <trans-unit id="errata.publish.nochannels" xml:space="preserve">
         <source>There are no channels available.</source>
@@ -4181,7 +4181,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>발표된 에라타는 최소한 한개의 채널에 속해야 합니다.</target>
+        <target>발표된 패치는 최소 1개의 채널에 속해야 합니다.</target>
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification" xml:space="preserve">
         <source>Send Patch Notification</source>
@@ -4190,7 +4190,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>에라타 통지 보내기</target>
+        <target>패치 통지 보내기</target>
       </trans-unit>
       <trans-unit id="errata.notify.instructions" xml:space="preserve">
         <source>You can send email to the administrators of systems to which this patch applies.</source>
@@ -4199,7 +4199,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>이 에라타가 적용될 시스템의 관리자에게 이메일을 보내실 수 있습니다.</target>
+        <target>이 패치가 적용될 시스템의 관리자에게 이메일을 보내실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.notify.success" xml:space="preserve">
         <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
@@ -4208,7 +4208,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>&lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;에 대한 에라타 메일 업데이트가 스케줄되었습니다.</target>
+        <target>&lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;에 대한 패치 메일 업데이트가 스케줄되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
@@ -4217,7 +4217,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/Packages.do
             </context>
         </context-group>
-        <target>에라타 패키지</target>
+        <target>패치 패키지</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.addpackages" xml:space="preserve">
         <source>Add Packages</source>
@@ -4235,7 +4235,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target>아래는 에라타에 추가 가능한 패키지 목록입니다. "보기" 선택 상자를 이용하여 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 에라타에 패키지를 추가하시려면, 패키지를 선택하신 후 아래에 위치한 '패키지 추가'를 클릭하시기 바랍니다.</target>
+        <target>아래는 패치에 추가 가능한 패키지 목록입니다. "보기" 선택 상자를 이용하여 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 패치에 패키지를 추가하려면, 패키지를 선택한 후 아래에 위치한 '패키지 추가'를 클릭하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel" xml:space="preserve">
         <source>View: </source>
@@ -4298,7 +4298,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{1}&lt;/strong&gt; 에라타에 	  &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 추가되었습니다.</target>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; 패치에 &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 추가되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4307,7 +4307,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{1}&lt;/strong&gt; 에라타에 	  &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 추가되었습니다.</target>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; 패치에 &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 추가되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4316,7 +4316,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{1}&lt;/strong&gt; 에라타에서 	  &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 삭제되었습니다.</target>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; 패치에서 &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4325,35 +4325,35 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{1}&lt;/strong&gt; 에라타에서 	  &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 삭제되었습니다.</target>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; 패치에서 &lt;strong&gt;{0}&lt;/strong&gt; 패키지가 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary" xml:space="preserve">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target>다음의 에라타는 사용자가 관리 권한을 가진 시스템 중 최소 한 개 이상의 시스템에 적용됩니다.   </target>
+        <target>다음의 패치는 사용자가 관리 권한을 가진 시스템 중 최소 1개 이상의 시스템에 적용됩니다.</target>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary" xml:space="preserve">
         <source>The following patch list represents all patches accessible by your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target>다음 에라타 목록은 조직이 액세스할 수 있는 모든 에라타를 표시합니다.</target>
+        <target>다음 패치 목록은 조직이 액세스할 수 있는 모든 패치를 표시합니다.</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary" xml:space="preserve">
         <source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>다음은 이 에라타에 의해 영향을 받을 시스템 목록입니다.</target>
+        <target>다음은 이 패치에 의해 영향을 받을 시스템 목록입니다.</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl" xml:space="preserve">
         <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>한개 이상의 시스템을 선택하여 이 에라타를 설치하실 수 있습니다. 오직 관리 (Managment) 서비스 인타이틀먼트를 갖춘 시스템만 선택 가능합니다.</target>
+        <target>1개 이상의 시스템을 선택하여 이 패치를 설치할 수 있습니다. 관리 서비스 인타이틀먼트를 갖춘 시스템만 선택 가능합니다.</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.header" xml:space="preserve">
         <source>Affected Systems</source>
@@ -4367,7 +4367,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>에라타 적용</target>
+        <target>패치 적용</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.status" xml:space="preserve">
         <source>Status</source>
@@ -4381,7 +4381,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>인타이틀먼트</target>
+        <target>시스템 유형</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.none" xml:space="preserve">
         <source>N/A</source>
@@ -4395,7 +4395,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>작업보류</target>
+        <target>보류 중</target>
       </trans-unit>
       <trans-unit id="affectedsystems.applynone" xml:space="preserve">
         <source>No Systems Selected.</source>
@@ -4409,7 +4409,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target>에라타 업데이트 확인:</target>
+        <target>패치 업데이트 확인:</target>
       </trans-unit>
       <trans-unit id="confirm.jsp.summary" xml:space="preserve">
         <source>The following systems will have &lt;strong&gt;{0}&lt;/strong&gt; applied to them:</source>
@@ -4417,7 +4417,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
           <context context-type="paramnotes">The following systems will have RHSA-2004:577 applied to them:</context>
         </context-group>
-        <target>다음 시스템에는 &lt;strong&gt;{0}&lt;/strong&gt;가 적용될 것입니다:</target>
+        <target>다음 시스템에는 &lt;strong&gt;{0}&lt;/strong&gt;이(가) 적용될 것입니다.</target>
       </trans-unit>
       <trans-unit id="confirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
@@ -4438,14 +4438,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target>다음에는 조직 전역에 걸쳐 @@PRODUCT_NAME@@에 있는 모든 사용자 목록이 있습니다. 현재 ({0})로 로그인하신 조직의 조직 관리자 권한이 있을 경우에만 조직 멤버의 사용자 정보를 수정하기 위해 액세스하실 수 있음에 유의하시기 바랍니다.     </target>
+        <target>다음에는 조직 전역에 걸쳐 @@PRODUCT_NAME@@에 있는 모든 사용자 목록이 있습니다. 현재 ({0})로 로그인한 조직의 조직 관리자 권한이 있을 경우에만 조직 멤버의 사용자 정보를 수정하기 위해 액세스할 수 있음에 유의하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="org.allusers.title" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 전역에 걸친 사용자 </target>
+        <target>@@PRODUCT_NAME@@ 전역에 걸친 사용자</target>
       </trans-unit>
       <trans-unit id="org.allusers.title1" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@ - External Authentication</source>
@@ -4473,7 +4473,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target>조직 정보 </target>
+        <target>조직 정보</target>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
@@ -4515,7 +4515,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target>조직 이름 </target>
+        <target>조직 이름</target>
       </trans-unit>
       <trans-unit id="org.active.users.jsp" xml:space="preserve">
         <source>Active Users</source>
@@ -4550,7 +4550,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target>준비 컨텐츠 활성화 </target>
+        <target>스테이징 컨텐트 활성화</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp" xml:space="preserve">
         <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
