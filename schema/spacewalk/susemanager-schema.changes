@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 29 12:04:34 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.20-1
 - Raise length limit for kernel options (bsc#1182916)
 - Fix: increase password length in the database (bsc#1182687)
 
