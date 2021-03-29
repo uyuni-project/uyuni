@@ -22,13 +22,10 @@ spec:
               memory: "64Mi"
               cpu: "100m"
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: "2048Mi"
+              cpu: "300m"
           ports:
-          - containerPort: 80
           - containerPort: 443
-          - containerPort: 4505
-          - containerPort: 4506
           imagePullPolicy: Never
 ---
 apiVersion: v1
@@ -38,18 +35,9 @@ metadata:
   namespace: uyuni
 spec:
   ports:
-  - port: 80
-    targetPort: 80
-    name: http
-  - port: 443
+  - protocol: "TCP"
+    port: 443
     targetPort: 443
-    name: https
-  - port: 4505
-    targetPort: 4505
-    name: salt1
-  - port: 4506
-    targetPort: 4506
-    name: salt2
 
   selector:
     app: uyuni
@@ -65,7 +53,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /rhn/*
         backend:
           serviceName: uyuni-service
           servicePort: 443

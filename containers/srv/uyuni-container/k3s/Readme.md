@@ -23,5 +23,8 @@ k3s ctr image import uyuni.tar
 - Test cluster and app
 curl -X GET http://YOUR_IP
 
-## troubleshooting 
+##remote
+`k3s kubectl delete  namespace uyuni`
+
+## troubleshooting
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/
