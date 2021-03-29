@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 29 12:05:29 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.12-1
 - define missing ubuntu universe update channels (bsc#1182842)
 - define UEK repositories for Oracle Linux
 
