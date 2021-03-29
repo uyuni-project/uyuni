@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 29 12:01:49 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.31-1
 - Eliminate duplicate entries when displaying results from mgr-libmod
 - Speed up the system groups page (bsc#1182132)
 - Raise length limit for kernel options (bsc#1182916)
