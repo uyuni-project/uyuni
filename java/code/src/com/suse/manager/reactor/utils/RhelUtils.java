@@ -162,7 +162,7 @@ public class RhelUtils {
             String minorVersion = StringUtils.substringAfter(matcher.group(2), ".");
             String release = matcher.group(3);
             return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
-        } else { // TODO ALIBABA VERIFY THIS IS CORRECT
+        } else {
             Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(releaseFile);
             if (amatcher.matches()) {
                 String name =
@@ -329,7 +329,6 @@ public class RhelUtils {
         return Optional.empty();
     }
 
-    // TODO ALIBABA NEEDS SOMETHING HERE???
     private static RhelProduct detectPlainRHEL(String releaseFileContent,
                                                String arch, String defaultName) {
         Optional<ReleaseFile> releaseFile = parseReleaseFile(releaseFileContent);
