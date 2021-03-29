@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="mgrlibmod",
-    version="4.1.7",
+    version="4.1.8",
     packages=["mgrlibmod",],
     license="MIT",
 )
