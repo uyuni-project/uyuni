@@ -1267,7 +1267,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/res/8/bootstrap/'
     },
     'alibaba-2-x86_64-uyuni': {
-        'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': [pkg for pkg in RES7 if pkg not in "python-urllib3"] + RES7_X86,
+        'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
         'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
