@@ -245,7 +245,6 @@ class ContentSource(object):
         self.repo = DebRepo(url, root,
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'), self.proxy_addr, self.proxy_user, self.proxy_pass)
         initCFG(comp)
-        self.repo.verify()
 
         self.num_packages = 0
         self.num_excluded = 0
