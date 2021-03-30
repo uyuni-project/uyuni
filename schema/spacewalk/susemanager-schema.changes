@@ -1,4 +1,5 @@
 - Add support for Alibaba Cloud Linux 2
+- Add EPEL 8 GPG key to database so it does not need to be manually accepted
 - Raise length limit for kernel options (bsc#1182916)
 - add rhnactiondetails table for handling allow vendor change for errata/install/upgrade actions
 - add virtual network create action
