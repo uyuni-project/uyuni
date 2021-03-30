@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-29 18:57+0000\n"
+"PO-Revision-Date: 2021-03-30 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4871,9 +4871,8 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
-#, fuzzy
 msgid "Has to be an IP address"
-msgstr "Rodičovská PCI adresa adaptéra"
+msgstr "Musí byť IP adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
@@ -4881,9 +4880,8 @@ msgid "Hosts"
 msgstr "Hostitelia"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
-#, fuzzy
 msgid "Address"
-msgstr "MAC adresa"
+msgstr "Adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
@@ -4898,23 +4896,20 @@ msgid "SRV records"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
-#, fuzzy
 msgid "Service name"
-msgstr "Názov zdroja"
+msgstr "Názov služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
-#, fuzzy
 msgid "Service domain name"
-msgstr "Názov zdroja"
+msgstr "Názov domény služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
-#, fuzzy
 msgid "Target hostname"
-msgstr "Typ cieľa"
+msgstr "Názov hostiteľa cieľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
@@ -4922,14 +4917,12 @@ msgid "Port"
 msgstr "Port"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
-#, fuzzy
 msgid "Target priority"
-msgstr "Typ cieľa"
+msgstr "Priorita cieľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
-#, fuzzy
 msgid "Target weight"
-msgstr "Typ cieľa"
+msgstr "Váha cieľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
@@ -4978,9 +4971,8 @@ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
-#, fuzzy
 msgid "Network address"
-msgstr "Siete"
+msgstr "Sieťová adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
@@ -4991,23 +4983,20 @@ msgid "v6"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
-#, fuzzy
 msgid "IP address"
-msgstr "MAC adresa"
+msgstr "IP adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
-#, fuzzy
 msgid "Needs to be a MAC address"
-msgstr "Ak chcete vygenerovať adresu MAC, nechajte pole prázdne"
+msgstr "Musí byť adresa MAC"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
-#, fuzzy
 msgid "BOOTP image file"
-msgstr "Profily obrazov"
+msgstr "Súbor obrazu BOOTP"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
@@ -5022,9 +5011,8 @@ msgid "Parameters"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
-#, fuzzy
 msgid "By profile id"
-msgstr "Upraviť profil"
+msgstr "Podľa id profilu"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
@@ -5039,23 +5027,20 @@ msgid "Interface id"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
-#, fuzzy
 msgid "VSI manager id"
-msgstr "Neriadený"
+msgstr "id správcu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
-#, fuzzy
 msgid "VSI type id version"
-msgstr "Verzia obrazu"
+msgstr "Verzia id typu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
-#, fuzzy
 msgid "VSI instance id"
-msgstr "Inštancie"
+msgstr "id inštancie VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
@@ -5066,14 +5051,12 @@ msgid "VLANs"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
-#, fuzzy
 msgid "Tag"
-msgstr "Cieľ"
+msgstr "Značka"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
-#, fuzzy
 msgid "Native mode"
-msgstr "Modul zberača"
+msgstr "Natívny režim"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
@@ -5084,11 +5067,9 @@ msgid "Untagged"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
-#, fuzzy
 msgid "Could not get network devices from the server. Please try again."
 msgstr ""
-"Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, skúste "
-"to znova."
+"Zo servera sa nepodarilo získať sieťové zariadenia. Prosím, skúste to znova."
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
