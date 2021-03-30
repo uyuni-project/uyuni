@@ -757,15 +757,13 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
 end
 
 When(/^I enable source package syncing$/) do
-  node = get_target("server")
   cmd = "echo 'server.sync_source_packages = 1' >> /etc/rhn/rhn.conf"
-  node.run(cmd)
+  $server.run(cmd)
 end
 
 When(/^I disable source package syncing$/) do
-  node = get_target("server")
   cmd = "sed -i 's/^server.sync_source_packages = 1.*//g' /etc/rhn/rhn.conf"
-  node.run(cmd)
+  $server.run(cmd)
 end
 
 When(/^I install pattern "([^"]*)" on this "([^"]*)"$/) do |pattern, host|
@@ -885,6 +883,27 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
   STDOUT.puts 'Creating the boostrap repository on the server:'
   STDOUT.puts '  ' + cmd
   $server.run(cmd)
+end
+
+When(/^I install "([^"]*)" product on the proxy$/) do |product|
+  out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
+  STDOUT.puts "Installed #{product} product: #{out}"
+end
+
+When(/^I install proxy pattern on the proxy$/) do
+  pattern = $product == 'Uyuni' ? 'uyuni_proxy' : 'suma_proxy'
+  cmd = "zypper --non-interactive install -t pattern #{pattern}"
+  $proxy.run(cmd, true, 600, 'root', [0, 100, 101, 102, 103, 106])
+end
+
+When(/^I let squid use avahi on the proxy$/) do
+  file = '/usr/share/rhn/proxy-template/squid.conf'
+  key = 'dns_multicast_local'
+  val = 'on'
+  $proxy.run("grep '^#{key}' #{file} && sed -i -e 's/^#{key}.*$/#{key} #{val}/' #{file} || echo '#{key} #{val}' >> #{file}")
+  key = 'ignore_unknown_nameservers'
+  val = 'off'
+  $proxy.run("grep '^#{key}' #{file} && sed -i -e 's/^#{key}.*$/#{key} #{val}/' #{file} || echo '#{key} #{val}' >> #{file}")
 end
 
 When(/^I open avahi port on the proxy$/) do
@@ -1378,17 +1397,4 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control})
   end
-end
-
-# WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
-When(/^I set correct product for "(proxy|branch server)"$/) do |product|
-  if product.include? 'proxy'
-    prod = 'SUSE-Manager-Proxy'
-  elsif product.include? 'branch server'
-    prod = 'SUSE-Manager-Retail-Branch-Server'
-  else
-    raise 'Incorrect product used.'
-  end
-  out, = $proxy.run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{prod}")
-  puts "Setting proper product: #{out}"
 end
