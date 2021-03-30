@@ -501,7 +501,7 @@ def do_group_listconfigchannels(self, args):
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
-        self.help_group_details()
+        self.help_group_listconfigchannels()
         return 1
 
     add_separator = False
@@ -523,3 +523,82 @@ def do_group_listconfigchannels(self, args):
             print(_('Type:        %s') % details.get('configChannelType', {}).get('label'))
 
     return 0
+
+####################
+
+
+def help_group_addconfigchannels(self):
+    print(_('group_addconfigchannels: Add config channels to a group'))
+    print(_('''usage: group_addconfigchannels <GROUP> <CHANNEL ...>'''))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_group_addconfigchannels(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return self.tab_completer(self.do_group_list('', True), text)
+    elif len(parts) > 2:
+        return tab_completer(self.do_configchannel_list('', True),
+                             text)
+
+
+def do_group_addconfigchannels(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_group_addconfigchannels()
+        return 1
+
+    add_separator = False
+
+    group = args.pop(0)
+    channels = args
+    self.client.systemgroup.subscribeConfigChannel(self.session, group, channels)
+    return 0
+
+####################
+
+
+def help_group_removeconfigchannels(self):
+    print(_('group_removeconfigchannels: Remove config channels from a group'))
+    print(_('''usage: group_removeconfigchannels <GROUP> <CHANNEL ...>'''))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def complete_group_removeconfigchannels(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return self.tab_completer(self.do_group_list('', True), text)
+    elif len(parts) > 2:
+        return tab_completer(self.do_configchannel_list('', True),
+                             text)
+
+
+def do_group_removeconfigchannels(self, args):
+    if not self.check_api_version('25.0'):
+        logging.warning(_N("This version of the API doesn't support this method"))
+        return 1
+
+    arg_parser = get_argument_parser()
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_group_removeconfigchannels()
+        return 1
+
+    add_separator = False
+
+    group = args.pop(0)
+    channels = args
+    self.client.systemgroup.unsubscribeConfigChannel(self.session, group, channels)
+    return 0
+
