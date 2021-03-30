@@ -8636,7 +8636,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>채널에 "{0}"라는 파일이 이미 존재합니다.</target>
+        <target>채널에 "{0}"(라)는 파일이 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
         <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
@@ -9832,7 +9832,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
         <source>Schedule Package Upgrades</source>
-        <target>패키지 업그레이드 스케줄 </target>
+        <target>패키지 업그레이드 스케줄</target>
       </trans-unit>
       <trans-unit id="ssm.package.verify.operationname" xml:space="preserve">
         <source>Schedule Package Verifications</source>
