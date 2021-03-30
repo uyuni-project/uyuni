@@ -147,7 +147,7 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'debian9_minion' => 'bison',
                       'debian9_ssh_minion' => 'bison',
                       'debian10_minion' => 'bison',
-                      'debian10_ssh_minion' => 'bison'}.freeze
+                      'debian10_ssh_minion' => 'bison' }.freeze
 
 BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool',
                            'sle_client' => 'SLES12-SP4-Pool',
