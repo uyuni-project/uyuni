@@ -9,10 +9,6 @@ Feature: Push a package with unset vendor
   Background:
     Given I am authorized as "admin" with password "admin"
 
-  Scenario: Download the SSL certificate
-    When I download the SSL certificate
-    And I make the SSL certificate available to zypper
-
   Scenario: Push a package with unset vendor
     When I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel
     Then I should see package "subscription-tools-1.0-0.noarch" in channel "Test Base Channel"
