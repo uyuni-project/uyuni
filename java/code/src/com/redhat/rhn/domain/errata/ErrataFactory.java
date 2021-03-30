@@ -1211,6 +1211,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static void syncErrataDetails(PublishedClonedErrata cloned) {
         copyDetails(cloned, cloned.getOriginal(), true);
+        cloned.setAdvisoryStatus(original.getAdvisoryStatus());
     }
 
     /**

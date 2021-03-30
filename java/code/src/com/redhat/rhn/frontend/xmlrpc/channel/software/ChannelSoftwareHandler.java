@@ -185,7 +185,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * should include the new packages, they will not be included when they
      * should. This method updates all the errata in the given cloned channel
      * with packages that have recently been added, and ensures that all the
-     * packages you expect are in the channel.
+     * packages you expect are in the channel. It also updates cloned errata
+     * attributes like advisoryStatus.
      * @param loggedInUser The current user
      * @param channelLabel Label of cloned channel to update
      * @return Returns 1 if successfull, FaultException otherwise
@@ -198,7 +199,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * should include the new packages, they will not be included when they
      * should. This method updates all the errata in the given cloned channel
      * with packages that have recently been added, and ensures that all the
-     * packages you expect are in the channel.
+     * packages you expect are in the channel. It also updates cloned errata
+     * attributes like advisoryStatus.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to update")
      * @xmlrpc.returntype  #return_int_success()

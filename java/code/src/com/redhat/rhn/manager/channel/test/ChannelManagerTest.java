@@ -940,6 +940,32 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    /**
+     * ChannelManager.listErrataNeedingResync should also list errata in case the advisoryStatus
+     * of clone is different from the original.
+     * @throws Exception
+     */
+    public void testListErrataNeedingResyncRetracted() throws Exception {
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        UserFactory.save(user);
+
+        Channel ochan = ChannelFactoryTest.createTestChannel(user);
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+
+        Errata oe = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(oe);
+
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Errata ce = ErrataFactory.lookupById(ceid);
+        ce = ErrataManager.addToChannels(ce, List.of(cchan.getId()), user);
+
+        oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        assertEquals(1, result.size());
+        assertEquals(result.get(0).getId(), ce.getId());
+    }
+
     public void testListErrataPackagesForResync() throws Exception {
 
         user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
