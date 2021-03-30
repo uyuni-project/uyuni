@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -152,25 +154,35 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         }
 
         //Now re-set the filename in case someone set it incorrectly
-        try {
-        String handle = (String) invokeXMLRPC("get_profile_handle",
-                cobblerProfile.get("name"), xmlRpcToken);
-        invokeXMLRPC("modify_profile", handle, "kickstart", profile.buildCobblerFileName(),
-                xmlRpcToken);
-        invokeXMLRPC("save_profile", handle, xmlRpcToken);
+        Path kickstartPath = Path.of(
+                ConfigDefaults.get().getKickstartConfigDir(),
+                cobblerProfile.get("kickstart").toString()
+        );
+        String cobblerKickstartFileName = profile.buildCobblerFileName();
+        if (!Path.of(cobblerKickstartFileName).equals(kickstartPath)) {
+            try {
+                log.info(String.format("Updating cobbler profile, setting 'kickstart' to: %s",
+                        cobblerKickstartFileName));
+                String handle = (String) invokeXMLRPC("get_profile_handle",
+                        cobblerProfile.get("name"), xmlRpcToken);
+                invokeXMLRPC("modify_profile", handle, "kickstart", cobblerKickstartFileName,
+                        xmlRpcToken);
 
-        //Lets update the modified date just to make sure
-        profile.setModified(new Date());
-        }
-        catch (RuntimeException re) {
-            if (re.getCause() instanceof XmlRpcFault) {
-                XmlRpcFault xrf = (XmlRpcFault)re.getCause();
-                if (xrf.getMessage().contains("unknown profile name")) {
-                    log.error("Cobbler doesn't know about this profile any more!");
-                }
+                invokeXMLRPC("save_profile", handle, xmlRpcToken);
+
+                //Lets update the modified date just to make sure
+                profile.setModified(new Date());
             }
-            else {
-                throw re;
+            catch (RuntimeException re) {
+                if (re.getCause() instanceof XmlRpcFault) {
+                    XmlRpcFault xrf = (XmlRpcFault)re.getCause();
+                    if (xrf.getMessage().contains("unknown profile name")) {
+                        log.error("Cobbler doesn't know about this profile any more!");
+                    }
+                }
+                else {
+                    throw re;
+                }
             }
         }
     }

@@ -39,8 +39,7 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * CobblerSyncTask
- * synces cobbler
- * @version $Rev$
+ * syncs cobbler
  */
 public class CobblerSyncTask extends RhnJavaJob {
 
