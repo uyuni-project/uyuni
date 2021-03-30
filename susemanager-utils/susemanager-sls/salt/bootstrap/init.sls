@@ -128,7 +128,7 @@ install_gnupg_debian:
 {% include 'channels/gpg-keys.sls' %}
 
 salt-minion-package:
-  pkg.latest:
+  pkg.installed:
     - name: salt-minion
     - install_recommends: False
     - require:
