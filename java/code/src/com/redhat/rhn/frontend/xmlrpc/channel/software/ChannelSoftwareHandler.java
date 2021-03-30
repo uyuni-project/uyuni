@@ -1528,7 +1528,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, "", "");
+        return listErrata(loggedInUser, channelLabel, null, null).stream().map(e -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", e.getId());
+            map.put("advisory_synopsis", e.getAdvisorySynopsis());
+            map.put("advisory_type", e.getAdvisoryType());
+            map.put("advisory_name", e.getAdvisoryName());
+            map.put("advisory", e.getAdvisoryName());
+            map.put("issue_date", e.getIssueDate());
+            map.put("update_date", e.getUpdateDate());
+            map.put("synopsis", e.getAdvisorySynopsis());
+            return map;
+        }).collect(Collectors.toList());
     }
 
     /**
