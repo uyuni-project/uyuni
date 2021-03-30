@@ -10,10 +10,13 @@ Feature: Setup SUSE Manager proxy
   As the system administrator
   I want to register the proxy to the server and configure it also as branch server
 
-  Scenario: Set correct product on a SUSE Manager proxy
-    # WORKAROUND to set proper product when JeOS image for SLE15SP2 is used
-    When I set correct product for "proxy"
-    # End of WORKAROUND
+  Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
+    When I perform a full salt minion cleanup on "proxy"
+
+  Scenario: Install proxy software
+    When I install "SUSE-Manager-Proxy" product on the proxy
+    And I install proxy pattern on the proxy
+    And I let squid use avahi on the proxy
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized as "admin" with password "admin"
@@ -49,23 +52,19 @@ Feature: Setup SUSE Manager proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page
 
-@proxy
 @private_net
   Scenario: Install the Retail pattern on the server
     When I install pattern "suma_retail" on this "server"
     And I wait for "patterns-suma_retail" to be installed on "server"
 
-@proxy
 @private_net
   Scenario: Enable repositories for installing branch services
     When I install package "expect" on this "proxy"
 
-@proxy
 @private_net
   Scenario: Configure retail formulas using retail_branch_init command
     When I set "eth1" as NIC, "id" as prefix, "rbs" as branch server name and "branch.org" as domain
 
-@proxy
 @private_net
   Scenario: Parametrize empty-zones-enable section in DNS formula
     # retail_branch_init command is not able to configure this
@@ -80,12 +79,10 @@ Feature: Setup SUSE Manager proxy
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-@proxy
 @private_net
   Scenario: Let avahi work on the branch server
     When I open avahi port on the proxy
 
-@proxy
 @private_net
   Scenario: Apply the branch network formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
@@ -98,4 +95,3 @@ Feature: Setup SUSE Manager proxy
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
-
