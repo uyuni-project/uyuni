@@ -16,6 +16,7 @@
 - features/core/srv_create_repository.feature
 - features/core/srv_create_activationkey.feature
 - features/core/srv_docker.feature
+- features/core/srv_push_package.feature
 # initialize clients
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
