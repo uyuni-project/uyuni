@@ -25884,79 +25884,79 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="badcsvaction.jsp.reason1" xml:space="preserve">
         <source>Your login session to the @@PRODUCT_NAME@@ expired. @@PRODUCT_NAME@@ sessions time out when your browser is left unattended for an extended period of time for security.</source>
-        <target>@@PRODUCT_NAME@@로의 로그인 세션이 만료되었습니다. 보안을 위해 일정 기간 동안 브라우져를 사용하지 않은 채로 두면 @@PRODUCT_NAME@@ 세션이 중단됩니다.   </target>
+        <target>@@PRODUCT_NAME@@(으)로의 로그인 세션이 만료되었습니다. 보안을 위해 일정 기간 동안 브라우저를 사용하지 않은 채로 두면 @@PRODUCT_NAME@@ 세션이 중단됩니다.</target>
       </trans-unit>
       <trans-unit id="badcsvaction.jsp.reason2" xml:space="preserve">
         <source>You may have followed an incorrect or out-of-date link. Double-check the link you followed - did you type or copy it correctly? If so, you may wish to contact the person who provided you with this link to let them know that it should be updated.</source>
-        <target>잘못된 또는 오래된 링크로 오셨습니다. 링크를 다시 확인하시기 바랍니다 - 링크를 올바르게 입력 또는 복사하셨습니까? 올바르게 입력하셨다면, 이 링크를 제공한 담당자에게 연락하여 업데이트해야 함을 알려주시기 바랍니다.  </target>
+        <target>잘못된 또는 오래된 링크로 오셨습니다. 링크를 다시 확인하시기 바랍니다. - 링크를 올바르게 입력 또는 복사하셨습니까? 올바르게 입력하셨다면, 이 링크를 제공한 담당자에게 연락하여 업데이트해야 함을 알려주시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="badcsvaction.jsp.reason3" xml:space="preserve">
         <source>You may have used an out-of-date bookmark to get to this page. You may wish to delete or correct the bookmark you used.</source>
-        <target>오래된 북마크를 사용하여 이 페이지로 오셨습니다. 사용하신 북마크를 삭제하거나 올바르게 수정하시기 바랍니다. </target>
+        <target>오래된 북마크를 사용하여 이 페이지로 오셨습니다. 사용한 북마크를 삭제하거나 올바르게 수정하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="badcsvaction.jsp.retry" xml:space="preserve">
         <source>To access the CSV you requested, please re-visit the page you wanted to export data from, and click the 'Export CSV' link again.</source>
-        <target>요청하신 CSV를 액세스하려면, 내보내기하려는 페이지로 다시 이동하셔서 'CSV 내보내기' 링크를 다시 클릭해 주시기 바랍니다. </target>
+        <target>요청한 CSV에 액세스하려면, 내보내기하려는 페이지로 다시 이동한 후 'CSV 내보내기' 링크를 다시 클릭해 주시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptions" xml:space="preserve">
         <source>Custom  options:</source>
-        <target>사용자 정의 옵션: </target>
+        <target>사용자 정의 옵션:</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionsnote" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause autoinstallations to fail.</source>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 잘못된 사용자 정의 옵션으로 킥스타트가 실패할 수 있습니다.   </target>
+        <target>&lt;strong&gt;참고:&lt;/strong&gt; 잘못된 사용자 정의 옵션으로 자동 설치가 실패할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionstip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; The max size of each line is 2048 characters.</source>
-        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 각 행의 최대 길이는 2048 문자입니다. </target>
+        <target>&lt;strong&gt;팁:&lt;/strong&gt; 각 행의 최대 길이는 2048자입니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.updatedate" xml:space="preserve">
         <source>Update Date</source>
-        <target>업데이트 날짜 </target>
+        <target>업데이트 날짜</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterrata" xml:space="preserve">
         <source>Add @@VENDOR_NAME@@ Patches</source>
-        <target>Red Hat 에라타 추가 </target>
+        <target>@@VENDOR_NAME@@ 패치 추가</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg" xml:space="preserve">
         <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
-        <target>Red Hat 기본 채널이나 Red Hat 제공 자식 채널에 있는 에라타를 가져오시려면 이 옵션을 선택합니다. </target>
+        <target>@@VENDOR_NAME@@ 기본 채널이나 @@VENDOR_NAME@@ 제공 하위 채널에 있는 패치를 가져오려면 이 옵션을 선택합니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata" xml:space="preserve">
         <source>No patches found applicable to this channel.</source>
-        <target>이 채널에 적용 가능한 에라타를 찾을 수 없습니다. </target>
+        <target>이 채널에 적용 가능한 패치를 찾을 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerrata" xml:space="preserve">
         <source>Add Custom Patches</source>
-        <target>사용자 정의 에라타 추가 </target>
+        <target>사용자 정의 패치 추가</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerratamsg" xml:space="preserve">
         <source>Choose this option if you want to import custom patches or patches from custom channels.</source>
-        <target>사용자 정의 채널에서 사용자 정의 에라타나 또는 에라타를 가져오시려면 이 옵션을 선택합니다. </target>
+        <target>사용자 정의 채널에서 사용자 정의 패치 또는 패치를 가져오려면 이 옵션을 선택합니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerrata" xml:space="preserve">
         <source>Create Custom Patch</source>
-        <target>사용자 정의 에라타 생성 </target>
+        <target>사용자 정의 패치 생성</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg" xml:space="preserve">
         <source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
-        <target>처음부터 에라타를 생성하려면 이 옵션을 선택합니다.  발표시 이 채널로 새로운 에라타를 가져오기할 수 있습니다. </target>
+        <target>처음부터 패치를 생성하려면 이 옵션을 선택합니다. 발표 시 이 채널로 새로운 패치를 가져오기할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg" xml:space="preserve">
         <source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
-        <target>아래에는 복제하기 위해 선택하신 에라타의 요약 내용이 있습니다. 각각의 CSV 다운로드에는 에라타 목록과 채널로 전달될 패키지 목록이 있습니다.   </target>
+        <target>아래에는 복제하기 위해 선택한 패치의 요약 내용이 있습니다. 각각의 CSV 다운로드에는 패치 목록과 채널로 전달될 패키지 목록이 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg" xml:space="preserve">
         <source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
-        <target>아래에는 현재 채널로 전달할 수 있는 에라타 목록이 있습니다. 채널 선택 드롭 다운 필터를 사용하여 선택할 수 있는 에라타 범위를 줄이시기 바랍니다.      </target>
+        <target>아래에는 현재 채널로 전달할 수 있는 패치 목록이 있습니다. 채널 선택 드롭다운 필터를 사용하여 선택할 수 있는 패치 범위를 줄이시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg" xml:space="preserve">
         <source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
-        <target>아래에는 현재 채널로 전달할 수 있는 에라타 목록이 있습니다. 드롭 다운 필터를 사용하여 선택할 수 있는 에라타 범위를 줄이시기 바랍니다.     </target>
+        <target>아래에는 현재 채널로 전달할 수 있는 패치 목록이 있습니다. 드롭다운 필터를 사용하여 선택할 수 있는 패치 범위를 줄이시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg" xml:space="preserve">
         <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
-        <target>(권장 사항) 이 채널에 적용되는 패키지가 들어있는 선택된 에라타를 보여주고 있습니다. 또한 패키지 아키텍쳐는 현재 채널에 있는 것을 일치하게 됩니다.     </target>
+        <target>&lt;em&gt;(권장 사항)&lt;/em&gt; 이 채널에 적용되는 패키지가 들어있는 선택된 패치를 보여주고 있습니다. 또한 패키지 아키텍처는 현재 채널에 있는 패치와 일치하게 됩니다.</target>
       </trans-unit>
       <trans-unit id="toolbar.ssm.add" xml:space="preserve">
         <source>Add to SSM</source>
@@ -25968,11 +25968,11 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="Clone" xml:space="preserve">
         <source>Clone</source>
-        <target>복제 </target>
+        <target>복제</target>
       </trans-unit>
       <trans-unit id="packagesbyname.jsp.toolbar" xml:space="preserve">
         <source>Packages by Name</source>
-        <target>이름에 따른 패키지 </target>
+        <target>이름별 패키지</target>
       </trans-unit>
       <trans-unit id="packagesbyname.jsp.introparagraph" xml:space="preserve">
         <source>NOTE: Different architectures of the same package can exist in a
@@ -25981,37 +25981,36 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NameOverview.do</context>
         </context-group>
-        <target>알림: 동일한 패키지의 다른 아키텍쳐가 단일 채널에 존재할 수
-있습니다, 이로 인해 패키지가 주어진 채널에 두번 나열될 수
-있습니다.  </target>
+        <target>참고: 동일한 패키지의 다른 아키텍처가 단일 채널에 존재할 수 있습니다.
+이로 인해 패키지가 주어진 채널에 두 번 나열될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="docsearch.content" xml:space="preserve">
         <source>Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>내용 </target>
+        <target>내용</target>
       </trans-unit>
       <trans-unit id="docsearch.free_form" xml:space="preserve">
         <source>Free Form</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>자유 형식  </target>
+        <target>자유 형식</target>
       </trans-unit>
       <trans-unit id="docsearch.content_title" xml:space="preserve">
         <source>Content &amp; Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>내용 &amp; 제목   </target>
+        <target>내용 &amp; 제목</target>
       </trans-unit>
       <trans-unit id="docsearch.title" xml:space="preserve">
         <source>Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>제목  </target>
+        <target>제목</target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.summary" xml:space="preserve">
         <source>Summary</source>
@@ -26032,14 +26031,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>문서 검색 </target>
+        <target>문서 검색</target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.pagesummary" xml:space="preserve">
         <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
-        <target>문서 검색을 사용하면 검색어와 일치하는 페이지로의 링크가 나타납니다.  </target>
+        <target>문서 검색을 사용하면 검색어와 일치하는 페이지로의 링크가 나타납니다. </target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
@@ -26067,14 +26066,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>페이지를 찾을 수 없습니다.  </target>
+        <target>페이지를 찾을 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="docsearch.jsp.pagetitle" xml:space="preserve">
         <source>Page Title</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>페이지 제목  </target>
+        <target>페이지 제목</target>
       </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault" xml:space="preserve">
         <source>This is your organizations default autoinstallation profile.</source>
@@ -26115,12 +26114,12 @@ given channel.</source>
         The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
         <target>
-        모든 @@PRODUCT_NAME@@ 기능(시스템 프로파일, 데이터 보고, 애플리케이션 서버 등)은
+        모든 @@PRODUCT_NAME@@ 기능(시스템 프로파일, 데이터 보고, 응용 프로그램 서버 등)은
         고객의 네트워크에 로컬로 저장됩니다. 이를 통해 고객은 원하는 경우 @@PRODUCT_NAME@@ 솔루션을
         공용 인터넷을 제거하고 시스템 최적화 및 관리를 향상할 수 있습니다.
-        @@PRODUCT_NAME@@ 서버와 함께 @@PRODUCT_NAME@@ Proxy 서버를 사용하면,
-        고객의 개별 시스템은 로컬에 호스팅된 Proxy로 연결됩니다.
-        Proxy는 데이터를 집계하고 로컬에서 일부 작업을 수행하여 중앙 @@PRODUCT_NAME@@ 서버와 통신합니다.
+        @@PRODUCT_NAME@@ 서버와 함께 @@PRODUCT_NAME@@ 프록시 서버를 사용하면,
+        고객의 개별 시스템은 로컬에 호스팅된 프록시로 연결됩니다.
+        프록시는 데이터를 집계하고 로컬에서 일부 작업을 수행하여 중앙 @@PRODUCT_NAME@@ 서버와 통신합니다.
         @@PRODUCT_NAME@@ 데이터베이스에 저장된 모든 정보는 @@PRODUCT_NAME@@ 서버에서 유지됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
@@ -26128,47 +26127,47 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk" xml:space="preserve">
         <source>Welcome to the Help Desk</source>
-        <target>Help Desk에 오신 것을 환영합니다 </target>
+        <target>헬프 데스크에 오신 것을 환영합니다</target>
       </trans-unit>
       <trans-unit id="help.jsp.translation" xml:space="preserve">
         <source>(Translations available)</source>
-        <target>(번역 제공) </target>
+        <target>(번역 제공)</target>
       </trans-unit>
       <trans-unit id="help.jsp.install" xml:space="preserve">
         <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation. </source>
-        <target>@@PRODUCT_NAME@@ 서버 및 설치 관련 상세 정보   </target>
+        <target>@@PRODUCT_NAME@@ 서버 및 설치 관련 상세 정보 </target>
       </trans-unit>
       <trans-unit id="help.jsp.install.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Installation Guide</source>
-        <target>@@PRODUCT_NAME@@ 설치 가이드  </target>
+        <target>@@PRODUCT_NAME@@ 설치 가이드</target>
       </trans-unit>
       <trans-unit id="help.jsp.proxy" xml:space="preserve">
         <source>Detailed information regarding @@PRODUCT_NAME@@ Proxy server.</source>
-        <target>@@PRODUCT_NAME@@ Proxy 서버 관련 상세 정보  </target>
+        <target>@@PRODUCT_NAME@@ 프록시 서버 관련 상세 정보</target>
       </trans-unit>
       <trans-unit id="help.jsp.proxy.title" xml:space="preserve">
         <source>Proxy Guide</source>
-        <target>프록시 가이드  </target>
+        <target>프록시 가이드</target>
       </trans-unit>
       <trans-unit id="help.jsp.clients" xml:space="preserve">
         <source>Documentation for setting up clients to connect to a @@PRODUCT_NAME@@ Proxy or @@PRODUCT_NAME@@ server.</source>
-        <target>@@PRODUCT_NAME@@ Proxy 또는 @@PRODUCT_NAME@@ 서버로 연결하기 위해 클라이언트를 설정하기 위한 문서  </target>
+        <target>@@PRODUCT_NAME@@ 프록시 또는 @@PRODUCT_NAME@@ 서버로 연결하도록 클라이언트를 설정하기 위한 문서</target>
       </trans-unit>
       <trans-unit id="help.jsp.clients.title" xml:space="preserve">
         <source>Client Configuration Guide</source>
-        <target>클라이언트 설정 가이드  </target>
+        <target>클라이언트 설정 가이드</target>
       </trans-unit>
       <trans-unit id="help.jsp.channel" xml:space="preserve">
         <source>Documentation for the creation and maintenance of custom channels using @@PRODUCT_NAME@@.</source>
-        <target>@@PRODUCT_NAME@@을 사용하여 사용자 설정 채널을 생성 및 관리를 위한 문서  </target>
+        <target>@@PRODUCT_NAME@@을(를) 사용하여 사용자 설정 채널 생성 및 관리를 위한 문서</target>
       </trans-unit>
       <trans-unit id="help.jsp.channel.title" xml:space="preserve">
         <source>Channel Management Guide</source>
-        <target>채널 관리 가이드 </target>
+        <target>채널 관리 가이드</target>
       </trans-unit>
       <trans-unit id="help.jsp.release.title" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Release Notes</source>
-        <target>@@PRODUCT_NAME@@ 릴리즈 노트  </target>
+        <target>@@PRODUCT_NAME@@ 릴리즈 노트</target>
       </trans-unit>
       <trans-unit id="help.jsp.user.title" xml:space="preserve">
         <source>User Guide</source>
@@ -26196,27 +26195,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iprange.emptylist" xml:space="preserve">
         <source>No Ip Ranges Found</source>
-        <target>Ip 범위를 찾을 수 없음  </target>
+        <target>Ip 범위를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="package.jsp.emptylist" xml:space="preserve">
         <source>This channel contains no packages.</source>
-        <target>이 채널에는 패키지가 들어있지 않습니다.  </target>
+        <target>패키지가 없는 채널입니다.</target>
       </trans-unit>
       <trans-unit id="package.jsp.list" xml:space="preserve">
         <source>This channel contains the following packages:</source>
-        <target>이 채널에는 다음과 같은 패키지가 들어 있습니다:  </target>
+        <target>다음 패키지가 있는 채널입니다.</target>
       </trans-unit>
       <trans-unit id="package.jsp.provider" xml:space="preserve">
         <source>Content Provider</source>
-        <target>컨텐츠 제공자 </target>
+        <target>컨텐트 제공자</target>
       </trans-unit>
       <trans-unit id="channel.jsp.systemssubsribed" xml:space="preserve">
         <source>Systems Subscribed</source>
-        <target>등록된 시스템 </target>
+        <target>등록된 시스템</target>
       </trans-unit>
       <trans-unit id="channel.jsp.parentchannel" xml:space="preserve">
         <source>Parent Channel</source>
-        <target>부모 채널  </target>
+        <target>상위 채널</target>
       </trans-unit>
       <trans-unit id="channel.jsp.summary" xml:space="preserve">
         <source>Summary</source>
@@ -26224,7 +26223,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.chanent" xml:space="preserve">
         <source>Channel Entitlement Name</source>
-        <target>채널 인타이틀먼트 이름 </target>
+        <target>채널 인타이틀먼트 이름</target>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgunknown" xml:space="preserve">
         <source>Unknown</source>
@@ -26233,20 +26232,20 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.remove" xml:space="preserve">
         <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
-        <target>이 채널에서 삭제하도록 선택한 패키지 목록은 다음과 같습니다. 이 채널에서 패키지를 삭제해도 이에 등록된 시스템이나 적용 가능한 에라타에는 영향을 미치지 않습니다.
-      </target>
+        <target>이 채널에서 삭제하도록 선택한 패키지 목록은 다음과 같습니다. 이 채널에서 패키지를 삭제해도 이에 등록된 시스템이나 적용 가능한 패치에는 영향을 미치지 않습니다.
+        </target>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title" xml:space="preserve">
         <source>Details
         </source>
         <target>상세 정보
-  </target>
+        </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.removesuccess" xml:space="preserve">
         <source>{0} package(s) removed from channel {1}
         </source>
         <target>{0} 패키지가 채널 {1}에서 제거되었습니다
-    </target>
+        </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.removebutton" xml:space="preserve">
         <source>Remove</source>
@@ -26258,7 +26257,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.menu.list" xml:space="preserve">
         <source>List / Remove Packages</source>
-        <target>패키지 목록 보기/ 삭제 </target>
+        <target>패키지 목록 보기/삭제</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.menu.add" xml:space="preserve">
         <source>Add Packages</source>
@@ -26266,7 +26265,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.menu.compare" xml:space="preserve">
         <source>Compare Packages</source>
-        <target>패키지 비교 </target>
+        <target>패키지 비교</target>
       </trans-unit>
       <trans-unit id="nvrea" xml:space="preserve">
         <source>nvrea</source>
@@ -26274,15 +26273,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="provider" xml:space="preserve">
         <source>Content Provider</source>
-        <target>컨텐츠 제공자 </target>
+        <target>컨텐트 제공자</target>
       </trans-unit>
       <trans-unit id="currentMembers" xml:space="preserve">
         <source>Regular Usage - Used</source>
-        <target>일반적인 사용 - 사용됨 </target>
+        <target>일반적인 사용 - 사용됨</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewpackages" xml:space="preserve">
         <source>View Packages</source>
-        <target>패키지 보기 </target>
+        <target>패키지 보기</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewbinarypackages" xml:space="preserve">
         <source>Binary Packages</source>
@@ -26300,11 +26299,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addbutton" xml:space="preserve">
         <source>Add Packages</source>
-        <target>패키지 추가 </target>
+        <target>패키지 추가</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addconfirmbutton" xml:space="preserve">
         <source>Confirm Addition</source>
-        <target>추가 확인 </target>
+        <target>추가 확인</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addemptylist" xml:space="preserve">
         <source>No packages found for this criteria.</source>
@@ -26314,9 +26313,9 @@ given channel.</source>
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
 
             Only packages of a compatible arch will be shown</source>
-        <target>아래는 채널에 추가할 수 있는 패키지 목록이 있습니다. "채널" 선택 상자를 통해 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 채널에 패키지를 추가하려면, 패키지를 선택하신 후 아래의 '패키지 추가'를 클릭합니다.
+        <target>아래는 채널에 추가할 수 있는 패키지 목록이 있습니다. "채널" 선택 상자를 통해 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 채널에 패키지를 추가하려면, 패키지를 선택한 후 아래의 '패키지 추가'를 클릭합니다.
 
-          호환 가능한 아키텍처의 패키지만이 나타나게 됩니다  </target>
+          호환 가능한 아키텍처의 패키지만이 나타나게 됩니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.title" xml:space="preserve">
         <source>Confirm Package Addition</source>
@@ -26325,8 +26324,8 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.add.confirm.msg" xml:space="preserve">
         <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
-        <target>이 채널에 추가하도록 선택한 패키지 목록은 다음과 같습니다. 이 채널에서 패키지를 추가해도 이에 등록된 시스템이나 적용 가능한 에라타에는 영향을 미치지 않습니다.
-         </target>
+        <target>이 채널에 추가하도록 선택한 패키지 목록은 다음과 같습니다. 이 채널에서 패키지를 추가해도 이에 등록된 시스템이나 적용 가능한 패치에는 영향을 미치지 않습니다.
+        </target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle" xml:space="preserve">
         <source>Add Packages</source>
@@ -26419,11 +26418,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listtitle" xml:space="preserve">
         <source>This channel contains the following patches:</source>
-        <target>이 채널에는 다음과 같은 에라타가 들어있습니다:  </target>
+        <target>다음 패치가 있는 채널입니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.emptylist" xml:space="preserve">
         <source>This channel contains no patches.</source>
-        <target>이 채널에는 에라타가 들어있지 않습니다.  </target>
+        <target>패치가 없는 채널입니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.title" xml:space="preserve">
         <source>Clone Patches</source>
@@ -26455,7 +26454,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.nothing" xml:space="preserve">
         <source>Do Nothing</source>
-        <target>아무 것도 없음</target>
+        <target>아무것도 없음</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button" xml:space="preserve">
         <source>Clone Patches</source>
@@ -26463,27 +26462,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list" xml:space="preserve">
         <source>Channel Packages</source>
-        <target>채널 패키지 </target>
+        <target>채널 패키지</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.title" xml:space="preserve">
         <source>Custom System Info Keys</source>
-        <target>사용자 정의 시스템 정보 키 </target>
+        <target>사용자 정의 시스템 정보 키</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.empty" xml:space="preserve">
         <source>No Custom Info Keys Found</source>
-        <target>사용자 정의 정보 키를 찾을 수 없음 </target>
+        <target>사용자 정의 정보 키를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message" xml:space="preserve">
         <source>Custom system info keys allow your adminstrators to store relevant custom key/value pairs with your system profiles. Custom system info values are fully {0}searchable{1}.</source>
-        <target>사용자 정의 정보 키는 관리자가 사용자의 시스템 프로파일과 함께 해당 사용자 정의 키/값 쌍을 저장하게 합니다. 사용자 정의 시스템 정보 값은 완전하게 {0}검색 가능합니다{1}.  </target>
+        <target>사용자 정의 정보 키는 관리자가 사용자의 시스템 프로파일과 함께 해당 사용자 정의 키/값 쌍을 저장하게 합니다. 사용자 정의 시스템 정보 값은 완전하게 {0}검색 가능합니다{1}.</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message2" xml:space="preserve">
         <source>The following custom system info keys have been defined for your organization.</source>
-        <target>사용자의 조직을 위해 다음과 같은 사용자 설정 시스템 정보 키가 정의되었습니다.  </target>
+        <target>사용자의 조직을 위해 다음과 같은 사용자 설정 시스템 정보 키가 정의되었습니다.</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.keylabel" xml:space="preserve">
         <source>Key Label</source>
-        <target>키 레이블 </target>
+        <target>키 레이블</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.description" xml:space="preserve">
         <source>Description</source>
@@ -26491,11 +26490,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.value" xml:space="preserve">
         <source>Value</source>
-        <target>값 </target>
+        <target>값</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.systemcount" xml:space="preserve">
         <source>Systems With Value</source>
-        <target>값을 갖는 시스템 </target>
+        <target>값을 갖는 시스템</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.created" xml:space="preserve">
         <source>Created</source>
@@ -26507,7 +26506,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.last_checkin" xml:space="preserve">
         <source>Last Checkin</source>
-        <target>마지막 접속 날짜 </target>
+        <target>마지막 접속 날짜</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.createlink" xml:space="preserve">
         <source>Create Key</source>
@@ -26523,11 +26522,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.createtitle" xml:space="preserve">
         <source>Create Custom Info Key</source>
-        <target>사용자 정의 정보 키 생성  </target>
+        <target>사용자 정의 정보 키 생성</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.createmsg" xml:space="preserve">
         <source>Define information about this key below.</source>
-        <target>아래에 키에 관한 정보를 정의합니다. </target>
+        <target>아래에 키에 관한 정보를 정의합니다.</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.updatebutton" xml:space="preserve">
         <source>Update Key</source>
@@ -26543,23 +26542,23 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.deletetitle" xml:space="preserve">
         <source>Remove Custom Value</source>
-        <target>사용자 정의 값 제거 </target>
+        <target>사용자 정의 값 제거</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.keylabel" xml:space="preserve">
         <source>Key</source>
-        <target>키 </target>
+        <target>키</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.description" xml:space="preserve">
         <source>Description</source>
-        <target>설명 </target>
+        <target>설명</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.created" xml:space="preserve">
         <source>Created</source>
-        <target>생성 날짜 </target>
+        <target>생성 날짜</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.lastmodified" xml:space="preserve">
         <source>Last Modified</source>
-        <target>마지막 수정 </target>
+        <target>마지막 수정</target>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.removemsg" xml:space="preserve">
         <source>Are you certain you wish to remove the value for this from this system?</source>
@@ -26567,7 +26566,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customdata.removevalue" xml:space="preserve">
         <source>Remove Value</source>
-        <target>값 삭제 </target>
+        <target>값 삭제</target>
       </trans-unit>
       <trans-unit id="lastModified" xml:space="preserve">
         <source>Last Modified</source>
@@ -26575,23 +26574,23 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.title" xml:space="preserve">
         <source>Package Management</source>
-        <target>패키지 관리  </target>
+        <target>패키지 관리</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.message" xml:space="preserve">
         <source>You may delete packages owned by your organization. The "view packages in channels" select box allows you to restrict the set of packages you will view. To delete a package, check the box next to it and click 'Confirm Deletion', below.</source>
-        <target>조직에 의해 소유되는 패키지를 삭제할 수 있습니다. "채널에 있는 패키지 표시" 선택 상자를 통해 표시하려는 일련의 패키지 모음을 제한할 수 있습니다. 패키지를 삭제하려면, 패키지 옆의 상자를 선택하고 아래의 '삭제 확인'을 클릭합니다.   </target>
+        <target>조직에 의해 소유되는 패키지를 삭제할 수 있습니다. "채널에 있는 패키지 표시" 선택 상자를 통해 표시하려는 일련의 패키지 모음을 제한할 수 있습니다. 패키지를 삭제하려면, 패키지 옆의 상자를 선택하고 아래의 '삭제 확인'을 클릭합니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.subtitle" xml:space="preserve">
         <source>Package List</source>
-        <target>패키지 목록 </target>
+        <target>패키지 목록</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.confirmbutton" xml:space="preserve">
         <source>Confirm Deletion</source>
-        <target>삭제 확인 </target>
+        <target>삭제 확인</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.delete" xml:space="preserve">
         <source>Delete Packages</source>
-        <target>패키지 삭제  </target>
+        <target>패키지 삭제</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.channels" xml:space="preserve">
         <source>Channels</source>
@@ -26607,7 +26606,7 @@ given channel.</source>
             This process can take several seconds. Be patient and do not click the button below more than once.</source>
         <target>정말로 이 패키지를 삭제하시겠습니까?
 
-          이 작업은 몇 초 정도 소모될 수 있습니다. 잠시만 기다려주십시오. 아래 버튼을 1 번 이상 클릭하지 마십시오.  </target>
+          이 작업은 몇 초 정도 소요될 수 있습니다. 잠시만 기다려 주십시오. 아래 버튼을 1번 이상 클릭하지 마십시오.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.channel" xml:space="preserve">
         <source>Channel</source>
@@ -26627,27 +26626,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="baddownload.jsp.title" xml:space="preserve">
         <source>File Download Failed</source>
-        <target>파일 다운로드 실패  </target>
+        <target>파일 다운로드 실패</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.summary" xml:space="preserve">
         <source>The file you requested could not be downloaded, likely due to one of the following reasons:</source>
-        <target>요청하신 파일은 다음과 같은 이유 중 하나에 해당할 경우 다운로드할 수 없습니다:       </target>
+        <target>요청한 파일은 다음과 같은 이유 중 하나에 해당할 경우 다운로드할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.reason1" xml:space="preserve">
         <source>The url has expired.</source>
-        <target>url이 만료되었습니다. </target>
+        <target>url이 만료되었습니다.</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.reason2" xml:space="preserve">
         <source>The url has been modified.</source>
-        <target>url이 수정되었습니다. </target>
+        <target>url이 수정되었습니다.</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.reason3" xml:space="preserve">
         <source>The @@PRODUCT_NAME@@ server does not have read permissions on the specified file.</source>
-        <target>@@PRODUCT_NAME@@ 서버가 지정한 파일에 대해 읽기 권한을 가지고 있지 않습니다. </target>
+        <target>@@PRODUCT_NAME@@ 서버가 지정한 파일에 대해 읽기 권한을 가지고 있지 않습니다.</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.retry" xml:space="preserve">
         <source>Please revisit the page you received this url from to receive a new one.</source>
-        <target>이 URL을 받은 페이지를 다시 방문하여 새로운 URL을 받으시기 바랍니다.  </target>
+        <target>이 URL을 받은 페이지를 다시 방문하여 새로운 URL을 받으시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="package.jsp.alt" xml:space="preserve">
         <source>package</source>
@@ -26659,15 +26658,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.arch" xml:space="preserve">
         <source>Package Architecture</source>
-        <target>패키지 아키텍처  </target>
+        <target>패키지 아키텍처</target>
       </trans-unit>
       <trans-unit id="package.jsp.availarch" xml:space="preserve">
         <source>Available Architectures</source>
-        <target>사용가능한 아키텍처 </target>
+        <target>사용가능한 아키텍처</target>
       </trans-unit>
       <trans-unit id="package.jsp.availfrom" xml:space="preserve">
         <source>Available From</source>
-        <target>사용 가능 </target>
+        <target>사용 가능</target>
       </trans-unit>
       <trans-unit id="package.jsp.eula" xml:space="preserve">
         <source>EULA</source>
@@ -26675,7 +26674,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.vendor" xml:space="preserve">
         <source>Vendor</source>
-        <target>공급 업체  </target>
+        <target>공급 업체</target>
       </trans-unit>
       <trans-unit id="package.jsp.vendor.unknown" xml:space="preserve">
         <source>Not defined</source>
@@ -26683,11 +26682,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.packagesize" xml:space="preserve">
         <source>Package Size</source>
-        <target>패키지 크기  </target>
+        <target>패키지 크기</target>
       </trans-unit>
       <trans-unit id="package.jsp.payloadsize" xml:space="preserve">
         <source>Payload Size</source>
-        <target>페이로드 크기  </target>
+        <target>페이로드 크기</target>
       </trans-unit>
       <trans-unit id="package.jsp.patchtype" xml:space="preserve">
         <source>Patch Type</source>
@@ -26695,83 +26694,83 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.patchinfo" xml:space="preserve">
         <source>Patch Info</source>
-        <target>패치 정보 </target>
+        <target>패치 정보</target>
       </trans-unit>
       <trans-unit id="package.jsp.buildhost" xml:space="preserve">
         <source>Build Host</source>
-        <target>호스트 구축 </target>
+        <target>호스트 빌드</target>
       </trans-unit>
       <trans-unit id="package.jsp.builddate" xml:space="preserve">
         <source>Build Date</source>
-        <target>구축 날짜 </target>
+        <target>빌드 날짜</target>
       </trans-unit>
       <trans-unit id="package.jsp.license" xml:space="preserve">
         <source>License</source>
-        <target>라이센스 </target>
+        <target>라이선스</target>
       </trans-unit>
       <trans-unit id="package.jsp.group" xml:space="preserve">
         <source>Package Group</source>
-        <target>패키지 그룹  </target>
+        <target>패키지 그룹</target>
       </trans-unit>
       <trans-unit id="package.jsp.rpmversion" xml:space="preserve">
         <source>Rpm Version</source>
-        <target>Rpm 버전 </target>
+        <target>Rpm 버전</target>
       </trans-unit>
       <trans-unit id="package.jsp.path" xml:space="preserve">
         <source>File System Path</source>
-        <target>파일 시스템 경로  </target>
+        <target>파일 시스템 경로</target>
       </trans-unit>
       <trans-unit id="package.jsp.download" xml:space="preserve">
         <source>Download</source>
-        <target>다운로드 </target>
+        <target>다운로드</target>
       </trans-unit>
       <trans-unit id="package.jsp.source" xml:space="preserve">
         <source>Source Package</source>
-        <target>소스 패키지  </target>
+        <target>소스 패키지</target>
       </trans-unit>
       <trans-unit id="package.jsp.missingfile" xml:space="preserve">
         <source>Missing File</source>
-        <target>없는 파일 </target>
+        <target>없는 파일</target>
       </trans-unit>
       <trans-unit id="package.jsp.unavailable" xml:space="preserve">
         <source>File Unavailable</source>
-        <target>사용할 수 없는 파일 </target>
+        <target>사용할 수 없는 파일</target>
       </trans-unit>
       <trans-unit id="package.jsp.errata" xml:space="preserve">
         <source>Patch</source>
-        <target>에라타</target>
+        <target>패치</target>
       </trans-unit>
       <trans-unit id="package.jsp.errataunavailable" xml:space="preserve">
         <source>This package is not linked to any patch</source>
-        <target>이 패키지는 어떤 에라타에도 연결되어 있지 않습니다</target>
+        <target>이 패키지는 어떤 패치에도 연결되어 있지 않습니다.</target>
       </trans-unit>
       <trans-unit id="package.jsp.sunosrelease" xml:space="preserve">
         <source>SunOs Release</source>
-        <target>SunOs 릴리즈 </target>
+        <target>SunOs 릴리즈</target>
       </trans-unit>
       <trans-unit id="package.jsp.solarisrelease" xml:space="preserve">
         <source>Solaris Release</source>
-        <target>Solaris 릴리즈 </target>
+        <target>Solaris 릴리즈</target>
       </trans-unit>
       <trans-unit id="package.jsp.readme" xml:space="preserve">
         <source>Readme</source>
-        <target>Readme </target>
+        <target>Readme</target>
       </trans-unit>
       <trans-unit id="package.jsp.readmedownload" xml:space="preserve">
         <source>Download</source>
-        <target>다운로드 </target>
+        <target>다운로드</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.details" xml:space="preserve">
         <source>Details</source>
-        <target>상세 정보  </target>
+        <target>상세 정보</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.overview" xml:space="preserve">
         <source>Overview</source>
-        <target>개요  </target>
+        <target>개요</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.filelist" xml:space="preserve">
         <source>File List</source>
-        <target>파일 목록  </target>
+        <target>파일 목록</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.changelog" xml:space="preserve">
         <source>Change Log</source>
@@ -26779,11 +26778,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.menu.map" xml:space="preserve">
         <source>Package Map</source>
-        <target>패키지 맵  </target>
+        <target>패키지 맵</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.deps" xml:space="preserve">
         <source>Dependencies</source>
-        <target>종속성 </target>
+        <target>종속성</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.newversions" xml:space="preserve">
         <source>New Versions</source>
@@ -26795,7 +26794,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.menu.patches" xml:space="preserve">
         <source>Patches</source>
-        <target>패치 </target>
+        <target>패치</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.patchclusters" xml:space="preserve">
         <source>Patch Clusters</source>
@@ -26803,7 +26802,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.menu.patchedsystems" xml:space="preserve">
         <source>Patched Systems</source>
-        <target>패치된 시스템  </target>
+        <target>패치된 시스템</target>
       </trans-unit>
       <trans-unit id="package.jsp.menu.targetsystems" xml:space="preserve">
         <source>Target Systems</source>
@@ -26811,7 +26810,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="package.jsp.menu.installedsystems" xml:space="preserve">
         <source>Installed Systems</source>
-        <target>설치된 시스템  </target>
+        <target>설치된 시스템</target>
       </trans-unit>
       <trans-unit id="layout.jsp.productname" xml:space="preserve">
         <source>@@PRODUCT_NAME@@</source>
@@ -26819,15 +26818,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.name" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ project</source>
-        <target>@@PRODUCT_NAME@@ 프로젝트  </target>
+        <target>@@PRODUCT_NAME@@ 프로젝트</target>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.title" xml:space="preserve">
         <source>Visit suse.com for more information on @@VENDOR_NAME@@ products and services</source>
-        <target>보다 자세한 내용은 http://www.spacewalkproject.org/에서 참조하십시오</target>
+        <target>@@VENDOR_NAME@@ 제품 및 서비스에 대한 자세한 내용은 suse.com을 방문하십시오.</target>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.website" xml:space="preserve">
         <source>/</source>
-        <target>http://www.spacewalkproject.org/</target>
+        <target>/</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.title" xml:space="preserve">
         <source>File List</source>
@@ -26835,7 +26834,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filelist.jsp.message" xml:space="preserve">
         <source>This package contains the following files.</source>
-        <target>이 패키지에 포함된 파일은 다음과 같습니다.</target>
+        <target>다음 파일이 있는 패키지입니다.</target>
       </trans-unit>
       <trans-unit id="filelist.jsp.nofiles" xml:space="preserve">
         <source>No files.</source>
@@ -26953,14 +26952,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>부모 채널  </target>
+        <target>상위 채널</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksum" xml:space="preserve">
         <source>Repository Checksum Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>Yum 리포지터리 체크섬 유형 </target>
+        <target>리포지토리 체크섬 유형</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip" xml:space="preserve">
         <source>&lt;strong&gt; Tip:&lt;/strong&gt;
@@ -26980,77 +26979,77 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>채널 요약  </target>
+        <target>채널 요약</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.description" xml:space="preserve">
         <source>Channel Description</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>채널 설명  </target>
+        <target>채널 설명</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.maintainername" xml:space="preserve">
         <source>Maintainer Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>관리자 이름  </target>
+        <target>관리자 이름</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.maintainercontactinfo" xml:space="preserve">
         <source>Maintainer Contact Information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>관리자 연락 정보  </target>
+        <target>관리자 연락 정보</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.emailaddress" xml:space="preserve">
         <source>Email Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>이메일 주소  </target>
+        <target>이메일 주소</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.phonenumber" xml:space="preserve">
         <source>Phone Number</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>전화 번호 </target>
+        <target>전화 번호</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.supportpolicy" xml:space="preserve">
         <source>Support Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>지원 정책 </target>
+        <target>지원 정책</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.perusersub" xml:space="preserve">
         <source>Per-User Subscription Restrictions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>사용자 별로 서브스크립션 제한 </target>
+        <target>사용자별 서브스크립션 제한</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.orgsharing" xml:space="preserve">
         <source>Organization Sharing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>조직 공유  </target>
+        <target>조직 공유</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.gpgkeyurl" xml:space="preserve">
         <source>GPG key URL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>GPG 키 URL </target>
+        <target>GPG 키 URL</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.gpgkeyid" xml:space="preserve">
         <source>GPG key ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>GPG 키 ID </target>
+        <target>GPG 키 ID</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.gpgkeyfingerprint" xml:space="preserve">
         <source>GPG key Fingerprint</source>
@@ -27064,14 +27063,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>채널 생성 </target>
+        <target>채널 생성</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.editchannel" xml:space="preserve">
         <source>Update Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>채널 업데이트 </target>
+        <target>채널 업데이트</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.toolbar" xml:space="preserve">
         <source>{0}</source>
@@ -27085,21 +27084,21 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>기본 채널 상세 정보  </target>
+        <target>기본 채널 상세 정보</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.contactsupportinfo" xml:space="preserve">
         <source>Contact/Support Information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>연락처/지원 정보  </target>
+        <target>연락처/지원 정보</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.channelaccesscontrol" xml:space="preserve">
         <source>Channel Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>채널 액세스 제어  </target>
+        <target>채널 액세스 제어</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.security.gpg" xml:space="preserve">
         <source>Security: GPG</source>
@@ -27221,7 +27220,7 @@ given channel.</source>
         </context-group>
         <target>정말로 이 채널을 삭제하시겠습니까? 채널에 있는 패키지는 채널에서 삭제되지만
 서버에 남아 있게 됩니다. 채널 삭제 후 패키지를 삭제하는 옵션을 선택할 수 있습니다.
-채널 관련 에라타는 더 이상 채널에 연결되지 않고 분리될 수 있습니다.
+채널 관련 패치는 더 이상 채널에 연결되지 않고 분리될 수 있습니다.
 채널이 자식 채널을 갖는 경우 이는 삭제할 수 없습니다. 자식 채널을 먼저
 삭제해야 합니다. 채널에 자동 설치 가능한 배포판이 있는 경우 이를 삭제할 수 없습니다.
 자동 설치 가능한 배포판을 채널에서 연결 해제하거나 이를 먼저 삭제해야 합니다.
@@ -27232,7 +27231,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>아키텍처 </target>
+        <target>아키텍처:</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.totalpackages" xml:space="preserve">
         <source>Total Packages:</source>
@@ -27246,14 +27245,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>등록된 시스템 </target>
+        <target>등록된 시스템:</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsheader" xml:space="preserve">
         <source>Trusted Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>조직 생성  </target>
+        <target>신뢰할 수 있는 조직</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsparagraph" xml:space="preserve">
         <source>Channel deletion will affect any Trusted Organizations that have systems
@@ -27262,8 +27261,9 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>채널을 삭제하면 {0} 채널에 등록된 시스템이 있는 모든 신뢰할 수 있는
-조직에 영향을 미칩니다. </target>
+        <target>채널을 삭제하면 {0} 채널에 등록된 시스템이 있는
+            모든 신뢰할 수 있는 조직에 영향을 미칩니다.
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsaffected" xml:space="preserve">
         <source>Organizations Affected:
@@ -27271,7 +27271,8 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>영향을 받는 조직:</target>
+        <target>영향을 받는 조직:
+         </target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubheader" xml:space="preserve">
         <source>Unsubscribe Systems</source>
@@ -27288,7 +27289,8 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
         <target>{0} 채널에 등록된 모든 신뢰할 수 있는 조직 시스템을 등록 취소합니다.
-등록된 시스템은 이 채널에 지정된 패키지로 액세스할 수 없게 됩니다.</target>
+등록된 시스템은 이 채널에 지정된 패키지로 액세스할 수 없게 됩니다.
+         </target>
       </trans-unit>
       <trans-unit id="generic.jsp.none" xml:space="preserve">
         <source>None</source>
@@ -27341,7 +27343,7 @@ given channel.</source>
         </context-group>
         <target>채널은 &lt;strong&gt;공개&lt;/strong&gt;되며
            조직이 신뢰하는 모든 &lt;a href="{0}"&gt;신뢰되는
-         조직&lt;/a&gt;이 액세스할 수 있습니다.  </target>
+         조직&lt;/a&gt;이 액세스할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected" xml:space="preserve">
         <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may
@@ -27352,7 +27354,7 @@ given channel.</source>
         </context-group>
         <target>이 채널은 &lt;strong&gt;보안&lt;/strong&gt;되므로,
          특정의 &lt;a href="{0}"&gt;신뢰되는
-         조직&lt;/a&gt;만이 액세스할 수 있습니다.  </target>
+         조직&lt;/a&gt;만이 액세스할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.private" xml:space="preserve">
         <source>This channel is &lt;strong&gt;private&lt;/strong&gt; and cannot
@@ -27361,14 +27363,14 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
         <target>이 채널은 &lt;strong&gt;비공개&lt;/strong&gt;되어 있어
-         다른 조직은 액세스할 수 없습니다. </target>
+         다른 조직은 액세스할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.allusers" xml:space="preserve">
         <source>All users within your organization may subscribe to this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>조직의 모든 사용자를 이 채널에 가입시킬 수 있습니다. </target>
+        <target>조직의 모든 사용자를 이 채널에 가입시킬 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.selectedusers" xml:space="preserve">
         <source>Only selected users within your organization may subscribe to this channel.</source>
@@ -27382,7 +27384,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target>채널 공유 변경 확인 </target>
+        <target>채널 공유 변경 확인</target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.noerrata.jsp" xml:space="preserve">
         <source>Do not sync errata</source>
@@ -27480,14 +27482,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>묶음 상세 설명 </target>
+        <target>묶음 상세 설명</target>
       </trans-unit>
       <trans-unit id="bunch.edit.jsp.button-schedule" xml:space="preserve">
         <source>Single Run Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>단일 실행 스케줄 </target>
+        <target>단일 실행 스케줄</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.generaldescription" xml:space="preserve">
         <source>Below is the list of runs of the specific bunch type. Several tasks may be run within a bunch in a predefined order. It's possible to see the schedule the task was scheduled within by following the start time link. A single run of the bunch may be scheduled here.</source>
@@ -27508,98 +27510,98 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>일일 보고서 전송 </target>
+        <target>일일 보고서 전송</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.clear-taskologs-bunch" xml:space="preserve">
         <source>Clears taskomatic run log history</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>taskomatic 실행 로그 기록 삭제 </target>
+        <target>taskomatic 실행 로그 기록 삭제</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cobbler-sync-bunch" xml:space="preserve">
         <source>Applies any cobbler configuration changes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>cobbler 설정 변경 적용 </target>
+        <target>cobbler 설정 변경 적용</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-configs-bunch" xml:space="preserve">
         <source>Schedules a comparison of config files on all systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>모든 시스템에서 설정  파일 비교를 스케줄 </target>
+        <target>모든 시스템에서 설정 파일 비교를 스케줄링</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.sync-probe-bunch" xml:space="preserve">
         <source>Synchronizes probe state</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>프로브 상태 동기화 </target>
+        <target>프로브 상태 동기화</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.session-cleanup-bunch" xml:space="preserve">
         <source>Deletes expired rows from the PXTSessions table to keep it from growing too large</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>PXTSessions 테이블에서 만료된 행을 삭제하여 너무 커지지 않게 합니다 </target>
+        <target>PXTSessions 테이블에서 만료된 행을 삭제하여 너무 커지지 않게 합니다</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.sandbox-cleanup-bunch" xml:space="preserve">
         <source>Cleans up sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>모래 상자 삭제 </target>
+        <target>샌드박스 삭제</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.package-cleanup-bunch" xml:space="preserve">
         <source>Cleans up orphaned packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>분리된 패키지 삭제 </target>
+        <target>분리된 패키지 삭제</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.kickstartfile-sync-bunch" xml:space="preserve">
         <source>Synchronizes kickstart profiles that were generated using the wizard</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>마법사를 사용하여 생성된 킥스타트 프로파일을 동기화 </target>
+        <target>마법사를 사용하여 생성된 킥스타트 프로파일을 동기화</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.kickstart-cleanup-bunch" xml:space="preserve">
         <source>Cleans up stale kickstarts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>오래된 킥스타트 삭제 </target>
+        <target>오래된 킥스타트 삭제</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-queue-bunch" xml:space="preserve">
         <source>Processes errata</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>에라타 처리 </target>
+        <target>에라타 처리</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-cache-bunch" xml:space="preserve">
         <source>Recalculates errata cache for a given server or channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>특정 서버 또는 채널의 에라타 캐시를 다시 계산 </target>
+        <target>특정 서버 또는 채널의 에라타 캐시를 다시 계산</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.channel-repodata-bunch" xml:space="preserve">
         <source>Generates channel repodata</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>채널 리포지터리 데이터를 생성 </target>
+        <target>채널 리포지토리 데이터를 생성</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch" xml:space="preserve">
         <source>Cleans up orphaned and outdated data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>분리 및 오래된 데이터를 삭제 </target>
+        <target>분리 및 오래된 데이터를 삭제</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.reboot-action-cleanup-bunch" xml:space="preserve">
         <source>Invalidate reboot actions which never finish</source>
@@ -27627,7 +27629,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>사용 가능한 스케줄이 없습니다. </target>
+        <target>사용 가능한 스케줄이 없습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.noruns" xml:space="preserve">
         <source>There're no runs available.</source>
@@ -27648,21 +27650,21 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>여기에서 선택한 묶음의 스케줄을 설정할 수 있습니다. </target>
+        <target>여기에서 선택한 묶음의 스케줄을 설정할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
         <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>정말로 스케줄을 삭제하시겠습니까? 연결된 묶음은 더이상 스케줄되지 않게 됩니다. 이는 satellite 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
+        <target>스케줄을 삭제하시겠습니까? 연결된 묶음은 더 이상 스케줄되지 않게 됩니다. 이는 SUSE Manager 기능에 큰 영향을 미칠 수 있습니다. 삭제로 인한 영향을 잘 이해한 후 계속 실행하십시오.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 이름 {0}은 이미 사용되고 있습니다. 다른 이름을 선택하십시오.</target>
+        <target>스케줄 이름 {0}은(는) 이미 사용되고 있습니다. 다른 이름을 선택하십시오.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameregex" xml:space="preserve">
         <source>Schedule name must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
@@ -27676,7 +27678,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>{0} 스케줄 설정을 실패했습니다. </target>
+        <target>{0} 스케줄 설정을 실패했습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.toolbar" xml:space="preserve">
         <source>Schedule {0}</source>
@@ -27690,14 +27692,14 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 생성 </target>
+        <target>스케줄 생성</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
         <source>delete schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 삭제 </target>
+        <target>스케줄 삭제</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27705,21 +27707,21 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/SatSchedules.do</context>
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 스케줄 </target>
+        <target>@@PRODUCT_NAME@@ 스케줄</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.basicscheduledetails" xml:space="preserve">
         <source>Basic Schedule Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>기본 스케줄 상세 정보 </target>
+        <target>기본 스케줄 상세 정보</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.name" xml:space="preserve">
         <source>Schedule name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 이름 </target>
+        <target>스케줄 이름</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.bunch" xml:space="preserve">
         <source>Bunch</source>
@@ -27727,14 +27729,14 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/SatSchedules.do</context>
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>묶음 </target>
+        <target>묶음</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.activefrom" xml:space="preserve">
         <source>Active From</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/SatSchedules.do</context>
         </context-group>
-        <target>활성화 시작: </target>
+        <target>활성화 시작:</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.activetill" xml:space="preserve">
         <source>Active Till</source>
@@ -27748,7 +27750,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄은 더이상 활성화되어 있지 않습니다. </target>
+        <target>스케줄은 더 이상 활성화되어 있지 않습니다.</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.frequency" xml:space="preserve">
         <source>Frequency</source>
@@ -27756,14 +27758,14 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/SatSchedules.do</context>
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>빈도 </target>
+        <target>빈도</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.createschedule" xml:space="preserve">
         <source>Create Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>스케줄 생성 </target>
+        <target>스케줄 생성</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.updateschedule" xml:space="preserve">
         <source>Update Schedule</source>
@@ -27777,28 +27779,28 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>스케줄 삭제 </target>
+        <target>스케줄 삭제</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>작업 이름 </target>
+        <target>작업 이름</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.stattime" xml:space="preserve">
         <source>Start Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>시작 시간: </target>
+        <target>시작 시간</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.endtime" xml:space="preserve">
         <source>End Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target>종료 시간:</target>
+        <target>종료 시간</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg" xml:space="preserve">
         <source>Are you sure you want to set this channel to
@@ -27815,8 +27817,8 @@ given channel.</source>
          조직에 있는 시스템만이 접근할 수 있게 하시겠습니까?
          이 채널이 제공하는 컨텐츠에 등록한 다른 조직에 있는
          시스템은 다음과 같습니다. 이 채널의 액세스를 제거하면,
-         채널에 의해 제공되는 컨텐츠에 대해 더이상 중요 보안 업데이트를 받을 수 없게 되는등
-         시스템에 악영향을 미칠 수있습니다.  </target>
+         채널에 의해 제공되는 컨텐츠에 대해 더 이상 중요 보안 업데이트를 받을 수 없게 되는 등
+         시스템에 악영향을 미칠 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve">
         <source>Please review the change you are about to make before confirming
@@ -27824,7 +27826,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>액세스 제거를 확인하기 전 변경하려는 내용을 확인하십시오.  </target>
+        <target>액세스 제거를 확인하기 전 변경하려는 내용을 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg" xml:space="preserve">
         <source>Are you sure you want to set this channel's access policy to
@@ -27840,7 +27842,7 @@ given channel.</source>
          설정하겠습니까? 채널에 등록된 시스템을 갖는 조직은
          다음과 같습니다. 이 조직의 액세스를 제거하면,
          채널에 의해 제공되는 컨텐츠에 대해 중요 보안 업데이트를 받을 수 없게 되는 등
-         시스템에 악영향을 미칠 수있습니다.   </target>
+         시스템에 악영향을 미칠 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg.deux" xml:space="preserve">
         <source>You may choose to grant the organizations below access to this
@@ -27867,21 +27869,21 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>액세스 거부 및 확인 </target>
+        <target>액세스 거부 및 확인</target>
       </trans-unit>
       <trans-unit id="button.grantaccess.confirm" xml:space="preserve">
         <source>Grant Access and Confirm</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>액세스 권한 부여 및 확인  </target>
+        <target>액세스 권한 부여 및 확인</target>
       </trans-unit>
       <trans-unit id="button.search" xml:space="preserve">
         <source>Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
-        <target>검색 </target>
+        <target>검색</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete software channel</source>
@@ -27902,77 +27904,77 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
-        <target>에라타 추가 </target>
+        <target>패치 추가</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.listremove" xml:space="preserve">
         <source>List/Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>에라타 목록 보기/삭제   </target>
+        <target>패치 목록 보기/삭제</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.add" xml:space="preserve">
         <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>에라타 추가 </target>
+        <target>패치 추가</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.clone" xml:space="preserve">
         <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>에라타 복제</target>
+        <target>패치 복제</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listempty" xml:space="preserve">
         <source>There are no patches associated with this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>이 채널과 관련된 에라타가 없습니다.  </target>
+        <target>이 채널과 관련된 패치가 없습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.confirmremove" xml:space="preserve">
         <source>Confirm Removal</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>삭제 확인   </target>
+        <target>삭제 확인</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove" xml:space="preserve">
         <source>Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>에라타 제거 </target>
+        <target>패치 제거</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.message" xml:space="preserve">
         <source>Below is the list of patches associated with this channel. To remove a patch from this channel, select it here, and click 'Remove' below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>채널과 관련된 에라타 목록은 다음과 같습니다. 채널에서 에라타를 제거하려면, 해당 에라타를 선택하고 아래의 '제거'를 클릭합니다.  </target>
+        <target>채널과 관련된 패치 목록은 다음과 같습니다. 채널에서 패치를 제거하려면, 해당 패치를 선택하고 아래의 '제거'를 클릭합니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.confirmmessage" xml:space="preserve">
         <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>아랭의 '확인'을 클릭하여 채널에서 에라타를 제거합니다. 관련 패키지도 채널에서 삭제됩니다.  </target>
+        <target>아래의 '확인'을 클릭하여 채널에서 패치를 제거합니다. 관련 패키지도 채널에서 삭제됩니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.finalmessage" xml:space="preserve">
         <source>Successfully removed {0} patch(es) from this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>이 채널에서 {0} 에라타가 성공적으로 제거되었습니다.  </target>
+        <target>이 채널에서 {0} 패치가 제거되었습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.managers.message" xml:space="preserve">
         <source>Selected users may manage this channel. Users with Admin Access (org admins or channel admins) may manage any channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Managers.do</context>
         </context-group>
-        <target>선택된 사용자는 이 채널을 관리할 수 있습니다. 관리 권한을 갖는 사용자 (조직 관리자 또는 채널 관리자)는 모든 채널을 관리할 수 있습니다. </target>
+        <target>선택된 사용자는 이 채널을 관리할 수 있습니다. 관리 권한을 갖는 사용자(조직 관리자 또는 채널 관리자)는 모든 채널을 관리할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.subscribers.header" xml:space="preserve">
         <source>Subscribers</source>
@@ -27993,25 +27995,25 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">any package page</context>
         </context-group>
-        <target>알 수 없는 패키지 </target>
+        <target>알 수 없는 패키지</target>
       </trans-unit>
       <trans-unit id="unknown.package.msg" xml:space="preserve">
         <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by @@VENDOR_SERVICE_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>데이터베이스에 존재하지 않는 패키지에 관한 정보를 요청하셨습니다. 이는 수동을 설치하신 사용자 정의 패키지로 @@PRODUCT_NAME@@에 의해 지원되지 않는 배포판에 있는 것일 수 있습니다.   </target>
+        <target>데이터베이스에 존재하지 않는 패키지에 관한 정보를 요청하셨습니다. 이는 수동을 설치한 사용자 정의 패키지로 @@VENDOR_SERVICE_NAME@@에 의해 지원하지 않는 배포판에서 가져온 것입니다.</target>
       </trans-unit>
       <trans-unit id="system.errata.show" xml:space="preserve">
         <source>Show</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList.do</context>
         </context-group>
-        <target>페이지 당 </target>
+        <target>표시</target>
       </trans-unit>
       <trans-unit id="unknown.kickstart" xml:space="preserve">
         <source>Autoinstallation Not Found</source>
-        <target>킥스타트를 찾을 수 없음 </target>
+        <target>자동 설치를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message" xml:space="preserve">
         <source>The requested autoinstallation file could not be found.
@@ -28021,7 +28023,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.last.execution" xml:space="preserve">
         <source>Last Execution Times</source>
-        <target>스크립트 실행 시간</target>
+        <target>마지막 실행 시간</target>
       </trans-unit>
       <trans-unit id="task.status.runtime.status" xml:space="preserve">
         <source>Runtime Status</source>
@@ -28029,7 +28031,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.taskomatic.on" xml:space="preserve">
         <source>Scheduling Service</source>
-        <target>서비스 스케줄 설정 </target>
+        <target>서비스 스케줄 설정</target>
       </trans-unit>
       <trans-unit id="task.status.session-cleanup" xml:space="preserve">
         <source>Session Cleanup</source>
@@ -28037,19 +28039,19 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.errata-queue" xml:space="preserve">
         <source>Errata Notification Queue</source>
-        <target>에라타 통지 보내기</target>
+        <target>에라타 알림 대기열</target>
       </trans-unit>
       <trans-unit id="task.status.errata-mailer" xml:space="preserve">
         <source>Errata Notification Mail</source>
-        <target>에라타 통지 보내기</target>
+        <target>에라타 알림 이메일</target>
       </trans-unit>
       <trans-unit id="task.status.summary-population" xml:space="preserve">
         <source>Daily Summary Queue</source>
-        <target>일별 요약</target>
+        <target>일별 요약 대기열</target>
       </trans-unit>
       <trans-unit id="task.status.daily-summary" xml:space="preserve">
         <source>Daily Summary Mail</source>
-        <target>일별 요약</target>
+        <target>일별 요약 이메일</target>
       </trans-unit>
       <trans-unit id="task.status.sync-probe-state" xml:space="preserve">
         <source>Sync Probe State</source>
@@ -28057,47 +28059,47 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.clear-log-history" xml:space="preserve">
         <source>Clean Log History</source>
-        <target>로그 기록 삭제 </target>
+        <target>로그 기록 삭제</target>
       </trans-unit>
       <trans-unit id="task.status.cobbler-sync" xml:space="preserve">
         <source>Cobbler Sync</source>
-        <target>Cobbler 동기화 </target>
+        <target>Cobbler 동기화</target>
       </trans-unit>
       <trans-unit id="task.status.compare-config-files" xml:space="preserve">
         <source>Compare Config Files</source>
-        <target>설정 파일 비교 </target>
+        <target>설정 파일 비교</target>
       </trans-unit>
       <trans-unit id="task.status.sandbox-cleanup" xml:space="preserve">
         <source>Sandbox Cleanup</source>
-        <target>모래 상자 정리 </target>
+        <target>샌드박스 정리</target>
       </trans-unit>
       <trans-unit id="task.status.package-cleanup" xml:space="preserve">
         <source>Package Cleanup</source>
-        <target>패키지 정리 </target>
+        <target>패키지 정리</target>
       </trans-unit>
       <trans-unit id="task.status.kickstartfile-sync" xml:space="preserve">
         <source>Kickstart Sync</source>
-        <target>킥스타트 동기화 </target>
+        <target>킥스타트 동기화</target>
       </trans-unit>
       <trans-unit id="task.status.kickstart-cleanup" xml:space="preserve">
         <source>Kickstart Cleanup</source>
-        <target>킥스타트 정리 </target>
+        <target>킥스타트 정리</target>
       </trans-unit>
       <trans-unit id="task.status.errata-cache" xml:space="preserve">
         <source>Errata Cache</source>
-        <target>에라타 캐시 </target>
+        <target>에라타 캐시</target>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata" xml:space="preserve">
         <source>Channel Repodata</source>
-        <target>채널 리포지터리 데이터 </target>
+        <target>채널 리포지토리 데이터</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data" xml:space="preserve">
         <source>TimeSeries Cleanup</source>
-        <target>TimeSeries 정리 </target>
+        <target>TimeSeries 정리</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-packagechangelog-data" xml:space="preserve">
         <source>Changelog Cleanup</source>
-        <target>변경 로그 정리 </target>
+        <target>변경 로그 정리</target>
       </trans-unit>
       <trans-unit id="task.status.reboot-action-cleanup" xml:space="preserve">
         <source>Failed reboots cleanup</source>
@@ -28113,37 +28115,37 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.message" xml:space="preserve">
         <source>The following is a status report for the various tasks run by the @@PRODUCT_NAME@@ task engine:</source>
-        <target>다음은 @@PRODUCT_NAME@@ 작업 엔진에 의해 실행된 다양한 작업의 상태 보고입니다:</target>
+        <target>다음은 @@PRODUCT_NAME@@ 작업 엔진에 의해 실행된 다양한 작업의 상태 보고입니다.</target>
       </trans-unit>
       <trans-unit id="task.status.title" xml:space="preserve">
         <source>Task Engine Status</source>
-        <target>작업 엔진 상태 </target>
+        <target>작업 엔진 상태</target>
       </trans-unit>
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
-        <target>시작 </target>
+        <target>선택됨</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync" xml:space="preserve">
         <source>Sync Patches</source>
-        <target>에라타 동기화 </target>
+        <target>패치 동기화</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message" xml:space="preserve">
         <source>The following patches were cloned from patches that have since been updated.
 		   This page will allow you to synchronize your cloned patches to that of its original.</source>
-        <target>다음 에라타는 업데이트 후 에라타에서 복제된 것입니다.
-        이 페이지에서는 복제된 에라타를 원래 상태로 동기화할 수 있습니다.</target>
+        <target>다음 패치는 업데이트 후 패치에서 복제된 것입니다.
+        이 페이지에서는 복제된 패치를 원래 상태로 동기화할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note" xml:space="preserve">
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
-        <target>본래의 복제 프로세스의 일부로 생략된 패키지는 여기에 포함됩니다. </target>
+        <target>본래의 복제 프로세스의 일부로 생략된 패키지는 여기에 포함됩니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.listempty" xml:space="preserve">
         <source>No out of date patches were found.</source>
-        <target>오래된 에라타를 찾을 수 없습니다. </target>
+        <target>오래된 패치를 찾을 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync.packagepush" xml:space="preserve">
         <source>Packages to Push</source>
-        <target>푸시할 패키지 </target>
+        <target>푸시할 패키지</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message" xml:space="preserve">
         <source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
@@ -28151,15 +28153,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete" xml:space="preserve">
         <source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
-        <target>채널 {2}에 {0} 에라타가 성공적으로 동기화되고 {1} 패키지가 푸시되었습니다.</target>
+        <target>채널 {2}에 {0} 패치가 동기화되고 {1} 패키지가 푸시되었습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
-        <target>리포지터리 캐시 상태 </target>
+        <target>리포지토리 캐시 상태</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
         <source> Completed </source>
-        <target>완료 </target>
+        <target> 완료됨 </target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
         <source> In Progress </source>
@@ -28171,39 +28173,39 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
-        <target>마지막 리포지터리 빌드 </target>
+        <target>마지막 리포지토리 빌드</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.lastsynced" xml:space="preserve">
         <source>Last Sync Time</source>
-        <target>마지막 동기화 시간 </target>
+        <target>마지막 동기화 시간</target>
       </trans-unit>
       <trans-unit id="filedetails.details.jspf.revnum" xml:space="preserve">
         <source>Next revision number:</source>
-        <target>다음 개정 번호: </target>
+        <target>다음 리비전 번호:</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.fourhours" xml:space="preserve">
         <source>4 Hours</source>
-        <target>4 시간 </target>
+        <target>4시간</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.twelvehours" xml:space="preserve">
         <source>12 Hours</source>
-        <target>12 시간 </target>
+        <target>12시간</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.oneday" xml:space="preserve">
         <source>1 Day</source>
-        <target>1 일 </target>
+        <target>1일</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.oneweek" xml:space="preserve">
         <source>1 Week</source>
-        <target>1 주</target>
+        <target>1주</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.onemonth" xml:space="preserve">
         <source>1 Month</source>
-        <target>1 달 </target>
+        <target>1개월</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.sixmonths" xml:space="preserve">
         <source>6 Month</source>
-        <target>6 달 </target>
+        <target>6개월</target>
       </trans-unit>
       <trans-unit id="duplicate-ip.jsp.inactive.header" xml:space="preserve">
         <source>A system is inactive if its system has not checked in for:</source>
@@ -28211,39 +28213,39 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="schedule.header" xml:space="preserve">
         <source>Select a Schedule</source>
-        <target>스케줄 선택:</target>
+        <target>스케줄 선택</target>
       </trans-unit>
       <trans-unit id="schedule.disabled" xml:space="preserve">
         <source>Disable Schedule</source>
-        <target>스케줄 비활성화 </target>
+        <target>스케줄 비활성화</target>
       </trans-unit>
       <trans-unit id="schedule.daily" xml:space="preserve">
         <source>Daily</source>
-        <target>매일 </target>
+        <target>매일</target>
       </trans-unit>
       <trans-unit id="schedule.monthly" xml:space="preserve">
         <source>Monthly</source>
-        <target>매달 </target>
+        <target>매달</target>
       </trans-unit>
       <trans-unit id="schedule.cron" xml:space="preserve">
         <source>Custom Quartz format</source>
-        <target>사용자 정의 Quartz 형식 </target>
+        <target>사용자 정의 Quartz 형식</target>
       </trans-unit>
       <trans-unit id="schedule.weekly" xml:space="preserve">
         <source>Weekly</source>
-        <target>매주 </target>
+        <target>매주</target>
       </trans-unit>
       <trans-unit id="schedule.button" xml:space="preserve">
         <source>Schedule</source>
-        <target>스케줄 </target>
+        <target>스케줄</target>
       </trans-unit>
       <trans-unit id="schedule.weekly.every" xml:space="preserve">
         <source>Every</source>
-        <target>마다 </target>
+        <target>마다</target>
       </trans-unit>
       <trans-unit id="schedule.weekly.at" xml:space="preserve">
         <source>at</source>
-        <target>에 </target>
+        <target>시간</target>
       </trans-unit>
       <trans-unit id="schedule.monthly.day" xml:space="preserve">
         <source>Day</source>
@@ -28251,7 +28253,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debuginfo.header" xml:space="preserve">
         <source>DebugInfo Package</source>
-        <target>디버그 정보 패키지 </target>
+        <target>디버그 정보 패키지</target>
       </trans-unit>
       <trans-unit id="debugsource.header" xml:space="preserve">
         <source>DebugSource Package</source>
@@ -28259,15 +28261,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debuginfo.external" xml:space="preserve">
         <source>Note:  A local debuginfo rpm could not be found.  The above links to an external FTP server and may not be valid.</source>
-        <target>알림: 로컬 디버그 정보 rpm을 찾을 수 없습니다. 위에서는 외부 FTP 서버로 연결하는데 적합하지 않습니다. </target>
+        <target>참고: 로컬 디버그 정보 rpm을 찾을 수 없습니다. 위에서는 외부 FTP 서버로 연결하는 데 적합하지 않습니다.</target>
       </trans-unit>
       <trans-unit id="debuginfo.unavailable" xml:space="preserve">
         <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
-        <target>사용할 수 있는 경우 적절한 debuginfo 패키지를 각 debuginfo 하위 채널의 SUSE Customer Center에서 다운로드할 수 있습니다. 참고: 일부 패키지에는 게시된 debuginfo 패키지가 없을 수 있습니다.</target>
+        <target>사용할 수 있는 경우 적절한 디버그 정보 패키지를 각 디버그 정보 하위 채널의 SUSE Customer Center에서 다운로드할 수 있습니다. 참고: 일부 패키지에는 게시된 디버그 정보 패키지가 없을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
-        <target>사용할 수 있는 경우 적절한 debugsource 패키지를 각 디버그 채널 또는 저장소에서 동기화할 수 있습니다. 참고: 일부 패키지에는 게시된 debugsource 패키지가 없을 수 있습니다.</target>
+        <target>사용할 수 있는 경우 적절한 디버그 소스 패키지를 각 디버그 채널 또는 저장소에서 동기화할 수 있습니다. 참고: 일부 패키지에는 게시된 디버그 소스 패키지가 없을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -28275,7 +28277,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.error" xml:space="preserve">
         <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
-        <target>선택된 패키지의 변경 로그를 읽는 도중 오류가 발생했습니다. 실제로 패키지가 존재하는지와 적절한 권한을 가지고 있는지 확인하십시오. </target>
+        <target>선택된 패키지의 변경 로그를 읽는 중 오류가 발생했습니다. 실제로 패키지가 존재하는지와 적절한 권한을 가지고 있는지 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.dependencies.requires.title" xml:space="preserve">
         <source>Requires</source>
@@ -28380,7 +28382,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.slave.name" xml:space="preserve">
         <source>Slave Fully-Qualified Domain Name</source>
-        <target>슬레이브의 FQDN (Fully-Qualified Domain Name)</target>
+        <target>슬레이브의 FQDN(Fully-Qualified Domain Name)</target>
       </trans-unit>
       <trans-unit id="iss.slave.isEnabled" xml:space="preserve">
         <source>Allow Slave to Sync?</source>
@@ -28392,7 +28394,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.slave.disabled" xml:space="preserve">
         <source>Slave is disabled</source>
-        <target>슬레이브가 비활성화됨 </target>
+        <target>슬레이브가 비활성화됨</target>
       </trans-unit>
       <trans-unit id="iss.slave.toAll" xml:space="preserve">
         <source>Sync All Orgs to Slave?</source>
@@ -28404,47 +28406,47 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.slave.notAll" xml:space="preserve">
         <source>Do Not Sync All</source>
-        <target>모두 동기화하지 않음 </target>
+        <target>모두 동기화하지 않음</target>
       </trans-unit>
       <trans-unit id="iss.slave.num-orgs-allowed" xml:space="preserve">
         <source>Number of Orgs Exported</source>
-        <target>내보내기된 조직 수 </target>
+        <target>내보내기된 조직 수</target>
       </trans-unit>
       <trans-unit id="iss.slave.all-allowed" xml:space="preserve">
         <source>All Organizations Exported</source>
-        <target>내보내기된 모든 조직 </target>
+        <target>내보내기된 모든 조직</target>
       </trans-unit>
       <trans-unit id="iss.localorg.name" xml:space="preserve">
         <source>Local Organization</source>
-        <target>로컬 조직 </target>
+        <target>로컬 조직</target>
       </trans-unit>
       <trans-unit id="toolbar.create.slave" xml:space="preserve">
         <source>Add new slave</source>
-        <target>새 슬레이브 추가 </target>
+        <target>새 슬레이브 추가</target>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
         <source>Remove selected slaves</source>
-        <target>선택한 슬레이브 삭제 </target>
+        <target>선택한 슬레이브 삭제</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
-        <target>새 마스터 추가 </target>
+        <target>새 마스터 추가</target>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
         <source>Remove selected masters</source>
-        <target>선택한 마스터 삭제 </target>
+        <target>선택한 마스터 삭제</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
-        <target>슬레이브 삭제 </target>
+        <target>슬레이브 삭제</target>
       </trans-unit>
       <trans-unit id="iss.slave.edit" xml:space="preserve">
         <source>Update</source>
-        <target>업데이트 </target>
+        <target>업데이트</target>
       </trans-unit>
       <trans-unit id="iss.slave.create" xml:space="preserve">
         <source>Create</source>
-        <target>생성 </target>
+        <target>생성</target>
       </trans-unit>
       <trans-unit id="iss.slave.associate" xml:space="preserve">
         <source>Allow Orgs</source>
@@ -28452,15 +28454,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.confirm.remove.slaves" xml:space="preserve">
         <source>Remove Slaves</source>
-        <target>슬레이브 삭제 </target>
+        <target>슬레이브 삭제</target>
       </trans-unit>
       <trans-unit id="iss.confirm.remove.masters" xml:space="preserve">
         <source>Remove Masters</source>
-        <target>마스터 삭제 </target>
+        <target>마스터 삭제</target>
       </trans-unit>
       <trans-unit id="iss.num.master.orgs" xml:space="preserve">
         <source>Known Orgs</source>
-        <target>알려진 조직 </target>
+        <target>알려진 조직</target>
       </trans-unit>
       <trans-unit id="iss.num.unmapped.orgs" xml:space="preserve">
         <source>Unmapped Orgs</source>
@@ -28468,11 +28470,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.master.label" xml:space="preserve">
         <source>Master Fully-Qualified Domain Name</source>
-        <target>마스터의 FQDN (Fully-Qualified Domain Name)</target>
+        <target>마스터의 FQDN(Fully-Qualified Domain Name)</target>
       </trans-unit>
       <trans-unit id="iss.master.notDefault" xml:space="preserve">
         <source>Not Default Master</source>
-        <target>기본 마스터가 아님 </target>
+        <target>기본 마스터가 아님</target>
       </trans-unit>
       <trans-unit id="iss.master.isDefault" xml:space="preserve">
         <source>Default Master?</source>
@@ -28480,31 +28482,31 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.master.cacert" xml:space="preserve">
         <source>Filename of this Master's CA Certificate</source>
-        <target>마스터의 CA 인증서 파일 이름 </target>
+        <target>마스터의 CA 인증서 파일 이름</target>
       </trans-unit>
       <trans-unit id="iss.master.cacert.note" xml:space="preserve">
         <source>Note that this is the absolute path on the file system of this @@PRODUCT_NAME@@</source>
-        <target>이는 @@PRODUCT_NAME@@의 파일 시스템에 있는 절대 경로임에 유의합니다 </target>
+        <target>이는 @@PRODUCT_NAME@@의 파일 시스템에 있는 절대 경로임에 유의합니다.</target>
       </trans-unit>
       <trans-unit id="iss.master.org.name" xml:space="preserve">
         <source>Master Org Name</source>
-        <target>마스터 조직 이름 </target>
+        <target>마스터 조직 이름</target>
       </trans-unit>
       <trans-unit id="iss.slave.orgs" xml:space="preserve">
         <source>Matching Local Org</source>
-        <target>일치하는 로컬 조직 </target>
+        <target>일치하는 로컬 조직</target>
       </trans-unit>
       <trans-unit id="iss.master.update" xml:space="preserve">
         <source>Update</source>
-        <target>업데이트 </target>
+        <target>업데이트</target>
       </trans-unit>
       <trans-unit id="iss.master.create" xml:space="preserve">
         <source>Add new master</source>
-        <target>새 마스터 추가 </target>
+        <target>새 마스터 추가</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.master" xml:space="preserve">
         <source>Delete master</source>
-        <target>마스터 삭제 </target>
+        <target>마스터 삭제</target>
       </trans-unit>
       <trans-unit id="message.iss_slaves_removed" xml:space="preserve">
         <source>Selected slaves have been removed</source>
@@ -28516,11 +28518,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="message.iss_slave_created" xml:space="preserve">
         <source>Slave {0} created</source>
-        <target>슬레이브 {0} 생성됨 </target>
+        <target>슬레이브 {0} 생성됨</target>
       </trans-unit>
       <trans-unit id="message.iss_slave_removed" xml:space="preserve">
         <source>Slave {0} removed</source>
-        <target>슬레이브 {0} 삭제됨 </target>
+        <target>슬레이브 {0} 삭제됨</target>
       </trans-unit>
       <trans-unit id="message.iss_masters_removed" xml:space="preserve">
         <source>Selected masters have been removed</source>
@@ -28540,7 +28542,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="message.iss_slave_allowed_orgs_updated" xml:space="preserve">
         <source>List of organizations exported to {0} updated</source>
-        <target>{0}에 내보내기된 조직 목록이 업데이트되었습니다 </target>
+        <target>{0}에 내보내기된 조직 목록이 업데이트되었습니다</target>
       </trans-unit>
       <trans-unit id="iss.master.jsp.toolbar" xml:space="preserve">
           <source>ISS Configuration - Master Setup</source>
@@ -28558,7 +28560,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.master.jsp.header2" xml:space="preserve">
           <source>Known Slave Instances</source>
-        <target>알려진 슬레이브 인스턴스 </target>
+        <target>알려진 슬레이브 인스턴스</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
         </context-group>
@@ -28572,7 +28574,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.editslave.jsp.toolbar" xml:space="preserve">
           <source>ISS Configuration - Update Slave</source>
-        <target>ISS 설정 - 슬레이브 업데이트 </target>
+        <target>ISS 설정 - 슬레이브 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
@@ -28593,14 +28595,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.editslave.jsp.allowed.orgs.header" xml:space="preserve">
           <source>Allow Export of the Selected Organizations</source>
-        <target>선택한 조직의 내보내기를 허용합니다 </target>
+        <target>선택한 조직의 내보내기를 허용합니다</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iss.editslave.jsp.nolocalorgs" xml:space="preserve">
           <source>No local organizations available</source>
-        <target>사용 가능한 로컬 조직이 없습니다 </target>
+        <target>사용 가능한 로컬 조직이 없습니다</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
@@ -28614,7 +28616,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.confirmslaveremove.jsp.toolbar" xml:space="preserve">
           <source>ISS Configuration - Confirm Slave Removal</source>
-        <target>ISS 설정 - 슬레이브 삭제 확인 </target>
+        <target>ISS 설정 - 슬레이브 삭제 확인</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
@@ -28634,7 +28636,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.confirmslaveremove.jsp.header2" xml:space="preserve">
           <source>Slaves To Be Removed</source>
-        <target>삭제할 슬레이브 </target>
+        <target>삭제할 슬레이브</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
@@ -28662,14 +28664,14 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.slave.jsp.nomasters" xml:space="preserve">
           <source>No Masters known to this Slave</source>
-        <target>이 슬레이브에 알려진 마스터가 없습니다 </target>
+        <target>이 슬레이브에 알려진 마스터가 없습니다</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Slave.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iss.confirmmasterremove.jsp.toolbar" xml:space="preserve">
           <source>ISS Configuration - Confirm Master Removal</source>
-        <target>ISS 설정 - 마스터 삭제 확인 </target>
+        <target>ISS 설정 - 마스터 삭제 확인</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
@@ -28689,7 +28691,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.confirmmasterremove.jsp.header2" xml:space="preserve">
           <source>Masters To Be Removed</source>
-        <target>삭제할 마스터 </target>
+        <target>삭제할 마스터</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
@@ -28703,7 +28705,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.editmaster.jsp.toolbar" xml:space="preserve">
           <source>ISS Configuration - Update Master</source>
-        <target>ISS 설정 - 마스터 업데이트 </target>
+        <target>ISS 설정 - 마스터 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
@@ -28721,21 +28723,21 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.editmaster.jsp.details.header" xml:space="preserve">
           <source>Details for {0}</source>
-        <target>{0}의 상세 정보 </target>
+        <target>{0}의 상세 정보</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iss.editmaster.jsp.newmaster.details.header" xml:space="preserve">
           <source>Details for new Master</source>
-        <target>새 마스터에 대한 상세 정보 </target>
+        <target>새 마스터에 대한 상세 정보</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iss.editmaster.jsp.maporgs.header" xml:space="preserve">
           <source>Configure Master-to-Slave Org Mappings for {0}</source>
-        <target>{0}에 대해 마스터에서 슬레이브로 조직 맵핑 설정 </target>
+        <target>{0}에 대해 마스터에서 슬레이브로 조직 맵핑 설정</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
@@ -28986,7 +28988,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="ssm.overview.states.apply" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; system states</source>
-        <target>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; 시스템 상태</target>
+        <target>시스템 상태 &lt;a href="/rhn/manager/systems/ssm/highstate"&gt;적용&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.ssm.deploy.warning" xml:space="preserve">
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
@@ -29142,7 +29144,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filedetails.jsp.tip.macros" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;User Guide&lt;/a&gt;.</source>
-        <target>&lt;strong&gt;Tip:&lt;/strong&gt; 사용할 수 있는 모든 매크로 목록은 &lt;a href="{0}"&gt;사용자 가이드&lt;/a&gt;에 나열되어 있습니다.</target>
+        <target>&lt;strong&gt;팁:&lt;/strong&gt; 사용할 수 있는 모든 매크로 목록은 &lt;a href="{0}"&gt;사용자 가이드&lt;/a&gt;에 나열되어 있습니다.</target>
       </trans-unit>
       <trans-unit id="setup-wizard.prev" xml:space="preserve">
         <source>Prev</source>
@@ -29330,7 +29332,7 @@ given channel.</source>
         <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
         <target>Salt minion의 경우 SUSE Manager는 minion에 설치된 특정 구성도 정리합니다.
-이 작업에는 추가로 몇 초가 걸릴 수 있습니다.</target>
+              이 작업에는 추가로 몇 초가 걸릴 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
         <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
