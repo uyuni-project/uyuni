@@ -151,7 +151,11 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -169,6 +173,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
@@ -1073,8 +1080,27 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         return longString.toString();
     }
 
+    private Map<String, Object> readCustomInfoPillar(MinionServer minion) throws Exception {
+        Path filePath = tmpPillarRoot.resolve(
+                PILLAR_DATA_FILE_PREFIX + "_" +
+                minion.getMinionId() + "_custom_info." +
+                PILLAR_DATA_FILE_EXT);
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+
+        assertTrue(map.containsKey("custom_info"));
+        map = (Map<String, Object>)map.get("custom_info");
+
+        return map;
+    }
+
     public void testCustomDataValues() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         CustomDataKey testKey = CustomDataKeyTest.createTestCustomDataKey(admin);
 
         // setCustomValues
@@ -1104,6 +1130,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         val = server.getCustomDataValue(testKey);
         assertEquals(val2, val.getValue());
         assertEquals(1, setResult);
+
+        Map<String, Object> pillar = readCustomInfoPillar(server);
+
+        assertTrue(pillar.containsKey(keyLabel));
+        assertEquals(val2, pillar.get(keyLabel));
 
         // try to set custom values with some undefined keys
         valuesToSet.put(fooKey, val1);
@@ -1138,6 +1169,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         val = server.getCustomDataValue(testKey);
         assertNotNull(val);
 
+        pillar = readCustomInfoPillar(server);
+        assertTrue(pillar.containsKey(keyLabel));
+        assertEquals(val2, pillar.get(keyLabel));
+
         result = handler.getCustomValues(admin, server.getId().intValue());
         assertEquals(1, result.size());
 
@@ -1151,6 +1186,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, setResult);
         val = server.getCustomDataValue(testKey);
         assertNull(val);
+
+        Path filePath = tmpPillarRoot.resolve(
+                PILLAR_DATA_FILE_PREFIX + "_" +
+                server.getMinionId() + "_custom_info." +
+                PILLAR_DATA_FILE_EXT);
+
+        assertFalse(Files.exists(filePath));
     }
 
     public void testListUserSystems() throws Exception {

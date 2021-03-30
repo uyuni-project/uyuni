@@ -49,15 +49,11 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
  */
 public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
-    protected MinionPillarManager minionPillarManager;
-
     @Override
     public void setUp() throws Exception {
         super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
-        minionPillarManager = new MinionPillarManager(
-                Arrays.asList(this.minionGeneralPillarFileManager, this.minionGroupMembershipPillarFileManager));
     }
 
     public void testGeneratePillarForServer() throws Exception {
@@ -75,7 +71,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         minion.addChannel(channel2);
 
         ServerFactory.save(minion);
-        minionPillarManager.generatePillar(minion);
+        MinionPillarManager.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
                 PILLAR_DATA_FILE_PREFIX + "_" +
@@ -143,7 +139,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         minion.addChannel(channel1);
         ServerFactory.save(minion);
 
-        minionPillarManager.generatePillar(minion);
+        MinionPillarManager.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot
                 .resolve(PILLAR_DATA_FILE_PREFIX + "_" + minion.getMinionId() + "." + PILLAR_DATA_FILE_EXT);
@@ -172,7 +168,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         minion.addChannel(channel1);
         ServerFactory.save(minion);
 
-        minionPillarManager.generatePillar(minion);
+        MinionPillarManager.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
             PILLAR_DATA_FILE_PREFIX + "_" +
@@ -228,7 +224,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().refresh(minion);
 
-        minionPillarManager.generatePillar(minion);
+        MinionPillarManager.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
                 PILLAR_DATA_FILE_PREFIX + "_" +

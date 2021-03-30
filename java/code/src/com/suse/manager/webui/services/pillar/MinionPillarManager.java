@@ -21,32 +21,51 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.log4j.Logger;
 
-import java.util.Arrays;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Manager class for generating or removing minion pillar files.
  */
 public class MinionPillarManager {
 
+    public enum PillarSubset {
+        GENERAL,
+        GROUP_MEMBERSHIP,
+        VIRTUALIZATION,
+        CUSTOM_INFO
+    };
+
     /** Logger */
     private static final Logger LOG = Logger.getLogger(MinionPillarManager.class);
 
     public static final MinionPillarManager INSTANCE = new MinionPillarManager(
-            Arrays.asList(new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
+                    new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
                     new MinionPillarFileManager(MinionGroupMembershipPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE)));
+                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE),
+                    new MinionPillarFileManager(MinionCustomInfoPillarGenerator.INSTANCE));
 
-    private List<MinionPillarFileManager> pillarFileManagers;
+    private MinionPillarFileManager generalPillarFileManager;
+    private MinionPillarFileManager groupMembershipPillarFileManager;
+    private MinionPillarFileManager virtualizationPillarFileManager;
+    private MinionPillarFileManager customInfoPillarFileManager;
 
     /**
      * Constructor for MinionPillarManager
-     * @param pillarFileManagersIn a list of minion pillar file managers
+     * @param generalPillarFileManagerIn general pillar file manager
+     * @param groupMembershipPillarFileManagerIn group membership pillar file manager
+     * @param virtualizationPillarFileManagerIn virtualization pillar file manager
+     * @param customInfoPillarFileManagerIn custom info pillar file manager
      */
-    public MinionPillarManager(List<MinionPillarFileManager> pillarFileManagersIn) {
-        this.pillarFileManagers = pillarFileManagersIn;
+    public MinionPillarManager(MinionPillarFileManager generalPillarFileManagerIn,
+                               MinionPillarFileManager groupMembershipPillarFileManagerIn,
+                               MinionPillarFileManager virtualizationPillarFileManagerIn,
+                               MinionPillarFileManager customInfoPillarFileManagerIn) {
+        this.generalPillarFileManager = generalPillarFileManagerIn;
+        this.groupMembershipPillarFileManager = groupMembershipPillarFileManagerIn;
+        this.virtualizationPillarFileManager = virtualizationPillarFileManagerIn;
+        this.customInfoPillarFileManager = customInfoPillarFileManagerIn;
     }
 
     /**
@@ -55,6 +74,37 @@ public class MinionPillarManager {
      */
     public void generatePillar(MinionServer minion) {
         generatePillar(minion, true, Collections.emptySet());
+    }
+
+    /**
+     * Generates specific pillar for the passed minion
+     * @param minion the minion server
+     * @param refreshAccessTokens if access tokens should be refreshed first
+     * @param subsets subsets of pillar, that should be generated
+     */
+    public void generatePillar(MinionServer minion, boolean refreshAccessTokens,
+                               PillarSubset... subsets) {
+        if (refreshAccessTokens) {
+            AccessTokenFactory.refreshTokens(minion, Collections.emptySet());
+        }
+        for (PillarSubset subset : subsets) {
+            switch (subset) {
+                case GENERAL:
+                    generalPillarFileManager.updatePillarFile(minion);
+                    break;
+                case GROUP_MEMBERSHIP:
+                    groupMembershipPillarFileManager.updatePillarFile(minion);
+                    break;
+                case VIRTUALIZATION:
+                    virtualizationPillarFileManager.updatePillarFile(minion);
+                    break;
+                case CUSTOM_INFO:
+                    customInfoPillarFileManager.updatePillarFile(minion);
+                    break;
+                default:
+                    throw new RuntimeException("unreachable");
+            }
+        }
     }
 
     /**
@@ -70,7 +120,10 @@ public class MinionPillarManager {
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
-        this.pillarFileManagers.stream().forEach(m -> m.updatePillarFile(minion));
+        generalPillarFileManager.updatePillarFile(minion);
+        groupMembershipPillarFileManager.updatePillarFile(minion);
+        virtualizationPillarFileManager.updatePillarFile(minion);
+        customInfoPillarFileManager.updatePillarFile(minion);
     }
 
     /**
@@ -78,7 +131,20 @@ public class MinionPillarManager {
      * @param minionId the minion Id
      */
     public void removePillar(String minionId) {
-        this.pillarFileManagers.stream().forEach(m -> m.removePillarFile(minionId));
+        generalPillarFileManager.removePillarFile(minionId);
+        groupMembershipPillarFileManager.removePillarFile(minionId);
+        virtualizationPillarFileManager.removePillarFile(minionId);
+        customInfoPillarFileManager.removePillarFile(minionId);
+    }
+
+    /**
+     * @param pillarDataPathIn the root path where pillar files are generated
+     */
+    public void setPillarDataPath(Path pillarDataPathIn) {
+        generalPillarFileManager.setPillarDataPath(pillarDataPathIn);
+        groupMembershipPillarFileManager.setPillarDataPath(pillarDataPathIn);
+        virtualizationPillarFileManager.setPillarDataPath(pillarDataPathIn);
+        customInfoPillarFileManager.setPillarDataPath(pillarDataPathIn);
     }
 
 }

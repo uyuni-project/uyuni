@@ -23,9 +23,7 @@ import java.util.TimeZone;
 import javax.servlet.http.Cookie;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
-import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
@@ -54,10 +52,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 public class RhnMockStrutsTestCase extends MockStrutsTestCase {
 
     protected User user;
-    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
-            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
-    protected MinionPillarFileManager minionGeneralPillarFileManager =
-            new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
     /**
      * {@inheritDoc}
@@ -96,8 +90,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         //Set temporary Salt directories for local runs
         Path tmpPillarRoot = Files.createTempDirectory("pillar");
         Path tmpSaltRoot = Files.createTempDirectory("salt");
-        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
-        minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
     }

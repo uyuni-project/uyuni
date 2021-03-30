@@ -86,6 +86,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);
         }
+
         return Optional.of(pillar);
     }
 

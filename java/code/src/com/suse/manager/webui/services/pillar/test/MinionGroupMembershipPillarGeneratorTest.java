@@ -23,6 +23,9 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.yaml.snakeyaml.Yaml;
 
@@ -41,9 +44,13 @@ import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT
  */
 public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUser {
 
+    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }
