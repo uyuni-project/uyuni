@@ -131,26 +131,6 @@ public class ChannelHandler extends BaseHandler {
     }
 
     /**
-     * Lists all Red Hat software channels that the user's organization is entitled to.
-     * @param loggedInUser The current user
-     * @return Returns array of channels with info such as channel_label, channel_name,
-     * channel_parent_label, packages and systems.
-     * @deprecated being replaced by listVendorChannels(String sessionKey)
-     *
-     * @xmlrpc.doc List all Red Hat software channels that the user's organization is
-     * entitled to.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
-     *     #array_begin()
-     *         $ChannelTreeNodeSerializer
-     *     #array_end()
-     */
-    @Deprecated
-    public Object[] listRedHatChannels(User loggedInUser) {
-        return listVendorChannels(loggedInUser);
-    }
-
-    /**
      * Lists the most popular software channels based on the popularity
      * count given.
      * @param loggedInUser The current user

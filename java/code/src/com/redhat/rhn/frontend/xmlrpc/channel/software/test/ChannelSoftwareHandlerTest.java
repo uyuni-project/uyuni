@@ -297,32 +297,26 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelFactory.save(child2);
         assertFalse(child2.isBaseChannel());
 
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
-        List<String> labels = new ArrayList<String>();
-        labels.add(child.getLabel());
-        // adding base last to make sure the handler does the right
-        // thing regardless of where the base channel is.
-        labels.add(base.getLabel());
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
 
-        Integer sid = server.getId().intValue();
-        int rc = csh.setSystemChannels(admin, sid, labels);
+        int sid = server.getId().intValue();
+        int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
+        int rc2 = sh.setChildChannels(admin, sid, List.of(child.getLabel()));
 
         server = reload(server);
 
         // now verify
-        assertEquals(1, rc);
+        assertEquals(1, rc1);
+        assertEquals(1, rc2);
         assertEquals(2, server.getChannels().size());
         Channel newBase = server.getBaseChannel();
         assertNotNull(newBase);
         assertEquals(newBase.getLabel(), base.getLabel());
 
-        List<String> nobase = new ArrayList<String>();
-        nobase.add(child.getLabel());
-        nobase.add(child2.getLabel());
-
         try {
-            rc = csh.setSystemChannels(admin, sid, nobase);
-            fail("setSystemChannels didn't complain when given no base channel");
+            sh.setBaseChannel(admin, sid, child.getLabel());
+            fail("setBaseChannel didn't complain when given no base channel");
         }
         catch (InvalidChannelException ice) {
             // ice ice baby
@@ -330,18 +324,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     }
 
-    public void testSetSystemChannels() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testSetBaseChannel() throws Exception {
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
+
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        List<String> channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(c1.getLabel());
-
         assertEquals(0, server.getChannels().size());
-        int result = csh.setSystemChannels(admin,
-                server.getId().intValue(), channelsToSubscribe);
+        int result = sh.setBaseChannel(admin, server.getId().intValue(), c1.getLabel());
 
         server = reload(server);
 
@@ -350,24 +342,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
         assertFalse(c1.getLabel().equals(c2.getLabel()));
-        channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(c2.getLabel());
-        assertEquals(1, channelsToSubscribe.size());
-        result = csh.setSystemChannels(admin,
-                server.getId().intValue(), channelsToSubscribe);
+        result = sh.setBaseChannel(admin, server.getId().intValue(), c2.getLabel());
 
         server = reload(server);
 
         assertEquals(1, result);
-        Channel subscribed = server.getChannels().iterator().next();
         assertTrue(server.getChannels().contains(c2));
 
         //try to make it break
-        channelsToSubscribe = new ArrayList<String>();
-        channelsToSubscribe.add(TestUtils.randomString());
         try {
-            csh.setSystemChannels(admin,
-                    server.getId().intValue(), channelsToSubscribe);
+            sh.setBaseChannel(admin, server.getId().intValue(), TestUtils.randomString());
             fail("subscribed system to invalid channel.");
         }
         catch (Exception e) {
@@ -377,7 +361,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         server = reload(server);
         //make sure servers channel subscriptions weren't changed
         assertEquals(1, result);
-        subscribed = server.getChannels().iterator().next();
+        Channel subscribed = server.getChannels().iterator().next();
         assertEquals(c2.getLabel(), subscribed.getLabel());
 
         // try setting the base channel of an s390 server to
@@ -385,17 +369,13 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         try {
 
             Channel c3 = ChannelFactoryTest.createTestChannel(admin);
-            List<String> channels = new ArrayList<String>();
-            channels.add(c3.getLabel());
-            assertEquals(1, channels.size());
 
             // change the arch of the server
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
             ServerFactory.save(server);
 
-            int rc = csh.setSystemChannels(admin,
-                    server.getId().intValue(), channels);
+            int rc = sh.setBaseChannel(admin, server.getId().intValue(), c3.getLabel());
 
             fail("allowed incompatible channel arch to be set, returned: " + rc);
         }
@@ -864,31 +844,30 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, secondList.length - iniailList.length);
     }
 
-    public void testSubscribeSystem() throws Exception {
+    public void testChannelSubscription() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         Channel baseChan = ChannelFactoryTest.createBaseChannel(admin);
         Channel childChan = ChannelFactoryTest.createTestChannel(admin);
         childChan.setParentChannel(baseChan);
 
+        SystemHandler sh = new SystemHandler(taskomaticApi,xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                serverGroupManager);
 
-        List<String> labels = new ArrayList<String>();
-        labels.add(baseChan.getLabel());
-        labels.add(childChan.getLabel());
+        int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
+        int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
 
-        int returned = handler.subscribeSystem(admin,
-                server.getId().intValue(), labels);
-
-        assertEquals(1, returned);
-        server = (Server)HibernateFactory.reload(server);
+        assertEquals(1, return1);
+        assertEquals(1, return2);
+        server = HibernateFactory.reload(server);
         assertEquals(2, server.getChannels().size());
         assertTrue(server.getChannels().contains(baseChan));
         assertTrue(server.getChannels().contains(childChan));
 
-        labels.clear();
-        returned = handler.subscribeSystem(admin,
-                server.getId().intValue(), labels);
-        assertEquals(1, returned);
-        server = (Server)HibernateFactory.reload(server);
+        return1 = sh.setBaseChannel(admin, server.getId().intValue(), "");
+        return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of());
+        assertEquals(1, return1);
+        assertEquals(1, return2);
+        server = HibernateFactory.reload(server);
         assertEquals(0, server.getChannels().size());
     }
 
@@ -1152,23 +1131,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -5);
 
-        String startDateStr = "2004-08-20 08:00:00";
-        String endDateStr = "3004-08-20 08:00:00";
-
-        List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel(),
-                startDateStr);
-        assertTrue(list.size() == 1);
-
-        list = handler.listAllPackages(admin, chan.getLabel(), startDateStr,
-                endDateStr);
-        assertTrue(list.size() == 1);
-
-        list = handler.listAllPackages(admin, chan.getLabel());
+        List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel());
         assertTrue(list.size() == 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = sdf.parse(startDateStr);
-        Date endDate = sdf.parse(endDateStr);
+        Date startDate = sdf.parse("2004-08-20 08:00:00");
+        Date endDate = sdf.parse("3004-08-20 08:00:00");
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate);
         assertTrue(list.size() == 1);
@@ -1176,87 +1144,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         list = handler.listAllPackages(admin, chan.getLabel(), startDate,
                 endDate);
         assertTrue(list.size() == 1);
-    }
-
-    public void testUnsubscribeChildChannels() throws Exception {
-        ChannelSoftwareHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
-
-        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
-        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
-        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
-        Channel base = ChannelFactoryTest.createTestChannel(admin);
-        child1.setParentChannel(base);
-        child2.setParentChannel(base);
-        base.setParentChannel(null);
-
-        server.addChannel(base);
-        server.addChannel(child1);
-        server.addChannel(child2);
-
-        Integer sid = server.getId().intValue();
-
-        Date earliest = new Date();
-        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
-        long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
-                Arrays.asList(child1.getLabel(), child2.getLabel()), earliest);
-
-        Action action = ActionFactory.lookupById(actionId);
-        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
-        assertEquals(2, sca.getDetails().getChannels().size());
-
-
-        //unsubscribe one child channel
-        long[] actionIds = handler.unsubscribeChannels(admin, Collections.singletonList(sid), "",
-                Arrays.asList(child2.getLabel()));
-
-        action = ActionFactory.lookupById(actionIds[0]);
-        assertTrue(action instanceof SubscribeChannelsAction);
-        sca = (SubscribeChannelsAction)action;
-        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
-        assertEquals(1, sca.getDetails().getChannels().size());
-    }
-
-    public void testUnsubscribeBaseChannel() throws Exception {
-        ChannelSoftwareHandler handler = getMockedHandler();
-        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
-        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
-        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
-        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
-        Channel base = ChannelFactoryTest.createTestChannel(admin);
-        child1.setParentChannel(base);
-        child2.setParentChannel(base);
-        base.setParentChannel(null);
-
-        server.addChannel(base);
-        server.addChannel(child1);
-        server.addChannel(child2);
-
-        Integer sid = server.getId().intValue();
-
-        Date earliest = new Date();
-        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, new ServerGroupManager());
-        long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
-                Arrays.asList(child1.getLabel(), child2.getLabel()), earliest);
-        Action action = ActionFactory.lookupById(actionId);
-        assertTrue(action instanceof SubscribeChannelsAction);
-        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-        assertEquals(base.getId(), sca.getDetails().getBaseChannel().getId());
-        assertEquals(2, sca.getDetails().getChannels().size());
-
-        //unsubscribe base channel (all the child channels will be removed too)
-        long [] actionIds= handler.unsubscribeChannels(admin, Collections.singletonList(sid), base.getLabel(),
-                Collections.emptyList());
-
-        action = ActionFactory.lookupById(actionIds[0]);
-        assertTrue(action instanceof SubscribeChannelsAction);
-        sca = (SubscribeChannelsAction)action;
-        assertNull(sca.getDetails().getBaseChannel());
-        assertTrue(sca.getDetails().getChannels().isEmpty());
-        assertEquals(0, sca.getDetails().getChannels().size());
     }
 
     private ChannelSoftwareHandler getMockedHandler() throws Exception {

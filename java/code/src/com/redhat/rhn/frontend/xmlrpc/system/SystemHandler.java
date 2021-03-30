@@ -646,40 +646,6 @@ public class SystemHandler extends BaseHandler {
      * can subscribe this system to.
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
-     * @deprecated being replaced by listSubscribableBaseChannels(string sessionKey,
-     * int serverId)
-     *
-     * @xmlrpc.doc Returns a list of subscribable base channels.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     *
-     * @xmlrpc.returntype
-     *  #array_begin()
-     *      #struct_begin("channel")
-     *          #prop_desc("int" "id" "Base Channel ID.")
-     *          #prop_desc("string" "name" "Name of channel.")
-     *          #prop_desc("string" "label" "Label of Channel")
-     *          #prop_desc("int", "current_base", "1 indicates it is the current base
-     *                                      channel")
-     *      #struct_end()
-     *  #array_end()
-     *
-     */
-    @Deprecated
-    public Object[] listBaseChannels(User loggedInUser, Integer sid) throws FaultException {
-
-        return listSubscribableBaseChannels(loggedInUser, sid);
-    }
-
-    /**
-     * Gets a list of base channels subscribable by the logged in user for the server with
-     * the given id.
-     * @param loggedInUser The current user
-     * @param sid The id of the server in question
-     * @return Returns an array of maps representing the base channels the logged in user
-     * can subscribe this system to.
-     * @throws FaultException A FaultException is thrown if the server corresponding to
-     * sid cannot be found.
      *
      * @xmlrpc.doc Returns a list of subscribable base channels.
      * @xmlrpc.param #param("string", "sessionKey")
@@ -912,40 +878,6 @@ public class SystemHandler extends BaseHandler {
         ret.put("label", channel.getLabel());
         ret.put("current_base", currentBase ? Integer.valueOf(1) : Integer.valueOf(0));
         return ret;
-    }
-
-    /**
-     * List the child channels that this system can subscribe to.
-     * @param loggedInUser The current user
-     * @param sid The id of the system in question
-     * @return Returns an array of maps representing the channels this server could
-     * subscribe too.
-     * @throws FaultException A FaultException is thrown if the server corresponding to
-     * sid cannot be found.
-     * @deprecated being replaced by listSubscribableChildChannels(string sessionKey,
-     * int serverId)
-     *
-     * @xmlrpc.doc Returns a list of subscribable child channels.  This only shows channels
-     * the system is *not* currently subscribed to.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("child channel")
-     *              #prop("int", "id")
-     *              #prop("string", "name")
-     *              #prop("string", "label")
-     *              #prop("string", "summary")
-     *              #prop("string", "has_license")
-     *              #prop("string", "gpg_key_url")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public Object[] listChildChannels(User loggedInUser, Integer sid)
-            throws FaultException {
-
-        return listSubscribableChildChannels(loggedInUser, sid);
     }
 
     /**
@@ -3345,28 +3277,6 @@ public class SystemHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
-    }
-
-    /**
-     * Schedules an action to apply errata updates to a system.
-     * @param loggedInUser The current user
-     * @param sid ID of the server
-     * @param errataIds List of errata IDs to apply (as Integers)
-     * @return 1 if successful, exception thrown otherwise
-     * @deprecated being replaced by system.scheduleApplyErrata(string sessionKey,
-     * int serverId, array[int errataId])
-     *
-     * @xmlrpc.doc Schedules an action to apply errata updates to a system.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param  #array_single("int", "errataId")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int applyErrata(User loggedInUser, Integer sid,
-            List<Integer> errataIds) {
-        scheduleApplyErrata(loggedInUser, sid, errataIds, false);
-        return 1;
     }
 
     /**

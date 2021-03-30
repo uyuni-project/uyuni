@@ -33,7 +33,6 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
-import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
@@ -48,27 +47,6 @@ import java.util.List;
  * @xmlrpc.doc Provides methods to create kickstart files
  */
 public class KickstartHandler extends BaseHandler {
-
-    /**
-     * List the available kickstartable trees for the given channel.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel to search.
-     * @return Array of KickstartableTreeObjects
-     * @deprecated being replaced by kickstart.tree.list(string sessionKey,
-     * string channelLabel)
-     *
-     * @xmlrpc.doc List the available kickstartable trees for the given channel.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
-     * search.")
-     * @xmlrpc.returntype #array_begin() $KickstartTreeSerializer #array_end()
-     */
-    @Deprecated
-    public List listKickstartableTrees(User loggedInUser,
-            String channelLabel) {
-        return new KickstartTreeHandler().
-                list(loggedInUser, channelLabel);
-    }
 
     /**
      * List kickstartable channels for the logged in user.

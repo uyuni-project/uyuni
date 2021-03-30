@@ -41,13 +41,11 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
-import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -738,75 +736,6 @@ public class ActivationKeyHandler extends BaseHandler {
             }
 
             manager.removeServerGroup(activationKey, group);
-        }
-        return 1;
-    }
-
-    /**
-     * Add packages to an activation key using package name only.
-     *
-     * @param loggedInUser The current user
-     * @param key The activation key to act upon
-     * @param packageNames List of package names to be added to this activation key
-     * @return 1 on success, exception thrown otherwise.
-     * @deprecated being replaced by addPackages(string sessionKey, string key,
-     * array[packages])
-     * @since 10.2
-     *
-     * @xmlrpc.doc Add packages to an activation key using package name only.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #array_single("string", "packageName")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int addPackageNames(User loggedInUser, String key, List packageNames) {
-
-        ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        ActivationKey activationKey = lookupKey(key, loggedInUser);
-
-        for (Iterator it = packageNames.iterator(); it.hasNext();) {
-            String name = (String)it.next();
-            PackageName packageName = PackageFactory.lookupOrCreatePackageByName(name);
-            manager.addPackage(activationKey, packageName, null);
-        }
-        return 1;
-    }
-
-    /**
-     * Remove package names from an activation key.
-     *
-     * @param loggedInUser The current user
-     * @param key The activation key to act upon
-     * @param packageNames List of package names to be removed from this activation key
-     * @return 1 on success, exception thrown otherwise
-     * @deprecated being replaced by removePackages(string sessionKey, string key,
-     * array[packages])
-     * @since 10.2
-     *
-     * @xmlrpc.doc Remove package names from an activation key.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #array_single("string", "packageName")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int removePackageNames(User loggedInUser, String key, List packageNames) {
-
-        ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        ActivationKey activationKey = lookupKey(key, loggedInUser);
-
-        for (Iterator it = packageNames.iterator(); it.hasNext();) {
-            String name = (String)it.next();
-
-            PackageName packageName = null;
-            try {
-                packageName = PackageManager.lookupPackageName(name);
-            }
-            catch (LookupException e) {
-                throw new InvalidPackageException(packageName.getName(), e);
-            }
-            manager.removePackage(activationKey, packageName, null);
         }
         return 1;
     }

@@ -26,7 +26,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -48,7 +47,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -59,7 +57,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
-import com.redhat.rhn.frontend.xmlrpc.MultipleBaseChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchContentSourceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
@@ -71,7 +68,6 @@ import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
-import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelEditor;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
@@ -97,8 +93,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -106,7 +100,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -348,181 +341,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
         return ChannelManager.listAllPackages(channel);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version, between the
-     * given dates.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @param endDate last modified end date (as a string)
-     * @return all packages in the channel, regardless of version between the
-     * given dates.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate, dateTime.iso8601 endDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of package version,
-     * between the given dates.
-     * Example Date:  '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.param #param("string", "endDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *              $PackageDtoSerializer
-     *      #array_end()
-     */
-    @Deprecated
-    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
-            String startDate, String endDate) throws NoSuchChannelException {
-
-        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-        return ChannelManager.listAllPackages(channel, startDate, endDate);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version whose last
-     * modified date is greater than given date.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @return all packages in the channel, regardless of version whose last
-     * modified date is greater than given date.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of version whose last
-     * modified date is greater than given date. Example Date: '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *              $PackageDtoSerializer
-     *      #array_end()
-     */
-    @Deprecated
-    public List<PackageDto> listAllPackages(User loggedInUser, String channelLabel,
-            String startDate) throws NoSuchChannelException {
-        return listAllPackages(loggedInUser, channelLabel, startDate, null);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version, between the
-     * given dates.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @param endDate last modified end date (as a string)
-     * @return all packages in the channel, regardless of version between the
-     * given dates.
-     * @throws NoSuchChannelException thrown if there is the channel is not
-     * found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate, dateTime.iso8601 endDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of the package version,
-     * between the given dates. Example Date: '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.param #param("string", "endDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("package")
-     *              #prop("string", "name")
-     *              #prop("string", "version")
-     *              #prop("string", "release")
-     *              #prop("string", "epoch")
-     *              #prop("string", "id")
-     *              #prop("string", "arch_label")
-     *              #prop("string", "last_modified")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public Object[] listAllPackagesByDate(User loggedInUser, String channelLabel,
-            String startDate, String endDate) throws NoSuchChannelException {
-
-        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-        List<Map<String, Object>> pkgs =
-                ChannelManager.listAllPackagesByDate(channel, startDate, endDate);
-        return pkgs.toArray();
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version, whose last
-     * modified date is greater than given date.
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @param startDate last modified begin date (as a string)
-     * @return all packages in the channel, regardless of version whose last
-     * modified date is greater than given date.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of the package version,
-     * whose last modified date is greater than given date.
-     * Example Date:  '2008-08-20 08:00:00'
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("package")
-     *              #prop("string", "name")
-     *              #prop("string", "version")
-     *              #prop("string", "release")
-     *              #prop("string", "epoch")
-     *              #prop("string", "id")
-     *              #prop("string", "arch_label")
-     *              #prop("string", "last_modified")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public Object[] listAllPackagesByDate(User loggedInUser, String channelLabel,
-            String startDate) throws NoSuchChannelException {
-
-        return listAllPackagesByDate(loggedInUser, channelLabel, startDate, null);
-    }
-
-    /**
-     * Lists all packages in the channel, regardless of version
-     * @param loggedInUser The current user
-     * @param channelLabel Label of channel whose package are sought.
-     * @return all packages in the channel, regardless of version between the
-     * given dates.
-     * @throws NoSuchChannelException thrown if no channel is found.
-     * @deprecated being replaced by listAllPackages(string sessionKey,
-     * string channelLabel)
-     *
-     * @xmlrpc.doc Lists all packages in the channel, regardless of the package version
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("package")
-     *              #prop("string", "name")
-     *              #prop("string", "version")
-     *              #prop("string", "release")
-     *              #prop("string", "epoch")
-     *              #prop("string", "id")
-     *              #prop("string", "arch_label")
-     *              #prop("string", "last_modified")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public Object[] listAllPackagesByDate(User loggedInUser, String channelLabel)
-        throws NoSuchChannelException {
-
-        return listAllPackagesByDate(loggedInUser, channelLabel, null, null);
     }
 
     /**
@@ -1169,113 +987,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Change a systems subscribed channels to the list of channels passed in.
-     * @param loggedInUser The current user
-     * @param sid The id for the system in question
-     * @param channelLabels The list of labels to subscribe the system to
-     * @return Returns 1 on success, Exception otherwise.
-     * @throws FaultException A FaultException is thrown if:
-     *   - sessionKey is invalid
-     *   - server doesn't exist
-     *   - channel doesn't exist
-     *   - user can't subscribe server to channel
-     *   - a base channel is not specified
-     *   - multiple base channels are specified
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel) and system.setChildChannels(string sessionKey,
-     * int serverId, array[string channelLabel])
-     *
-     * @xmlrpc.doc Change a systems subscribed channels to the list of channels passed in.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array_single("string", "channelLabel - labels of the channels to
-     *              subscribe the system to.")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int setSystemChannels(User loggedInUser, Integer sid,
-            List<String> channelLabels) throws FaultException {
-        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
-        List<Channel> channels = new ArrayList<Channel>();
-        log.debug("setSystemChannels()");
-
-        // Verify that each channel label we were passed corresponds to a valid channel
-        // and store in a list.
-        Channel baseChannel = null;
-        log.debug("Incoming channels:");
-        for (String label : channelLabels) {
-            Channel channel = lookupChannelByLabel(loggedInUser, label);
-            log.debug("   " + channel.getLabel());
-            if (!ChannelManager.verifyChannelSubscribe(loggedInUser, channel.getId())) {
-                throw new PermissionCheckFailureException();
-            }
-
-            // let's save ourselves some time and check the arches here
-            if (!channel.getChannelArch().isCompatible(server.getServerArch())) {
-                throw new InvalidChannelException();
-            }
-
-            if (baseChannel == null && channel.isBaseChannel()) {
-
-                baseChannel = channel;
-
-                // need to make sure the base channel is the first
-                // item in the list because subscribeToServer can't subscribe
-                // to a child channel unless the server is subscribed to a base
-                // channel.
-                channels.add(0, channel);
-            }
-            else if (baseChannel != null && channel.isBaseChannel()) {
-                throw new MultipleBaseChannelException(baseChannel.getLabel(), label);
-            }
-            else {
-                channels.add(channel);
-            }
-        }
-
-        // if we can't find a base channel in the list, we need to leave
-        // the system alone and punt.
-        if (baseChannel == null) {
-            throw new InvalidChannelException("No base channel specified");
-        }
-
-        // Unsubscribe the server from it's current channels (if any)
-        Set<Channel> currentlySubscribed = server.getChannels();
-        Channel oldBase = server.getBaseChannel();
-        log.debug("Unsubscribing from:");
-        for (Channel channel : currentlySubscribed) {
-            if (channel.isBaseChannel()) {
-                continue; // must leave base for now
-            }
-            server = SystemManager.unsubscribeServerFromChannel(server, channel);
-            log.debug("   " + channel.getLabel());
-        }
-
-        // We must unsubscribe from the old Base channel last, so no child channels
-        // are still subscribed
-        if (!channels.contains(oldBase)) {
-            server = SystemManager.unsubscribeServerFromChannel(server, oldBase);
-        }
-        else {
-            // Base is the same, no need to resubscribe:
-            channels.remove(oldBase);
-        }
-
-
-        // Subscribe the server to channels in channels list
-        log.debug("Subscribing to:");
-        for (Channel channel : channels) {
-            server = SystemManager.subscribeServerToChannel(loggedInUser, server,
-                    channel, true);
-            log.debug("   " + channel.getName());
-        }
-
-        //Update errata cache
-        publishUpdateErrataCacheEvent(loggedInUser.getOrg());
-        return 1;
-    }
-
-    /**
      * Set the subscribable flag for a given channel and user. If value is set to 'true',
      * this method will give the user subscribe permissions to the channel. Otherwise, this
      * method revokes that privilege.
@@ -1817,86 +1528,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, "", "");
-    }
-
-    /**
-     * List the errata applicable to a channel after given startDate
-     * @param loggedInUser The current user
-     * @param channelLabel The label for the channel
-     * @param startDate begin date
-     * @return the errata applicable to a channel
-     * @throws NoSuchChannelException thrown if there is no channel matching
-     * channelLabel.
-     * @deprecated being replaced by listErrata(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate)
-     *
-     * @xmlrpc.doc List the errata applicable to a channel after given startDate
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("errata")
-     *              #prop_desc("string","advisory", "name of the advisory")
-     *              #prop_desc("string","issue_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *              #prop_desc("string","update_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *              #prop("string","synopsis")
-     *              #prop("string","advisory_type")
-     *              #prop_desc("string","last_modified_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *          #struct_end()
-     *      #array_end()
-     */
-    @Deprecated
-    public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel,
-            String startDate) throws NoSuchChannelException {
-
-        return listErrata(loggedInUser, channelLabel, startDate, null);
-    }
-
-    /**
-     * List the errata applicable to a channel between startDate and endDate.
-     * @param loggedInUser The current user
-     * @param channelLabel The label for the channel
-     * @param startDate begin date
-     * @param endDate end date
-     * @return the errata applicable to a channel
-     * @throws NoSuchChannelException thrown if there is no channel matching
-     * channelLabel.
-     * @deprecated being replaced by listErrata(string sessionKey,
-     * string channelLabel, dateTime.iso8601 startDate, dateTime.iso8601)
-     *
-     * @xmlrpc.doc List the errata applicable to a channel between startDate and endDate.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.param #param("string", "startDate")
-     * @xmlrpc.param #param("string", "endDate")
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("errata")
-     *              #prop_desc("string","advisory", "name of the advisory")
-     *              #prop_desc("string","issue_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *              #prop_desc("string","update_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *              #prop("string","synopsis")
-     *              #prop("string","advisory_type")
-     *              #prop_desc("string","last_modified_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS")
-     *          #struct_end()
-     *      #array_end()
-     */
-
-    @Deprecated
-    public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel,
-            String startDate, String endDate) throws NoSuchChannelException {
-
-        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
-
-        return ChannelManager.listErrataForDates(channel, startDate, endDate);
+        return listErrata(loggedInUser, channelLabel, null, null).stream().map(e -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", e.getId());
+            map.put("advisory_synopsis", e.getAdvisorySynopsis());
+            map.put("advisory_type", e.getAdvisoryType());
+            map.put("advisory_name", e.getAdvisoryName());
+            map.put("advisory", e.getAdvisoryName());
+            map.put("issue_date", e.getIssueDate());
+            map.put("update_date", e.getUpdateDate());
+            map.put("synopsis", e.getAdvisorySynopsis());
+            return map;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -2028,65 +1671,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.CHANNEL_ADMIN);
         return PackageFactory.lookupOrphanPackages(loggedInUser.getOrg()).toArray();
     }
-
-    /**
-     * Subscribe a system to a list of channels
-     * @param loggedInUser The current user
-     * @param labels a list of channel labels to subscribe the system to
-     * @param sid the serverId of the system in question
-     * @return 1 for success
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel) and system.setChildChannels(string sessionKey,
-     * int serverId, array[string channelLabel])
-     *
-     * @xmlrpc.doc Subscribes a system to a list of channels.  If a base channel is
-     *      included, that is set before setting child channels.  When setting child
-     *      channels the current child channel subscriptions are cleared.  To fully
-     *      unsubscribe the system from all channels, simply provide an empty list of
-     *      channel labels.
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array_single("string", "label - channel label to subscribe
-     *                  the system to.")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int subscribeSystem(User loggedInUser, Integer sid, List<String> labels) {
-        Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
-                loggedInUser);
-
-
-        if (labels.size() == 0) {
-            ServerFactory.unsubscribeFromAllChannels(loggedInUser, server);
-            return 1;
-        }
-
-        Channel base = null;
-        List<Integer> childChannelIds = new ArrayList<Integer>();
-
-        for (String label : labels) {
-            Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), label);
-
-            if (base == null && channel.isBaseChannel()) {
-                base = channel;
-            }
-            else if (base != null && channel.isBaseChannel()) {
-                throw new MultipleBaseChannelException(base.getLabel(), label);
-            }
-            else {
-                childChannelIds.add(channel.getId().intValue());
-            }
-        }
-        if (base != null) {
-
-            systemHandler.setBaseChannel(loggedInUser, sid,
-                    base.getId().intValue());
-        }
-        systemHandler.setChildChannels(loggedInUser, sid, childChannelIds);
-
-        return 1;
-    }
-
 
     /**
      * Clone a channel
@@ -3559,58 +3143,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ChannelFactory.clearContentSourceFilters(cs.getId());
 
         return 1;
-    }
-
-    /**
-     * Unsubscribe channels from the specified minions, trigger immediate channels update state
-     * @param user The current user
-     * @param sids System Ids for minions
-     * @param baseChannel base channel label
-     * @param childLabels child channels' labels
-     * @return array containing action Ids
-     * @deprecated being replaced by refreshSystemsChannelInfo
-     *
-     * @xmlrpc.doc Unsubscribe channels from the specified minions, trigger immediate channels update state
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #param("string", "baseChannelLabel")
-     * @xmlrpc.param #array_single("string", "childLabels")
-     * @xmlrpc.returntype #array_single("int", "actionId")
-     */
-    @Deprecated
-    public long[] unsubscribeChannels(User user, List<Integer> sids, String baseChannel, List<String> childLabels) {
-        Set<Action> actions = new HashSet<>();
-        try {
-            Set<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toSet());
-            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-            Date earliest = Date.from(LocalDateTime.now().atZone(zoneId).toInstant());
-            //If baseChannelLabel is there then we subscribe to nothing
-            if (StringUtils.isNotEmpty(baseChannel)) {
-                actions = ActionChainManager.scheduleSubscribeChannelsAction(user, serverIds, Optional.empty(),
-                        Collections.EMPTY_SET, earliest, null);
-            }
-            else {
-                List<Channel> childChannelsToRemove = childLabels.stream()
-                        .map(clabel -> lookupChannelByLabel(user, clabel))
-                        .collect(Collectors.toList());
-
-                for (Long serverId : serverIds) {
-                    Server server = SystemManager.lookupByIdAndUser(serverId, user);
-                    Set<Channel> childChannels = server.getChildChannels();
-                    childChannels.removeAll(childChannelsToRemove);
-                    Set<Action> action =
-                            ActionChainManager.scheduleSubscribeChannelsAction(user, Collections.singleton(serverId),
-                                    Optional.of(server.getBaseChannel()), childChannels, earliest, null);
-                    actions.addAll(action);
-
-                }
-            }
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
-        }
-        return actions.stream().mapToLong(a -> a.getId()).toArray();
-
     }
 
     /**

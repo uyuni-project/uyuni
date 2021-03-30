@@ -299,7 +299,7 @@ def main():
             print("(Errata ID: %04d, Errata Name: %s, Released: %s) %s" % (errata, EN[errata], ED[errata], EI[errata]))
 
     if not opt['test']:
-        client.system.applyErrata(session, sid, erratum)
+        client.system.scheduleApplyErrata(session, sid, erratum)
         command = ["/usr/sbin/rhn_check"]
         if opt['verbose']:
             print("\tDeploying updates now")

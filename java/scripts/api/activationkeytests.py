@@ -57,7 +57,7 @@ class ActivationKeyTests(RhnTestCase):
         client.activationkey.addServerGroups(self.session_key, newkey,
             [SERVER_GROUP_ID])
 
-        client.activationkey.addPackageNames(self.session_key, newkey, ["gaim"])
+        client.activationkey.addPackages(self.session_key, newkey, [{'name': 'gaim'}])
 
         details = client.activationkey.getDetails(self.session_key, newkey)
         self.validateActivationKeyHash(details)
@@ -68,7 +68,7 @@ class ActivationKeyTests(RhnTestCase):
             self.validateActivationKeyHash(keyDetails)
 
         ### Teardown Related Calls ###
-        client.activationkey.removePackageNames(self.session_key, newkey, ["gaim"])
+        client.activationkey.removePackages(self.session_key, newkey, [{'name': 'gaim'}])
 
     def validateActivationKeyHash(self, keyDetails):
         self.assertTrue(keyDetails.has_key('key'))

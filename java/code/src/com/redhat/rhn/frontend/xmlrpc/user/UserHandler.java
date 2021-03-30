@@ -37,7 +37,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import com.redhat.rhn.frontend.xmlrpc.UserNeverLoggedInException;
 import com.redhat.rhn.frontend.xmlrpc.UserNotUpdatedException;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -51,7 +50,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -905,35 +903,6 @@ public class UserHandler extends BaseHandler {
         List groups = ServerGroupFactory.listAdministeredServerGroups(target);
         return groups.toArray();
     }
-
-    /**
-     * Returns the last logged in time of the given user.
-     * @param loggedInUser The current user
-     * in user.
-     * @param login The login of the user.
-     * @return last logged in time
-     * @throws UserNeverLoggedInException if the given user has never logged in.
-     * @deprecated Never returned usable value.
-     *
-     * @xmlrpc.doc Returns the time user last logged in.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype #param("dateTime.iso8601", "date")
-     */
-    @Deprecated
-    public Date getLoggedInTime(User loggedInUser, String login)
-        throws UserNeverLoggedInException {
-
-        User target = XmlRpcUserHelper.getInstance().lookupTargetUser(
-                    loggedInUser, login);
-        Date d = target.getLastLoggedIn();
-        if (d != null) {
-            return d;
-        }
-        throw new UserNeverLoggedInException();
-    }
-
-
 
     /**
      * remove system group association from a user

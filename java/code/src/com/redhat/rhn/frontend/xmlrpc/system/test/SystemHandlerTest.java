@@ -728,8 +728,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         base.setParentChannel(null);
         SystemManager.subscribeServerToChannel(admin, server, base);
 
-        Object[] results = handler.listBaseChannels(admin,
-                server.getId().intValue());
+        Object[] results = handler.listSubscribableBaseChannels(admin, server.getId().intValue());
 
         assertTrue(results.length > 0);
         //make sure that every channel returned has null for parent_channel
@@ -750,14 +749,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Channel child = ChannelFactoryTest.createTestChannel(admin);
         child.setParentChannel(parent);
 
-        Object[] result = handler.listChildChannels(admin,
-                server.getId().intValue());
+        Object[] result = handler.listSubscribableChildChannels(admin, server.getId().intValue());
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
         server = reload(server);
-        result = handler.listChildChannels(admin,
-                server.getId().intValue());
+
+        result = handler.listSubscribableChildChannels(admin, server.getId().intValue());
 
         //server should have 1 child channel
         assertEquals(1, result.length);
@@ -1671,7 +1669,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         List errataIds = new LinkedList();
         errataIds.add(irrelevantErrata.getId().intValue());
         try {
-            handler.applyErrata(admin, server.getId().intValue(),
+            handler.scheduleApplyErrata(admin, server.getId().intValue(),
                     errataIds);
             fail();
         }

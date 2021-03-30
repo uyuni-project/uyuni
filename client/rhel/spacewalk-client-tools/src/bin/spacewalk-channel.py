@@ -144,7 +144,7 @@ def get_available_channels(user, password):
     system_id = re.sub('^ID-', '', rpclib.xmlrpclib.loads(up2dateAuth.getSystemId())[0][0]['system_id'])
     result = []
     try:
-        channels = client.system.listChildChannels(key, int(system_id))
+        channels = client.system.listSubscribableChildChannels(key, int(system_id))
     except xmlrpclib.Fault:
         exc = sys.exc_info()[1]
         systemExit(1, "Error when listing child channels: %s" % exc.faultString)
