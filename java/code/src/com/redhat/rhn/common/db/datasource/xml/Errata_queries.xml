@@ -1459,6 +1459,19 @@ JOIN rhnErrata e ON e.id = O.clone_errata_id
 -- following line ensures the errata clone is already published in the cloned channel
 JOIN rhnChannelErrata ce ON ce.errata_id = e.id AND ce.channel_id = :cid
 WHERE C.package_id IS NULL
+UNION -- orig and cloned erratas in the channels, exactly one of them has 'retracted' status
+    SELECT DISTINCT
+        clone.id, clone.advisory_name, clone.advisory, clone.advisory_type, clone.advisory_status,
+        clone.synopsis as advisory_synopsis, clone.update_date, clone.issue_date
+    FROM
+        rhnErrata clone
+        JOIN rhnErrataCloned ec ON ec.id = clone.id
+        JOIN rhnErrata orig ON orig.id = ec.original_id
+        JOIN rhnChannelErrata origCe ON origCe.errata_id = orig.id AND origCe.channel_id = :ocid
+        JOIN rhnChannelErrata cloneCe ON cloneCe.errata_id = clone.id AND cloneCe.channel_id = :cid
+    WHERE
+        orig.advisory_status != clone.advisory_status
+        AND (orig.advisory_status = 'retracted' OR clone.advisory_status = 'retracted')
   </query>
   <elaborator name="errata_flags"/>
 </mode>

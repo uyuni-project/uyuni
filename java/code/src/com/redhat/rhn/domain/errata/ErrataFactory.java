@@ -978,6 +978,7 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setLocallyModified(original.getLocallyModified());
         cloned.setLastModified(original.getLastModified());
         cloned.setSeverity(original.getSeverity());
+        cloned.setAdvisoryStatus(original.getAdvisoryStatus());
 
         // Copy the packages
         cloned.setPackages(new HashSet(original.getPackages()));
