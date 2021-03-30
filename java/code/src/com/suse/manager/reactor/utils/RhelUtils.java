@@ -162,7 +162,8 @@ public class RhelUtils {
             String minorVersion = StringUtils.substringAfter(matcher.group(2), ".");
             String release = matcher.group(3);
             return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
-        } else {
+        }
+        else {
             Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(releaseFile);
             if (amatcher.matches()) {
                 String name =
@@ -171,7 +172,8 @@ public class RhelUtils {
                 String minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
                 String release = amatcher.group(3);
                 return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
-            } else {
+            }
+            else {
                 Matcher omatcher = ORACLE_RELEASE_MATCHER.matcher(releaseFile);
                 if (omatcher.matches()) {
                     String name =

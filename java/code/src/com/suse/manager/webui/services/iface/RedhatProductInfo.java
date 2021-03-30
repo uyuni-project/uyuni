@@ -47,12 +47,16 @@ public class RedhatProductInfo {
     /**
      * @return alinux (Alibaba) release content
      */
-    public Optional<String> getAlibabaReleaseContent() { return alibabaReleaseContent; }
+    public Optional<String> getAlibabaReleaseContent() {
+        return alibabaReleaseContent;
+    }
 
     /**
      * @return oracle release content
      */
-    public Optional<String> getOracleReleaseContent() { return oracleReleaseContent; }
+    public Optional<String> getOracleReleaseContent() {
+        return oracleReleaseContent;
+    }
 
     /**
      * @return centos release content

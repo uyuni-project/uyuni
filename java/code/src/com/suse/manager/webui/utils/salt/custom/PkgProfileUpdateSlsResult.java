@@ -129,7 +129,9 @@ public class PkgProfileUpdateSlsResult {
     /**
      * @return the content of the file /etc/alinux-release
      */
-    public StateApplyResult<CmdResult> getAlibabaReleaseFile() { return alibabaReleaseFile; }
+    public StateApplyResult<CmdResult> getAlibabaReleaseFile() {
+        return alibabaReleaseFile;
+    }
 
     /**
      * @return the package that provides 'sles_es-release-server'
