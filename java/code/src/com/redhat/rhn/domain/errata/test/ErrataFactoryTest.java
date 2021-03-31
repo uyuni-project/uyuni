@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
@@ -331,6 +332,22 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         List<Errata> errata = ErrataFactory.listByChannel(user.getOrg(), chan);
         assertEquals(1, errata.size());
         assertEquals(e, errata.iterator().next());
+    }
+
+    /**
+     * Tests that syncing errata details syncs advisoryStatus attribute.
+     * @throws Exception
+     */
+    public void testSyncErrataAdvisoryStatus() throws Exception {
+        Errata oe = ErrataFactoryTest.createTestErrata(null);
+
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        ClonedErrata ce = (ClonedErrata) ErrataFactory.lookupById(ceid);
+
+        oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        ErrataFactory.syncErrataDetails(ce);
+        assertEquals(AdvisoryStatus.RETRACTED, ce.getAdvisoryStatus());
     }
 }
 

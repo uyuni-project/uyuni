@@ -978,6 +978,7 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setLocallyModified(original.getLocallyModified());
         cloned.setLastModified(original.getLastModified());
         cloned.setSeverity(original.getSeverity());
+        AdvisoryStatus previousAdvisoryStatus = cloned.getAdvisoryStatus();
         cloned.setAdvisoryStatus(original.getAdvisoryStatus());
 
         // Copy the packages
@@ -996,6 +997,23 @@ public class ErrataFactory extends HibernateFactory {
             Bug bugIn = (Bug) bugsItr.next();
             Bug cloneB = createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
             cloned.addBug(cloneB);
+        }
+
+        if (previousAdvisoryStatus != cloned.getAdvisoryStatus()) {
+            boolean retract = (cloned.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+            cloned.getChannels().forEach(c -> processRetracted(cloned.getId(), c.getId(), retract));
+        }
+    }
+
+    private static void processRetracted(long errataId, long channelId, boolean retract) {
+        List<Long> erratumPids = ErrataFactory.listErrataChannelPackages(channelId, errataId);
+        if (retract) {
+            ErrataCacheManager.deleteCacheEntriesForChannelErrata(channelId, List.of(errataId));
+            ErrataCacheManager.deleteCacheEntriesForChannelPackages(channelId, erratumPids);
+        }
+        else {
+            ErrataCacheManager.insertCacheForChannelPackages(channelId, errataId, erratumPids);
+            ErrataCacheManager.insertCacheForChannelPackages(channelId, null, erratumPids);
         }
     }
 
