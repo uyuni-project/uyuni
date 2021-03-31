@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -954,12 +955,17 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
+        // let's also add an extra erratum to the original, but let's not clone it to the cloned channel
+        // it must not appear in the result
+        Errata notCloned = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(notCloned);
 
         Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
         ce = ErrataManager.addToChannels(ce, List.of(cchan.getId()), user);
 
         oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        notCloned.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
 
         List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
         assertEquals(1, result.size());

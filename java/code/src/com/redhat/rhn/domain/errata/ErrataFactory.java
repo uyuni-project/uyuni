@@ -1211,7 +1211,25 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static void syncErrataDetails(PublishedClonedErrata cloned) {
         copyDetails(cloned, cloned.getOriginal(), true);
+        AdvisoryStatus previousAdvisoryStatus = cloned.getAdvisoryStatus();
         cloned.setAdvisoryStatus(original.getAdvisoryStatus());
+        }
+
+        if (previousAdvisoryStatus != cloned.getAdvisoryStatus()) {
+            boolean retract = (cloned.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+            cloned.getChannels().forEach(c -> processRetracted(cloned.getId(), c.getId(), retract));
+        }
+    }
+
+    private static void processRetracted(long errataId, long channelId, boolean retract) {
+        List<Long> erratumPids = ErrataFactory.listErrataChannelPackages(channelId, errataId);
+        if (retract) {
+            ErrataCacheManager.deleteCacheEntriesForChannelErrata(channelId, List.of(errataId));
+            ErrataCacheManager.deleteCacheEntriesForChannelPackages(channelId, erratumPids);
+        }
+        else {
+            ErrataCacheManager.insertCacheForChannelPackages(channelId, errataId, erratumPids);
+            ErrataCacheManager.insertCacheForChannelPackages(channelId, null, erratumPids);
     }
 
     /**
