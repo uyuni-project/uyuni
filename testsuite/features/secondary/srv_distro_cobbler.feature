@@ -6,8 +6,6 @@ Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
-
-  Scenario: Upload files
     And I upload ./features/upload_files/install/vmlinuz to /install/Fedora_12_i386/images/pxeboot on server
     And I upload ./features/upload_files/install/empty.xml to /install on server
     And I upload ./features/upload_files/install/initrd.img to /install/Fedora_12_i386/images/pxeboot on server
