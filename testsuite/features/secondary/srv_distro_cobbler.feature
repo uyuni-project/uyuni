@@ -7,6 +7,12 @@ Feature: Cobbler and distribution autoinstallation
   Background:
     Given I am authorized
 
+  Scenario: Upload files
+    And I upload ./features/upload_files/install/vmlinuz to /install/Fedora_12_i386/images/pxeboot on server
+    And I upload ./features/upload_files/install/empty.xml to /install on server
+    And I upload ./features/upload_files/install/initrd.img to /install/Fedora_12_i386/images/pxeboot on server
+    And I upload ./features/upload_files/install/initrd to /install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/ on server
+
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"

@@ -67,3 +67,7 @@ Feature: Very first settings
 
   Scenario: Detect latest Salt changes on the server
     When I query latest Salt changes on "server"
+
+  Scenario: Copy install files
+    Given I am authorized for the "Admin" section
+    Then I copy /root/spacewalk/testsuite/test.txt to /install
