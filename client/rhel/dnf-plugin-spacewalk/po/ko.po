@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 13:12+0100\n"
-"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "dnf-plugin-spacewalk-master/ko/>\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #: ../spacewalk.py:45
 msgid "This system is not subscribed to any channels."
-msgstr ""
+msgstr "이 시스템은 아무 채널에도 등록되지 않았습니다."
 
 #: ../spacewalk.py:46
 msgid "SystemId could not be acquired."
@@ -61,7 +61,7 @@ msgstr ""
 
 #: ../spacewalk.py:50
 msgid "Package profile information could not be sent."
-msgstr ""
+msgstr "패키지 프로파일 정보를 보낼 수 없습니다."
 
 #: ../spacewalk.py:51
 #, python-format
