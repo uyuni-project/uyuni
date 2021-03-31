@@ -1205,12 +1205,20 @@ DATA = {
         'BASECHANNEL' : 'centos7-ppc64le', 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
+    'centos-7-aarch64-uyuni' : {
+        'BASECHANNEL' : 'centos7-aarch64', 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
     'centos-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'centos-8-ppc64le-uyuni' : {
         'BASECHANNEL' : 'centos8-ppc64le', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-8-aarch64-uyuni' : {
+        'BASECHANNEL' : 'centos8-aarch64', 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
     },
     'oracle-6-x86_64' : {
@@ -1233,12 +1241,24 @@ DATA = {
         'BASECHANNEL' : 'oraclelinux7-x86_64', 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
     },
+    'oracle-7-aarch64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux7-aarch64', 'PKGLIST' : RES7 + RES7_X86,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+    },
     'oracle-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
+    'oracle-8-aarch64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux8-aarch64', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+    },
     'amazonlinux-2-x86_64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2-core-x86_64', 'PKGLIST' : RES7 + RES7_X86 + AMAZONLINUX2,
+        'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
+    },
+    'amazonlinux-2-aarch64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2-core-aarch64', 'PKGLIST' : RES7 + AMAZONLINUX2,
         'DEST' : '/srv/www/htdocs/pub/repositories/amzn/2/bootstrap/'
     },
     'RHEL6-x86_64' : {
@@ -1263,6 +1283,10 @@ DATA = {
     },
     'alibaba-2-x86_64-uyuni': {
         'BASECHANNEL': 'alibaba-2-x86_64', 'PKGLIST': RES7 + RES7_X86,
+        'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
+    },
+    'alibaba-2-aarch64-uyuni': {
+        'BASECHANNEL': 'alibaba-2-aarch64', 'PKGLIST': RES7,
         'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
     },
     'almalinux-8-x86_64-uyuni' : {
