@@ -1,7 +1,7 @@
 # Uyuni automated test suite
 
 # Introduction
-
+TEST
 This is the automated testsuite for [Uyuni](https://www.uyuni-project.org/).
 
 Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/gherkin/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
