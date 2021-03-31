@@ -1,8 +1,6 @@
 name: "Pull Request Labeler"
 
-on:
- pull_request_target:
-    types: [opened, edited, synchronize, reopened]
+on: [pull_request_target, pull_request]
 
 jobs:
   triage:
