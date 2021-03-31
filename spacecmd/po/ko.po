@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-23 10:57+0000\n"
+"PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -382,7 +382,7 @@ msgstr "사용법: activationkey_setusagelimit KEY <usage limit>"
 
 #: ../src/spacecmd/activationkey.py:1102
 msgid "usage: activationkey_setusagelimit KEY unlimited "
-msgstr "사용법: activationkey_setusagelimit KEY unlimited "
+msgstr "사용법: activationkey_setusagelimit KEY 무제한 "
 
 #: ../src/spacecmd/activationkey.py:1132
 #, python-format
