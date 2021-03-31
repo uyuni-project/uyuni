@@ -1,0 +1,24 @@
+reviewers:
+  # Reviewer groups each of which has a list of GitHub usernames
+  groups:
+    qa:
+      - ktsamis
+      - atighineanu
+      - maximenoel8
+      - lkotek
+      - srbarrios
+      - Bischoff
+      - calancha
+
+files:
+  # Keys are glob expressions.
+  # You can assign groups defined above as well as GitHub usernames.
+  'testsuite/**':
+    - qa
+
+options:
+  ignore_draft: true
+  ignored_keywords:
+    - WIP
+    - DRAFT
+  enable_group_assignment: true
