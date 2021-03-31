@@ -1,44 +1,44 @@
 #Dev Labels
-java: 
+java:
 - java/*
 - java/**/*
-ui: 
+ui:
 - web/*
 - web/**/*
-webapp: 
+webapp:
 - java/code/webapp/*
 - java/code/webapp/**/*
-cobbler: 
+cobbler:
 - java/code/src/org/cobbler/*
 - java/code/src/org/cobbler/**/*
-documentation: 
+documentation:
 - documentation/*
 - documentation/**/*
-proxy: 
+proxy:
 - proxy/*
 - proxy/**/*
-API: 
+API:
 - java/code/src/com/redhat/rhn/frontend/*
 - java/code/src/com/redhat/rhn/frontend/**/*
-Virtualization management: 
+Virtualization management:
 - java/code/src/com/suse/manager/virtualization/*
 - java/code/src/com/suse/manager/virtualization/**/*
-monitoring: 
+monitoring:
 - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/*
 - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/**/*
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
-python3: 
+python3:
 - java/**/*.py
 - backend/**/*.py
 - client/**/*.py
 - susemanager/**/*.py
 - spacecmd/*
 - spacecmd/**/*
-database: 
+database:
 - schema/spacewalk/*
 - schema/spacewalk/**/*
-content-management: 
+content-management:
 - java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
 - java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
 spark-router:
@@ -64,46 +64,46 @@ xmlrpc:
 - java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
 
 #QA Labels
-testing: 
+testing:
 - testsuite/*
 - testsuite/**/*
 test-framework:
 - testsuite/features/support/*
 - testsuite/features/step_definitions/*
-core-features: 
+core-features:
 - testsuite/features/core/*
 - testsuite/features/core/**/*
-build-validation-features: 
+build-validation-features:
 - testsuite/features/build_validation/*
 - testsuite/features/build_validation/**/*
-secondary-features: 
+secondary-features:
 - testsuite/features/secondary/*
 - testsuite/features/secondary/**/*
-ci-pipelines: 
+ci-pipelines:
 - testsuite/**/*.yml
 
 #Unit tests
-backend_unittests_pgsql: 
+backend_unittests_pgsql:
 - backend/*
 - backend/**/*
-javascript_lint: 
+javascript_lint:
 - web/*
 - web/**/*
-java_lint_checkstyle: 
+java_lint_checkstyle:
 - java/*
 - java/**/*
-java_pgsql_tests: 
+java_pgsql_tests:
 - java/*
 - java/**/*
-ruby_rubocop: 
+ruby_rubocop:
 - testsuite/*
 - testsuite/**/*
-schema_migration_test_oracle: 
+schema_migration_test_oracle:
 - schema/spacewalk/*
 - schema/spacewalk/**/*
-schema_migration_test_pgsql: 
+schema_migration_test_pgsql:
 - schema/spacewalk/*
 - schema/spacewalk/**/*
-susemanager_unittests: 
+susemanager_unittests:
 - susemanager/*
 - susemanager/**/*
