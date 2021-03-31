@@ -98,7 +98,8 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Check default snippets
     When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "Default Snippets"
-    And I click on "Next Page"
+    And I enter "spacewalk/sles_no_signature_checks" as the filtered snippet name
+    And I click on the filter button
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
