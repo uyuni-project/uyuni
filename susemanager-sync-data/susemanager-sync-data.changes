@@ -1,5 +1,6 @@
 - define missing ubuntu universe update channels (bsc#1182842)
 - define UEK repositories for Oracle Linux
+- add OES2018 SP3 (bsc#1183845)
 
 -------------------------------------------------------------------
 Tue Feb 02 13:11:23 CET 2021 - jgonzalez@suse.com
