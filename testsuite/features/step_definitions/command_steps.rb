@@ -535,25 +535,25 @@ When(/^the server stops mocking an IPMI host$/) do
 end
 
 When(/^the server starts mocking a Redfish host$/) do
-  $server.run('mkdir -p /root/Redfish-Mockup-Server/')
+  $server.run('mkdir -p /var/Redfish-Mockup-Server/')
   ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = '/root/Redfish-Mockup-Server/' + file
+    dest = '/var/Redfish-Mockup-Server/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
   $server.run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
   $server.run('unzip DSP2043_2019.1.zip')
-  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
+  cmd = "/usr/bin/python3 /var/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{$server.full_hostname} -p 8443 " \
-        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
+        "-S -D /var/DSP2043_2019.1/public-catfish/ " \
         "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
         "< /dev/null > /dev/null 2>&1 &"
   $server.run(cmd)
 end
 
 When(/^the server stops mocking a Redfish host$/) do
-  $server.run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
+  $server.run('pkill -e -f /var/Redfish-Mockup-Server/redfishMockupServer.py')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -980,10 +980,10 @@ end
 
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
-    return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
+    return_code = file_extract($server, '/var/ssl-build/' + file, '/tmp/' + file)
     raise 'File extraction failed' unless return_code.zero?
-    $proxy.run('mkdir -p /root/ssl-build')
-    return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
+    $proxy.run('mkdir -p /var/ssl-build')
+    return_code = file_inject($proxy, '/tmp/' + file, '/var/ssl-build/' + file)
     raise 'File injection failed' unless return_code.zero?
   end
 end
@@ -1574,4 +1574,19 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+end
+
+When(/^I copy autoinstall mocked files on server$/) do
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  $server.run("mkdir -p #{target_dirs}")
+  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
+  source_dir = "/var/autoinstall/"
+  return_codes = []
+  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
+  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
+  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
+  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  raise 'File injection failed' unless return_codes.all?(&:zero?)
+  $server.run("chmod 755 -R #{source_dir}")
 end
