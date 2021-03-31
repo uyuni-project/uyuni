@@ -383,19 +383,6 @@ Then(/^the tomcat logs should not contain errors$/) do
   end
 end
 
-When(/^I increase Java log level to "([^"]*)" on server$/) do |log_level|
-  $server.run(
-    "cat >>/srv/tomcat/webapps/rhn/WEB-INF/classes/log4j.properties <<CONFIG
-log4j.logger.com.suse.manager.reactor=#{log_level.upcase}
-log4j.logger.com.suse.manager.webui.services.impl=#{log_level.upcase}
-CONFIG"
-  )
-end
-
-When(/^I restart the tomcat service$/) do
-  $server.run('systemctl restart tomcat.service')
-end
-
 When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
