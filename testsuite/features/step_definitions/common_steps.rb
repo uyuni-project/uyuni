@@ -195,7 +195,7 @@ Given(/^I am on the Systems page$/) do
   )
 end
 
-Given(/cobblerd is running/) do
+Given(/^cobblerd is running$/) do
   ct = CobblerTest.new
   raise 'cobblerd is not running' unless ct.running?
 end
@@ -225,7 +225,7 @@ When(/^I trigger cobbler system record$/) do
   end
 end
 
-Given(/distro "([^"]*)" exists/) do |distro|
+Given(/^distro "([^"]*)" exists$/) do |distro|
   ct = CobblerTest.new
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
