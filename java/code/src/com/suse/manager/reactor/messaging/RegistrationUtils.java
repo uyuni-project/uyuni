@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -355,13 +355,14 @@ public class RegistrationUtils {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                  "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "oel".equalsIgnoreCase(grains.getValueAsString(OS))) {
+                 "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
                             server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
-                            x.getOracleReleaseContent()));
+                            x.getOracleReleaseContent(), x.getAlibabaReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());
@@ -388,6 +389,8 @@ public class RegistrationUtils {
                return Collections.singleton(product);
            }
         }
+        LOG.warn("No product match found. OS grain is " + grains.getValueAsString(OS) +
+                ", arch is " + grains.getValueAsString(OS_ARCH));
         return emptySet();
     }
 

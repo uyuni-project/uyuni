@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
-# Copyright (c) 2021 SUSE LLC.
+# Copyright (c) 2016--2021 SUSE LLC.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -385,6 +385,9 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/oracle-release ]; then
             grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
             VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`
+        elif [ -f /etc/alinux-release ]; then
+            grep -v '^#' /etc/alinux-release | grep -q '\(Alibaba\)' && BASE="alibaba"
+            VERSION=`grep -v '^#' /etc/alinux-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/centos-release ]; then
             grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
             VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`

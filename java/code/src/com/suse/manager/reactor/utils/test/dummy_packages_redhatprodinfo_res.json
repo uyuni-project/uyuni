@@ -19,6 +19,16 @@
       "__run_num__": 3,
       "changes": {}
     },
+    "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run": {
+      "comment": "Command \"cat /etc/alinux-release\" run",
+      "name": "cat /etc/alinux-release",
+      "start_time": "14:04:57.667941",
+      "skip_watch": true,
+      "result": true,
+      "duration": 233.474,
+      "__run_num__": 3,
+      "changes": {}
+    },
     "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
       "__run_num__": 2,
       "changes": {

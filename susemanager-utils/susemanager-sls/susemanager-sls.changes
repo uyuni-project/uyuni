@@ -1,5 +1,6 @@
 - Provide Custom Info as Pillar data
 - Add support for Amazon Linux 2
+- Add support for Alibaba Cloud Linux 2
 - add allow vendor change option to pathing via salt 
 - Prevent useless package list refresh actions on zypper minions (bsc#1183661)
 - Skip removed product classes with satellite-sync

@@ -1,5 +1,6 @@
 - Provide Custom Info as Pillar data
 - remove deprecated xmlrpc functions
+- Add support for Alibaba Cloud Linux 2
 - Only update the kickstart path in cobbler if necessary (bsc#1175216)
 - enhance config channel API with list assigned groups
 - enhance server group API with config channel and formula

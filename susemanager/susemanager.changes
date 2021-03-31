@@ -1,4 +1,5 @@
 - Add bootstrap repository for Amazon Linux 2
+- Add bootstrap repository for Alibaba Cloud Linux 2
 - Add bootstrap repository definition for SUSE Manager Proxy 4.2 (bsc#1183645)
 - Removed workaround for bnc#668908.
 - Require bind-utils so dig is available for mgr-setup

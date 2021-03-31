@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2010-2014 Novell
+# Copyright (c) 2010-2021 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,6 +32,7 @@ def getInstalledProducts():
 def getRedHatLikeProducts():
     """
      1) if a RES release package (sles_es-release) is installed it is a RES.
+     2) if /etc/alinux-release exists it is an Alibaba Cloud Linux
      2) if /etc/oracle-release exists it is a OracleLinux
      3) is it a centos system? check if /etc/centos-release file exists
      4) finally we can say it is a original RHEL (maybe:-)
@@ -41,6 +42,10 @@ def getRedHatLikeProducts():
         ret = parseReleaseInfo()
         if ret:
             ret['name'] = "RES"
+    elif os.path.exists('/etc/alinux-release'):
+        ret = parseReleaseInfo(release='/etc/alinux-release')
+        if ret:
+            ret['name'] = "Alibaba"
     elif os.path.exists('/etc/oracle-release'):
         ret = parseReleaseInfo(release='/etc/oracle-release')
         if ret:
