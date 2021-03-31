@@ -12,10 +12,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -338,7 +338,7 @@ msgstr ""
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "릴리스 (%s, %s)에 구독하기 위한 권한 부족"
+msgstr "릴리스(%s, %s)에 구독하기 위한 권한 부족"
 
 #. Various messages that can be reused
 #.
@@ -589,7 +589,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     사용자 그룹 구성원 한도에 도달했습니다..\n"
+"     사용자 그룹 구성원 한도에 도달했습니다.\n"
 "\n"
 "     계정의 현재 설정에서 다른 사용자 계정 추가를 허용하지 않습니다.\n"
 "     조직 관리자에게 문의하여 서버에 구독할 수 있는 최대 사용자 수를\n"
@@ -1552,7 +1552,7 @@ msgstr "       (채널 목록을 확인하려면: %s --list-channels)"
 #: ../satellite_tools/satsync.py:903
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
-msgstr "   짧은 패키지 메타데이터 검색 중/구문 분석 중: %s (%s)"
+msgstr "   짧은 패키지 메타데이터 검색 중/구문 분석 중: %s(%s)"
 
 #: ../satellite_tools/satsync.py:981
 #, python-format
@@ -1889,9 +1889,7 @@ msgstr "오류: 조직 ID %s을(를) 조회할 수 없음"
 #: ../satellite_tools/satsync.py:2374
 msgid ""
 "WARNING: --list-channels option overrides any --step option. --step ignored."
-msgstr ""
-"경고: --list-channels 옵션은 모든 --step 옵션을 재정의합니다. --step가 무시되"
-"었습니다."
+msgstr "경고: --list-channels 옵션은 모든 --step 옵션을 재정의합니다. --step이 무시되었습니다."
 
 #: ../satellite_tools/satsync.py:2389
 #, python-format
