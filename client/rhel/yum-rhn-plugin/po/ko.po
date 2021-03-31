@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-18 09:56+0000\n"
+"PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "yum-rhn-plugin/ko/>\n"
@@ -60,7 +60,7 @@ msgstr "정리"
 #: ../rhnplugin.py:113
 #, python-brace-format
 msgid "Using list of {PRODUCT_NAME} repos from cache"
-msgstr "캐시의 {PRODUCT_NAME} 저장소 목록 사용"
+msgstr "캐시의 {PRODUCT_NAME} 리포지토리 목록 사용"
 
 #: ../rhnplugin.py:129
 #, python-brace-format
