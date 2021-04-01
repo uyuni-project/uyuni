@@ -1,29 +1,30 @@
 # Image Server installation state - part of SUSE Manager for Retail
 #
-# Copyright (c) 2017 - 2019 SUSE LLC
+# Copyright (c) 2017 - 2021 SUSE LLC
 
 {% if pillar['addon_group_types'] is defined and 'osimage_build_host' in pillar['addon_group_types'] %}
 {% set kiwi_dir = '/var/lib/Kiwi' %}
 
 # on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
 {%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
+{%- set available_packages = salt['pkg.search']('kiwi').keys() %}
 
 {%- if use_kiwi_ng %}
-{% set kiwi_boot_modules = ['kiwi-boot-descriptions'] %}
-
 mgr_install_kiwi:
   pkg.installed:
     - pkgs:
       - python3-kiwi
-{% for km in kiwi_boot_modules %}
-      - {{ km }}
-{% endfor %}
-
+{%- if 'kiwi-systemdeps-disk-images' in available_packages %}
+      - kiwi-systemdeps-disk-images
+      - kiwi-systemdeps-image-validation
+      - kiwi-systemdeps-iso-media
+{%- endif %}
+{%- if 'kiwi-systemdeps-containers' in available_packages %}
+      - kiwi-systemdeps-containers
+{%- endif %}
+      - kiwi-boot-descriptions
 {%- else %}
-# legacy kiwi
-
 {% set kiwi_boot_modules = ['kiwi-desc-netboot', 'kiwi-desc-saltboot', 'kiwi-desc-vmxboot', 'kiwi-desc-oemboot', 'kiwi-desc-isoboot'] %}
-{% set available_packages = salt['pkg.search']('kiwi*').keys() %}
 
 mgr_install_kiwi:
   pkg.installed:
