@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.utils;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -21,6 +22,7 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -198,7 +200,8 @@ public class RhelUtils {
      * 5) is it a centos system? check if /etc/centos-release file exists
      * 6) finally we can say it is a original RHEL (maybe:-)
      *
-     * @param server the minion
+     * @param channels channels assigned to the target
+     * @param arch the architecture string of the target
      * @param resReleasePackage the package that provides 'sles_es-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
@@ -207,13 +210,12 @@ public class RhelUtils {
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
-            Server server, Optional<String> resReleasePackage,
+            Set<Channel> channels, String arch, Optional<String> resReleasePackage,
             Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
             Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
-        String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
         // check first if it has RES channels assigned or the RES release package installed
-        boolean hasRESChannels = server.getChannels().stream()
+        boolean hasRESChannels = channels.stream()
                 .filter(ch -> ch.getProductName() != null &&
                         "RES".equalsIgnoreCase(ch.getProductName().getName()))
                 .count() > 0;
@@ -230,7 +232,17 @@ public class RhelUtils {
             String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
 
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                    .findSUSEProduct("RES", majorVersion, release, arch, true));
+                    .findSUSEProduct("RES", majorVersion, release, arch, true))
+                    .flatMap(resProduct -> {
+                        if (resProduct.isBase()) {
+                            return Optional.of(resProduct);
+                        }
+                        else {
+                            return Optional.ofNullable(SUSEProductFactory
+                                    .findSUSEProduct("rhel-base", majorVersion, release, arch, true));
+                        }
+                    })
+                    .filter(SUSEProduct::isBase);
 
             return Optional.of(new RhelProduct(suseProduct, name,
                     majorVersion, release, arch));
@@ -266,6 +278,40 @@ public class RhelUtils {
      *    assigned to a system it is a RES system
      * 2) if a RES release package (sles_es-release) is installed it is a RES.
      * 3) otherwise it is not a RES system
+     * 4) if /etc/oracle-release exists, it is OracleLinux
+     * 5) is it a centos system? check if /etc/centos-release file exists
+     * 6) finally we can say it is a original RHEL (maybe:-)
+     *
+     * @param server the minion
+     * @param resReleasePackage the package that provides 'sles_es-release'
+     * @param rhelReleaseFile the content of /etc/redhat-release
+     * @param centosReleaseFile the content of /etc/centos-release
+     * @param oracleReleaseFile the content of /etc/oracle-release
+     * @param alibabaReleaseFile the content of /etc/alinux-release
+     * @return the {@link RhelProduct}
+     */
+    public static Optional<RhelProduct> detectRhelProduct(
+            Server server, Optional<String> resReleasePackage,
+            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
+            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
+        return detectRhelProduct(
+                server.getChannels(),
+                server.getServerArch().getLabel().replace("-redhat-linux", ""),
+                resReleasePackage,
+                rhelReleaseFile,
+                centosReleaseFile,
+                oracleReleaseFile,
+                alibabaReleaseFile
+        );
+    }
+
+    /**
+     * Guess the SUSE product for the RedHat minion and parse the
+     * /etc/redhat,centos-release file.
+     * 1) if the RES channel or a clone of the RES channel is
+     *    assigned to a system it is a RES system
+     * 2) if a RES release package (sles_es-release) is installed it is a RES.
+     * 3) otherwise it is not a RES system
      * 4) if /etc/oracle-release exists it is a OracleLinux
      * 5) if /etc/alinlux-release exists it is an Alibaba Cloud Linux
      * 6) is it a centos system? check if /etc/centos-release file exists
@@ -283,52 +329,15 @@ public class RhelUtils {
             ImageInfo image, Optional<String> resReleasePackage,
             Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
             Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
-        String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
-
-        // check first if it has RES channels assigned or the RES release package installed
-        boolean hasRESChannels = image.getChannels().stream()
-                .filter(ch -> ch.getProductName() != null &&
-                        "RES".equalsIgnoreCase(ch.getProductName().getName()))
-                .count() > 0;
-        boolean hasRESReleasePackage = resReleasePackage
-                .filter(pkg -> StringUtils.startsWith(pkg, "sles_es-release")).isPresent();
-        if (hasRESChannels || hasRESReleasePackage) {
-            // we got a RES. find the corresponding SUSE product
-            Optional<ReleaseFile> releaseFile = rhelReleaseFile.or(() -> centosReleaseFile)
-                    .flatMap(RhelUtils::parseReleaseFile);
-            // Find the corresponding SUSEProduct in the database
-            String name = releaseFile.map(ReleaseFile::getName).orElse("RES");
-            String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
-                    .orElse("unknown");
-            String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
-
-            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                    .findSUSEProduct("RES", majorVersion, release, arch, true));
-            return Optional.of(new RhelProduct(suseProduct, name,
-                    majorVersion, release, arch));
-        }
-
-        // next check if OracleLinux
-        if (oracleReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return oracleReleaseFile.map(v -> detectPlainRHEL(v, arch, "OracleLinux"));
-        }
-
-        // next check if Alibaba Cloud Linux
-        if (alibabaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return alibabaReleaseFile.map(v -> detectPlainRHEL(v, arch, "Alibaba"));
-        }
-
-        // next check if Centos
-        if (centosReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return centosReleaseFile.map(v -> detectPlainRHEL(v, arch, "CentOS"));
-        }
-
-        // if neither RES nor Centos then we probably got a plain RHEL
-        if (rhelReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return rhelReleaseFile.map(v -> detectPlainRHEL(v, arch, "RedHatEnterprise"));
-        }
-
-        return Optional.empty();
+        return detectRhelProduct(
+                image.getChannels(),
+                image.getImageArch().getLabel().replace("-redhat-linux", ""),
+                resReleasePackage,
+                rhelReleaseFile,
+                centosReleaseFile,
+                oracleReleaseFile,
+                alibabaReleaseFile
+        );
     }
 
     private static RhelProduct detectPlainRHEL(String releaseFileContent,
