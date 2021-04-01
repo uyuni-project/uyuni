@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-31 19:58+0000\n"
-"PO-Revision-Date: 2021-03-31 19:57+0000\n"
+"PO-Revision-Date: 2021-04-01 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2532,7 +2532,7 @@ msgstr "Stránka nenájdená"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "The page you requested, {0}, was not found."
-msgstr ""
+msgstr "Požadovaná stránka {0} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:11
 msgid ""
@@ -2547,18 +2547,24 @@ msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
 msgstr ""
+"Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite "
+"na tlačidlo späť vo vašom "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
 msgstr ""
+"Ak ste použili záložku, stránka sa mohla presunúť na iné miesto, odkedy bola "
+"záložka "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
 msgstr ""
+"Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte "
+"nás s podrobnosťami o tom, ako ste dostali "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -2819,7 +2825,7 @@ msgstr "Naozaj chcete vymazať vybrané profily? ({0} vybraných profilov)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
-msgstr ""
+msgstr "Použiť prihlasovanie údaje"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
@@ -3254,7 +3260,7 @@ msgstr ""
 
 #: ../html/src/manager/login/login.tsx:109
 msgid "Learn more about"
-msgstr ""
+msgstr "Zistiť viac o"
 
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
@@ -3875,7 +3881,7 @@ msgstr "odmietnuté"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:146
 msgid "Keys"
-msgstr ""
+msgstr "Kľúče"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
@@ -3946,7 +3952,7 @@ msgstr "Vytvoriť opakovanie sa"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:14
 msgid "Minion"
-msgstr ""
+msgstr "Minion"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
@@ -4022,7 +4028,7 @@ msgstr "Vytvoriť "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
-msgstr ""
+msgstr "Späť na zoznam"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
 msgid "Schedule Recurring Highstate"
@@ -4727,6 +4733,7 @@ msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
+"Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych sietí"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -4753,7 +4760,7 @@ msgstr "Typ siete"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:187
 msgid "Macvtap mode"
-msgstr ""
+msgstr "Režim Macvtap"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:196
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
@@ -4762,11 +4769,11 @@ msgstr "Spustiť pri štarte virtuálneho hostiteľa"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:204
 msgid "Connectivity"
-msgstr ""
+msgstr "Pripojenie"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:219
 msgid "Maximum Transmission Unit (MTU)"
-msgstr ""
+msgstr "Maximálna prenosová jednotka (MTU)"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
@@ -4781,11 +4788,11 @@ msgstr "Typ virtuálneho portu"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Select interfaces"
-msgstr ""
+msgstr "Vybrané rozhrania"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:257
 msgid "By physical function"
-msgstr ""
+msgstr "Podľa fyzickej funkcie"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By virtual functions"
