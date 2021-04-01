@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-31 12:58+0000\n"
+"PO-Revision-Date: 2021-04-01 10:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -1810,7 +1810,7 @@ msgstr "적용할 패치 없음"
 #. a summary of which errata we're going to apply
 #: ../src/spacecmd/errata.py:162
 msgid "Errata             Systems"
-msgstr "오류 시스템"
+msgstr "오류             시스템"
 
 #: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:231
 #: ../src/spacecmd/system.py:468 ../src/spacecmd/system.py:821
@@ -1952,7 +1952,7 @@ msgstr "삭제할 패치 없음"
 
 #: ../src/spacecmd/errata.py:471
 msgid "Erratum            Channels"
-msgstr "오류 채널"
+msgstr "오류            채널"
 
 #: ../src/spacecmd/errata.py:479
 msgid "Delete these patches [y/N]:"
@@ -1969,7 +1969,7 @@ msgstr "errata_publish: 채널에 패치 게시"
 
 #: ../src/spacecmd/errata.py:496
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
-msgstr "오류: errata_publish ERRATA|search:XXX <CHANNEL ...>"
+msgstr "사용법: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 
 #: ../src/spacecmd/errata.py:523
 msgid "No patches to publish"
@@ -3518,7 +3518,7 @@ msgstr "%s에 가입한 시스템 없음"
 
 #: ../src/spacecmd/misc.py:935
 msgid "Is this ok [y/N]:"
-msgstr "계속하시겠습니까 [예/아니요]:"
+msgstr "계속하시겠습니까 [y/N]:"
 
 #: ../src/spacecmd/org.py:48
 msgid "org_create: Create an organization"
