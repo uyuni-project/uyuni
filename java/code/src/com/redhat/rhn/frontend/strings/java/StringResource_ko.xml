@@ -2237,9 +2237,9 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>다음 패키지는 킥트타트 프로파일과 관련된 채널에서 사용할 수 없습니다: {0}. 모든 킥스타트의 기능이 올바르게 작동하게 하기 위해, 이러한 패키지는 킥스타트 프로파일과 관련된 최소 하나의 채널에 있어야 합니다.  </target>
+        <target>다음 패키지는 킥스타트 프로파일과 관련된 채널에서 사용할 수 없습니다: {0}. 모든 킥스타트의 기능이 올바르게 작동하게 하기 위해, 이러한 패키지는 킥스타트 프로파일과 관련된 최소 하나의 채널에 있어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.invalidchannel.satmessage" xml:space="preserve">
+      <trans-unit id="kickstart.invalidchannel.satmessage" xml:space="preserve" approved="yes">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
@@ -2269,7 +2269,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;이 문제를 해결하려면 다음 사항을 확인하십시오:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2296,7 +2296,7 @@ rhn-tools 채널의 satellite 동기화를 요청하고 다시 시도해야
 &lt;/div&gt;
 </target>
       </trans-unit>
-      <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
+      <trans-unit id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve" approved="yes">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
@@ -2317,8 +2317,8 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="translated">&lt;div style="text-align: left;"&gt;
-&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
+&lt;p&gt;이 문제를 해결하려면 다음 사항을 확인하십시오:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 이 킥스타트 프로파일의 기본 채널을 위한 'appstream' 하위 소프트웨어 채널을 조직에서
@@ -2439,12 +2439,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>오류: IP 범위값은 0과 255 사이여야 합니다. 입력하신 IP 범위를 확인하시고 다시 시도하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.iprange_delete.success" xml:space="preserve">
+      <trans-unit id="kickstart.iprange_delete.success" xml:space="preserve" approved="yes">
         <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 프로파일 {0}에서 IP 범위를 성공적으로 삭제하였습니다</target>
+        <target>자동 설치 프로파일 {0}에서 IP 범위를 성공적으로 삭제하였습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure" xml:space="preserve">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
@@ -2516,12 +2516,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>snippet 삭제  </target>
       </trans-unit>
-      <trans-unit id="kickstart.iprange.url" xml:space="preserve">
+      <trans-unit id="kickstart.iprange.url" xml:space="preserve" approved="yes">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>킥스타트 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 첨가하시면 새로운 시스템의 IP 주소에 기반하여 킥스타트를 실행할 수 있습니다. </target>
+        <target>자동 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 첨가하면 새로운 시스템의 IP 주소에 기반하여 자동 설치를 실행할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
@@ -2593,7 +2593,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>트랜잭션 롤백</target>
       </trans-unit>
-      <trans-unit id="action.failedlink" xml:space="preserve">
+      <trans-unit id="action.failedlink" xml:space="preserve" approved="yes">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/schedule/ActionDetails.do</context>
@@ -2601,9 +2601,9 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
             1 system failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
-      <trans-unit id="action.failedlink.plural" xml:space="preserve">
+      <trans-unit id="action.failedlink.plural" xml:space="preserve" approved="yes">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
@@ -2611,7 +2611,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
             2 systems failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink" xml:space="preserve">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2835,12 +2835,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>(없음)</target>
       </trans-unit>
-      <trans-unit id="settag.select" xml:space="preserve">
+      <trans-unit id="settag.select" xml:space="preserve" approved="yes">
         <source>Select or deselect all items on this page</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All list views with checkboxes</context>
         </context-group>
-        <target>이 페이지 모든 항목 선택 또는 선택해제</target>
+        <target>이 페이지의 모든 항목 선택 또는 선택해제</target>
       </trans-unit>
       <trans-unit id="toolbar.create.filter" xml:space="preserve">
         <source>Create Notification Filter</source>
@@ -3115,7 +3115,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>'{0}' 질의를 구문 분석할 수 없습니다. </target>
       </trans-unit>
-      <trans-unit id="packages.search.index_files_missing" xml:space="preserve">
+      <trans-unit id="packages.search.index_files_missing" xml:space="preserve" approved="yes">
         <source>Index files missing from search-server.  Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
@@ -3123,9 +3123,9 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>검색 서버에 색인 파일이 없습니다. 데이터베이스에 데이터가 있다고 가정할 경우, /usr/sbin/rhn-search cleanindex를 실행하여 색인을 다시 생성한 후 rhn-search를 재시작할 수 있습니다.   </target>
+        <target>검색 서버에 색인 파일이 없습니다. 데이터베이스에 데이터가 있다고 가정할 경우, /usr/sbin/rhn-search cleanindex를 실행하여 색인을 다시 생성한 후 rhn-search를 재시작할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve">
+      <trans-unit id="packages.search.index_files_missing_for_docs" xml:space="preserve" approved="yes">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
@@ -3133,9 +3133,9 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>해당 로케일의 검색 서버에 색인 파일이 누락되어 있습니다. 검색 작업은 디폴트 로케일을 사용하여 실행됩니다. 해당 로케일의 데이터베이스에 데이터가 있을 경우 /usr/sbin/rhn-search cleanindex를 실행하면 색인 파일을 다시 생성할 수 있습니다. 그 후 rhn-search를 다시 시작합니다</target>
+        <target>해당 로케일의 검색 서버에 색인 파일이 누락되어 있습니다. 검색 작업은 디폴트 로케일을 사용하여 실행됩니다. 해당 로케일의 데이터베이스에 데이터가 있을 경우 /usr/sbin/rhn-search cleanindex를 실행하면 색인 파일을 다시 생성할 수 있습니다. 그 후 rhn-search를 다시 시작합니다.</target>
       </trans-unit>
-      <trans-unit id="packages.search.could_not_execute_query" xml:space="preserve">
+      <trans-unit id="packages.search.could_not_execute_query" xml:space="preserve" approved="yes">
         <source>Could not execute query '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
@@ -3143,14 +3143,14 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>'{0}' 질의를 실행할 수 없습니다.        </target>
+        <target>'{0}' 질의를 실행할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="searchserver.index_out_of_sync_with_db" xml:space="preserve">
+      <trans-unit id="searchserver.index_out_of_sync_with_db" xml:space="preserve" approved="yes">
         <source>SearchServer index and database entries appear to be out of sync. Please run '/usr/sbin/rhn-search cleanindex'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
         </context-group>
-        <target>검색 서버 인덱스와 데이터베이스 항목이 동기화되어 있지 않은 것 같습니다. '/usr/sbin/rhn-search cleanindex'를 실행하십시오</target>
+        <target>검색 서버 인덱스와 데이터베이스 항목이 동기화되어 있지 않은 것 같습니다. '/usr/sbin/rhn-search cleanindex'를 실행하십시오.</target>
       </trans-unit>
       <trans-unit id="patches.installed.notavailable" xml:space="preserve">
         <source>Not Available</source>
@@ -3209,12 +3209,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>작업</target>
       </trans-unit>
-      <trans-unit id="systemsearch_checkin" xml:space="preserve">
+      <trans-unit id="systemsearch_checkin" xml:space="preserve" approved="yes">
         <source>Days Since Last Check-in</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>마지막으로 시스템을 접속한 날짜  </target>
+        <target>마지막 접속 후 지난 일 수</target>
       </trans-unit>
       <trans-unit id="systemsearch_registered" xml:space="preserve">
         <source>Days Since First Registered</source>
@@ -3251,19 +3251,19 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>CPU MHz 이상</target>
       </trans-unit>
-      <trans-unit id="systemsearch_num_of_cpus_lt" xml:space="preserve">
+      <trans-unit id="systemsearch_num_of_cpus_lt" xml:space="preserve" approved="yes">
         <source>Number of CPUs Less Than</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>CPU 수 이하 </target>
+        <target>CPU 수 이하</target>
       </trans-unit>
-      <trans-unit id="systemsearch_num_of_cpus_gt" xml:space="preserve">
+      <trans-unit id="systemsearch_num_of_cpus_gt" xml:space="preserve" approved="yes">
         <source>Number of CPUs Greater Than</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>CPU 수 이상 </target>
+        <target>CPU 수 이상</target>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt" xml:space="preserve">
         <source>RAM Less Than</source>
@@ -3391,12 +3391,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>필요한 패키지</target>
       </trans-unit>
-      <trans-unit id="systemsearch_running_kernel" xml:space="preserve">
+      <trans-unit id="systemsearch_running_kernel" xml:space="preserve" approved="yes">
         <source>Running Kernel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>커널 실행 중  </target>
+        <target>커널 실행 중</target>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.location" xml:space="preserve">
         <source>Location</source>
@@ -3468,86 +3468,86 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target>이 영역의 검색 쿼리는 반드시 숫자로 되어야 합니다</target>
       </trans-unit>
-      <trans-unit id="systemsearch_no_matches_found" xml:space="preserve">
+      <trans-unit id="systemsearch_no_matches_found" xml:space="preserve" approved="yes">
         <source>No matches found</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>일치하는 항목을 찾을 수 없음  </target>
+        <target>일치하는 항목을 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.sameorg" xml:space="preserve">
+      <trans-unit id="userdisable.error.sameorg" xml:space="preserve" approved="yes">
         <source>User to deactivate must be in the same organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>비활성화시킬 사용자는 반드시 같은 조직에 속해야 합니다. </target>
+        <target>비활성화시킬 사용자는 반드시 같은 조직에 속해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.onlyuser" xml:space="preserve">
+      <trans-unit id="userdisable.error.onlyuser" xml:space="preserve" approved="yes">
         <source>This user is the last Organization Administrator for this Organization. You cannot remove him from the Organization Administrators group.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>이 사용자는 이 조직에서 마지막으로 남은 유일한 조직 관리자입니다. 따라서 조직 관리자 그룹에서 이 조직 관리자를 삭제하실 수 없습니다. </target>
+        <target>이 사용자는 이 조직에서 마지막으로 남은 유일한 조직 관리자입니다. 따라서 조직 관리자 그룹에서 이 조직 관리자를 삭제하실 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.otheruser" xml:space="preserve">
+      <trans-unit id="userdisable.error.otheruser" xml:space="preserve" approved="yes">
         <source>Only Organization Administrators can deactivate users other than themselves.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>조직 관리자만이 자신을 제외한 다른 사용자를 비활성화시킬 수 있습니다. </target>
+        <target>조직 관리자만이 자신을 제외한 다른 사용자를 비활성화시킬 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="org.base.delete.error" xml:space="preserve">
+      <trans-unit id="org.base.delete.error" xml:space="preserve" approved="yes">
         <source>You cannot delete the base Organization {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDelete</context>
         </context-group>
-        <target>{0} 조직을 삭제할 수 없습니다.   </target>
+        <target>{0} 조직을 삭제할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.orgadmin" xml:space="preserve">
+      <trans-unit id="userdisable.error.orgadmin" xml:space="preserve" approved="yes">
         <source>You cannot deactivate another organization
 administrator. Please remove the 'Organization Administrator' role from this
 user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>또 다른 조직 관리자를 비활성화하실 수 없습니다.
+        <target>또 다른 조직 관리자를 비활성화할 수 없습니다.
 사용자 계정을 비활성화하기 전에 해당 사용자의 '조직 관리자' 역할을 먼저
-삭제하셔야 합니다. </target>
+삭제해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.userdisabled" xml:space="preserve">
+      <trans-unit id="userdisable.error.userdisabled" xml:space="preserve" approved="yes">
         <source>User is already deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
         <target>사용자는 이미 비활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit id="userenable.error.usernotdisabled" xml:space="preserve">
+      <trans-unit id="userenable.error.usernotdisabled" xml:space="preserve" approved="yes">
         <source>Only deactivated users can be reactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
         <target>비활성화된 사용자만 재활성화시킬 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="userenable.error.sameorg" xml:space="preserve">
+      <trans-unit id="userenable.error.sameorg" xml:space="preserve" approved="yes">
         <source>User to reactivate must be in the same organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target>재활성화시킬 사용자는 반드시 같은 조직에 속해야 합니다.  </target>
+        <target>재활성화시킬 사용자는 반드시 같은 조직에 속해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="userenable.error.orgadmin" xml:space="preserve">
+      <trans-unit id="userenable.error.orgadmin" xml:space="preserve" approved="yes">
         <source>You must be an Organization Administrator to enable a user.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
-        <target>조직 관리자만이 사용자를 활성화시킬 수 있습니다.  </target>
+        <target>조직 관리자만 사용자를 활성화할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="reactivateusers.none" xml:space="preserve">
+      <trans-unit id="reactivateusers.none" xml:space="preserve" approved="yes">
         <source>Choose at least one user to reactivate.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
-        <target>재활성화시킬 사용자를 선택해주세요.</target>
+        <target>재활성화할 사용자를 선택해주세요.</target>
       </trans-unit>
       <trans-unit id="enable.confirmed" xml:space="preserve">
         <source>{0} user successfully reactivated.</source>
@@ -3643,37 +3643,37 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>권고 릴리즈</target>
       </trans-unit>
-      <trans-unit id="packageName" xml:space="preserve">
+      <trans-unit id="packageName" xml:space="preserve" approved="yes">
         <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>패키지 이름 </target>
+        <target>패키지 이름</target>
       </trans-unit>
-      <trans-unit id="packageNvre" xml:space="preserve">
+      <trans-unit id="packageNvre" xml:space="preserve" approved="yes">
         <source>Package NVRE</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>패키지 NVRE  </target>
+        <target>패키지 NVRE</target>
       </trans-unit>
-      <trans-unit id="packageArch" xml:space="preserve">
+      <trans-unit id="packageArch" xml:space="preserve" approved="yes">
         <source>Package Architecture</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>패키지 아키텍쳐  </target>
+        <target>패키지 아키텍쳐</target>
       </trans-unit>
-      <trans-unit id="summary" xml:space="preserve">
+      <trans-unit id="summary" xml:space="preserve" approved="yes">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
         </context-group>
-        <target>요약 정보  </target>
+        <target>요약 정보</target>
       </trans-unit>
       <trans-unit id="topic" xml:space="preserve">
         <source>Topic</source>
@@ -3758,12 +3758,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>이벤트</target>
       </trans-unit>
-      <trans-unit id="type" xml:space="preserve">
+      <trans-unit id="type" xml:space="preserve" approved="yes">
         <source>Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyCreate.do</context>
         </context-group>
-        <target>유형 </target>
+        <target>유형</target>
       </trans-unit>
       <trans-unit id="patch.applynone" xml:space="preserve">
         <source>No patches selected.</source>
@@ -3786,12 +3786,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>현재 @@PRODUCT_NAME@@ 시간:   </target>
       </trans-unit>
-      <trans-unit id="timetag.awol" xml:space="preserve">
+      <trans-unit id="timetag.awol" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; This system has not checked into the @@PRODUCT_NAME@@ recently. Since a system cannot be updated if it does not check in to @@PRODUCT_NAME@@, it is unlikely that this action will succeed.&lt;br/&gt;&lt;br/&gt; Please check the system logs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 이 시스템은 최근 @@PRODUCT_NAME@@에 체크인하지 않았습니다. @@PRODUCT_NAME@@에 체크인하지 않은 경우 시스템을 업데이트할 수 없기 때문에, 작업을 실패할 확률이 높습니다.&lt;br/&gt;&lt;br/&gt;시스템에서 rhnsd가 실행 중인지 확인해 보십시오.  </target>
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; 이 시스템은 최근 @@PRODUCT_NAME@@에 체크인하지 않았습니다. @@PRODUCT_NAME@@에 체크인하지 않은 경우 시스템을 업데이트할 수 없기 때문에, 작업을 실패할 확률이 높습니다.&lt;br/&gt;&lt;br/&gt;시스템에서 rhnsd가 실행 중인지 확인해 보십시오.</target>
       </trans-unit>
       <trans-unit id="timetag.categorizeFormat" xml:space="preserve">
         <source>{0} {1} {2}</source>
@@ -3965,12 +3965,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>일반 설정</target>
       </trans-unit>
-      <trans-unit id="Admin" xml:space="preserve">
+      <trans-unit id="Admin" xml:space="preserve" approved="yes">
         <source>Admin</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>관리  </target>
+        <target>관리</target>
       </trans-unit>
       <trans-unit id="Filters" xml:space="preserve">
         <source>Filters</source>
@@ -4021,14 +4021,14 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>패키지 프로파일을 생성하기 전에 먼저 이 시스템을 기본 채널에 등록하셔야 합니다.</target>
       </trans-unit>
-      <trans-unit id="erratum.delete" xml:space="preserve">
+      <trans-unit id="erratum.delete" xml:space="preserve" approved="yes">
         <source>Deleted patches &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Delete</context>
         </context-group>
-        <target>삭제된 에라타 &lt;strong&gt;{0}&lt;/strong&gt;.</target>
+        <target>삭제된 패치 &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
-      <trans-unit id="Active Filters" xml:space="preserve">
+      <trans-unit id="Active Filters" xml:space="preserve" approved="yes">
         <source>Active Filters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -4050,13 +4050,13 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>&lt;strong&gt;{3}&lt;/strong&gt;의 &lt;strong&gt;{2}&lt;/strong&gt;를 위한 패키지 프로파일 동기화 작업을 성공적으로 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;스케줄하셨습니다&lt;/a&gt;&lt;/strong&gt;.</target>
       </trans-unit>
-      <trans-unit id="message.hardwarerefresh" xml:space="preserve">
+      <trans-unit id="message.hardwarerefresh" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; @@PRODUCT_NAME@@는 패키지 프로파일 동기화 작업 이전에 &lt;strong&gt;{2}&lt;/strong&gt;에 하드웨어 재생 작업을 실행하도록 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;스케줄하였습니다&lt;/a&gt;&lt;/strong&gt;.  이는 시스템에 패키지 비교 기능이 있는지를 확인하기 위해 필요합니다.  </target>
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; @@PRODUCT_NAME@@는 패키지 프로파일 동기화 작업 이전에 &lt;strong&gt;{2}&lt;/strong&gt;에 하드웨어 재생 작업을 실행하도록 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;스케줄하였습니다&lt;/a&gt;&lt;/strong&gt;. 이는 시스템에 패키지 비교 기능이 있는지를 확인하기 위해 필요합니다.</target>
       </trans-unit>
       <trans-unit id="filterCreate.success" xml:space="preserve">
         <source>The filter {0} was successfully created</source>
@@ -10959,23 +10959,23 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>
