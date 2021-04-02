@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-07 02:35+0000\n"
+"PO-Revision-Date: 2021-04-02 06:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -717,12 +717,12 @@ msgstr "모니터링이 비활성화되었습니다."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
+msgstr "Tomcat Prometheus 내보내기는 작동하지만 JMX 구성은 비활성화되어 있습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
+msgstr "Tomcat Prometheus 내보내기는 작동하지 않지만 JMX 구성은 활성화되어 있습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
 #, fuzzy
@@ -795,7 +795,7 @@ msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
-msgstr ""
+msgstr " 내보내기를 통해 환경에 대한 메트릭을 노출합니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Refer to the "
@@ -807,7 +807,7 @@ msgstr "문서"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
-msgstr ""
+msgstr " 이러한 메트릭을 사용하는 방법을 알아보십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:242
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:262
@@ -1443,7 +1443,7 @@ msgstr "프로파일 삭제"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
+msgstr "정의된 핀이 없습니다. 아래 버튼으로 만들 수 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
@@ -1592,11 +1592,11 @@ msgstr "일치하지 않는 시스템"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
-msgstr ""
+msgstr "CSV 다운로드"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
-msgstr ""
+msgstr "물리적 배포만"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
 #, fuzzy
@@ -1808,8 +1808,7 @@ msgstr "클러스터를 삭제하시겠습니까?"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:106
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"이 작업을 수행해도 클러스터가 쳬기되지 않습니다. Uyuni에서만 제거됩니다."
+msgstr "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
@@ -1928,7 +1927,7 @@ msgstr "이 작업을 수행할 권한이 없습니다."
 
 #: ../html/src/manager/content-management/create-project/create-project.js:35
 msgid "Create a new Content Lifecycle Project"
-msgstr "새 컨텐트 라이프싸이클 프로젝트 생성"
+msgstr "새 컨텐트 라이프싸이클 프로젝트 만들기"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
 msgid "Create project"
@@ -2531,7 +2530,7 @@ msgstr "페이지를 찾을 수 없음"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "The page you requested, {0}, was not found."
-msgstr ""
+msgstr "요청한 페이지 {0}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:11
 #, fuzzy
@@ -2546,19 +2545,19 @@ msgstr ""
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
+msgstr "링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클릭하십시오. "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
+msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
+msgstr "이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하십시오. "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -2818,7 +2817,7 @@ msgstr "선택한 프로파일을 삭제하시겠습니까?({0}개 프로파일 
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
-msgstr ""
+msgstr "자격 증명 사용"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
@@ -3253,7 +3252,7 @@ msgstr ""
 
 #: ../html/src/manager/login/login.tsx:109
 msgid "Learn more about"
-msgstr ""
+msgstr "자세히 알아보기"
 
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
@@ -3873,7 +3872,7 @@ msgstr "거부됨"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:146
 msgid "Keys"
-msgstr ""
+msgstr "키"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
@@ -3944,7 +3943,7 @@ msgstr "반복 생성"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:14
 msgid "Minion"
-msgstr ""
+msgstr "Minion"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 #, fuzzy
@@ -4023,7 +4022,7 @@ msgstr "만들기"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
-msgstr ""
+msgstr "목록으로 돌아가기"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
 #, fuzzy
@@ -4720,7 +4719,7 @@ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr ""
+msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -4749,7 +4748,7 @@ msgstr "네트워크"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:187
 msgid "Macvtap mode"
-msgstr ""
+msgstr "Macvtap 모드"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:196
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
@@ -4758,11 +4757,11 @@ msgstr "가상 호스트 부팅 중 시작"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:204
 msgid "Connectivity"
-msgstr ""
+msgstr "연결성"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:219
 msgid "Maximum Transmission Unit (MTU)"
-msgstr ""
+msgstr "최대 전송 단위(MTU)"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
@@ -4779,27 +4778,27 @@ msgstr "가상 머신 유형"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Select interfaces"
-msgstr ""
+msgstr "인터페이스 선택"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:257
 msgid "By physical function"
-msgstr ""
+msgstr "물리적 기능별"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By virtual functions"
-msgstr ""
+msgstr "가상 기능별"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By interfaces"
-msgstr ""
+msgstr "인터페이스별"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Interfaces"
-msgstr ""
+msgstr "인터페이스"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:290
 msgid "Physical Function"
-msgstr ""
+msgstr "물리적 기능"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:305
 #, fuzzy
@@ -4808,21 +4807,21 @@ msgstr "가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:329
 msgid "VLAN tag"
-msgstr ""
+msgstr "VLAN 태그"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:333
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
-msgstr ""
+msgstr "0에서 4095 사이의 정수"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:340
 msgid "VLAN tags trunking"
-msgstr ""
+msgstr "VLAN 태그 트렁킹"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:350
 #: ../html/src/manager/virtualization/nets/network-properties.js:351
 msgid "NAT IPv4 range"
-msgstr ""
+msgstr "NAT IPv4 범위"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:360
 #, fuzzy
@@ -4857,25 +4856,25 @@ msgstr "이미지 이름"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
-msgstr ""
+msgstr "전달자"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
-msgstr ""
+msgstr "도메인"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
-msgstr ""
+msgstr "DNS 서버 주소"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
-msgstr ""
+msgstr "유효한 정규화된 호스트 이름이어야 합니다."
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
@@ -4895,15 +4894,15 @@ msgstr "MAC 주소"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
-msgstr ""
+msgstr "호스트 이름(쉼표로 구분)"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
-msgstr ""
+msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
-msgstr ""
+msgstr "SRV 레코드"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
 #, fuzzy
@@ -4912,7 +4911,7 @@ msgstr "소스 이름"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
-msgstr ""
+msgstr "프로토콜"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
 #, fuzzy
@@ -4941,49 +4940,49 @@ msgstr "대상 유형"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
-msgstr ""
+msgstr "TXT 레코드"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
-msgstr ""
+msgstr "값"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
-msgstr ""
+msgstr "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/DNS 서비스가 추가되지 않았습니다."
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
+msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
+msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
-msgstr ""
+msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
-msgstr ""
+msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr ""
+msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. 게스트와 호스트 간의 통신이 불가능합니다."
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
-msgstr ""
+msgstr "SR-IOV 풀"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
+msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 #, fuzzy
@@ -4996,7 +4995,7 @@ msgstr "네트워크"
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
-msgstr ""
+msgstr "v6"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
 #, fuzzy
@@ -5005,7 +5004,7 @@ msgstr "MAC 주소"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
-msgstr ""
+msgstr "DHCP 고유 식별자(DUID)"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
 #, fuzzy
@@ -5019,15 +5018,15 @@ msgstr "이미지 프로파일"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
-msgstr ""
+msgstr "BOOTP 서버"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
-msgstr ""
+msgstr "TFTP 루트 경로"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
-msgstr ""
+msgstr "파라미터"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
 #, fuzzy
@@ -5036,15 +5035,15 @@ msgstr "프로파일 편집"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
-msgstr ""
+msgstr "VSI(Virtual Station Interface) 파라미터"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
-msgstr ""
+msgstr "프로파일 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
-msgstr ""
+msgstr "인터페이스 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
 #, fuzzy
@@ -5053,7 +5052,7 @@ msgstr "관리되지 않음"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
-msgstr ""
+msgstr "VSI 유형 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
 #, fuzzy
@@ -5067,11 +5066,11 @@ msgstr "인스턴스"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
-msgstr ""
+msgstr "값은 유효한 UUID여야 합니다."
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
-msgstr ""
+msgstr "VLAN"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
 #, fuzzy
@@ -5085,11 +5084,11 @@ msgstr "Gatherer 모듈"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
-msgstr ""
+msgstr "태그됨"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr ""
+msgstr "태그되지 않음"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 #, fuzzy
@@ -5384,7 +5383,7 @@ msgstr "이미지를 찾을 수 없음"
 
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
-msgstr ""
+msgstr "HTTP 오류 코드 "
 
 #~ msgid ""
 #~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
