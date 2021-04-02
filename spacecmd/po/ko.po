@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-01 10:58+0000\n"
+"PO-Revision-Date: 2021-04-02 06:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -3602,7 +3602,7 @@ msgstr "성은 필수입니다."
 
 #: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
 msgid "An email address is required"
-msgstr "전자 메일 주소는 필수입니다."
+msgstr "이메일 주소는 필수입니다."
 
 #: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
 msgid "A password is required"
@@ -4358,15 +4358,15 @@ msgstr "SID:"
 
 #: ../src/spacecmd/scap.py:160
 msgid "Action_ID:"
-msgstr "Action_ID:"
+msgstr "작업_ID:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "OSCAP_Parameters:"
-msgstr "OSCAP_Parameters:"
+msgstr "OSCAP_파라미터:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Test_Result:"
-msgstr "Test_Result:"
+msgstr "테스트_결과:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Benchmark:"
@@ -4374,7 +4374,7 @@ msgstr "벤치마크:"
 
 #: ../src/spacecmd/scap.py:164
 msgid "Benchmark_Version:"
-msgstr "Benchmark_Version:"
+msgstr "벤치마크_버전:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Profile:"
@@ -4382,15 +4382,15 @@ msgstr "프로파일:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Profile_Title:"
-msgstr "Profile_Title:"
+msgstr "프로파일_제목:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Start_Time:"
-msgstr "Start_Time:"
+msgstr "시작_시간:"
 
 #: ../src/spacecmd/scap.py:167
 msgid "End_Time:"
-msgstr "End_Time:"
+msgstr "종료_시간:"
 
 #: ../src/spacecmd/scap.py:168
 msgid "Errors:"
