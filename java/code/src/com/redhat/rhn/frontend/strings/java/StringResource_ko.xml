@@ -4150,12 +4150,12 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="monitoring.services.restarted" xml:space="preserve">
+      <trans-unit id="monitoring.services.restarted" xml:space="preserve" approved="yes">
         <source>Configuration updated, Monitoring services restarted.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>설정이 업데이트되고, 모니터링 (Monitoring) 서비스가 재시작되었습니다.  </target>
+        <target>구성이 업데이트되고, 모니터링 서비스가 재시작되었습니다.</target>
       </trans-unit>
       <trans-unit id="monitoring.services.novalueschanged" xml:space="preserve">
         <source>No changes made.</source>
@@ -4269,12 +4269,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>아루바</target>
       </trans-unit>
-      <trans-unit id="AX" xml:space="preserve">
+      <trans-unit id="AX" xml:space="preserve" approved="yes">
         <source>Aland Islands</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>올란드 제도 </target>
+        <target>올란드 제도</target>
       </trans-unit>
       <trans-unit id="AZ" xml:space="preserve">
         <source>Azerbaijan</source>
@@ -4346,12 +4346,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>베냉</target>
       </trans-unit>
-      <trans-unit id="BL" xml:space="preserve">
+      <trans-unit id="BL" xml:space="preserve" approved="yes">
         <source>Saint Barthelemy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>생바르텔레미 </target>
+        <target>생바르텔레미</target>
       </trans-unit>
       <trans-unit id="BM" xml:space="preserve">
         <source>Bermuda</source>
@@ -4444,12 +4444,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>코코 (키링) 섬</target>
       </trans-unit>
-      <trans-unit id="CD" xml:space="preserve">
+      <trans-unit id="CD" xml:space="preserve" approved="yes">
         <source>CONGO, The Democratic Republic of the</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>콩고, 민주 공화국  </target>
+        <target>콩고, 민주 공화국</target>
       </trans-unit>
       <trans-unit id="CF" xml:space="preserve">
         <source>Central African Republic</source>
@@ -4717,12 +4717,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>가봉</target>
       </trans-unit>
-      <trans-unit id="GB" xml:space="preserve">
+      <trans-unit id="GB" xml:space="preserve" approved="yes">
         <source>United Kingdom</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>영국  </target>
+        <target>영국</target>
       </trans-unit>
       <trans-unit id="GB-Eire" xml:space="preserve">
         <source>Ireland</source>
@@ -4749,12 +4749,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>프랑스령 기아나</target>
       </trans-unit>
-      <trans-unit id="GG" xml:space="preserve">
+      <trans-unit id="GG" xml:space="preserve" approved="yes">
         <source>Guernsey</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>건지 </target>
+        <target>건지</target>
       </trans-unit>
       <trans-unit id="GH" xml:space="preserve">
         <source>Ghana</source>
@@ -4910,12 +4910,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>이스라엘</target>
       </trans-unit>
-      <trans-unit id="IM" xml:space="preserve">
+      <trans-unit id="IM" xml:space="preserve" approved="yes">
         <source>Isle of Man</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>맨 섬 </target>
+        <target>맨 섬</target>
       </trans-unit>
       <trans-unit id="IN" xml:space="preserve">
         <source>India</source>
@@ -4959,12 +4959,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>이탈리아</target>
       </trans-unit>
-      <trans-unit id="JE" xml:space="preserve">
+      <trans-unit id="JE" xml:space="preserve" approved="yes">
         <source>Jersey</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>저지 섬 </target>
+        <target>저지 섬</target>
       </trans-unit>
       <trans-unit id="JM" xml:space="preserve">
         <source>Jamaica</source>
@@ -5036,12 +5036,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>북한</target>
       </trans-unit>
-      <trans-unit id="KR" xml:space="preserve">
+      <trans-unit id="KR" xml:space="preserve" approved="yes">
         <source>South Korea</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>남한</target>
+        <target>대한민국</target>
       </trans-unit>
       <trans-unit id="KW" xml:space="preserve">
         <source>Kuwait</source>
@@ -5162,19 +5162,19 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>몰도바</target>
       </trans-unit>
-      <trans-unit id="ME" xml:space="preserve">
+      <trans-unit id="ME" xml:space="preserve" approved="yes">
         <source>Montenegro</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>몬테네그로  </target>
+        <target>몬테네그로</target>
       </trans-unit>
-      <trans-unit id="MF" xml:space="preserve">
+      <trans-unit id="MF" xml:space="preserve" approved="yes">
         <source>Saint Martin</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>세인트 마틴 </target>
+        <target>세인트 마틴</target>
       </trans-unit>
       <trans-unit id="MG" xml:space="preserve">
         <source>Madagascar</source>
@@ -5463,19 +5463,19 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>푸에르토리코</target>
       </trans-unit>
-      <trans-unit id="PS" xml:space="preserve">
+      <trans-unit id="PS" xml:space="preserve" approved="yes">
         <source>Palestinian Territory, Occupied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>팔레스타인 자치 구역 </target>
+        <target>팔레스타인 자치 구역</target>
       </trans-unit>
-      <trans-unit id="PT" xml:space="preserve">
+      <trans-unit id="PT" xml:space="preserve" approved="yes">
         <source>Portugal</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>포루투갈</target>
+        <target>포르투갈</target>
       </trans-unit>
       <trans-unit id="PW" xml:space="preserve">
         <source>Palau</source>
@@ -5505,12 +5505,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>리유니온(프랑스)</target>
       </trans-unit>
-      <trans-unit id="RS" xml:space="preserve">
+      <trans-unit id="RS" xml:space="preserve" approved="yes">
         <source>Serbia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>세르비아  </target>
+        <target>세르비아</target>
       </trans-unit>
       <trans-unit id="RO" xml:space="preserve">
         <source>Romania</source>
@@ -5729,12 +5729,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>토켈라우</target>
       </trans-unit>
-      <trans-unit id="TL" xml:space="preserve">
+      <trans-unit id="TL" xml:space="preserve" approved="yes">
         <source>Timor-Leste</source>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
-        <target>동티모르 </target>
+        <target>동티모르</target>
       </trans-unit>
       <trans-unit id="TM" xml:space="preserve">
         <source>Turkmenistan</source>
@@ -5967,19 +5967,19 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>이 행을 기준으로 순서 정렬하기</target>
       </trans-unit>
-      <trans-unit id="method.createsuccess" xml:space="preserve">
+      <trans-unit id="method.createsuccess" xml:space="preserve" approved="yes">
         <source>Notification Method '{0}' created.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
-        <target>통지 방식'{0}'이 만들어졌습니다.</target>
+        <target>'{0}' 알림 방법을 생성했습니다.</target>
       </trans-unit>
-      <trans-unit id="method.nametaken" xml:space="preserve">
+      <trans-unit id="method.nametaken" xml:space="preserve" approved="yes">
         <source>Notification Method with name '{0}' is already in use.  Please choose a different name.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
-        <target>{0} 통지 방식은 이미 사용 중입니다. 다른 프로파일 이름을 입력해주세요.</target>
+        <target>{0} 알림 방법은 이미 사용 중입니다. 다른 프로파일 이름을 입력해주세요.</target>
       </trans-unit>
       <trans-unit id="Bootstrap Script" xml:space="preserve">
         <source>Bootstrap Script</source>
@@ -5995,12 +5995,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>재시작</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve">
+      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 서비스를 사용할 첫번째 사용자를 생성하셨습니다.&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;이곳을 클릭하여&lt;/strong&gt;&lt;/a&gt; 나머지 추가 설정을 마치시기 바랍니다.  </target>
+        <target>@@PRODUCT_NAME@@ 서비스를 사용할 첫번째 사용자를 생성했습니다.&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;이곳을 클릭하여&lt;/strong&gt;&lt;/a&gt; 나머지 추가 설정을 완료하십시오.</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -6009,19 +6009,19 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="hostname" xml:space="preserve">
+      <trans-unit id="hostname" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ server hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 서버 호스트 이름 </target>
+        <target>@@PRODUCT_NAME@@ 서버 호스트 이름</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.10" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.10" xml:space="preserve" approved="yes">
         <source>A script with that name already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>같은 이름을 가진 스크립트가 이미 존재합니다</target>
+        <target>같은 이름을 가진 스크립트가 이미 존재함</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.11" xml:space="preserve">
         <source>Invalid script name</source>
@@ -6037,41 +6037,41 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>부적절한 인수</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.13" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.13" xml:space="preserve" approved="yes">
         <source>Could not parse httpd proxy URL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>httpd proxy URL을 구문 분석하지 못했습니다</target>
+        <target>httpd proxy URL을 구문 분석할 수 없음</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.14" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.14" xml:space="preserve" approved="yes">
         <source>Cannot find pub tree</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>pub 트리를 찾지 못했습니다</target>
+        <target>pub 트리를 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.15" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.15" xml:space="preserve" approved="yes">
         <source>The hostname was not valid</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig</context>
         </context-group>
-        <target>유효한 호스트명이 아닙니다</target>
+        <target>호스트명이 유효하지 않음</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.16" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.16" xml:space="preserve" approved="yes">
         <source>Could not find the CA certificate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>CA 인증서를 찾지 못했습니다</target>
+        <target>CA 인증서를 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.error.17" xml:space="preserve">
+      <trans-unit id="bootstrap.config.error.17" xml:space="preserve" approved="yes">
         <source>Could not find GPG key</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>GPG 키를 찾지 못했습니다</target>
+        <target>GPG 키를 찾을 수 없음</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.error.127" xml:space="preserve">
         <source>Unhandled error</source>
@@ -6080,54 +6080,54 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>처리할 수 없는 오류</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.success" xml:space="preserve">
+      <trans-unit id="bootstrap.config.success" xml:space="preserve" approved="yes">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾으실 수 있습니다</target>
+        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾을 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="restart.config.error" xml:space="preserve">
+      <trans-unit id="restart.config.error" xml:space="preserve" approved="yes">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>satellite를 재시작하는데 오류가 발생하였습니다. 콘솔에서 /usr/sbin/service rhn-satellite restart 명령을 입력하여 재시작시킬 수 있습니다. 보다 자세한 정보는 지원팀에게 문의하시기 바랍니다.</target>
+        <target>satellite를 재시작하는데 오류가 발생하였습니다. 콘솔에서 /usr/sbin/service rhn-satellite restart 명령을 입력하여 재시작할 수 있습니다. 보다 자세한 정보는 지원팀에게 문의하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit id="config.storeconfig.error" xml:space="preserve">
+      <trans-unit id="config.storeconfig.error" xml:space="preserve" approved="yes">
         <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>오류가 발생하여 Satellite 설정 변경 사항이 저장되지 않았습니다.  보다 자세한 정보는 지원팀에 문의하시기 바랍니다.</target>
+        <target>오류가 발생하여 Satellite 설정 변경 사항이 저장되지 않았습니다. 자세한 정보는 지원팀에 문의하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit id="restart.config.success" xml:space="preserve">
+      <trans-unit id="restart.config.success" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@를 다시 시작하고 있습니다.  5 분 안에 이 페이지가 새로 고침되지 않을 경우, &lt;a href="/rhn/YourRhn.do"&gt;여기&lt;/a&gt;를 클릭하여 수동으로 시도해 봅니다.        </target>
+        <target>@@PRODUCT_NAME@@를 다시 시작하고 있습니다. 5 분 안에 이 페이지가 새로 고침되지 않을 경우, &lt;a href="/rhn/YourRhn.do"&gt;여기&lt;/a&gt;를 클릭하여 수동으로 시도해 봅니다. </target>
       </trans-unit>
-      <trans-unit id="restart.config.norestart" xml:space="preserve">
+      <trans-unit id="restart.config.norestart" xml:space="preserve" approved="yes">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>아래 양식에서 @@PRODUCT_NAME@@를 재시작하도록 박스에 체크하시기 바랍니다. </target>
+        <target>아래 양식에서 @@PRODUCT_NAME@@를 재시작하도록 박스에 체크하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit id="restart.config.restarted" xml:space="preserve">
+      <trans-unit id="restart.config.restarted" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ has been restarted.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@가 다시 시작되었습니다.        </target>
+        <target>@@PRODUCT_NAME@@가 다시 시작되었습니다.</target>
       </trans-unit>
-      <trans-unit id="scout.default.name" xml:space="preserve">
+      <trans-unit id="scout.default.name" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ Monitoring Scout</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ Monitoring 스카웃      </target>
+        <target>@@PRODUCT_NAME@@ 모니터링 찾기</target>
       </trans-unit>
       <trans-unit id="Panic Destination" xml:space="preserve">
         <source>Panic Destination</source>
@@ -6171,12 +6171,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>키가 성공적으로 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="crypto.key.descinuse" xml:space="preserve">
+      <trans-unit id="crypto.key.descinuse" xml:space="preserve" approved="yes">
         <source>This description is already in use.  Please type a new description for this key.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target>이 정보는 이미 사용중입니다.  이 키에 대한 새로운 정보를 입력해주십시오.</target>
+        <target>이 정보는 이미 사용중입니다. 이 키에 대한 새로운 정보를 입력해주십시오.</target>
       </trans-unit>
       <trans-unit id="label" xml:space="preserve">
         <source>Label</source>
@@ -6206,14 +6206,14 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>두개의 암호는 서로 같지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="preservation.key.success" xml:space="preserve">
+      <trans-unit id="preservation.key.success" xml:space="preserve" approved="yes">
         <source>File Preservation list updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
-        <target>파일 보관 목록이 업데이트되었습니다.  </target>
+        <target>파일 보관 목록이 업데이트되었습니다.</target>
       </trans-unit>
-      <trans-unit id="preservation.key.labelexists" xml:space="preserve">
+      <trans-unit id="preservation.key.labelexists" xml:space="preserve" approved="yes">
         <source>File Preservation label already exists. Please choose a unique File Preservation label. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
@@ -6241,19 +6241,19 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>{0} 개의 활성키가 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="file_lists.removed" xml:space="preserve">
+      <trans-unit id="file_lists.removed" xml:space="preserve" approved="yes">
         <source>{0} File Preservation List(s) removed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/FilePreservationLists.do</context>
         </context-group>
-        <target>{0} 파일 보관 목록이 삭제되었습니다.  </target>
+        <target>{0} 파일 보관 목록이 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="file_lists.added" xml:space="preserve">
+      <trans-unit id="file_lists.added" xml:space="preserve" approved="yes">
         <source>{0} File Preservation List(s) added.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/FilePreservationLists.do</context>
         </context-group>
-        <target>{0} 파일 보관 목록이 추가되었습니다. </target>
+        <target>{0} 파일 보관 목록이 추가되었습니다.</target>
       </trans-unit>
       <trans-unit id="taskomatic.msg.awolservers" xml:space="preserve">
         <source>Systems Not Checking In:
@@ -6374,12 +6374,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>스크립트 내용</target>
       </trans-unit>
-      <trans-unit id="script_name" xml:space="preserve">
+      <trans-unit id="script_name" xml:space="preserve" approved="yes">
         <source>Script Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>스크립트 이름 </target>
+        <target>스크립트 이름</target>
       </trans-unit>
       <trans-unit id="kickstart.script.pre" xml:space="preserve">
         <source>Pre Script</source>
@@ -6472,12 +6472,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>킥스타트 스크립트가 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.clone.success" xml:space="preserve">
+      <trans-unit id="kickstart.clone.success" xml:space="preserve" approved="yes">
         <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
-        <target>킥스타트가 성공적으로 복제되었습니다.  지금 복제된 킥스타트를 편집하고 계십니다.</target>
+        <target>킥스타트가 성공적으로 복제되었습니다. 지금 복제된 킥스타트를 편집하고 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success" xml:space="preserve">
         <source>Autoinstallation canceled.</source>
@@ -6500,12 +6500,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>{0}을 위해 예정된 시스템 킥스타트</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.cobblercreate" xml:space="preserve">
+      <trans-unit id="kickstart.schedule.cobblercreate" xml:space="preserve" approved="yes">
         <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>Cobbler에서 (0)에 대한 시스템 기록을 만들었습니다. 이는 'koan' 명령과 함께 {0} 터미널에서 {1} 프로파일을 사용하여 이 시스템을 킥스타트 설치하게 합니다.  </target>
+        <target>Cobbler에서 (0)에 대한 시스템 기록을 만들었습니다. 이는 'koan' 명령과 함께 {0} 터미널에서 {1} 프로파일을 사용하여 이 시스템을 킥스타트 설치하게 합니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap" xml:space="preserve">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
@@ -6514,12 +6514,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.cobbler.schedule.success" xml:space="preserve">
+      <trans-unit id="kickstart.cobbler.schedule.success" xml:space="preserve" approved="yes">
         <source>System Autoinstallation scheduled for {0}. Please check the system console for status information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>{0}에 대한 시스템 킥스타트가 스케줄되었습니다. 시스템 콘솔에서 상태 정보를 확인하십시오.       </target>
+        <target>{0}에 대한 시스템 킥스타트가 스케줄되었습니다. 시스템 콘솔에서 상태 정보를 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles" xml:space="preserve">
         <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
@@ -6535,33 +6535,33 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>시스템 {0} 은 기본 채널이 없기 때문에 킥스타트할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nosuchdevice" xml:space="preserve">
+      <trans-unit id="kickstart.schedule.nosuchdevice" xml:space="preserve" approved="yes">
         <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>시스템 {0} 에는 {1} 네트워크 장치가 없기 때문에 킥스타트할 수 없습니다. </target>
+        <target>시스템 {0} 에는 {1} 네트워크 장치가 없기 때문에 킥스타트할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
+      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve" approved="yes">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>이 시스템의 현재 기본 채널에 주어지며 목표(target) 채널로 요구되는 필요한 @@PRODUCT_NAME@@ 프로비저닝 패키지를 찾을 수 없습니다: {0} </target>
+        <target>이 시스템의 현재 기본 채널에 주어지며 목표(target) 채널로 요구되는 필요한 @@PRODUCT_NAME@@ 프로비저닝 패키지를 찾을 수 없습니다: {0}</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
+      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve" approved="yes">
         <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>현재 이 시스템의 기본 채널에 대해 @@PRODUCT_NAME@@ 프로비저닝 채널에 남아있는 서브스크립션이 없습니다.  </target>
+        <target>현재 이 시스템의 기본 채널에 대해 @@PRODUCT_NAME@@ 프로비저닝 채널에 남아있는 서브스크립션이 없습니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
+      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve" approved="yes">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>현재 이 시스템의 기본 채널에 대해 {0} 채널에 남아있는 서브스크립션이 없습니다.  </target>
+        <target>현재 이 시스템의 기본 채널에 대해 {0} 채널에 남아있는 서브스크립션이 없습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
@@ -6640,26 +6640,26 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve">
+      <trans-unit id="kickstart.tree.invalidlabel" xml:space="preserve" approved="yes">
         <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>레이블 형식이 적절하지 않습니다.  레이블은 문자, 숫자, 하이픈, 점과 밑줄만 포함할 수 있으며, 최소한 4 글자 이상이어야 합니다.</target>
+        <target>레이블 형식이 적절하지 않습니다. 레이블은 문자, 숫자, 하이픈, 점과 밑줄만 포함할 수 있으며, 최소한 4 글자 이상이어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve">
+      <trans-unit id="kickstart.tree.invalidkernel" xml:space="preserve" approved="yes">
         <source>The kernel could not be found at the specified location: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>지정된 위치에서 커널을 찾을 수 없습니다: {0} </target>
+        <target>지정된 위치에서 커널을 찾을 수 없습니다: {0}</target>
       </trans-unit>
-      <trans-unit id="kickstart.tree.invalidinitrd" xml:space="preserve">
+      <trans-unit id="kickstart.tree.invalidinitrd" xml:space="preserve" approved="yes">
         <source>The initrd could not be found at the specified location: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>지정된 위치에서 initrd를 찾을 수 없습니다: {0}  </target>
+        <target>지정된 위치에서 initrd를 찾을 수 없습니다: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse" xml:space="preserve">
         <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
@@ -6739,9 +6739,9 @@ Follow this url to see the full list of inactive systems:
         <target>결합된 네트워크 인터페이스에 대해 지정된 게이트웨이가 유효하지 않습니다.</target>
       </trans-unit>
       <!-- Activation Keys -->
-      <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
+      <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve" approved="yes">
           <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-        <target>활성키 레이블 &lt;strong&gt;{0}&lt;/strong&gt;에 다음과 같은 잘못된 문자 &lt;strong&gt;{1}&lt;/strong&gt;이 1 개 이상 포함되어 있습니다. 레이블에서 잘못된 문자를 제거해 주십시오.   </target>
+        <target>활성키 레이블 &lt;strong&gt;{0}&lt;/strong&gt;에 다음과 같은 잘못된 문자 &lt;strong&gt;{1}&lt;/strong&gt;이 1 개 이상 포함되어 있습니다. 레이블에서 잘못된 문자를 제거해 주십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6753,37 +6753,37 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.java.created" xml:space="preserve">
+      <trans-unit id="activation-key.java.created" xml:space="preserve" approved="yes">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 생성되었습니다.  </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 생성되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.java.deleted" xml:space="preserve">
+      <trans-unit id="activation-key.java.deleted" xml:space="preserve" approved="yes">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 삭제되었습니다.    </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 삭제되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.java.cloned" xml:space="preserve">
+      <trans-unit id="activation-key.java.cloned" xml:space="preserve" approved="yes">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 복제되었습니다. </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 복제되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.java.modified" xml:space="preserve">
+      <trans-unit id="activation-key.java.modified" xml:space="preserve" approved="yes">
           <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 수정되었습니다. </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 수정되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
+      <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve" approved="yes">
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt;이 &lt;strong&gt;{1}&lt;/strong&gt; 로 수정되었습니다. </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt;이 &lt;strong&gt;{1}&lt;/strong&gt; 로 수정되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6795,44 +6795,44 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
+      <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve" approved="yes">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-        <target>이 시스템에는 설정 배치 기능이 없습니다. 설정 배치 기능을 위해 시스템에 특정 소프트웨어가 설치되고 활성화되어 있어야 합니다.    </target>
+        <target>이 시스템에는 설정 배치 기능이 없습니다. 설정 배치 기능을 위해 시스템에 특정 소프트웨어가 설치되고 활성화되어 있어야 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
+      <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve" approved="yes">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-        <target>&lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 "{2}"를 클릭하여 이 시스템에서 설정 배치 기능을 사용할 수 있는지를 확인할 수 있습니다  </target>
+        <target>&lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 "{2}"를 클릭하여 이 시스템에서 설정 배치 기능을 사용할 수 있는지를 확인할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.sdc.addtossm" xml:space="preserve">
+      <trans-unit id="system.sdc.addtossm" xml:space="preserve" approved="yes">
           <source>System added to the System Set Manager.</source>
-        <target>시스템을 시스템 세트 관리자에 추가했습니다.  </target>
+        <target>시스템을 시스템 세트 관리자에 추가했습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
+      <trans-unit id="system.sdc.removefromssm" xml:space="preserve" approved="yes">
           <source>System removed from the System Set Manager.</source>
-        <target>시스템을 시스템 세트 관리자에서 삭제했습니다.  </target>
+        <target>시스템을 시스템 세트 관리자에서 삭제했습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="usageLimit" xml:space="preserve">
+      <trans-unit id="usageLimit" xml:space="preserve" approved="yes">
           <source>Usage Limit</source>
-        <target>사용 제한 </target>
+        <target>사용 제한</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="key" xml:space="preserve">
+      <trans-unit id="key" xml:space="preserve" approved="yes">
           <source>Key</source>
-        <target>키 </target>
+        <target>키</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -6861,35 +6861,35 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>{0} MB</target>
       </trans-unit>
-      <trans-unit id="error.config-cannot-change-type" xml:space="preserve">
+      <trans-unit id="error.config-cannot-change-type" xml:space="preserve" approved="yes">
         <source>Error creating configuration file revision: ({0}) is a '{1}', but you are attempting to change it to a '{2}'. If you want to change its file type, you'll need to delete ({0}) and re-add it as a '{2}' rather than a '{1}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
-        <target>설정 파일 개정판 생성 중 오류 발생: ({0})는 '{1}'인데 이를 '{2}'로 변경하려 하셨습니다. 파일 유형을 변경하시려면, ({0})를 삭제하고 '{1}' 대신 '{2}'로 다시 추가하셔야 합니다. </target>
+        <target>설정 파일 개정판 생성 중 오류 발생: ({0})는 '{1}'인데 이를 '{2}'로 변경하려 하셨습니다. 파일 유형을 변경하시려면, ({0})를 삭제하고 '{1}' 대신 '{2}'로 다시 추가하셔야 합니다.</target>
       </trans-unit>
-      <trans-unit id="error.config-not-specified" xml:space="preserve">
+      <trans-unit id="error.config-not-specified" xml:space="preserve" approved="yes">
         <source>Error creating Configuration File Revision:  Upload file not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
-        <target>설정 파일 배포판 생성 중 오류: 업로드된 파일을 찾을 수 없음. </target>
+        <target>설정 파일 배포판 생성 중 오류: 업로드된 파일을 찾을 수 없음.</target>
       </trans-unit>
-      <trans-unit id="error.config-empty" xml:space="preserve">
+      <trans-unit id="error.config-empty" xml:space="preserve" approved="yes">
         <source>Error creating Configuration File Revision:  File {0} is empty.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File /etc/testfile.txt not found.</context>
         </context-group>
-        <target>설정 파일 배포판 생성 중 오류: {0} 파일이 비어있음. </target>
+        <target>설정 파일 배포판 생성 중 오류: {0} 파일이 비어있음.</target>
       </trans-unit>
-      <trans-unit id="error.configtoolarge" xml:space="preserve">
+      <trans-unit id="error.configtoolarge" xml:space="preserve" approved="yes">
         <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
         </context-group>
-        <target>설정 파일 배포판 생성 중 오류: 파일 크기가 너무 큼. 최대 파일 크기는 {0}임. </target>
+        <target>설정 파일 배포판 생성 중 오류: 파일 크기가 너무 큼. 최대 파일 크기는 {0}임.</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure" xml:space="preserve">
         <source>{0} revision deletions failed.</source>
@@ -7134,12 +7134,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>파일 권한 설정</target>
       </trans-unit>
-      <trans-unit id="cffSELinuxCtx" xml:space="preserve">
+      <trans-unit id="cffSELinuxCtx" xml:space="preserve" approved="yes">
         <source>SELinux context</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>SELinux 문맥 </target>
+        <target>SELinux 문맥</target>
       </trans-unit>
       <trans-unit id="cffMacroStart" xml:space="preserve">
         <source>Macro start tag</source>
@@ -7362,9 +7362,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
+      <trans-unit id="sdc.config.deploy.failure" xml:space="preserve" approved="yes">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-        <target>모든 파일 및 디렉토리 ({0})를 디플로이하지 못했습니다. [&lt;a href="{1}"&gt;자세한 정보 보기&lt;/a&gt;]   </target>
+        <target>모든 파일 및 디렉토리 ({0})를 디플로이하지 못했습니다. [&lt;a href="{1}"&gt;자세한 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7383,9 +7383,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve" approved="yes">
           <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>비교를 위해 파일, 디렉토리, 심볼릭 링크가 선택되어 있지 않습니다.  [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>비교를 위해 파일, 디렉토리, 심볼릭 링크가 선택되어 있지 않습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7453,58 +7453,58 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -7516,79 +7516,79 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve" approved="yes">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
+        <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
+      <trans-unit id="sdc.config.differing.files_0" xml:space="preserve" approved="yes">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target>기존 시스템에 있는 기존 파일은 @@PRODUCT_NAME@@-관리 파일과 다릅니다.  </target>
+        <target>기존 시스템에 있는 기존 파일은 @@PRODUCT_NAME@@-관리 파일과 다릅니다.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
+      <trans-unit id="sdc.config.differing.files_1" xml:space="preserve" approved="yes">
           <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-        <target>시스템에 있는 1 개 중 1개의 파일이 @@PRODUCT_NAME@@-관리 파일과 다릅니다. </target>
+        <target>시스템에 있는 1 개 중 1개의 파일이 @@PRODUCT_NAME@@-관리 파일과 다릅니다.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
+      <trans-unit id="sdc.config.differing.files_2" xml:space="preserve" approved="yes">
           <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-        <target>시스템에 있는 {1} 개 중 {0} 개의 파일이 @@PRODUCT_NAME@@-관리 파일과 다릅니다.  </target>
+        <target>시스템에 있는 {1} 개 중 {0} 개의 파일이 @@PRODUCT_NAME@@-관리 파일과 다릅니다.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
@@ -8221,33 +8221,33 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>z/VM</target>
       </trans-unit>
-      <trans-unit id="oneday" xml:space="preserve">
+      <trans-unit id="oneday" xml:space="preserve" approved="yes">
         <source>within the past day</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>지난날 </target>
+        <target>지난날</target>
       </trans-unit>
-      <trans-unit id="oneweek" xml:space="preserve">
+      <trans-unit id="oneweek" xml:space="preserve" approved="yes">
         <source>within the past week</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>지난주 </target>
+        <target>지난주</target>
       </trans-unit>
-      <trans-unit id="onemonth" xml:space="preserve">
+      <trans-unit id="onemonth" xml:space="preserve" approved="yes">
         <source>within the past 30 days</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>지난 30일 사이 </target>
+        <target>지난 30일 사이</target>
       </trans-unit>
-      <trans-unit id="sixmonths" xml:space="preserve">
+      <trans-unit id="sixmonths" xml:space="preserve" approved="yes">
         <source>within the past 180 days</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>지난 180일 사이 </target>
+        <target>지난 180일 사이</target>
       </trans-unit>
       <trans-unit id="oneyear" xml:space="preserve">
         <source>within the past year</source>
@@ -8361,26 +8361,26 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>{1}에서 물리적 CPU ({0})의 수를 증가시키면 실행에 영향을 미치게 됩니다.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.vcpu.increase.warning" xml:space="preserve">
+      <trans-unit id="systems.details.virt.vcpu.increase.warning" xml:space="preserve" approved="yes">
         <source>{1} must be shutdown if last started with less than {0} vCPUs for changes to take effect.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>마지막으로 {0} vCPU 이하로 시작하셨을 경우 {1}을 종료해야 합니다. </target>
+        <target>마지막으로 {0} vCPU 이하로 시작했을 경우 {1}을 종료해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.memory.warning" xml:space="preserve">
+      <trans-unit id="systems.details.virt.memory.warning" xml:space="preserve" approved="yes">
         <source>{0} must be shutdown for max memory settings to take effect.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>최대 메모리 설정을 적용하기 위해 {0}을 재부팅해야 합니다.  </target>
+        <target>최대 메모리 설정을 적용하기 위해 {0}을 재부팅해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.memory.check.host" xml:space="preserve">
+      <trans-unit id="systems.details.virt.memory.check.host" xml:space="preserve" approved="yes">
         <source>Ensure the host system has sufficient free memory if increasing guest memory allocation. Otherwise the guest may refuse to boot the next time it is started.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>게스트 메모리 할당을 늘리는 경우 호스트 시스템에 충분한 여유 메모리가 있는지 확인하십시오. 그렇지 않을 경우, 다음번 게스트 시작 시 부팅하지 않을 수 있습니다.  </target>
+        <target>게스트 메모리 할당을 늘리는 경우 호스트 시스템에 충분한 여유 메모리가 있는지 확인하십시오. 그렇지 않을 경우, 다음번 게스트 시작 시 부팅하지 않을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="virtualsystems.none" xml:space="preserve">
         <source>No virtual systems selected.</source>
@@ -8396,19 +8396,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>스케줄된 작업이 없습니다.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.one.actions.scheduled" xml:space="preserve">
+      <trans-unit id="systems.details.virt.one.actions.scheduled" xml:space="preserve" approved="yes">
         <source>Scheduled one action, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>한 개의 스케줄된 작업.</target>
+        <target>한 개의 스케줄된 작업. &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;대기중 동작&lt;/strong&gt;&lt;/a&gt;의 내용을 참조하십시오.</target>
       </trans-unit>
-      <trans-unit id="systems.details.virt.actions.scheduled" xml:space="preserve">
+      <trans-unit id="systems.details.virt.actions.scheduled" xml:space="preserve" approved="yes">
         <source>Scheduled {0} actions, see &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;pending actions&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>스케줄된 {0} 작업.</target>
+        <target>스케줄된 {0} 작업. &lt;a href="/rhn/schedule/PendingActions.do"&gt;&lt;strong&gt;대기중 동작&lt;/strong&gt;&lt;/a&gt;의 내용을 참조하십시오.</target>
       </trans-unit>
       <trans-unit id="systems.details.virt.no.virt.deleted" xml:space="preserve">
         <source>No virtual systems deleted.</source>
@@ -8529,12 +8529,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve">
+      <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve" approved="yes">
         <source>System's Base Channel has been updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>시스템의 기본 채널이 업데이트되었습니다. </target>
+        <target>시스템의 기본 채널이 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.child_channels_updated" xml:space="preserve">
         <source>Child channel subscriptions updated.</source>
@@ -8557,19 +8557,19 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/ssm/groups/Manage.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="selinux.java.invalid_mode" xml:space="preserve">
+      <trans-unit id="selinux.java.invalid_mode" xml:space="preserve" approved="yes">
         <source>Invalid SE Linux mode "{0}" specified. Valid values are {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
-        <target>잘못된 SE Linux 모드 "{0}" 가 지정되었습니다. 유효한 값은 {1}입니다. </target>
+        <target>잘못된 SE Linux 모드 "{0}" 가 지정되었습니다. 유효한 값은 {1}입니다.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage" xml:space="preserve">
         <source>Updated entitlement count for '{0}'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>'{0}'에 해당하는 업데이트된 인타이틀먼트 수 </target>
+        <target>'{0}'에 해당하는 업데이트된 인타이틀먼트 수</target>
       </trans-unit>
       <trans-unit id="orgsizelimit.invalid" xml:space="preserve">
         <source>Size limit modification must be a valid non negative number.</source>
@@ -8609,26 +8609,26 @@ Follow this url to see the full list of inactive systems:
         <source>External Authentication Group name '{0}' is already used. Please choose another one.</source>
         <target>외부 인증 그룹 이름 '{0}'은(는) 이미 사용 중인 이름입니다. 다른 이름을 선택하십시오.</target>
       </trans-unit>
-      <trans-unit id="message.org_name_updated" xml:space="preserve">
+      <trans-unit id="message.org_name_updated" xml:space="preserve" approved="yes">
         <source>Organization {0} was successfully updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
-        <target>{0} 조직이 성공적으로 업데이트되었습니다.    </target>
+        <target>{0} 조직이 성공적으로 업데이트되었습니다.</target>
       </trans-unit>
-      <trans-unit id="message.org_name_not_updated" xml:space="preserve">
+      <trans-unit id="message.org_name_not_updated" xml:space="preserve" approved="yes">
         <source>Organization {0} was not updated due to identical name.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
-        <target>동일한 이름으로 인해 {0} 조직이 업데이트되지 않았습니다.   </target>
+        <target>동일한 이름으로 인해 {0} 조직이 업데이트되지 않았습니다.</target>
       </trans-unit>
-      <trans-unit id="message.org_deleted" xml:space="preserve">
+      <trans-unit id="message.org_deleted" xml:space="preserve" approved="yes">
         <source>Organization {0} was successfully deleted.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>{0} 조직이 성공적으로 삭제되었습니다.   </target>
+        <target>{0} 조직이 성공적으로 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="config.error.file-exists" xml:space="preserve">
         <source>A file named "{0}" already exists in this channel.</source>
@@ -8666,12 +8666,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>시스템을 RHEL 가상화 채널에 자동으로 등록할 수 없습니다. 이 채널에는 가상화에 필요한 패키지가 들어있습니다. 이는 채널 인타인틀먼트의 부재로 인한 것일 수 도 있습니다.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
+      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve" approved="yes">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>{0} 패키지가 있는 채널을 찾을 수 없습니다. 이 패키지는 @@PRODUCT_NAME@@으로 가상 게스트를 관리하기 위해 필요합니다.       </target>
+        <target>{0} 패키지가 있는 채널을 찾을 수 없습니다. 이 패키지는 @@PRODUCT_NAME@@으로 가상 게스트를 관리하기 위해 필요합니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
@@ -8687,12 +8687,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="needs-adaptation">알림: 이 시스템의 @@PRODUCT_NAME@@내에서 가상화 기능을 활성화하여 사용할 경우 해당 RHN 도구 자식 채널에서 rhn-virtualization-host 패키지를 설치합니다. 호스트 시스템의 가상화를 활성화할 때 Red Hat Enterprise Linux가 주의해야 할 사항 및 요구 사항은 Red Hat 문서에서 참조하십시오.</target>
       </trans-unit>
-      <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
+      <trans-unit id="system.migrate.user_no_perms" xml:space="preserve" approved="yes">
         <source>This user lacks the required permissions to migrate this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>이 사용자는 이 시스템 마이그레이션에 필요한 권한이 없습니다. </target>
+        <target>이 사용자는 이 시스템 마이그레이션에 필요한 권한이 없습니다.</target>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be migrated between trusted organizations.</source>
@@ -8708,19 +8708,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>이 조직에는 다른 조직과의 신뢰가 정의되어 있지 않거나 다른 조직이 정의되어 있지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="system.migrate.no_org_specified" xml:space="preserve">
+      <trans-unit id="system.migrate.no_org_specified" xml:space="preserve" approved="yes">
         <source>An organization must be specified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>조직을 지정해야 합니다 </target>
+        <target>조직을 지정해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve">
+      <trans-unit id="system.entitle.invalid_addon_entitlement" xml:space="preserve" approved="yes">
         <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>잘못된 애드온 인타이틀먼트 [{0}]가 있습니다. 이러한 인타이틀먼트는 존재하지 않습니다.  </target>
+        <target>잘못된 애드온 인타이틀먼트 [{0}]가 있습니다. 이러한 인타이틀먼트는 존재하지 않습니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.guestcantvirt" xml:space="preserve">
         <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
@@ -8729,13 +8729,13 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.invalidsystem" xml:space="preserve">
+      <trans-unit id="system.invalidsystem" xml:space="preserve" approved="yes">
         <source>Invalid system</source>
-        <target>잘못된 시스템  </target>
+        <target>잘못된 시스템</target>
       </trans-unit>
-      <trans-unit id="api.invalidargs" xml:space="preserve">
+      <trans-unit id="api.invalidargs" xml:space="preserve" approved="yes">
         <source>Invalid argument(s): {0}</source>
-        <target>부적절한 인수: {0} </target>
+        <target>부적절한 인수: {0}</target>
       </trans-unit>
       <trans-unit id="api.action.nosuchaction" xml:space="preserve">
         <source>No such action: {0}</source>
@@ -8745,41 +8745,41 @@ Follow this url to see the full list of inactive systems:
         <source>No such action chain: {0}</source>
         <target>해당 작업 체인 없음: {0}</target>
       </trans-unit>
-      <trans-unit id="api.action.invalidactiontype" xml:space="preserve">
+      <trans-unit id="api.action.invalidactiontype" xml:space="preserve" approved="yes">
         <source>Invalid action type</source>
-        <target>잘못된 작업 유형 </target>
+        <target>잘못된 작업 유형</target>
       </trans-unit>
       <trans-unit id="api.org.pamAuthNotConfigured" xml:space="preserve">
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
         <target>서버는 PAM 인증을 지원하도록 설정되어 있지 않습니다. PAM을 설정하는 방법은 참조 가이드에서 살펴보십시오.</target>
       </trans-unit>
-      <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
+      <trans-unit id="api.org.migrationtosameorg" xml:space="preserve" approved="yes">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target>기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 이전할 수 없습니다. 조직 ID: {0}, 시스템 ID: {1}.  </target>
+        <target>기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 이전할 수 없습니다. 조직 ID: {0}, 시스템 ID: {1}.</target>
       </trans-unit>
-      <trans-unit id="api.org.nosuchorg" xml:space="preserve">
+      <trans-unit id="api.org.nosuchorg" xml:space="preserve" approved="yes">
         <source>No such organization: {0}</source>
-        <target>이러한 조직이 없음: {0} </target>
+        <target>이러한 조직이 없음: {0}</target>
       </trans-unit>
-      <trans-unit id="api.org.notintrust" xml:space="preserve">
+      <trans-unit id="api.org.notintrust" xml:space="preserve" approved="yes">
         <source>Organization {0} is not defined in trust.</source>
-        <target>{0} 조직은 신뢰도에 정의되어 있지 않습니다.       </target>
+        <target>{0} 조직은 신뢰도에 정의되어 있지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="api.org.sysnotintrust" xml:space="preserve">
+      <trans-unit id="api.org.sysnotintrust" xml:space="preserve" approved="yes">
         <source>System {0} is member of organization {1} which is not defined in the destination organization's trust.</source>
-        <target>{0} 시스템은 대상 조직의 신뢰도에 정의되지 않은 {1} 조직의 멤버입니다.         </target>
+        <target>{0} 시스템은 대상 조직의 신뢰도에 정의되지 않은 {1} 조직의 멤버입니다.</target>
       </trans-unit>
-      <trans-unit id="api.org.notpermittedbyorg" xml:space="preserve">
+      <trans-unit id="api.org.notpermittedbyorg" xml:space="preserve" approved="yes">
         <source>User in organization {0} is not allowed to retrieve or modify {1} properties in organization {2}.</source>
-        <target>{0} 조직에 있는 사용자는 {2} 조직에 있는 {1} 속성을 읽어오거나 수정할 수 없습니다.  </target>
+        <target>{0} 조직에 있는 사용자는 {2} 조직에 있는 {1} 속성을 읽어오거나 수정할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve">
+      <trans-unit id="api.org.cannotperformonsatelliteorg" xml:space="preserve" approved="yes">
         <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
-        <target state="needs-adaptation">satellite 조직에서 이 작업을 실행할 수 없습니다. (조직 ID 1) </target>
+        <target state="final">satellite 조직에서 이 작업을 실행할 수 없습니다. (조직 ID 1)</target>
       </trans-unit>
-      <trans-unit id="api.errata.invaliderrata" xml:space="preserve">
+      <trans-unit id="api.errata.invaliderrata" xml:space="preserve" approved="yes">
         <source>Invalid patch: {0}</source>
-        <target>잘못된 에라타: {0} </target>
+        <target>잘못된 패치: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole" xml:space="preserve">
         <source>Invalid role: {0}</source>
@@ -8797,109 +8797,109 @@ Follow this url to see the full list of inactive systems:
         <source>No external group to server group map exists for group: {0}</source>
         <target>다음 그룹에 서버 그룹 맵에 대한 외부 그룹 없음: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.invalidpackage" xml:space="preserve">
+      <trans-unit id="api.package.invalidpackage" xml:space="preserve" approved="yes">
         <source>Invalid package: {0}</source>
-        <target>잘못된 패키지: {0} </target>
+        <target>잘못된 패키지: {0}</target>
       </trans-unit>
-      <trans-unit id="api.errata.duplicateerrata" xml:space="preserve">
+      <trans-unit id="api.errata.duplicateerrata" xml:space="preserve" approved="yes">
         <source>Patch already exists with advisory {0}</source>
-        <target>{0} 권고와 함께 이미 에라타가 존재함  </target>
+        <target>{0} 권고와 함께 이미 패치가 존재함</target>
       </trans-unit>
-      <trans-unit id="api.system.invalidsnapshot" xml:space="preserve">
+      <trans-unit id="api.system.invalidsnapshot" xml:space="preserve" approved="yes">
         <source>Invalid snapshot specified: {0}</source>
-        <target>잘못된 스냅샷이 지정됨: {0}   </target>
+        <target>잘못된 스냅샷이 지정됨: {0}</target>
       </trans-unit>
-      <trans-unit id="api.systemgroup.lookupServerGroup" xml:space="preserve">
+      <trans-unit id="api.systemgroup.lookupServerGroup" xml:space="preserve" approved="yes">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target>서버 그룹을 배치 또는 액세스할 수 없음: "{0}" </target>
+        <target>서버 그룹을 배치 또는 액세스할 수 없음: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied" xml:space="preserve">
         <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
         <target state="needs-adaptation">Satellite 및 조직 관리자에 대한 관리자 액세스 변경이 허용되지 않습니다. 이 사용자는 기본값으로 액세스 권한이 주어지기 때문에 다음과 같은 사용자는 입력 내용에서 삭제되어야 합니다: {0}</target>
       </trans-unit>
-      <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve">
+      <trans-unit id="api.system.invalidprofilelabel" xml:space="preserve" approved="yes">
         <source>Invalid profile label specified: {0}</source>
-        <target>잘못된 프로파일 레이블이 지정됨: {0}  </target>
+        <target>잘못된 프로파일 레이블이 지정됨: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.missingCapabilities" xml:space="preserve">
         <source>The server {0} does not have the {1} client capability. Please enable the capability before proceeding with the operation.</source>
         <target>서버 {0}는 {1} 클라이언트 기능이 없습니다. 작업을 계속 진행하기 전 이 기능을 활성화하십시오.</target>
       </trans-unit>
-      <trans-unit id="api.systemgroup.serverNotInGroup" xml:space="preserve">
+      <trans-unit id="api.systemgroup.serverNotInGroup" xml:space="preserve" approved="yes">
         <source>The specified server is not a member of the specified group</source>
-        <target>지정된 서버는 지정된 그룹의 맴버가 아님 </target>
+        <target>지정된 서버는 지정된 그룹의 맴버가 아님</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchnetiface" xml:space="preserve">
         <source>No such network interface: {0}.</source>
         <target>이러한 네트워크 인터페이스가 없습니다: {0}.</target>
       </trans-unit>
-      <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve">
+      <trans-unit id="api.errata.invalidadvisorytype" xml:space="preserve" approved="yes">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>잘못된 에라타 유형, "{0}". 다음 중 하나를 사용하시기 바랍니다: "보안 권고", "제품 업데이트 권고", "버그 수정 권고".  </target>
+        <target>잘못된 에라타 유형, "{0}". 다음 중 하나를 사용하시기 바랍니다: "보안 권고", "제품 업데이트 권고", "버그 수정 권고".</target>
       </trans-unit>
-      <trans-unit id="api.errata.invalidadvisoryrelease" xml:space="preserve">
+      <trans-unit id="api.errata.invalidadvisoryrelease" xml:space="preserve" approved="yes">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target>잘못된 권고 릴리즈 "{0}" 입니다. 최대 값은 {1}입니다.   </target>
+        <target>잘못된 권고 릴리즈 "{0}" 입니다. 최대 값은 {1}입니다.</target>
       </trans-unit>
-      <trans-unit id="api.errata.nochannelsselected" xml:space="preserve">
+      <trans-unit id="api.errata.nochannelsselected" xml:space="preserve" approved="yes">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target>에라타를 발표하려 시도하고 있지만, 발표할 채널이 선택되지 않았습니다. 최소 한 개의 채널에 에라타가 발표되어야 합니다. </target>
+        <target>에라타를 발표하려 시도하고 있지만, 발표할 채널이 선택되지 않았습니다. 최소 한 개의 채널에 패치가 게시되어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="api.package.download.toolarge" xml:space="preserve">
+      <trans-unit id="api.package.download.toolarge" xml:space="preserve" approved="yes">
         <source>The requested file is too large to download over XMLRPC.</source>
-        <target>요청한 파일이 너무 커거 XMLRPC를 통해 다운로드할 수 없습니다.  </target>
+        <target>요청한 파일이 너무 커거 XMLRPC를 통해 다운로드할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="api.package.download.ioerror" xml:space="preserve">
+      <trans-unit id="api.package.download.ioerror" xml:space="preserve" approved="yes">
         <source>There was a general IO Error, check permissions on the requested file.</source>
-        <target>일반적인 IO 오류가 발생했습니다. 요청한 파일의 사용 권한을 확인하십시오.   </target>
+        <target>일반적인 IO 오류가 발생했습니다. 요청한 파일의 사용 권한을 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="api.channel.access.invalidaccessvalue" xml:space="preserve">
+      <trans-unit id="api.channel.access.invalidaccessvalue" xml:space="preserve" approved="yes">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target>액세스 값 "{0}". "public", "private", "protected" 중 하나를 사용하십시오.     </target>
+        <target>액세스 값 "{0}". "public", "private", "protected" 중 하나를 사용하십시오.</target>
       </trans-unit>
-      <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve">
+      <trans-unit id="api.channel.software.channelsubscription" xml:space="preserve" approved="yes">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target>시스템을 요청하신 채널에 등록할 수 없습니다: "{0}"   </target>
+        <target>시스템을 요청하신 채널에 등록할 수 없습니다: "{0}"</target>
       </trans-unit>
-      <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve">
+      <trans-unit id="api.channel.software.multiplebasechannel" xml:space="preserve" approved="yes">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target>등록을 위해 다중 기본 채널이 선택되었습니다. {0} 및 {1} 채널이 등록을 위해 선택되었으나, 시스템은 단일 기본 채널에만 등록될 수 있습니다.  </target>
+        <target>등록을 위해 다중 기본 채널이 선택되었습니다. {0} 및 {1} 채널이 등록을 위해 선택되었으나, 시스템은 단일 기본 채널에만 등록될 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
+      <trans-unit id="api.channel.invalidchannellist" xml:space="preserve" approved="yes">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target>채널 목록이 잘못되어 있습니다. 채널 목록에는 채널 레이블이나 ID가 들어 있어야 하며 이 두가지 모두가 혼합되어서는 안됩니다.       </target>
+        <target>채널 목록이 잘못되어 있습니다. 채널 목록에는 채널 레이블이나 ID가 들어 있어야 하며 이 두가지 모두가 혼합되어서는 안됩니다.</target>
       </trans-unit>
-      <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
+      <trans-unit id="channel.invalidchannelarch" xml:space="preserve" approved="yes">
         <source>The channel arch specified ({0}) is invalid.</source>
-        <target>잘못된 채널 아키텍쳐 ({0})가 지정되어 있습니다. </target>
+        <target>잘못된 채널 아키텍쳐 ({0})가 지정되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve">
+      <trans-unit id="api.channel.duplicatechannellabel" xml:space="preserve" approved="yes">
         <source>The channel label specified ({0}) already exists.</source>
-        <target>({0})은 이미 존재하는 채널 레이블입니다. </target>
+        <target>({0})은 이미 존재하는 채널 레이블입니다.</target>
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname" xml:space="preserve">
         <source>The channel name specified ({0}) already exists.</source>
         <target>입력한 채널 이름({0})은 이미 사용 중입니다.</target>
       </trans-unit>
-      <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve">
+      <trans-unit id="api.channel.invalidchannelaccess" xml:space="preserve" approved="yes">
         <source>The channel access ({0}) is not allowed for this operation.</source>
-        <target>이 작업에 채널 액세스 ({0})는 허용되지 않습니다.  </target>
+        <target>이 작업에 채널 액세스 ({0})는 허용되지 않습니다.</target>
       </trans-unit>
       <trans-unit id="Certificate Administrators" xml:space="preserve">
         <source>Certificate Administrators</source>
         <target>인증서 관리자</target>
       </trans-unit>
-      <trans-unit id="Monitoring Administrators" xml:space="preserve">
+      <trans-unit id="Monitoring Administrators" xml:space="preserve" approved="yes">
         <source>Monitoring Administrators</source>
-        <target>모니터링 (Monitoring) 관리자  </target>
+        <target>모니터링 (Monitoring) 관리자</target>
       </trans-unit>
-      <trans-unit id="Configuration Administrators" xml:space="preserve">
+      <trans-unit id="Configuration Administrators" xml:space="preserve" approved="yes">
         <source>Configuration Administrators</source>
-        <target>설정 관리자 </target>
+        <target>구성 관리자</target>
       </trans-unit>
-      <trans-unit id="user.unspecified.name" xml:space="preserve">
+      <trans-unit id="user.unspecified.name" xml:space="preserve" approved="yes">
         <source>(unspecified)</source>
-        <target>(지정되지 않음) </target>
+        <target>(지정되지 않음)</target>
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.tagalreadyinuse" xml:space="preserve">
         <source>Snapshot tag already exists: {0}</source>
@@ -8913,37 +8913,37 @@ Follow this url to see the full list of inactive systems:
         <source>No such server snapshot: {0}</source>
         <target>해당 서버 스냅샷 없음: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.provider.invalidKeyType" xml:space="preserve">
+      <trans-unit id="api.package.provider.invalidKeyType" xml:space="preserve" approved="yes">
         <source>The package key type specified ({0}) is invalid.</source>
-        <target>지정된 패키지 키 유형 ({0})이 잘못되어 있습니다.      </target>
+        <target>지정된 패키지 키 유형 ({0})이 잘못되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.package.provider.invalidKey" xml:space="preserve">
+      <trans-unit id="api.package.provider.invalidKey" xml:space="preserve" approved="yes">
         <source>The package key specified ({0}) is invalid.</source>
-        <target>지정된 패키지 키 ({0})가 잘못되어 있습니다.       </target>
+        <target>지정된 패키지 키 ({0})가 잘못되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.package.provider.invalidProvider" xml:space="preserve">
+      <trans-unit id="api.package.provider.invalidProvider" xml:space="preserve" approved="yes">
         <source>The package provider specified ({0}) is  invalid.</source>
-        <target>지정된 패키지 제공자 ({0})가 잘못되어 있습니다.       </target>
+        <target>지정된 패키지 제공자 ({0})가 잘못되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.invalidvirttype" xml:space="preserve">
+      <trans-unit id="api.kickstart.invalidvirttype" xml:space="preserve" approved="yes">
         <source>Invalid virtualization type: {0}</source>
-        <target>잘못된 가상화 유형: {0} </target>
+        <target>잘못된 가상화 유형: {0}</target>
       </trans-unit>
-      <trans-unit id="org.create.success" xml:space="preserve">
+      <trans-unit id="org.create.success" xml:space="preserve" approved="yes">
         <source>Organization {0} created successfully</source>
-        <target>{0} 조직이 성공적으로 생성되었습니다   </target>
+        <target>{0} 조직이 성공적으로 생성되었습니다.</target>
       </trans-unit>
-      <trans-unit id="orgName" xml:space="preserve">
+      <trans-unit id="orgName" xml:space="preserve" approved="yes">
         <source>Organization Name</source>
-        <target>조직 이름   </target>
+        <target>조직 이름</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.nosuchkickstarttreelabel" xml:space="preserve">
+      <trans-unit id="api.kickstart.nosuchkickstarttreelabel" xml:space="preserve" approved="yes">
         <source>Unable to locate autoinstallable tree for your organization: {0}</source>
-        <target>조직의 킥스타트 트리를 배치할 수 없습니다: {0}   </target>
+        <target>조직의 킥스타트 트리를 배치할 수 없습니다: {0}</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve">
+      <trans-unit id="api.kickstart.invalidkickstartlabel" xml:space="preserve" approved="yes">
         <source>Invalid autoinstallation label: {0}</source>
-        <target>잘못된 킥스타트 레이블: {0} </target>
+        <target>잘못된 킥스타트 레이블: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType" xml:space="preserve">
         <source>Invalid update type: {0}</source>
@@ -8957,13 +8957,13 @@ Follow this url to see the full list of inactive systems:
         <source>The kickstartable tree {0} has no base channel. The only valid update type with a no-base kickstartable tree is 'none'.</source>
         <target>킥스타트 가능한 트리 {0}에는 기본 채널이 없습니다. 기본이 아닌 킥스타트 가능한 트리에 대해 유일한 유효한 업데이트 유형은 'none'입니다.</target>
       </trans-unit>
-      <trans-unit id="api.package.invalidpackagearch" xml:space="preserve">
+      <trans-unit id="api.package.invalidpackagearch" xml:space="preserve" approved="yes">
         <source>The package arch specified ({0}) is invalid.</source>
-        <target>잘못된 패키지 아키텍쳐 ({0})가 지정되어 있습니다. </target>
+        <target>잘못된 패키지 아키텍쳐 ({0})가 지정되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.errata.missingerrataaction" xml:space="preserve">
+      <trans-unit id="api.errata.missingerrataaction" xml:space="preserve" approved="yes">
         <source>A required patch attribute ({0}) was missing.</source>
-        <target>필요한 에라타 속성 ({0})이 없습니다. </target>
+        <target>필요한 패치 속성 ({0})이 없습니다.</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster" xml:space="preserve">
         <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
@@ -8973,93 +8973,93 @@ Follow this url to see the full list of inactive systems:
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
         <target state="needs-adaptation">슬레이브 Satellite {0}의 기록은 이미 존재합니다.</target>
       </trans-unit>
-      <trans-unit id="securityErrata" xml:space="preserve">
+      <trans-unit id="securityErrata" xml:space="preserve" approved="yes">
         <source>Security Patches</source>
-        <target>보안 에라타 </target>
+        <target>보안 패치</target>
       </trans-unit>
-      <trans-unit id="bugErrata" xml:space="preserve">
+      <trans-unit id="bugErrata" xml:space="preserve" approved="yes">
         <source>Bug Patches</source>
-        <target>버그 에라타 </target>
+        <target>버그 패치</target>
       </trans-unit>
-      <trans-unit id="enhancementErrata" xml:space="preserve">
+      <trans-unit id="enhancementErrata" xml:space="preserve" approved="yes">
         <source>Enhancement Patches</source>
-        <target>업데이트 에라타 </target>
+        <target>업데이트 패치</target>
       </trans-unit>
-      <trans-unit id="outdatedPackages" xml:space="preserve">
+      <trans-unit id="outdatedPackages" xml:space="preserve" approved="yes">
         <source>Outdated Packages</source>
-        <target>이전 패키지  </target>
+        <target>이전 패키지</target>
       </trans-unit>
       <trans-unit id="lastCheckin" xml:space="preserve">
         <source>Last Checkin</source>
         <target>마지막 시스템 체크인:</target>
       </trans-unit>
-      <trans-unit id="entitlement" xml:space="preserve">
+      <trans-unit id="entitlement" xml:space="preserve" approved="yes">
         <source>System Types</source>
-        <target>인타이틀먼트 </target>
+        <target>시스템 유형</target>
       </trans-unit>
-      <trans-unit id="groupAdmins" xml:space="preserve">
+      <trans-unit id="groupAdmins" xml:space="preserve" approved="yes">
         <source>Group Admins</source>
-        <target>그룹 관리 </target>
+        <target>그룹 관리</target>
       </trans-unit>
-      <trans-unit id="serverCount" xml:space="preserve">
+      <trans-unit id="serverCount" xml:space="preserve" approved="yes">
         <source>Server Count</source>
-        <target>서버 수 </target>
+        <target>서버 수</target>
       </trans-unit>
-      <trans-unit id="monitoringStatus" xml:space="preserve">
+      <trans-unit id="monitoringStatus" xml:space="preserve" approved="yes">
         <source>Monitor Status</source>
-        <target>감시 상태  </target>
+        <target>감시 상태</target>
       </trans-unit>
-      <trans-unit id="userLogin" xml:space="preserve">
+      <trans-unit id="userLogin" xml:space="preserve" approved="yes">
         <source>User Login</source>
-        <target>사용자 로그인 </target>
+        <target>사용자 로그인</target>
       </trans-unit>
       <trans-unit id="userLastName" xml:space="preserve">
         <source>User Last Name</source>
         <target>사용자의 성(姓)</target>
       </trans-unit>
-      <trans-unit id="userFirstName" xml:space="preserve">
+      <trans-unit id="userFirstName" xml:space="preserve" approved="yes">
         <source>User First Name</source>
-        <target>사용자의 이름 </target>
+        <target>사용자의 이름</target>
       </trans-unit>
-      <trans-unit id="roleNames" xml:space="preserve">
+      <trans-unit id="roleNames" xml:space="preserve" approved="yes">
         <source>Role Names</source>
-        <target>역할명 </target>
+        <target>역할명</target>
       </trans-unit>
-      <trans-unit id="lastLoggedIn" xml:space="preserve">
+      <trans-unit id="lastLoggedIn" xml:space="preserve" approved="yes">
         <source>Last Logged In</source>
-        <target>마지막 로그인 </target>
+        <target>마지막 로그인</target>
       </trans-unit>
-      <trans-unit id="changedByFirstName" xml:space="preserve">
+      <trans-unit id="changedByFirstName" xml:space="preserve" approved="yes">
         <source>Changed by First Name</source>
-        <target>이름 변경 </target>
+        <target>이름 변경</target>
       </trans-unit>
-      <trans-unit id="changedByLastName" xml:space="preserve">
+      <trans-unit id="changedByLastName" xml:space="preserve" approved="yes">
         <source>Changed by Last Name</source>
-        <target>성(姓) 변경 </target>
+        <target>성(姓) 변경</target>
       </trans-unit>
-      <trans-unit id="changeDate" xml:space="preserve">
+      <trans-unit id="changeDate" xml:space="preserve" approved="yes">
         <source>Change Date</source>
-        <target>날짜 변경 </target>
+        <target>날짜 변경</target>
       </trans-unit>
-      <trans-unit id="channelLabels" xml:space="preserve">
+      <trans-unit id="channelLabels" xml:space="preserve" approved="yes">
         <source>Channel Labels</source>
-        <target>채널 레이블 </target>
+        <target>채널 레이블</target>
       </trans-unit>
-      <trans-unit id="entitlementLevel" xml:space="preserve">
+      <trans-unit id="entitlementLevel" xml:space="preserve" approved="yes">
         <source>System Type Level</source>
-        <target>인타이틀먼트 레벨 </target>
+        <target>시스템 유형 레벨</target>
       </trans-unit>
-      <trans-unit id="serverName" xml:space="preserve">
+      <trans-unit id="serverName" xml:space="preserve" approved="yes">
         <source>Server Name</source>
-        <target>서버 이름 </target>
+        <target>서버 이름</target>
       </trans-unit>
-      <trans-unit id="matchingField" xml:space="preserve">
+      <trans-unit id="matchingField" xml:space="preserve" approved="yes">
         <source>Matching Field Name</source>
-        <target>일치하는 영역 이름 </target>
+        <target>일치하는 영역 이름</target>
       </trans-unit>
-      <trans-unit id="matchingFieldValue" xml:space="preserve">
+      <trans-unit id="matchingFieldValue" xml:space="preserve" approved="yes">
         <source>Matching Field Value</source>
-        <target>일치하는 영역 값 </target>
+        <target>일치하는 필드 값</target>
       </trans-unit>
       <trans-unit id="dmiBiosVendor" xml:space="preserve">
         <source>DMI Bios Vendor</source>
@@ -9163,121 +9163,121 @@ Follow this url to see the full list of inactive systems:
         <source>Xid</source>
         <target>Xid</target>
       </trans-unit>
-      <trans-unit id="testResult" xml:space="preserve">
+      <trans-unit id="testResult" xml:space="preserve" approved="yes">
         <source>Idref of TestResult</source>
-        <target>TestResult의 Idref </target>
+        <target>TestResult의 Idref</target>
       </trans-unit>
-      <trans-unit id="completed" xml:space="preserve">
+      <trans-unit id="completed" xml:space="preserve" approved="yes">
         <source>Completion Time</source>
-        <target>완료 시간 </target>
+        <target>완료 시간</target>
       </trans-unit>
       <trans-unit id="pass" xml:space="preserve">
         <source>Pass</source>
         <target>합격</target>
       </trans-unit>
-      <trans-unit id="fail" xml:space="preserve">
+      <trans-unit id="fail" xml:space="preserve" approved="yes">
         <source>Fail</source>
-        <target>불합격 </target>
+        <target>불합격</target>
       </trans-unit>
-      <trans-unit id="error" xml:space="preserve">
+      <trans-unit id="error" xml:space="preserve" approved="yes">
         <source>Error</source>
-        <target>오류 </target>
+        <target>오류</target>
       </trans-unit>
-      <trans-unit id="unknown" xml:space="preserve">
+      <trans-unit id="unknown" xml:space="preserve" approved="yes">
         <source>Unknown</source>
-        <target>알 수 없음 </target>
+        <target>알 수 없음</target>
       </trans-unit>
-      <trans-unit id="notapplicable" xml:space="preserve">
+      <trans-unit id="notapplicable" xml:space="preserve" approved="yes">
         <source>Notapplicable</source>
-        <target>해당 없음 </target>
+        <target>해당 없음</target>
       </trans-unit>
-      <trans-unit id="notchecked" xml:space="preserve">
+      <trans-unit id="notchecked" xml:space="preserve" approved="yes">
         <source>Notchecked</source>
-        <target>확인하지 않음 </target>
+        <target>확인하지 않음</target>
       </trans-unit>
-      <trans-unit id="notselected" xml:space="preserve">
+      <trans-unit id="notselected" xml:space="preserve" approved="yes">
         <source>Notselected</source>
-        <target>선택하지 않음 </target>
+        <target>선택하지 않음</target>
       </trans-unit>
-      <trans-unit id="informational" xml:space="preserve">
+      <trans-unit id="informational" xml:space="preserve" approved="yes">
         <source>Informational</source>
-        <target>정보 </target>
+        <target>정보</target>
       </trans-unit>
-      <trans-unit id="fixed" xml:space="preserve">
+      <trans-unit id="fixed" xml:space="preserve" approved="yes">
         <source>Fixed</source>
-        <target>수정됨 </target>
+        <target>수정됨</target>
       </trans-unit>
-      <trans-unit id="sum" xml:space="preserve">
+      <trans-unit id="sum" xml:space="preserve" approved="yes">
         <source>Total</source>
-        <target>합계 </target>
+        <target>합계</target>
       </trans-unit>
-      <trans-unit id="documentIdref" xml:space="preserve">
+      <trans-unit id="documentIdref" xml:space="preserve" approved="yes">
         <source>Idref of rule-result</source>
-        <target>rule-result의 Idref </target>
+        <target>rule-result의 Idref</target>
       </trans-unit>
       <trans-unit id="identsString" xml:space="preserve">
         <source>Assigned Idents</source>
         <target>할당된 Idents</target>
       </trans-unit>
-      <trans-unit id="evaluationResult" xml:space="preserve">
+      <trans-unit id="evaluationResult" xml:space="preserve" approved="yes">
         <source>Result of Evaluation</source>
-        <target>평가 결과 </target>
+        <target>평가 결과</target>
       </trans-unit>
-      <trans-unit id="profile" xml:space="preserve">
+      <trans-unit id="profile" xml:space="preserve" approved="yes">
         <source>Idref of Profile</source>
-        <target>프로파일의 Idref </target>
+        <target>프로파일의 Idref</target>
       </trans-unit>
-      <trans-unit id="satisfied" xml:space="preserve">
+      <trans-unit id="satisfied" xml:space="preserve" approved="yes">
         <source>Satisfied</source>
-        <target>만족함 </target>
+        <target>만족함</target>
       </trans-unit>
       <trans-unit id="dissatisfied" xml:space="preserve">
         <source>Dissatisfied</source>
         <target>불만족함</target>
       </trans-unit>
-      <trans-unit id="satisfactionUnknown" xml:space="preserve">
+      <trans-unit id="satisfactionUnknown" xml:space="preserve" approved="yes">
         <source>Unknown</source>
-        <target>알 수 없음 </target>
+        <target>알 수 없음</target>
       </trans-unit>
       <trans-unit id="filter.clearfilter" xml:space="preserve">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
         <target>다음 목록은 필터링되어 있습니다.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;모든 항목을 표시하려면 필터를 삭제합니다.&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="listtag.clearfilter" xml:space="preserve">
+      <trans-unit id="listtag.clearfilter" xml:space="preserve" approved="yes">
         <source>Clear filter </source>
         <target>필터 삭제 </target>
       </trans-unit>
-      <trans-unit id="listtag.seeall" xml:space="preserve">
+      <trans-unit id="listtag.seeall" xml:space="preserve" approved="yes">
         <source>to see all {0} items.  </source>
         <target>모든 {0} 항목 보기  </target>
       </trans-unit>
-      <trans-unit id="listtag.filteredmessage" xml:space="preserve">
+      <trans-unit id="listtag.filteredmessage" xml:space="preserve" approved="yes">
         <source>The list of {0} item(s) below is filtered.</source>
-        <target>아래 목록 중 {0} 항목이 필터되었습니다. </target>
+        <target>아래 목록 중 {0} 항목이 필터되었습니다.</target>
       </trans-unit>
-      <trans-unit id="listtag.all_items_in_filter" xml:space="preserve">
+      <trans-unit id="listtag.all_items_in_filter" xml:space="preserve" approved="yes">
         <source>The list below is not filtered, because the term you entered to filter by, '&lt;strong&gt;{0}&lt;/strong&gt;', returned matches for every item in the list. Try to filter by a more unique term.</source>
-        <target>아래의 목록은 필터되지 않았습니다. 필터를 위해 입력하신 단어 '&lt;strong&gt;{0}&lt;/strong&gt;'가 목록에 있는 모든 항목과 일치하기 때문입니다. 보다 고유한 단어로 필터해 보시기 바랍니다. </target>
+        <target>아래의 목록은 필터되지 않았습니다. 필터를 위해 입력한 단어 '&lt;strong&gt;{0}&lt;/strong&gt;'가 목록에 있는 모든 항목과 일치하기 때문입니다. 보다 고유한 단어로 필터해 보시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessageempty" xml:space="preserve">
         <source>The empty list below is filtered.</source>
-        <target>아래의 빈 목록이 필터되었습니다. </target>
+        <target>아래의 빈 목록이 필터되었습니다.</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.systems.virt.invalidguestnamelength" xml:space="preserve">
+      <trans-unit id="frontend.actions.systems.virt.invalidguestnamelength" xml:space="preserve" approved="yes">
         <source>Length of guest names must be at least {0} characters.</source>
-        <target>게스트 이름은 최소 {0} 글자수가 되어야 합니다. </target>
+        <target>게스트 이름은 최소 {0} 글자수가 되어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.systems.virt.invalidmemvalue" xml:space="preserve">
+      <trans-unit id="frontend.actions.systems.virt.invalidmemvalue" xml:space="preserve" approved="yes">
         <source>Memory Allocation must be a positive value greater than 0.</source>
-        <target>메모리 할당은 0 보다 큰 값이어야 합니다. </target>
+        <target>메모리 할당은 0 보다 큰 값이어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve">
+      <trans-unit id="frontend.actions.systems.virt.invalidcpuvalue" xml:space="preserve" approved="yes">
         <source>Virtual CPUs must be set to a positive value greater than 0 and less than {0}.</source>
-        <target>가상 CPU는 0보다 크고 {0} 보다 작은 값으로 설정해야 합니다.  </target>
+        <target>가상 CPU는 0보다 크고 {0} 보다 작은 값으로 설정해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.systems.virt.invalidstoragevalue" xml:space="preserve">
+      <trans-unit id="frontend.actions.systems.virt.invalidstoragevalue" xml:space="preserve" approved="yes">
         <source>Only natural numbers are accepted as storage values.</source>
-        <target>저장 장치는 0 보다 큰 값으로 설정해야 합니다. </target>
+        <target>저장 장치는 0 보다 큰 값으로 설정해야 합니다.</target>
       </trans-unit>
       <trans-unit id="frontend.actions.systems.virt.invalidmacaddressvalue" xml:space="preserve">
         <source>MAC Addresses must be of the form XX:XX:XX:XX:XX:XX where all X's are hexedecimal values.</source>
@@ -9295,13 +9295,13 @@ Follow this url to see the full list of inactive systems:
         <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
         <target>게스트 이름에는 영숫자 문자, 하이픈 ('-'), 마침표 ('.') 밑줄 ('_')만 포함할 수 있습니다</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve">
+      <trans-unit id="frontend.actions.channels.manager.add.viewChannels" xml:space="preserve" approved="yes">
         <source>View Associated Channels</source>
-        <target>관련 채널 보기 </target>
+        <target>관련 채널 보기</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve">
+      <trans-unit id="frontend.actions.channels.manager.add.viewErrata" xml:space="preserve" approved="yes">
         <source>View Associated Patches</source>
-        <target>관련 에라타 보기 </target>
+        <target>관련 패치 보기</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit" xml:space="preserve">
         <source>Confirm</source>
@@ -9311,9 +9311,9 @@ Follow this url to see the full list of inactive systems:
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
         <target>{2} 채널에 {1} 패키지 및 {0} 패치가 추가되었습니다.</target>
       </trans-unit>
-      <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve">
+      <trans-unit id="frontend.actions.channels.manager.add.permsfailure" xml:space="preserve" approved="yes">
         <source>You do not have sufficient permissions to perform this action.</source>
-        <target>이 작업을 실행할 수 있는 권한이 없습니다. </target>
+        <target>이 작업을 실행할 수 있는 권한이 없습니다.</target>
       </trans-unit>
       <!-- The following resources need to be updated for each
               schema change (see rhnChannelArch.sql) -->
@@ -9409,25 +9409,25 @@ Follow this url to see the full list of inactive systems:
         <source>PPC64LE</source>
         <target>PPC64LE</target>
       </trans-unit>
-      <trans-unit id="probeparam.passnomatch" xml:space="preserve">
+      <trans-unit id="probeparam.passnomatch" xml:space="preserve" approved="yes">
         <source>The Password and Password Confirm did not match.</source>
-        <target>암호와 암호 확인이 일치하지 않습니다. </target>
+        <target>암호와 암호 확인이 일치하지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="permission.configadmin.needed" xml:space="preserve">
+      <trans-unit id="permission.configadmin.needed" xml:space="preserve" approved="yes">
         <source>The requested function requires a Configuration Admin or Organizational Admin role.</source>
-        <target>요청된 기능에는 설정 관리자 또는 조직 관리자 역할이 필요합니다.   </target>
+        <target>요청된 기능에는 설정 관리자 또는 조직 관리자 역할이 필요합니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.invalidscripttype" xml:space="preserve">
+      <trans-unit id="api.kickstart.invalidscripttype" xml:space="preserve" approved="yes">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target>"pre" 및 "post" 스크립트 유형만 킥스타트 용으로 사용할 수 있습니다.  </target>
+        <target>"pre" 및 "post" 스크립트 유형만 킥스타트 용으로 사용할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname" xml:space="preserve">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
         <target>스크립트 이름은 0 보다 크고 40자 미만이어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.invalidscript" xml:space="preserve">
+      <trans-unit id="api.kickstart.invalidscript" xml:space="preserve" approved="yes">
         <source>You have specified an invalid kickstart script.</source>
-        <target>잘못된 킥스타트 스크립트가 지정되었습니다. </target>
+        <target>잘못된 킥스타트 스크립트가 지정되었습니다.</target>
       </trans-unit>
       <trans-unit id="filter.kickstart.label" xml:space="preserve">
         <source>Label</source>
@@ -9441,45 +9441,45 @@ Follow this url to see the full list of inactive systems:
              들어있지 않습니다.  삭제를 계속 진행할 경우 시스템을
             스냅샷이나 이전 스냅샷으로 시스템을 롤백할 수 없게 됩니다.</target>
       </trans-unit>
-      <trans-unit id="list.filter.iprange" xml:space="preserve">
+      <trans-unit id="list.filter.iprange" xml:space="preserve" approved="yes">
         <source>Single Ip Address</source>
-        <target>단일 Ip 주소 </target>
+        <target>단일 Ip 주소</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve">
+      <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve" approved="yes">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target>지정된 IP 범위 {0}는 기존 IP 범위와 충돌합니다. </target>
+        <target>지정된 IP 범위 {0}는 기존 IP 범위와 충돌합니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve">
+      <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve" approved="yes">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target>지정된 IP 주소 {0}가 잘못되었습니다. </target>
+        <target>지정된 IP 주소 {0}가 잘못되었습니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.filelist.exists" xml:space="preserve">
+      <trans-unit id="api.kickstart.filelist.exists" xml:space="preserve" approved="yes">
         <source>A file list with label {0} already exists.</source>
-        <target>{0}으로 레이블된 파일 목록이 이미 존재합니다.   </target>
+        <target>{0}으로 레이블된 파일 목록이 이미 존재합니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.filelist.notfound" xml:space="preserve">
+      <trans-unit id="api.kickstart.filelist.notfound" xml:space="preserve" approved="yes">
         <source>A file list with label {0} could not be found.</source>
-        <target>{0}으로 레이블된 파일 목록을 찾을 수 없습니다.  </target>
+        <target>{0}으로 레이블된 파일 목록을 찾을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.keys.exists" xml:space="preserve">
+      <trans-unit id="api.kickstart.keys.exists" xml:space="preserve" approved="yes">
         <source>The specified key conflicts with an existing key.</source>
-        <target>지정된 키는 기존 키와 충돌합니다.   </target>
+        <target>지정된 키는 기존 키와 충돌합니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.keys.delete" xml:space="preserve">
+      <trans-unit id="api.kickstart.keys.delete" xml:space="preserve" approved="yes">
         <source>The specified key cannot be deleted.</source>
-        <target>지정된 키를 삭제할 수 없습니다.  </target>
+        <target>지정된 키를 삭제할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="Compare" xml:space="preserve">
+      <trans-unit id="Compare" xml:space="preserve" approved="yes">
         <source>Compare</source>
-        <target>비교 </target>
+        <target>비교</target>
       </trans-unit>
-      <trans-unit id="system.customkey.error.alreadyexists" xml:space="preserve">
+      <trans-unit id="system.customkey.error.alreadyexists" xml:space="preserve" approved="yes">
         <source>A Custom Key with this label already exists.</source>
-        <target>이 레이블로된 사용자 정의키가 이미 존재합니다.  </target>
+        <target>이 레이블로된 사용자 정의키가 이미 존재합니다.</target>
       </trans-unit>
-      <trans-unit id="system.customkey.error.tooshort" xml:space="preserve">
+      <trans-unit id="system.customkey.error.tooshort" xml:space="preserve" approved="yes">
         <source>A Custom Key label and description must be at least two characters long.</source>
-        <target>사용자 정의 키 레이블 및 설명은 최소 2 자 이상이어야 합니다.  </target>
+        <target>사용자 정의 키 레이블 및 설명은 최소 2 자 이상이어야 합니다.</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.toolong" xml:space="preserve">
         <source>A Custom Key label can only be 64 characters long at maximum.</source>
@@ -9493,63 +9493,63 @@ Follow this url to see the full list of inactive systems:
         <source>A Custom Key label can only contain letters, numbers, hyphens (-), and underscores (_).</source>
         <target>사용자 정의 키 레이블에는 문자, 숫자, 하이픈 (-), 밑줄 (_)만 포함할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="system.customkey.addsuccess" xml:space="preserve">
+      <trans-unit id="system.customkey.addsuccess" xml:space="preserve" approved="yes">
         <source>Successfully added 1 custom key.</source>
-        <target>1 개의 사용자 정의키가 성공적으로 추가되었습니다.  </target>
+        <target>1 개의 사용자 정의키가 성공적으로 추가되었습니다.</target>
       </trans-unit>
       <trans-unit id="system.customkey.deletesuccess" xml:space="preserve">
         <source>Successfully deleted 1 custom key.</source>
         <target>1개 사용자 정의 키가 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="channel.java.package.deletesuccess" xml:space="preserve">
+      <trans-unit id="channel.java.package.deletesuccess" xml:space="preserve" approved="yes">
         <source>Successfully deleted {0} packages.</source>
-        <target>{0} 패키지가 성공적으로 삭제되었습니다.  </target>
+        <target>{0} 패키지가 성공적으로 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
+      <trans-unit id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve" approved="yes">
         <source>Invalid autoinstall type: {0}.</source>
-        <target>잘못된 킥스타트 설치 유형: {0}   </target>
+        <target>잘못된 킥스타트 설치 유형: {0}</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidgpgfp" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidgpgfp" xml:space="preserve" approved="yes">
         <source>Invalid GPG Fingerprint</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 GPG 지문  </target>
+        <target>잘못된 GPG 지문</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidgpgkey" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidgpgkey" xml:space="preserve" approved="yes">
         <source>Invalid GPG Key Id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 GPG 키 Id </target>
+        <target>잘못된 GPG 키 Id</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidgpgurl" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidgpgurl" xml:space="preserve" approved="yes">
         <source>Invalid GPG Url</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 GPG Url  </target>
+        <target>잘못된 GPG Url</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname" xml:space="preserve" approved="yes">
         <source>Invalid Channel Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 채널 이름  </target>
+        <target>잘못된 채널 이름</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.missing" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.missing" xml:space="preserve" approved="yes">
         <source>Channel name must be specified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>반드시 채널 이름을 지정해야 합니다 </target>
+        <target>반드시 채널 이름을 지정해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.regex" xml:space="preserve" approved="yes">
         <source>Invalid channel name, please see the format described below</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 이름이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다   </target>
+        <target>채널 이름이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
         <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
@@ -9562,26 +9562,26 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>채널 이름은 '{0}'로 시작할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.minlength" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.minlength" xml:space="preserve" approved="yes">
         <source>Channel name must be at least {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 이름은 최소 {0} 자리 문자이어야 합니다. </target>
+        <target>채널 이름은 최소 {0} 자리 문자이어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.maxlength" xml:space="preserve" approved="yes">
         <source>Channel name can not exceed {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 이름은 {0} 자를 초과할 수 없습니다. </target>
+        <target>채널 이름은 {0} 자를 초과할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelname.nameinuse" xml:space="preserve" approved="yes">
         <source>The channel name '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 이름 '{0}'은 이미 사용 중입니다. 다른 이름을 입력해 주세요. </target>
+        <target>채널 이름 '{0}'은 이미 사용 중입니다. 다른 이름을 입력해 주세요.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.namereserved" xml:space="preserve">
         <source>The channel name '{0}' is reserved, please enter a different name</source>
@@ -9590,26 +9590,26 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannellabel" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannellabel" xml:space="preserve" approved="yes">
         <source>Invalid Channel Label</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 채널 레이블   </target>
+        <target>잘못된 채널 레이블</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannellabel.missing" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannellabel.missing" xml:space="preserve" approved="yes">
         <source>Channel label must be specified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>반드시 채널 레이블을 지정해야 합니다  </target>
+        <target>반드시 채널 레이블을 지정해야 합니다</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannellabel.regex" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannellabel.regex" xml:space="preserve" approved="yes">
         <source>Invalid channel label, please see the format described below</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 레이블이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다   </target>
+        <target>채널 레이블이 잘못되었습니다. 아래에 설명된 형식을 살펴보시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
         <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
@@ -9622,19 +9622,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>채널 레이블은 '{0}'로 시작할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannellabel.minlength" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannellabel.minlength" xml:space="preserve" approved="yes">
         <source>Channel label must be at least {0} characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 레이블은 최소 {0} 자리 문자이어야 합니다.  </target>
+        <target>채널 레이블은 최소 {0} 자리 문자이어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannellabel.labelinuse" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannellabel.labelinuse" xml:space="preserve" approved="yes">
         <source>The channel label '{0}' is already in use, please enter a different name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>채널 레이블 '{0}'은 이미 사용 중입니다. 다른 이름을 입력해 주세요.       </target>
+        <target>채널 레이블 '{0}'은 이미 사용 중입니다. 다른 이름을 입력해 주세요.</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.labelreserved" xml:space="preserve">
         <source>The channel label '{0}' is reserved, please enter a different name</source>
@@ -9643,40 +9643,40 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="edit.channel.invalidchannelsummary" xml:space="preserve">
+      <trans-unit id="edit.channel.invalidchannelsummary" xml:space="preserve" approved="yes">
         <source>Invalid Channel Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target>잘못된 채널 요약 </target>
+        <target>잘못된 채널 요약</target>
       </trans-unit>
       <trans-unit id="message.configuration.channel.deleted" xml:space="preserve">
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
         <target>&lt;strong&gt;'{0}'&lt;/strong&gt; 채널이 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="distribution.tree.exists" xml:space="preserve">
+      <trans-unit id="distribution.tree.exists" xml:space="preserve" approved="yes">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
-        <target>'{0}'라는 배포판이 이미 있습니다. 다른 이름을 선택하십시오. </target>
+        <target>'{0}'라는 배포판이 이미 있습니다. 다른 이름을 선택하십시오.</target>
       </trans-unit>
-      <trans-unit id="api.channel.delete.redhat" xml:space="preserve">
+      <trans-unit id="api.channel.delete.redhat" xml:space="preserve" approved="yes">
         <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
-        <target>Red Hat 채널은 삭제될 수 없습니다. 오직 사용자 설정 채널만 삭제될 수 있습니다.     </target>
+        <target>Red Hat 채널은 삭제될 수 없습니다. 오직 사용자 설정 채널만 삭제될 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="api.channel.delete.haschild" xml:space="preserve">
+      <trans-unit id="api.channel.delete.haschild" xml:space="preserve" approved="yes">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
-        <target>이 채널에는 관련된 자식 채널이 있습니다. 먼저 자식 채널을 삭제한 후 부모 채널을 삭제해야 합니다.  </target>
+        <target>이 채널에는 관련된 자식 채널이 있습니다. 먼저 자식 채널을 삭제한 후 부모 채널을 삭제해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="api.channel.delete.hasclones" xml:space="preserve">
+      <trans-unit id="api.channel.delete.hasclones" xml:space="preserve" approved="yes">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
         <target>채널은 삭제할 수 없습니다. 삭제하려는 채널이 복제되었습니다. 복제된 채널을 삭제한 후 이 채널을 삭제해야 합니다. 복제된 채널에는 ({0}{1})이(가) 포함되었습니다.</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.tree.notfound" xml:space="preserve">
+      <trans-unit id="api.kickstart.tree.notfound" xml:space="preserve" approved="yes">
         <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
-        <target>킥스타트 트리를 찾을 수 없습니다. 요청된 트리에 액세스할 수 없습니다.  </target>
+        <target>킥스타트 트리를 찾을 수 없습니다. 요청된 트리에 액세스할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="message.channelcreated" xml:space="preserve">
+      <trans-unit id="message.channelcreated" xml:space="preserve" approved="yes">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 생성 </target>
+        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 생성</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
@@ -9686,9 +9686,9 @@ Follow this url to see the full list of inactive systems:
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <target>이제 &lt;strong&gt;{0}&lt;/strong&gt;와(과) 연결된 패치를 복제할 수 있습니다.</target>
       </trans-unit>
-      <trans-unit id="message.channeldeleted" xml:space="preserve">
+      <trans-unit id="message.channeldeleted" xml:space="preserve" approved="yes">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 삭제되었습니다.    </target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 활성키가 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.channel.delete.systemssubscribed" xml:space="preserve">
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
@@ -9702,9 +9702,9 @@ Follow this url to see the full list of inactive systems:
         <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
         <target>일정 서비스가 중지된 것 같습니다. 현재 채널을 삭제할 수 없습니다. 관리자에게 문의하십시오.</target>
       </trans-unit>
-      <trans-unit id="message.channelupdated" xml:space="preserve">
+      <trans-unit id="message.channelupdated" xml:space="preserve" approved="yes">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 업데이트 </target>
+        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 업데이트</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
@@ -9718,9 +9718,9 @@ Follow this url to see the full list of inactive systems:
         <source>Repository sync is running.</source>
         <target>저장소 동기화가 실행 중입니다.</target>
       </trans-unit>
-      <trans-unit id="message.channelsubscribers" xml:space="preserve">
+      <trans-unit id="message.channelsubscribers" xml:space="preserve" approved="yes">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
-        <target>등록자 탭에서 사용자마다 서브스크립션 제한이 적용될 수 있습니다.  </target>
+        <target>등록자 탭에서 사용자마다 서브스크립션 제한이 적용될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="message.bunch.singlescheduled" xml:space="preserve">
         <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled for {1}.</source>
@@ -9754,51 +9754,51 @@ Follow this url to see the full list of inactive systems:
         <source>SUSE Linux Enterprise Server guests require at least 512 MB of memory.</source>
         <target>SUSE Linux Enterprise Server 게스트에스는 512MB 이상의 메모리가 필요합니다.</target>
       </trans-unit>
-      <trans-unit id="kickstart.cobbler.profile.invalidvirt" xml:space="preserve">
+      <trans-unit id="kickstart.cobbler.profile.invalidvirt" xml:space="preserve" approved="yes">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
-        <target>선택한 킥스타트 트리 또는 배포판에서 반가상화는 지원되지 않습니다.   </target>
+        <target>선택한 킥스타트 트리 또는 배포판에서 반가상화는 지원되지 않습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.nodistribution" xml:space="preserve">
         <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
         <target>선택한 킥스타트 가능한 트리를 현재 사용할 수 없습니다. cobbler 기능을 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt" xml:space="preserve">
+      <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt" xml:space="preserve" approved="yes">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target>현재 선택된 가상화 유형과 호환할 수 없는 배포판 또는 킥스타트 트리가 선택되었습니다. 다른 배포판을 선택하거나 배포판을 설정하기 전 프로파일의 선택된 가상화 유형을 변경하십시오.    </target>
+        <target>현재 선택된 가상화 유형과 호환할 수 없는 배포판 또는 킥스타트 트리가 선택되었습니다. 다른 배포판을 선택하거나 배포판을 설정하기 전 프로파일의 선택된 가상화 유형을 변경하십시오.</target>
       </trans-unit>
-      <trans-unit id="snapshots.childchannel" xml:space="preserve">
+      <trans-unit id="snapshots.childchannel" xml:space="preserve" approved="yes">
         <source>Child Channels Updated</source>
-        <target>자식 채널 업데이트  </target>
+        <target>자식 채널 업데이트</target>
       </trans-unit>
-      <trans-unit id="snapshots.basechannel" xml:space="preserve">
+      <trans-unit id="snapshots.basechannel" xml:space="preserve" approved="yes">
         <source>Base Channel Updated</source>
-        <target>기본 채널 업데이트  </target>
+        <target>기본 채널 업데이트</target>
       </trans-unit>
-      <trans-unit id="snapshots.entitlements" xml:space="preserve">
+      <trans-unit id="snapshots.entitlements" xml:space="preserve" approved="yes">
         <source>System Types Updated</source>
-        <target>인타이틀먼트 업데이트  </target>
+        <target>시스템 유형 업데이트</target>
       </trans-unit>
-      <trans-unit id="errata.updates.noncritical" xml:space="preserve">
+      <trans-unit id="errata.updates.noncritical" xml:space="preserve" approved="yes">
         <source>Non-Critical</source>
-        <target>중요하지 않음 </target>
+        <target>중요하지 않음</target>
       </trans-unit>
-      <trans-unit id="snapshots.configchannel" xml:space="preserve">
+      <trans-unit id="snapshots.configchannel" xml:space="preserve" approved="yes">
         <source>Configuration Channels Updated</source>
-        <target>설정 채널 업데이트  </target>
+        <target>구성 채널 업데이트</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
         <target>이 채널은 외부 리포지터리와 동기화되지 않았습니다.</target>
       </trans-unit>
-      <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
+      <trans-unit id="channel.edit.repo.updated" xml:space="preserve" approved="yes">
         <source>{0} repository information was successfully updated</source>
-        <target>{0} 리포지터리 정보가 성공적으로 업데이트되었습니다 </target>
+        <target>{0} 리포지터리 정보가 성공적으로 업데이트됨</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve" approved="yes">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target>리포지터리 레이블 '{0}'은 이미 사용 중입니다. 다른 레이블을 선택하십시오 </target>
+        <target>리포지터리 레이블 '{0}'은 이미 사용 중입니다. 다른 레이블을 선택하십시오.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve" approved="yes">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
         <target>'{0}' 저장소 유형이 잘못되었거나 지정된 URL에서 이미 사용 중입니다. 다른 유형을 선택하십시오.</target>
       </trans-unit>
@@ -9826,29 +9826,29 @@ Follow this url to see the full list of inactive systems:
         <source>Successfully scheduled {0} system(s) for provisioning.{1}</source>
         <target>{0}시스템의 프로비저닝이 성공적으로 스케줄되었습니다.</target>
       </trans-unit>
-      <trans-unit id="ssm.package.install.operationname" xml:space="preserve">
+      <trans-unit id="ssm.package.install.operationname" xml:space="preserve" approved="yes">
         <source>Schedule Package Installations</source>
-        <target>패키지 설치 스케줄 </target>
+        <target>패키지 설치 스케줄</target>
       </trans-unit>
-      <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
+      <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve" approved="yes">
         <source>Schedule Package Upgrades</source>
         <target>패키지 업그레이드 스케줄</target>
       </trans-unit>
-      <trans-unit id="ssm.package.verify.operationname" xml:space="preserve">
+      <trans-unit id="ssm.package.verify.operationname" xml:space="preserve" approved="yes">
         <source>Schedule Package Verifications</source>
-        <target>패키지 검증 스케줄 </target>
+        <target>패키지 검증 스케줄</target>
       </trans-unit>
-      <trans-unit id="ssm.server.delete.operationname" xml:space="preserve">
+      <trans-unit id="ssm.server.delete.operationname" xml:space="preserve" approved="yes">
         <source>Server Delete</source>
-        <target>서버 삭제 </target>
+        <target>서버 삭제</target>
       </trans-unit>
-      <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
+      <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve" approved="yes">
         <source>Systems Migrated</source>
-        <target>마이그레이션된 시스템 </target>
+        <target>마이그레이션된 시스템</target>
       </trans-unit>
-      <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
+      <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve" approved="yes">
         <source>Migrate Systems</source>
-        <target>시스템 마이그레이션 </target>
+        <target>시스템 마이그레이션</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
@@ -9866,13 +9866,13 @@ Follow this url to see the full list of inactive systems:
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
         <target>채널에서 {0} 패키지가 추가되었고 {1} 패키지가 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="system.select.inactive" xml:space="preserve">
+      <trans-unit id="system.select.inactive" xml:space="preserve" approved="yes">
         <source>Select Inactive</source>
-        <target>비활성화 선택 </target>
+        <target>비활성화 선택</target>
       </trans-unit>
-      <trans-unit id="package.jsp.key" xml:space="preserve">
+      <trans-unit id="package.jsp.key" xml:space="preserve" approved="yes">
         <source>Signing Key</source>
-        <target>서명 키 </target>
+        <target>서명 키</target>
       </trans-unit>
       <trans-unit id="package.jsp.key.unkown" xml:space="preserve">
         <source>(Unknown)</source>
@@ -9936,13 +9936,13 @@ tree will not be usable for autoinstalling.
 오류를 해결하지 않으면 자동 설치에서 자동 설치 가능 트리를 사용할 수 없습니다.
         </target>
       </trans-unit>
-      <trans-unit id="errata.delete.msg" xml:space="preserve">
+      <trans-unit id="errata.delete.msg" xml:space="preserve" approved="yes">
         <source>Successfully deleted {0} patches.</source>
-        <target>{0} 에라타가 성공적으로 삭제되었습니다.   </target>
+        <target>{0} 패치가 성공적으로 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="message.syncschedule.disabled" xml:space="preserve">
+      <trans-unit id="message.syncschedule.disabled" xml:space="preserve" approved="yes">
         <source>Schedule has been disabled</source>
-        <target>스케줄이 비활성화되었습니다</target>
+        <target>스케줄이 비활성화됨</target>
       </trans-unit>
       <trans-unit id="repos.jsp.message.invalidcron" xml:space="preserve">
         <source>Invalid schedule entry: {0}</source>
@@ -9957,9 +9957,9 @@ tree will not be usable for autoinstalling.
         <source>Your credentials were successfully deleted.</source>
         <target>인증서가 삭제되었습니다.</target>
       </trans-unit>
-      <trans-unit id="credentials.message.incomplete" xml:space="preserve">
+      <trans-unit id="credentials.message.incomplete" xml:space="preserve" approved="yes">
         <source>Your credentials are incomplete, at least username and password are needed.</source>
-        <target>인증서가 불완전합니다. 최소한으로 사용자 이름과 비밀번호가 필요합니다.</target>
+        <target>인증서가 불완전합니다. 적어도 사용자 이름과 비밀번호가 필요합니다.</target>
       </trans-unit>
       <trans-unit id="images.message.error.nocreds" xml:space="preserve">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
@@ -10058,9 +10058,9 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Select first character</source>
         <target>첫 번째 문자 선택</target>
       </trans-unit>
-      <trans-unit id="login.jsp.satbody2" xml:space="preserve">
+      <trans-unit id="login.jsp.satbody2" xml:space="preserve" approved="yes">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
-        <target state="translated">@@PRODUCT_NAME@@에 대한 자세한 정보는 당사 웹 사이트(&lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;)에서 확인할 수 있습니다. </target>
+        <target state="final">@@PRODUCT_NAME@@에 대한 자세한 정보는 당사 웹 사이트(&lt;a href="http://www.suse.com/products/suse-manager/" target="_blank" rel="noreferrer noopener"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;)에서 확인할 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3" xml:space="preserve">
         <source> </source>
@@ -10433,19 +10433,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
+      <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve" approved="yes">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템에 가상화 인타이틀먼트를 추가하신 이후, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는 지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.   </target>
+        <target>시스템에 가상화 시스템 유형을 추가한 후에 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve" approved="yes">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템에 가상화 인타이틀먼트를 추가하신 이후, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는 지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
+        <target>시스템에 가상화 시스템 유형을 추가한 후에, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
@@ -10959,23 +10959,23 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-        <target state="new" />
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>
