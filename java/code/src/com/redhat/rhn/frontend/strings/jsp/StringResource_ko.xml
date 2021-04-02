@@ -21799,7 +21799,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
+      <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve" approved="yes">
           <source>Schedule Package Upgrades</source>
         <target>패키지 업그레이드 스케줄</target>
         <context-group name="ctx">
