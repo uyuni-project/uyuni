@@ -10642,9 +10642,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>User has no permissions to do the action</source>
         <target>사용자에게 작업 실행 권한 없음</target>
       </trans-unit>
-      <trans-unit id="recurring_action.empty_name" xml:space="preserve">
+      <trans-unit id="recurring_action.empty_name" xml:space="preserve" approved="yes">
         <source>Recurring Action name must be provided</source>
-        <target>반복 작업 이름을 입력해야 합니다.</target>
+        <target>반복 작업 이름을 입력해야 함</target>
       </trans-unit>
       <trans-unit id="recurring_action.action_name_exists" xml:space="preserve">
         <source>Recurring Action with given name already exists</source>
@@ -10954,28 +10954,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
         <target state="translated">저장소 레이블 '{0}'이(가) 잘못되었습니다. 저장소 레이블은 문자로 시작해야 하며 소문자, 하이픈('-'), 마침표('.'), 밑줄('_'), 숫자, 공백, 괄호 및 슬래시('/')만 포함되어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="virt.network_create" xml:space="preserve">
+      <trans-unit id="virt.network_create" xml:space="preserve" approved="yes">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new" />
+        <target state="final">가상 네트워크 생성</target>
       </trans-unit>
-      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
+      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve" approved="yes">
         <source>No such FQDN: {0}.</source>
-        <target state="new" />
+        <target state="final">해당하는 FQDN: {0}이(가) 없습니다.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve" approved="yes">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-        <target state="new" />
+        <target state="final">'{0}'을(를) 읽고 쓸 수 없습니다. 권한을 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve" approved="yes">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-        <target state="new" />
+        <target state="final">'{0}'에 대한 권한을 확인하는 동안 오류가 발생했습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
+      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve" approved="yes">
         <source>Error during applying the bootstrap state, message: {0}</source>
-        <target state="new" />
+        <target state="final">부트스트랩 상태를 적용하는 동안 오류 발생. 메시지: {0}</target>
       </trans-unit>
     </body>
   </file>
