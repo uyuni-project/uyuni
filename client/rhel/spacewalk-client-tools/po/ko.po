@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-18 09:56+0000\n"
+"PO-Revision-Date: 2021-04-03 19:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/ko/>\n"
@@ -62,7 +62,7 @@ msgstr "소프트웨어 업데이트 설정"
 
 #: ../src/up2date_client/gui.py:283
 msgid "You must run rhn_register as root."
-msgstr "root 계정으로 rhn_register를 실행하셔야 합니다."
+msgstr "root 계정으로 rhn_register를 실행해야 합니다."
 
 #: ../src/up2date_client/gui.py:308
 #, python-format
@@ -90,19 +90,16 @@ msgid "Error reading network interface information:"
 msgstr "네트워크 인터페이스 정보를 읽어오는 중 오류 발생:"
 
 #: ../src/up2date_client/hardware.py:1118
-#, fuzzy
 msgid "Error reading network FQDNs information:"
-msgstr "네트워크 정보를 읽어오는 중 오류 발생:"
+msgstr "네트워크 FQDN 정보를 읽어오는 중 오류 발생:"
 
 #: ../src/up2date_client/hardware.py:1125
-#, fuzzy
 msgid "Error reading system info:"
-msgstr "시스템 메모리 정보를 읽어오는 중 오류 발생:"
+msgstr "시스템 정보를 읽어오는 중 오류 발생:"
 
 #: ../src/up2date_client/hardware.py:1132
-#, fuzzy
 msgid "Error reading machine info:"
-msgstr "cpu 정보를 읽어오는 중 오류 발생:"
+msgstr "머신 정보를 읽어오는 중 오류 발생:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -114,16 +111,15 @@ msgstr "예/아니오 대화 상자:"
 
 #: ../src/up2date_client/rhnChannel.py:102
 msgid "Unable to Locate SystemId"
-msgstr "SystemId를 찾을 수 없음 "
+msgstr "SystemId를 찾을 수 없음"
 
 #: ../src/up2date_client/rhnChannel.py:119
 msgid "This system may not be updated until it is associated with a channel."
-msgstr "이 시스템에 채널을 할당하기 전에는 업데이트가 실행되지 않을 것입니다."
+msgstr "채널과 연결되어야 시스템을 업데이트할 수 있습니다."
 
 #: ../src/up2date_client/rhncli.py:65
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "추가 출력을 보여줌"
+msgstr "출력을 추가로 표시합니다. 세부 정보를 위해 반복합니다."
 
 #: ../src/up2date_client/rhncli.py:67
 msgid "Specify an http proxy to use"
@@ -135,7 +131,7 @@ msgstr "인증받은 http proxy와 함께 사용할 사용자명 지정"
 
 #: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
-msgstr "인증받은 http proxy에 사용할 암호 지정"
+msgstr "인증받은 http proxy와 함께 사용할 암호 지정"
 
 #: ../src/up2date_client/rhncli.py:93
 msgid ""
@@ -190,7 +186,7 @@ msgstr "인증 오류 발생: %s\n"
 #: ../src/up2date_client/rhncli.py:139
 #, python-format
 msgid "You must be root to run %s"
-msgstr "root로 %s를 실행하셔야 합니다"
+msgstr "root로 %s을(를) 실행해야 함"
 
 #: ../src/up2date_client/rhncli.py:169 ../src/up2date_client/rhncli.py:204
 msgid "Unable to open gui. Try `up2date --nox`"
@@ -249,9 +245,9 @@ msgid "SSL certificate:"
 msgstr "SSL 인증서:"
 
 #: ../src/up2date_client/rhnreg_constants.py:31
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must enter a valid {PRODUCT_NAME} URL."
-msgstr "로그인 계정을 입력해 주십시오."
+msgstr "유효한 {PRODUCT_NAME} URL을 입력해야 합니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 msgid ""
@@ -261,27 +257,26 @@ msgstr "https를 사용하는 경우에는 유효한 SSL 인증서의 위치를 
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
 msgid "Attempting to contact the Spacewalk server."
-msgstr "Red Hat Network 서버에 연결합니다."
+msgstr "Spacewalk 서버에 연결을 시도하고 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
-msgstr "%s에 있는 Red Hat Network 서버에 연결합니다."
+msgstr "%s에 있는 {PRODUCT_NAME} 서버에 연결을 시도하고 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:39
 #, python-format
 msgid "A proxy was specified at %s."
-msgstr "proxy는 %s에 지정되어 있습니다."
+msgstr "프록시는 %s에 지정되어 있습니다."
 
 #. Start Window
 #: ../src/up2date_client/rhnreg_constants.py:42
 msgid "System Registration"
-msgstr "RHN 등록"
+msgstr "시스템 등록"
 
 #: ../src/up2date_client/rhnreg_constants.py:43
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "This assistant will guide you through connecting your system to "
 "{PRODUCT_NAME} to receive software updates, including security updates, to "
@@ -293,31 +288,30 @@ msgid ""
 " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
-"지속적으로 시스템을 지원하고 호환되게 하기 위해 보안 업데이트를 포함하여 소프"
-"트웨어를 업데이트 하는 방법에 대해 시스템을 Red Hat Network (RHN)에 연결하여 "
-"안내해 드립니다. 다음과 같은 정보가 필요합니다:\n"
+"지속적으로 시스템을 지원하고 호환되게 하기 위해 보안 업데이트를 포함하여 소프트웨어를 업데이트 하는 방법에 대해 시스템을  "
+"{PRODUCT_NAME}에 연결하여 안내해 드립니다. 다음과 같은 정보가 필요합니다.\n"
 "\n"
 " * 네트워크 연결\n"
-" * Red Hat 로그인 & 암호\n"
-" * Red Hat Network Satellite 또는 Proxy의 위치 (선택 사항)\n"
+" * {PRODUCT_NAME} 로그인 & 암호\n"
+" * {PRODUCT_NAME} 서버 또는 프록시의 위치\n"
 "\n"
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Why Should I Connect to {PRODUCT_NAME}? ..."
-msgstr "RHN에 연결해야 하는 이유는? ..."
+msgstr "{PRODUCT_NAME}에 연결해야 하는 이유는? ..."
 
 #: ../src/up2date_client/rhnreg_constants.py:57 ../data/rh_register.glade.h:69
 msgid "Why Register"
 msgstr "등록해야 하는 이유"
 
 #: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
 "of the benefits of a paid subscription, including:"
-msgstr "유료 등록 서비스의 혜택을 받기 위해 시스템을 Red Hat Network에 연결함:"
+msgstr "시스템을 {PRODUCT_NAME}에 연결하면 다음과 같은 유료 등록 혜택을 최대한 이용할 수 있습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:60
 msgid "Security & Updates:"
@@ -336,30 +330,21 @@ msgid "Compliance:"
 msgstr "호환:"
 
 #: ../src/up2date_client/rhnreg_constants.py:64
-#, fuzzy
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
 "this system updated and secure."
-msgstr ""
-"보안 업데이트가 포함된 최신 소프트웨어를 업데이트하여 Red Hat Enterprise "
-"Linux 시스템을 지속적으로 업데이트하고 보안을 유지하시기 바랍니다."
+msgstr "보안 업데이트가 포함된 최신 소프트웨어를 업데이트하여 이 시스템을 지속적으로 업데이트하고 보안을 유지하시기 바랍니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:66
-#, fuzzy
 msgid ""
 "Download installation images for system releases, including new releases."
-msgstr ""
-"새로운 출시 버전을 포함하는 Red Hat Enterprise Linux 출시 버전에 대한 설치 이"
-"미지를 다운로드합니다."
+msgstr "새로운 릴리스를 포함하는 시스템 릴리스에 대한 설치 이미지를 다운로드합니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:68
-#, fuzzy
 msgid ""
 "Access to the technical support experts for help with any issues you might "
 "encounter with this system."
-msgstr ""
-"Red Hat 또는 Red Hat 총판점에서 전문가에게 시스템 관련 사항에 관한 기술 지원"
-"을 받으시기 바랍니다."
+msgstr "이 시스템에 문제가 발생하는 경우 기술 지원 전문가의 도움을 받으시기 바랍니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:70
 msgid ""
@@ -368,38 +353,33 @@ msgid ""
 msgstr "구독 계약을 준수하고 계정에 연결된 시스템의 구독을 관리하십시오."
 
 #: ../src/up2date_client/rhnreg_constants.py:73
-#, fuzzy
 msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
 msgstr ""
-"도움말: Red Hat은 사용자 개인 정보를 보호합니다: http://www.redhat.com/legal/"
+"도움말: SUSE는 사용자 개인 정보를 보호합니다. http://www.redhat.com/legal/"
 "privacy_statement.html"
 
 #: ../src/up2date_client/rhnreg_constants.py:75
 msgid "Take me back to the registration"
-msgstr "등록 절차가 있는 곳으로 이동 "
+msgstr "등록 절차가 있는 곳으로 이동"
 
 #. Confirm Quit Window
 #: ../src/up2date_client/rhnreg_constants.py:78
 msgid "Software Update Not Set Up"
-msgstr "소프트웨어 업데이트 설정"
+msgstr "소프트웨어 업데이트가 설정되지 않음"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
 "miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr ""
-"정말로 시스템을 Red Hat Network에 연결하지 않으시겠습니다? Red Hat "
-"Enterprise Linux 등록 혜택을 놓치게 됩니다:\n"
+msgstr "시스템을 {PRODUCT_NAME}에 연결하지 않으시겠습니까? SLES/RHEL 등록 혜택을 놓치게 됩니다.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "You will not be able to take advantage of these subscription privileges "
 "without connecting your system to {PRODUCT_NAME}.\n"
-msgstr ""
-"시스템을 Red Hat Network에 연결하지 않고 이러한 등록 권한의 혜택을 받으실 수 "
-"없습니다.\n"
+msgstr "시스템을 {PRODUCT_NAME}에 연결하지 않고 이러한 등록 권한의 혜택을 받으실 수 없습니다.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:83
 msgid "Take me back to the setup process."
@@ -416,12 +396,12 @@ msgid "{PRODUCT_NAME} Account"
 msgstr "{PRODUCT_NAME} 계정"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, fuzzy, python-format, python-brace-format
+#, python-brace-format, python-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
 msgstr ""
-"%s Red Hat Network Satellite에 대한 사용자 로그인 정보를 입력합니다:\n"
+"%s {PRODUCT_NAME}에 대한 사용자 로그인 정보를 입력합니다.\n"
 "\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:89
@@ -439,13 +419,11 @@ msgid "Password:"
 msgstr "암호:"
 
 #: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
 "Organization Administrator."
-msgstr ""
-"도움말: 사용자명이나 암호를 잊어버리셨습니까? Satellite의 기업 관리자에게 연"
-"락하시기 바랍니다."
+msgstr "도움말: 로그인 또는 암호를 잊어버리셨습니까? {PRODUCT_NAME} 기업 관리자에게 연락하시기 바랍니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
