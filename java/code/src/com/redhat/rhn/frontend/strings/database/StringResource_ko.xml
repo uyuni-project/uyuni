@@ -32,26 +32,26 @@
         <target>실패</target>
       </trans-unit>
       <!-- System Group Types -->
-      <trans-unit id="Spacewalk Management Entitled Servers" xml:space="preserve">
+      <trans-unit id="Spacewalk Management Entitled Servers" xml:space="preserve" approved="yes">
         <source>Management</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>관리 (Management)</target>
+        <target>관리</target>
       </trans-unit>
-      <trans-unit id="Spacewalk Provisioning Entitled Servers" xml:space="preserve">
+      <trans-unit id="Spacewalk Provisioning Entitled Servers" xml:space="preserve" approved="yes">
         <source>Provisioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>프로비저닝 (Provisioning)</target>
+        <target>프로비저닝</target>
       </trans-unit>
-      <trans-unit id="Spacewalk Monitoring Entitled Servers" xml:space="preserve">
+      <trans-unit id="Spacewalk Monitoring Entitled Servers" xml:space="preserve" approved="yes">
         <source>Monitoring</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>모니터링 (Monitoring)</target>
+        <target>모니터링</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
       <trans-unit id="bootstrap_entitled" xml:space="preserve">
@@ -63,9 +63,9 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="enterprise_entitled" xml:space="preserve">
+      <trans-unit id="enterprise_entitled" xml:space="preserve" approved="yes">
           <source>Management</source>
-        <target>관리 (Management)</target>
+        <target>관리</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -468,19 +468,19 @@
         </context-group>
         <target>응용 프로그램 프로토콜</target>
       </trans-unit>
-      <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
+      <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve" approved="yes">
         <source>Available Space Percent Used Critical if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Available Space Percent Used Critical if Above</target>
+        <target>사용 가능 공간 사용 비율, 다음 이상일 경우 중요</target>
       </trans-unit>
-      <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
+      <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve" approved="yes">
         <source>Available Space Percent Used Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Available Space Percent Used Warn if Above</target>
+        <target>사용 가능 공간 사용 비율, 다음 이상일 경우 경고</target>
       </trans-unit>
       <trans-unit id="BEA Domain Admin Server" xml:space="preserve">
         <source>BEA Domain Admin Server</source>
@@ -566,124 +566,124 @@
         </context-group>
         <target>중요 활성 세션</target>
       </trans-unit>
-      <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
+      <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve" approved="yes">
         <source>Critical Avail Sessions Used Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Avail Sessions Used Pct</target>
+        <target>중요 사용 가능 세션 사용 비율</target>
       </trans-unit>
-      <trans-unit id="Critical Blocked Process Count" xml:space="preserve">
+      <trans-unit id="Critical Blocked Process Count" xml:space="preserve" approved="yes">
         <source>Critical Blocked Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Blocked Process Count</target>
+        <target>중요 차단 프로세스 수</target>
       </trans-unit>
-      <trans-unit id="Critical Blocking Sessions" xml:space="preserve">
+      <trans-unit id="Critical Blocking Sessions" xml:space="preserve" approved="yes">
         <source>Critical Blocking Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Blocking Sessions</target>
+        <target>중요 차단 세션</target>
       </trans-unit>
-      <trans-unit id="Critical Buffer Cache Hit Ratio" xml:space="preserve">
+      <trans-unit id="Critical Buffer Cache Hit Ratio" xml:space="preserve" approved="yes">
         <source>Critical Buffer Cache Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Buffer Cache Hit Ratio</target>
+        <target>중요 버퍼 캐시 적중률</target>
       </trans-unit>
-      <trans-unit id="Critical CLOSE_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Critical CLOSE_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Critical CLOSE_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CLOSE_WAIT Connections</target>
+        <target>중요 CLOSE_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Critical CPU Load 1-Min Ave" xml:space="preserve">
+      <trans-unit id="Critical CPU Load 1-Min Ave" xml:space="preserve" approved="yes">
         <source>Critical CPU Load 1-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CPU Load 1-Min Ave</target>
+        <target>중요 CPU 사용량 1-Min Ave</target>
       </trans-unit>
-      <trans-unit id="Critical CPU Load 15-Min Ave" xml:space="preserve">
+      <trans-unit id="Critical CPU Load 15-Min Ave" xml:space="preserve" approved="yes">
         <source>Critical CPU Load 15-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CPU Load 15-Min Ave</target>
+        <target>중요 CPU 사용량 15-Min Ave</target>
       </trans-unit>
-      <trans-unit id="Critical CPU Load 5-Min Ave" xml:space="preserve">
+      <trans-unit id="Critical CPU Load 5-Min Ave" xml:space="preserve" approved="yes">
         <source>Critical CPU Load 5-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CPU Load 5-Min Ave</target>
+        <target>중요 CPU 사용량 5-Min Ave</target>
       </trans-unit>
-      <trans-unit id="Critical CPU Pct Used" xml:space="preserve">
+      <trans-unit id="Critical CPU Pct Used" xml:space="preserve" approved="yes">
         <source>Critical CPU Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CPU Pct Used</target>
+        <target>중요 CPU 사용 비율</target>
       </trans-unit>
-      <trans-unit id="Critical CPU Time Rate" xml:space="preserve">
+      <trans-unit id="Critical CPU Time Rate" xml:space="preserve" approved="yes">
         <source>Critical CPU Time Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical CPU Time Rate</target>
+        <target>중요 CPU 시간 비율</target>
       </trans-unit>
-      <trans-unit id="Critical Child Process Count" xml:space="preserve">
+      <trans-unit id="Critical Child Process Count" xml:space="preserve" approved="yes">
         <source>Critical Child Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Child Process Count</target>
+        <target>중요 하위 프로세스 수</target>
       </trans-unit>
-      <trans-unit id="Critical Child Process Groups" xml:space="preserve">
+      <trans-unit id="Critical Child Process Groups" xml:space="preserve" approved="yes">
         <source>Critical Child Process Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Child Process Groups</target>
+        <target>중요 하위 프로세스 그룹</target>
       </trans-unit>
-      <trans-unit id="Critical Connection Rate" xml:space="preserve">
+      <trans-unit id="Critical Connection Rate" xml:space="preserve" approved="yes">
         <source>Critical Connection Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Connection Rate</target>
+        <target>중요 연결 속도</target>
       </trans-unit>
-      <trans-unit id="Critical Connections" xml:space="preserve">
+      <trans-unit id="Critical Connections" xml:space="preserve" approved="yes">
         <source>Critical Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Connections</target>
+        <target>중요 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Count" xml:space="preserve">
+      <trans-unit id="Critical Count" xml:space="preserve" approved="yes">
         <source>Critical Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Count</target>
+        <target>중요 카운트</target>
       </trans-unit>
-      <trans-unit id="Critical Data Dictionary Hit Ratio" xml:space="preserve">
+      <trans-unit id="Critical Data Dictionary Hit Ratio" xml:space="preserve" approved="yes">
         <source>Critical Data Dictionary Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Data Dictionary Hit Ratio</target>
+        <target>중요 데이터 사전 적중률</target>
       </trans-unit>
-      <trans-unit id="Critical Defunct Process Count" xml:space="preserve">
+      <trans-unit id="Critical Defunct Process Count" xml:space="preserve" approved="yes">
         <source>Critical Defunct Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Defunct Process Count</target>
+        <target>중요 Defunct 프로세스 카운트</target>
       </trans-unit>
       <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve">
         <source>Critical Disk Sort Ratio</source>
