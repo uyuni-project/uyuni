@@ -685,425 +685,425 @@
         </context-group>
         <target>중요 Defunct 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve">
+      <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve" approved="yes">
         <source>Critical Disk Sort Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Disk Sort Ratio</target>
+        <target>중요 디스크 분류 비율</target>
       </trans-unit>
-      <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve">
+      <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve" approved="yes">
         <source>Critical ESTABLISHED Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical ESTABLISHED Connections</target>
+        <target>중요 ESTABLISHED 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Execution Time Moving Ave" xml:space="preserve">
+      <trans-unit id="Critical Execution Time Moving Ave" xml:space="preserve" approved="yes">
         <source>Critical Execution Time Moving Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Execution Time Moving Ave</target>
+        <target>중요 실행 시간 이동 이동 Ave</target>
       </trans-unit>
-      <trans-unit id="Critical Exit Status" xml:space="preserve">
+      <trans-unit id="Critical Exit Status" xml:space="preserve" approved="yes">
         <source>Critical Exit Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Exit Status</target>
+        <target>중요 종료 상태</target>
       </trans-unit>
-      <trans-unit id="Critical FIN_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Critical FIN_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Critical FIN_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical FIN_WAIT Connections</target>
+        <target>중요 FIN_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Filesystem Pct Used" xml:space="preserve">
+      <trans-unit id="Critical Filesystem Pct Used" xml:space="preserve" approved="yes">
         <source>Critical Filesystem Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Filesystem Pct Used</target>
+        <target>중요 파일 시스템 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Critical Heap Free" xml:space="preserve">
+      <trans-unit id="Critical Heap Free" xml:space="preserve" approved="yes">
         <source>Critical Heap Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Heap Free</target>
+        <target>중요 힙 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Critical High Execution Time" xml:space="preserve">
+      <trans-unit id="Critical High Execution Time" xml:space="preserve" approved="yes">
         <source>Critical High Execution Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical High Execution Time</target>
+        <target>중요 높은 실행 시간</target>
       </trans-unit>
-      <trans-unit id="Critical Idle Sessions" xml:space="preserve">
+      <trans-unit id="Critical Idle Sessions" xml:space="preserve" approved="yes">
         <source>Critical Idle Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Idle Sessions</target>
+        <target>중요 유휴 세션</target>
       </trans-unit>
-      <trans-unit id="Critical Idle Threads" xml:space="preserve">
+      <trans-unit id="Critical Idle Threads" xml:space="preserve" approved="yes">
         <source>Critical Idle Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Idle Threads</target>
+        <target>중요 유휴 스레드</target>
       </trans-unit>
-      <trans-unit id="Critical Inodes Pct Used" xml:space="preserve">
+      <trans-unit id="Critical Inodes Pct Used" xml:space="preserve" approved="yes">
         <source>Critical Inodes Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Inodes Pct Used</target>
+        <target>중요 Inode 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Critical Input Rate" xml:space="preserve">
+      <trans-unit id="Critical Input Rate" xml:space="preserve" approved="yes">
         <source>Critical Input Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Input Rate</target>
+        <target>중요 입력 속도</target>
       </trans-unit>
-      <trans-unit id="Critical Latency" xml:space="preserve">
+      <trans-unit id="Critical Latency" xml:space="preserve" approved="yes">
         <source>Critical Latency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Latency</target>
+        <target>중요 지연 시간</target>
       </trans-unit>
-      <trans-unit id="Critical Library Cache Miss Ratio" xml:space="preserve">
+      <trans-unit id="Critical Library Cache Miss Ratio" xml:space="preserve" approved="yes">
         <source>Critical Library Cache Miss Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Library Cache Miss Ratio</target>
+        <target>중요 라이브러리 캐시 누락 비율</target>
       </trans-unit>
-      <trans-unit id="Critical Line Rate" xml:space="preserve">
+      <trans-unit id="Critical Line Rate" xml:space="preserve" approved="yes">
         <source>Critical Line Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Line Rate</target>
+        <target>중요 라인 비율</target>
       </trans-unit>
-      <trans-unit id="Critical Lines" xml:space="preserve">
+      <trans-unit id="Critical Lines" xml:space="preserve" approved="yes">
         <source>Critical Lines</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Lines</target>
+        <target>중요 라인</target>
       </trans-unit>
-      <trans-unit id="Critical Match Rate" xml:space="preserve">
+      <trans-unit id="Critical Match Rate" xml:space="preserve" approved="yes">
         <source>Critical Match Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Match Rate</target>
+        <target>중요 일치율</target>
       </trans-unit>
-      <trans-unit id="Critical Matches" xml:space="preserve">
+      <trans-unit id="Critical Matches" xml:space="preserve" approved="yes">
         <source>Critical Matches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Matches</target>
+        <target>중요 일치</target>
       </trans-unit>
-      <trans-unit id="Critical Number Running Maximum" xml:space="preserve">
+      <trans-unit id="Critical Number Running Maximum" xml:space="preserve" approved="yes">
         <source>Critical Number Running Maximum</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Number Running Maximum</target>
+        <target>중요 번호 실행 최대</target>
       </trans-unit>
-      <trans-unit id="Critical Number Running Minimum" xml:space="preserve">
+      <trans-unit id="Critical Number Running Minimum" xml:space="preserve" approved="yes">
         <source>Critical Number Running Minimum</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Number Running Minimum</target>
+        <target>중요 번호 실행 최소</target>
       </trans-unit>
-      <trans-unit id="Critical Open Tables" xml:space="preserve">
+      <trans-unit id="Critical Open Tables" xml:space="preserve" approved="yes">
         <source>Critical Open Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Open Tables</target>
+        <target>중요 테이블 열기</target>
       </trans-unit>
-      <trans-unit id="Critical Opened Tables" xml:space="preserve">
+      <trans-unit id="Critical Opened Tables" xml:space="preserve" approved="yes">
         <source>Critical Opened Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Opened Tables</target>
+        <target>중요 열린 테이블</target>
       </trans-unit>
-      <trans-unit id="Critical Output Rate" xml:space="preserve">
+      <trans-unit id="Critical Output Rate" xml:space="preserve" approved="yes">
         <source>Critical Output Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Output Rate</target>
+        <target>중요 출력 속도</target>
       </trans-unit>
-      <trans-unit id="Critical Packet Loss Pct" xml:space="preserve">
+      <trans-unit id="Critical Packet Loss Pct" xml:space="preserve" approved="yes">
         <source>Critical Packet Loss Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Packet Loss Pct</target>
+        <target>중요 패킷 손실 백분율</target>
       </trans-unit>
-      <trans-unit id="Critical Percent" xml:space="preserve">
+      <trans-unit id="Critical Percent" xml:space="preserve" approved="yes">
         <source>Critical Percent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Percent</target>
+        <target>중요 백분율</target>
       </trans-unit>
-      <trans-unit id="Critical Physical Memory Used" xml:space="preserve">
+      <trans-unit id="Critical Physical Memory Used" xml:space="preserve" approved="yes">
         <source>Critical Physical Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Physical Memory Used</target>
+        <target>중요 실제 메모리 사용됨</target>
       </trans-unit>
-      <trans-unit id="Critical Process Count" xml:space="preserve">
+      <trans-unit id="Critical Process Count" xml:space="preserve" approved="yes">
         <source>Critical Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Process Count</target>
+        <target>중요 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Critical Processes" xml:space="preserve">
+      <trans-unit id="Critical Processes" xml:space="preserve" approved="yes">
         <source>Critical Processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Processes</target>
+        <target>중요 프로세스</target>
       </trans-unit>
-      <trans-unit id="Critical Query Rate" xml:space="preserve">
+      <trans-unit id="Critical Query Rate" xml:space="preserve" approved="yes">
         <source>Critical Query Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Query Rate</target>
+        <target>중요 쿼리 비율</target>
       </trans-unit>
-      <trans-unit id="Critical Query Time" xml:space="preserve">
+      <trans-unit id="Critical Query Time" xml:space="preserve" approved="yes">
         <source>Critical Query Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Query Time</target>
+        <target>중요 쿼리 시간</target>
       </trans-unit>
-      <trans-unit id="Critical Queue Length" xml:space="preserve">
+      <trans-unit id="Critical Queue Length" xml:space="preserve" approved="yes">
         <source>Critical Queue Length</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Queue Length</target>
+        <target>중요 대기열 길이</target>
       </trans-unit>
-      <trans-unit id="Critical RAM Free" xml:space="preserve">
+      <trans-unit id="Critical RAM Free" xml:space="preserve" approved="yes">
         <source>Critical RAM Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical RAM Free</target>
+        <target>중요 RAM 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Critical Read Rate" xml:space="preserve">
+      <trans-unit id="Critical Read Rate" xml:space="preserve" approved="yes">
         <source>Critical Read Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Read Rate</target>
+        <target>중요 읽기 속도</target>
       </trans-unit>
-      <trans-unit id="Critical Redo Buffer Allocation Retries" xml:space="preserve">
+      <trans-unit id="Critical Redo Buffer Allocation Retries" xml:space="preserve" approved="yes">
         <source>Critical Redo Buffer Allocation Retries</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Redo Buffer Allocation Retries</target>
+        <target>중요 다시 실행 버퍼 할당 재시도</target>
       </trans-unit>
-      <trans-unit id="Critical Redo Log Space Requests" xml:space="preserve">
+      <trans-unit id="Critical Redo Log Space Requests" xml:space="preserve" approved="yes">
         <source>Critical Redo Log Space Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Redo Log Space Requests</target>
+        <target>중요 다시 실행 로그 공간 요청</target>
       </trans-unit>
-      <trans-unit id="Critical Request Rate" xml:space="preserve">
+      <trans-unit id="Critical Request Rate" xml:space="preserve" approved="yes">
         <source>Critical Request Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Request Rate</target>
+        <target>중요 요청 빈도</target>
       </trans-unit>
-      <trans-unit id="Critical Requests" xml:space="preserve">
+      <trans-unit id="Critical Requests" xml:space="preserve" approved="yes">
         <source>Critical Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Requests</target>
+        <target>중요 요청</target>
       </trans-unit>
-      <trans-unit id="Critical Round-trip Ave" xml:space="preserve">
+      <trans-unit id="Critical Round-trip Ave" xml:space="preserve" approved="yes">
         <source>Critical Round-trip Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Round-trip Ave</target>
+        <target>중요 Round-trip Ave</target>
       </trans-unit>
-      <trans-unit id="Critical Round-trip Avg" xml:space="preserve">
+      <trans-unit id="Critical Round-trip Avg" xml:space="preserve" approved="yes">
         <source>Critical Round-trip Avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Round-trip Avg</target>
+        <target>중요 Round-trip Avg</target>
       </trans-unit>
-      <trans-unit id="Critical SYN_RCVD Connections" xml:space="preserve">
+      <trans-unit id="Critical SYN_RCVD Connections" xml:space="preserve" approved="yes">
         <source>Critical SYN_RCVD Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical SYN_RCVD Connections</target>
+        <target>중요 SYN_RCVD 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Seconds" xml:space="preserve">
+      <trans-unit id="Critical Seconds" xml:space="preserve" approved="yes">
         <source>Critical Seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Seconds</target>
+        <target>중요 시간(초)</target>
       </trans-unit>
-      <trans-unit id="Critical Size" xml:space="preserve">
+      <trans-unit id="Critical Size" xml:space="preserve" approved="yes">
         <source>Critical Size</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Size</target>
+        <target>중요 크기</target>
       </trans-unit>
-      <trans-unit id="Critical Space Available" xml:space="preserve">
+      <trans-unit id="Critical Space Available" xml:space="preserve" approved="yes">
         <source>Critical Space Available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Space Available</target>
+        <target>중요 사용 가능 공간</target>
       </trans-unit>
-      <trans-unit id="Critical Space Used" xml:space="preserve">
+      <trans-unit id="Critical Space Used" xml:space="preserve" approved="yes">
         <source>Critical Space Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Space Used</target>
+        <target>중요 사용된 공간</target>
       </trans-unit>
-      <trans-unit id="Critical Stopped Process Count" xml:space="preserve">
+      <trans-unit id="Critical Stopped Process Count" xml:space="preserve" approved="yes">
         <source>Critical Stopped Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Stopped Process Count</target>
+        <target>중요 정지된 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Critical Swap Pct Free" xml:space="preserve">
+      <trans-unit id="Critical Swap Pct Free" xml:space="preserve" approved="yes">
         <source>Critical Swap Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Swap Pct Free</target>
+        <target>중요 스왑 백분율 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Critical TIME_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Critical TIME_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Critical TIME_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical TIME_WAIT Connections</target>
+        <target>중요 TIME_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Threads" xml:space="preserve">
+      <trans-unit id="Critical Threads" xml:space="preserve" approved="yes">
         <source>Critical Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Threads</target>
+        <target>중요 스레드</target>
       </trans-unit>
-      <trans-unit id="Critical Threads Running" xml:space="preserve">
+      <trans-unit id="Critical Threads Running" xml:space="preserve" approved="yes">
         <source>Critical Threads Running</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Threads Running</target>
+        <target>중요 실행 중인 스레드</target>
       </trans-unit>
-      <trans-unit id="Critical Total Connections" xml:space="preserve">
+      <trans-unit id="Critical Total Connections" xml:space="preserve" approved="yes">
         <source>Critical Total Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Total Connections</target>
+        <target>중요 총 연결</target>
       </trans-unit>
-      <trans-unit id="Critical Traffic" xml:space="preserve">
+      <trans-unit id="Critical Traffic" xml:space="preserve" approved="yes">
         <source>Critical Traffic</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Traffic</target>
+        <target>중요 트래픽</target>
       </trans-unit>
-      <trans-unit id="Critical Transferred Per Child" xml:space="preserve">
+      <trans-unit id="Critical Transferred Per Child" xml:space="preserve" approved="yes">
         <source>Critical Transferred Per Child</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Transferred Per Child</target>
+        <target>중요 전송됨/하위</target>
       </trans-unit>
-      <trans-unit id="Critical Transferred Per Slot" xml:space="preserve">
+      <trans-unit id="Critical Transferred Per Slot" xml:space="preserve" approved="yes">
         <source>Critical Transferred Per Slot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Transferred Per Slot</target>
+        <target>중요 전송됨/슬롯</target>
       </trans-unit>
-      <trans-unit id="Critical Users" xml:space="preserve">
+      <trans-unit id="Critical Users" xml:space="preserve" approved="yes">
         <source>Critical Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Users</target>
+        <target>중요 사용자</target>
       </trans-unit>
-      <trans-unit id="Critical Value" xml:space="preserve">
+      <trans-unit id="Critical Value" xml:space="preserve" approved="yes">
         <source>Critical Value</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Value</target>
+        <target>중요 값</target>
       </trans-unit>
-      <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve">
+      <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve" approved="yes">
         <source>Critical Virtual Mem Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Virtual Mem Pct Free</target>
+        <target>중요 가상 메모리 백분율 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Critical Virtual Memory Used" xml:space="preserve">
+      <trans-unit id="Critical Virtual Memory Used" xml:space="preserve" approved="yes">
         <source>Critical Virtual Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Virtual Memory Used</target>
+        <target>중요 가상 메모리 사용됨</target>
       </trans-unit>
-      <trans-unit id="Critical Waiters" xml:space="preserve">
+      <trans-unit id="Critical Waiters" xml:space="preserve" approved="yes">
         <source>Critical Waiters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Waiters</target>
+        <target>중요 대기자</target>
       </trans-unit>
-      <trans-unit id="Critical Write Rate" xml:space="preserve">
+      <trans-unit id="Critical Write Rate" xml:space="preserve" approved="yes">
         <source>Critical Write Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Write Rate</target>
+        <target>중요 쓰기 속도</target>
       </trans-unit>
-      <trans-unit id="Critical Write rate" xml:space="preserve">
+      <trans-unit id="Critical Write rate" xml:space="preserve" approved="yes">
         <source>Critical Write rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Critical Write rate</target>
+        <target>중요 쓰기 속도</target>
       </trans-unit>
       <trans-unit id="Database" xml:space="preserve">
         <source>Database</source>
@@ -1224,12 +1224,12 @@
         </context-group>
         <target>인덱스 소유자</target>
       </trans-unit>
-      <trans-unit id="Input Traffic Critical" xml:space="preserve">
+      <trans-unit id="Input Traffic Critical" xml:space="preserve" approved="yes">
         <source>Input Traffic Critical</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Input Traffic Critical</target>
+        <target>입력 트래픽 중요</target>
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
@@ -1273,26 +1273,26 @@
         </context-group>
         <target>MySQL 포트</target>
       </trans-unit>
-      <trans-unit id="Number of Allocated Extents Critical if Above" xml:space="preserve">
+      <trans-unit id="Number of Allocated Extents Critical if Above" xml:space="preserve" approved="yes">
         <source>Number of Allocated Extents Critical if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Number of Allocated Extents Critical if Above</target>
+        <target>다음을 초과하는 할당된 확장 수 중요</target>
       </trans-unit>
-      <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve">
+      <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve" approved="yes">
         <source>Number of Allocated Extents Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Number of Allocated Extents Warn if Above</target>
+        <target>다음을 초과하는 할당된 확장 수 경고</target>
       </trans-unit>
-      <trans-unit id="OK Exit Status" xml:space="preserve">
+      <trans-unit id="OK Exit Status" xml:space="preserve" approved="yes">
         <source>OK Exit Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>OK Exit Status</target>
+        <target>확인 종료 상태</target>
       </trans-unit>
       <trans-unit id="ORACLE_HOME" xml:space="preserve">
         <source>ORACLE_HOME</source>
@@ -1336,12 +1336,12 @@
         </context-group>
         <target>Oracle 사용자명</target>
       </trans-unit>
-      <trans-unit id="Output Traffic Critical" xml:space="preserve">
+      <trans-unit id="Output Traffic Critical" xml:space="preserve" approved="yes">
         <source>Output Traffic Critical</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Output Traffic Critical</target>
+        <target>출력 트래픽 중요</target>
       </trans-unit>
       <trans-unit id="PID file (overrides command name)" xml:space="preserve">
         <source>PID file (overrides command name)</source>
@@ -1371,19 +1371,19 @@
         </context-group>
         <target>경로명</target>
       </trans-unit>
-      <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve">
+      <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve" approved="yes">
         <source>Percent of Available Extents Critical if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Percent of Available Extents Critical if Above</target>
+        <target>다음을 초과하는 사용 가능 확장 백분율 중요</target>
       </trans-unit>
-      <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
+      <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve" approved="yes">
         <source>Percent of Available Extents Warn if Above</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Percent of Available Extents Warn if Above</target>
+        <target>다음을 초과하는 사용 가능 확장 백분율 경고</target>
       </trans-unit>
       <trans-unit id="Port" xml:space="preserve">
         <source>Port</source>
@@ -1595,572 +1595,572 @@
         </context-group>
         <target>가상 호스트</target>
       </trans-unit>
-      <trans-unit id="Warn 1 min" xml:space="preserve">
+      <trans-unit id="Warn 1 min" xml:space="preserve" approved="yes">
         <source>Warn 1 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn 1 min</target>
+        <target>경고 1분</target>
       </trans-unit>
-      <trans-unit id="Warn 15 min" xml:space="preserve">
+      <trans-unit id="Warn 15 min" xml:space="preserve" approved="yes">
         <source>Warn 15 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn 15 min</target>
+        <target>경고 15분</target>
       </trans-unit>
-      <trans-unit id="Warn 5 min" xml:space="preserve">
+      <trans-unit id="Warn 5 min" xml:space="preserve" approved="yes">
         <source>Warn 5 min</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn 5 min</target>
+        <target>경고 5분</target>
       </trans-unit>
-      <trans-unit id="Warn Percent" xml:space="preserve">
+      <trans-unit id="Warn Percent" xml:space="preserve" approved="yes">
         <source>Warn Percent</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn Percent</target>
+        <target>경고 백분율</target>
       </trans-unit>
-      <trans-unit id="Warn Processes" xml:space="preserve">
+      <trans-unit id="Warn Processes" xml:space="preserve" approved="yes">
         <source>Warn Processes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn Processes</target>
+        <target>경고 프로세스</target>
       </trans-unit>
-      <trans-unit id="Warn Users" xml:space="preserve">
+      <trans-unit id="Warn Users" xml:space="preserve" approved="yes">
         <source>Warn Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warn Users</target>
+        <target>경고 사용자</target>
       </trans-unit>
-      <trans-unit id="Warning Accesses" xml:space="preserve">
+      <trans-unit id="Warning Accesses" xml:space="preserve" approved="yes">
         <source>Warning Accesses</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Accesses</target>
+        <target>경고 액세스</target>
       </trans-unit>
-      <trans-unit id="Warning Active Locks" xml:space="preserve">
+      <trans-unit id="Warning Active Locks" xml:space="preserve" approved="yes">
         <source>Warning Active Locks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Active Locks</target>
+        <target>경고 활성 잠금</target>
       </trans-unit>
-      <trans-unit id="Warning Active Sessions" xml:space="preserve">
+      <trans-unit id="Warning Active Sessions" xml:space="preserve" approved="yes">
         <source>Warning Active Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Active Sessions</target>
+        <target>경고 활성 세션</target>
       </trans-unit>
-      <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve">
+      <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve" approved="yes">
         <source>Warning Avail Sessions Used Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Avail Sessions Used Pct</target>
+        <target>경고 사용 가능 세션 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning Blocked Process Count" xml:space="preserve">
+      <trans-unit id="Warning Blocked Process Count" xml:space="preserve" approved="yes">
         <source>Warning Blocked Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Blocked Process Count</target>
+        <target>경고 차단된 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Blocking Sessions" xml:space="preserve">
+      <trans-unit id="Warning Blocking Sessions" xml:space="preserve" approved="yes">
         <source>Warning Blocking Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Blocking Sessions</target>
+        <target>경고 차단 세션</target>
       </trans-unit>
-      <trans-unit id="Warning Buffer Cache Hit Ratio" xml:space="preserve">
+      <trans-unit id="Warning Buffer Cache Hit Ratio" xml:space="preserve" approved="yes">
         <source>Warning Buffer Cache Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Buffer Cache Hit Ratio</target>
+        <target>경고 버퍼 캐시 적중률</target>
       </trans-unit>
-      <trans-unit id="Warning CLOSE_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Warning CLOSE_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Warning CLOSE_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CLOSE_WAIT Connections</target>
+        <target>경고 CLOSE_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Warning CPU Load 1-Min Ave" xml:space="preserve">
+      <trans-unit id="Warning CPU Load 1-Min Ave" xml:space="preserve" approved="yes">
         <source>Warning CPU Load 1-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CPU Load 1-Min Ave</target>
+        <target>경고 CPU 사용량 1분 Ave</target>
       </trans-unit>
-      <trans-unit id="Warning CPU Load 15-Min Ave" xml:space="preserve">
+      <trans-unit id="Warning CPU Load 15-Min Ave" xml:space="preserve" approved="yes">
         <source>Warning CPU Load 15-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CPU Load 15-Min Ave</target>
+        <target>경고 CPU 사용량 15분 Ave</target>
       </trans-unit>
-      <trans-unit id="Warning CPU Load 5-Min Ave" xml:space="preserve">
+      <trans-unit id="Warning CPU Load 5-Min Ave" xml:space="preserve" approved="yes">
         <source>Warning CPU Load 5-Min Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CPU Load 5-Min Ave</target>
+        <target>경고 CPU 사용량 5분 Ave</target>
       </trans-unit>
-      <trans-unit id="Warning CPU Pct Used" xml:space="preserve">
+      <trans-unit id="Warning CPU Pct Used" xml:space="preserve" approved="yes">
         <source>Warning CPU Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CPU Pct Used</target>
+        <target>경고 CPU 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning CPU Time Rate" xml:space="preserve">
+      <trans-unit id="Warning CPU Time Rate" xml:space="preserve" approved="yes">
         <source>Warning CPU Time Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning CPU Time Rate</target>
+        <target>경고 CPU 시간 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Child Process Count" xml:space="preserve">
+      <trans-unit id="Warning Child Process Count" xml:space="preserve" approved="yes">
         <source>Warning Child Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Child Process Count</target>
+        <target>경고 하위 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Child Process Groups" xml:space="preserve">
+      <trans-unit id="Warning Child Process Groups" xml:space="preserve" approved="yes">
         <source>Warning Child Process Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Child Process Groups</target>
+        <target>경고 하위 프로세스 그룹</target>
       </trans-unit>
-      <trans-unit id="Warning Connection Rate" xml:space="preserve">
+      <trans-unit id="Warning Connection Rate" xml:space="preserve" approved="yes">
         <source>Warning Connection Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Connection Rate</target>
+        <target>경고 연결 속도</target>
       </trans-unit>
-      <trans-unit id="Warning Connections" xml:space="preserve">
+      <trans-unit id="Warning Connections" xml:space="preserve" approved="yes">
         <source>Warning Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Connections</target>
+        <target>경고 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Count" xml:space="preserve">
+      <trans-unit id="Warning Count" xml:space="preserve" approved="yes">
         <source>Warning Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Count</target>
+        <target>경고 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Data Dictionary Hit Ratio" xml:space="preserve">
+      <trans-unit id="Warning Data Dictionary Hit Ratio" xml:space="preserve" approved="yes">
         <source>Warning Data Dictionary Hit Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Data Dictionary Hit Ratio</target>
+        <target>경고 데이터 사전 적중률</target>
       </trans-unit>
-      <trans-unit id="Warning Defunct Process Count" xml:space="preserve">
+      <trans-unit id="Warning Defunct Process Count" xml:space="preserve" approved="yes">
         <source>Warning Defunct Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Defunct Process Count</target>
+        <target>경고 Defunct 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Disk Sort Ratio" xml:space="preserve">
+      <trans-unit id="Warning Disk Sort Ratio" xml:space="preserve" approved="yes">
         <source>Warning Disk Sort Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Disk Sort Ratio</target>
+        <target>경고 디스크 분류 비율</target>
       </trans-unit>
-      <trans-unit id="Warning ESTABLISHED Connections" xml:space="preserve">
+      <trans-unit id="Warning ESTABLISHED Connections" xml:space="preserve" approved="yes">
         <source>Warning ESTABLISHED Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning ESTABLISHED Connections</target>
+        <target>경고 ESTABLISHED 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Execution Time Moving Ave" xml:space="preserve">
+      <trans-unit id="Warning Execution Time Moving Ave" xml:space="preserve" approved="yes">
         <source>Warning Execution Time Moving Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Execution Time Moving Ave</target>
+        <target>경고 실행 시간 이동 Ave</target>
       </trans-unit>
-      <trans-unit id="Warning Exit Status" xml:space="preserve">
+      <trans-unit id="Warning Exit Status" xml:space="preserve" approved="yes">
         <source>Warning Exit Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Exit Status</target>
+        <target>경고 종료 상태</target>
       </trans-unit>
-      <trans-unit id="Warning FIN_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Warning FIN_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Warning FIN_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning FIN_WAIT Connections</target>
+        <target>경고 FIN_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Filesystem Pct Used" xml:space="preserve">
+      <trans-unit id="Warning Filesystem Pct Used" xml:space="preserve" approved="yes">
         <source>Warning Filesystem Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Filesystem Pct Used</target>
+        <target>경고 파일 시스템 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning Heap Free" xml:space="preserve">
+      <trans-unit id="Warning Heap Free" xml:space="preserve" approved="yes">
         <source>Warning Heap Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Heap Free</target>
+        <target>경고 힙 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Warning High Execution Time" xml:space="preserve">
+      <trans-unit id="Warning High Execution Time" xml:space="preserve" approved="yes">
         <source>Warning High Execution Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning High Execution Time</target>
+        <target>경고 높은 실행 시간</target>
       </trans-unit>
-      <trans-unit id="Warning Idle Sessions" xml:space="preserve">
+      <trans-unit id="Warning Idle Sessions" xml:space="preserve" approved="yes">
         <source>Warning Idle Sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Idle Sessions</target>
+        <target>경고 유휴 세션</target>
       </trans-unit>
-      <trans-unit id="Warning Idle Threads" xml:space="preserve">
+      <trans-unit id="Warning Idle Threads" xml:space="preserve" approved="yes">
         <source>Warning Idle Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Idle Threads</target>
+        <target>경고 유휴 스레드</target>
       </trans-unit>
-      <trans-unit id="Warning Inodes Pct Used" xml:space="preserve">
+      <trans-unit id="Warning Inodes Pct Used" xml:space="preserve" approved="yes">
         <source>Warning Inodes Pct Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Inodes Pct Used</target>
+        <target>경고 Inode 사용 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning Input Rate" xml:space="preserve">
+      <trans-unit id="Warning Input Rate" xml:space="preserve" approved="yes">
         <source>Warning Input Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Input Rate</target>
+        <target>경고 입력 속도</target>
       </trans-unit>
-      <trans-unit id="Warning Latency" xml:space="preserve">
+      <trans-unit id="Warning Latency" xml:space="preserve" approved="yes">
         <source>Warning Latency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Latency</target>
+        <target>경고 지연 시간</target>
       </trans-unit>
-      <trans-unit id="Warning Library Cache Miss Ratio" xml:space="preserve">
+      <trans-unit id="Warning Library Cache Miss Ratio" xml:space="preserve" approved="yes">
         <source>Warning Library Cache Miss Ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Library Cache Miss Ratio</target>
+        <target>경고 라이브러리 캐시 누락 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Line Rate" xml:space="preserve">
+      <trans-unit id="Warning Line Rate" xml:space="preserve" approved="yes">
         <source>Warning Line Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Line Rate</target>
+        <target>경고 라인 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Lines" xml:space="preserve">
+      <trans-unit id="Warning Lines" xml:space="preserve" approved="yes">
         <source>Warning Lines</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Lines</target>
+        <target>경고 라인</target>
       </trans-unit>
-      <trans-unit id="Warning Match Rate" xml:space="preserve">
+      <trans-unit id="Warning Match Rate" xml:space="preserve" approved="yes">
         <source>Warning Match Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Match Rate</target>
+        <target>경고 일치 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Matches" xml:space="preserve">
+      <trans-unit id="Warning Matches" xml:space="preserve" approved="yes">
         <source>Warning Matches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Matches</target>
+        <target>경고 일치</target>
       </trans-unit>
-      <trans-unit id="Warning Open Tables" xml:space="preserve">
+      <trans-unit id="Warning Open Tables" xml:space="preserve" approved="yes">
         <source>Warning Open Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Open Tables</target>
+        <target>경고 테이블 열기</target>
       </trans-unit>
-      <trans-unit id="Warning Opened Tables" xml:space="preserve">
+      <trans-unit id="Warning Opened Tables" xml:space="preserve" approved="yes">
         <source>Warning Opened Tables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Opened Tables</target>
+        <target>경고 열린 테이블</target>
       </trans-unit>
-      <trans-unit id="Warning Output Rate" xml:space="preserve">
+      <trans-unit id="Warning Output Rate" xml:space="preserve" approved="yes">
         <source>Warning Output Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Output Rate</target>
+        <target>경고 출력 속도</target>
       </trans-unit>
-      <trans-unit id="Warning Packet Loss Pct" xml:space="preserve">
+      <trans-unit id="Warning Packet Loss Pct" xml:space="preserve" approved="yes">
         <source>Warning Packet Loss Pct</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Packet Loss Pct</target>
+        <target>경고 패킷 손실 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning Physical Memory Used" xml:space="preserve">
+      <trans-unit id="Warning Physical Memory Used" xml:space="preserve" approved="yes">
         <source>Warning Physical Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Physical Memory Used</target>
+        <target>경고 실제 메모리 사용됨</target>
       </trans-unit>
-      <trans-unit id="Warning Process Count" xml:space="preserve">
+      <trans-unit id="Warning Process Count" xml:space="preserve" approved="yes">
         <source>Warning Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Process Count</target>
+        <target>경고 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Query Rate" xml:space="preserve">
+      <trans-unit id="Warning Query Rate" xml:space="preserve" approved="yes">
         <source>Warning Query Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Query Rate</target>
+        <target>경고 쿼리 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Query Time" xml:space="preserve">
+      <trans-unit id="Warning Query Time" xml:space="preserve" approved="yes">
         <source>Warning Query Time</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Query Time</target>
+        <target>경고 쿼리 시간</target>
       </trans-unit>
-      <trans-unit id="Warning Queue Length" xml:space="preserve">
+      <trans-unit id="Warning Queue Length" xml:space="preserve" approved="yes">
         <source>Warning Queue Length</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Queue Length</target>
+        <target>경고 대기열 길이</target>
       </trans-unit>
-      <trans-unit id="Warning RAM Free" xml:space="preserve">
+      <trans-unit id="Warning RAM Free" xml:space="preserve" approved="yes">
         <source>Warning RAM Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning RAM Free</target>
+        <target>경고 RAM 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Warning Read Rate" xml:space="preserve">
+      <trans-unit id="Warning Read Rate" xml:space="preserve" approved="yes">
         <source>Warning Read Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Read Rate</target>
+        <target>경고 읽기 속도</target>
       </trans-unit>
-      <trans-unit id="Warning Redo Buffer Allocation Retries" xml:space="preserve">
+      <trans-unit id="Warning Redo Buffer Allocation Retries" xml:space="preserve" approved="yes">
         <source>Warning Redo Buffer Allocation Retries</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Redo Buffer Allocation Retries</target>
+        <target>경고 다시 실행 버퍼 할당 재시도</target>
       </trans-unit>
-      <trans-unit id="Warning Redo Log Space Requests" xml:space="preserve">
+      <trans-unit id="Warning Redo Log Space Requests" xml:space="preserve" approved="yes">
         <source>Warning Redo Log Space Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Redo Log Space Requests</target>
+        <target>경고 다시 실행 로그 공간 요청</target>
       </trans-unit>
-      <trans-unit id="Warning Request Rate" xml:space="preserve">
+      <trans-unit id="Warning Request Rate" xml:space="preserve" approved="yes">
         <source>Warning Request Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Request Rate</target>
+        <target>경고 요청 비율</target>
       </trans-unit>
-      <trans-unit id="Warning Requests" xml:space="preserve">
+      <trans-unit id="Warning Requests" xml:space="preserve" approved="yes">
         <source>Warning Requests</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Requests</target>
+        <target>경고 요청</target>
       </trans-unit>
-      <trans-unit id="Warning Round-trip Ave" xml:space="preserve">
+      <trans-unit id="Warning Round-trip Ave" xml:space="preserve" approved="yes">
         <source>Warning Round-trip Ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Round-trip Ave</target>
+        <target>경고 Round-trip Ave</target>
       </trans-unit>
-      <trans-unit id="Warning Round-trip Avg" xml:space="preserve">
+      <trans-unit id="Warning Round-trip Avg" xml:space="preserve" approved="yes">
         <source>Warning Round-trip Avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Round-trip Avg</target>
+        <target>경고 Round-trip Avg</target>
       </trans-unit>
-      <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve">
+      <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve" approved="yes">
         <source>Warning SYN_RCVD Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning SYN_RCVD Connections</target>
+        <target>경고 SYN_RCVD 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Seconds" xml:space="preserve">
+      <trans-unit id="Warning Seconds" xml:space="preserve" approved="yes">
         <source>Warning Seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Seconds</target>
+        <target>경고 시간(초)</target>
       </trans-unit>
       <trans-unit id="Warning Size" xml:space="preserve">
         <source>Warning Size</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Size</target>
+        <target>경고 크기</target>
       </trans-unit>
-      <trans-unit id="Warning Space Available" xml:space="preserve">
+      <trans-unit id="Warning Space Available" xml:space="preserve" approved="yes">
         <source>Warning Space Available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Space Available</target>
+        <target>경고 사용 가능 공간</target>
       </trans-unit>
-      <trans-unit id="Warning Space Used" xml:space="preserve">
+      <trans-unit id="Warning Space Used" xml:space="preserve" approved="yes">
         <source>Warning Space Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Space Used</target>
+        <target>경고 사용 공간</target>
       </trans-unit>
-      <trans-unit id="Warning Stopped Process Count" xml:space="preserve">
+      <trans-unit id="Warning Stopped Process Count" xml:space="preserve" approved="yes">
         <source>Warning Stopped Process Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Stopped Process Count</target>
+        <target>경고 정지된 프로세스 카운트</target>
       </trans-unit>
-      <trans-unit id="Warning Swap Pct Free" xml:space="preserve">
+      <trans-unit id="Warning Swap Pct Free" xml:space="preserve" approved="yes">
         <source>Warning Swap Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Swap Pct Free</target>
+        <target>경고 스왑 백분율 사용 가능</target>
       </trans-unit>
-      <trans-unit id="Warning TIME_WAIT Connections" xml:space="preserve">
+      <trans-unit id="Warning TIME_WAIT Connections" xml:space="preserve" approved="yes">
         <source>Warning TIME_WAIT Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning TIME_WAIT Connections</target>
+        <target>경고 TIME_WAIT 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Threads" xml:space="preserve">
+      <trans-unit id="Warning Threads" xml:space="preserve" approved="yes">
         <source>Warning Threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Threads</target>
+        <target>경고 스레드</target>
       </trans-unit>
-      <trans-unit id="Warning Threads Running" xml:space="preserve">
+      <trans-unit id="Warning Threads Running" xml:space="preserve" approved="yes">
         <source>Warning Threads Running</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Threads Running</target>
+        <target>경고 실행 중인 스레드</target>
       </trans-unit>
-      <trans-unit id="Warning Total Connections" xml:space="preserve">
+      <trans-unit id="Warning Total Connections" xml:space="preserve" approved="yes">
         <source>Warning Total Connections</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Total Connections</target>
+        <target>경고 총 연결</target>
       </trans-unit>
-      <trans-unit id="Warning Traffic" xml:space="preserve">
+      <trans-unit id="Warning Traffic" xml:space="preserve" approved="yes">
         <source>Warning Traffic</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Traffic</target>
+        <target>경고 트래픽</target>
       </trans-unit>
-      <trans-unit id="Warning Transferred Per Child" xml:space="preserve">
+      <trans-unit id="Warning Transferred Per Child" xml:space="preserve" approved="yes">
         <source>Warning Transferred Per Child</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Transferred Per Child</target>
+        <target>경고 전송됨/하위</target>
       </trans-unit>
-      <trans-unit id="Warning Transferred Per Slot" xml:space="preserve">
+      <trans-unit id="Warning Transferred Per Slot" xml:space="preserve" approved="yes">
         <source>Warning Transferred Per Slot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Transferred Per Slot</target>
+        <target>경고 전송됨/슬롯</target>
       </trans-unit>
-      <trans-unit id="Warning Users" xml:space="preserve">
+      <trans-unit id="Warning Users" xml:space="preserve" approved="yes">
         <source>Warning Users</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Users</target>
+        <target>경고 사용자</target>
       </trans-unit>
-      <trans-unit id="Warning Value" xml:space="preserve">
+      <trans-unit id="Warning Value" xml:space="preserve" approved="yes">
         <source>Warning Value</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Value</target>
+        <target>경고 값</target>
       </trans-unit>
-      <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve">
+      <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve" approved="yes">
         <source>Warning Virtual Mem Pct Free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Virtual Mem Pct Free</target>
+        <target>경고 가상 메모리 사용 가능 백분율</target>
       </trans-unit>
-      <trans-unit id="Warning Virtual Memory Used" xml:space="preserve">
+      <trans-unit id="Warning Virtual Memory Used" xml:space="preserve" approved="yes">
         <source>Warning Virtual Memory Used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Virtual Memory Used</target>
+        <target>경고 가상 메모리 사용됨</target>
       </trans-unit>
-      <trans-unit id="Warning Waiters" xml:space="preserve">
+      <trans-unit id="Warning Waiters" xml:space="preserve" approved="yes">
         <source>Warning Waiters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Waiters</target>
+        <target>경고 대기자</target>
       </trans-unit>
-      <trans-unit id="Warning Write Rate" xml:space="preserve">
+      <trans-unit id="Warning Write Rate" xml:space="preserve" approved="yes">
         <source>Warning Write Rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>Warning Write Rate</target>
+        <target>경고 쓰기 속도</target>
       </trans-unit>
       <!-- PROBE METRICS -->
       <trans-unit id="metrics.Active locks" xml:space="preserve">
@@ -2205,40 +2205,40 @@
         </context-group>
         <target>CLOSE_WAIT 접속</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 1-min ave" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 1-min ave" xml:space="preserve" approved="yes">
         <source>CPU load 1-min ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 1 분 평균</target>
+        <target>CPU 사용량 1분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 1-min avg" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 1-min avg" xml:space="preserve" approved="yes">
         <source>CPU load 1-min avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 1 분 평균</target>
+        <target>CPU 사용량 1분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve" approved="yes">
         <source>CPU load 15-min ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 15 분 평균</target>
+        <target>CPU 사용량 15분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 15-min avg" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 15-min avg" xml:space="preserve" approved="yes">
         <source>CPU load 15-min avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 15 분 평균</target>
+        <target>CPU 사용량 15분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve" approved="yes">
         <source>CPU load 5-min ave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 5 분 평균</target>
+        <target>CPU 사용량 5분 평균</target>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve">
         <source>CPU load 5-min avg</source>
