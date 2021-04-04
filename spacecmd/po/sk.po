@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"PO-Revision-Date: 2021-04-04 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -221,7 +221,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
 #: ../src/spacecmd/softwarechannel.py:928
 msgid "Base Channels"
-msgstr ""
+msgstr "Základné kanály"
 
 #: ../src/spacecmd/activationkey.py:744
 msgid "Base Channel (blank for default):"
@@ -5016,7 +5016,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1097
 msgid "Base Channels:"
-msgstr ""
+msgstr "Základné kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:1105
 #: ../src/spacecmd/softwarechannel.py:1195
