@@ -2240,12 +2240,12 @@
         </context-group>
         <target>CPU 사용량 5분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve">
+      <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve" approved="yes">
         <source>CPU load 5-min avg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 부하 5 분 평균</target>
+        <target>CPU 사용량 5분 평균</target>
       </trans-unit>
       <trans-unit id="metrics.CPU pct used" xml:space="preserve">
         <source>CPU pct used</source>
@@ -2394,19 +2394,19 @@
         </context-group>
         <target>최장 실행 시간</target>
       </trans-unit>
-      <trans-unit id="metrics.Idle sessions" xml:space="preserve">
+      <trans-unit id="metrics.Idle sessions" xml:space="preserve" approved="yes">
         <source>Idle sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>휴지 세션</target>
+        <target>유휴 세션</target>
       </trans-unit>
-      <trans-unit id="metrics.Idle threads" xml:space="preserve">
+      <trans-unit id="metrics.Idle threads" xml:space="preserve" approved="yes">
         <source>Idle threads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>휴지 스레드</target>
+        <target>유휴 스레드</target>
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
         <source>Inodes pct used</source>
@@ -2716,12 +2716,12 @@
         </context-group>
         <target>총 연결수</target>
       </trans-unit>
-      <trans-unit id="metrics.Traffic" xml:space="preserve">
+      <trans-unit id="metrics.Traffic" xml:space="preserve" approved="yes">
         <source>Traffic</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>소통량</target>
+        <target>통신량</target>
       </trans-unit>
       <trans-unit id="metrics.Used Sessions" xml:space="preserve">
         <source>Used Sessions</source>
@@ -2744,12 +2744,12 @@
         </context-group>
         <target>값</target>
       </trans-unit>
-      <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve">
+      <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve" approved="yes">
         <source>Virtual mem pct free</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>가상 메모리 pct 무료</target>
+        <target>가상 메모리 백분율 사용 가능</target>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
@@ -2765,12 +2765,12 @@
         </context-group>
         <target>대기자</target>
       </trans-unit>
-      <trans-unit id="metrics.Write rate" xml:space="preserve">
+      <trans-unit id="metrics.Write rate" xml:space="preserve" approved="yes">
         <source>Write rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>쓰기 비율</target>
+        <target>쓰기 속도</target>
       </trans-unit>
       <trans-unit id="metrics.value" xml:space="preserve">
         <source>value</source>
@@ -3108,9 +3108,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Idle Sessions" xml:space="preserve">
+      <trans-unit id="Idle Sessions" xml:space="preserve" approved="yes">
           <source>Idle Sessions</source>
-        <target>휴지 세션</target>
+        <target>유휴 세션</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3157,9 +3157,9 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Load" xml:space="preserve">
+      <trans-unit id="Load" xml:space="preserve" approved="yes">
           <source>Load</source>
-        <target>부하</target>
+        <target>사용량</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3234,30 +3234,30 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Probe Count" xml:space="preserve">
+      <trans-unit id="Probe Count" xml:space="preserve" approved="yes">
           <source>Probe Count</source>
-        <target>프로브 계수</target>
+        <target>프로브 수</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Process Count Total" xml:space="preserve">
+      <trans-unit id="Process Count Total" xml:space="preserve" approved="yes">
           <source>Process Count Total</source>
-        <target>총 프로세스 계수</target>
+        <target>총 프로세스 수</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Process Counts" xml:space="preserve">
+      <trans-unit id="Process Counts" xml:space="preserve" approved="yes">
           <source>Process Counts</source>
-        <target>프로세스 계수</target>
+        <target>프로세스 수</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Process Counts by State" xml:space="preserve">
+      <trans-unit id="Process Counts by State" xml:space="preserve" approved="yes">
           <source>Process Counts by State</source>
-        <target>상태에 따른 프로세스 계수</target>
+        <target>상태에 따른 프로세스 수</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
