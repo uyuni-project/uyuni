@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-02 19:57+0000\n"
+"PO-Revision-Date: 2021-04-04 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4962,24 +4962,28 @@ msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
 msgstr ""
+"Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
+"pre firewall a NAT"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
-msgstr ""
+msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
 msgstr ""
+"Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
+"Žiadna možná komunikácia medzi hosťom a hostiteľom"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
-msgstr ""
+msgstr "fond SR-IOV"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
+msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
@@ -4991,7 +4995,7 @@ msgstr "Sieťová adresa"
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
-msgstr ""
+msgstr "v6"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
 msgid "IP address"
@@ -4999,7 +5003,7 @@ msgstr "IP adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
-msgstr ""
+msgstr "Jedinečný identifikátor DHCP (DUID)"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
 msgid "Needs to be a MAC address"
@@ -5011,15 +5015,15 @@ msgstr "Súbor obrazu BOOTP"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
-msgstr ""
+msgstr "Server BOOTP"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
-msgstr ""
+msgstr "Koreňová cesta TFTP"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
-msgstr ""
+msgstr "Parametre"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
 msgid "By profile id"
@@ -5027,15 +5031,15 @@ msgstr "Podľa id profilu"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
-msgstr ""
+msgstr "Parametre rozhrania virtuálnej stanice (VSI)"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
-msgstr ""
+msgstr "id profilu"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
-msgstr ""
+msgstr "id rozhrania"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
 msgid "VSI manager id"
@@ -5043,7 +5047,7 @@ msgstr "id správcu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
-msgstr ""
+msgstr "id typu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
 msgid "VSI type id version"
@@ -5055,11 +5059,11 @@ msgstr "id inštancie VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
-msgstr ""
+msgstr "Hodnota musí byť platný UUID"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
-msgstr ""
+msgstr "Siete VLAN"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
 msgid "Tag"
