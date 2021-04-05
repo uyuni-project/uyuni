@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-05 13:57+0000\n"
+"PO-Revision-Date: 2021-04-05 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -26,7 +26,7 @@ msgstr "activationkey_addpackages: Pridať balíky k aktivačnému kľúču"
 
 #: ../src/spacecmd/activationkey.py:51
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: activationkey_addpackages KĽÚČ <BALÍK ...>"
 
 #: ../src/spacecmd/activationkey.py:84
 msgid "activationkey_removepackages: Remove packages from an activation key"
@@ -34,7 +34,7 @@ msgstr "activationkey_removepackages: Odstrániť balíky z aktivačného kľú�
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: activationkey_removepackages KĽÚČ <BALÍK ...>"
 
 #: ../src/spacecmd/activationkey.py:122
 msgid "activationkey_addgroups: Add groups to an activation key"
@@ -42,7 +42,7 @@ msgstr "activationkey_addgroups: Pridať skupiny k aktivačnému kľúču"
 
 #: ../src/spacecmd/activationkey.py:123
 msgid "usage: activationkey_addgroups KEY <GROUP ...>"
-msgstr ""
+msgstr "použitie: activationkey_addgroups KĽÚČ <SKUPINA ...>"
 
 #: ../src/spacecmd/activationkey.py:161
 msgid "activationkey_removegroups: Remove groups from an activation key"
@@ -50,7 +50,7 @@ msgstr "activationkey_removegroups: Odstrániť skupiny z aktivačného kľúča
 
 #: ../src/spacecmd/activationkey.py:162
 msgid "usage: activationkey_removegroups KEY <GROUP ...>"
-msgstr ""
+msgstr "použitie: activationkey_removegroups KĽÚČ <SKUPINA ...>"
 
 #: ../src/spacecmd/activationkey.py:209
 msgid "activationkey_addentitlements: Add entitlements to an activation key"
@@ -58,7 +58,7 @@ msgstr "activationkey_addentitlements: Pridať oprávnenia k aktivačnému kľú
 
 #: ../src/spacecmd/activationkey.py:211
 msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "použitie: activationkey_addentitlements KĽÚČ <OPRÁVNENIE ...>"
 
 #: ../src/spacecmd/activationkey.py:246
 msgid ""
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:248
 msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "použitie: activationkey_removeentitlements KĽÚČ <OPRÁVNENIE ...>"
 
 #: ../src/spacecmd/activationkey.py:286
 msgid "activationkey_addchildchannels: Add child channels to an activation key"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:288
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_addchildchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:338
 msgid ""
@@ -89,7 +89,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:340
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_removechildchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:377
 msgid ""
@@ -101,7 +101,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:379
 msgid "usage: activationkey_listchildchannels KEY"
-msgstr ""
+msgstr "použitie: activationkey_listchildchannels KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:408
 msgid ""
@@ -112,7 +112,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:410
 msgid "usage: activationkey_listbasechannel KEY"
-msgstr ""
+msgstr "použitie: activationkey_listbasechannel KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:438
 msgid "activationkey_listgroups: List the groups for an activation key"
@@ -120,7 +120,7 @@ msgstr "activationkey_listgroups: Vypísať zoznam skupín pre aktivačný kľú
 
 #: ../src/spacecmd/activationkey.py:440
 msgid "usage: activationkey_listgroups KEY"
-msgstr ""
+msgstr "použitie: activationkey_listgroups KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:471
 msgid ""
@@ -130,7 +130,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:473
 msgid "usage: activationkey_listentitlements KEY"
-msgstr ""
+msgstr "použitie: activationkey_listentitlements KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:502
 msgid "activationkey_listpackages: List the packages for an activation key"
@@ -138,7 +138,7 @@ msgstr "activationkey_listpackages: Vypísať zoznam balíkov pre aktivačný k�
 
 #: ../src/spacecmd/activationkey.py:504
 msgid "usage: activationkey_listpackages KEY"
-msgstr ""
+msgstr "použitie: activationkey_listpackages KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:536
 msgid ""
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:538
 msgid "usage: activationkey_listconfigchannels KEY"
-msgstr ""
+msgstr "použitie: activationkey_listconfigchannels KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:571
 msgid ""
@@ -167,6 +167,11 @@ msgid ""
 "  -t add channels to the top of the list\n"
 "  -b add channels to the bottom of the list"
 msgstr ""
+"použitie: activationkey_addconfigchannels KĽÚČ <KANÁL ...> [voľby])\n"
+"\n"
+"voľby:\n"
+"  -t pridá kanály na začiatok zoznamu\n"
+"  -b pridá kanály na koniec zoznamu"
 
 #: ../src/spacecmd/activationkey.py:626
 msgid ""
@@ -178,17 +183,19 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:628
 msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_removeconfigchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:667
 msgid ""
 "activationkey_setconfigchannelorder: Set the ranked order of configuration "
 "channels"
 msgstr ""
+"activationkey_setconfigchannelorder: Nastavte poradie podľa hodnotenia "
+"konfiguračných kanálov"
 
 #: ../src/spacecmd/activationkey.py:669
 msgid "usage: activationkey_setconfigchannelorder KEY"
-msgstr ""
+msgstr "použitie: activationkey_setconfigchannelorder KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:699
 msgid "New Configuration Channels:"
