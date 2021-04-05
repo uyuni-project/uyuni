@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-04 17:57+0000\n"
+"PO-Revision-Date: 2021-04-05 10:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -261,7 +261,7 @@ msgstr "Vymazať aktivačný kľúč(e) [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:833
 msgid "activationkey_list: List all activation keys"
-msgstr ""
+msgstr "activationkey_list: Vypísať zoznam všetkých aktivačných kľúčov"
 
 #: ../src/spacecmd/activationkey.py:834
 msgid "usage: activationkey_list"
@@ -278,11 +278,11 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:882 ../src/spacecmd/activationkey.py:931
 #, python-format
 msgid "%s is not a valid activation key"
-msgstr ""
+msgstr "%s nie je platný aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:896
 msgid "activationkey_details: Show the details of an activation key"
-msgstr ""
+msgstr "activationkey_details: Zobraziť podrobnosti aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:897
 msgid "usage: activationkey_details KEY ..."
@@ -363,7 +363,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1050
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
-msgstr ""
+msgstr "activationkey_setbasechannel: Nastaviť základný kanál aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1052
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
@@ -374,6 +374,8 @@ msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
 msgstr ""
+"activationkey_setusagelimit: Nastavte limit použitia aktivačného kľúča, môže "
+"byť číslo alebo \"neobmedzený\""
 
 #: ../src/spacecmd/activationkey.py:1101
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
@@ -400,6 +402,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1197
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr ""
+"activationkey_export: Exportovať aktivačné kľúč(e) do súboru vo formáte JSON"
 
 #: ../src/spacecmd/activationkey.py:1198
 msgid ""
@@ -418,16 +421,16 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1214
 #, python-format
 msgid "Getting activation key details for %s"
-msgstr ""
+msgstr "Získanie podrobností aktivačného kľúča pre %s"
 
 #: ../src/spacecmd/activationkey.py:1268
 #, python-format
 msgid "Exporting ALL activation keys to %s"
-msgstr ""
+msgstr "Exportovanie VŠETKÝCH aktivačných kľúčov do %s"
 
 #: ../src/spacecmd/activationkey.py:1277
 msgid "Invalid activation key passed"
-msgstr ""
+msgstr "Odovzdaný neplatný aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1292
 #, python-format
@@ -445,7 +448,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1315
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
-msgstr ""
+msgstr "activationkey_import: importovať aktivačné kľúč(e) zo súboru(ov) JSON"
 
 #: ../src/spacecmd/activationkey.py:1316
 msgid "usage: activationkey_import <JSONFILE ...>"
@@ -477,7 +480,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1429
 msgid "activationkey_clone: Clone an activation key"
-msgstr ""
+msgstr "activationkey_clone: Klonovať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1430
 msgid ""
@@ -500,7 +503,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3061
 msgid "Activation Keys"
-msgstr ""
+msgstr "Aktivačné kľúče"
 
 #: ../src/spacecmd/activationkey.py:1464
 #, python-format
@@ -571,7 +574,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1623
 msgid "activationkey_diff: Diff activation keys"
-msgstr ""
+msgstr "activationkey_diff: Porovnať aktivačné kľúče"
 
 #: ../src/spacecmd/activationkey.py:1625
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
@@ -579,7 +582,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1674
 msgid "activationkey_disable: Disable an activation key"
-msgstr ""
+msgstr "activationkey_disable: Zakázať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1676
 msgid "usage: activationkey_disable KEY [KEY ...]"
