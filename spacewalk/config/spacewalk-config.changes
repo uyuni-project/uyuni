@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 05 09:45:17 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.16-1
 - Increase apache ssl logs to include response code and process time
 
 -------------------------------------------------------------------
