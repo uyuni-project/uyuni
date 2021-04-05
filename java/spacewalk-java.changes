@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 05 09:45:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.42-1
 - Raise length limit for kernel options (bsc#1182916)
 - Log shell command output on failure when checking known_hosts file permissions
 - improve fromdir with better mapping of URL to local files
