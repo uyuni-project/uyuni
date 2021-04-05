@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 05 09:54:52 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.25-1
 - Raise length limit for kernel options (bsc#1182916)
 - enable openscap auditing for salt systems in SSM (bsc#1157711)
 
