@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 05 09:51:39 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.33-1
 - add SLE 15 SP3 bootstrap repository definitions (bsc#1182008)
 - python3-dbus-python and dependencies not installed by default
   on JeOS SLE15 images, add them to the bootstrap repository list
