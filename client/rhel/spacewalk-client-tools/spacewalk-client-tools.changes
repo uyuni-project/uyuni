@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 05 09:44:47 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.14-1
 - Fallback to sysfs when reading info from python-dmidecode fails (bsc#1182603)
 - adapt to new SSL implementation of rhnlib (bsc#1181807)
 
