@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-05 10:57+0000\n"
+"PO-Revision-Date: 2021-04-05 13:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -590,7 +590,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1708
 msgid "activationkey_enable: Enable an activation key"
-msgstr ""
+msgstr "activationkey_enable: Povoliť aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1710
 msgid "usage: activationkey_enable KEY [KEY ...]"
@@ -598,7 +598,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1742
 msgid "activationkey_setdescription: Set the activation key description"
-msgstr ""
+msgstr "activationkey_setdescription: Nastaviť popis aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1744
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
@@ -2395,6 +2395,8 @@ msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
 msgstr ""
+"kickstart_listactivationkeys: Vypísať zoznam aktivačných kľúčov priradených "
+"k profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:711
 msgid "usage: kickstart_listactivationkeys PROFILE"
@@ -2403,6 +2405,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:741
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
 msgstr ""
+"kickstart_addactivationkeys: Pridať aktivačné kľúče do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:743
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
@@ -2413,6 +2416,7 @@ msgid ""
 "kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
 "profile"
 msgstr ""
+"kickstart_removeactivationkeys: Odstrániť aktivačné kľúče z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:774
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
@@ -3558,7 +3562,7 @@ msgstr ""
 #: ../src/spacecmd/org.py:458
 #, python-format
 msgid "Activation Keys:        %i"
-msgstr ""
+msgstr "Aktivačné kľúče:        %i"
 
 #: ../src/spacecmd/org.py:459
 #, python-format
