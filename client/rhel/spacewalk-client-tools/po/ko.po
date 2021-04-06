@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-04 20:57+0000\n"
+"PO-Revision-Date: 2021-04-06 10:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/ko/>\n"
@@ -215,7 +215,7 @@ msgstr "Uyuni"
 
 #: ../src/up2date_client/rhnreg_constants.py:21
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
-msgstr "저작권  2006--2014  Red Hat, Inc. 저작권법에 의해 보호받습니다."
+msgstr "Copyright © 2006--2014 Red Hat, Inc. 저작권법에 의해 보호받습니다."
 
 #. Satellite URL Window
 #: ../src/up2date_client/rhnreg_constants.py:24
@@ -352,9 +352,7 @@ msgstr "구독 계약을 준수하고 계정에 연결된 시스템의 구독을
 
 #: ../src/up2date_client/rhnreg_constants.py:73
 msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr ""
-"도움말: SUSE는 사용자 개인 정보를 보호합니다. http://www.redhat.com/legal/"
-"privacy_statement.html"
+msgstr "도움말: SUSE는 사용자 개인 정보를 보호합니다. https://www.suse.com/company/legal/"
 
 #: ../src/up2date_client/rhnreg_constants.py:75
 msgid "Take me back to the registration"
@@ -435,7 +433,7 @@ msgstr "암호를 입력하신 후 다시 한번 확인해 주십시오."
 #: ../src/up2date_client/rhnreg_constants.py:98 ../data/gui.glade.h:6
 #: ../data/rh_register.glade.h:142
 msgid "Operating System Release Version"
-msgstr "운영 체제 릴리스 버전:"
+msgstr "운영 체제 릴리스 버전"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid "Operating System version:"
@@ -529,7 +527,7 @@ msgstr "이미 시스템이 등록되어 있음"
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
-msgstr "시스템에 이미 소프트웨어 업데이트가 설정되었다고 나타납니다"
+msgstr "시스템에 이미 소프트웨어 업데이트가 설정되었다고 나타납니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
@@ -600,11 +598,11 @@ msgid ""
 "the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
 "main {PRODUCT_NAME} web interface.)"
 msgstr ""
-"{PRODUCT_NAME}에서 최신 소프트웨어 업데이트를 받기위해 현재 이 시스템의 명령행에서 '%s update'를 실행할 수 "
-"있습니다. 최신 업데이트를 받으시려면 이를 주기적으로 실행하셔야 합니다. 다른 방법으로는 {PRODUCT_NAME} 웹 인터페이스를 통해 "
-"시스템에 자동 소프트웨어 업데이트 ('자동 에라타 업데이트 (auto errata update)'라고도 알려짐)를 설정할 수 도 "
-"있습니다. (이에 관한 지시사항은 {PRODUCT_NAME} 참조 가이드에 있으며, {PRODUCT_NAME} 웹 인터페이스에서 "
-"'도움말(Help)' 버튼을 누르면 됩니다.)"
+"{PRODUCT_NAME}에서 최신 소프트웨어 업데이트를 받기 위해 현재 이 시스템의 명령행에서 '%s update'를 실행할 수 "
+"있습니다. 최신 업데이트를 받으려면 이를 주기적으로 실행해야 합니다. 다른 방법으로는 {PRODUCT_NAME} 웹 인터페이스를 통해 "
+"시스템에 자동 소프트웨어 업데이트('자동 에라타 업데이트(auto errata update)'라고도 알려짐)를 설정할 수도 있습니다(이에 "
+"관한 지시사항은 {PRODUCT_NAME} 참조 가이드에 있으며, {PRODUCT_NAME} 웹 인터페이스에서 '도움말(Help)' "
+"버튼을 누르면 됨)."
 
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:168 ../data/gui.glade.h:8
@@ -674,7 +672,7 @@ msgstr ""
 msgid ""
 "You were unable to be subscribed to the following software channels because "
 "there were insufficient subscriptions available in your account:"
-msgstr "사용자 계정에서 사용 부적합한 등록이 있어 시스템을 다음의 소프트웨어 채널에 등록시킬 수 없습니다."
+msgstr "사용자 계정에서 사용 부적합한 등록이 있어 시스템을 다음 소프트웨어 채널에 등록할 수 없습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:193
 #, python-brace-format
@@ -714,7 +712,7 @@ msgid ""
 "This system was unable to be associated with the following {PRODUCT_NAME} "
 "system type(s) because there were insufficient subscriptions available in "
 "your account:"
-msgstr "사용자 계정에서 사용 부적합한 등록이 있어 시스템을 다음의 {PRODUCT_NAME} 시스템 유형과 연관시킬 수 없습니다."
+msgstr "사용자 계정에서 사용 부적합한 등록이 있어 시스템을 다음 {PRODUCT_NAME} 시스템 유형과 연결할 수 없습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:207
 msgid ""
@@ -722,7 +720,7 @@ msgid ""
 "system package profiling, bare-metal provisioning, existing state "
 "provisioning, rollbacks, configuration management"
 msgstr ""
-"관리(Management) 유형: 자동 업데이트, 시스템 그룹만들기, 시스템 권한 부여, 시스템 패키지 프로파일하기, 베어 메탈 "
+"관리(Management) 유형: 자동 업데이트, 시스템 그룹 만들기, 시스템 권한 부여, 시스템 패키지 프로파일하기, 베어 메탈 "
 "프로비저닝, 기존 상태 프로비저닝, 롤백, 구성 관리"
 
 #: ../src/up2date_client/rhnreg_constants.py:212
@@ -775,12 +773,10 @@ msgid ""
 "Universal Default activation key: %s"
 msgstr ""
 "범용 기본 활성화 키 감지됨\n"
-"계정에서 범용 기본 활성화 키가 감지되었습니다. 즉, {PRODUCT_NAME} 서버 또는 "
-"{PRODUCT_NAME} 프록시에 시스템을 연결하기 위한 속성 집합(소프트웨어 채널 구"
-"독, 패키지 설치, 시스템 그룹 구성원 등)이 설치 번호가 아닌 활성화 키로 결정되"
-"었습니다. 활성화 키에 대한 자세한 내용은 {PRODUCT_NAME} 참조 안내서도 참조하"
-"십시오.\n"
-"범용 기본 활성화 키:"
+"계정에서 범용 기본 활성화 키가 감지되었습니다. 즉, {PRODUCT_NAME} 서버 또는 {PRODUCT_NAME} 프록시에 시스템을 "
+"연결하기 위한 속성 집합(소프트웨어 채널 구독, 패키지 설치, 시스템 그룹 구성원 등)이 설치 번호가 아닌 활성화 키로 결정되었습니다. "
+"활성화 키에 대한 자세한 내용은 {PRODUCT_NAME} 참조 안내서도 참조하십시오.\n"
+"범용 기본 활성화 키: %s"
 
 #. Error Messages.
 #: ../src/up2date_client/rhnreg_constants.py:243
@@ -809,16 +805,16 @@ msgstr ""
 "{PRODUCT_NAME}에 연결할 수 없습니다.\n"
 "\n"
 "제공한 위치를 다시 한번 확인합니다 - '%s'이 맞습니까?\n"
-"맞지않다면, 위치를 수정하여 다시 시도해 보시기 바랍니다.\n"
+"맞지 않다면, 위치를 수정하여 다시 시도해 보시기 바랍니다.\n"
 "\n"
 "시스템의 네트워크 연결이 작동하는지를 확인합니다.\n"
 "\n"
-"시스템을 {PRODUCT_NAME} 서버/프록시에 연결하지 않고 이 시스템에서 성공적으로 소프트웨어를 업데이트할 수 없습니다."
+"시스템을 {PRODUCT_NAME} 서버/프록시에 연결하지 않고 이 시스템에서 소프트웨어를 업데이트할 수 없습니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:252
 #, python-format
 msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "아키텍쳐: %s, OS 릴리즈: %s, OS 버전: %s"
+msgstr "아키텍처: %s, OS 릴리즈: %s, OS 버전: %s"
 
 #: ../src/up2date_client/rhnreg_constants.py:254
 msgid ""
@@ -856,8 +852,7 @@ msgid ""
 msgstr ""
 "<b><span size=\"12000\">부적합한 인증서 파일</span></b>\n"
 "\n"
-" 인증서가 만료되었습니다. 인증서가 유효한지와 시스템 시간이 맞는지를 확인해 "
-"주시기 바랍니다. "
+" 인증서가 만료되었습니다. 인증서가 유효한지와 시스템 시간이 맞는지를 확인해 주시기 바랍니다."
 
 #: ../src/up2date_client/rhnreg_constants.py:272
 #, python-brace-format
@@ -953,11 +948,11 @@ msgstr "아니오, 취소합니다"
 #: ../src/up2date_client/rhnreg_constants.py:311
 #: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
-msgstr "예, 계속진행합니다"
+msgstr "예, 계속 진행합니다"
 
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "Press <space> to deselect the option."
-msgstr "옵션을 선택 해제하시려면 <space> 버튼을 누르십시오."
+msgstr "옵션을 선택 해제하려면 <space> 버튼을 누르십시오."
 
 #: ../src/up2date_client/rhnregGui.py:147
 #: ../src/up2date_client/rhnregGui.py:164
@@ -1016,7 +1011,7 @@ msgstr "서버에 맞지않는 클라이언트를 실행하고 있습니다."
 #, python-format
 msgid ""
 "Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr "<b>%s</b> Spacewalk 서버에 대한 사용자 로그인 정보를 입력하십시오."
+msgstr "<b>%s</b> Spacewalk 서버에 대한 계정 정보를 입력하십시오."
 
 #: ../src/up2date_client/rhnregGui.py:416
 msgid "You must enter a login."
@@ -1042,7 +1037,7 @@ msgstr "프로파일을 위한 정보를 수집하는 동안 오류가 발생했
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
-msgstr "하드웨어 프로파일의 실행도중 오류 발생"
+msgstr "하드웨어 프로파일의 실행 도중 오류 발생"
 
 #: ../src/up2date_client/rhnregGui.py:655
 msgid "There was an error while populating the profile."
@@ -1142,9 +1137,7 @@ msgstr "인증서를 선택해 주십시오."
 msgid ""
 "There was an SSL error. This could be because the file you picked was not a "
 "certificate file."
-msgstr ""
-"SSL 오류가 발생했습니다. 이는 선택하신 파일이 인증서 파일이 아니기 때문일 수 "
-"도 있습니다."
+msgstr "SSL 오류가 발생했습니다. 이는 선택한 파일이 인증서 파일이 아니기 때문일 수도 있습니다."
 
 #. TODO Provide better messages
 #: ../src/up2date_client/rhnregGui.py:974
@@ -1164,12 +1157,12 @@ msgstr "하드웨어 목록을 얻는 동안 오류가 발생했습니다."
 #: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:785
 #, python-format
 msgid "%d MHz"
-msgstr "%d MHz"
+msgstr "%dMHz"
 
 #: ../src/up2date_client/rhnregGui.py:1149
 #, python-format
 msgid "%s MB"
-msgstr "%s MB"
+msgstr "%sMB"
 
 #: ../src/up2date_client/rhnregGui.py:1194
 msgid "There was an error building the list of packages."
@@ -1349,7 +1342,7 @@ msgstr "파일을 찾을 수 없음: \n"
 
 #: ../src/up2date_client/up2dateErrors.py:144
 msgid "Delay error from server.  The message was:\n"
-msgstr "서버로 부터 지연 오류 발생. 메시지:\n"
+msgstr "서버로부터 지연 오류 발생. 메시지:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:180
 msgid "Error validating data at server:\n"
@@ -1461,7 +1454,7 @@ msgstr "ssl CA 인증서로 사용할 파일을 지정"
 
 #: ../src/bin/rhnreg_ks.py:62
 msgid "Specify an activation key"
-msgstr "활성키 지정"
+msgstr "활성화 키 지정"
 
 #: ../src/bin/rhnreg_ks.py:64
 msgid ""
@@ -1510,7 +1503,7 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
-msgstr "등록시 사용하려는 서버가 EUS를 지원하지 않습니다."
+msgstr "등록 시 사용하려는 서버가 EUS를 지원하지 않습니다."
 
 #: ../src/bin/rhnreg_ks.py:154
 msgid ""
@@ -1681,9 +1674,9 @@ msgid ""
 "system at your earliest convenience."
 msgstr ""
 "Red Hat Satellite 또는 Red Hat Network Classic에 연결하지 않고 Red Hat에서 보안 업데이트를 포함한 "
-"소프트웨어를 성공적으로 업데이트할 수 <b>없습니다.</b>\n"
+"소프트웨어를 성공적으로 업데이트할 수 <b>없습니다</b>.\n"
 "\n"
-"시스템을 지속적으로 업데이트, 보안, 및 지원하시려면 가능한 빠른 시일내에 시스템을 등록하시기 바랍니다."
+"시스템을 지속적으로 업데이트, 보안, 및 지원하려면 가능한 빠른 시일 내에 시스템을 등록하시기 바랍니다."
 
 #: ../data/rh_register.glade.h:5
 msgid "Why Should I Connect to RHN? ..."
@@ -1700,7 +1693,7 @@ msgstr "파일 위치:"
 
 #: ../data/rh_register.glade.h:9
 msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr "<small><b>예시:</b> https://satellite.example.com</small> "
+msgstr "예: https://satellite.example.com/XMLRPC"
 
 #: ../data/rh_register.glade.h:10
 msgid "satellite server location"
@@ -1752,7 +1745,7 @@ msgstr "Red Hat Linux 버전:"
 
 #: ../data/rh_register.glade.h:22
 msgid "Hostname:"
-msgstr "호스트 이름:"
+msgstr "호스트명:"
 
 #: ../data/rh_register.glade.h:23
 msgid "IP Address:"
@@ -1812,7 +1805,7 @@ msgstr "• Red Hat Satellite 또는 Red Hat Satellite Proxy의 주소"
 
 #: ../data/rh_register.glade.h:36
 msgid "_Why Should I Register?"
-msgstr "등록해야 하는 이유 (_W)"
+msgstr "등록해야 하는 이유(_W)"
 
 #: ../data/rh_register.glade.h:37
 msgid "Why Should I Register?"
@@ -2149,7 +2142,7 @@ msgstr "아니요, 취소합니다(_N)"
 
 #: ../data/rh_register.glade.h:111
 msgid "_Yes, Continue"
-msgstr "예, 계속진행합니다(_Y)"
+msgstr "예, 계속 진행합니다(_Y)"
 
 #: ../data/rh_register.glade.h:113
 msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
@@ -2161,9 +2154,8 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
-"시스템은 기본 소프트웨어 채널이 등록될 것입니다. 계속 진행하시면 이 시스템을 "
-"더 이전의 마이너 릴리즈로 변경할 수 없습니다(이후의 마이너 버전으로는 변경할 "
-"수 있습니다)."
+"시스템은 기본 소프트웨어 채널이 등록될 것입니다. 계속 진행하시면 이 시스템을 더 이전의 마이너 릴리즈로 변경할 수 없습니다(이후의 "
+"마이너 버전으로는 변경할 수 있음)."
 
 #: ../data/rh_register.glade.h:115
 msgid ""
@@ -2198,8 +2190,7 @@ msgid ""
 "Are you sure you don't want to register your system with Red Hat? You'll "
 "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
 msgstr ""
-"시스템을 Red Hat Network에 연결하지 않으시겠습니까? Red Hat Enterprise Linux 서브스크립션 혜택을 놓치게 "
-"됩니다."
+"시스템을 Red Hat에 등록하지 않으시겠습니까? Red Hat Enterprise Linux 서브스크립션 혜택을 놓치게 됩니다."
 
 #: ../data/rh_register.glade.h:123
 msgid "Management:"
@@ -2272,7 +2263,7 @@ msgid ""
 msgstr ""
 "시스템에 지속적 보안 및 지원을 제공하는 소프트웨어 업데이트를 받을 수 있는 준비가 되었습니다.\n"
 "\n"
-"소프트웨어 업데이트가 가능할 때 데스크톱의 통지 부분에 패키지 아이콘이 나타나게 됩니다. (주로 오른쪽 상단 코너에 나타남) 이 아이콘을 "
+"소프트웨어 업데이트가 가능할 때 데스크톱의 통지 부분에 패키지 아이콘이 나타나게 됩니다(주로 오른쪽 상단 코너에 나타남). 이 아이콘을 "
 "클릭하면 사용 가능한 업데이트를 적용하는 방법을 안내해 드립니다."
 
 #: ../data/rh_register.glade.h:141
@@ -2292,14 +2283,13 @@ msgid ""
 "<b>_Limited updates</b> will be provided to this system, maintaining "
 "compatibility with the selected minor release software channel:"
 msgstr ""
-"<b>제한된 업데이트(_L)</b>는 이 시스템에 제공되며, 선택된 마이너 릴리즈 소프트웨어 체널과의 호환성을 유지하도록 할 것입니다."
+"<b>제한된 업데이트(_L)</b>는 이 시스템에 제공되며, 선택된 마이너 릴리즈 소프트웨어 채널과의 호환성을 유지하도록 할 것입니다."
 
 #: ../data/rh_register.glade.h:146
 msgid ""
 "Limited updates will be provided to this system, maintaining compatibility "
 "with the selected minor release software channel:"
-msgstr ""
-"<b>제한된 업데이트(_L)</b>는 이 시스템에 제공되며, 선택된 마이너 릴리즈 소프트웨어 체널과의 호환성을 유지하도록 할 것입니다."
+msgstr "제한된 업데이트는 이 시스템에 제공되며, 선택된 마이너 릴리즈 소프트웨어 채널과의 호환성을 유지하도록 할 것입니다."
 
 #: ../data/rh_register.glade.h:147
 msgid "_Minor release:"
@@ -2368,9 +2358,9 @@ msgid ""
 "circled below.) Clicking on this icon, when available, will guide you "
 "through applying any updates that are available:"
 msgstr ""
-"시스템에 지속적 보안 및 지원을 제공하는 소프트웨어 업데이트를 받으실 수 있는 준비가 되었습니다.\n"
+"시스템에 지속적 보안 및 지원을 제공하는 소프트웨어 업데이트를 받을 수 있는 준비가 되었습니다.\n"
 "\n"
-"소프트웨어 업데이트가 가능할 때 데스크톱의 통지 부분에 패키지 아이콘이 나타나게 됩니다. (주로 오른쪽 상단 코너에 나타남) 이 아이콘을 "
+"소프트웨어 업데이트가 가능할 때 데스크톱의 통지 부분에 패키지 아이콘이 나타나게 됩니다(주로 오른쪽 상단 코너에 나타남). 이 아이콘을 "
 "클릭하면 사용 가능한 업데이트를 적용하는 방법을 안내해 드립니다."
 
 #: ../data/rh_register.glade.h:160
