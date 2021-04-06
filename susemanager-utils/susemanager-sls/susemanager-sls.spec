@@ -101,9 +101,8 @@ cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
-cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
-cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/*.py %{buildroot}/usr/share/susemanager/salt/_states
+rm %{buildroot}/usr/share/susemanager/salt/_states/__init__.py
 
 # Install doc, examples
 mkdir -p %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap

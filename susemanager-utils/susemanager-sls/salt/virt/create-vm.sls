@@ -12,6 +12,26 @@ initrd_cached:
     - makedirs: True
 {%- endif %}
 
+{%- if 'interfaces' in pillar %}
+nets-{{ pillar['name'] }}:
+  virt_utils.network_running:
+    - networks:
+    {%- for nic in pillar['interfaces'] %}
+      - {{ nic['source'] }}
+    {%- endfor %}
+{%- endif %}
+
+{%- if 'disks' in pillar %}
+pools-{{ pillar['name'] }}:
+  virt_utils.pool_running:
+    - pools:
+  {%- for disk in pillar['disks'] %}
+    {%- if 'pool' in disk %}
+      - {{ disk['pool'] }}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+
 {% macro domain_params() -%}
     - name: {{ pillar['name'] }}
     - cpu: {{ pillar['vcpus'] }}
@@ -75,6 +95,12 @@ domain_first_boot_define:
     - require:
       - file: kernel_cached
       - file: initrd_cached
+  {%- if 'interfaces' in pillar %}
+      - virt_utils: nets-{{ pillar['name'] }}
+  {%- endif %}
+  {%- if 'disks' in pillar %}
+      - virt_utils: pools-{{ pillar['name'] }}
+  {%- endif %}
 {%- endif %}
 
 {%- if cdrom_boot or ks_boot %}
