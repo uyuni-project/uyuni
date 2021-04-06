@@ -89,8 +89,8 @@ cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
-cp src/grains/cpuinfo.py %{buildroot}/usr/share/susemanager/salt/_grains/
-cp src/grains/public_cloud.py %{buildroot}/usr/share/susemanager/salt/_grains/
+cp src/grains/*.py %{buildroot}/usr/share/susemanager/salt/_grains/
+rm %{buildroot}/usr/share/susemanager/salt/_grains/__init__.py
 cp src/modules/sumautil.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mainframesysinfo.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
