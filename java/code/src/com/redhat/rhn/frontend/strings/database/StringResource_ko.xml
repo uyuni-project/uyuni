@@ -425,12 +425,12 @@
         </context-group>
         <target>지역 메일 교환기</target>
       </trans-unit>
-      <trans-unit id="MDOM" xml:space="preserve">
+      <trans-unit id="MDOM" xml:space="preserve" approved="yes">
         <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>메일 도메인 (예, myemail@redhat.com의 경우 'redhat.com')</target>
+        <target>메일 도메인(예: myemail@suse.com의 경우 'suse.com')</target>
       </trans-unit>
       <trans-unit id="RHN_ADMIN_EMAIL" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ administrator email</source>
@@ -704,7 +704,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
-        <target>중요 실행 시간 이동 이동 Ave</target>
+        <target>중요 실행 시간 이동 Ave</target>
       </trans-unit>
       <trans-unit id="Critical Exit Status" xml:space="preserve" approved="yes">
         <source>Critical Exit Status</source>
@@ -1322,7 +1322,7 @@
         </context-group>
         <target>Oracle 포트</target>
       </trans-unit>
-      <trans-unit id="Oracle SID" xml:space="preserve">
+      <trans-unit id="Oracle SID" xml:space="preserve" approved="yes">
         <source>Oracle SID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
@@ -2184,19 +2184,19 @@
         </context-group>
         <target>블록된 프로세스</target>
       </trans-unit>
-      <trans-unit id="metrics.Blocking sessions" xml:space="preserve">
+      <trans-unit id="metrics.Blocking sessions" xml:space="preserve" approved="yes">
         <source>Blocking sessions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>블록킹 세션</target>
+        <target>블로킹 세션</target>
       </trans-unit>
-      <trans-unit id="metrics.Buffer cache hit ratio" xml:space="preserve">
+      <trans-unit id="metrics.Buffer cache hit ratio" xml:space="preserve" approved="yes">
         <source>Buffer cache hit ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>버퍼 캐시 적중율</target>
+        <target>버퍼 캐시 적중률</target>
       </trans-unit>
       <trans-unit id="metrics.CLOSE_WAIT conns" xml:space="preserve">
         <source>CLOSE_WAIT conns</source>
@@ -2247,12 +2247,12 @@
         </context-group>
         <target>CPU 사용량 5분 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.CPU pct used" xml:space="preserve">
+      <trans-unit id="metrics.CPU pct used" xml:space="preserve" approved="yes">
         <source>CPU pct used</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>CPU 사용율</target>
+        <target>CPU 사용률</target>
       </trans-unit>
       <trans-unit id="metrics.CPU usage" xml:space="preserve">
         <source>CPU usage</source>
@@ -2275,12 +2275,12 @@
         </context-group>
         <target>자식 프로세스 그룹</target>
       </trans-unit>
-      <trans-unit id="metrics.Conn rate" xml:space="preserve">
+      <trans-unit id="metrics.Conn rate" xml:space="preserve" approved="yes">
         <source>Conn rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>접속율</target>
+        <target>접속률</target>
       </trans-unit>
       <trans-unit id="metrics.Connections" xml:space="preserve">
         <source>Connections</source>
@@ -2310,12 +2310,12 @@
         </context-group>
         <target>DB 블록 get 비율</target>
       </trans-unit>
-      <trans-unit id="metrics.Data dict hit ratio" xml:space="preserve">
+      <trans-unit id="metrics.Data dict hit ratio" xml:space="preserve" approved="yes">
         <source>Data dict hit ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>데이터 사전 적중율</target>
+        <target>데이터 사전 적중률</target>
       </trans-unit>
       <trans-unit id="metrics.Defunct processes" xml:space="preserve">
         <source>Defunct processes</source>
@@ -2331,7 +2331,7 @@
         </context-group>
         <target>디스크 정렬 속도</target>
       </trans-unit>
-      <trans-unit id="metrics.Disk sort ratio" xml:space="preserve">
+      <trans-unit id="metrics.Disk sort ratio" xml:space="preserve" approved="yes">
         <source>Disk sort ratio</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
@@ -2352,12 +2352,12 @@
         </context-group>
         <target>실행 시간 이동 평균</target>
       </trans-unit>
-      <trans-unit id="metrics.Execution rate" xml:space="preserve">
+      <trans-unit id="metrics.Execution rate" xml:space="preserve" approved="yes">
         <source>Execution rate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>실행율</target>
+        <target>실행률</target>
       </trans-unit>
       <trans-unit id="metrics.Execution time ave" xml:space="preserve">
         <source>Execution time ave</source>
@@ -2709,12 +2709,12 @@
         </context-group>
         <target>실행 중인 스레드</target>
       </trans-unit>
-      <trans-unit id="metrics.Total conns" xml:space="preserve">
+      <trans-unit id="metrics.Total conns" xml:space="preserve" approved="yes">
         <source>Total conns</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
-        <target>총 연결수</target>
+        <target>총 연결 수</target>
       </trans-unit>
       <trans-unit id="metrics.Traffic" xml:space="preserve" approved="yes">
         <source>Traffic</source>
@@ -2898,7 +2898,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="BEA Weblogic" xml:space="preserve">
+      <trans-unit id="BEA Weblogic" xml:space="preserve" approved="yes">
           <source>BEA Weblogic</source>
         <target>BEA Weblogic</target>
         <context-group name="ctx">
@@ -2940,7 +2940,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Oracle" xml:space="preserve">
+      <trans-unit id="Oracle" xml:space="preserve" approved="yes">
           <source>Oracle</source>
         <target>Oracle</target>
         <context-group name="ctx">
@@ -3185,7 +3185,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="LongLegs" xml:space="preserve">
+      <trans-unit id="LongLegs" xml:space="preserve" approved="yes">
           <source>LongLegs</source>
         <target>LongLegs</target>
         <context-group name="ctx">
@@ -3465,7 +3465,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve">
+      <trans-unit id="Red Hat Enterprise Linux 4" xml:space="preserve" approved="yes">
           <source>Red Hat Enterprise Linux 4</source>
         <target>Red Hat Enterprise Linux 4</target>
         <context-group name="ctx">
@@ -3479,7 +3479,7 @@
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve">
+      <trans-unit id="Red Hat Enterprise Linux 2.1" xml:space="preserve" approved="yes">
           <source>Red Hat Enterprise Linux 2.1</source>
         <target>Red Hat Enterprise Linux 2.1</target>
         <context-group name="ctx">
@@ -3500,9 +3500,9 @@
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.state.injected" xml:space="preserve">
+      <trans-unit id="kickstart.state.injected" xml:space="preserve" approved="yes">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target>시스템 설정은 다음 부팅시에 자동 설치가 실행되도록 수정되었습니다.</target>
+        <target>시스템 설정은 다음 부팅 시에 자동 설치가 실행되도록 수정되었습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
