@@ -7,7 +7,7 @@ DEFAULT_RHN_CONF="/usr/share/rhn/config-defaults/rhn.conf"
 if [ -f "$DEFAULT_RHN_CONF" ]; then
     while read -r name value
     do
-        if [ $name == "product_name" ]; then
+        if [ "$name" == "product_name" ]; then
             PRODUCT_NAME=$value
         fi
     done < $DEFAULT_RHN_CONF
