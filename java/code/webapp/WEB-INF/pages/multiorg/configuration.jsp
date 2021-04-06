@@ -14,7 +14,7 @@
         miscImg="${img}"
         miscAlt="${text}"
         imgAlt="users.jsp.imgAlt"
-        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/your-organization-configuration.html">
+        helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/my-organization-configuration.html">
       <c:out escapeXml="true" value="${org.name}" />
     </rhn:toolbar>
 
