@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-05 19:57+0000\n"
+"PO-Revision-Date: 2021-04-06 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -199,7 +199,7 @@ msgstr "použitie: activationkey_setconfigchannelorder KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:699
 msgid "New Configuration Channels:"
-msgstr ""
+msgstr "Nové konfiguračné kanály:"
 
 #: ../src/spacecmd/activationkey.py:713
 msgid "activationkey_create: Create an activation key"
@@ -216,14 +216,22 @@ msgid ""
 "  -u set key as universal default\n"
 "  -e [enterprise_entitled,virtualization_host]"
 msgstr ""
+"použitie: activationkey_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -d POPIS\n"
+"  -b ZÁKLADNÝ_KANÁL\n"
+"  -u nastaviť kľúč ako univerzálny predvolený\n"
+"  -e [podnikový_oprávnený,virtualizačný_hostiteľ]"
 
 #: ../src/spacecmd/activationkey.py:735
 msgid "Name (blank to autogenerate):"
-msgstr ""
+msgstr "Názov (prázdne na automatické vygenerovanie):"
 
 #: ../src/spacecmd/activationkey.py:736
 msgid "Description [None]:"
-msgstr ""
+msgstr "Popis [Žiadny]:"
 
 #: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
 #: ../src/spacecmd/softwarechannel.py:928
@@ -232,16 +240,16 @@ msgstr "Základné kanály"
 
 #: ../src/spacecmd/activationkey.py:744
 msgid "Base Channel (blank for default):"
-msgstr ""
+msgstr "Základný kanál (prázdne pre predvolený):"
 
 #: ../src/spacecmd/activationkey.py:752
 #, python-format
 msgid "%s Entitlement [y/N]:"
-msgstr ""
+msgstr "%s Oprávnenie [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:756
 msgid "Universal Default [y/N]:"
-msgstr ""
+msgstr "Univerzálny predvolený [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:783
 #, python-format
@@ -254,13 +262,13 @@ msgstr "activationkey_delete: Vymazať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:792
 msgid "usage: activationkey_delete KEY"
-msgstr ""
+msgstr "použitie: activationkey_delete KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:814 ../src/spacecmd/cryptokey.py:140
 #: ../src/spacecmd/cryptokey.py:198 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
-msgstr ""
+msgstr "Žiadny kľúč sa nezhoduje s argumentom %s"
 
 #: ../src/spacecmd/activationkey.py:820
 msgid "Delete activation key(s) [y/N]:"
@@ -272,7 +280,7 @@ msgstr "activationkey_list: Vypísať zoznam všetkých aktivačných kľúčov"
 
 #: ../src/spacecmd/activationkey.py:834
 msgid "usage: activationkey_list"
-msgstr ""
+msgstr "použitie: activationkey_list"
 
 #: ../src/spacecmd/activationkey.py:858
 msgid "activationkey_listsystems: List systems registered with a key"
