@@ -2,7 +2,7 @@ name: Auto Request Review
 
 on:
   pull_request_target:
-    types: [opened, ready_for_review, synchronize, reopened, edited]
+    types: [opened, ready_for_review, reopened]
 
 jobs:
   auto-request-review:
