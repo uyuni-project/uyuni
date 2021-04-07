@@ -642,6 +642,82 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(pkg2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
+    /**
+     * 3 versions of a package: 1.0.0, 2.0.0, 3.0.0.
+     * 2 non-retracted patches: for 2.0.0 and 3.0.0
+     * We align the channels check the caches.
+     * Then vendor retracts the patch 3.0.0.
+     * We align the channels again.
+     * Result: The caches should not contain any traces of retracted patch/package.
+     * After that, the vendor makes the patch final again.
+     * We align the channels again.
+     * Result: The caches should contain previously retracted patch/package.
+     */
+    public void testLaterRetractedPatch() throws Exception {
+        // server has the pkg installed and is subscribed to the target channel
+        Server server = ServerFactoryTest.createTestServer(user);
+        SystemManager.subscribeServerToChannel(user, server, tgtChannel);
+
+        // let's make the tgt clone of source (as it should be in CLM scenario)
+        ChannelManager.addCloneInfo(srcChannel.getId(), tgtChannel.getId());
+        tgtChannel = HibernateFactory.reload(tgtChannel);
+
+        InstalledPackage installedPkg = copyPackage(pkg, empty());
+        setInstalledPackage(server, installedPkg);
+
+        // create a (non-retracted) patch that upgrades pkg to 2.0.0
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+        pkg2.setPackageName(pkg.getPackageName());
+        PackageEvr evr = pkg.getPackageEvr();
+        pkg2.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
+        Errata patch2 = ErrataFactoryTest.createTestErrata(null);
+        patch2.addPackage(pkg2);
+        srcChannel.addPackage(pkg2);
+        srcChannel.addErrata(patch2);
+
+        // create a (non-retracted) patch that upgrades pkg to 3.0.0
+        Package pkg3 = PackageTest.createTestPackage(user.getOrg());
+        pkg3.setPackageName(pkg.getPackageName());
+        pkg3.setPackageEvr(PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "3.0.0", evr.getRelease(), pkg.getPackageType()));
+        Errata patch3 = ErrataFactoryTest.createTestErrata(null);
+        patch3.addPackage(pkg3);
+        srcChannel.addPackage(pkg3);
+        srcChannel.addErrata(patch3);
+
+        // assumptions
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(0, needingUpdates.size());
+
+        // tests
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+
+        // after building, the cache should contain 4 entries (2 for each package (one of them with errata, one without))
+        needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(4, needingUpdates.size());
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId())));
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+
+        // now we retract the patch
+        // after building, the cache should not contain any entries related to the retracted patch and package
+        patch3.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(2, needingUpdates.size());
+        assertFalse(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(pkg2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+
+        // now we make the patch final again
+        // after building, the cache should contain entries related to the previously retracted patch and package
+        patch3.setAdvisoryStatus(AdvisoryStatus.FINAL);
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        assertEquals(4, needingUpdates.size());
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId())));
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+    }
+
     private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
         Package olderPkg = PackageTest.createTestPackage(user.getOrg());
         PackageEvr packageEvr = fromPkg.getPackageEvr();
