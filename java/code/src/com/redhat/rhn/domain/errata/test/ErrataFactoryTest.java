@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
@@ -42,6 +43,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -566,6 +568,26 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         ErrataFactory.syncErrataDetails(ce);
         assertEquals(AdvisoryStatus.RETRACTED, ce.getAdvisoryStatus());
+    }
+
+    /**
+     * Tests that listErrata honors the subclass mapping (e.g. returns ClonedErrata instance in case the erratum is cloned)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListErrataSubclassMapping() throws Exception {
+        Cve cveOriginal = ErrataTestUtils.createTestCve("testcveorig-1");
+        Errata original = ErrataTestUtils.createTestErrata(user, Set.of(cveOriginal));
+
+        Cve cveClone = ErrataTestUtils.createTestCve("testcveclone-1");
+        Errata clone = ErrataTestUtils.createTestClonedErrata(user, original, Set.of(cveClone), original.getPackages().iterator().next());
+
+        // let's evict from the cache, otherwise hibernate does not refresh the class
+        HibernateFactory.getSession().evict(original);
+        HibernateFactory.getSession().evict(clone);
+
+        assertFalse(ErrataFactory.listErrata(Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());
+        assertTrue(ErrataFactory.listErrata(Set.of(clone.getId()), user.getOrg().getId()).iterator().next().isCloned());
     }
 }
 
