@@ -57,7 +57,9 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
@@ -954,7 +956,7 @@ public class ContentManager {
 
     private void alignPackageCache(Channel channel, Set<Package> oldChannelPackages) {
         // remove entries for deleted packages
-        HashSet<Package> removedPackages = new HashSet<>(oldChannelPackages);
+        Set<Package> removedPackages = new HashSet<>(oldChannelPackages);
         removedPackages.removeAll(channel.getPackages());
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(channel.getId(), extractPackageIds(removedPackages));
 
@@ -1006,6 +1008,12 @@ public class ContentManager {
         excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+
+        // Also check if content of cloned errata needs alignment (advisory status etc.)
+        ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
+            ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
+            ErrataFactory.syncErrataDetails(cloned);
+        });
     }
 
     /**
