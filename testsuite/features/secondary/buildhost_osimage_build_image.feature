@@ -11,6 +11,7 @@
 
 @buildhost
 @long_test
+@scope_retail
 @scope_building_container_images
 Feature: Build OS images
 
