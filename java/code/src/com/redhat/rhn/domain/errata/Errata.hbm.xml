@@ -290,8 +290,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
     <sql-query name="Errata.listAvailableToOrgByIds">
-        <![CDATA[SELECT E.*, 0 as clazz_
+        <![CDATA[SELECT E.*, EC.original_id, CASE WHEN EC.original_id IS NULL THEN 0 ELSE 1 END as clazz_
                  FROM rhnErrata as E
+                 LEFT JOIN rhnErrataCloned EC ON E.id = EC.id
                  WHERE E.id in (:eids)
                      AND (E.org_id = :orgId
                           OR EXISTS (SELECT 1
