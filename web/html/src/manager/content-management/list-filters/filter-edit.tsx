@@ -11,8 +11,14 @@ import { showDialog } from "components/dialog/util";
 import { mapFilterFormToRequest } from "./filter.utils";
 import _isEmpty from "lodash/isEmpty";
 import useUserLocalization from "core/user-localization/use-user-localization";
+import { FilterFormType } from "../shared/type/filter.type";
 
-const FilterEditModalContent = ({ open, isLoading, filter, errors, onChange, onClientValidate, editing }) => {
+type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
+  open: boolean;
+  isLoading: boolean;
+}
+
+const FilterEditModalContent = ({ open, isLoading, filter, errors, onChange, onClientValidate, editing }: FilterEditModalContentProps) => {
   if (!open) {
     return null;
   }
@@ -34,7 +40,7 @@ const FilterEditModalContent = ({ open, isLoading, filter, errors, onChange, onC
 
 type FilterEditProps = {
   id: string;
-  initialFilterForm: any;
+  initialFilterForm: Partial<FilterFormType>;
   icon: string;
   buttonText: string;
   onChange: Function;
@@ -108,7 +114,8 @@ const FilterEdit = (props: FilterEditProps) => {
                   text={t("Delete")}
                   disabled={isLoading}
                   handler={() => {
-                    onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "delete", item.id)
+                    // TODO: Remove `any`
+                    onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "delete", item.id as any)
                       .then(updatedListOfFilters => {
                         closeDialog(modalNameId);
                         showSuccessToastr(t("Filter deleted successfully"));
@@ -146,7 +153,8 @@ const FilterEdit = (props: FilterEditProps) => {
                       showErrorToastr(t("Check the required fields below"), { autoHide: false });
                     } else {
                       if (props.editing) {
-                        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", item.id)
+                        // TODO: Remove `any`
+                        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", item.id as any)
                           .then(updatedListOfFilters => {
                             if (!_isEmpty(props.projectLabel)) {
                               redirectToProject(props.projectLabel);

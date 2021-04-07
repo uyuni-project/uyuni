@@ -1,10 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { Text } from "components/input/Text";
-import { DateTime } from "components/input/DateTime";
-import { Radio } from "components/input/Radio";
-import { Select } from "components/input/Select";
-import { Form } from "components/input/Form";
+import { Text, DateTime, Radio, Select, Form } from "components/input";
 import AppStreamsForm from "./appstreams/appstreams";
 import { FilterFormType } from "../shared/type/filter.type";
 import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
@@ -12,8 +8,10 @@ import useUserLocalization from "core/user-localization/use-user-localization";
 import { Utils } from "utils/functions";
 import produce from "utils/produce";
 
-type Props = {
-  filter: FilterFormType;
+import LivePatchingFilterForm from './live-patching';
+
+export type Props = {
+  filter: Partial<FilterFormType>;
   errors: any;
   onChange: (...args: any[]) => any;
   onClientValidate: (...args: any[]) => any;
@@ -24,29 +22,31 @@ const FilterForm = (props: Props) => {
   const { timezone, localTime } = useUserLocalization();
 
   // If the filter type changes, resets the matcher filter
+  const { editing, filter, onChange } = props;
   useEffect(() => {
-    if (!props.editing) {
-      props.onChange(
-        produce(props.filter, draft => {
-          const selectedFilter = findClmFilterByKey(props.filter.type);
+    if (!editing) {
+      onChange(
+        produce(filter, draft => {
+          const selectedFilter = findClmFilterByKey(filter.type);
           if (selectedFilter && selectedFilter.matchers.length === 1) {
             draft.matcher = selectedFilter.matchers[0].key;
           } else {
             delete draft.matcher;
           }
-          if (clmFilterOptions.ADVISORY_TYPE.key === props.filter.type) {
+          if (clmFilterOptions.ADVISORY_TYPE.key === filter.type) {
             draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
           }
-          if (clmFilterOptions.ISSUE_DATE.key === props.filter.type) {
+          if (clmFilterOptions.ISSUE_DATE.key === filter.type) {
             draft[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(localTime || "");
           }
         })
       );
     }
-  }, [props.filter.type]);
+  }, [editing, filter, onChange, localTime]);
 
-  const selectedFilter = findClmFilterByKey(props.filter.type);
-  const selectedFilterMatchers = selectedFilter && selectedFilter.matchers;
+  const filterType = props.filter.type || "";
+  const selectedFilter = findClmFilterByKey(filterType);
+  const selectedFilterMatchers = selectedFilter?.matchers;
 
   return (
     <Form
@@ -86,7 +86,7 @@ const FilterForm = (props: Props) => {
           formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
         />
 
-        {selectedFilterMatchers && (
+        {selectedFilterMatchers?.length ? (
           <Select
             name="matcher"
             label={t("Matcher")}
@@ -98,9 +98,9 @@ const FilterForm = (props: Props) => {
             getOptionValue={matcher => matcher.key}
             getOptionLabel={matcher => matcher.text}
           />
-        )}
+        ) : null}
 
-        {clmFilterOptions.NAME.key === props.filter.type && (
+        {clmFilterOptions.NAME.key === filterType && (
           <Text
             name={clmFilterOptions.NAME.key}
             label={t("Package Name")}
@@ -110,7 +110,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.NEVRA.key === props.filter.type && (
+        {clmFilterOptions.NEVRA.key === filterType && (
           <>
             <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
             <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
@@ -120,7 +120,7 @@ const FilterForm = (props: Props) => {
           </>
         )}
 
-        {clmFilterOptions.PACKAGE_NEVR.key === props.filter.type && (
+        {clmFilterOptions.PACKAGE_NEVR.key === filterType && (
           <>
             <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
             <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
@@ -129,7 +129,7 @@ const FilterForm = (props: Props) => {
           </>
         )}
 
-        {clmFilterOptions.ADVISORY_NAME.key === props.filter.type && (
+        {clmFilterOptions.ADVISORY_NAME.key === filterType && (
           <Text
             name={clmFilterOptions.ADVISORY_NAME.key}
             label={t("Advisory name")}
@@ -139,7 +139,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.ADVISORY_TYPE.key === props.filter.type && (
+        {clmFilterOptions.ADVISORY_TYPE.key === filterType && (
           <Radio
             name={clmFilterOptions.ADVISORY_TYPE.key}
             required
@@ -154,7 +154,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.ISSUE_DATE.key === props.filter.type && (
+        {clmFilterOptions.ISSUE_DATE.key === filterType && (
           <DateTime
             name={clmFilterOptions.ISSUE_DATE.key}
             label={t("Issued")}
@@ -165,7 +165,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.SYNOPSIS.key === props.filter.type && (
+        {clmFilterOptions.SYNOPSIS.key === filterType && (
           <Text
             name={clmFilterOptions.SYNOPSIS.key}
             label={t("Synopsis")}
@@ -175,7 +175,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.KEYWORD.key === props.filter.type && (
+        {clmFilterOptions.KEYWORD.key === filterType && (
           <Radio
             name={clmFilterOptions.KEYWORD.key}
             required
@@ -190,7 +190,7 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.PACKAGE_NAME.key === props.filter.type && (
+        {clmFilterOptions.PACKAGE_NAME.key === filterType && (
           <Text
             name={clmFilterOptions.PACKAGE_NAME.key}
             label={t("Package Name")}
@@ -200,13 +200,17 @@ const FilterForm = (props: Props) => {
           />
         )}
 
-        {clmFilterOptions.STREAM.key === props.filter.type && (
+        {clmFilterOptions.STREAM.key === filterType && (
           <>
             <AppStreamsForm />
           </>
         )}
 
-        {clmFilterOptions.STREAM.key !== props.filter.type && (
+        {![
+          clmFilterOptions.STREAM.key,
+          clmFilterOptions.LIVE_PATCHING_SYSTEM.key,
+          clmFilterOptions.LIVE_PATCHING_PRODUCT.key,
+        ].includes(filterType) && (
           <Radio
             inline
             name="rule"
@@ -219,6 +223,8 @@ const FilterForm = (props: Props) => {
             divClass="col-md-6"
           />
         )}
+
+        <LivePatchingFilterForm {...props} />
       </React.Fragment>
     </Form>
   );

@@ -7,7 +7,7 @@ import { Utils } from "utils/functions";
 declare var Loggerhead: any;
 
 export function mapFilterFormToRequest(
-  filterForm: FilterFormType,
+  filterForm: Partial<FilterFormType>,
   projectLabel?: string,
   localTime?: string
 ): FilterServerType {

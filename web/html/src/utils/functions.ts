@@ -1,13 +1,15 @@
-export type Cancelable = {
-  promise: Promise<any>;
-  cancel: (reason?: any) => void;
-};
+import { useEffect } from "react";
 
-function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => void): Cancelable {
+export class Cancelable<T> extends Promise<T> {
+  promise!: Promise<T>;
+  cancel!: (reason?: any) => void;
+}
+
+function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void) => void): Cancelable<T> {
   let rejectFn: (reason: any) => void;
   let isCancelled = false;
 
-  const cancelPromise = new Promise((resolve, reject) => {
+  const cancelPromise = new Promise<T>((resolve, reject) => {
     rejectFn = reject;
   });
 
@@ -18,13 +20,52 @@ function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => vo
     throw error;
   });
 
+  /*
+  race.promise = race;
+  race.cancel = (reason: any) => {
+    isCancelled = true;
+    rejectFn(reason);
+  };
+  return race as Cancelable<T>;
+
+  */
+  // TODO: Test & verify this
   return {
+    ...race,
     promise: race,
     cancel: (reason: any) => {
       isCancelled = true;
       rejectFn(reason);
     },
   };
+}
+
+function isCancelable<T>(input: any): input is Cancelable<T> {
+  return input && Object.prototype.hasOwnProperty.call(input, "cancel") && typeof input.cancel === "function";
+}
+
+function useCancelableEffect<T = any>(
+  promiseOrCancelable: () => Promise<T> | Cancelable<T>,
+  deps?: React.DependencyList
+) {
+  return useEffect(() => {
+    let isDone = false;
+    let cleanup: T | undefined;
+
+    (async function() {
+      cleanup = await promiseOrCancelable();
+      isDone = true;
+    })();
+
+    return () => {
+      if (!isDone && isCancelable(promiseOrCancelable)) {
+        promiseOrCancelable.cancel();
+      }
+      if (typeof cleanup === 'function') {
+        (cleanup as Function)();
+      }
+    };
+  }, deps);
 }
 
 function dateWithTimezone(dateString: string): Date {
@@ -219,6 +260,7 @@ function getProductName(): string {
 
 const Utils = {
   cancelable: cancelable,
+  useCancelableEffect: useCancelableEffect,
   sortById: sortById,
   sortByText: sortByText,
   dateWithTimezone: dateWithTimezone,

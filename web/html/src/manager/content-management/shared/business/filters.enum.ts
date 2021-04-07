@@ -29,6 +29,10 @@ export const filterEntity: FilterEntityEnumType = {
     key: "erratum",
     text: t("Patch"),
   },
+  LIVE_PATCHING: {
+    key: "live_patching",
+    text: t("Live patching"),
+  },
   MODULE: {
     key: "module",
     text: t("Module"),
@@ -154,6 +158,18 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
       filterMatchers.CONTAINS_PKG_GT_EVR,
     ],
   },
+  LIVE_PATCHING_SYSTEM: {
+    key: "live_patching_system",
+    text: t("System"),
+    entityType: filterEntity.LIVE_PATCHING,
+    matchers: []
+  },
+  LIVE_PATCHING_PRODUCT: {
+    key: "live_patching_product",
+    text: t("Product"),
+    entityType: filterEntity.LIVE_PATCHING,
+    matchers: []
+  },
   STREAM: {
     key: "module_stream",
     text: t("Stream"),
@@ -162,7 +178,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
   },
 };
 
-export function findClmFilterByKey(key: string | null | undefined): ClmFilterOptionType | null | undefined {
+export function findClmFilterByKey(key: string | undefined): ClmFilterOptionType | null | undefined {
   return _find(clmFilterOptions, entry => entry.key === key);
 }
 
@@ -170,7 +186,7 @@ export function getClmFiltersOptions(): Array<ClmFilterOptionType> {
   return Object.values(clmFilterOptions) as any;
 }
 
-function findFilterMatcherByKey(key: string | null | undefined): FilterMatcherType | Partial<FilterMatcherEnumType> {
+function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Partial<FilterMatcherEnumType> {
   return _find(filterMatchers, entry => entry.key === key) || {};
 }
 
