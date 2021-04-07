@@ -1,3 +1,4 @@
+- Check if the directory exists prior to modular data cleanup (bsc#1184311)
 - assign right base product for res8 (bsc#1184005)
 
 -------------------------------------------------------------------
