@@ -1,3 +1,4 @@
+- Fix condition in mgr-setup to prevent noise messages during setup
 - Add bootstrap repository definitions for AlmaLinux8
 - Add bootstrap repository for Amazon Linux 2
 - Add bootstrap repository for Alibaba Cloud Linux 2
