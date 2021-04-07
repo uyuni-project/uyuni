@@ -132,6 +132,12 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.name === 'kernel') {
+      console.log('did update kernel', typeof this.context.model.kernel, this.context.model.kernel, this.props.required);
+      if (this.props.required && typeof this.context.model.kernel === 'undefined') {
+        // debugger;
+      }
+    }
     // Support validation when changing the following props on-the-fly
     if (this.props.required !== prevProps.required || this.props.disabled !== prevProps.disabled) {
       if (this.props.name instanceof Array) {
@@ -191,6 +197,11 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       isValid = false;
     }
 
+    if (this.props.name === 'kernel' && typeof value === 'undefined') {
+      console.log('in validate');
+      // debugger;
+    }
+
     if (!this.props.disabled && (value || this.props.required)) {
       const noValue = this.isEmptyValue(value) ||
         (Array.isArray(this.props.name) && Object.values(value).filter(v => !this.isEmptyValue(v)).length === 0);
@@ -224,6 +235,8 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   setValue(name: string, value: ValueType) {
+    if (name === 'kernel') console.log('set for', name, typeof value, value);
+
     if (this.context.setModelValue != null) {
       this.context.setModelValue(name, value);
     }

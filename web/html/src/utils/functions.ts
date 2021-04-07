@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-
-export class Cancelable<T> extends Promise<T> {
+// This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
+export class Cancelable<T = any> extends Promise<T> {
   promise!: Promise<T>;
   cancel!: (reason?: any) => void;
 }
@@ -38,34 +37,6 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
       rejectFn(reason);
     },
   };
-}
-
-function isCancelable<T>(input: any): input is Cancelable<T> {
-  return input && Object.prototype.hasOwnProperty.call(input, "cancel") && typeof input.cancel === "function";
-}
-
-function useCancelableEffect<T = any>(
-  promiseOrCancelable: () => Promise<T> | Cancelable<T>,
-  deps?: React.DependencyList
-) {
-  return useEffect(() => {
-    let isDone = false;
-    let cleanup: T | undefined;
-
-    (async function() {
-      cleanup = await promiseOrCancelable();
-      isDone = true;
-    })();
-
-    return () => {
-      if (!isDone && isCancelable(promiseOrCancelable)) {
-        promiseOrCancelable.cancel();
-      }
-      if (typeof cleanup === 'function') {
-        (cleanup as Function)();
-      }
-    };
-  }, deps);
 }
 
 function dateWithTimezone(dateString: string): Date {
@@ -260,7 +231,6 @@ function getProductName(): string {
 
 const Utils = {
   cancelable: cancelable,
-  useCancelableEffect: useCancelableEffect,
   sortById: sortById,
   sortByText: sortByText,
   dateWithTimezone: dateWithTimezone,

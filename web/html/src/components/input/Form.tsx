@@ -1,4 +1,7 @@
 import * as React from "react";
+import { InputBase } from "./InputBase";
+
+type InputBaseRef = React.ElementRef<typeof InputBase>;
 
 type Props = {
   /** Object storing the data of the form.
@@ -47,7 +50,7 @@ type Props = {
 type FormContextType = {
   model: any;
   errors: any;
-  setModelValue: Function;
+  setModelValue: (name: string, value: any) => any;
   registerInput: Function;
   unregisterInput: Function;
   validateForm: () => void;
@@ -65,7 +68,7 @@ export class Form extends React.Component<Props> {
     formDirection: "form-horizontal",
   };
 
-  inputs = {};
+  inputs: { [key: string]: InputBaseRef | undefined } = {};
 
   setModelValue(name: string, value: any) {
     const { model, errors } = this.props;
@@ -79,10 +82,13 @@ export class Form extends React.Component<Props> {
     if (errors) {
       delete errors[name];
     }
+
+    // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
+    this.inputs[name]?.validate(value);
   }
 
   allValid(): boolean {
-    return Object.keys(this.inputs).every(name => this.inputs[name].isValid());
+    return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
   }
 
   validateForm(): void {
@@ -92,7 +98,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  getComponentName(component: React.ReactElement<any>) {
+  getComponentName(component: InputBaseRef) {
     return Array.isArray(component.props.name) ? component.props.name.join() : component.props.name;
   }
 
@@ -100,7 +106,7 @@ export class Form extends React.Component<Props> {
     return name.split(",");
   }
 
-  unregisterInput(component: React.ReactElement<any>) {
+  unregisterInput(component: InputBaseRef) {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       if (this.inputs[name] === component) {
@@ -109,7 +115,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  registerInput(component: React.ReactElement<any>) {
+  registerInput(component: InputBaseRef) {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       this.inputs[name] = component;
@@ -132,7 +138,7 @@ export class Form extends React.Component<Props> {
       Object.keys(this.inputs).forEach(name => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
-          this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name]);
+          this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);
         } else {
           const values = Object.keys(this.props.model).reduce((filtered, key) => {
             if (names.includes(key)) {
@@ -146,7 +152,7 @@ export class Form extends React.Component<Props> {
             }
             return filtered;
           }, []);
-          this.inputs[name].validate(values, errors);
+          this.inputs[name]?.validate(values, errors);
         }
       });
     }

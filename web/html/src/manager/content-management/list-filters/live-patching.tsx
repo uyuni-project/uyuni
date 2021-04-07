@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Text, Select, FormContext } from "components/input";
 import { clmFilterOptions } from "../shared/business/filters.enum";
 import { Props as FilterFormProps } from "./filter-form";
-import { Cancelable, Utils } from "utils/functions";
+import { Cancelable } from "utils/functions";
 
 type Client = {
   id: number;
@@ -19,14 +19,26 @@ type Kernel = {
 async function getClients(): Cancelable<Client[]> {
   const PLACEHOLDER_CLIENTS = [
     {
-      id: 123,
-      name: "Placeholder Client",
+      id: 1,
+      name: "Placeholder Client 1",
+    },
+    {
+      id: 2,
+      name: "Placeholder Client 2",
+    },
+    {
+      id: 3,
+      name: "Placeholder Client 3",
     },
   ];
   return PLACEHOLDER_CLIENTS;
 }
 
-async function getKernels(client: unknown): Cancelable<Kernel[]> {
+async function getKernels(client: any): Cancelable<Kernel[]> {
+  console.log("get kernels for", client);
+  if (client.id === 1) {
+    
+  }
   const PLACEHOLDER_KERNELS = [
     {
       id: 234,
@@ -50,26 +62,14 @@ export default (props: FilterFormProps) => {
     getClients().then(clients => setClients(clients));
   }, []);
 
-  Utils.useCancelableEffect(() => {
-    const request = getKernels(client);
-    request.then(kernels => setKernels(kernels));
-    return request;
-  }, [client]);
-
   useEffect(() => {
-    let request: Cancelable<any> | undefined;
-    (async function foo() {
-      if (client) {
-        request = getKernels(client);
-        const kernels = await request;
-        setKernels(kernels);
-      } else {
-        setKernels([]);
-      }
-    })();
-    return () => {
-      request?.cancel();
-    };
+    if (client) {
+      getKernels(client).then(kernels => setKernels(kernels));
+      formContext.setModelValue?.("kernel", null);
+    } else {
+      setKernels([]);
+      // formContext.model.kernel = undefined;
+    }
   }, [client]);
 
   return (
@@ -95,8 +95,8 @@ export default (props: FilterFormProps) => {
         label={t("Kernel")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        required
-        disabled={props.editing}
+        required={!!client}
+        disabled={props.editing || !client}
         options={kernels}
         getOptionValue={kernel => kernel.id}
         getOptionLabel={kernel => kernel.version}
