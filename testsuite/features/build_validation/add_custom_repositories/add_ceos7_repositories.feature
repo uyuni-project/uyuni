@@ -5,7 +5,7 @@
 Feature: Adding the CentOS 7 distribution custom repositories
 
   Scenario: Download the iso of CentOS 7 DVD and mount it on the server
-    When I mount as "centos-7-iso" the ISO from "http://minima-mirror-qam.mgr.prv.suse.net/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" in the server
+    When I mount as "centos-7-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" in the server
 
   Scenario: Add a child channel for CentOS 7 DVD repositories
     Given I am authorized as "admin" with password "admin"

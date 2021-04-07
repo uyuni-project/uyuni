@@ -5,7 +5,7 @@
 Feature: Adding the CentOS 8 distribution custom repositories
 
   Scenario: Download the iso of CentOS 8 DVD and mount it on the server
-    When I mount as "centos-8-iso" the ISO from "http://minima-mirror-qam.mgr.prv.suse.net/pub/centos/8/isos/x86_64/CentOS-8.2.2004-x86_64-dvd1.iso" in the server
+    When I mount as "centos-8-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/8/isos/x86_64/CentOS-8.2.2004-x86_64-dvd1.iso" in the server
 
   Scenario: Add a child channel for CentOS 8 DVD repositories
     Given I am authorized as "admin" with password "admin"
