@@ -1,3 +1,5 @@
+- Add identity-obj-proxy dependency to load CSS imports in jest tests
+
 -------------------------------------------------------------------
 Fri Mar 05 15:43:58 CET 2021 - jgonzalez@suse.com
 
