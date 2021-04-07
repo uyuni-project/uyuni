@@ -1,6 +1,5 @@
 - keep salt-minion when it is installed to prevent update problems with
   dependend packages not available in the bootstrap repo (bsc#1183573)
-- Require new kiwi-systemdeps packages (bsc#1184271)
 
 -------------------------------------------------------------------
 Mon Mar 29 12:05:00 CEST 2021 - jgonzalez@suse.com

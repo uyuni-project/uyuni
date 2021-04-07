@@ -9,14 +9,16 @@
 {%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) %}
 
 {%- if use_kiwi_ng %}
+{% set kiwi_boot_modules = ['kiwi-boot-descriptions'] %}
+
 mgr_install_kiwi:
   pkg.installed:
     - pkgs:
       - python3-kiwi
-      - kiwi-systemdeps-disk-images
-      - kiwi-systemdeps-image-validation
-      - kiwi-systemdeps-iso-media
-      - kiwi-boot-descriptions
+{% for km in kiwi_boot_modules %}
+      - {{ km }}
+{% endfor %}
+
 {%- else %}
 # legacy kiwi
 
