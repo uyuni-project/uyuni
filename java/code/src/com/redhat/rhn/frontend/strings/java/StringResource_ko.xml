@@ -1592,7 +1592,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>최소 한 명의 @@ PRODUCT_NAME @@ 관리자가 일반 액세스 권한을 유지해야 합니다.</target>
+        <target>최소 한 명의 @@PRODUCT_NAME@@ 관리자가 일반 액세스 권한을 유지해야 합니다.</target>
       </trans-unit>
       <trans-unit id="login" xml:space="preserve" approved="yes">
         <source>Desired Login</source>
