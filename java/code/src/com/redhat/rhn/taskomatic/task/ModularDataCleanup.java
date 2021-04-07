@@ -49,8 +49,15 @@ public class ModularDataCleanup extends RhnJavaJob {
         Set<Path> usedModularDataAbsolutePaths = usedModularDataPaths.stream()
                 .map(relPath -> Path.of(MOUNT_POINT_PATH, relPath))
                 .collect(Collectors.toSet());
+
+        File modulesPath = Path.of(MOUNT_POINT_PATH, MODULES_REL_PATH).toFile();
+        if (!modulesPath.exists()) {
+            log.info(String.format("Modules directory " + modulesPath + " does not exist. Skipping cleanup"));
+            return;
+        }
+
         Collection<File> modularDataFiles = FileUtils.listFiles(
-                Path.of(MOUNT_POINT_PATH, MODULES_REL_PATH).toFile(),
+                modulesPath,
                 new SuffixFileFilter("modules.yaml"),
                 TrueFileFilter.TRUE);
 
