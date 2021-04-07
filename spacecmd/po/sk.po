@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-06 17:57+0000\n"
+"PO-Revision-Date: 2021-04-07 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -285,10 +285,11 @@ msgstr "použitie: activationkey_list"
 #: ../src/spacecmd/activationkey.py:858
 msgid "activationkey_listsystems: List systems registered with a key"
 msgstr ""
+"activationkey_listsystems: Vypísať zoznam systémov registrovaných s kľúčom"
 
 #: ../src/spacecmd/activationkey.py:859
 msgid "usage: activationkey_listsystems KEY"
-msgstr ""
+msgstr "použitie: activationkey_listsystems KĹÚČ"
 
 #: ../src/spacecmd/activationkey.py:882 ../src/spacecmd/activationkey.py:931
 #, python-format
@@ -301,27 +302,27 @@ msgstr "activationkey_details: Zobraziť podrobnosti aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:897
 msgid "usage: activationkey_details KEY ..."
-msgstr ""
+msgstr "použitie: activationkey_details KĽÚČ ..."
 
 #: ../src/spacecmd/activationkey.py:944
 #, python-format
 msgid "Key:                    %s"
-msgstr ""
+msgstr "Kľúč:                    %s"
 
 #: ../src/spacecmd/activationkey.py:945
 #, python-format
 msgid "Description:            %s"
-msgstr ""
+msgstr "Popis:            %s"
 
 #: ../src/spacecmd/activationkey.py:946
 #, python-format
 msgid "Universal Default:      %s"
-msgstr ""
+msgstr "Univerzálny predvolený:      %s"
 
 #: ../src/spacecmd/activationkey.py:947
 #, python-format
 msgid "Usage Limit:            %s"
-msgstr ""
+msgstr "Limit použitia:            %s"
 
 #: ../src/spacecmd/activationkey.py:948
 #, python-format
@@ -394,7 +395,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1101
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
-msgstr ""
+msgstr "usage: activationkey_setusagelimit KĽÚČ <limit použitia>"
 
 #: ../src/spacecmd/activationkey.py:1102
 msgid "usage: activationkey_setusagelimit KEY unlimited "
@@ -409,6 +410,8 @@ msgstr ""
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr ""
+"activationkey_setuniversaldefault: Nastaviť tento kľúč ako univerzálny "
+"predvolený"
 
 #: ../src/spacecmd/activationkey.py:1156
 msgid "usage: activationkey_setuniversaldefault KEY"
@@ -670,7 +673,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
-msgstr ""
+msgstr "configchannel_list: Vypísať zoznam všetkých konfiguračných kanálov"
 
 #: ../src/spacecmd/configchannel.py:52
 msgid "usage: configchannel_list"
@@ -678,7 +681,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:69
 msgid "configchannel_listsystems: List the systems subscribed to a"
-msgstr ""
+msgstr "configchannel_listsystems: Vypísať zoznam systémov prihlásených k"
 
 #: ../src/spacecmd/configchannel.py:70
 msgid "                           configuration channel"
@@ -694,7 +697,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:104
 msgid "configchannel_listfiles: List the files in a config channel"
-msgstr ""
+msgstr "configchannel_listfiles: Vypísať zoznam súborov v konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:105
 msgid "usage: configchannel_listfiles CHANNEL ..."
