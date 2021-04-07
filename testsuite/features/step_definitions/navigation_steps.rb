@@ -146,13 +146,17 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
   check(arg1) unless has_checked_field?(arg1)
 end
 
-When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//input[@name='#{arg2}']/.."
-  if all(:xpath, xpath, wait: 0).any?
-    find(:xpath, xpath).click
-    find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
+When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
+  xpath_option = ".//*[contains(text(),'#{option}')]"
+  xpath_field = "//*[@name='#{field}']/.."
+  if has_select?(option, with_options: [field], wait: 1)
+    select(option, from: field)
   else
-    select(arg1, from: arg2, exact: false)
+    # Custom React selector
+    within(:xpath, xpath_field) do
+      find(:xpath, '.').click
+      find(:xpath, xpath_option, match: :first).click
+    end
   end
 end
 
@@ -889,29 +893,26 @@ end
 #
 # Test if an option is selected
 #
-Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  xpath = "//input[@id='#{arg2}']"
-  if has_xpath?(xpath)
-    xpath = "//input[@id='#{arg2}']/../../../../../div/div/div[normalize-space(text())='#{arg1}']"
-    raise "#{arg1} is not selected as #{arg2}" unless has_xpath?(xpath)
-  else
-    raise "#{arg1} is not selected as #{arg2}" unless has_select?(arg2, selected: arg1)
+Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
+  next if has_select?(field, selected: option)
+
+  # Custom React selector
+  within(:xpath, "//*[@name='#{field}']/..") do
+    next if has_xpath?(".//*[contains(text(),'#{option}')]")
   end
+  raise "#{option} is not selected as #{field}"
 end
 
 #
 # Wait for an option to appear in a list
 #
-When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
-  repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
-    xpath = "//input[@id='#{arg2}']/../../../../.."
-    if has_xpath?(xpath)
-      find(:xpath, xpath).click
-      has_option = has_xpath?("#{xpath}/div/div/div[normalize-space(text())='#{arg1}']")
-      find(:xpath, xpath).click
-      break if has_option
-    elsif has_select?(arg2, with_options: [arg1])
-      break
+When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, field|
+  repeat_until_timeout(message: "#{option} has not been listed in #{field}") do
+    break if has_select?(field, with_options: [option])
+
+    # Custom React selector
+    within(:xpath, "//*[@name='#{field}']/..") do
+      break if has_xpath?(".//*[contains(text(),'#{option}')]")
     end
   end
 end
