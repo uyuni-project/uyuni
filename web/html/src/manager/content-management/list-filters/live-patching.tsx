@@ -55,6 +55,7 @@ export default (props: FilterFormProps) => {
   }
   const formContext = React.useContext(FormContext);
   const client = formContext.model.client;
+  const setModelValue = formContext.setModelValue;
   const [clients, setClients] = useState<Client[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
@@ -65,12 +66,16 @@ export default (props: FilterFormProps) => {
   useEffect(() => {
     if (client) {
       getKernels(client).then(kernels => setKernels(kernels));
-      formContext.setModelValue?.("kernel", null);
+      // TODO: Set according to spec instead
+      setModelValue?.("kernel", null);
+      // TODO: For project
+    } else if (false) {
+
     } else {
       setKernels([]);
       // formContext.model.kernel = undefined;
     }
-  }, [client]);
+  }, [client, setModelValue]);
 
   return (
     <>

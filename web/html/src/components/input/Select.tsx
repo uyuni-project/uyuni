@@ -95,10 +95,6 @@ export function Select(props: Props) {
         const value = (formContext.model || {})[props.name];
         const optionFinder = needle => convertedOptions.find(option => getOptionValue(option) === needle);
         const valueOption = Array.isArray(value) ? value.map(item => optionFinder(item)) : optionFinder(value);
-        // TODO: Revalidate?
-        if (typeof valueOption === 'undefined') {
-          // console.log('reval');
-        }
         return (
           <ReactSelect
             className={inputClass ? ` ${inputClass}` : ""}
