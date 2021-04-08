@@ -70,7 +70,7 @@ export class Form extends React.Component<Props> {
 
   inputs: { [key: string]: InputBaseRef | undefined } = {};
 
-  setModelValue(name: string, value: any) {
+  setModelValue = (name: string, value: any) => {
     const { model, errors } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
@@ -91,7 +91,7 @@ export class Form extends React.Component<Props> {
     return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
   }
 
-  validateForm(): void {
+  validateForm = () => {
     const valid = this.allValid();
     if (this.props.onValidate) {
       this.props.onValidate(valid);
@@ -106,7 +106,7 @@ export class Form extends React.Component<Props> {
     return name.split(",");
   }
 
-  unregisterInput(component: InputBaseRef) {
+  unregisterInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       if (this.inputs[name] === component) {
@@ -115,7 +115,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  registerInput(component: InputBaseRef) {
+  registerInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
       this.inputs[name] = component;
@@ -124,7 +124,7 @@ export class Form extends React.Component<Props> {
     }
   }
 
-  submit(event: any) {
+  submit = (event: any) => {
     event.preventDefault();
     if (this.allValid() && this.props.onSubmit) {
       this.props.onSubmit(this.props.model, event);
@@ -164,13 +164,24 @@ export class Form extends React.Component<Props> {
         value={{
           model: this.props.model,
           errors: this.props.errors,
-          setModelValue: this.setModelValue.bind(this),
-          registerInput: this.registerInput.bind(this),
-          unregisterInput: this.unregisterInput.bind(this),
-          validateForm: this.validateForm.bind(this),
+          /**
+           * NB! Please don't use `.bind()` here, children may rely on these functions in `useEffect()` calls.
+           * Binding here will create a new reference on every render which will in turn retrigger dependency tracking.
+           * Instead of using `.bind()` here, implicitly bind any methods you need here in the class declaration:
+           * 
+           *  class Foo {
+           *    method = () => {...}
+           *    // ----^
+           *  }
+           *  
+           */
+          setModelValue: this.setModelValue,
+          registerInput: this.registerInput,
+          unregisterInput: this.unregisterInput,
+          validateForm: this.validateForm,
         }}
       >
-        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className} title={this.props.title}>
+        <form ref={this.props.formRef} onSubmit={this.submit} className={this.props.className} title={this.props.title}>
           <div className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}>
             {this.props.children}
           </div>

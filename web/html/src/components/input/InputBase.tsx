@@ -110,6 +110,8 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
       const model = this.context.model || {};
       const checkValueChange = (name, defaultValue) => {
+        // TODO: This is a bug and only holds for inputs where the value is a string, in dropdowns and the like, we should not fall back to ""
+        // TODO: This doesn't allow setting defaultValue to falsey values, we should use ?? instead but this needs to be thoroughly tested
         const value = model[name] || defaultValue || "";
         const valueChanged =
           (value instanceof Date && model[name] instanceof Date && value.getTime() !== model[name].getTime()) ||

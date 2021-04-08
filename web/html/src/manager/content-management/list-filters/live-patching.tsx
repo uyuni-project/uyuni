@@ -34,18 +34,22 @@ async function getClients(): Cancelable<Client[]> {
   return PLACEHOLDER_CLIENTS;
 }
 
-async function getKernels(client: any): Cancelable<Kernel[]> {
-  console.log("get kernels for", client);
-  if (client.id === 1) {
-    
+async function getKernels(clientId: number): Cancelable<Kernel[]> {
+  console.log("get kernels for", clientId);
+  if (clientId === 1) {
+    return [
+      {
+        id: 234,
+        version: "0.1.2",
+      },
+    ];
   }
-  const PLACEHOLDER_KERNELS = [
+  return [
     {
-      id: 234,
-      version: "0.1.2",
+      id: 345,
+      version: "1.2.3",
     },
   ];
-  return PLACEHOLDER_KERNELS;
 }
 
 export default (props: FilterFormProps) => {
@@ -54,28 +58,27 @@ export default (props: FilterFormProps) => {
     return null;
   }
   const formContext = React.useContext(FormContext);
-  const client = formContext.model.client;
+  const clientId = formContext.model.clientId;
   const setModelValue = formContext.setModelValue;
   const [clients, setClients] = useState<Client[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
   useEffect(() => {
-    getClients().then(clients => setClients(clients));
+    getClients().then(result => setClients(result));
   }, []);
 
   useEffect(() => {
-    if (client) {
-      getKernels(client).then(kernels => setKernels(kernels));
+    if (clientId) {
+      getKernels(clientId).then(result => setKernels(result));
       // TODO: Set according to spec instead
       setModelValue?.("kernel", null);
       // TODO: For project
     } else if (false) {
-
     } else {
       setKernels([]);
-      // formContext.model.kernel = undefined;
+      setModelValue?.("kernel", null);
     }
-  }, [client, setModelValue]);
+  }, [clientId, setModelValue]);
 
   return (
     <>
@@ -83,7 +86,7 @@ export default (props: FilterFormProps) => {
       {clmFilterOptions.LIVE_PATCHING_SYSTEM.key === filterType && (
         <>
           <Select
-            name="client"
+            name="clientId"
             label={t("Client")}
             labelClass="col-md-3"
             divClass="col-md-6"
@@ -100,8 +103,8 @@ export default (props: FilterFormProps) => {
         label={t("Kernel")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        required={!!client}
-        disabled={props.editing || !client}
+        required={!!clientId}
+        disabled={props.editing || !clientId}
         options={kernels}
         getOptionValue={kernel => kernel.id}
         getOptionLabel={kernel => kernel.version}
