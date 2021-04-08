@@ -712,7 +712,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         patch3.setAdvisoryStatus(AdvisoryStatus.FINAL);
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(4, needingUpdates.size());
+        assertEquals(3, needingUpdates.size());
         assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId())));
         assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
         assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));

@@ -1229,7 +1229,6 @@ public class ErrataFactory extends HibernateFactory {
         }
         else {
             ErrataCacheManager.insertCacheForChannelPackages(channelId, errataId, erratumPids);
-            ErrataCacheManager.insertCacheForChannelPackages(channelId, null, erratumPids);
     }
 
     /**
