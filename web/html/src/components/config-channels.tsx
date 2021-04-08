@@ -75,6 +75,10 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     Network.get(this.props.matchUrl()).promise.then(data => {
       this.setState({
         channels: data,
+        search: {
+          filter: this.state.filter,
+          results: data,
+        },
       });
     });
   }
