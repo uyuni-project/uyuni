@@ -70,12 +70,9 @@ except ImportError:
     HAS_PSYCOPG2 = False
 
 # Import salt libs
+import salt.ext.tornado
 import salt.utils.event
 import json
-
-# Import third-party libs
-import tornado
-from salt.utils.zeromq import ZMQDefaultLoop
 
 log = logging.getLogger(__name__)
 
@@ -167,7 +164,7 @@ class Responder:
     def _is_batch_mode(self, data):
         return data.get("metadata", {}).get("batch-mode")
 
-    @tornado.gen.coroutine
+    @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
         tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
         self._insert(tag, data)
@@ -177,7 +174,7 @@ class Responder:
             log.error("%s: Diconnected from database. Trying to reconnect...", __name__)
             self._connect_to_database()
 
-    @tornado.gen.coroutine
+    @salt.ext.tornado.gen.coroutine
     def add_token(self):
         self.tokens = min(self.tokens + 1, self.config['commit_burst'])
         self.attempt_commit()
@@ -204,7 +201,8 @@ def start(**config):
     '''
     Listen to events and write them to the Postgres database
     '''
-    io_loop = ZMQDefaultLoop.current()
+    io_loop = salt.ext.tornado.ioloop.IOLoop(make_current=False)
+    io_loop.make_current()
     event_bus = salt.utils.event.get_master_event(
             __opts__,
             __opts__['sock_dir'],
