@@ -19,6 +19,7 @@ Feature: Smoke tests for <client>
     Given I am on the Systems overview page of this "<client>"
     Then I can see all system information for "<client>"
 
+@skip_for_sle15sp3
 @skip_for_ubuntu
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
