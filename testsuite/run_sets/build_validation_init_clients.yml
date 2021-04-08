@@ -8,8 +8,8 @@
 - features/build_validation/init_clients/ceos7_minion.feature
 - features/build_validation/init_clients/ceos7_ssh_minion.feature
 - features/build_validation/init_clients/ceos7_client.feature
-- features/build_validation/init_clients/ceos8_minion.feature
-- features/build_validation/init_clients/ceos8_ssh_minion.feature
+#- features/build_validation/init_clients/ceos8_minion.feature
+#- features/build_validation/init_clients/ceos8_ssh_minion.feature
 
 - features/build_validation/init_clients/sle11sp4_minion.feature
 - features/build_validation/init_clients/sle11sp4_ssh_minion.feature
