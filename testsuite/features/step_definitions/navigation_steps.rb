@@ -149,7 +149,7 @@ end
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   xpath_option = ".//*[contains(text(),'#{option}')]"
   xpath_field = "//*[@name='#{field}']/.."
-  if has_select?(option, with_options: [field], wait: 1)
+  if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
     # Custom React selector
