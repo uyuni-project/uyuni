@@ -2,6 +2,12 @@
   dependend packages not available in the bootstrap repo (bsc#1183573)
 
 -------------------------------------------------------------------
+Thu Apr 08 11:31:14 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.23-1
+- Require new kiwi-systemdeps packages (bsc#1184271)
+
+-------------------------------------------------------------------
 Mon Mar 29 12:05:00 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.22-1
