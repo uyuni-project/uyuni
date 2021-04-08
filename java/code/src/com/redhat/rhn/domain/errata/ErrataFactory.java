@@ -1001,7 +1001,10 @@ public class ErrataFactory extends HibernateFactory {
 
         if (previousAdvisoryStatus != cloned.getAdvisoryStatus()) {
             boolean retract = (cloned.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
-            cloned.getChannels().forEach(c -> processRetracted(cloned.getId(), c.getId(), retract));
+            cloned.getChannels().forEach(c -> {
+                processRetracted(cloned.getId(), c.getId(), retract);
+                ChannelFactory.refreshNewestPackageCache(c, "sync errata");
+            });
         }
     }
 
