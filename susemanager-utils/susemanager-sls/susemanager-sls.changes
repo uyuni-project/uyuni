@@ -1,3 +1,5 @@
+- Avoid conflicts with running ioloop on mgr_events engine (bsc#1172711)
+
 -------------------------------------------------------------------
 Thu Apr 08 11:31:56 CEST 2021 - jgonzalez@suse.com
 
