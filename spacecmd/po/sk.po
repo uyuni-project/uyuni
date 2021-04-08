@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-07 19:57+0000\n"
+"PO-Revision-Date: 2021-04-08 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -327,12 +327,12 @@ msgstr "Limit použitia:            %s"
 #: ../src/spacecmd/activationkey.py:948
 #, python-format
 msgid "Deploy Config Channels: %s"
-msgstr ""
+msgstr "Nasadiť konfiguračné kanály: %s"
 
 #: ../src/spacecmd/activationkey.py:950
 #, python-format
 msgid "Contact Method:         %s"
-msgstr ""
+msgstr "Kontaktná metóda:         %s"
 
 #: ../src/spacecmd/activationkey.py:953 ../src/spacecmd/kickstart.py:427
 #: ../src/spacecmd/system.py:3066
@@ -346,11 +346,11 @@ msgstr "Konfiguračné kanály"
 
 #: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3080
 msgid "Entitlements"
-msgstr ""
+msgstr "Oprávnenia"
 
 #: ../src/spacecmd/activationkey.py:972 ../src/spacecmd/system.py:3086
 msgid "System Groups"
-msgstr ""
+msgstr "Systémové skupiny"
 
 #: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1391
@@ -627,10 +627,12 @@ msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
 msgstr ""
+"activationkey_setcontactmethod: Nastaviť kontaktnú metódu, ktorá sa má "
+"použiť pre systémy registrované s týmto kľúčom."
 
 #: ../src/spacecmd/activationkey.py:1778 ../src/spacecmd/system.py:4150
 msgid "Available contact methods: "
-msgstr ""
+msgstr "Dostupné kontaktné metódy: "
 
 #: ../src/spacecmd/activationkey.py:1779
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
@@ -6819,7 +6821,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:3011
 #, python-format
 msgid "Contact Method:%s"
-msgstr ""
+msgstr "Kontaktná metóda:%s"
 
 #: ../src/spacecmd/system.py:3055
 #, python-format
@@ -7111,7 +7113,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:4149
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
-msgstr ""
+msgstr "system_setcontactmethod: Nastaviť kontaktnú metódu pre dané systém(y)."
 
 #: ../src/spacecmd/system.py:4151
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
