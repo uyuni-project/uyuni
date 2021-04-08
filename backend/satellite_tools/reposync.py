@@ -736,6 +736,10 @@ class RepoSync(object):
             elif notices_type == 'patches':
                 self.upload_patches(notices)
 
+            # some errata could get retracted and this needs to be reflected in the newest package cache
+            refresh_newest_package = rhnSQL.Procedure("rhn_channel.refresh_newest_package")
+            refresh_newest_package(self.channel['id'], 'backend.importPatches')
+
     @staticmethod
     def _get_decompressed_file_checksum(abspath, hashtype):
         with fileutils.decompress_open(abspath) as src, tempfile.TemporaryFile('w') as tmp:
