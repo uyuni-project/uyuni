@@ -351,13 +351,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChan, tgtChan, user);
         // let's check that errata cache contains all entries
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(4, needingUpdates.size());
-        assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) && errataCache.getErrataId() == null));
+        assertEquals(2, needingUpdates.size());
         assertTrue(needingUpdates.stream()
                 .anyMatch(errataCache -> errataCache.getPackageId().equals(pack1.getId()) && errata1.getId().equals(errataCache.getErrataId())));
-        assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errataCache.getErrataId() == null));
         assertTrue(needingUpdates.stream()
                 .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
 
@@ -367,9 +363,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // 2. let's align the channel again and check that the errata1 and its package is not in the cache anymore
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter), srcChan, tgtChan, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(2, needingUpdates.size());
-        assertTrue(needingUpdates.stream()
-                .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errataCache.getErrataId() == null));
+        assertEquals(1, needingUpdates.size());
         assertTrue(needingUpdates.stream()
                 .anyMatch(errataCache -> errataCache.getPackageId().equals(pack2.getId()) && errata2.getId().equals(errataCache.getErrataId())));
     }
@@ -633,9 +627,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), sourceClone, tgtChannel, user);
         // after aligning the channels, the package in the cloned channel should appear in the cache
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(2, needingUpdates.size());
-        assertTrue(needingUpdates.stream()
-                .anyMatch(c -> c.getPackageId().equals(pkg2.getId()) && c.getErrataId() == null));
+        assertEquals(1, needingUpdates.size());
         assertTrue(needingUpdates.stream()
                 .anyMatch(c -> c.getPackageId().equals(pkg2.getId()) && sourceClone.getErratas().iterator().next().getId().equals(c.getErrataId())));
         // and it should be reported as the newest package in the channel
@@ -693,9 +685,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         // after building, the cache should contain 4 entries (2 for each package (one of them with errata, one without))
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(4, needingUpdates.size());
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId())));
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(2, needingUpdates.size());
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
         assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
         // now we retract the patch
@@ -703,8 +695,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         patch3.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(2, needingUpdates.size());
-        assertFalse(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(1, needingUpdates.size());
+        assertFalse(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
         assertEquals(pkg2.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
 
         // now we make the patch final again
@@ -712,9 +704,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         patch3.setAdvisoryStatus(AdvisoryStatus.FINAL);
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
-        assertEquals(3, needingUpdates.size());
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId())));
-        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId())));
+        assertEquals(2, needingUpdates.size());
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
+        assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
         assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
     }
 
