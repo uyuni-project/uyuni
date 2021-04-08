@@ -897,9 +897,8 @@ Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |option, field|
   next if has_select?(field, selected: option)
 
   # Custom React selector
-  within(:xpath, "//*[@name='#{field}']/..") do
-    next if has_xpath?(".//*[contains(text(),'#{option}')]")
-  end
+  next if has_xpath?("//*[@name='#{field}']/..//*[contains(text(),'#{option}')]")
+
   raise "#{option} is not selected as #{field}"
 end
 
@@ -911,9 +910,7 @@ When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |option, fi
     break if has_select?(field, with_options: [option])
 
     # Custom React selector
-    within(:xpath, "//*[@name='#{field}']/..") do
-      break if has_xpath?(".//*[contains(text(),'#{option}')]")
-    end
+    break if has_xpath?("//*[@name='#{field}']/..//*[contains(text(),'#{option}')]")
   end
 end
 
