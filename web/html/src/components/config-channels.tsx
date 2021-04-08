@@ -1,14 +1,13 @@
 import * as React from "react";
-import { AceEditor } from "../components/ace-editor";
-import { AsyncButton, LinkButton } from "../components/buttons";
+import { AsyncButton } from "../components/buttons";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { TextField } from "../components/fields";
-import { PopUp } from "../components/popup";
 import { Messages, MessageType } from "../components/messages";
 import { Utils as MessagesUtils } from "../components/messages";
 import Network from "../utils/network";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { RankingTable } from "../components/ranking-table";
+import { SaltStatePopup } from "../components/salt-state-popup";
 
 function channelKey(channel) {
   return channel.label;
@@ -25,66 +24,6 @@ function channelIcon(channel) {
   }
 
   return <i className={iconClass} title={iconTitle} />;
-}
-
-type SaltStatePopupProps = {
-  saltState?: {
-    id: string;
-    name: string;
-    content: React.ReactNode;
-  };
-  onClosePopUp: () => any;
-};
-
-class SaltStatePopup extends React.Component<SaltStatePopupProps> {
-  render() {
-    let popUpContent, icon, title, footer;
-
-    if (this.props.saltState) {
-      popUpContent = (
-        <AceEditor
-          className="form-control"
-          id="content-state"
-          minLines={20}
-          maxLines={40}
-          readOnly={true}
-          mode="yaml"
-          content={this.props.saltState.content}
-        ></AceEditor>
-      );
-
-      icon = this.props.saltState && channelIcon(this.props.saltState);
-      title = this.props.saltState && (
-        <span>
-          {icon}
-          {t("Configuration Channel: {0}", this.props.saltState.name)}
-        </span>
-      );
-
-      footer = (
-        <div className="btn-group">
-          <LinkButton
-            href={"/rhn/configuration/ChannelOverview.do?ccid=" + this.props.saltState.id}
-            className="btn-default"
-            icon="fa-edit"
-            text={t("Edit")}
-            title={t("Edit Configuration Channel")}
-          />
-        </div>
-      );
-    }
-
-    return (
-      <PopUp
-        title={title}
-        className="modal-lg"
-        id="saltStatePopUp"
-        content={popUpContent}
-        onClosePopUp={this.props.onClosePopUp}
-        footer={footer}
-      />
-    );
-  }
 }
 
 type ConfigChannelsProps = {
