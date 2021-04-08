@@ -238,7 +238,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
           elements
         ) : (
           <tr>
-            <td colSpan={2}>
+            <td colSpan={3}>
               <div>
                 {t("No states assigned. Use search to find and assign states.")}
               </div>
