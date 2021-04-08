@@ -34,7 +34,6 @@ type ConfigChannelsProps = {
 
 class ConfigChannelsState {
   filter = "";
-  view = "system";
   channels: any[] = [];
   search = {
     filter: null as string | null,
@@ -61,7 +60,6 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
       "search",
       "save",
       "applySaltState",
-      "setView",
       "addChanged",
       "showPopUp",
       "onClosePopUp",
@@ -115,7 +113,6 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
         this.setState({
           changed: new Map(), // clear changed
-          view: "system", // switch view to system
           channels: data, // set data for system tab
           search: {
             filter: this.state.search.filter,
@@ -145,15 +142,11 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
   search() {
     if (this.state.filter === this.state.search.filter) {
-      this.setState({
-        view: "search",
-      });
       return Promise.resolve();
     } else {
       return Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
         console.log(data);
         this.setState({
-          view: "search",
           search: {
             filter: this.state.filter,
             results: data,
@@ -188,35 +181,16 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   tableBody() {
     const elements: React.ReactNode[] = [];
     let rows: any[] = [];
-    if (this.state.view === "system") {
-      rows = this.state.channels
-        .filter(channel => channel.assigned)
-        .map(channel => {
-          const changed = this.state.changed.get(channelKey(channel));
-          if (changed !== undefined) {
-            return changed;
-          } else {
-            return {
-              original: channel,
-            };
-          }
-        });
-    } else if (this.state.view === "search") {
-      rows = this.state.search.results.map(channel => {
-        const changed = this.state.changed.get(channelKey(channel));
-        if (changed !== undefined) {
-          return changed;
-        } else {
-          return {
-            original: channel,
-          };
-        }
-      });
-    } else if (this.state.view === "changes") {
-      for (var channel of this.state.changed.values()) {
-        rows.push(channel);
+    rows = this.state.search.results.map(channel => {
+      const changed = this.state.changed.get(channelKey(channel));
+      if (changed !== undefined) {
+        return changed;
+      } else {
+        return {
+          original: channel,
+        };
       }
-    }
+    });
 
     for (var row of rows) {
       const changed = row.value;
@@ -266,21 +240,13 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
           <tr>
             <td colSpan={2}>
               <div>
-                {this.state.view === "changes"
-                  ? t("No current changes.")
-                  : t("No states assigned. Use search to find and assign states.")}
+                {t("No states assigned. Use search to find and assign states.")}
               </div>
             </td>
           </tr>
         )}
       </tbody>
     );
-  }
-
-  setView(view) {
-    this.setState({
-      view: view,
-    });
   }
 
   showPopUp(channel) {
@@ -366,45 +332,11 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
     const messages = this.state.messages ? <Messages items={this.state.messages} /> : null;
 
-    const headerTabs = () => {
-      const length = this.state.changed.size;
-      let changesText = t("Changes");
-      if (length === 1) {
-        changesText = t("1 Change");
-      } else if (length > 1) {
-        changesText = length + " " + t("Changes");
-      }
-
-      return (
-        <div className="spacewalk-content-nav" id="config-channels-tabs">
-          <ul className="nav nav-tabs">
-            <li className={this.state.view === "search" || this.state.view === "" ? "active" : ""}>
-              <a href="#search" onClick={() => this.setView("search")}>
-                {t("Search")}
-              </a>
-            </li>
-            <li className={this.state.view === "changes" ? "active" : ""}>
-              <a href="#changes" onClick={() => this.setView("changes")}>
-                {changesText}
-              </a>
-            </li>
-            <li className={this.state.view === "system" ? "active" : ""}>
-              <a href="#system" onClick={() => this.setView("system")}>
-                {t("System")}
-              </a>
-            </li>
-          </ul>
-        </div>
-      );
-    };
-
     return (
       <span>
         {messages}
         <InnerPanel title={t("Configuration Channels")} icon="spacewalk-icon-salt-add" buttons={buttons}>
-          {!this.state.rank && headerTabs()}
-
-          {!this.state.rank && this.state.view === "search" && (
+          {!this.state.rank ? (
             <div className={"row"} id={"search-row"}>
               <div className={"col-md-5"}>
                 <div style={{ paddingBottom: 0.7 + "em" }}>
@@ -423,7 +355,8 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
                 </div>
               </div>
             </div>
-          )}
+          ) : null
+          }
 
           {this.state.rank ? (
             <div className="col-md-offset-2 col-md-8">
