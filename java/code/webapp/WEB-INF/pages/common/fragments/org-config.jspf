@@ -164,4 +164,22 @@
         />
     </div>
 </div>
-
+<div class="form-group">
+    <label class="col-lg-3 control-label">
+    <!-- todo local -->
+        <bean:message key="org-config.clm-sync-patches"/>
+    </label>
+    <div class="col-lg-6">
+        <div class="checkbox">
+            <input type="checkbox" name="clm_sync_patches_enabled"
+                   value="enabled" id="clm_sync_patches_enabled"
+                   <c:if test = "${edit_disabled}">
+                        disabled="disabled"
+                   </c:if>
+                   <c:if test = "${org.orgConfig.clmSyncPatches}">
+                       checked="checked"
+                   </c:if>
+            />
+        </div>
+    </div>
+</div>
