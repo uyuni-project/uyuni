@@ -20,6 +20,8 @@ script(type='text/javascript').
                           arch: "#{server.cpu.archName}"
                       },
                       saltEntitled: #{isSalt},
+                      inCluster: #{inCluster},
+                      raCanStartResources: #{raCanStartResources},
                   },
                   actionChains: !{actionChains},
                   timezone: "#{h.renderTimezone()}",

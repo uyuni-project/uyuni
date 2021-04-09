@@ -5,8 +5,10 @@ import * as React from "react";
 import { Panel } from "components/panels/Panel";
 import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
+import { Check } from 'components/input/Check';
 import Validation from "components/validation";
 import { Messages } from "components/messages";
+import { Utils as MessagesUtils } from 'components/messages';
 import { Loading } from "components/utils/Loading";
 import { guestNicsPanel } from "./properties/guest-nics-panel";
 import { GuestDisksPanel } from "./properties/GuestDisksPanel";
@@ -214,6 +216,34 @@ export function GuestProperties(props: Props) {
                                     />
                                   </>
                                 )}
+                                { initialModel.name === undefined && props.host.inCluster && (
+                                    <>
+                                      {
+                                        !props.host.raCanStartResources && (
+                                          <Messages
+                                            items={MessagesUtils.warning(
+                                              t('Cluster support is disabled since VirtualDomain resource agent ' +
+                                                'does not support the start_resources parameter.')
+                                            )}
+                                          />)
+                                      }
+                                      <Check
+                                        name="in_cluster"
+                                        label={t('Define as a cluster resource')}
+                                        divClass="col-md-6 col-md-offset-3"
+                                        disabled={!props.host.raCanStartResources}
+                                      />
+                                      <Text
+                                        name="cluster_definitions"
+                                        label={t('Path to the cluster shared folder for VM definitions')}
+                                        labelClass="col-md-3"
+                                        divClass="col-md-6"
+                                        disabled={!model["in_cluster"] || !props.host.raCanStartResources}
+                                        required={model["in_cluster"]}
+                                      />
+                                    </>
+                                  )
+                                }
                               </Panel>,
                               <GuestDisksPanel
                                 changeModel={changeModel}

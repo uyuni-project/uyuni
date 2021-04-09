@@ -302,9 +302,16 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Only for Salt-managed virtual hosts");
         }
 
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
+        Map<String, Boolean> features = virtManager.getFeatures(minionId).orElse(new HashMap<>());
+
         /* For the rest of the template */
         MinionController.addActionChains(user, data);
         data.put("isSalt", true);
+        // If the resource agent doesn't support the new start_resources we'll get into troubles with pools and networks
+        data.put("inCluster", features.getOrDefault("cluster", false));
+        data.put("raCanStartResources",
+                features.getOrDefault("resource_agent_start_resources", false));
 
         KickstartScheduleCommand cmd = new ProvisionVirtualInstanceCommand(host.getId(), user);
         DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();
