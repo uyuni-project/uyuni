@@ -4,7 +4,7 @@
 - Add Amazon Linux 2 repositories
 - Add Alibaba Cloud Linux 2 repositories
 - Add current UEK repos to Oracle Linux
-- Add multiverse, restricted and backports to Ubuntu 20.04
+- Add multiverse, restricted and backports to Ubuntu 16.04, 18.04 and 20.04
 - Add the Universe Security repositories for Ubuntu
 - Complete the fix arch handling in spacewalk-common-channels
 
