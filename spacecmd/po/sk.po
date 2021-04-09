@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-09 18:57+0000\n"
+"PO-Revision-Date: 2021-04-09 21:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -462,7 +462,7 @@ msgstr "Exportovanie VŠETKÝCH aktivačných kľúčov do %s"
 
 #: ../src/spacecmd/activationkey.py:1277
 msgid "Invalid activation key passed"
-msgstr "Odovzdaný neplatný aktivačný kľúč"
+msgstr "Zadaný neplatný aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1292
 #, python-format
@@ -472,11 +472,11 @@ msgstr "Exportovanie kľúča %s do %s"
 #: ../src/spacecmd/activationkey.py:1301
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "Súbor %s existuje, potvrďte prepísanie súboru?  (a/n)"
 
 #: ../src/spacecmd/activationkey.py:1306
 msgid "Failed to save exported keys to file: {}"
-msgstr ""
+msgstr "Zlyhalo uloženie exportovaných kľúčov do súboru: {}"
 
 #: ../src/spacecmd/activationkey.py:1315
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
@@ -484,26 +484,26 @@ msgstr "activationkey_import: importovať aktivačné kľúč(e) zo súboru(ov) 
 
 #: ../src/spacecmd/activationkey.py:1316
 msgid "usage: activationkey_import <JSONFILE ...>"
-msgstr ""
+msgstr "použitie: activationkey_import <SÚBORJSON ...>"
 
 #: ../src/spacecmd/activationkey.py:1325
 msgid "No filename passed"
-msgstr ""
+msgstr "Nebol zadaný žiadny názov súboru"
 
 #: ../src/spacecmd/activationkey.py:1334
 #, python-format
 msgid "Could not read json data from %s"
-msgstr ""
+msgstr "Nepodarilo sa prečítať dáta json z %s"
 
 #: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
 #, python-format
 msgid "Failed to import key %s"
-msgstr ""
+msgstr "Nepodarilo sa importovať kľúč %s"
 
 #: ../src/spacecmd/activationkey.py:1353
 #, python-format
 msgid "%s already exists! Skipping!"
-msgstr ""
+msgstr "%s už existuje! Preskočenie!"
 
 #: ../src/spacecmd/activationkey.py:1408
 #, python-format
@@ -561,7 +561,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1482
 msgid "Error no activationkey to clone passed!"
-msgstr ""
+msgstr "Chyba, nebol zadaný žiadny aktivačný kľúč na klonovanie!"
 
 #: ../src/spacecmd/activationkey.py:1536
 #, python-format
@@ -1258,7 +1258,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1236 ../src/spacecmd/kickstart.py:2332
 msgid "Error, no filename passed"
-msgstr ""
+msgstr "Chyba, nebol zadaný žiadny názov súboru"
 
 #: ../src/spacecmd/configchannel.py:1244 ../src/spacecmd/kickstart.py:2340
 #, python-format
@@ -5817,7 +5817,7 @@ msgstr ""
 
 #: ../src/spacecmd/ssm.py:113
 msgid "               systems passed as arguments"
-msgstr ""
+msgstr "               systémy zadané ako argumenty"
 
 #: ../src/spacecmd/ssm.py:114
 msgid "usage: ssm_intersect <SYSTEMS>"
