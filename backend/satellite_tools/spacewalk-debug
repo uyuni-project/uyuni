@@ -28,7 +28,7 @@ IS_SUSE=0
 NO_REPORTS=0
 NO_COMPRESSION=0
 MAX_LOG_AGE=10
-if [ -f /etc/SuSE-release ]; then
+if `grep -iq '^ID_LIKE=.*suse' /etc/os-release`; then
     IS_SUSE=1
 fi
 if [ "$SPACEWALK_DEBUG_NO_REPORTS" == 1 ]; then
