@@ -69,7 +69,12 @@ public class PackageTestUtils {
         server.getPackages().add(installedNewerPkg);
     }
 
-    private static InstalledPackage createInstalledPackage(Package pkg) {
+    /**
+     * Creates an InstalledPackage instance based on Package
+     * @param pkg the Package
+     * @return the InstalledPackage
+     */
+    public static InstalledPackage createInstalledPackage(Package pkg) {
         InstalledPackage installedNewerPkg = new InstalledPackage();
         installedNewerPkg.setEvr(pkg.getPackageEvr());
         installedNewerPkg.setArch(pkg.getPackageArch());

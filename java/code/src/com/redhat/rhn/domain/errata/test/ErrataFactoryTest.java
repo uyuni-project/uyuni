@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -35,11 +36,19 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
+import com.redhat.rhn.frontend.dto.ErrataCacheDto;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -54,6 +63,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * ErrataFactoryTest
@@ -351,6 +361,70 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         ErrataFactory.syncErrataDetails(ce);
         assertEquals(AdvisoryStatus.RETRACTED, ce.getAdvisoryStatus());
+    }
+
+    public void testUpdateCacheConsistencyOnRetractingPatch() throws Exception {
+        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.FINAL, AdvisoryStatus.RETRACTED);
+    }
+
+    public void testUpdateCacheConsistencyOnUnretractingPatch() throws Exception {
+        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.RETRACTED, AdvisoryStatus.FINAL);
+    }
+
+    public void testUpdateCacheConsistencyForNonRetractedPatches() throws Exception {
+        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.STABLE, AdvisoryStatus.FINAL);
+    }
+
+    /**
+     * Helper method for testing cache consistency
+     * @throws Exception
+     */
+    private void updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
+        originalErratum.setAdvisoryStatus(oldStatus);
+        Long clonedErratumId = ErrataHelper.cloneErrataFaster(originalErratum.getId(), user.getOrg());
+        ClonedErrata clonedErratum = (ClonedErrata) ErrataFactory.lookupById(clonedErratumId);
+
+        Channel originalChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel cloneChannel = ChannelFactoryTest.createTestClonedChannel(originalChannel, user);
+        originalChannel.getErratas().add(originalErratum);
+        originalChannel.getPackages().addAll(originalErratum.getPackages());
+        cloneChannel.getErratas().add(clonedErratum);
+        cloneChannel.getPackages().addAll(clonedErratum.getPackages());
+
+        // install an older pkg on server
+        Package pkg = clonedErratum.getPackages().iterator().next();
+        InstalledPackage installedPackage = PackageTestUtils.createInstalledPackage(pkg);
+        PackageEvr evr = pkg.getPackageEvr();
+        installedPackage.setEvr((PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType()))); // older version
+        // assumption
+        assertTrue(pkg.getPackageEvr().compareTo(installedPackage.getEvr()) > 0);
+        installedPackage.setServer(server);
+        server.getPackages().add(installedPackage);
+        SystemManager.subscribeServerToChannel(user, server, cloneChannel);
+        ServerFactory.updateServerNeededCache(server.getId());
+
+        // test itself
+        originalErratum.setAdvisoryStatus(newStatus);
+        ErrataFactory.syncErrataDetails(clonedErratum);
+        Set<ErrataCacheDto> needingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        regenerateNeededUpdatesCache(server);
+        Set<ErrataCacheDto> regeneratedNeedingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        assertEquals(regeneratedNeedingUpdates, needingUpdates);
+    }
+
+    private Set<ErrataCacheDto> intoSet(DataResult packagesNeedingUpdates) {
+        return (Set<ErrataCacheDto>) packagesNeedingUpdates.stream().collect(Collectors.toSet());
+    }
+
+    private void regenerateNeededUpdatesCache(Server server) {
+        HibernateFactory.getSession()
+                .createNativeQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
+                .setParameter("sid", server.getId())
+                .executeUpdate();
+        ServerFactory.updateServerNeededCache(server.getId());
     }
 
     /**
