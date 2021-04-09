@@ -688,6 +688,20 @@ public class SystemManager extends BaseManager {
      * @param sid The id of the Server to be deleted
      */
     public static void deleteServer(User user, Long sid) {
+        deleteServer(user, sid, true);
+    }
+
+    /**
+     * Deletes a Server and associated VirtualInstances:
+     *  - If the server was a virtual guest, remove the VirtualInstance that links it to its
+     *  host server.
+     *  - If the server was a virtual host, remove all its entitlements and all
+     *  VirtualInstances that link it to the guest servers.
+     * @param user The user doing the deleting.
+     * @param sid The id of the Server to be deleted
+     * @param deleteSaltKey delete also the salt key when set to true
+     */
+    public static void deleteServer(User user, Long sid, boolean deleteSaltKey) {
         /*
          * Looking up the server here rather than being passed in a Server object, allows
          * us to call lookupByIdAndUser which will ensure the user has access to this
@@ -738,8 +752,10 @@ public class SystemManager extends BaseManager {
         ServerFactory.delete(server);
 
         server.asMinionServer().ifPresent(minion -> {
-            saltApi.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
+            if (deleteSaltKey) {
+                saltApi.deleteKey(minion.getMinionId());
+            }
         });
     }
 
@@ -1889,7 +1905,7 @@ public class SystemManager extends BaseManager {
          */
         log.debug("returning with a flush? " + flush);
         if (flush) {
-            return (Server) HibernateFactory.reload(server);
+            return HibernateFactory.reload(server);
         }
         HibernateFactory.getSession().refresh(server);
         return server;
@@ -2008,7 +2024,7 @@ public class SystemManager extends BaseManager {
          * This will update the server.channels set.
          */
         if (flush) {
-            return (Server)HibernateFactory.reload(server);
+            return HibernateFactory.reload(server);
         }
         HibernateFactory.getSession().refresh(server);
         return server;
