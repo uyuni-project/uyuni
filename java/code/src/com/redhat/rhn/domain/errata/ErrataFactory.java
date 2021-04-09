@@ -17,6 +17,7 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import static com.redhat.rhn.domain.errata.AdvisoryStatus.RETRACTED;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import com.redhat.rhn.common.db.DatabaseException;
@@ -1215,8 +1216,10 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setAdvisoryStatus(original.getAdvisoryStatus());
         }
 
-        if (previousAdvisoryStatus != cloned.getAdvisoryStatus()) {
-            boolean retract = (cloned.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+        // only update the cache if exactly one of patches is retracted
+        if (previousAdvisoryStatus != cloned.getAdvisoryStatus() &&
+                (previousAdvisoryStatus == RETRACTED || cloned.getAdvisoryStatus() == RETRACTED)) {
+            boolean retract = (cloned.getAdvisoryStatus() == RETRACTED);
             cloned.getChannels().forEach(c -> {
                 processRetracted(cloned.getId(), c.getId(), retract);
                 ChannelFactory.refreshNewestPackageCache(c, "sync errata");
