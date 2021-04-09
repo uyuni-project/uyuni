@@ -1544,7 +1544,6 @@ UNION -- orig and cloned erratas in the channels, exactly one of them has 'retra
         JOIN rhnChannelErrata cloneCe ON cloneCe.errata_id = clone.id AND cloneCe.channel_id = :cid
     WHERE
         orig.advisory_status != clone.advisory_status
-        AND (orig.advisory_status = 'retracted' OR clone.advisory_status = 'retracted')
   </query>
   <elaborator name="errata_flags"/>
 </mode>
