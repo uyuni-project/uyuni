@@ -1010,10 +1010,12 @@ public class ContentManager {
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
 
         // Also check if content of cloned errata needs alignment (advisory status etc.)
-        ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
-            ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
-            ErrataFactory.syncErrataDetails(cloned);
-        });
+        if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
+            ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
+                ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
+                ErrataFactory.syncErrataDetails(cloned);
+            });
+        }
     }
 
     /**

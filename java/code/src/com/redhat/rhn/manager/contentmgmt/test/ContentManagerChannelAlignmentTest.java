@@ -52,6 +52,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -708,6 +709,34 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg2.getId()) && ne.getErrataId() != null));
         assertTrue(needingUpdates.stream().anyMatch(ne -> ne.getPackageId().equals(pkg3.getId()) && ne.getErrataId() != null));
         assertEquals(pkg3.getId(), ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pkg.getPackageName().getName()));
+    }
+
+    /**
+     * Tests that the sync patches options is respected in the
+     */
+    public void testClmSyncOption() {
+        assertEquals(1, srcChannel.getErratas().size()); // assumption
+        srcChannel.getErratas().iterator().next().setOrg(null);  // turn this into a vendor patch
+        // let's make the tgt clone of source (as it should be in CLM scenario)
+        ChannelManager.addCloneInfo(srcChannel.getId(), tgtChannel.getId());
+        tgtChannel = HibernateFactory.reload(tgtChannel);
+
+        // let's align the channels first
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+
+        // disable patch sync in my org, retract patch, align again
+        OrgManager.setClmSyncPatchesConfig(user, user.getOrg().getId(), false);
+        srcChannel.getErratas().iterator().next().setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+
+        assertEquals(1, tgtChannel.getErratas().size()); // assumption
+        assertFalse(tgtChannel.getErratas().iterator().next().getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+
+        // enable patch sync in my org, retract patch, align again
+        OrgManager.setClmSyncPatchesConfig(user, user.getOrg().getId(), true);
+        contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
+        assertEquals(1, tgtChannel.getErratas().size()); // assumption
+        assertEquals(AdvisoryStatus.RETRACTED, tgtChannel.getErratas().iterator().next().getAdvisoryStatus());
     }
 
     private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
