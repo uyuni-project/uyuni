@@ -18,6 +18,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -717,4 +718,54 @@ public class OrgHandler extends BaseHandler {
 
         return 1;
     }
+
+    /**
+     * Reads the content lifecycle management patch synchronization config option.
+     *
+     * @param loggedInUser the logged in user
+     * @param orgId the org id
+     * @return the option value
+     *
+     * @xmlrpc.doc Reads the content lifecycle management patch synchronization config option.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the config option value")
+     */
+    public Boolean getClmSyncPatchesConfig(User loggedInUser, Integer orgId) {
+        ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
+        try {
+            return OrgManager.getClmSyncPatchesConfig(loggedInUser, orgId);
+        } catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+    }
+
+    // todo
+
+    /**
+     * Sets the content lifecycle management patch synchronization config option.
+     *
+     * @param loggedInUser the logged in user
+     * @param orgId the org id
+     * @param value the option value
+     * @return 1 on success
+     * @throws PermissionCheckFailureException if the user is not authorized to perform this action
+     *
+     * @xmlrpc.doc Sets the content lifecycle management patch synchronization config option.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param #param_desc("boolean", "value", "The config option value")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer setClmSyncPatchesConfig(User loggedInUser, Integer orgId, Boolean value) {
+        ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
+        try {
+            OrgManager.setClmSyncPatchesConfig(loggedInUser, orgId, Boolean.TRUE.equals(value));
+        } catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        return 1;
+    }
+
 }
