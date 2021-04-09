@@ -153,11 +153,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
                 Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
-                Optional<ActivationKey> activationKey =
+                Optional<ActivationKey> managementKey =
                         mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
-                        mkey.filter(mk -> isValidReactivationKey(activationKey, minionId));
-                updateKickStartSession(activationKey);
+                        mkey.filter(mk -> isValidReactivationKey(managementKey, minionId));
+                updateKickStartSession(managementKey);
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
