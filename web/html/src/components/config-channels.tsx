@@ -204,7 +204,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         <tr
           id={currentChannel.label + "-row"}
           key={currentChannel.label}
-          className={changed !== undefined ? "warning" : ""}
+          className={changed !== undefined ? "changed" : ""}
         >
           <td>
             {channelIcon(currentChannel)}
