@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-08 17:57+0000\n"
+"PO-Revision-Date: 2021-04-09 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -363,19 +363,22 @@ msgstr "Balíky"
 #: ../src/spacecmd/activationkey.py:992
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr ""
+"activationkey_enableconfigdeployment: Povoliť nasadenie konfiguračného kanála"
 
 #: ../src/spacecmd/activationkey.py:994
 msgid "usage: activationkey_enableconfigdeployment KEY"
-msgstr ""
+msgstr "použitie: activationkey_enableconfigdeployment KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1021
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr ""
+"activationkey_disableconfigdeployment: Zakázať nasadenie konfiguračného "
+"kanála"
 
 #: ../src/spacecmd/activationkey.py:1023
 msgid "usage: activationkey_disableconfigdeployment KEY"
-msgstr ""
+msgstr "použitie: activationkey_disableconfigdeployment KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1050
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
@@ -383,7 +386,7 @@ msgstr "activationkey_setbasechannel: Nastaviť základný kanál aktivačného 
 
 #: ../src/spacecmd/activationkey.py:1052
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
-msgstr ""
+msgstr "použitie: activationkey_setbasechannel KĽÚČ KANÁL"
 
 #: ../src/spacecmd/activationkey.py:1099
 msgid ""
@@ -391,7 +394,7 @@ msgid ""
 "be a number or \"unlimited\""
 msgstr ""
 "activationkey_setusagelimit: Nastavte limit použitia aktivačného kľúča, môže "
-"byť číslo alebo \"neobmedzený\""
+"byť číslo alebo \"unlimited\""
 
 #: ../src/spacecmd/activationkey.py:1101
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
@@ -399,12 +402,12 @@ msgstr "usage: activationkey_setusagelimit KĽÚČ <limit použitia>"
 
 #: ../src/spacecmd/activationkey.py:1102
 msgid "usage: activationkey_setusagelimit KEY unlimited "
-msgstr ""
+msgstr "použitie: activationkey_setusagelimit KĽÚČ unlimited "
 
 #: ../src/spacecmd/activationkey.py:1132
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
-msgstr ""
+msgstr "Nepodarilo sa previesť argument %s na celé číslo"
 
 #: ../src/spacecmd/activationkey.py:1154
 msgid ""
@@ -415,7 +418,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1156
 msgid "usage: activationkey_setuniversaldefault KEY"
-msgstr ""
+msgstr "použitie: activationkey_setuniversaldefault KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1197
 msgid "activationkey_export: Export activation key(s) to JSON format file"
@@ -434,6 +437,17 @@ msgid ""
 "\n"
 "Note : KEY list is optional, default is to export ALL keys "
 msgstr ""
+"použitie: activationkey_export [voľby] [<KĽÚČ> ...])\n"
+"\n"
+"voľby:\n"
+"    -f outfile.json : určuje výstupný názov súboru, predvolené hodnoty sú "
+"<KĽÚČ>.json,\n"
+"                      ak sa exportuje jeden kľúč, akeys.json pre viac kľúčov,"
+"\n"
+"                      alebo akey_all.json, ak nie je zadaný žiadny KĽÚČ ("
+"exportovať VŠETKY)\n"
+"\n"
+"Poznámka : Zoznam KĽÚČOV je voliteľný, predvolený je export VŠETKÝCH kľúčov "
 
 #. Get the key details
 #: ../src/spacecmd/activationkey.py:1214
@@ -453,7 +467,7 @@ msgstr "Odovzdaný neplatný aktivačný kľúč"
 #: ../src/spacecmd/activationkey.py:1292
 #, python-format
 msgid "Exporting key %s to %s"
-msgstr ""
+msgstr "Exportovanie kľúča %s do %s"
 
 #: ../src/spacecmd/activationkey.py:1301
 #, python-format
