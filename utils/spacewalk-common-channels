@@ -471,7 +471,7 @@ Create everything as well as unlimited activation key for every channel:
         if options.verbose:
             # an empty line after channel group
             sys.stdout.write("\n")
-
+        existing_repo_urls = get_existing_repos(client)
     if client is not None:
         # logout
         xmlrpc_logout(client, key)
