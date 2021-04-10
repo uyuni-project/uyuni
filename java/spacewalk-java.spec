@@ -243,7 +243,7 @@ Requires:       sitemesh
 Requires:       spacewalk-branding
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
-Requires:       spacewalk-java-lib
+Requires:       spacewalk-java-lib = %{version}
 Requires:       stringtree-json
 Requires:       struts >= 1.2.9
 Requires:       woodstox
@@ -387,7 +387,7 @@ Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
-Requires:       spacewalk-java-lib
+Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
 Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard

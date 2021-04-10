@@ -1,3 +1,5 @@
+- check minimal required DB schema version during startup
+
 -------------------------------------------------------------------
 Wed Jan 27 13:00:30 CET 2021 - jgonzalez@suse.com
 
