@@ -109,7 +109,6 @@
 </div>
 <div class="form-group">
     <label class="col-lg-3 control-label">
-    <!-- todo local -->
         <bean:message key="org-config.clm-sync-patches"/>
     </label>
     <div class="col-lg-6">

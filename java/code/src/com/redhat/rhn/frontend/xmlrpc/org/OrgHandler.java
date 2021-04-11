@@ -735,12 +735,11 @@ public class OrgHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
         try {
             return OrgManager.getClmSyncPatchesConfig(loggedInUser, orgId);
-        } catch (PermissionException e) {
+        }
+        catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
         }
     }
-
-    // todo
 
     /**
      * Sets the content lifecycle management patch synchronization config option.
@@ -762,7 +761,8 @@ public class OrgHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
         try {
             OrgManager.setClmSyncPatchesConfig(loggedInUser, orgId, Boolean.TRUE.equals(value));
-        } catch (PermissionException e) {
+        }
+        catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
         }
         return 1;
