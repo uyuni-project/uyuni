@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-10 12:57+0000\n"
+"PO-Revision-Date: 2021-04-11 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -567,12 +567,12 @@ msgstr "Klonovaný kľúč:"
 
 #: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1390
 msgid "Error - must specify either -c or -x options!"
-msgstr ""
+msgstr "Chyba - musia sa zadať voľby -c alebo -x!"
 
 #: ../src/spacecmd/activationkey.py:1478
 #, python-format
 msgid "Key %s already exists"
-msgstr ""
+msgstr "Kľúč %s už existuje"
 
 #: ../src/spacecmd/activationkey.py:1482
 msgid "Error no activationkey to clone passed!"
@@ -581,39 +581,41 @@ msgstr "Chyba, nebol zadaný žiadny aktivačný kľúč na klonovanie!"
 #: ../src/spacecmd/activationkey.py:1536
 #, python-format
 msgid "Found child channel %s key %s, %s"
-msgstr ""
+msgstr "Nájdený kľúč %s kanála potomka %s, %s"
 
 #: ../src/spacecmd/activationkey.py:1538
 msgid " does not exist, skipping!"
-msgstr ""
+msgstr " neexistuje, preskakuje sa!"
 
 #: ../src/spacecmd/activationkey.py:1545
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr ""
+"Výsledkom nahradenia regulárneho výrazu je nový základný kanál %s, ktorý "
+"neexistuje!"
 
 #: ../src/spacecmd/activationkey.py:1561
 #, python-format
 msgid "Found config channel %s for key %s, %s "
-msgstr ""
+msgstr "Nájdený konfiguračný kanál %s pre kľúč %s, %s "
 
 #: ../src/spacecmd/activationkey.py:1563
 msgid "does not exist, skipping!"
-msgstr ""
+msgstr "neexistuje, preskakuje sa!"
 
 #: ../src/spacecmd/activationkey.py:1581
 #, python-format
 msgid "Cloning key %s as %s"
-msgstr ""
+msgstr "Klonovanie kľúča %s ako %s"
 
 #: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1442
 #, python-format
 msgid "Failed to clone %s to %s"
-msgstr ""
+msgstr "Nepodarilo sa klonovať %s do %s"
 
 #: ../src/spacecmd/activationkey.py:1603
 msgid "no activationkey label given"
-msgstr ""
+msgstr "nie je dané označenie aktivačnéhokľúča"
 
 #: ../src/spacecmd/activationkey.py:1606
 msgid "invalid activationkey label "
