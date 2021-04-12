@@ -621,8 +621,7 @@ public class DownloadFile extends DownloadAction {
             // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
 
             if (child == null) {
-                if (path.contains("repodata/") && tree.getKernelOptions() != null &&
-                        tree.getKernelOptions().contains("useonlinerepo")) {
+                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
                     if (path.endsWith("/comps.xml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
                             "/" + tree.getChannel().getComps().getRelativeFilename();
@@ -641,8 +640,7 @@ public class DownloadFile extends DownloadAction {
                                 File.separator + StringUtils.join(split, '/');
                     }
                 }
-                else if (tree.getKernelOptions() != null &&
-                         tree.getKernelOptions().contains("useonlinerepo") &&
+                else if (tree.getKernelOptions().contains("useonlinerepo") &&
                          path.endsWith("/media.1/products")) {
                     MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
                             .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());
