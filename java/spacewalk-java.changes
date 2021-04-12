@@ -1,3 +1,4 @@
+- for a SUSE system get metadata and package from same source (bsc#1184475)
 - List config state summary for systems in highstate page
 - Implement retracted patches
 - Add support for notify beacon for Debian/Ubuntu systems
