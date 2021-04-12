@@ -422,6 +422,20 @@ public class ContentManager {
     }
 
     /**
+     * List {@link SoftwareProjectSource}s that have patches needing resync.
+     *
+     * @param user the User
+     * @param project the Project
+     * @return a list of {@link SoftwareProjectSource}s that have patches needing resync
+     */
+    public static Set<SoftwareProjectSource> listActiveSwSourcesWithUnsyncedPatches(User user, ContentProject project) {
+        return project.getActiveSources().stream()
+                .flatMap(s -> s.asSoftwareSource().stream())
+                .filter(swSource -> !ChannelManager.listErrataNeedingResync(swSource.getChannel(), user).isEmpty())
+                .collect(toSet());
+    }
+
+    /**
      * List filters visible to given user
      *
      * @param user the user
