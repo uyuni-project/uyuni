@@ -1,6 +1,6 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.2
+    project: openSUSE:Leap:15.3
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
