@@ -73,7 +73,7 @@ SELECT distinct
    JOIN rhnPackageArch pa ON pkg.package_arch_id = pa.id
    JOIN rhnPackageName pn ON pkg.name_id = pn.id
    JOIN rhnPackageEVR pevr ON pkg.evr_id = pevr.id
-   JOIN rhnChannelPackage CP ON CP.package_id = pkg.id
+   JOIN suseChannelPackageRetractedStatusView CP ON CP.package_id = pkg.id
    JOIN rhnChannel c ON CP.channel_id = c.id
    JOIN (
           SELECT I_C.*
@@ -91,6 +91,7 @@ SELECT distinct
                                       WHERE pc.label = :parentchannel)
         ) spc ON spc.id = c.id
   WHERE pn.name = :pkgname
+    AND NOT CP.is_retracted
 ORDER BY pkg.id
 """
 
