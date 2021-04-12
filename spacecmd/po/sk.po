@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-11 18:57+0000\n"
+"PO-Revision-Date: 2021-04-12 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -619,7 +619,7 @@ msgstr "nie je dané označenie aktivačnéhokľúča"
 
 #: ../src/spacecmd/activationkey.py:1606
 msgid "invalid activationkey label "
-msgstr ""
+msgstr "neplatné označenie aktivačnéhokľúča "
 
 #: ../src/spacecmd/activationkey.py:1623
 msgid "activationkey_diff: Diff activation keys"
@@ -627,7 +627,7 @@ msgstr "activationkey_diff: Porovnať aktivačné kľúče"
 
 #: ../src/spacecmd/activationkey.py:1625
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
-msgstr ""
+msgstr "použitie: activationkey_diff ZDROJOVÝ_KĽÚČ CIEĽOVÝ_KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1674
 msgid "activationkey_disable: Disable an activation key"
@@ -635,7 +635,7 @@ msgstr "activationkey_disable: Zakázať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1676
 msgid "usage: activationkey_disable KEY [KEY ...]"
-msgstr ""
+msgstr "použitie: activationkey_disable KĽÚČ [KĽÚČ ...]"
 
 #: ../src/spacecmd/activationkey.py:1708
 msgid "activationkey_enable: Enable an activation key"
@@ -643,7 +643,7 @@ msgstr "activationkey_enable: Povoliť aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1710
 msgid "usage: activationkey_enable KEY [KEY ...]"
-msgstr ""
+msgstr "použitie: activationkey_enable KĽÚČ [KĽÚČ ...]"
 
 #: ../src/spacecmd/activationkey.py:1742
 msgid "activationkey_setdescription: Set the activation key description"
@@ -651,7 +651,7 @@ msgstr "activationkey_setdescription: Nastaviť popis aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1744
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
-msgstr ""
+msgstr "použitie: activationkey_setdescription KĽÚČ POPIS"
 
 #: ../src/spacecmd/activationkey.py:1776
 msgid ""
@@ -667,11 +667,11 @@ msgstr "Dostupné kontaktné metódy: "
 
 #: ../src/spacecmd/activationkey.py:1779
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
-msgstr ""
+msgstr "použitie: activationkey_setcontactmethod KĽÚČ KONTAKTNÁ_METÓDA"
 
 #: ../src/spacecmd/api.py:45
 msgid "api: call server API with arguments directly"
-msgstr ""
+msgstr "api: volať API servera priamo s argumentmi"
 
 #: ../src/spacecmd/api.py:46
 #, python-format
@@ -691,14 +691,27 @@ msgid ""
 "  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
 "      channel.software.listAllPackages\n"
 msgstr ""
+"použitie: api [voľby] REŤAZEC_API)\n"
+"\n"
+"voľby:\n"
+"  -A, --args  Argumenty pre API iné ako id sedenia v reťazcoch oddelených\n"
+"              čiarkou alebo vo výraze JSON\n"
+"  -F, --format   Výstupný formát\n"
+"  -o, --output   Výstupný súbor\n"
+"\n"
+"príklady:\n"
+"  api api.getApiCallList\n"
+"  api --args \"sysgroup_A\" systemgroup.listSystems\n"
+"  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
+"      channel.software.listAllPackages\n"
 
 #: ../src/spacecmd/api.py:82
 msgid "Could not open to write: "
-msgstr ""
+msgstr "Nepodarilo sa otvoriť na zápis: "
 
 #: ../src/spacecmd/api.py:83
 msgid "Fallback output to stdout"
-msgstr ""
+msgstr "Núdzový výstup na stdout"
 
 #: ../src/spacecmd/api.py:92
 msgid "No such API: "
