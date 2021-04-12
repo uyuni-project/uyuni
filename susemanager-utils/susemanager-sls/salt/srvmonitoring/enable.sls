@@ -51,7 +51,7 @@ jmx_exporter:
 
 jmx_tomcat_config:
   cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname={{ grains['fqdns'][0] }}"/' /etc/sysconfig/tomcat
+    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=localhost"/' /etc/sysconfig/tomcat
     - require:
       - cmd: remove_tomcat_jmx_*
 
@@ -79,7 +79,7 @@ jmx_exporter_taskomatic_systemd_config:
 
 jmx_taskomatic_config:
   cmd.run:
-    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname={{ grains['fqdns'][0] }}"/' /etc/rhn/taskomatic.conf
+    - name: sed -i 's/JAVA_OPTS="\(.*\)"/JAVA_OPTS="\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=localhost"/' /etc/rhn/taskomatic.conf
     - require:
       - cmd: remove_taskomatic_jmx_*
 
@@ -118,4 +118,3 @@ mgr_enable_prometheus_self_monitoring:
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
     - name: grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf
-
