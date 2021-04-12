@@ -63,7 +63,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         setTestTreeParams(cmd);
         cmd.setKernelOptions("");
         cmd.store();
-        assertNull(cmd.getKernelOptions());
+        assert(cmd.getKernelOptions().isEmpty());
     }
 
     public void testPopulateKernelOptsForRhel8() throws Exception {
