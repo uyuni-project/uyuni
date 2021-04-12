@@ -100,6 +100,18 @@
             "duration": 12.73,
             "__id__": "jmx_exporter"
         },
+        "cmd_|-remove_tomcat_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 7,
+            "start_time": "16:14:48.941835",
+            "duration": 7.032,
+            "__id__": "remove_tomcat_jmx_host"
+        },
         "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
             "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
             "changes": {},
@@ -148,8 +160,8 @@
             "duration": 6.529,
             "__id__": "remove_tomcat_jmx_hostname"
         },
-        "cmd_|-jmx_tomcat_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat",
+        "cmd_|-jmx_tomcat_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat",
             "changes": {
                 "pid": 6918,
                 "retcode": 0,
@@ -157,7 +169,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat\" run",
+            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/sysconfig/tomcat\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 11,
             "start_time": "16:14:48.971125",
@@ -188,6 +200,18 @@
             "start_time": "16:14:49.327986",
             "duration": 2.472,
             "__id__": "jmx_exporter_taskomatic_systemd_config"
+        },
+        "cmd_|-remove_taskomatic_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {},
+            "result": true,
+            "comment": "onlyif condition is false",
+            "skip_watch": true,
+            "__sls__": "srvmonitoring.enable",
+            "__run_num__": 14,
+            "start_time": "16:14:49.330573",
+            "duration": 6.169,
+            "__id__": "remove_taskomatic_jmx_host"
         },
         "cmd_|-remove_taskomatic_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
             "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
@@ -237,8 +261,8 @@
             "duration": 6.445,
             "__id__": "remove_taskomatic_jmx_hostname"
         },
-        "cmd_|-jmx_taskomatic_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf",
+        "cmd_|-jmx_taskomatic_config_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf",
             "changes": {
                 "pid": 6967,
                 "retcode": 0,
@@ -246,7 +270,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf\" run",
+            "comment": "Command \"sed -i 's/JAVA_OPTS=\"\\(.*\\)\"/JAVA_OPTS=\"\\1 -Dcom.sun.management.jmxremote.host=localhost -Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=test-srv.tf.local\"/' /etc/rhn/taskomatic.conf\" run",
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 18,
             "start_time": "16:14:49.357508",
