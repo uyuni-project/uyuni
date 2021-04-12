@@ -13,7 +13,7 @@ postgres_exporter_service:
 
 jmx_tomcat_config:
   cmd.run:
-    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat
+    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.host=' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat
     - require:
       - cmd: remove_tomcat_jmx_*
 
@@ -29,7 +29,7 @@ jmx_exporter_tomcat_service:
 
 jmx_taskomatic_config:
   cmd.run:
-    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf
+    - name: grep -q -v -- '-Dcom.sun.management.jmxremote.host=' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3334' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf
     - require:
       - cmd: remove_taskomatic_jmx_*
 

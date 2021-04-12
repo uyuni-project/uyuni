@@ -26,6 +26,22 @@
             "duration": 286.435,
             "__id__": "postgres_exporter_service"
         },
+        "cmd_|-remove_tomcat_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "changes": {
+                "pid": 6335,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat\" run",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 2,
+            "start_time": "16:06:06.461899",
+            "duration": 13.875,
+            "__id__": "remove_tomcat_jmx_host"
+        },
         "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
             "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
             "changes": {
@@ -90,8 +106,8 @@
             "duration": 13.157,
             "__id__": "remove_tomcat_jmx_hostname"
         },
-        "cmd_|-jmx_tomcat_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat_|-run": {
-            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat",
+        "cmd_|-jmx_tomcat_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat_|-run": {
+            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat",
             "changes": {
                 "pid": 6342,
                 "retcode": 0,
@@ -99,7 +115,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat\" run",
+            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/sysconfig/tomcat && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/sysconfig/tomcat && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/sysconfig/tomcat\" run",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 6,
             "start_time": "16:06:06.519393",
@@ -118,6 +134,22 @@
             "start_time": "16:06:06.530091",
             "duration": 615.425,
             "__id__": "jmx_exporter_tomcat_service"
+        },
+        "cmd_|-remove_taskomatic_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
+            "changes": {
+                "pid": 6372,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=localhost(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf\" run",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 8,
+            "start_time": "16:06:07.145892",
+            "duration": 14.262,
+            "__id__": "remove_taskomatic_jmx_host"
         },
         "cmd_|-remove_taskomatic_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf_|-run": {
             "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/rhn/taskomatic.conf",
@@ -183,8 +215,8 @@
             "duration": 13.131,
             "__id__": "remove_taskomatic_jmx_hostname"
         },
-        "cmd_|-jmx_taskomatic_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf_|-run": {
-            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf",
+        "cmd_|-jmx_taskomatic_config_|-grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf_|-run": {
+            "name": "grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf",
             "changes": {
                 "pid": 6379,
                 "retcode": 0,
@@ -192,7 +224,7 @@
                 "stderr": ""
             },
             "result": true,
-            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf\" run",
+            "comment": "Command \"grep -q -v -- '-Dcom.sun.management.jmxremote.host=localhost' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.port=3333' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.ssl=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Dcom.sun.management.jmxremote.authenticate=false' /etc/rhn/taskomatic.conf && grep -q -v -- '-Djava.rmi.server.hostname=' /etc/rhn/taskomatic.conf\" run",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 12,
             "start_time": "16:06:07.202697",

@@ -122,6 +122,29 @@ base:
 EOF
     fi
 fi
+# Restrict Java RMI to localhost (bsc#1184617)
+restrict_to_localhost()
+{
+  JMXREMOTE_HOST='-Dcom.sun.management.jmxremote.host='
+  JMXREMOTE_PORT='-Dcom.sun.management.jmxremote.port='
+  RMI_SERVER_HOSTNAME='-Djava.rmi.server.hostname='
+  systemctl is-enabled ${1} > /dev/null 2>&1
+  jmx_exporter_enabled=$?
+  grep -q -- $JMXREMOTE_HOST ${2}
+  jmxremote_host_configured=$?
+  if [ $jmx_exporter_enabled -eq 0 ] && [ $jmxremote_host_configured -eq 1 ]; then
+    sed -ri "s/JAVA_OPTS=\"(.*)${JMXREMOTE_PORT}(.*)\"/JAVA_OPTS=\"\1${JMXREMOTE_HOST}localhost\ ${JMXREMOTE_PORT}\2\"/" ${2}
+    sed -ri "s/JAVA_OPTS=\"(.*)${RMI_SERVER_HOSTNAME}\S*(.*)\"/JAVA_OPTS=\"\1${RMI_SERVER_HOSTNAME}localhost\2\"/" ${2}
+  fi
+}
+tomcat_config=/etc/sysconfig/tomcat
+taskomatic_config=/etc/rhn/taskomatic.conf
+if [ $1 -gt 1 ] && [ -e $tomcat_config ]; then
+  restrict_to_localhost prometheus-jmx_exporter@tomcat.service $tomcat_config
+fi
+if [ $1 -gt 1 ] && [ -e $taskomatic_config ]; then
+  restrict_to_localhost prometheus-jmx_exporter@taskomatic.service $taskomatic_config
+fi
 
 %files
 %defattr(-,root,root)
