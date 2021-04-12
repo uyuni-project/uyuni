@@ -7,6 +7,9 @@ Feature: Basic web security measures and recommendations
   As an authorized user
   I want to avoid session and other attacks
 
+  Background:
+    When I clear browser cookies
+
   Scenario: Caching should be enabled for static content
     Given I retrieve any static resource
     Then the response header "ETag" should not be present
