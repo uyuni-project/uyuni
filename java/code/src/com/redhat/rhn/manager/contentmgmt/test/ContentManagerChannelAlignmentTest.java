@@ -712,7 +712,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests that the sync patches options is respected in the
+     * Tests that the ORG-wide sync patches options is respected when aligning the channels.
      */
     public void testClmSyncOption() {
         assertEquals(1, srcChannel.getErratas().size()); // assumption
