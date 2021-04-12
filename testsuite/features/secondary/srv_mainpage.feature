@@ -4,6 +4,9 @@
 @scope_visualization
 Feature: Main landing page options and preferences
 
+  Background: Clear browser cookies
+    When I clear browser cookies
+
   Scenario: Access the Login page
     Given I am not authorized
     When I go to the home page
