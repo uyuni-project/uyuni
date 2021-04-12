@@ -983,3 +983,7 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
   raise unless code.zero?
 end
+
+When(/^I clear browser cookies$/) do
+  page.driver.browser.manage.delete_all_cookies
+end
