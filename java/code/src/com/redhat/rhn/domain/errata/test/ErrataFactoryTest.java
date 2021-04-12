@@ -363,23 +363,40 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(AdvisoryStatus.RETRACTED, ce.getAdvisoryStatus());
     }
 
+    /**
+     * Tests cache consistency when vendor retracts a patch.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
+     */
     public void testUpdateCacheConsistencyOnRetractingPatch() throws Exception {
-        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.FINAL, AdvisoryStatus.RETRACTED);
-    }
-
-    public void testUpdateCacheConsistencyOnUnretractingPatch() throws Exception {
-        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.RETRACTED, AdvisoryStatus.FINAL);
-    }
-
-    public void testUpdateCacheConsistencyForNonRetractedPatches() throws Exception {
-        updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus.STABLE, AdvisoryStatus.FINAL);
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.FINAL, AdvisoryStatus.RETRACTED);
     }
 
     /**
-     * Helper method for testing cache consistency
-     * @throws Exception
+     * Tests cache consistency when vendor turns a 'retracted' patch to 'final'.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
      */
-    private void updatePatchAndCheckUpateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) throws Exception {
+    public void testUpdateCacheConsistencyOnUnretractingPatch() throws Exception {
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.RETRACTED, AdvisoryStatus.FINAL);
+    }
+
+    /**
+     * Tests cache consistency when vendor turns a 'stable' patch to 'final'.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
+     */
+    public void testUpdateCacheConsistencyForNonRetractedPatches() throws Exception {
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.STABLE, AdvisoryStatus.FINAL);
+    }
+
+    /**
+     * Helper method for testing cache consistency when syncing vendor patch
+     * into cloned patch when the vendor patch changes advisoryStatus over time.
+     *
+     * @throws Exception when anything goes wrong
+     */
+    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
@@ -419,6 +436,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         return (Set<ErrataCacheDto>) packagesNeedingUpdates.stream().collect(Collectors.toSet());
     }
 
+    // flush the needed updates cache for a server and re-generate it from scratch.
     private void regenerateNeededUpdatesCache(Server server) {
         HibernateFactory.getSession()
                 .createNativeQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
