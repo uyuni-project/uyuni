@@ -172,7 +172,7 @@ artifacts:
   - artifact: pgjdbc-ng
     repository: Uyuni_Other
   - artifact: postgresql-jdbc
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: quartz
     repository: Uyuni_Other
   - artifact: redstone-xmlrpc
