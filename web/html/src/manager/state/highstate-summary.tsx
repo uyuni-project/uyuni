@@ -4,11 +4,13 @@ import Network from "utils/network";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { AsyncButton } from "components/buttons";
+import { Utils } from "utils/functions";
 
 interface StateSource {
   id: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
+  typeName: string; //Filled in on-the-fly via typeMap
   sourceId: number;
   sourceName: string;
   sourceType: "SYSTEM" | "GROUP" | "ORG";
@@ -25,9 +27,19 @@ export default function HighstateSummary({ minionId }) {
   const [summary, setSummary] = useState<StateSource[]>([]);
   const [isLoading, setLoading] = useState(false);
 
+  const toDisplayValues = (state: StateSource) => {
+    if (state.type === "INTERNAL")
+      state.name = t("Internal states");
+    if (state.sourceType === "SYSTEM")
+      state.sourceName = "-";
+    state.typeName = typeMap[state.type];
+    return state;
+  }
+
   useEffect(() => {
     setLoading(true);
     Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`).promise
+      .then(data => data.map(toDisplayValues))
       .then(setSummary)
       .then(() => setLoading(false));
   }, [minionId]);
@@ -43,9 +55,9 @@ export default function HighstateSummary({ minionId }) {
   return (
     <>
       <Table identifier={state => state.state} data={summary} initialItemsPerPage={0}>
-        <Column header={t("State")} columnKey="state" cell={source => <State minionId={minionId} state={source} />} />
-        <Column header={t("Type")} columnKey="type" cell={source => typeMap[source.type]} />
-        <Column header={t("Inherited From")} columnKey="source" cell={source => <Source source={source} />} />
+        <Column header={t("State Source")} comparator={Utils.sortByText} columnKey="name" cell={source => <State minionId={minionId} state={source} />} />
+        <Column header={t("Type")} comparator={Utils.sortByText} columnKey="typeName" cell={source => source.typeName} />
+        <Column header={t("Inherited From")} comparator={Utils.sortByText} sortable columnKey="sourceName" cell={source => <Source source={source} />} />
       </Table>
       <HighstateOutput minionId={minionId} />
     </>
@@ -80,29 +92,29 @@ function State({ minionId, state }: { minionId: number, state: StateSource }) {
   if (state.type === "STATE") {
     return (
       <>
-        <i className="spacewalk-icon-software-channels" title={typeMap[state.type]} />
+        <i className="spacewalk-icon-software-channels" title={state.typeName} />
         <strong><a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a></strong>
       </>
     );
   } else if (state.type === "CONFIG") {
     return (
       <>
-        <i className="spacewalk-icon-software-channels" title={typeMap[state.type]} />
+        <i className="spacewalk-icon-software-channels" title={state.typeName} />
         <strong><a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a></strong>
       </>
     );
   } else if (state.type === "FORMULA") {
     return (
       <>
-        <i className="spacewalk-icon-salt" title={typeMap[state.type]} />
+        <i className="spacewalk-icon-salt" title={state.typeName} />
         <strong><a href={`/rhn/manager/systems/details/formula/${state.id}?sid=${minionId}`}>{state.name}</a></strong>
       </>
     );
   } else if (state.type === "INTERNAL") {
     return (
       <>
-        <i className="spacewalk-icon-salt" title={typeMap[state.type]} />
-        <i>{t("Internal states")}</i>
+        <i className="spacewalk-icon-salt" title={state.typeName} />
+        <i>{state.name}</i>
       </>
     );
   }

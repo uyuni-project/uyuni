@@ -25,7 +25,7 @@ describe("Highstate summary", () => {
     const rows = getAllByRole("row");
 
     // Table headers
-    within(rows[0]).getByRole("columnheader", { name: "State" });
+    within(rows[0]).getByRole("columnheader", { name: "State Source" });
     within(rows[0]).getByRole("columnheader", { name: "Type" });
     within(rows[0]).getByRole("columnheader", { name: "Inherited From" });
 
