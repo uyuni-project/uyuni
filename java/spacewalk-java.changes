@@ -1,3 +1,4 @@
+- Check if the directory exists prior to modular data cleanup (bsc#1184311)
 - assign right base product for res8 (bsc#1184005)
 - Fix docs link in my organization configuration (bsc#1184286)
 - Only update the kickstart path in cobbler if necessary (bsc#1175216)
