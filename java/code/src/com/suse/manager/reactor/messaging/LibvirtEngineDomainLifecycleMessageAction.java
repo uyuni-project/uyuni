@@ -109,8 +109,8 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
                     VirtualInstanceState state = statesMap.entrySet().stream()
                             .filter(entry -> entry.getKey().contains(event))
-                            .map(entry -> entry.getValue())
-                            .findFirst().orElse(VirtualInstanceFactory.getInstance().getUnknownState());
+                            .map(Map.Entry::getValue)
+                            .findFirst().orElse(vms.get(0).getState());
 
                     LOG.debug("Changing VM " + vms.get(0) + " state to " + state.getLabel());
 
