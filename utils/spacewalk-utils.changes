@@ -1,3 +1,4 @@
+- Bugfix for ubuntu-18.04 repo urls: multiverse, restricted and backports
 - Add openSUSE Leap 15.3
 - Add aarch64 for CentOS7/8 and Oracle7/8
 - Add AlmaLinux 8 repositories
