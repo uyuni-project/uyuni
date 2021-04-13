@@ -174,6 +174,7 @@ export function GuestsList(props: Props) {
               return [];
             }
             const state = row.stateLabel;
+            const clustered = props.saltEntitled && row.cluster_primitive;
             return (
               <div className="btn-group">
                 {state !== "running" && row.name !== "Domain-0" && (
@@ -184,10 +185,10 @@ export function GuestsList(props: Props) {
                     action={() => onAction("start", [row.uuid], {})}
                   />
                 )}
-                {state === "running" && row.name !== "Domain-0" && createModalButton("suspend", modalsData, row)}
+                {state === 'running' && row.name !== 'Domain-0' && !clustered && createModalButton('suspend', modalsData, row)}
                 {state !== "stopped" && row.name !== "Domain-0" && createModalButton("shutdown", modalsData, row)}
                 {(state === "paused" || state === "running") && createModalButton("restart", modalsData, row)}
-                {props.saltEntitled && (
+                {props.saltEntitled && ["spice", "vnc"].includes(row.graphics_type) && (
                   <LinkButton
                     title={t("Graphical Console")}
                     className="btn-default btn-sm"
