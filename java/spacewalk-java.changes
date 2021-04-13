@@ -1,3 +1,4 @@
+- List config state summary for systems in highstate page
 - Implement retracted patches
 - Add support for notify beacon for Debian/Ubuntu systems
 - Check if the directory exists prior to modular data cleanup (bsc#1184311)

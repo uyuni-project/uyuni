@@ -25,7 +25,6 @@ export const {
   hover,
   unhover,
   paste,
-  specialChars,
 } = userEvent;
 
 /**
@@ -39,25 +38,30 @@ export const type = async (elementOrPromiseOfElement, text) => {
   const target = await elementOrPromiseOfElement;
   // await userEvent.type(target, text, mergedOptions);
   userEvent.paste(target, text, undefined);
+
   /**
    * `window.requestAnimationFrame` mandatory to ensure we don't proceed until
    * the UI has updated, expect non-deterministic results without this.
    */
-  return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
-}
+  return new Promise(resolve => window.requestAnimationFrame(() => resolve(undefined)));
+};
 
 export * from "./forms";
 
-const server = setupServer();
-
-/** Mock a GET request to `url` with a successful JSON response containing `response` */
-server.mockGetJson = function mockGetJson(url, response) {
-  return server.use(
-    rest.get(url, (req, res, ctx) => {
-      return res(ctx.json(response));
-    })
-  );
+const baseServer = setupServer();
+const serverAddons = {
+  /** Mock a GET request to `url` with a successful JSON response containing `response` */
+  mockGetJson(url, response) {
+    return server.use(
+      rest.get(url, (req, res, ctx) => {
+        return res(ctx.json(response));
+      })
+    );
+  }
 };
+
+type Server = typeof baseServer & typeof serverAddons;
+const server: Server = Object.assign(baseServer, serverAddons);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -65,4 +69,4 @@ afterAll(() => server.close());
 
 export { server };
 
-export * from "./mock.js";
+export * from "./mock";

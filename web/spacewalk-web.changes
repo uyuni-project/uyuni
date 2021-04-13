@@ -1,3 +1,4 @@
+- Add state summary section to highstate pages
 - add warning about missing salt feature for virtual networks
 - add virtual network create action
 
