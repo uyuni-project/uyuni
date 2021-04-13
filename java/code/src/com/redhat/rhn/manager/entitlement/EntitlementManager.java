@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.entitlement;
 
+import com.redhat.rhn.domain.entitlement.AnsibleControlNodeEntitlement;
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -53,6 +54,7 @@ public class EntitlementManager extends BaseManager {
     public static final Entitlement OSIMAGE_BUILD_HOST =
             new OSImageBuildHostEntitlement();
     public static final Entitlement MONITORING = new MonitoringEntitlement();
+    public static final Entitlement ANSIBLE_CONTROL_NODE = new AnsibleControlNodeEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
@@ -63,6 +65,7 @@ public class EntitlementManager extends BaseManager {
     public static final String CONTAINER_BUILD_HOST_ENTITLED = "container_build_host";
     public static final String OSIMAGE_BUILD_HOST_ENTITLED = "osimage_build_host";
     public static final String MONITORING_ENTITLED = "monitoring_entitled";
+    public static final String ANSIBLE_CONTROL_NODE_ENTITLED = "ansible_control_node";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
@@ -72,6 +75,7 @@ public class EntitlementManager extends BaseManager {
         ADDON_ENTITLEMENTS.add(CONTAINER_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(OSIMAGE_BUILD_HOST);
         ADDON_ENTITLEMENTS.add(MONITORING);
+        ADDON_ENTITLEMENTS.add(ANSIBLE_CONTROL_NODE);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
@@ -109,6 +113,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (MONITORING_ENTITLED.equals(name)) {
             return MONITORING;
+        }
+        else if (ANSIBLE_CONTROL_NODE_ENTITLED.equals(name)) {
+            return ANSIBLE_CONTROL_NODE;
         }
         return null;
     }
