@@ -78,39 +78,40 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
                 isLoading
                   ? <Loading text={t("Building project..")}/>
                       :
-                      <div>
-                      {hasChannelsWithUnsyncedPatches &&
-                      <Messages items={MsgUtils.info(
-                              <>
-                              {t("The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings.")}
-                          </>
-                      )}/>}
-                  <Form
-                    model={buildVersionForm}
-                    onChange={model => setBuildVersionForm(model)} >
-                    <div className="row">
-                      <Text
-                        name="version"
-                        label={t("Version")}
-                        labelClass="col-md-3"
-                        divClass="col-md-9"
-                        disabled
-                      />
-                    </div>
-                    <div className="row">
-                      <Text
-                        name="message"
-                        label={t("Version Message")}
-                        labelClass="col-md-3"
-                        divClass="col-md-9"/>
-                    </div>
-                    <dl className="row">
-                      <dt className="col-md-3 control-label">{t('Version {0} history', buildVersionForm.version)}:</dt>
-                      <dd className="col-md-9">
-                        <pre>{changesToBuild}</pre>
-                      </dd>
-                    </dl>
-                  </Form>
+                  <div>
+                    {hasChannelsWithUnsyncedPatches &&
+                    <Messages items={MsgUtils.info(
+                      <>
+                        {t("The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings.")}
+                      </>
+                    )}/>}
+
+                    <Form
+                      model={buildVersionForm}
+                      onChange={model => setBuildVersionForm(model)} >
+                      <div className="row">
+                        <Text
+                          name="version"
+                          label={t("Version")}
+                          labelClass="col-md-3"
+                          divClass="col-md-9"
+                          disabled
+                        />
+                      </div>
+                      <div className="row">
+                        <Text
+                          name="message"
+                          label={t("Version Message")}
+                          labelClass="col-md-3"
+                          divClass="col-md-9"/>
+                      </div>
+                      <dl className="row">
+                        <dt className="col-md-3 control-label">{t('Version {0} history', buildVersionForm.version)}:</dt>
+                        <dd className="col-md-9">
+                          <pre>{changesToBuild}</pre>
+                        </dd>
+                      </dl>
+                    </Form>
                   </div>
               }
               buttons={
