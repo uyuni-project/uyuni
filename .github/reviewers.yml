@@ -13,7 +13,7 @@ reviewers:
 files:
   # Keys are glob expressions.
   # You can assign groups defined above as well as GitHub usernames.
-  'testsuite/**!(.feature)':
+  'testsuite/**/!(*.feature)':
     - qa
 
 options:
