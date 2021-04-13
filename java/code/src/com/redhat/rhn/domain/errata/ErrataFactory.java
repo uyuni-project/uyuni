@@ -1008,6 +1008,7 @@ public class ErrataFactory extends HibernateFactory {
             cloned.getChannels().forEach(c -> {
                 processRetracted(cloned.getId(), c.getId(), retract);
                 ChannelFactory.refreshNewestPackageCache(c, "sync errata");
+                ChannelManager.queueChannelChange(c.getLabel(), "java::syncErrata", "Errata synced");
             });
         }
     }
