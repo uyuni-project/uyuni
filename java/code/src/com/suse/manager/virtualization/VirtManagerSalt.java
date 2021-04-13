@@ -280,4 +280,13 @@ public class VirtManagerSalt implements VirtManager {
                 new TypeToken<Map<String, Map<String, Boolean>>>() { }, grainName), minionId);
         return data.map(features -> features.get(grainName));
     }
+
+    @Override
+    public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
+        LocalCall<Map<String, Map<String, JsonElement>>> call =
+                new LocalCall<>("virt_utils.vm_info", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
 }
