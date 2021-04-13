@@ -118,6 +118,14 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                         .map(xml -> GuestDefinition.parse(xml,
                                 vmInfo.map(data -> data.get(domainName))));
             }
+
+            @Override
+            public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
+                return SaltTestUtils.<Map<String, Map<String, JsonElement>>>getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm.info.json",
+                        Collections.emptyMap(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
+            }
         };
 
         ServerGroupManager serverGroupManager = new ServerGroupManager();
