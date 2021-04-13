@@ -454,8 +454,8 @@ When(/^I (deselect|select) "([^\"]*)" as a (SUSE Manager|Uyuni) product$/) do |s
   end
 end
 
-When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
-  repeat_until_timeout(message: "could still find a sub list for tree item #{item}") do
+When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
+  repeat_until_timeout(timeout: timeout.to_i, message: "could still find a sub list for tree item #{item}") do
     xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
     begin
       find(:xpath, xpath)
@@ -466,16 +466,16 @@ When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
   end
 end
 
-When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" text$/) do |item, text|
+When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" text$/) do |timeout, item, text|
   within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
-    raise "could not find text #{text} for tree item #{item}" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+    raise "could not find text #{text} for tree item #{item}" unless has_text?(text, wait: timeout.to_i)
   end
 end
 
-When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" button$/) do |item, button|
+When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" button$/) do |timeout, item, button|
   xpath_query = "//span[contains(text(), '#{item}')]/"\
       "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
