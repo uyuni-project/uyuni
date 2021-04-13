@@ -10,6 +10,8 @@ from . import mockery
 
 mockery.setup_environment()
 
+virt_utils.__salt__ = {}
+
 
 CRM_CONFIG_XML = b"""<?xml version="1.0" ?>
 <cib>
@@ -33,6 +35,16 @@ CRM_CONFIG_XML = b"""<?xml version="1.0" ?>
           </instance_attributes>
         </primitive>
       </clone>
+      <primitive id="vm01" class="ocf" provider="heartbeat" type="VirtualDomain">
+        <instance_attributes id="vm01-instance_attributes">
+          <nvpair name="config" value="/srv/clusterfs/vm01.xml" id="vm01-instance_attributes-config"/>
+        </instance_attributes>
+      </primitive>
+      <primitive id="vm03" class="ocf" provider="heartbeat" type="VirtualDomain">
+        <instance_attributes id="vm03-instance_attributes">
+          <nvpair name="config" value="/srv/clusterfs/vm03.xml" id="vm03-instance_attributes-config"/>
+        </instance_attributes>
+      </primitive>
     </resources>
   </configuration>
 </cib>
@@ -67,3 +79,56 @@ def test_get_cluster_filesystem_nocrm():
         with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
             popen_mock.return_value.communicate.side_effect = FileNotFoundError("No such file or directory: 'crm'")
             assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None
+
+
+@pytest.mark.parametrize("no_graphics", [True, False])
+def test_vm_info_no_cluster(no_graphics):
+    """
+    Test the vm_info() function for a VM which isn't in a cluster
+    """
+    fake_vminfo = {} if no_graphics else {
+        "graphics": {
+            "type": "spice",
+        }
+    }
+    vminfo_mock = MagicMock(return_value={"vm": fake_vminfo})
+    with patch.dict(virt_utils.__salt__, {"virt.vm_info": vminfo_mock}):
+        info = virt_utils.vm_info("vm")
+        assert info["vm"].get("cluster_primitive") is None
+        assert info["vm"].get("graphics_type") == (None if no_graphics else "spice")
+
+
+def test_vminfo_cluster():
+    """
+    Test the vm_info() function for VMs in a cluster
+    """
+    vm_xml_template = """<domain type='kvm'>
+  <name>{}</name>
+  <uuid>{}</uuid>
+  <memory unit='KiB'>524288</memory>
+  <currentMemory unit='KiB'>524288</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+  <devices>
+    <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'>
+      <listen type='address' address='0.0.0.0'/>
+    </graphics>
+  </devices>
+</domain>"""
+
+    vms = [
+        ("vm01", "15c09f1f-6ac7-43b5-83e9-96a63c40fb14"),
+        ("vm03", "c4596ec0-4e0e-4a1d-aa43-88ba442d5085")
+    ]
+    vms_xml = [ElementTree.fromstring(vm_xml_template.format(vm[0], vm[1])) for vm in vms]
+
+    vminfo_mock = MagicMock(return_value={"vm01": {"graphics": {"type": "vnc"}}})
+
+    popen_mock = MagicMock()
+    popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
+
+    with patch.dict(virt_utils.__salt__, {"virt.vm_info": vminfo_mock}):
+        with patch.object(virt_utils.subprocess, "Popen", popen_mock):
+            with patch.object(virt_utils.ElementTree, "parse", MagicMock(side_effect=vms_xml)):
+                info = virt_utils.vm_info()
+                assert info["vm01"].get("cluster_primitive") == "vm01"
+                assert info["vm01"].get("graphics_type") =="vnc"
