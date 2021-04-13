@@ -1053,7 +1053,7 @@ grains:
     susemanager:
 EOF
     if [ -n "$ACTIVATION_KEYS" ] ; then
-        echo "Using activaion key: \"$ACTIVATION_KEYS\""
+        echo "Using activation key: \"$ACTIVATION_KEYS\""
         cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
         activation_key: "$(echo $ACTIVATION_KEYS | cut -d, -f1)"
 EOF
