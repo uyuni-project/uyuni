@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-06 10:59+0000\n"
+"POT-Creation-Date: 2021-04-13 17:54+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -263,7 +263,7 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -280,8 +280,8 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
-#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -2011,7 +2011,7 @@ msgstr "纪元"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2107,15 +2107,15 @@ msgstr "环境生命周期"
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "您要查找的项目不存在或已删除"
 
-#: ../html/src/manager/content-management/project/project.js:89
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "内容生命周期项目 - {0}"
 
-#: ../html/src/manager/content-management/project/project.js:104
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "删除项目"
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
@@ -2244,12 +2244,12 @@ msgstr "包含软件包"
 msgid "enable module"
 msgstr "启用模块"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "构建 ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2258,23 +2258,29 @@ msgstr "构建 ({0})"
 msgid "Build"
 msgstr "构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "构建项目"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "正在构建项目..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+msgid ""
+"The project contains channels with unsynchronized patches. They will be "
+"synchronized depending on your Organization settings."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "版本消息"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "版本 {0} 历史记录"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "已成功在 {1} 中构建版本 {0}"
 
@@ -2471,15 +2477,19 @@ msgstr "无子频道"
 msgid "This channel is recommended"
 msgstr "建议使用此频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+msgid "has unsynchronized patches"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "已成功编辑源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "软件频道"
