@@ -151,4 +151,12 @@ public interface VirtManager {
      * @return the map of features.
      */
     Optional<Map<String, Boolean>> getFeatures(String minionId);
+
+    /**
+     * Get informations from all the virtual machines of a minion
+     *
+     * @param minionId the minion id to look VMs on
+     * @return the infos
+     */
+    Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId);
 }

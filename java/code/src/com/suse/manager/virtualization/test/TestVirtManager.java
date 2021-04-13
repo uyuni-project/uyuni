@@ -101,4 +101,9 @@ public class TestVirtManager implements VirtManager {
     public Optional<Map<String, Boolean>> getFeatures(String minionId) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
+        throw new UnsupportedOperationException();
+    }
 }
