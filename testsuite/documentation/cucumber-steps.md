@@ -234,7 +234,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I see "Successfully bootstrapped host!" text
   When I wait until I do not see "Loading..." text
   When I wait at most 360 seconds until I see "Product Description" text
-  When I wait until the tree item "test-pool0" contains "inactive" text
+  When I wait at most 600 seconds until the tree item "test-pool0" contains "inactive" text
   When I wait until table row for "test-net1" contains "running"
 ```
 
@@ -254,7 +254,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 * Wait until a tree item has no sub list
 
 ```cucumber
-  When I wait until the tree item "test-pool0" has no sub-list
+  When I wait at most 600 seconds until the tree item "test-pool0" has no sub-list
 ```
 
 <a name="b4" />
@@ -363,7 +363,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I wait until table row for "test-vm" contains button "Resume"
   When I wait at most 300 seconds until table row for "test-vm" contains button "Resume"
-  When I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
+  When I wait at most 600 seconds until the tree item "test-pool1" contains "test-pool1 is started automatically" button
 ```
 
 

@@ -246,21 +246,21 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Refresh" in tree item "test-pool0"
-    And I wait until the tree item "test-pool0" has no sub-list
+    And I wait at most 600 seconds until the tree item "test-pool0" has no sub-list
 
 @virthost_kvm
   Scenario: Stop a virtual storage pool for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Stop" in tree item "test-pool0"
-    And I wait until the tree item "test-pool0" contains "inactive" text
+    And I wait at most 600 seconds until the tree item "test-pool0" contains "inactive" text
 
 @virthost_kvm
   Scenario: Start a virtual storage pool for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Start" in tree item "test-pool0"
-    And I wait until the tree item "test-pool0" contains "running" text
+    And I wait at most 600 seconds until the tree item "test-pool0" contains "running" text
 
 @virthost_kvm
   Scenario: Delete a virtual storage pool for KVM
@@ -285,7 +285,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I enter "0755" as "target_mode"
     And I click on "Create"
     Then I should see a "Virtual Storage Pools and Volumes" text
-    And I wait until the tree item "test-pool1" contains "running" text
+    And I wait at most 600 seconds until the tree item "test-pool1" contains "running" text
     And file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
 
 @virthost_kvm
@@ -298,7 +298,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "autostart"
     And I click on "Update"
     Then I should see a "Virtual Storage Pools and Volumes" text
-    And I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
+    And I wait at most 600 seconds until the tree item "test-pool1" contains "test-pool1 is started automatically" button
     And file "/var/lib/libvirt/images/test-pool1" should have 711 permissions on "kvm_server"
 
 @virthost_kvm
