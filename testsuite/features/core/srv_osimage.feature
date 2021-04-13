@@ -1,6 +1,6 @@
 # Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+# TESTSSSSSTTTTTT
 Feature: Prepare server for using Kiwi
 
   Scenario: Create a Kiwi user with image administrators rights
