@@ -2,7 +2,6 @@
 virt utility functions
 """
 
-import libvirt
 import re
 
 __virtualname__ = "virt_utils"
@@ -61,9 +60,9 @@ def _all_running(name, kind, names, is_running):
             ", ".join(stopped), kind, "s have" if len(stopped) > 1 else " has"
         )
 
-    except libvirt.libvirtError as err:
+    except Exception as err:
         ret["result"] = False
-        ret["comment"] = err.get_error_message()
+        ret["comment"] = str(err)
 
     return ret
 
@@ -102,9 +101,9 @@ def pool_running(name, pools=None):
                 __salt__["virt.pool_refresh"](pool_name)
             ret["changes"][pool_name] = "refreshed"
 
-        except libvirt.libvirtError as err:
+        except Exception as err:
             ret["result"] = False
-            ret["comment"] = err.get_error_message()
+            ret["comment"] = str(err)
 
     return ret
 
@@ -149,8 +148,8 @@ def vm_resources_running(name):
         ret["comment"] = "{}, {}".format(net_ret["comment"], pool_ret["comment"])
         ret["changes"] = {"networks": net_ret["changes"], "pools": pool_ret["changes"]}
 
-    except libvirt.libvirtError as err:
+    except Exception as err:
         ret["result"] = False
-        ret["comment"] = err.get_error_message()
+        ret["comment"] = str(err)
 
     return ret
