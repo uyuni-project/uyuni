@@ -197,7 +197,20 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         }
 
         response.type("application/json");
-        return GSON.toJson(data);
+        String json = GSON.toJson(data);
+        List<Map<String, JsonElement>> mergeData = GSON.fromJson(json,
+                new TypeToken<List<Map<String, JsonElement>>>() { }.getType());
+
+        server.asMinionServer().ifPresent(minionServer -> {
+            Optional<Map<String, Map<String, JsonElement>>> extraData =
+                    virtManager.getVmInfos(minionServer.getMinionId());
+            extraData.ifPresent(extra -> extra.forEach((key, value) -> mergeData.stream()
+                            .filter(element -> element.get("name").getAsString().equals(key))
+                            .findFirst()
+                            .ifPresent(item -> item.putAll(value))));
+        });
+
+        return GSON.toJson(mergeData);
     }
 
     /**
