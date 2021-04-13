@@ -1112,7 +1112,7 @@ public class ErrataHandler extends BaseHandler {
      *          following: "Security Advisory", "Product Enhancement Advisory", or
      *          "Bug Fix Advisory"
      *  String "advirory_status" the status of advisory for the errata
-     *         (Must be one of the following: "final", "testing", "retracted")
+     *         (Must be one of the following: "final", "stable", "testing", "retracted")
      *  String "product" the product the errata affects
      *  String "errataFrom" the author of the errata
      *  String "topic" the topic of the errata
@@ -1140,7 +1140,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
      *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
-     *                  following: 'final', 'testing', or 'stable'")
+     *                  following: 'final', 'testing', 'stable' or 'retracted'")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
