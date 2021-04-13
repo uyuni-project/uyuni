@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, DateTime, Radio, Select, Form } from "components/input";
 import AppStreamsForm from "./appstreams/appstreams";
 import { FilterFormType } from "../shared/type/filter.type";
@@ -8,7 +8,12 @@ import useUserLocalization from "core/user-localization/use-user-localization";
 import { Utils } from "utils/functions";
 import produce from "utils/produce";
 
-import LivePatchingFilterForm from './live-patching';
+import TemplatesForm from "./templates";
+
+enum FilterBy {
+  Type = "Type",
+  Template = "Template",
+}
 
 export type Props = {
   filter: Partial<FilterFormType>;
@@ -20,6 +25,7 @@ export type Props = {
 
 const FilterForm = (props: Props) => {
   const { timezone, localTime } = useUserLocalization();
+  const [filterBy, setFilterBy] = useState(FilterBy.Type);
 
   // If the filter type changes, resets the matcher filter
   const { editing, filter, onChange } = props;
@@ -74,157 +80,174 @@ const FilterForm = (props: Props) => {
           />
         </div>
 
-        <Select
-          name="type"
-          label={t("Filter Type")}
+        <Radio
+          inline
+          defaultValue={filterBy}
+          items={[
+            { label: t("Type"), value: FilterBy.Type },
+            { label: t("Template"), value: FilterBy.Template },
+          ]}
+          label={t("Filter by")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          required
-          disabled={props.editing}
-          options={getClmFiltersOptions()}
-          getOptionValue={filter => filter.key}
-          formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+          onChange={(_, value) => setFilterBy(value as FilterBy)}
         />
 
-        {selectedFilterMatchers?.length ? (
-          <Select
-            name="matcher"
-            label={t("Matcher")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-            disabled={props.editing}
-            options={selectedFilterMatchers}
-            getOptionValue={matcher => matcher.key}
-            getOptionLabel={matcher => matcher.text}
-          />
+        {filterBy === FilterBy.Type ? (
+          <React.Fragment>
+            <Select
+              name="type"
+              label={t("Filter Type")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              required
+              disabled={props.editing}
+              options={getClmFiltersOptions()}
+              getOptionValue={filter => filter.key}
+              formatOptionLabel={filter => `${filter.entityType.text} (${filter.text})`}
+            />
+
+            {selectedFilterMatchers?.length ? (
+              <Select
+                name="matcher"
+                label={t("Matcher")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+                disabled={props.editing}
+                options={selectedFilterMatchers}
+                getOptionValue={matcher => matcher.key}
+                getOptionLabel={matcher => matcher.text}
+              />
+            ) : null}
+
+            {clmFilterOptions.NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.NAME.key}
+                label={t("Package Name")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+              />
+            )}
+
+            {clmFilterOptions.NEVRA.key === filterType && (
+              <>
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-6" />
+              </>
+            )}
+
+            {clmFilterOptions.PACKAGE_NEVR.key === filterType && (
+              <>
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
+              </>
+            )}
+
+            {clmFilterOptions.ADVISORY_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.ADVISORY_NAME.key}
+                label={t("Advisory name")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+              />
+            )}
+
+            {clmFilterOptions.ADVISORY_TYPE.key === filterType && (
+              <Radio
+                name={clmFilterOptions.ADVISORY_TYPE.key}
+                required
+                items={[
+                  { label: t("Security Advisory"), value: "Security Advisory" },
+                  { label: t("Bug Fix Advisory"), value: "Bug Fix Advisory" },
+                  { label: t("Product Enhancement Advisory"), value: "Product Enhancement Advisory" },
+                ]}
+                label={t("Advisory Type")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+              />
+            )}
+
+            {clmFilterOptions.ISSUE_DATE.key === filterType && (
+              <DateTime
+                name={clmFilterOptions.ISSUE_DATE.key}
+                label={t("Issued")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+                timezone={timezone}
+              />
+            )}
+
+            {clmFilterOptions.SYNOPSIS.key === filterType && (
+              <Text
+                name={clmFilterOptions.SYNOPSIS.key}
+                label={t("Synopsis")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+              />
+            )}
+
+            {clmFilterOptions.KEYWORD.key === filterType && (
+              <Radio
+                name={clmFilterOptions.KEYWORD.key}
+                required
+                items={[
+                  { label: t("Reboot Required"), value: "reboot_suggested" },
+                  { label: t("Package Manager Restart Required"), value: "restart_suggested" },
+                ]}
+                openOption
+                label={t("Advisory Keywords")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+              />
+            )}
+
+            {clmFilterOptions.PACKAGE_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PACKAGE_NAME.key}
+                label={t("Package Name")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+                required
+              />
+            )}
+
+            {clmFilterOptions.STREAM.key === filterType && (
+              <>
+                <AppStreamsForm />
+              </>
+            )}
+
+            {![
+              clmFilterOptions.STREAM.key,
+              clmFilterOptions.LIVE_PATCHING_SYSTEM.key,
+              clmFilterOptions.LIVE_PATCHING_PRODUCT.key,
+            ].includes(filterType) && (
+              <Radio
+                inline
+                name="rule"
+                items={[
+                  { label: t("Deny"), value: "deny" },
+                  { label: t("Allow"), value: "allow" },
+                ]}
+                label={t("Rule")}
+                labelClass="col-md-3"
+                divClass="col-md-6"
+              />
+            )}
+          </React.Fragment>
         ) : null}
 
-        {clmFilterOptions.NAME.key === filterType && (
-          <Text
-            name={clmFilterOptions.NAME.key}
-            label={t("Package Name")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-          />
-        )}
-
-        {clmFilterOptions.NEVRA.key === filterType && (
-          <>
-            <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-            <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-            <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-            <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
-            <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-6" />
-          </>
-        )}
-
-        {clmFilterOptions.PACKAGE_NEVR.key === filterType && (
-          <>
-            <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-            <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-            <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-            <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
-          </>
-        )}
-
-        {clmFilterOptions.ADVISORY_NAME.key === filterType && (
-          <Text
-            name={clmFilterOptions.ADVISORY_NAME.key}
-            label={t("Advisory name")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-          />
-        )}
-
-        {clmFilterOptions.ADVISORY_TYPE.key === filterType && (
-          <Radio
-            name={clmFilterOptions.ADVISORY_TYPE.key}
-            required
-            items={[
-              { label: t("Security Advisory"), value: "Security Advisory" },
-              { label: t("Bug Fix Advisory"), value: "Bug Fix Advisory" },
-              { label: t("Product Enhancement Advisory"), value: "Product Enhancement Advisory" },
-            ]}
-            label={t("Advisory Type")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-        )}
-
-        {clmFilterOptions.ISSUE_DATE.key === filterType && (
-          <DateTime
-            name={clmFilterOptions.ISSUE_DATE.key}
-            label={t("Issued")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-            timezone={timezone}
-          />
-        )}
-
-        {clmFilterOptions.SYNOPSIS.key === filterType && (
-          <Text
-            name={clmFilterOptions.SYNOPSIS.key}
-            label={t("Synopsis")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-          />
-        )}
-
-        {clmFilterOptions.KEYWORD.key === filterType && (
-          <Radio
-            name={clmFilterOptions.KEYWORD.key}
-            required
-            items={[
-              { label: t("Reboot Required"), value: "reboot_suggested" },
-              { label: t("Package Manager Restart Required"), value: "restart_suggested" },
-            ]}
-            openOption
-            label={t("Advisory Keywords")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-        )}
-
-        {clmFilterOptions.PACKAGE_NAME.key === filterType && (
-          <Text
-            name={clmFilterOptions.PACKAGE_NAME.key}
-            label={t("Package Name")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-          />
-        )}
-
-        {clmFilterOptions.STREAM.key === filterType && (
-          <>
-            <AppStreamsForm />
-          </>
-        )}
-
-        {![
-          clmFilterOptions.STREAM.key,
-          clmFilterOptions.LIVE_PATCHING_SYSTEM.key,
-          clmFilterOptions.LIVE_PATCHING_PRODUCT.key,
-        ].includes(filterType) && (
-          <Radio
-            inline
-            name="rule"
-            items={[
-              { label: t("Deny"), value: "deny" },
-              { label: t("Allow"), value: "allow" },
-            ]}
-            label={t("Rule")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-        )}
-
-        <LivePatchingFilterForm {...props} />
+        {filterBy === FilterBy.Template ? <TemplatesForm {...props} /> : null}
       </React.Fragment>
     </Form>
   );

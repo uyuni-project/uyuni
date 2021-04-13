@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Text, Select, FormContext } from "components/input";
-import { clmFilterOptions } from "../shared/business/filters.enum";
-import { Props as FilterFormProps } from "./filter-form";
+import { Props as FilterFormProps } from "../filter-form";
 import { Cancelable } from "utils/functions";
+
+import { Template } from "./index";
 
 type Client = {
   id: number;
@@ -35,7 +36,6 @@ async function getClients(): Cancelable<Client[]> {
 }
 
 async function getKernels(clientId: number): Cancelable<Kernel[]> {
-  console.log("get kernels for", clientId);
   if (clientId === 1) {
     return [
       {
@@ -52,11 +52,12 @@ async function getKernels(clientId: number): Cancelable<Kernel[]> {
   ];
 }
 
-export default (props: FilterFormProps) => {
-  const filterType = props.filter.type || "";
-  if (![clmFilterOptions.LIVE_PATCHING_SYSTEM.key, clmFilterOptions.LIVE_PATCHING_PRODUCT.key].includes(filterType)) {
+export default (props: FilterFormProps & { template: Template }) => {
+  const template = props.template;
+  if (!template) {
     return null;
   }
+
   const formContext = React.useContext(FormContext);
   const clientId = formContext.model.clientId;
   const setModelValue = formContext.setModelValue;
@@ -83,7 +84,7 @@ export default (props: FilterFormProps) => {
   return (
     <>
       <Text name={"labelPrefix"} label={t("Prefix")} labelClass="col-md-3" divClass="col-md-6" required />
-      {clmFilterOptions.LIVE_PATCHING_SYSTEM.key === filterType && (
+      {template === Template.LivePatchingSystem && (
         <>
           <Select
             name="clientId"
