@@ -14,7 +14,7 @@ Feature: Register a salt system to be managed via SSH tunnel
 
   Scenario: Register this minion for push via SSH tunnel
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I enter the hostname of "sle_ssh_tunnel_minion" as "hostname"
     And I enter "22" as "port"

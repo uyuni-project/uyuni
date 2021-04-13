@@ -10,7 +10,7 @@ Feature: Negative tests for bootstrapping normal minions
 
   Scenario: Bootstrap should fail when minion already exists
      Given I am authorized
-     And I go to the bootstrapping page
+     And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
@@ -31,7 +31,7 @@ Feature: Negative tests for bootstrapping normal minions
 
   Scenario: Bootstrap a SLES minion with wrong hostname
      Given I am authorized
-     And I go to the bootstrapping page
+     And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter "not-existing-name" as "hostname"
      And I enter "22" as "port"
@@ -43,7 +43,7 @@ Feature: Negative tests for bootstrapping normal minions
 
   Scenario: Bootstrap a SLES minion with wrong SSH credentials
      Given I am authorized
-     And I go to the bootstrapping page
+     And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
@@ -55,7 +55,7 @@ Feature: Negative tests for bootstrapping normal minions
 
   Scenario: Bootstrap a SLES minion with wrong SSH port number
      Given I am authorized
-     And I go to the bootstrapping page
+     And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
      And I enter "11" as "port"
@@ -68,7 +68,7 @@ Feature: Negative tests for bootstrapping normal minions
 
   Scenario: Cleanup: bootstrap a SLES minion after negative tests
      Given I am authorized
-     When I go to the bootstrapping page
+     When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"

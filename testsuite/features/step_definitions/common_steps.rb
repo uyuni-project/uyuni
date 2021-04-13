@@ -175,7 +175,6 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    When I am authorized as "admin" with password "admin"
     And I follow the left menu "Systems > Overview"
     And I wait until I see "System Overview" text
   )

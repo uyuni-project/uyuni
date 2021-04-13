@@ -9,7 +9,7 @@ Feature: Migrate a traditional client into a Salt minion
 
   Scenario: Migrate a SLES client into a Salt minion
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"

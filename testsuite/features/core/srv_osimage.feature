@@ -3,9 +3,12 @@
 
 Feature: Prepare server for using Kiwi
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create a Kiwi user with image administrators rights
-    Given I am on the active Users page
-    When I follow "Create User"
+    When I follow the left menu "Users > User List > Active"
+    And I follow "Create User"
     And I enter "kiwikiwi" as "login"
     And I enter "kiwikiwi" as "desiredpassword"
     And I enter "kiwikiwi" as "desiredpasswordConfirm"
@@ -22,7 +25,6 @@ Feature: Prepare server for using Kiwi
     And I click on "Update"
 
   Scenario: Create Kiwi activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Kiwi testing" as "description"

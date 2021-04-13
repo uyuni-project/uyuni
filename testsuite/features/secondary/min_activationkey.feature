@@ -51,7 +51,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Bootstrap a SLES minion with an activation key
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
@@ -67,7 +67,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Verify that minion bootstrapped with Salt key and packages
     Given I am authorized
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "sle_minion"
     When I wait for "orion-dummy" to be installed on "sle_minion"

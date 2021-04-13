@@ -4,9 +4,11 @@
 @ssh_minion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Register this SSH minion for service pack migration
-    Given I am authorized
-    And I go to the bootstrapping page
+    And I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
     And I enter the hostname of "ssh_minion" as "hostname"
@@ -19,7 +21,6 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until onboarding is completed for "ssh_minion"
 
 @proxy
-@ssh_minion
   Scenario: Check connection from SSH minion to proxy
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Details" in the content area
@@ -27,7 +28,6 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see "proxy" short hostname
 
 @proxy
-@ssh_minion
   Scenario: Check registration on proxy of SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area

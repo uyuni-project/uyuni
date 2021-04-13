@@ -9,7 +9,7 @@ Feature: Bootstrap a SLES 15 Salt minion
 
   Scenario: Bootstrap a SLES 15 minion
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle15_minion" as "hostname"
     And I enter "22" as "port"
@@ -23,7 +23,7 @@ Feature: Bootstrap a SLES 15 Salt minion
 
   Scenario: Check the new bootstrapped SLES 15 minion in System Overview page
     Given I am authorized as "admin" with password "admin"
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "sle15_minion"
 

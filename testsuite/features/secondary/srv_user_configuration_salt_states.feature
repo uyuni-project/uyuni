@@ -43,7 +43,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I follow "Managers"
 
   Scenario: User Roles were assigned
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user2"
     Then I should see a "User Details" text
     And I should see "role_activation_key_admin" as checked
@@ -72,7 +72,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I should not see a "my_org2" text
 
   Scenario: Cleanup: user was successfully removed
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     Then I should not see a "user2" text
 
   Scenario: Cleanup: activation key was successfully removed

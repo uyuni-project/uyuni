@@ -589,14 +589,6 @@ When(/^I accept "([^"]*)" key$/) do |host|
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
-When(/^I go to the minion onboarding page$/) do
-  step %(I follow the left menu "Salt > Keys")
-end
-
-When(/^I go to the bootstrapping page$/) do
-  step %(I follow the left menu "Systems > Bootstrapping")
-end
-
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
     step %(I wait until I see the name of "#{minion}", refreshing the page)

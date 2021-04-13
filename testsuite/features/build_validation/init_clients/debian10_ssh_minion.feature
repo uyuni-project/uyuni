@@ -12,7 +12,7 @@ Feature: Bootstrap a Debian 10 Salt SSH minion
 
   Scenario: Bootstrap a SSH-managed Debian 10 minion
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "debian10_ssh_minion" as "hostname"
     And I enter "root" as "user"

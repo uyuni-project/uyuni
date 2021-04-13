@@ -6,8 +6,10 @@ Feature: Adding channels
   As an authorized user
   I want to add channels
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Add a base channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test Base Channel" as "Channel Name"
@@ -20,7 +22,6 @@ Feature: Adding channels
     Then I should see a "Channel Test Base Channel created." text
 
   Scenario: Add a child channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     When I enter "Test Child Channel" as "Channel Name"
@@ -33,7 +34,6 @@ Feature: Adding channels
     Then I should see a "Channel Test Child Channel created." text
 
   Scenario: Add a base test channel for i586
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-i586" as "Channel Name"
@@ -46,7 +46,6 @@ Feature: Adding channels
     Then I should see a "Channel Test-Channel-i586 created." text
 
   Scenario: Add a child channel to the i586 test channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-i586 Child Channel" as "Channel Name"
@@ -59,7 +58,6 @@ Feature: Adding channels
     Then I should see a "Channel Test-Channel-i586 Child Channel created." text
 
   Scenario: Add a test base channel for x86_64
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-x86_64" as "Channel Name"
@@ -72,7 +70,6 @@ Feature: Adding channels
     Then I should see a "Channel Test-Channel-x86_64 created." text
 
   Scenario: Add a child channel to the x86_64 test channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-x86_64 Child Channel" as "Channel Name"
@@ -85,7 +82,6 @@ Feature: Adding channels
     Then I should see a "Channel Test-Channel-x86_64 Child Channel created." text
 
   Scenario: Add Ubuntu AMD64 base channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test-Channel-Deb-AMD64" as "Channel Name"

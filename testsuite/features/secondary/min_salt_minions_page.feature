@@ -17,14 +17,14 @@ Feature: Management of minion keys
 
   Scenario: Completeness of the onboarding page
     Given I am authorized as "testing" with password "testing"
-    And I go to the minion onboarding page
+    And I follow the left menu "Salt > Keys"
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
     Given I am authorized as "testing" with password "testing"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
-    And I go to the minion onboarding page
+    And I follow the left menu "Salt > Keys"
     And I refresh page until I see "sle_minion" hostname as text
     Then I should see a "Fingerprint" text
     And I see "sle_minion" fingerprint
@@ -32,7 +32,7 @@ Feature: Management of minion keys
 
   Scenario: Reject and delete the pending key
     Given I am authorized as "testing" with password "testing"
-    And I go to the minion onboarding page
+    And I follow the left menu "Salt > Keys"
     And I reject "sle_minion" from the Pending section
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "rejected"
     Then I should see a "rejected" text
@@ -46,7 +46,7 @@ Feature: Management of minion keys
     When I start salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     Then "sle_minion" should not be registered
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "pending" text
     When I accept "sle_minion" key
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "accepted"
@@ -72,7 +72,7 @@ Feature: Management of minion keys
 
   Scenario: Cleanup: bootstrap again the minion
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"

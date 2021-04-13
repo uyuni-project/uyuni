@@ -12,7 +12,7 @@ Feature: Bootstrap a CentOS 6 Salt SSH minion
 
   Scenario: Bootstrap a CentOS 6 Salt SSH minion
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "ceos6_ssh_minion" as "hostname"

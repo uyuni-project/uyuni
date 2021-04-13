@@ -12,7 +12,7 @@ Feature: Bootstrap a Ubuntu 18.04 Salt SSH minion
 
   Scenario: Bootstrap a SSH-managed Ubuntu 18.04 minion
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu1804_ssh_minion" as "hostname"
     And I enter "root" as "user"

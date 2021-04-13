@@ -114,7 +114,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 @centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos_minion" as "hostname"
     And I enter "22" as "port"

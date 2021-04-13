@@ -3,9 +3,11 @@
 
 Feature: Bootstrap a Salt minion via the GUI
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a SLES minion
-     Given I am authorized
-     When I go to the bootstrapping page
+     When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
      And I enter "22" as "port"
@@ -16,8 +18,7 @@ Feature: Bootstrap a Salt minion via the GUI
      And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped minion in System Overview page
-    Given I am authorized
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page

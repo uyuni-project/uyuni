@@ -7,7 +7,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
   Scenario: Bootstrap KVM virtual host
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "kvm_server" as "hostname"
     And I enter "22" as "port"

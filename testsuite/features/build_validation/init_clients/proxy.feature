@@ -21,7 +21,7 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy" as "hostname"
     And I enter "22" as "port"
