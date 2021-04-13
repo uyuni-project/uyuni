@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-13 17:54+0000\n"
+"POT-Creation-Date: 2021-04-13 19:56+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -1881,6 +1881,7 @@ msgstr "クラスタ"
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "タイプ"
@@ -3881,6 +3882,7 @@ msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr "Formula"
 
@@ -3942,13 +3944,63 @@ msgstr "SUSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+#, fuzzy
+msgid "State Summary for {0}"
 msgstr "{0} に対する highstate"
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "該当するシステムはありません。"
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+#, fuzzy
+msgid "State channel"
+msgstr "ソフトウェアチャンネル"
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+#, fuzzy
+msgid "Config channel"
+msgstr "チャンネルを複製しています"
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+#, fuzzy
+msgid "internal"
+msgstr "メンテナンス"
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+#, fuzzy
+msgid "Internal states"
+msgstr "インターフェイス"
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+#, fuzzy
+msgid "State Source"
+msgstr "ソース"
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+#, fuzzy
+msgid "System Group"
+msgstr "システムグループ"
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "組織"
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -3982,12 +4034,6 @@ msgstr "minion"
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
 msgstr "グループ"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "組織"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"

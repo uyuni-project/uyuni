@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-13 17:54+0000\n"
+"POT-Creation-Date: 2021-04-13 19:56+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1830,6 +1830,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr ""
@@ -3777,6 +3778,7 @@ msgid "Filter by formula name"
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr ""
 
@@ -3838,13 +3840,59 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+msgid "State Summary for {0}"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+#, fuzzy
+msgid "State channel"
+msgstr "Canal de configuração de estado"
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+#, fuzzy
+msgid "Config channel"
+msgstr "Canais de Configuração"
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+msgid "internal"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+msgid "Internal states"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+msgid "State Source"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+#, fuzzy
+msgid "System Group"
+msgstr "Sistemas"
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "Organização"
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -3878,12 +3926,6 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
 msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "Organização"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
