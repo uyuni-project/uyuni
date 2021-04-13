@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-12 17:57+0000\n"
+"PO-Revision-Date: 2021-04-13 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -615,11 +615,11 @@ msgstr "Nepodarilo sa klonovať %s do %s"
 
 #: ../src/spacecmd/activationkey.py:1603
 msgid "no activationkey label given"
-msgstr "nie je dané označenie aktivačnéhokľúča"
+msgstr "nie je dané označenie aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1606
 msgid "invalid activationkey label "
-msgstr "neplatné označenie aktivačnéhokľúča "
+msgstr "neplatné označenie aktivačného kľúča "
 
 #: ../src/spacecmd/activationkey.py:1623
 msgid "activationkey_diff: Diff activation keys"
@@ -715,7 +715,7 @@ msgstr "Núdzový výstup na stdout"
 
 #: ../src/spacecmd/api.py:92
 msgid "No such API: "
-msgstr ""
+msgstr "Žiadne také API: "
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
@@ -723,7 +723,7 @@ msgstr "configchannel_list: Vypísať zoznam všetkých konfiguračných kanálo
 
 #: ../src/spacecmd/configchannel.py:52
 msgid "usage: configchannel_list"
-msgstr ""
+msgstr "použitie: configchannel_list"
 
 #: ../src/spacecmd/configchannel.py:69
 msgid "configchannel_listsystems: List the systems subscribed to a"
@@ -731,15 +731,15 @@ msgstr "configchannel_listsystems: Vypísať zoznam systémov prihlásených k"
 
 #: ../src/spacecmd/configchannel.py:70
 msgid "                           configuration channel"
-msgstr ""
+msgstr "                           konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:71
 msgid "usage: configchannel_listsystems CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_listsystems KANÁL"
 
 #: ../src/spacecmd/configchannel.py:80
 msgid "This version of the API doesn't support this method"
-msgstr ""
+msgstr "Táto verzia API nepodporuje túto metódu"
 
 #: ../src/spacecmd/configchannel.py:104
 msgid "configchannel_listfiles: List the files in a config channel"
@@ -747,138 +747,140 @@ msgstr "configchannel_listfiles: Vypísať zoznam súborov v konfiguračnom kan�
 
 #: ../src/spacecmd/configchannel.py:105
 msgid "usage: configchannel_listfiles CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_listfiles KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:134
 msgid "configchannel_forcedeploy: Forces a redeployment"
-msgstr ""
+msgstr "configchannel_forcedeploy: Vynúti opätovné nasadenie"
 
 #: ../src/spacecmd/configchannel.py:135
 msgid "                           of files within this channel"
-msgstr ""
+msgstr "                           súborov v tomto kanáli"
 
 #: ../src/spacecmd/configchannel.py:136
 msgid "                           on all subscribed systems"
-msgstr ""
+msgstr "                           vo všetkých prihlásených systémoch"
 
 #: ../src/spacecmd/configchannel.py:137
 msgid "usage: configchannel_forcedeploy CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_forcedeploy KANÁL"
 
 #: ../src/spacecmd/configchannel.py:159
 msgid "No files within selected configchannel."
-msgstr ""
+msgstr "Žiadne súbory vo vybranom konfiguračnom kanáli."
 
 #: ../src/spacecmd/configchannel.py:165
 msgid "Channel has no subscribed Systems"
-msgstr ""
+msgstr "Kanál nemá žiadne prihlásené systémy"
 
 #: ../src/spacecmd/configchannel.py:168
 msgid "Force deployment of the following configfiles:"
-msgstr ""
+msgstr "Vynútiť nasadenie nasledujúcich konfiguračných súborov:"
 
 #: ../src/spacecmd/configchannel.py:171
 msgid ""
 "\n"
 "On these systems:"
 msgstr ""
+"\n"
+"Na týchto systémoch:"
 
 #: ../src/spacecmd/configchannel.py:174
 msgid "Really force deployment [y/N]:"
-msgstr ""
+msgstr "Naozaj vynútiť nasadenie [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:183
 msgid "configchannel_filedetails: Show the details of a file"
-msgstr ""
+msgstr "configchannel_filedetails: Zobraziť podrobnosti súboru"
 
 #: ../src/spacecmd/configchannel.py:184
 msgid "in a configuration channel"
-msgstr ""
+msgstr "v konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:185
 msgid "usage: configchannel_filedetails CHANNEL FILE [REVISION]"
-msgstr ""
+msgstr "použitie: configchannel_filedetails KANÁL SÚBOR [REVÍZIA]"
 
 #: ../src/spacecmd/configchannel.py:217
 #, python-format
 msgid "Invalid revision: %s"
-msgstr ""
+msgstr "Neplatná revízia: %s"
 
 #: ../src/spacecmd/configchannel.py:223
 #, python-format
 msgid "%s is not in this configuration channel"
-msgstr ""
+msgstr "%s nie je v tomto konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:241
 #, python-format
 msgid "Path:     %s"
-msgstr ""
+msgstr "Cesta:     %s"
 
 #: ../src/spacecmd/configchannel.py:242
 #, python-format
 msgid "Type:     %s"
-msgstr ""
+msgstr "Typ:     %s"
 
 #: ../src/spacecmd/configchannel.py:243
 #, python-format
 msgid "Revision: %s"
-msgstr ""
+msgstr "Revízia: %s"
 
 #: ../src/spacecmd/configchannel.py:244
 #, python-format
 msgid "Created:  %s"
-msgstr ""
+msgstr "Vytvorený:  %s"
 
 #: ../src/spacecmd/configchannel.py:245
 #, python-format
 msgid "Modified: %s"
-msgstr ""
+msgstr "Zmenený: %s"
 
 #: ../src/spacecmd/configchannel.py:249 ../src/spacecmd/configchannel.py:651
 #, python-format
 msgid "Target Path:     %s"
-msgstr ""
+msgstr "Cieľová cesta:     %s"
 
 #: ../src/spacecmd/configchannel.py:252 ../src/spacecmd/configchannel.py:681
 #, python-format
 msgid "Owner:           %s"
-msgstr ""
+msgstr "Vlastník:           %s"
 
 #: ../src/spacecmd/configchannel.py:253 ../src/spacecmd/configchannel.py:682
 #, python-format
 msgid "Group:           %s"
-msgstr ""
+msgstr "Skupina:           %s"
 
 #: ../src/spacecmd/configchannel.py:254 ../src/spacecmd/configchannel.py:683
 #, python-format
 msgid "Mode:            %s"
-msgstr ""
+msgstr "Režim:            %s"
 
 #: ../src/spacecmd/configchannel.py:256 ../src/spacecmd/configchannel.py:652
 #: ../src/spacecmd/configchannel.py:685
 #, python-format
 msgid "SELinux Context: %s"
-msgstr ""
+msgstr "Kontext SELinux: %s"
 
 #: ../src/spacecmd/configchannel.py:259
 #, python-format
 msgid "SHA256:          %s"
-msgstr ""
+msgstr "SHA256:          %s"
 
 #: ../src/spacecmd/configchannel.py:260 ../src/spacecmd/configchannel.py:684
 #, python-format
 msgid "Binary:          %s"
-msgstr ""
+msgstr "Binárne:          %s"
 
 #: ../src/spacecmd/configchannel.py:264 ../src/spacecmd/configchannel.py:697
 #: ../src/spacecmd/configchannel.py:947 ../src/spacecmd/kickstart.py:1905
 #: ../src/spacecmd/snippet.py:162
 msgid "Contents"
-msgstr ""
+msgstr "Obsah"
 
 #: ../src/spacecmd/configchannel.py:274
 msgid "configchannel_backup: backup a config channel"
-msgstr ""
+msgstr "configchannel_backup: zálohovať konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:275
 msgid ""
@@ -886,6 +888,10 @@ msgid ""
 "\n"
 "OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL\n"
 msgstr ""
+"použitie: configchannel_backup KANÁL [VÝST_ADR])\n"
+"\n"
+"VÝST_ADR predvolená hodnota je $HOME/spacecmd-backup/configchannel/"
+"YYYY-MM-DD/KANÁL\n"
 
 #: ../src/spacecmd/configchannel.py:314 ../src/spacecmd/group.py:268
 #, python-format
@@ -1014,7 +1020,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:554
 msgid "SELinux Context [none]:"
-msgstr ""
+msgstr "Kontext SELinux [žiadny]:"
 
 #: ../src/spacecmd/configchannel.py:562
 msgid "Directory [y/N]:"
@@ -1038,7 +1044,7 @@ msgstr ""
 #: ../src/spacecmd/configchannel.py:575
 #, python-format
 msgid "SELinux Context [%s]:"
-msgstr ""
+msgstr "Kontext SELinux [%s]:"
 
 #: ../src/spacecmd/configchannel.py:576 ../src/spacecmd/configchannel.py:912
 msgid "Revision [next]:"
