@@ -3,9 +3,12 @@
 
 Feature: Prepare server for using Docker
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create a Docker user with image administrators rights
-    Given I am on the active Users page
-    When I follow "Create User"
+    When I follow the left menu "Users > User List > Active"
+    And I follow "Create User"
     And I enter "docker" as "login"
     And I enter "docker" as "desiredpassword"
     And I enter "docker" as "desiredpasswordConfirm"
@@ -22,7 +25,6 @@ Feature: Prepare server for using Docker
     And I click on "Update"
 
   Scenario: Create Docker activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     When I enter "Docker testing" as "description"
@@ -37,7 +39,6 @@ Feature: Prepare server for using Docker
 
 @no_auth_registry
   Scenario: Create an image store without credentials
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "galaxy-registry" as "label"

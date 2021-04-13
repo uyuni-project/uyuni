@@ -31,6 +31,9 @@ Feature: Setup SUSE Manager proxy
     And I configure the proxy
     Then I should see "proxy" via spacecmd
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname

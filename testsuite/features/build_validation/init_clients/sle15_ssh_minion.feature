@@ -9,7 +9,7 @@ Feature: Bootstrap a SLES 15 Salt SSH minion
 
   Scenario: Bootstrap a SLES 15 system managed via salt-ssh
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "sle15_ssh_minion" as "hostname"

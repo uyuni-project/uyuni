@@ -36,7 +36,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
   Scenario: Enable new module.run syntax on the minion and perform registration
     Given I store "use_superseded: [module.run]" into file "/etc/salt/minion.d/custom_modulerun.conf" on "sle_minion"
     And I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
@@ -78,7 +78,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Cleanup: bootstrap again the minion after mgrcompat tests
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"

@@ -21,7 +21,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
 @ubuntu_minion
   Scenario: Bootstrap a SSH-managed Ubuntu minion
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "ubuntu_ssh_minion" as "hostname"
@@ -99,7 +99,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
 @ubuntu_minion
   Scenario: Cleanup: bootstrap a Ubuntu minion
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu_minion" as "hostname"
     And I enter "22" as "port"

@@ -5,8 +5,10 @@ Feature: Register a traditional client
   In order to register a traditional client to the SUSE Manager server
   I want to create, parametrize and run boostrap script from proxy
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Register a traditional client
-    Given I am authorized
     When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
     And I wait until onboarding is completed for "sle_client"
     Then I should see "sle_client" via spacecmd

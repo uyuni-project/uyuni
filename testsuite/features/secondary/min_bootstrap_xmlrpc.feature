@@ -19,7 +19,7 @@ Feature: Register a Salt minion via XML-RPC API
 
   Scenario: Check new minion bootstrapped via XML-RPC in System Overview page
     Given I am authorized
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page

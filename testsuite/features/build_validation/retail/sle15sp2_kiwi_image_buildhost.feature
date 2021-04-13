@@ -9,7 +9,7 @@ Feature: Bootstrap a SLES 15 SP2 Salt build host via the GUI
 
   Scenario: Bootstrap a SLES 15 SP2 build host
      Given I am authorized as "admin" with password "admin"
-     When I go to the bootstrapping page
+     When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle15sp2_buildhost" as "hostname"
      And I enter "22" as "port"
@@ -21,7 +21,7 @@ Feature: Bootstrap a SLES 15 SP2 Salt build host via the GUI
 
   Scenario: Check the new bootstrapped SLES 15 SP2 build host in System Overview page
     Given I am authorized as "admin" with password "admin"
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page
     And I wait until I see the name of "sle15sp2_buildhost", refreshing the page

@@ -456,13 +456,6 @@ Given(/^I am on the groups page$/) do
   )
 end
 
-Given(/^I am on the active Users page$/) do
-  steps %(
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Users > User List > Active"
-  )
-end
-
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   step %(I wait until table row for "#{arg1}" contains "#{arg2}")
 end

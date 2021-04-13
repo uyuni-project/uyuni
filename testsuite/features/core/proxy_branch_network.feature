@@ -29,6 +29,11 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+@proxy
+@private_net
   Scenario: Enable the branch network formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area

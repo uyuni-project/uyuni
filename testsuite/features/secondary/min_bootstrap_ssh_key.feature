@@ -18,7 +18,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Bootstrap a SLES minion using SSH key with wrong passphrase
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
@@ -31,7 +31,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Bootstrap a SLES minion using SSH key
     Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
@@ -45,7 +45,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
     Given I am authorized
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the Systems page
     And I wait until I see the name of "sle_minion", refreshing the page

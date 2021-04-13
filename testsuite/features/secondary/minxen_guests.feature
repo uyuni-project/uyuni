@@ -7,7 +7,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
 @virthost_xen
   Scenario: Bootstrap Xen virtual host
     Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "xen_server" as "hostname"
     And I enter "22" as "port"
