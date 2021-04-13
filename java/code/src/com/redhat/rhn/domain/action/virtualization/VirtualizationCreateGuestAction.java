@@ -39,6 +39,7 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     private String cobblerSystem;
     private String kickstartHost;
     private String kernelOptions;
+    private String clusterDefinitions;
 
     /**
      * @return the ID in the DB
@@ -259,6 +260,20 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
         kernelOptions = kernelOptionsIn;
     }
 
+    /**
+     * @return value of clusterDefinitions
+     */
+    public String getClusterDefinitions() {
+        return clusterDefinitions;
+    }
+
+    /**
+     * @param clusterDefinitionsIn value of clusterDefinitions
+     */
+    public void setClusterDefinitions(String clusterDefinitionsIn) {
+        clusterDefinitions = clusterDefinitionsIn;
+    }
+
     @Override
     public boolean equals(Object other) {
         boolean result = false;
@@ -276,7 +291,8 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
                     isRemoveDisks() == otherAction.isRemoveDisks() &&
                     Objects.equals(getDisks(), otherAction.getDisks()) &&
                     isRemoveInterfaces() == otherAction.isRemoveInterfaces() &&
-                    Objects.equals(getInterfaces(), otherAction.getInterfaces());
+                    Objects.equals(getInterfaces(), otherAction.getInterfaces()) &&
+                    Objects.equals(getClusterDefinitions(), otherAction.getClusterDefinitions());
         }
         return result;
     }
@@ -284,6 +300,6 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     @Override
     public int hashCode() {
         return Objects.hash(type, guestName, osType, memory, vcpus, arch, removeDisks, disks, removeInterfaces,
-                interfaces, cobblerSystem, kickstartHost, kernelOptions);
+                interfaces, cobblerSystem, kickstartHost, kernelOptions, clusterDefinitions);
     }
 }

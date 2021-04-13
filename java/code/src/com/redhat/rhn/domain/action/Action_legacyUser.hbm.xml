@@ -381,6 +381,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <property name="cobblerSystem" type="string" column="cobbler_system"/>
             <property name="kickstartHost" type="string" column="kickstart_host"/>
             <property name="kernelOptions" type="string" column="kernel_options"/>
+            <property name="clusterDefinitions" type="string" column="cluster_definitions"/>
           </join>
         </subclass>
 
@@ -638,7 +639,8 @@ select {ra.*}
             NULL as remove_interfaces,
             NULL as cobbler_system,
             NULL as kickstart_host,
-            NULL as kernel_options from dual) ra_11_,
+            NULL as kernel_options,
+            NULL as cluster_definitions from dual) ra_11_,
     (select NULL as pool_name from dual) ra_12_,
     (select NULL as pool_name from dual) ra_13_,
     (select NULL as pool_name from dual) ra_14_,
@@ -784,7 +786,8 @@ select sa.server_id
                              NULL as remove_interfaces,
                              NULL as cobbler_system,
                              NULL as kickstart_host,
-                             NULL as kernel_options from dual) ra_11_,
+                             NULL as kernel_options,
+                             NULL as cluster_definitions from dual) ra_11_,
                      (select NULL as pool_name from dual) ra_12_,
                      (select NULL as pool_name from dual) ra_13_,
                      (select NULL as pool_name from dual) ra_14_,
