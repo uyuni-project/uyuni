@@ -131,6 +131,11 @@ When(/^I switch to last opened window$/) do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
 
+When(/^I close the last opened window$/) do
+  page.driver.browser.close
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+end
+
 #
 # Check a checkbox of the given id
 #
@@ -346,6 +351,7 @@ end
 #
 
 Given(/^I am not authorized$/) do
+  page.reset!
   visit Capybara.app_host
   raise "Button 'Sign In' not visible" unless find_button('Sign In').visible?
 end
