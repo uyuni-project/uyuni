@@ -429,9 +429,20 @@ public class ContentManager {
      * @return a list of {@link SoftwareProjectSource}s that have patches needing resync
      */
     public static Set<SoftwareProjectSource> listActiveSwSourcesWithUnsyncedPatches(User user, ContentProject project) {
+        if (project.getFirstEnvironmentOpt().isEmpty()) {
+            return Set.of();
+        }
+        ContentEnvironment firstEnv = project.getFirstEnvironmentOpt().orElseThrow();
+
         return project.getActiveSources().stream()
-                .flatMap(s -> s.asSoftwareSource().stream())
-                .filter(swSource -> !ChannelManager.listErrataNeedingResync(swSource.getChannel(), user).isEmpty())
+                .flatMap(src -> src.asSoftwareSource().stream())
+                .filter(src -> {
+                    // we are interested in sources that have targets with patches needing resync
+                    Optional<SoftwareEnvironmentTarget> tgt = lookupTarget(src.getChannel(), firstEnv, user);
+                    return tgt
+                            .map(t -> !ChannelManager.listErrataNeedingResync(t.getChannel(), user).isEmpty())
+                            .orElse(false);
+                })
                 .collect(toSet());
     }
 
