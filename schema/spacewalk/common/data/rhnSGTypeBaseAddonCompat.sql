@@ -33,4 +33,8 @@ insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
 values (lookup_sg_type('salt_entitled'),
         lookup_sg_type('monitoring_entitled'));
 
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('salt_entitled'),
+        lookup_sg_type('ansible_control_node'));
+
 commit;

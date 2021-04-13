@@ -81,4 +81,12 @@ insert into rhnServerGroupType (id, label, name, permanent, is_base)
       'N', 'N'
    );
 
+-- ansible_control_node type ---------------------------------------------------
+
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'ansible_control_node', 'Ansible Control Node',
+      'N', 'N'
+   );
+
 commit;

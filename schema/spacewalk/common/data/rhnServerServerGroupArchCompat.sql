@@ -903,4 +903,18 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('s390x-redhat-linux'),
             lookup_sg_type('monitoring_entitled'));
 
+-- ansible_control_node system entitlement
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('x86_64-redhat-linux'),
+            lookup_sg_type('ansible_control_node'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('amd64-redhat-linux'),
+            lookup_sg_type('ansible_control_node'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+	values (lookup_server_arch('amd64-debian-linux'),
+            lookup_sg_type('ansible_control_node'));
+
 commit;
