@@ -10,6 +10,7 @@ Feature: Cobbler and distribution autoinstallation
     And I upload ./features/upload_files/install/empty.xml to /install on server
     And I upload ./features/upload_files/install/initrd.img to /install/Fedora_12_i386/images/pxeboot on server
     And I upload ./features/upload_files/install/initrd to /install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/ on server
+    And I upload ./features/upload_files/install/linux to /install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/ on server
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
