@@ -85,7 +85,7 @@ export class Form extends React.Component<Props> {
 
     // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
     this.inputs[name]?.validate(value);
-  }
+  };
 
   allValid(): boolean {
     return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
@@ -96,7 +96,7 @@ export class Form extends React.Component<Props> {
     if (this.props.onValidate) {
       this.props.onValidate(valid);
     }
-  }
+  };
 
   getComponentName(component: InputBaseRef) {
     return Array.isArray(component.props.name) ? component.props.name.join() : component.props.name;
@@ -109,20 +109,20 @@ export class Form extends React.Component<Props> {
   unregisterInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
-      if (this.inputs[name] === component) {
+      if (typeof name !== "undefined" && this.inputs[name] === component) {
         delete this.inputs[name];
       }
     }
-  }
+  };
 
   registerInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
-      this.inputs[name] = component;
-    } else {
-      throw new Error('Can not add input without "name" attribute');
+      if (typeof name !== "undefined") {
+        this.inputs[name] = component;
+      }
     }
-  }
+  };
 
   submit = (event: any) => {
     event.preventDefault();
@@ -131,7 +131,7 @@ export class Form extends React.Component<Props> {
     } else if (this.props.onSubmitInvalid) {
       this.props.onSubmitInvalid(this.props.model, event);
     }
-  }
+  };
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
@@ -168,12 +168,12 @@ export class Form extends React.Component<Props> {
            * NB! Please don't use `.bind()` here, children may rely on these functions in `useEffect()` calls.
            * Binding here will create a new reference on every render which will in turn retrigger dependency tracking.
            * Instead of using `.bind()` here, implicitly bind any methods you need here in the class declaration:
-           * 
+           *
            *  class Foo {
            *    method = () => {...}
            *    // ----^
            *  }
-           *  
+           *
            */
           setModelValue: this.setModelValue,
           registerInput: this.registerInput,

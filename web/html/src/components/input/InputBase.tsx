@@ -114,7 +114,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
       const model = this.context.model || {};
       const checkValueChange = (name, defaultValue) => {
         // If we don't have a value yet but do have a defaultValue, set it on the model
-        if (typeof model[name] === "undefined" && defaultValue) {
+        if (typeof model[name] === "undefined" && typeof defaultValue !== "undefined") {
           this.setValue(name, defaultValue);
           return;
         }
