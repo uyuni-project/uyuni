@@ -25,6 +25,7 @@ public class ProjectSoftwareSourceResponse {
     private String label;
     private String state;
     private String type;
+    private boolean hasUnsyncedPatches;
 
     public void setChannelId(Long channelIdIn) {
         this.channelId = channelIdIn;
@@ -44,6 +45,10 @@ public class ProjectSoftwareSourceResponse {
 
     public void setLabel(String labelIn) {
         this.label = labelIn;
+    }
+
+    public void setHasUnsyncedPatches(boolean hasUnsyncedPatchesIn) {
+        hasUnsyncedPatches = hasUnsyncedPatchesIn;
     }
 }
 

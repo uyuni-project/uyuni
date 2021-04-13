@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import static com.redhat.rhn.domain.errata.AdvisoryStatus.RETRACTED;
+
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -28,6 +30,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
@@ -60,6 +63,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -788,6 +792,24 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
+     * Takes a set of packages that should be installed on a set of systems and checks whether there are
+     * and packages that are retracted. A packages counts as retracted for a server if it is contained
+     * in any retracted errata of a channel assigned to the system.
+     *
+     * @param pids package ids
+     * @param sids server ids
+     * @return pairs of package and server ids of packages that are retracted for a given server.
+     */
+    public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pids", pids);
+        params.put("sids", sids);
+        List<Object[]> results = singleton.listObjectsByNamedQuery(
+                "Errata.retractedPackages", params);
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
+    }
+
+    /**
      * Returns a list of ErrataOverview that match the given errata ids.
      * @param eids Errata ids.
      * @param org Organization to match results with
@@ -808,12 +830,13 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.setRebootSuggested((Boolean)values[7]);
-            eo.setRestartSuggested((Boolean)values[8]);
-            eo.setSeverityid((Integer)values[9]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.setRebootSuggested((Boolean)values[8]);
+            eo.setRestartSuggested((Boolean)values[9]);
+            eo.setSeverityid((Integer)values[10]);
             errata.add(eo);
         }
 
@@ -854,10 +877,12 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.addPackageName((String)values[7]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.addPackageName((String)values[8]);
+            eo.addPackageId((Long)values[11]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
@@ -910,12 +935,13 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisory((String)values[1]);
             eo.setAdvisoryName((String)values[2]);
             eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisorySynopsis((String)values[4]);
-            eo.setUpdateDate((Date)values[5]);
-            eo.setIssueDate((Date)values[6]);
-            eo.addPackageName((String)values[7]);
-            eo.setRebootSuggested((Boolean)values[8]);
-            eo.setRestartSuggested((Boolean)values[9]);
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
+            eo.setAdvisorySynopsis((String)values[5]);
+            eo.setUpdateDate((Date)values[6]);
+            eo.setIssueDate((Date)values[7]);
+            eo.addPackageName((String)values[8]);
+            eo.setRebootSuggested((Boolean)values[9]);
+            eo.setRestartSuggested((Boolean)values[10]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
@@ -954,6 +980,8 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setLocallyModified(original.getLocallyModified());
         cloned.setLastModified(original.getLastModified());
         cloned.setSeverity(original.getSeverity());
+        AdvisoryStatus previousAdvisoryStatus = cloned.getAdvisoryStatus();
+        cloned.setAdvisoryStatus(original.getAdvisoryStatus());
 
         // Copy the packages
         cloned.setPackages(new HashSet(original.getPackages()));
@@ -971,6 +999,28 @@ public class ErrataFactory extends HibernateFactory {
             Bug bugIn = (Bug) bugsItr.next();
             Bug cloneB = createBug(bugIn.getId(), bugIn.getSummary(), bugIn.getUrl());
             cloned.addBug(cloneB);
+        }
+
+        // only update the cache if exactly one of patches is retracted
+        if (previousAdvisoryStatus != cloned.getAdvisoryStatus() &&
+                (previousAdvisoryStatus == RETRACTED || cloned.getAdvisoryStatus() == RETRACTED)) {
+            boolean retract = (cloned.getAdvisoryStatus() == RETRACTED);
+            cloned.getChannels().forEach(c -> {
+                processRetracted(cloned.getId(), c.getId(), retract);
+                ChannelFactory.refreshNewestPackageCache(c, "sync errata");
+                ChannelManager.queueChannelChange(c.getLabel(), "java::syncErrata", "Errata synced");
+            });
+        }
+    }
+
+    private static void processRetracted(long errataId, long channelId, boolean retract) {
+        List<Long> erratumPids = ErrataFactory.listErrataChannelPackages(channelId, errataId);
+        if (retract) {
+            ErrataCacheManager.deleteCacheEntriesForChannelErrata(channelId, List.of(errataId));
+            ErrataCacheManager.deleteCacheEntriesForChannelPackages(channelId, erratumPids);
+        }
+        else {
+            ErrataCacheManager.insertCacheForChannelPackages(channelId, errataId, erratumPids);
         }
     }
 

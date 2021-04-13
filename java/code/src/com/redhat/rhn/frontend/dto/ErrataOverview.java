@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +32,7 @@ public class ErrataOverview extends BaseDto {
     private String advisory;
     private String advisoryName;
     private String advisoryType;
+    private AdvisoryStatus advisoryStatus;
     private String advisorySynopsis;
     private String errataFrom;
     private String description;
@@ -39,7 +42,8 @@ public class ErrataOverview extends BaseDto {
     private Integer affectedSystemCount;
     private String advisoryLastUpdated;
     private List cves = new ArrayList();
-    private List packageNames = new ArrayList();
+    private List<String> packageNames = new ArrayList<>();
+    private List<Long> pids = new ArrayList<>();
     private List actionId;
     private List status;
     private Long associatedSystemId;
@@ -136,6 +140,20 @@ public class ErrataOverview extends BaseDto {
     public List getPackageNames() {
         return packageNames;
     }
+    /**
+     * Adds a name to packageNames list.
+     * @param idIn The id to add.
+     */
+    public void addPackageId(long idIn) {
+        pids.add(idIn);
+    }
+    /**
+     * @return Returns the package ids.
+     */
+    public List<Long> getPackageIds() {
+        return pids;
+    }
+
     /**
      * @param p The packageNames to set.
      */
@@ -284,6 +302,25 @@ public class ErrataOverview extends BaseDto {
      */
     public void setAdvisoryType(String advisoryTypeIn) {
         advisoryType = advisoryTypeIn;
+    }
+    /**
+     * @return Returns the advisoryStatus.
+     */
+    public AdvisoryStatus getAdvisoryStatus() {
+        return advisoryStatus;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
     }
     /**
      * @return Returns the affectedSystemCount.

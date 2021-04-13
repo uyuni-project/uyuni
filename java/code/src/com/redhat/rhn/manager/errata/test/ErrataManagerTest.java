@@ -32,9 +32,10 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -150,6 +151,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
+        e.setAdvisoryStatus(AdvisoryStatus.FINAL);
         e.setSolution("This errata fixes nothing, it's just a damn test.");
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
@@ -197,6 +199,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setAdvisoryType("Security Advisory");
         e.setProduct("Red Hat Enterprise Linux");
         e.setSynopsis("Just a test errata");
+        e.setAdvisoryStatus(AdvisoryStatus.FINAL);
         e.setSolution("This errata fixes nothing, it's just a damn test.");
         e.setIssueDate(new Date());
         e.setUpdateDate(e.getIssueDate());
@@ -1629,6 +1632,29 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(chan.getErratas().isEmpty());
         assertTrue(chan.getPackages().contains(olderPack));
         assertFalse(chan.getPackages().contains(errataPackage));
+    }
+
+    /**
+     * Test that the advisory status gets populated when listing all errata
+     * @throws Exception
+     */
+    public void testListRetractedErrata() throws Exception {
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+
+        Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        patch.addChannel(channel);
+        ErrataFactory.save(patch);
+
+        Errata retractedPatch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        retractedPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        retractedPatch.addChannel(channel);
+        ErrataFactory.save(retractedPatch);
+
+        DataResult<ErrataOverview> patches = ErrataManager.allErrata(user);
+        Map<Long, ErrataOverview> patchesMap = patches.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        assertEquals(2, patches.size());
+        assertEquals(AdvisoryStatus.FINAL, patchesMap.get(patch.getId()).getAdvisoryStatus());
+        assertEquals(AdvisoryStatus.RETRACTED, patchesMap.get(retractedPatch.getId()).getAdvisoryStatus());
     }
 
     private static Package copyPackage(Package fromPkg, User user, Channel channel, String version) throws Exception {

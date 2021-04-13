@@ -34,6 +34,7 @@ public class OrgConfig extends BaseDomainHelper {
     private Long scapFileSizelimit;
     private Long scapRetentionPeriodDays;
     private boolean createDefaultSg;
+    private boolean clmSyncPatches;
 
     /**
      * Gets the current value of org_id
@@ -140,5 +141,23 @@ public class OrgConfig extends BaseDomainHelper {
      */
     public void setCreateDefaultSg(boolean createDefaultSgIn) {
         createDefaultSg = createDefaultSgIn;
+    }
+
+    /**
+     * Gets the clmSyncPatches.
+     *
+     * @return clmSyncPatches
+     */
+    public boolean isClmSyncPatches() {
+        return clmSyncPatches;
+    }
+
+    /**
+     * Sets the clmSyncPatches.
+     *
+     * @param clmSyncPatchesIn the clmSyncPatches
+     */
+    public void setClmSyncPatches(boolean clmSyncPatchesIn) {
+        clmSyncPatches = clmSyncPatchesIn;
     }
 }

@@ -269,6 +269,19 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Regenerate the package needed cache for the server
+     *
+     * @param serverId the server ID
+     */
+    public static void updateServerNeededCache(long serverId) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries", "update_needed_cache");
+        Map inParams = new HashMap();
+        inParams.put("server_id", serverId);
+
+        m.execute(inParams, new HashMap());
+    }
+
+    /**
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */

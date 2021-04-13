@@ -17,9 +17,12 @@ package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.FaultException;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.manager.errata.RetractedErrataException;
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
 import java.nio.channels.OverlappingFileLockException;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcFault;
 
@@ -50,6 +53,14 @@ public class ExceptionTranslator {
 
         if (t instanceof NotInMaintenanceModeException) {
             return new XmlRpcFault(11334, t.getMessage());
+        }
+
+        if (t instanceof RetractedErrataException) {
+            return new XmlRpcFault(2602, LocalizationService.getInstance().
+                            getMessage("api.errata.retractederrata",
+                                    ((RetractedErrataException)t).getErrataIds()
+                                            .stream().map(Object::toString)
+                                            .collect(Collectors.joining(","))));
         }
 
         // For any other unhandled exception, we still need to send something to the client.

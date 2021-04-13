@@ -1,3 +1,5 @@
+- Fail traditional errata and package actions when they act on retracted items
+- Add advisory_status to reposync and ISS
 - define dependency for DB schema version
 - Improve config component switching to initial on exceptions
 - deb_src repo plugin is not restoring config namespace on exception (bsc#1182197)

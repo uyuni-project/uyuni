@@ -70,6 +70,8 @@ public class SyncErrataAction extends RhnAction implements Listable<ErrataOvervi
         ListRhnSetHelper helper = new ListRhnSetHelper(this, request,
                 RhnSetDecl.ERRATA_TO_SYNC.createCustom(chan.getId()));
 
+        helper.setDataSetName("pageList");
+        helper.setListName("errata");
         request.setAttribute("emptyKey", EMPTY_KEY);
         request.setAttribute("editUrl", "true");
 

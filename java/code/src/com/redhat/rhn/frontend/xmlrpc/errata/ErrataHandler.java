@@ -34,13 +34,14 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.CveFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Severity;
-import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Keyword;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -216,6 +217,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "last_modified_date", "last time the erratum was modified.")
      *          #prop("string", "synopsis")
      *          #prop("int", "release")
+     *          #prop("string", "advisory_status")
      *          #prop("string", "type")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
@@ -251,6 +253,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (errata.getAdvisoryRel() != null) {
             errataMap.put("release", errata.getAdvisoryRel());
+        }
+        if (errata.getAdvisoryStatus() != null) {
+            errataMap.put("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
         }
         errataMap.put("product",
                 StringUtils.defaultString(errata.getProduct()));
@@ -1106,6 +1111,8 @@ public class ErrataHandler extends BaseHandler {
      *  String "advisory_type" the type of advisory for the errata (Must be one of the
      *          following: "Security Advisory", "Product Enhancement Advisory", or
      *          "Bug Fix Advisory"
+     *  String "advirory_status" the status of advisory for the errata
+     *         (Must be one of the following: "final", "stable", "testing", "retracted")
      *  String "product" the product the errata affects
      *  String "errataFrom" the author of the errata
      *  String "topic" the topic of the errata
@@ -1132,6 +1139,8 @@ public class ErrataHandler extends BaseHandler {
      *          #prop_desc("string", "advisory_type", "Type of advisory (one of the
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
+     *          #prop_desc("string", "advisory_status", "Status of advisory (one of the
+     *                  following: 'final', 'testing', 'stable' or 'retracted'")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
@@ -1171,6 +1180,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_name");
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
+        validKeys.add("advisory_status");
         validKeys.add("product");
         validKeys.add("errataFrom");
         validKeys.add("topic");
@@ -1202,6 +1212,10 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryReleaseException(advisoryRelease.longValue());
         }
         String advisoryType = (String) getRequiredAttribute(errataInfo, "advisory_type");
+        String advisoryStatusString = (String) getRequiredAttribute(errataInfo, "advisory_status");
+        AdvisoryStatus advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusString)
+                .filter(a -> a != AdvisoryStatus.RETRACTED)
+                .orElseThrow(() -> new InvalidAdvisoryTypeException(advisoryStatusString));
         String product = (String) getRequiredAttribute(errataInfo, "product");
         String errataFrom = (String) errataInfo.get("errataFrom");
         String topic = (String) getRequiredAttribute(errataInfo, "topic");
@@ -1235,6 +1249,7 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryTypeException(advisoryType);
         }
 
+        newErrata.setAdvisoryStatus(advisoryStatus);
         newErrata.setProduct(product);
         newErrata.setTopic(topic);
         newErrata.setDescription(description);
