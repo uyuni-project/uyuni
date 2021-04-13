@@ -1,6 +1,6 @@
 # Copyright (c) 2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
-
+# TEST
 Feature: Create a configuration channel and file
 
   Scenario: Server side, Create a configuration channel and add a configuration file
