@@ -64,8 +64,24 @@
     "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP2 x86_64"
   },
   {
+    "label" : "HPC15-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP3 ARM64"
+  },
+  {
+    "label" : "HPC15-SP3-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP3 x86_64"
+  },
+  {
     "label" : "HPE-HELION-OPENSTACK-X86",
     "name" : "HPE Helion Openstack (x86)"
+  },
+  {
+    "label" : "MICROOS-ARM64",
+    "name" : "MicroOS for ARM64"
+  },
+  {
+    "label" : "MICROOS-X86",
+    "name" : "MicroOS for x86_64"
   },
   {
     "label" : "MODULE",
