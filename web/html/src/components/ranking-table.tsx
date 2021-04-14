@@ -1,5 +1,6 @@
 import * as React from "react";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import _cloneDeep from "lodash/cloneDeep";
 
 type Instance = JQuery & {};
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
@@ -45,7 +46,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
   }
 
   cloneItems() {
-    return this.state.items.map(i => Object.assign({}, i));
+    return this.state.items.map(i => _cloneDeep(i));
   }
 
   handleUpdate() {
