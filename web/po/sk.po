@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-13 19:56+0000\n"
-"PO-Revision-Date: 2021-04-04 17:57+0000\n"
+"PO-Revision-Date: 2021-04-14 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2313,6 +2313,8 @@ msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
 msgstr ""
+"Projekt obsahuje kanály s nesynchronizovanými opravami. Budú synchronizované "
+"v závislosti od vašich nastavení organizácie."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2522,7 +2524,7 @@ msgstr "Tento kanál je odporúčaný"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
-msgstr ""
+msgstr "má nesynchronizované opravy"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
@@ -3930,53 +3932,46 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {0}"
-msgstr "Highstate pre {0}"
+msgstr "Súhrn stavu pre {0}"
 
 #: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "Neexistujú žiadne použiteľné systémy."
 
 #: ../html/src/manager/state/highstate-summary.tsx:20
-#, fuzzy
 msgid "State channel"
-msgstr "Softvérové kanály"
+msgstr "Stavový kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:21
-#, fuzzy
 msgid "Config channel"
-msgstr "Klonovanie kanálov"
+msgstr "Konfiguračný kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
-#, fuzzy
 msgid "internal"
-msgstr "Údržba"
+msgstr "interný"
 
 #: ../html/src/manager/state/highstate-summary.tsx:32
-#, fuzzy
 msgid "Internal states"
-msgstr "Rozhrania"
+msgstr "Interné stavy"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
-msgstr ""
+msgstr "Získavanie súhrnu highstate..."
 
 #: ../html/src/manager/state/highstate-summary.tsx:58
-#, fuzzy
 msgid "State Source"
-msgstr "Zdroj"
+msgstr "Stavový zdroj"
 
 #: ../html/src/manager/state/highstate-summary.tsx:60
 msgid "Inherited From"
-msgstr ""
+msgstr "Zdedené z"
 
 #: ../html/src/manager/state/highstate-summary.tsx:78
 msgid "Show full highstate output"
-msgstr ""
+msgstr "Zobraziť úplný výstup highstate"
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
-#, fuzzy
 msgid "System Group"
 msgstr "Systémová skupina"
 
