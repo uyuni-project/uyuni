@@ -1,6 +1,7 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { GuestsList } from "./guests-list";
+import { HostInfo } from "./guests-list";
 
 type RendererProps = {
   serverId: string;
@@ -8,10 +9,10 @@ type RendererProps = {
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
-  hypervisor: string;
+  hostInfo: HostInfo;
 };
 
-export const renderer = (id: string, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hypervisor }: RendererProps) => {
+export const renderer = (id: string, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps) => {
   SpaRenderer.renderNavigationReact(
     <GuestsList
       serverId={serverId}
@@ -19,7 +20,7 @@ export const renderer = (id: string, { serverId, pageSize, saltEntitled, foreign
       saltEntitled={saltEntitled}
       foreignEntitled={foreignEntitled}
       isAdmin={isAdmin}
-      hypervisor={hypervisor}
+      hostInfo={hostInfo}
     />,
     document.getElementById(id)
   );
