@@ -1,3 +1,5 @@
+- Fail traditional errata and package actions when they act on retracted items
+- Add advisory_status to reposync and ISS
 - Add minrate/timeout configuration values for downloading DEB/RPM packages
 
 -------------------------------------------------------------------
