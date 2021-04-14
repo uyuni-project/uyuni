@@ -315,7 +315,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
             defaultType="btn-success"
             disabled={!assigned}
             action={this.applySaltState}
-            text={t("Apply")}
+            text={t("Execute States")}
           />,
         ];
 
