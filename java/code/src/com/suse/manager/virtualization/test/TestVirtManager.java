@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -88,7 +89,7 @@ public class TestVirtManager implements VirtManager {
     }
 
     @Override
-    public Optional<String> getHypervisor(String minionId) {
+    public Optional<HostInfo> getHostInfo(String minionId) {
         throw new UnsupportedOperationException();
     }
 

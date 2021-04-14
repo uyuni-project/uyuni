@@ -97,3 +97,30 @@ def vm_info(name=None):
         log.debug("Failed to get cluster configuration: %s", err)
 
     return all_vms
+
+
+def host_info():
+    """
+    Provide a few informations on the virtualization host for the UI to use.
+    """
+    cluster_nodes = []
+    try:
+        node_name = subprocess.Popen(["crm_node", "-n"], stdout=subprocess.PIPE).communicate()[0].strip().decode()
+        crm_conf = ElementTree.fromstring(
+            subprocess.Popen(
+                ["crm", "configure", "show", "xml", "type:node"],
+                stdout=subprocess.PIPE,
+            ).communicate()[0]
+        )
+        cluster_nodes = [
+            node.get("uname")
+            for node in crm_conf.findall(".//node")
+            if node.get("uname") != node_name
+        ]
+    except FileNotFoundError as err:
+        log.debug("Failed to get cluster configuration: %s", err)
+
+    return {
+        "hypervisor": __salt__["virt.get_hypervisor"](),
+        "cluster_other_nodes": cluster_nodes,
+    }

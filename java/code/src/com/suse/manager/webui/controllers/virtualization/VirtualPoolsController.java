@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.MinionController;
@@ -53,6 +54,7 @@ import org.apache.http.HttpStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -124,9 +126,9 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
     public ModelAndView show(Request request, Response response, User user, Server host) {
         return renderPage("show", () -> {
             Map<String, Object> extra = new HashMap<>();
-            extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
-                    virtManager.getHypervisor(host.getMinionId()).orElse("") :
-                    "");
+            Optional<HostInfo> hostInfo = virtManager.getHostInfo(host.getMinionId());
+            String hypervisor = hostInfo.isPresent() ? hostInfo.get().getHypervisor() : "";
+            extra.put("hypervisor", host.hasVirtualizationEntitlement() ? hypervisor : "");
             return extra;
         });
     }
