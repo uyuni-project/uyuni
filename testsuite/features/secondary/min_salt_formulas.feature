@@ -7,13 +7,14 @@ Feature: Use salt formulas
   As an authorized user
   I want to be able to install and use salt formulas
 
-  Scenario: Install the locale formula package on the server
-     Given I am authorized
+   Scenario: Log in as admin user
+      Given I am authorized for the "Admin" section
+
+   Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: The new formula appears on the server
-     Given I am authorized
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "locale" text in the content area
 
@@ -161,9 +162,7 @@ Feature: Use salt formulas
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
-     Given I am authorized
      And I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I am authorized as "admin" with password "admin"
      And I follow "Clear"

@@ -24,7 +24,8 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     Then I should see a "my_org" text in the content area
 
   Scenario: Group was correctly created
-    Given I am on the groups page
+    Given I am authorized for the "Admin" section
+    And I am on the groups page
     When I follow "minions_group"
     Then I should see a "minions_group" text
     And I should see a "System Group Status" text
@@ -43,6 +44,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I follow "Managers"
 
   Scenario: User Roles were assigned
+    Given I am authorized for the "Users" section
     When I follow the left menu "Users > User List > Active"
     And I follow "user2"
     Then I should see a "User Details" text

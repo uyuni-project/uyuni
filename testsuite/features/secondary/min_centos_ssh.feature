@@ -8,7 +8,10 @@
 @scope_res
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
-@centos_minion
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  @centos_minion
   Scenario: Delete the CentOS minion before SSH minion tests
     When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
@@ -19,7 +22,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 
 @centos_minion
   Scenario: Bootstrap a SSH-managed CentOS minion
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -69,7 +71,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 
 @centos_minion
   Scenario: Run a remote command on the SSH-managed CentOS minion
-    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
@@ -98,7 +99,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
 
 @centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos_minion" as "hostname"

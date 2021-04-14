@@ -10,9 +10,12 @@
 
 @scope_traditional_client
 @scope_res
+@centos_minion
 Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
 
-@centos_minion
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete the CentOS minion before traditional client tests
     When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
@@ -21,9 +24,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I wait until I see "has been deleted" text
     Then "ceos_minion" should not be registered
 
-@centos_minion
   Scenario: Prepare the CentOS 7 traditional client
-    Given I am authorized
     When I enable SUSE Manager tools repositories on "ceos_client"
     And I enable repository "CentOS-Base" on this "ceos_client"
     And I install the traditional stack utils on "ceos_client"
@@ -33,7 +34,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
 @proxy
-@centos_minion
   Scenario: Check connection from CentOS 7 traditional to proxy
     Given I am on the Systems overview page of this "ceos_client"
     When I follow "Details" in the content area
@@ -41,14 +41,12 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see "proxy" short hostname
 
 @proxy
-@centos_minion
   Scenario: Check registration on proxy of traditional CentOS 7
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos_client" hostname
 
-@centos_minion
   Scenario: Re-subscribe the CentOS traditional client to a base channel
     Given I am on the Systems overview page of this "ceos_client"
     When I follow "Software" in the content area
@@ -62,7 +60,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-@centos_minion
   Scenario: Schedule an OpenSCAP audit job for the CentOS traditional client
     Given I am on the Systems overview page of this "ceos_client"
     When I follow "Audit" in the content area
@@ -74,7 +71,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
-@centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
     Given I am on the Systems overview page of this "ceos_client"
     When I follow "Audit" in the content area
@@ -86,16 +82,13 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I click on the filter button
     Then I should see a "ensure_redhat_gpgkey_installed" link
 
-@centos_minion
   Scenario: Schedule some actions on the CentOS 7 traditional client
-    Given I am authorized as "admin" with password "admin"
     When I authenticate to XML-RPC
     And I refresh the packages on "ceos_client" through XML-RPC
     And I run a script on "ceos_client" through XML-RPC
     And I reboot "ceos_client" through XML-RPC
     And I unauthenticate from XML-RPC
 
-@centos_minion
   Scenario: Cleanup: delete the CentOS 7 traditional client
     Given I am on the Systems overview page of this "ceos_client"
     When I follow "Delete System"
@@ -104,16 +97,13 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I wait until I see "has been deleted." text
     Then "ceos_client" should not be registered
 
-@centos_minion
   Scenario: Cleanup: delete the installed rpms on CentOS 7 traditional client
     When I remove the traditional stack utils from "ceos_client"
     And I remove OpenSCAP dependencies from "ceos_client"
     And I disable SUSE Manager tools repositories on "ceos_client"
     And I disable repository "CentOS-Base" on this "ceos_client"
 
-@centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos_minion" as "hostname"
@@ -127,7 +117,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 
-@centos_minion
   Scenario: Cleanup: re-subscribe the new CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area

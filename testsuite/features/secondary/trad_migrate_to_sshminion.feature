@@ -7,6 +7,9 @@ Feature: Migrate a traditional client into a Salt SSH minion
   As an authorized user
   I want to migrate these clients to Salt SSH minions and have everything as before
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Install a package before migration to Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
@@ -20,7 +23,6 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Then "orion-dummy-1.1-1.1" should be installed on "sle_client"
 
   Scenario: Change contact method of activation key to ssh-push
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I select "Push via SSH" from "contactMethodId"
@@ -28,7 +30,6 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
   Scenario: Migrate a SLES client into a Salt SSH minion
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     And I enter the hostname of "sle_client" as "hostname"
     And I enter "22" as "port"
@@ -124,7 +125,6 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: change contact method of activation key back to default
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I select "Default" from "contactMethodId"

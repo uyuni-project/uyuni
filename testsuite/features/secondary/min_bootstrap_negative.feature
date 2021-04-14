@@ -8,8 +8,10 @@ Feature: Negative tests for bootstrapping normal minions
   As an authorized user
   I want to avoid registration with invalid input parameters
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap should fail when minion already exists
-     Given I am authorized
      And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
@@ -30,7 +32,6 @@ Feature: Negative tests for bootstrapping normal minions
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap a SLES minion with wrong hostname
-     Given I am authorized
      And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter "not-existing-name" as "hostname"
@@ -42,7 +43,6 @@ Feature: Negative tests for bootstrapping normal minions
      Then I should not see a "GenericSaltError" text
 
   Scenario: Bootstrap a SLES minion with wrong SSH credentials
-     Given I am authorized
      And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
@@ -54,7 +54,6 @@ Feature: Negative tests for bootstrapping normal minions
      Then I should not see a "GenericSaltError" text
 
   Scenario: Bootstrap a SLES minion with wrong SSH port number
-     Given I am authorized
      And I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"
@@ -67,7 +66,6 @@ Feature: Negative tests for bootstrapping normal minions
      And I should see a "port 11: Connection refused" text or "port 11: Invalid argument" text
 
   Scenario: Cleanup: bootstrap a SLES minion after negative tests
-     Given I am authorized
      When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle_minion" as "hostname"

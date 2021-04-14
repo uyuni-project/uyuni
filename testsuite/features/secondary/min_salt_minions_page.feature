@@ -7,6 +7,9 @@ Feature: Management of minion keys
   As an authorized user
   I want to verify all the minion key management features in the UI
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
@@ -16,12 +19,10 @@ Feature: Management of minion keys
     Then "sle_minion" should not be registered
 
   Scenario: Completeness of the onboarding page
-    Given I am authorized as "testing" with password "testing"
     And I follow the left menu "Salt > Keys"
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
-    Given I am authorized as "testing" with password "testing"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
@@ -31,7 +32,6 @@ Feature: Management of minion keys
     And I should see a "pending" text
 
   Scenario: Reject and delete the pending key
-    Given I am authorized as "testing" with password "testing"
     And I follow the left menu "Salt > Keys"
     And I reject "sle_minion" from the Pending section
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "rejected"
@@ -42,7 +42,6 @@ Feature: Management of minion keys
     And I refresh page until I do not see "sle_minion" hostname as text
 
   Scenario: Accepted minion shows up as a registered system
-    Given I am authorized as "testing" with password "testing"
     When I start salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     Then "sle_minion" should not be registered
@@ -54,7 +53,6 @@ Feature: Management of minion keys
     Then "sle_minion" should be registered
 
   Scenario: The minion communicates with the Salt master
-    Given I am authorized as "testing" with password "testing"
     Then the Salt master can reach "sle_minion"
     When I get OS information of "sle_minion" from the Master
     Then it should contain the OS of "sle_minion"
@@ -71,7 +69,6 @@ Feature: Management of minion keys
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"

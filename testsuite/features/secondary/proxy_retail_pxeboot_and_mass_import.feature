@@ -30,6 +30,9 @@ Feature: PXE boot a Retail terminal
     And I manually install the "pxe" formula on the server
     And I synchronize all Salt dynamic modules on "proxy"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Enable the PXE formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -191,7 +194,6 @@ Feature: PXE boot a Retail terminal
     Then I should see a "Formula saved" text
 
   Scenario: PXE boot the PXE boot minion
-    Given I am authorized as "admin" with password "admin"
     When I reboot the PXE boot minion
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
@@ -336,7 +338,6 @@ Feature: PXE boot a Retail terminal
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    Given I am authorized
     When I stop and disable avahi on the PXE boot minion
     And I create bootstrap script and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
