@@ -61,6 +61,12 @@ import org.apache.http.StatusLine;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.Period;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -556,6 +562,31 @@ public class MaintenanceManager {
             );
         }
         return events;
+    }
+
+    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
+                                                          Optional<String> eventName, Long date) {
+        Map<String, Long> activeRange = getActiveRange(date);
+        Long start = activeRange.get("start");
+        Long end = activeRange.get("end");
+
+        return icalUtils.getCalendarEvents(calendar, eventName, start, end);
+    }
+
+    private Map<String, Long> getActiveRange(Long date) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
+        ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
+        rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
+                rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+
+        ZonedDateTime rangeEnd = rangeStart.plusDays(42);
+
+        // We add one more day to the beginning and end to prevent the potential loss of events due to
+        // timezone shifts.
+        return Map.of(
+                "start", rangeStart.toInstant().minus(Period.ofDays(1)).toEpochMilli(),
+                "end", rangeEnd.toInstant().plus(Period.ofDays(1)).toEpochMilli()
+        );
     }
 
     /**
