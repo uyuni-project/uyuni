@@ -57,10 +57,9 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
         List<StateSourceDto> result = StateSourceService.getSystemStateSources(server);
         assertEquals(3, result.size());
 
-        // Results must respect the order of assignment
-        assertStateSourceEquals(stateChannel, server, result.get(0));
-        assertStateSourceEquals(configChannel, server, result.get(1));
-        assertEquals("INTERNAL", result.get(2).getType());
+        assertStateSourceEquals(stateChannel, server, findResultById(stateChannel.getId(), result));
+        assertStateSourceEquals(configChannel, server, findResultById(configChannel.getId(), result));
+        assertTrue(result.stream().anyMatch(s -> "INTERNAL".equals(s.getType())));
     }
 
     public void testGroupAndOrgStates() {
@@ -89,11 +88,15 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
         assertEquals(5, result.size());
 
         // Sources should be assigned in priority: System > Group > Org
-        assertStateSourceEquals(ch1, server, result.get(0));
-        assertStateSourceEquals(ch2, group1, result.get(1));
-        assertStateSourceEquals(ch3, group2, result.get(2));
-        assertStateSourceEquals(ch4, org, result.get(3));
-        assertEquals("INTERNAL", result.get(4).getType());
+        assertStateSourceEquals(ch1, server, findResultById(ch1.getId(), result));
+        assertStateSourceEquals(ch2, group1, findResultById(ch2.getId(), result));
+        assertStateSourceEquals(ch3, group2, findResultById(ch3.getId(), result));
+        assertStateSourceEquals(ch4, org, findResultById(ch4.getId(), result));
+        assertTrue(result.stream().anyMatch(s -> "INTERNAL".equals(s.getType())));
+    }
+
+    private StateSourceDto findResultById(Long id, List<StateSourceDto> results) {
+        return results.stream().filter(s -> id.equals(s.getId())).findFirst().orElseThrow();
     }
 
     private void assertStateSourceEquals(ConfigChannel expState, SaltConfigurable expSource, StateSourceDto actual) {
