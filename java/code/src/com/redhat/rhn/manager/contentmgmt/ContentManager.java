@@ -57,9 +57,9 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
@@ -1037,7 +1037,7 @@ public class ContentManager {
         // Also check if content of cloned errata needs alignment (advisory status etc.)
         if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
             ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
-                ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
+                PublishedClonedErrata cloned = (PublishedClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
                 ErrataFactory.syncErrataDetails(cloned);
             });
         }

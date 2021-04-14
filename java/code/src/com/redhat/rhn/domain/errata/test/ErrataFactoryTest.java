@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -24,13 +25,14 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
-import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
+import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
@@ -44,9 +46,10 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ErrataCacheDto;
-import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -571,8 +574,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testSyncErrataAdvisoryStatus() throws Exception {
         Errata oe = ErrataFactoryTest.createTestErrata(null);
 
-        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
-        ClonedErrata ce = (ClonedErrata) ErrataFactory.lookupById(ceid);
+        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        PublishedClonedErrata ce = (PublishedClonedErrata) ErrataFactory.lookupById(ceid);
 
         oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
 
@@ -618,8 +621,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
         originalErratum.setAdvisoryStatus(oldStatus);
-        Long clonedErratumId = ErrataHelper.cloneErrataFaster(originalErratum.getId(), user.getOrg());
-        ClonedErrata clonedErratum = (ClonedErrata) ErrataFactory.lookupById(clonedErratumId);
+        Long clonedErratumId = PublishErrataHelper.cloneErrataFaster(originalErratum.getId(), user.getOrg());
+        PublishedClonedErrata clonedErratum = (PublishedClonedErrata) ErrataFactory.lookupById(clonedErratumId);
 
         Channel originalChannel = ChannelFactoryTest.createBaseChannel(user);
         Channel cloneChannel = ChannelFactoryTest.createTestClonedChannel(originalChannel, user);

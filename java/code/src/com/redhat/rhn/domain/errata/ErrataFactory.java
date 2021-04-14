@@ -455,6 +455,7 @@ public class ErrataFactory extends HibernateFactory {
         }
 
         copy.setAdvisoryType(original.getAdvisoryType());
+        copy.setAdvisoryStatus(original.getAdvisoryStatus());
         copy.setProduct(original.getProduct());
         copy.setErrataFrom(original.getErrataFrom());
         copy.setDescription(original.getDescription());
@@ -1211,10 +1212,8 @@ public class ErrataFactory extends HibernateFactory {
      * @param cloned the cloned errata that needs syncing
      */
     public static void syncErrataDetails(PublishedClonedErrata cloned) {
-        copyDetails(cloned, cloned.getOriginal(), true);
         AdvisoryStatus previousAdvisoryStatus = cloned.getAdvisoryStatus();
-        cloned.setAdvisoryStatus(original.getAdvisoryStatus());
-        }
+        copyDetails(cloned, cloned.getOriginal(), true);
 
         // only update the cache if exactly one of patches is retracted
         if (previousAdvisoryStatus != cloned.getAdvisoryStatus() &&
@@ -1236,6 +1235,7 @@ public class ErrataFactory extends HibernateFactory {
         }
         else {
             ErrataCacheManager.insertCacheForChannelPackages(channelId, errataId, erratumPids);
+        }
     }
 
     /**

@@ -108,7 +108,7 @@ public class Package extends BaseDomainHelper {
      * @return true if the package is part of a retracted patch
      */
     public Boolean isPartOfRetractedPatch() {
-        return errata.stream().anyMatch(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+        return publishedErrata.stream().anyMatch(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
     }
 
     /**

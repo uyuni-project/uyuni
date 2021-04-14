@@ -71,19 +71,19 @@ public interface Errata {
      * Getter for advisoryStatus
      * @return String to get
      */
-    public AdvisoryStatus getAdvisoryStatus();
+    AdvisoryStatus getAdvisoryStatus();
 
     /**
      * Setter for advisoryStatus
      * @param advisoryStatusIn to set
      */
-    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn);
+    void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn);
 
     /**
      * Setter for advisoryStatus
      * @param advisoryStatusIn to set
      */
-    public void setAdvisoryStatus(String advisoryStatusIn);
+    void setAdvisoryStatus(String advisoryStatusIn);
 
     /**
      * Getter for product
@@ -436,6 +436,7 @@ public interface Errata {
     /**
      * {@inheritDoc}
      */
+    @Override
     String toString();
 
     /**
