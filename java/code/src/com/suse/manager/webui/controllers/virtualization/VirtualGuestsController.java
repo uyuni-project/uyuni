@@ -55,6 +55,7 @@ import com.suse.manager.virtualization.HostCapabilitiesJson;
 import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestMigrateActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
@@ -144,6 +145,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 withUserAndServer(this::newGuest));
         post("/manager/api/systems/details/virtualization/guests/:sid/update",
                 withUserAndServer(this::update));
+        post("/manager/api/systems/details/virtualization/guests/:sid/migrate",
+                withUserAndServer(this::migrate));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
                 withUserAndServer(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
@@ -583,6 +586,25 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestActionCreator(actionType, getGuestNames(user, host)),
                 VirtualGuestsBaseActionJson.class);
+    }
+
+    /**
+     * Migrate a virtual guest to an other virtual host
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param host the server
+     * @return the action id or "Failed" in case of failure
+     */
+    public String migrate(Request request, Response response, User user, Server host) {
+        if (noHostSupportAction(host, true)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        return doGuestAction(request, response, user, host,
+                VirtualizationActionHelper.getGuestMigrateActionCreator(getGuestNames(user, host)),
+                VirtualGuestMigrateActionJson.class);
     }
 
     /**

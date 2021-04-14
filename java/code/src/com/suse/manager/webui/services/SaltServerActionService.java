@@ -74,6 +74,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDis
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
@@ -410,6 +411,11 @@ public class SaltServerActionService {
             VirtualizationCreateGuestAction createAction =
                     (VirtualizationCreateGuestAction)actionIn;
             return virtCreateAction(minions, createAction);
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE.equals(actionType)) {
+            VirtualizationMigrateGuestAction migrationAction =
+                    (VirtualizationMigrateGuestAction)actionIn;
+            return virtGuestMigrateAction(minions, migrationAction);
         }
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
             KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
@@ -1686,6 +1692,23 @@ public class SaltServerActionService {
 
         ret.remove(null);
 
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtGuestMigrateAction(List<MinionSummary> minions,
+                                                                           VirtualizationMigrateGuestAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("primitive", action.getPrimitive());
+                    pillar.put("target", action.getTarget());
+
+                    return State.apply(
+                            Collections.singletonList("virt.guest-migrate"),
+                            Optional.of(pillar));
+                }, Collections::singletonList));
+
+        ret.remove(null);
         return ret;
     }
 
