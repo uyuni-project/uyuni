@@ -84,7 +84,7 @@ export default (props: FilterFormProps & { template: Template }) => {
 
         const client = clients.find(item => item.id === clientId);
         const kernelId = client?.kernelId ?? null;
-        setModelValue?.("kernel", kernelId);
+        setModelValue?.("kernelId", kernelId);
       });
     } else if (productId) {
       getKernels(productId).then(result => {
@@ -92,13 +92,20 @@ export default (props: FilterFormProps & { template: Template }) => {
 
         const product = products.find(item => item.id === productId);
         // TODO: Specify where and how this data realistically comes from
-        setModelValue?.("kernel", null);
+        setModelValue?.("kernelId", null);
       });
     } else {
       setKernels([]);
-      setModelValue?.("kernel", null);
+      setModelValue?.("kernelId", null);
     }
-  }, [clients, clientId, products, productId, setModelValue]);
+  }, [
+    template, // If the template changes, reset what we previously had
+    clients,
+    clientId,
+    products,
+    productId,
+    setModelValue,
+  ]);
 
   return (
     <>
