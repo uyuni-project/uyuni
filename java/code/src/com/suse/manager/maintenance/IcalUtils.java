@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,17 +25,18 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -135,6 +136,8 @@ public class IcalUtils {
                 .filter(l -> !l.isEmpty())
                 .collect(toList());
 
+        periodLists.add(getInitialEvents(filteredEvents, period));
+
         Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
                 .map(pl -> pl.stream())
                 .reduce(Stream.empty(), Stream::concat)
@@ -143,6 +146,25 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
+    }
+
+    private PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
+        PeriodList periodList = new PeriodList();
+        events.forEach(event -> {
+                    try {
+                        DateTime start = new DateTime(event.getProperty(Property.DTSTART).getValue());
+                        DateTime end = new DateTime(event.getProperty(Property.DTEND).getValue());
+                        // Check if event is contained in given period
+                        if (period.includes(start) && period.includes(end)) {
+                            periodList.add(new Period(start, end));
+                        }
+                    }
+                    catch (ParseException e) {
+                        log.error("Unable to get event range from: " + event.toString(), e);
+                    }
+                }
+        );
+        return periodList;
     }
 
     // given collection of events, filter out those with non-matching SUMMARY
