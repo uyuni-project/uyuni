@@ -4,6 +4,9 @@
 @scope_onboarding
 Feature: Register a Salt minion via XML-RPC API
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete SLES minion system profile before XML-RPC bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
@@ -18,7 +21,6 @@ Feature: Register a Salt minion via XML-RPC API
     And I logout from XML-RPC system namespace
 
   Scenario: Check new minion bootstrapped via XML-RPC in System Overview page
-    Given I am authorized
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page

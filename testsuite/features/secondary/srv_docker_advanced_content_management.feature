@@ -26,6 +26,7 @@ Feature: Advanced content management
 
 @no_auth_registry
   Scenario: Create a user without rights nor roles
+    Given I am authorized for the "Users" section
     When I follow the left menu "Users > User List > Active"
     And I follow "Create User"
     And I enter "norole" as "login"
@@ -60,6 +61,7 @@ Feature: Advanced content management
 
 @no_auth_registry
   Scenario: Cleanup: delete no role user
+    Given I am authorized for the "Users" section
     When I follow the left menu "Users > User List > Active"
     And I follow "norole"
     And I follow "Delete User"

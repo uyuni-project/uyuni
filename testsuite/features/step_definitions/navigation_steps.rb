@@ -380,6 +380,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   case section
   when 'Admin'
     step %(I am authorized as "admin" with password "admin")
+  when 'Users'
+    step %(I am authorized as "admin" with password "admin")
   end
 end
 

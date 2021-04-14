@@ -4,6 +4,9 @@
 @scope_salt_ssh
 Feature: Register a salt system to be managed via SSH tunnel
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete the salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
@@ -13,7 +16,6 @@ Feature: Register a salt system to be managed via SSH tunnel
     Then "sle_minion" should not be registered
 
   Scenario: Register this minion for push via SSH tunnel
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I enter the hostname of "sle_ssh_tunnel_minion" as "hostname"
@@ -58,7 +60,6 @@ Feature: Register a salt system to be managed via SSH tunnel
     Then I wait until event "Package Removal scheduled by admin" is completed
 
   Scenario: Run a remote command on this SSH tunnel minion
-    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "echo 'My remote command output'"

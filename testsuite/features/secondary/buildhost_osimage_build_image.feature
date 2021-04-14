@@ -37,7 +37,10 @@ Feature: Build OS images
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
 
-  Scenario: Check the OS image built as Kiwi image administrator
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: Check the OS image built
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed

@@ -8,6 +8,9 @@
 @scope_visualization
 Feature: Manage users
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Display active users page
     When I follow the left menu "Users > User List > Active"
     Then I should see a "Active Users" text

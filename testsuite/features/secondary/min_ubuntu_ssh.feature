@@ -7,9 +7,12 @@
 
 @scope_ubuntu
 @scope_salt_ssh
+@ubuntu_minion
 Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on it
 
-@ubuntu_minion
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete the Ubuntu minion
     When I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Delete System"
@@ -18,9 +21,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I wait until I see "has been deleted" text
     Then "ubuntu_minion" should not be registered
 
-@ubuntu_minion
   Scenario: Bootstrap a SSH-managed Ubuntu minion
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -34,7 +35,6 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I wait until onboarding is completed for "ubuntu_ssh_minion"
 
 @proxy
-@ubuntu_minion
   Scenario: Check connection from SSH-managed Ubuntu minion to proxy
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     When I follow "Details" in the content area
@@ -42,14 +42,12 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     Then I should see "proxy" short hostname
 
 @proxy
-@ubuntu_minion
   Scenario: Check registration on proxy of SSH-managed Ubuntu minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ubuntu_ssh_minion" hostname
 
-@ubuntu_minion
   Scenario: Subscribe the SSH-managed Ubuntu minion to a base channel
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     When I follow "Software" in the content area
@@ -63,14 +61,11 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-@ubuntu_minion
   Scenario: Check events history for failures on SSH-managed Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     Then I check for failed events on history event page
 
-@ubuntu_minion
   Scenario: Run a remote command on the SSH-managed Ubuntu minion
-    Given I am authorized
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"
@@ -82,12 +77,10 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I expand the results for "ubuntu_ssh_minion"
     Then I should see a "ID=ubuntu" text
 
-@ubuntu_minion
   Scenario: Check events history for failures on SSH-managed Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     Then I check for failed events on history event page
 
-@ubuntu_minion
   Scenario: Cleanup: delete the SSH-managed Ubuntu minion
     When I am on the Systems overview page of this "ubuntu_ssh_minion"
     And I follow "Delete System"
@@ -96,9 +89,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I wait until I see "has been deleted" text
     Then "ubuntu_ssh_minion" should not be registered
 
-@ubuntu_minion
   Scenario: Cleanup: bootstrap a Ubuntu minion
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu_minion" as "hostname"
@@ -112,7 +103,6 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I wait until I see the name of "ubuntu_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Cleanup: re-subscribe the Ubuntu minion to a base channel
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Software" in the content area
