@@ -141,19 +141,19 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   search() {
-    if (this.state.filter === this.state.search.filter) {
-      return Promise.resolve();
-    } else {
-      return Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
-        this.setState({
-          search: {
-            filter: this.state.filter,
-            results: data,
-          },
-          messages: null,
+    return Promise.resolve().then( () => {
+      if (this.state.filter !== this.state.search.filter) {
+        Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
+          this.setState({
+            search: {
+              filter: this.state.filter,
+              results: data,
+            },
+            messages: null,
+          });
         });
-      });
-    }
+      }
+    });
   }
 
   addChanged(original, key, selected) {
