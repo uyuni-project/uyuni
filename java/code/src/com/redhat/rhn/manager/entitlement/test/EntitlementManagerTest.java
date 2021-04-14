@@ -50,5 +50,10 @@ public class EntitlementManagerTest extends RhnBaseTestCase {
                 EntitlementManager.OSIMAGE_BUILD_HOST_ENTITLED);
         assertNotNull(ent);
         assertEquals(EntitlementManager.OSIMAGE_BUILD_HOST, ent);
+
+        ent = EntitlementManager.getByName(
+                EntitlementManager.ANSIBLE_CONTROL_NODE_ENTITLED);
+        assertNotNull(ent);
+        assertEquals(EntitlementManager.ANSIBLE_CONTROL_NODE, ent);
     }
 }
