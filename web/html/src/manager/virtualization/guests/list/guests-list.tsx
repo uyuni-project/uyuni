@@ -9,13 +9,17 @@ import { ListTab } from "../../ListTab";
 import { HypervisorCheck } from "../../HypervisorCheck";
 import { ActionApi } from "../../ActionApi";
 
+export type HostInfo = {
+  hypervisor: string,
+};
+
 type Props = {
   serverId: string;
   pageSize: number;
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
-  hypervisor: string;
+  hostInfo: HostInfo;
 };
 
 export function GuestsList(props: Props) {
@@ -77,7 +81,7 @@ export function GuestsList(props: Props) {
 
   return (
     <>
-      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hypervisor} />
+      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hostInfo.hypervisor}/>
 
       <ListTab
         serverId={props.serverId}

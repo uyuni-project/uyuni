@@ -132,3 +132,29 @@ def test_vminfo_cluster():
                 info = virt_utils.vm_info()
                 assert info["vm01"].get("cluster_primitive") == "vm01"
                 assert info["vm01"].get("graphics_type") =="vnc"
+
+
+def test_host_info():
+    """
+    Test the host_info() function
+    """
+    popen_mock = MagicMock()
+    crm_conf_node = b"""<?xml version="1.0" ?>
+<cib>
+  <configuration>
+    <crm_config/>
+    <nodes>
+      <node id="1084783225" uname="demo-kvm1"/>
+      <node id="1084783226" uname="demo-kvm2"/>
+      <node id="1084783227" uname="demo-kvm3"/>
+    </nodes>
+    <resources/>
+    <constraints/>
+  </configuration>
+</cib>"""
+    popen_mock.return_value.communicate.side_effect = [(b"demo-kvm1", None), (crm_conf_node, None)]
+    with patch.object(virt_utils.subprocess, "Popen", popen_mock):
+        with patch.dict(virt_utils.__salt__, {"virt.get_hypervisor": MagicMock(return_value="kvm")}):
+            info = virt_utils.host_info()
+            assert info["hypervisor"] == "kvm"
+            assert info["cluster_other_nodes"] == ["demo-kvm2", "demo-kvm3"]
