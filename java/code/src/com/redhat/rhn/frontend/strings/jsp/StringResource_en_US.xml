@@ -25009,6 +25009,9 @@ given channel.</source>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitoring</source>
       </trans-unit>
+      <trans-unit id="ansible_control_node" xml:space="preserve">
+        <source>Ansible Control Node</source>
+      </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
       </trans-unit>
