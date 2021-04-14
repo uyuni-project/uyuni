@@ -7285,6 +7285,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.guest_migrate" xml:space="preserve">
+        <source>Migrate a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.pool_refresh" xml:space="preserve">
         <source>Virtual storage pool refresh</source>
         <context-group name="ctx">

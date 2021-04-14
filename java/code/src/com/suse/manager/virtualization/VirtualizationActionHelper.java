@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -38,6 +39,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestMigrateActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.utils.MinionActionUtils;
@@ -283,6 +285,30 @@ public class VirtualizationActionHelper {
             action.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
 
             action.setRemoveInterfaces(data.getInterfaces() != null && data.getInterfaces().isEmpty());
+            return action;
+        };
+
+        return getGuestBaseActionCreator(actionCreator, guestNames);
+    }
+
+    /**
+     * Get action creator for guest migration actions
+     *
+     * @param guestNames the guests names mapped to their UUID
+     *
+     * @return the action creator
+     */
+    public static BiFunction<VirtualGuestMigrateActionJson, String, Action> getGuestMigrateActionCreator(
+            Map<String, String> guestNames
+    ) {
+        BiFunction<VirtualGuestMigrateActionJson, Optional<String>,
+                BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
+            VirtualizationMigrateGuestAction action = (VirtualizationMigrateGuestAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE);
+            action.setName(ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE.getName());
+            action.setUuid(data.getUuids().get(0));
+            action.setPrimitive(data.getPrimitive());
+            action.setTarget(data.getTarget());
             return action;
         };
 
