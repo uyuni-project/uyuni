@@ -8,9 +8,11 @@ import { Utils as ListUtils } from "../../list.utils";
 import { ListTab } from "../../ListTab";
 import { HypervisorCheck } from "../../HypervisorCheck";
 import { ActionApi } from "../../ActionApi";
+import { MigrateDialog } from './MigrateDialog';
 
 export type HostInfo = {
   hypervisor: string,
+  cluster_other_nodes: string[],
 };
 
 type Props = {
@@ -23,6 +25,7 @@ type Props = {
 };
 
 export function GuestsList(props: Props) {
+  const [migrateVm, setMigrateVm] = React.useState(undefined);
   const modalsData = [
     {
       type: "start",
@@ -206,6 +209,16 @@ export function GuestsList(props: Props) {
                     target="_blank"
                   />
                 )}
+                {row.cluster_primitive && state === 'running' &&
+                  <AsyncButton
+                    defaultType="btn-default btn-sm"
+                    title={t('Migrate')}
+                    icon="fa-share-square-o"
+                    action={() => {
+                      setMigrateVm(row);
+                    }}
+                  />
+                }
                 <LinkButton
                   title={t("Edit")}
                   className="btn-default btn-sm"
@@ -220,6 +233,26 @@ export function GuestsList(props: Props) {
           return { columns, actionsProvider };
         }}
       </ListTab>
+      <ActionApi urlTemplate={`/rhn/manager/api/systems/details/virtualization/guests/${props.serverId}/migrate`}>
+      {
+        ({onAction}) => (
+          <MigrateDialog
+            id="migrate-modal"
+            key="migrate-modal"
+            vm={migrateVm}
+            onConfirm={(vm: any, target: string) => {
+              onAction((url) => url, "", {
+                uuids: [vm.uuid],
+                primitive: vm.cluster_primitive,
+                target: target,
+              });
+            }}
+            onClose={() => setMigrateVm(undefined)}
+            clusterNodes={props.hostInfo.cluster_other_nodes}
+          />
+        )
+      }
+      </ActionApi>
     </>
   );
 }

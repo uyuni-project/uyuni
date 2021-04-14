@@ -597,6 +597,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         outer-join="false" cascade="all" property-ref="parentAction"/>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction"
+                  discriminator-value="522" lazy="true">
+            <join table="rhnActionVirtMigrate">
+                <key column="action_id"/>
+                <property name="uuid"/>
+                <property name="primitive"/>
+                <property name="target"/>
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
@@ -672,7 +682,10 @@ select {ra.*}
     (select NULL as network_name,
             NULL as definition from dual) ra_23_,
     (select NULL as playbook_path,
-            NULL as inventory_path from dual) ra_24_
+            NULL as inventory_path from dual) ra_25_,
+    (select NULL as uuid,
+            NULL as primitive,
+            NULL as target from dual) ra_24_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -819,7 +832,10 @@ select sa.server_id
                      (select NULL as network_name,
                              NULL as definition from dual) ra_23_,
                      (select NULL as playbook_path,
-                             NULL as inventory_path from dual) ra_24_
+                             NULL as inventory_path from dual) ra_25_,
+                     (select NULL as uuid,
+                             NULL as primitive,
+                             NULL as target from dual) ra_24_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id
