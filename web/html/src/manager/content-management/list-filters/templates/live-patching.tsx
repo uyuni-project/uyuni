@@ -9,7 +9,12 @@ import { Template } from "./index";
 type Client = {
   id: number;
   name: string;
-  kernelVersion?: string;
+  kernelId?: string;
+};
+
+type Product = {
+  id: number;
+  name: string;
 };
 
 type Kernel = {
@@ -18,7 +23,7 @@ type Kernel = {
 };
 
 async function getClients(): Cancelable<Client[]> {
-  const PLACEHOLDER_CLIENTS = [
+  return [
     {
       id: 1,
       name: "Placeholder Client 1",
@@ -32,18 +37,19 @@ async function getClients(): Cancelable<Client[]> {
       name: "Placeholder Client 3",
     },
   ];
-  return PLACEHOLDER_CLIENTS;
 }
 
-async function getKernels(clientId: number): Cancelable<Kernel[]> {
-  if (clientId === 1) {
-    return [
-      {
-        id: 234,
-        version: "0.1.2",
-      },
-    ];
-  }
+async function getProducts(): Cancelable<Product[]> {
+  return [
+    {
+      id: 1,
+      name: "SLES product 1",
+    },
+  ];
+}
+
+// TODO: Specify where and how this data realistically comes from
+async function getKernels(...args: any[]): Cancelable<Kernel[]> {
   return [
     {
       id: 345,
@@ -59,27 +65,40 @@ export default (props: FilterFormProps & { template: Template }) => {
   }
 
   const formContext = React.useContext(FormContext);
-  const clientId = formContext.model.clientId;
   const setModelValue = formContext.setModelValue;
+  const clientId = formContext.model.clientId;
+  const productId = formContext.model.productId;
   const [clients, setClients] = useState<Client[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
   useEffect(() => {
     getClients().then(result => setClients(result));
+    getProducts().then(result => setProducts(result));
   }, []);
 
   useEffect(() => {
     if (clientId) {
-      getKernels(clientId).then(result => setKernels(result));
-      // TODO: Set according to spec instead
-      setModelValue?.("kernel", null);
-      // TODO: For project
-    } else if (false) {
+      getKernels(clientId).then(result => {
+        setKernels(result);
+
+        const client = clients.find(item => item.id === clientId);
+        const kernelId = client?.kernelId ?? null;
+        setModelValue?.("kernel", kernelId);
+      });
+    } else if (productId) {
+      getKernels(productId).then(result => {
+        setKernels(result);
+
+        const product = products.find(item => item.id === productId);
+        // TODO: Specify where and how this data realistically comes from
+        setModelValue?.("kernel", null);
+      });
     } else {
       setKernels([]);
       setModelValue?.("kernel", null);
     }
-  }, [clientId, setModelValue]);
+  }, [clients, clientId, products, productId, setModelValue]);
 
   return (
     <>
@@ -99,13 +118,28 @@ export default (props: FilterFormProps & { template: Template }) => {
           />
         </>
       )}
+      {template === Template.LivePatchingProduct && (
+        <>
+          <Select
+            name="productId"
+            label={t("Product")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+            disabled={props.editing}
+            options={products}
+            getOptionValue={product => product.id}
+            getOptionLabel={product => product.name}
+          />
+        </>
+      )}
       <Select
-        name="kernel"
+        name="kernelId"
         label={t("Kernel")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        required={!!clientId}
-        disabled={props.editing || !clientId}
+        required={!!(clientId || productId)}
+        disabled={!clientId && !productId}
         options={kernels}
         getOptionValue={kernel => kernel.id}
         getOptionLabel={kernel => kernel.version}

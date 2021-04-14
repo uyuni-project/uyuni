@@ -1,4 +1,3 @@
-/* global moment */
 import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
@@ -16,6 +15,14 @@ export function mapFilterFormToRequest(
   requestForm.name = filterForm.filter_name;
   requestForm.rule = filterForm.rule;
   requestForm.matcher = filterForm.matcher;
+
+  // If we're using a prebuilt filter
+  if (Object.prototype.hasOwnProperty.call(filterForm, 'template')) {
+    // TODO: Implement
+    const { labelPrefix, kernelId } = filterForm;
+    console.log({ labelPrefix, kernelId });
+    throw new TypeError("Not implemented");
+  }
 
   const selectedFilterOption = findClmFilterByKey(filterForm.type);
   if (selectedFilterOption) {
