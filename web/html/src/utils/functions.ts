@@ -1,5 +1,5 @@
-export type Cancelable = {
-  promise: Promise<any>;
+export type Cancelable<T = any> = {
+  promise: Promise<T>;
   cancel: (reason?: any) => void;
 };
 
