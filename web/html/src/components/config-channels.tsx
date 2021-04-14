@@ -104,8 +104,6 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
     const channels = this.state.assigned;
     const request = this.props.saveRequest(channels).promise.then(
       (data, textStatus, jqXHR) => {
-        console.log("success: " + data);
-
         const newSearchResults = this.state.search.results.map(channel => {
           const changed = this.state.changed.get(channelKey(channel));
           if (changed !== undefined) {
@@ -128,8 +126,6 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
         this.hideRanking();
       },
       (jqXHR, textStatus, errorThrown) => {
-        console.log("fail: " + textStatus);
-
         this.setState({
           messages: MessagesUtils.error(t("An error occurred on save.")),
         });
@@ -149,7 +145,6 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
       return Promise.resolve();
     } else {
       return Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
-        console.log(data);
         this.setState({
           search: {
             filter: this.state.filter,
