@@ -5,6 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import allLocales from "@fullcalendar/core/locales-all";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
@@ -121,6 +122,8 @@ const WebCalendar = (props: WebCalendarProps) => {
       <FullCalendar
         ref={calendarRef}
         timeZone={""} // Prevent FullCalendar from using the browsers set timezone
+        locales={allLocales}
+        locale={window.preferredLocale.replace("_", "-")}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         customButtons={{
           backButton: {

@@ -18,6 +18,7 @@ declare global {
     localTime?: any;
     type?: any;
     isAdmin?: any;
+    preferredLocale?: any;
   }
 }
 
