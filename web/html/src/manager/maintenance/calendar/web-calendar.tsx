@@ -36,6 +36,8 @@ const WebCalendar = (props: WebCalendarProps) => {
     // Hack: Make Fullcalendar button icons show correctly
     jQuery(".fc-backButton-button").html('<div class="fa fa-angle-left"></div>');
     jQuery(".fc-nextButton-button").html('<div class="fa fa-angle-right"></div>');
+    jQuery(".fc-skipNextButton-button").html('<div class="fa fa-angle-double-right"></div>')
+      .prop('title', "Skip to the next maintenance window");
   }, []);
 
   const getApi = () => {
@@ -55,6 +57,35 @@ const WebCalendar = (props: WebCalendarProps) => {
         }).catch(props.responseError)
     }
     navigateTo(operation);
+  };
+
+  const onSkipNext = () => {
+    // Get last date of currently displayed range
+    let date = getDate("next");
+    // Check if we need to update the events
+    if (!needsUpdate(date) && skipToNextEvent(date)) {
+      return;
+    }
+    // If we are in day view and need to update we want to make sure to always use the first day of the next month
+    if (getApi().currentDataManager.data.currentViewType === "timeGridDay" && moment(date).date() !== 1) {
+      date = Date.parse(moment(date).add(1, 'month').startOf('month'));
+    }
+    const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date}/${props.id}`;
+    return Network.get(endpoint, "application/json").promise
+      .then(events => {
+        if (events.data.length === 0) {
+          props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));
+        } else {
+          setEvents(events.data);
+          // Skip to next event that is not in current month
+          const firstEvent = moment.parseZone(events.data.filter(event =>
+            moment.parseZone(event.start).month() !== moment(currentDate).month())[0].start
+          );
+          getApi().gotoDate(firstEvent.format("YYYY-MM-DD"));
+          props.clearMessages();
+          setCurrentDate(getApi().currentDataManager.data.currentDate);
+        }
+      }).catch(props.responseError)
   };
 
   const onClickMonth = () => {
@@ -117,6 +148,18 @@ const WebCalendar = (props: WebCalendarProps) => {
       moment(date).year() !== moment(currentDate).year());
   };
 
+  const skipToNextEvent = (date) => {
+    // We are only interested in events from the same month that are later or equal to 'date'
+    const filteredEvents = events.filter(event => (
+      moment.parseZone(event.start).month() === moment(currentDate).month() &&
+      moment.parseZone(event.start).date() >= moment(date).date())
+    );
+    // Only perform action if there is an event to go to
+    filteredEvents.length > 0 && getApi().gotoDate(filteredEvents[0].start);
+    // Return true if there's an event false otherwise
+    return filteredEvents.length > 0;
+  }
+
   return (
     <div>
       <FullCalendar
@@ -136,6 +179,9 @@ const WebCalendar = (props: WebCalendarProps) => {
           nextButton: {
             click: () => getEvents("next")
           },
+          skipNextButton: {
+            click: () => onSkipNext()
+          },
           monthButton: {
             text: t("Month"),
             click: () => onClickMonth()
@@ -147,7 +193,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         }}
         height={"800px"}
         headerToolbar={{
-          left: "backButton,todayButton,nextButton",
+          left: "backButton,todayButton,nextButton skipNextButton",
           center: "title",
           right: "monthButton,dayButton"
         }}
