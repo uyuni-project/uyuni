@@ -1,3 +1,4 @@
+- Add the Ansible Control Node system type
 - List config state summary for systems in highstate page
 - Implement retracted patches
 - Add support for notify beacon for Debian/Ubuntu systems
