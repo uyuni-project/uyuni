@@ -62,6 +62,7 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
       )) ||
         (type === "calendar" && (
           <MaintenanceCalendarDetails
+            id={props.data.id}
             name={props.data.name}
             scheduleNames={props.data.scheduleNames}
             url={props.data.url}
