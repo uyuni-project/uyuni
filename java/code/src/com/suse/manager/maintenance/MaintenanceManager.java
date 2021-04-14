@@ -566,6 +566,14 @@ public class MaintenanceManager {
 
     private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
                                                           Optional<String> eventName, Long date) {
+        if (operation.equals("skipNext")) {
+            Optional<MaintenanceWindowData> nextWindow = icalUtils.getNextEvent(calendar, eventName, date);
+            if (nextWindow.isEmpty()) {
+                return new ArrayList<>();
+            }
+            date = nextWindow.get().getFromMilliseconds();
+        }
+
         Map<String, Long> activeRange = getActiveRange(date);
         Long start = activeRange.get("start");
         Long end = activeRange.get("end");

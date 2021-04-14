@@ -34,6 +34,8 @@ import java.io.StringReader;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -280,5 +282,20 @@ public class IcalUtils {
                 .reduce(Stream.empty(), Stream::concat)
                 .sorted(Comparator.comparing(MaintenanceWindowData::getFromMilliseconds))
                 .collect(toList());
+    }
+
+    /**
+     * Given the date get the next event in the future. Looks a maximum of one year and one month into the future
+     *
+     * @param calendar the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param startDate the date to look at
+     * @return the last event
+     */
+    public Optional<MaintenanceWindowData> getNextEvent(MaintenanceCalendar calendar, Optional<String> eventName,
+                                              Long startDate) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(startDate), ZoneOffset.UTC);
+        Long endDate = t.plusYears(1).plusMonths(1).toInstant().toEpochMilli();
+        return getCalendarEvents(calendar, eventName, startDate, endDate).stream().findFirst();
     }
 }
