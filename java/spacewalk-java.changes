@@ -1,3 +1,4 @@
+- Add the Ansible Control Node system type
 - Exclude minions from the list of locally-managed/sandbox systems when copying config files (bsc#1184940)
 - Remove activation key display from system details page
 - change deprecated path /var/run into /run for systemd (bsc#1185059)
