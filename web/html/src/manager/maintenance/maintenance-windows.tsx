@@ -184,6 +184,8 @@ const MaintenanceWindows = () => {
           onEdit={handleEditAction}
           onMessage={setMessages}
           onDelete={deleteItem}
+          responseError={handleResponseError}
+          clearMessages={clearMessages}
         />
       ) : (action === "edit" || action === "create") && window.isAdmin ? (
         <MaintenanceWindowsEdit

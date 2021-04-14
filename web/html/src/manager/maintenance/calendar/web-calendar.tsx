@@ -6,11 +6,15 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+import { MessageType, Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
 
 type WebCalendarProps = {
   id: number;
   type: string;
+  messages: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 type Event = {
@@ -45,8 +49,9 @@ const WebCalendar = (props: WebCalendarProps) => {
         .then(events => {
           setEvents(events.data);
           navigateTo(operation);
+          props.clearMessages();
           setCurrentDate(getApi().currentDataManager.data.currentDate);
-        })
+        }).catch(props.responseError)
     }
     navigateTo(operation);
   };

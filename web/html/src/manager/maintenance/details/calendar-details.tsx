@@ -7,6 +7,7 @@ import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+import { MessageType } from "components/messages";
 
 type CalendarDetailsProps = {
   id: number;
@@ -15,6 +16,9 @@ type CalendarDetailsProps = {
   url: string;
   data: string;
   onDelete: (...args: any[]) => any;
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
@@ -53,6 +57,9 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
         scheduleNames={props.scheduleNames}
         url={props.url}
         data={props.data}
+        onMessage={props.onMessage}
+        clearMessages={props.clearMessages}
+        responseError={props.responseError}
       />
     </>
   );
@@ -64,6 +71,9 @@ type OverviewProps = {
   scheduleNames: Array<Record<string, string>>;
   url: string;
   data: string;
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
@@ -89,6 +99,9 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
               <WebCalendar
                 id={props.id}
                 type={"calendar"}
+                messages={props.onMessage}
+                clearMessages={props.clearMessages}
+                responseError={props.responseError}
               />
           </div>
         </div>
