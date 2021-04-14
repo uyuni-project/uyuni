@@ -469,10 +469,10 @@ public class KickstartableTree extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns the kernelOptions.
+     * @return Returns the kernelOptions (never null).
      */
     public String getKernelOptions() {
-        return kernelOptions;
+        return StringUtils.defaultString(kernelOptions);
     }
 
     /**
@@ -483,10 +483,10 @@ public class KickstartableTree extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns the kernelOptionsPost.
+     * @return Returns the kernelOptionsPost (never null).
      */
     public String getKernelOptionsPost() {
-        return kernelOptionsPost;
+        return StringUtils.defaultString(kernelOptionsPost);
     }
 
     /**

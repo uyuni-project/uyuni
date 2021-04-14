@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
-import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -48,6 +47,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected CobblerCommand getCobblerCommand() {
         return new CobblerDistroCreateCommand(this.tree, this.user);
     }
@@ -64,7 +64,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             return new ValidatorError("distribution.tree.exists", existingTree.getLabel());
         }
 
-        String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
+        String kopts = this.tree.getKernelOptions();
         StringJoiner kOptsJoiner = new StringJoiner(" ");
         kOptsJoiner.add(kopts);
 

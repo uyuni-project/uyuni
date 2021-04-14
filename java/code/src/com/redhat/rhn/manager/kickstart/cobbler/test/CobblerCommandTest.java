@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroDeleteCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroSyncCommand;
@@ -32,6 +31,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
@@ -185,7 +185,8 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
         // after the backsync command, the kernel options of the kickstartable tree in the
         // db should remain untouched
         assertEquals("option1=value1", fromDb.getKernelOptions().trim());
-        assertNull(fromDb.getKernelOptionsPost());
+        // the get function convert null to empty string
+        assert(fromDb.getKernelOptionsPost().isEmpty());
     }
 
     public void testDistroDelete() throws Exception {
@@ -197,7 +198,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     public void testLogin() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
-        user = (User) reload(user);
+        user = reload(user);
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         String cobblertoken = cmd.login(user.getLogin(), "password");
         assertNotNull(cobblertoken);
