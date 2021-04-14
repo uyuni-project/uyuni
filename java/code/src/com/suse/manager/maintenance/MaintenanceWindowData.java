@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,6 +29,9 @@ import java.time.Instant;
  */
 public class MaintenanceWindowData {
 
+    // name of the event associated with the maintenance window
+    private String name;
+
     // maintenance window start date/time (human readable form)
     private String from;
 
@@ -37,6 +40,9 @@ public class MaintenanceWindowData {
 
     // maintenance window start date/time (milliseconds since epoch, used in struts pages)
     private long fromMilliseconds;
+
+    // maintenance window end date/time (milliseconds since epoch, used in struts pages)
+    private long toMilliseconds;
 
     // maintenance window start date/time (local date format, used in react pages)
     private String fromLocalDate;
@@ -51,7 +57,33 @@ public class MaintenanceWindowData {
         this.from = LocalizationService.getInstance().formatDate(fromIn);
         this.to = LocalizationService.getInstance().formatDate(toIn);
         this.fromMilliseconds = fromIn.toEpochMilli();
+        this.toMilliseconds = toIn.toEpochMilli();
         this.fromLocalDate = ViewHelper.getInstance().renderDate(fromIn);
+    }
+
+    /**
+     * Standard constructor
+     *
+     * @param nameIn the name of the maintenance window
+     * @param fromIn the maintenance window start
+     * @param toIn the maintenance window end
+     */
+    public MaintenanceWindowData(String nameIn, Instant fromIn, Instant toIn) {
+        this.name = nameIn;
+        this.from = LocalizationService.getInstance().formatDate(fromIn);
+        this.to = LocalizationService.getInstance().formatDate(toIn);
+        this.fromMilliseconds = fromIn.toEpochMilli();
+        this.toMilliseconds = toIn.toEpochMilli();
+        this.fromLocalDate = ViewHelper.getInstance().renderDate(fromIn);
+    }
+
+    /**
+     * Gets the name
+     *
+     * @return name
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -79,6 +111,15 @@ public class MaintenanceWindowData {
      */
     public long getFromMilliseconds() {
         return fromMilliseconds;
+    }
+
+    /**
+     * Gets the toMilliseconds.
+     *
+     * @return toMilliseconds
+     */
+    public long getToMilliseconds() {
+        return toMilliseconds;
     }
 
     /**
