@@ -161,7 +161,6 @@ public class MaintenanceCalendarController {
 
         json.setId(calendar.getId());
         json.setName(calendar.getLabel());
-        json.setData(calendar.getIcal());
         calendar.getUrlOpt().ifPresent(json::setUrl);
         json.setScheduleNames(MM.listSchedulesByCalendar(user, calendar).stream().map(
                 schedule -> Map.of(

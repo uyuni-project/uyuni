@@ -6,8 +6,10 @@ import { Column } from "components/table/Column";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 type CalendarDetailsProps = {
+  id: number;
   name: string;
   scheduleNames: Array<Record<string, string>>;
   url: string;
@@ -46,6 +48,7 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
         }
       />
       <MaintenanceCalendarOverview
+        id={props.id}
         name={props.name}
         scheduleNames={props.scheduleNames}
         url={props.url}
@@ -56,11 +59,13 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
 };
 
 type OverviewProps = {
+  id: number;
   name: string;
   scheduleNames: Array<Record<string, string>>;
   url: string;
   data: string;
 };
+
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
   const tableData = [
     { left: t("Calendar Name") + ":", right: props.name },
@@ -76,16 +81,17 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
           <Column columnKey="right" cell={row => row.right} />
         </Table>
       </BootstrapPanel>
-      {props.data && (
         <div className="panel panel-default">
           <div className="panel-heading">
             <h4>{props.name}</h4>
           </div>
           <div className="panel-body">
-            <pre>{props.data}</pre>
+              <WebCalendar
+                id={props.id}
+                type={"calendar"}
+              />
           </div>
         </div>
-      )}
     </div>
   );
 };
