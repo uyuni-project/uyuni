@@ -29,10 +29,6 @@ export const filterEntity: FilterEntityEnumType = {
     key: "erratum",
     text: t("Patch"),
   },
-  LIVE_PATCHING: {
-    key: "live_patching",
-    text: t("Live patching"),
-  },
   MODULE: {
     key: "module",
     text: t("Module"),
@@ -157,18 +153,6 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
       filterMatchers.CONTAINS_PKG_GE_EVR,
       filterMatchers.CONTAINS_PKG_GT_EVR,
     ],
-  },
-  LIVE_PATCHING_SYSTEM: {
-    key: "live_patching_system",
-    text: t("System"),
-    entityType: filterEntity.LIVE_PATCHING,
-    matchers: []
-  },
-  LIVE_PATCHING_PRODUCT: {
-    key: "live_patching_product",
-    text: t("Product"),
-    entityType: filterEntity.LIVE_PATCHING,
-    matchers: []
   },
   STREAM: {
     key: "module_stream",

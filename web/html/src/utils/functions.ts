@@ -1,14 +1,13 @@
-// This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
-export class Cancelable<T = any> extends Promise<T> {
-  promise!: Promise<T>;
-  cancel!: (reason?: any) => void;
-}
+export type Cancelable = {
+  promise: Promise<any>;
+  cancel: (reason?: any) => void;
+};
 
-function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void) => void): Cancelable<T> {
+function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => void): Cancelable {
   let rejectFn: (reason: any) => void;
   let isCancelled = false;
 
-  const cancelPromise = new Promise<T>((resolve, reject) => {
+  const cancelPromise = new Promise((resolve, reject) => {
     rejectFn = reject;
   });
 
@@ -19,18 +18,7 @@ function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void
     throw error;
   });
 
-  /*
-  race.promise = race;
-  race.cancel = (reason: any) => {
-    isCancelled = true;
-    rejectFn(reason);
-  };
-  return race as Cancelable<T>;
-
-  */
-  // TODO: Test & verify this
   return {
-    ...race,
     promise: race,
     cancel: (reason: any) => {
       isCancelled = true;
