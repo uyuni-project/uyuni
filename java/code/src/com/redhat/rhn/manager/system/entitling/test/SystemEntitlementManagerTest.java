@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.system.entitling.test;
 import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -180,5 +181,43 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         server = reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
+    }
+
+    /**
+     * Test entitling a traditional client with Ansible Control Node
+     * @throws Exception
+     */
+    public void testEntitleAnsibleControlNodeToTradClient() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server = HibernateFactory.reload(server);
+
+        assertFalse(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
+        // adding the entitlement should have no effect
+        assertFalse(server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
+    }
+
+    /**
+     * Test entitling a salt minion with Ansible Control Node
+     * @throws Exception
+     */
+    public void testEntitleAnsibleControlNodeToSaltClient() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        server = HibernateFactory.reload(server);
+
+        assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
+        assertTrue(server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
+
+        systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
+        assertFalse(server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
     }
 }
