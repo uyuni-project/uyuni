@@ -242,4 +242,43 @@ public class IcalUtils {
         }
         return ofNullable(calendar);
     }
+
+    /**
+     * Given a Maintenance Calendar return the events in the specified range
+     *
+     * @param calendarIn the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param start the start date to look for events
+     * @param end the end date to look for events
+     * @return list of MaintenanceWindowData
+     */
+    public List<MaintenanceWindowData> getCalendarEvents(MaintenanceCalendar calendarIn, Optional<String> eventName,
+                                                         Long start, Long end) {
+        Optional<Calendar> calendar = parseCalendar(calendarIn);
+        if (calendar.isEmpty()) {
+           log.error("Could not parse calendar: " + calendarIn.getLabel());
+           return new ArrayList<>();
+        }
+        Period period = new Period(new DateTime(start), new DateTime(end));
+        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+
+        Collection<CalendarComponent> filteredEvents = eventName
+                .map(summary -> filterEventsBySummary(events, summary))
+                .orElse(events);
+
+        return filteredEvents.stream().map(
+                eventSet -> {
+                    PeriodList pl = eventSet.calculateRecurrenceSet(period);
+                    pl = pl.add(getInitialEvents(List.of(eventSet), period));
+                    return pl.stream()
+                            .filter(l -> !l.isEmpty())
+                            .map(event -> new MaintenanceWindowData(
+                                    eventSet.getProperty("SUMMARY").getValue(),
+                                    event.getStart().toInstant(),
+                                    event.getRangeEnd().toInstant()));
+                })
+                .reduce(Stream.empty(), Stream::concat)
+                .sorted(Comparator.comparing(MaintenanceWindowData::getFromMilliseconds))
+                .collect(toList());
+    }
 }
