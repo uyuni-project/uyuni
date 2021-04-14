@@ -9,6 +9,9 @@ describe("InputBase", () => {
   let model;
   let onChange;
 
+  // Children are mandatory in InputBase
+  const placeholderChild = () => null;
+
   beforeEach(() => {
     model = {};
     onChange = () => {};
@@ -24,8 +27,6 @@ describe("InputBase", () => {
 
   test("renders with minimal props", () => {
     expect(() => {
-      // Children are mandatory in InputBase
-      const placeholderChild = () => null;
       renderWithForm(<InputBase name="foo">{placeholderChild}</InputBase>);
     }).not.toThrow();
   });
@@ -106,5 +107,29 @@ describe("InputBase", () => {
     );
     expect(model).toStrictEqual({ firstname: "John", lastname: "Hacker" });
     expect(screen.queryByText(/Minimum 2 characters/)).toBeNull();
+  });
+
+  test("default value applies to the model when no value is present", () => {
+    model = {};
+
+    renderWithForm(
+      <InputBase name="foo" defaultValue="defaultValue">
+        {placeholderChild}
+      </InputBase>
+    );
+    expect(model).toStrictEqual({ foo: "defaultValue" });
+  });
+
+  test("default value does not apply to the model when a value is already present", () => {
+    model = {
+      foo: "initialValue",
+    };
+
+    renderWithForm(
+      <InputBase name="foo" defaultValue="defaultValue">
+        {placeholderChild}
+      </InputBase>
+    );
+    expect(model).toStrictEqual({ foo: "initialValue" });
   });
 });
