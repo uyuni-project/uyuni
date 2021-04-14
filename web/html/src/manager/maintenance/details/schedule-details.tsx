@@ -28,6 +28,8 @@ type MaintenanceScheduleDetailsProps = {
   calendarName: string;
   onDelete: (item: { name: string }) => Promise<any>;
   onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
@@ -63,6 +65,9 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
           name={props.name}
           calendarName={props.calendarName}
           type={props.type}
+          onMessage={props.onMessage}
+          responseError={props.responseError}
+          clearMessages={props.clearMessages}
         />
       )}
       {activeTab === "assignment" && (
@@ -77,6 +82,9 @@ type OverviewProps = {
   name: string;
   calendarName: string;
   type: "SINGLE" | "MULTI";
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceScheduleOverview = (props: OverviewProps) => {
@@ -104,6 +112,9 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
           <WebCalendar
             id={props.id}
             type={"schedule"}
+            messages={props.onMessage}
+            clearMessages={props.clearMessages}
+            responseError={props.responseError}
           />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
 import { TopPanel } from "components/panels/TopPanel";
+import { MessageType } from "components/messages";
 
 import MaintenanceScheduleDetails from "./schedule-details";
 import MaintenanceCalendarDetails from "./calendar-details";
@@ -10,10 +11,12 @@ import MaintenanceCalendarDetails from "./calendar-details";
 type MaintenanceDetailsProps = {
   type: "schedule" | "calendar";
   data: any;
-  onMessage: (...args: any[]) => any;
+  onMessage: (messages: MessageType[]) => void;
   onCancel: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
@@ -55,9 +58,10 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
           name={props.data.name}
           calendarName={props.data.calendarName}
           type={props.data.type}
-          maintenanceWindows={props.data.maintenanceWindows}
           onDelete={props.onDelete}
           onMessage={props.onMessage}
+          clearMessages={props.clearMessages}
+          responseError={props.responseError}
         />
       )) ||
         (type === "calendar" && (
@@ -68,6 +72,9 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
             url={props.data.url}
             data={props.data.data}
             onDelete={props.onDelete}
+            onMessage={props.onMessage}
+            clearMessages={props.clearMessages}
+            responseError={props.responseError}
           />
         ))}
     </TopPanel>
