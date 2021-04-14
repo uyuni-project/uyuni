@@ -19,18 +19,13 @@ import { Toggler } from "components/toggler";
 import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 import { MessageType } from "components/messages";
-
-type MaintenanceWindowType = {
-  start: string;
-  end: string;
-};
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string;
   type: "SINGLE" | "MULTI";
   calendarName: string;
-  maintenanceWindows?: MaintenanceWindowType[];
   onDelete: (item: { name: string }) => Promise<any>;
   onMessage: (messages: MessageType[]) => void;
 };
@@ -64,10 +59,10 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
       </div>
       {activeTab === "overview" && (
         <MaintenanceScheduleOverview
+          id={props.id}
           name={props.name}
           calendarName={props.calendarName}
           type={props.type}
-          maintenanceWindows={props.maintenanceWindows}
         />
       )}
       {activeTab === "assignment" && (
@@ -78,10 +73,10 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 };
 
 type OverviewProps = {
+  id: number,
   name: string;
   calendarName: string;
   type: "SINGLE" | "MULTI";
-  maintenanceWindows?: MaintenanceWindowType[];
 };
 
 const MaintenanceScheduleOverview = (props: OverviewProps) => {
@@ -99,18 +94,19 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
           <Column columnKey="right" cell={row => row.right} />
         </Table>
       </BootstrapPanel>
-      {props.maintenanceWindows && props.maintenanceWindows.length > 0 && (
-        <BootstrapPanel title={t("Upcoming Maintenance Windows")}>
-          <Table
-            data={props.maintenanceWindows || []}
-            identifier={row => (props.maintenanceWindows || []).indexOf(row)}
-            initialItemsPerPage={0}
-          >
-            <Column header={t("Start")} columnKey="start" cell={row => row.start} />
-            <Column header={t("End")} columnKey="end" cell={row => row.end} />
-          </Table>
-        </BootstrapPanel>
-      )}
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h4>
+            {props.name}
+          </h4>
+        </div>
+        <div className="panel-body">
+          <WebCalendar
+            id={props.id}
+            type={"schedule"}
+          />
+        </div>
+      </div>
     </div>
   );
 };
