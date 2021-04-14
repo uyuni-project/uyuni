@@ -21,19 +21,22 @@ export function NetsList(props: Props) {
       type: "start",
       name: t("Start"),
       icon: "fa-play",
-      bulkonly: true,
+      bulk: true,
+      row: false,
     },
     {
       type: "stop",
       name: t("Stop"),
       icon: "fa-stop",
-      bulkonly: false,
+      bulk: true,
+      row: true,
     },
     {
       type: "delete",
       name: t("Delete"),
       icon: "fa-trash",
-      bulkonly: false,
+      bulk: true,
+      row: true,
     },
   ];
   return (

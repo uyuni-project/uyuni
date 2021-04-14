@@ -19,7 +19,8 @@ type ModalDataType = {
   type: string;
   name: string;
   icon: string;
-  bulkonly: boolean;
+  bulk: boolean;
+  row: boolean;
   canForce?: boolean;
   forceName?: string;
 };
@@ -111,7 +112,7 @@ export function ListTab(props: Props) {
   const capsType = props.type.replace(/(?:^[a-z])/, word => word.toUpperCase());
   const createConfirmModal = (action: any, onConfirm: Function) => {
     return [
-      !action.bulkonly && (
+      action.row && (
         <ActionConfirm
           id={`${action.type}-modal`}
           key={`${action.type}-modal`}
@@ -137,34 +138,36 @@ export function ListTab(props: Props) {
           isOpen={openedModals[`${action.type}-modal`] || false}
         />
       ),
-      <ActionConfirm
-        id={`${action.type}-selected-modal`}
-        key={`${action.type}-selected-modal`}
-        type={action.type}
-        name={action.name}
-        itemName={t(capsType)}
-        icon={action.icon}
-        selected={selectedItems}
-        onConfirm={(type, items, params) =>
-          onConfirm(
-            type,
-            items.map(item => item[props.idName]),
-            params
-          )
-        }
-        canForce={action.canForce}
-        forceName={action.forceName}
-        onClose={() => {
-          // Mark the corresponding modal `${action.type}-selected-modal` hidden
-          setOpenedModals(Object.assign({}, openedModals, { [`${action.type}-selected-modal`]: false }));
-        }}
-        isOpen={openedModals[`${action.type}-selected-modal`] || false}
-      />,
+      action.bulk && (
+        <ActionConfirm
+          id={`${action.type}-selected-modal`}
+          key={`${action.type}-selected-modal`}
+          type={action.type}
+          name={action.name}
+          itemName={t(capsType)}
+          icon={action.icon}
+          selected={selectedItems}
+          onConfirm={(type, items, params) =>
+            onConfirm(
+              type,
+              items.map(item => item[props.idName]),
+              params
+            )
+          }
+          canForce={action.canForce}
+          forceName={action.forceName}
+          onClose={() => {
+            // Mark the corresponding modal `${action.type}-selected-modal` hidden
+            setOpenedModals(Object.assign({}, openedModals, { [`${action.type}-selected-modal`]: false }));
+          }}
+          isOpen={openedModals[`${action.type}-selected-modal`] || false}
+        />
+      ),
     ];
   };
 
   const createSelectedModalButton = (action: any) => {
-    return (
+    return action.bulk && (
       <Button
         key={`${action.type}-selected-button`}
         id={`${action.type}-selected`}
