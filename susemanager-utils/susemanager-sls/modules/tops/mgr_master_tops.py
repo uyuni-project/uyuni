@@ -33,7 +33,8 @@ MANAGER_BASE_TOP = [
     "formulas",
     "services.salt-minion",
     "services.docker",
-    "services.kiwi-image-server"
+    "services.kiwi-image-server",
+    "ansible"
 ]
 
 
