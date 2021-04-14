@@ -298,4 +298,19 @@ public class IcalUtils {
         Long endDate = t.plusYears(1).plusMonths(1).toInstant().toEpochMilli();
         return getCalendarEvents(calendar, eventName, startDate, endDate).stream().findFirst();
     }
+
+    /**
+     * Given the date get the last event in the past. Looks a maximum of one year and one month into the past
+     *
+     * @param calendar the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param endDate the date to look at
+     * @return the last event
+     */
+    public Optional<MaintenanceWindowData> getLastEvent(MaintenanceCalendar calendar, Optional<String> eventName,
+                                                        Long endDate) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(endDate), ZoneOffset.UTC);
+        Long startDate = t.minusYears(1).minusMonths(1).toInstant().toEpochMilli();
+        return getCalendarEvents(calendar, eventName, startDate, endDate).stream().reduce((first, last) -> last);
+    }
 }
