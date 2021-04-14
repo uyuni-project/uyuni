@@ -1,3 +1,4 @@
+- Fix insecure JMX configuration (bsc#1184617)
 - Add support for notify beacon for Debian/Ubuntu systems
 - Automatically start needed networks and storage pools when creating/starting a VM
 - Avoid conflicts with running ioloop on mgr_events engine (bsc#1172711)
