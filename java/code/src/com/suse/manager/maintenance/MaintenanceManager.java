@@ -519,49 +519,48 @@ public class MaintenanceManager {
     }
 
     /**
-     * Given a Maintenance Schedule or Calendar return a list of maintenance windows based on the operation
+     * Given a Maintenance Calendar return a list of maintenance windows based on the operation
      * to perform starting from the given date.
      *
      * @param user the current user
      * @param operation get previous, current or future maintenance windows based on the operation
      * @param id the id of the calendar or schedule
-     * @param type determines whether the id belongs to a schedule or a calendar
      * @param date the date to start looking for maintenance windows
      * @return the resulting list of maintenance windows
      */
-    public List<MaintenanceWindowData> preprocessMaintenanceWindows(User user, String operation, Long id, String type,
-                                                                              Long date) {
-        List<MaintenanceWindowData> events;
-
-        if (type.equals("calendar")) {
-            Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
-            if (calendar.isEmpty()) {
-                throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
-            }
-            events = getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date) {
+        Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
+        if (calendar.isEmpty()) {
+            throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
-        else if (type.equals("schedule")) {
-            Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
-            if (schedule.isEmpty()) {
-                throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
-            }
-            Optional<MaintenanceCalendar> calendar = schedule.get().getCalendarOpt();
-            if (calendar.isEmpty()) {
-                throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
-            }
-            if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
-                events = getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()), date);
-            }
-            else {
-                events = getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
-            }
+        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+    }
+
+    /**
+     * Given a Maintenance Schedule return a list of maintenance windows based on the operation
+     * to perform starting from the given date.
+     *
+     * @param user the current user
+     * @param operation get previous, current or future maintenance windows based on the operation
+     * @param id the id of the calendar or schedule
+     * @param date the date to start looking for maintenance windows
+     * @return the resulting list of maintenance windows
+     */
+    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date) {
+        Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
+        if (schedule.isEmpty()) {
+            throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
+        }
+        Optional<MaintenanceCalendar> calendar = schedule.get().getCalendarOpt();
+        if (calendar.isEmpty()) {
+            throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
+        }
+        if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
+            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()), date);
         }
         else {
-            throw new EntityNotExistsException(
-                    "Type: " + type + " does not exist! Choose either 'schedule' or 'calendar'"
-            );
+            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
         }
-        return events;
     }
 
     private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
