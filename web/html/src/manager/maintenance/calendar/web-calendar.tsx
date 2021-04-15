@@ -37,9 +37,9 @@ const WebCalendar = (props: WebCalendarProps) => {
     jQuery(".fc-backButton-button").html('<div class="fa fa-angle-left"></div>');
     jQuery(".fc-nextButton-button").html('<div class="fa fa-angle-right"></div>');
     jQuery(".fc-skipBackButton-button").html('<div class="fa fa-angle-double-left"></div>')
-      .prop('title', "Skip to the last maintenance window");
+      .prop('title', t("Skip to the last maintenance window"));
     jQuery(".fc-skipNextButton-button").html('<div class="fa fa-angle-double-right"></div>')
-      .prop('title', "Skip to the next maintenance window");
+      .prop('title', t("Skip to the next maintenance window"));
   }, []);
 
   const getApi = () => {
