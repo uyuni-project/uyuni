@@ -35,6 +35,7 @@ import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.utils.gson.MaintenanceWindowDataJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -49,6 +50,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -145,7 +147,8 @@ public class MaintenanceController {
             log.error(e.getMessage());
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
-        return postprocessMaintenanceWindows(user, response, events);
+        response.type("application/json");
+        return json(response, eventsToJson(user, events));
     }
 
     static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
@@ -162,28 +165,30 @@ public class MaintenanceController {
     }
 
     /**
-     * Apply the timezone shift of the user selected timezone and return json string in Fullcalendar required format
+     * Given a date returns the date in the user configured timezone
      *
      * @param user the current user
-     * @param response the response
-     * @param events list of MaintenanceWindowData
-     * @return the result json string
+     * @param date the date
+     * @return the date string in the user configured timezone
      */
-    private static String postprocessMaintenanceWindows(
-            User user , Response response, List<MaintenanceWindowData> events) {
+    private static String applyTimezoneShift(User user, Long date) {
         ZoneId zoneId = ZoneId.of(user.getTimeZone().getOlsonName());
-        List<Map<String, String>> data = new ArrayList<>();
-        events.forEach(event ->
-                data.add(Map.of(
-                        "title", event.getName(),
-                        "start", ZonedDateTime.ofInstant(
-                                Instant.ofEpochMilli(event.getFromMilliseconds()), zoneId
-                        ).toString().split("\\[")[0],
-                        "end", ZonedDateTime.ofInstant(
-                                Instant.ofEpochMilli(event.getToMilliseconds()), zoneId
-                        ).toString().split("\\[")[0]
-                ))
-        );
-        return json(response, ResultJson.success(data));
+        return ZonedDateTime
+                .ofInstant(Instant.ofEpochMilli(date), zoneId)
+                .toString()
+                .split("\\[")[0];
+    }
+
+    private static List<MaintenanceWindowDataJson> eventsToJson(User user, List<MaintenanceWindowData> events) {
+        return events.stream().map(event -> eventToJson(user, event)).collect(Collectors.toList());
+    }
+
+    private static MaintenanceWindowDataJson eventToJson(User user, MaintenanceWindowData event) {
+        MaintenanceWindowDataJson json = new MaintenanceWindowDataJson();
+        json.setTitle(event.getName());
+        json.setStart(applyTimezoneShift(user, event.getFromMilliseconds()));
+        json.setEnd(applyTimezoneShift(user, event.getToMilliseconds()));
+
+        return json;
     }
 }
