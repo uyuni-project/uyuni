@@ -49,7 +49,7 @@ const WebCalendar = (props: WebCalendarProps) => {
   const getEvents = (operation) => {
     const date = getDate(operation);
     if (operation === "initial" || needsUpdate(date)) {
-      const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${date}/${props.id}`;
+      const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${date.valueOf()}/${props.id}`;
       return Network.get(endpoint, "application/json").promise
         .then(events => {
           setEvents(events.data);
@@ -68,7 +68,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     if (!needsUpdate(date) && skipToPrevEvent(date)) {
       return;
     }
-    const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${date}/${props.id}`;
+    const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
         if (events.data.length === 0) {
@@ -94,10 +94,10 @@ const WebCalendar = (props: WebCalendarProps) => {
       return;
     }
     // If we are in day view and need to update we want to make sure to always use the first day of the next month
-    if (getApi().currentDataManager.data.currentViewType === "timeGridDay" && moment(date).date() !== 1) {
-      date = Date.parse(moment(date).add(1, 'month').startOf('month'));
+    if (getApi().currentDataManager.data.currentViewType === "timeGridDay" && date.date() !== 1) {
+      date = date.add(1, 'month').startOf('month');
     }
-    const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date}/${props.id}`;
+    const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
         if (events.data.length === 0) {
@@ -119,7 +119,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     if (getApi().currentDataManager.data.currentViewType === "dayGridMonth") {
       return;
     }
-    if (needsUpdate(getApi().currentDataManager.data.currentDate)) {
+    if (needsUpdate(moment(getApi().currentDataManager.data.currentDate))) {
       getEvents("current");
     }
     getApi().changeView("dayGridMonth", getApi().currentDataManager.data.currentDate);
@@ -133,7 +133,7 @@ const WebCalendar = (props: WebCalendarProps) => {
   const onDateClick = (info) => {
     setCurrentDate(getApi().currentDataManager.data.currentDate);
     getApi().changeView('timeGridDay', info.date);
-    if (needsUpdate(info.date)) {
+    if (needsUpdate(moment(info.date))) {
       getEvents("current");
     }
   };
@@ -142,15 +142,15 @@ const WebCalendar = (props: WebCalendarProps) => {
   const getDate = (operation) => {
     switch (operation) {
       case "next":
-        return Date.parse(getApi().currentDataManager.state.dateProfile.currentRange.end);
+        return moment(getApi().currentDataManager.state.dateProfile.currentRange.end);
       case "back":
         // currentRange.start returns the first day of the displayed month, but we want to end up in
         // the previous month so we subtract one day in this case
-        return Date.parse(getApi().currentDataManager.state.dateProfile.currentRange.start) - 24 * 60 * 60 * 1000;
+        return moment(getApi().currentDataManager.state.dateProfile.currentRange.start).subtract(1, "day");
       case "current":
-        return Date.parse(getApi().currentDataManager.data.currentDate);
+        return moment(getApi().currentDataManager.data.currentDate);
       default:
-        return Date.parse(getApi().currentDataManager.data.dateProfileGenerator.nowDate);
+        return moment(getApi().currentDataManager.data.dateProfileGenerator.nowDate);
     }
   };
 
@@ -171,15 +171,15 @@ const WebCalendar = (props: WebCalendarProps) => {
   }
 
   const needsUpdate = (date) => {
-    return (moment(date).month() !== moment(currentDate).month() ||
-      moment(date).year() !== moment(currentDate).year());
+    return date.month() !== moment(currentDate).month() ||
+      date.year() !== moment(currentDate).year();
   };
 
   const skipToNextEvent = (date) => {
     // We are only interested in events from the same month that are later or equal to 'date'
     const filteredEvents = events.filter(event => (
       moment.parseZone(event.start).month() === moment(currentDate).month() &&
-      moment.parseZone(event.start).date() >= moment(date).date())
+      moment.parseZone(event.start).date() >= date.date())
     );
     // Only perform action if there is an event to go to
     filteredEvents.length > 0 && getApi().gotoDate(filteredEvents[0].start);
@@ -191,7 +191,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     // We are only interested in events from the same month that are earlier or equal to 'date'
     const filteredEvents = events.filter(event => (
       moment.parseZone(event.start).month() === moment(currentDate).month() &&
-      moment.parseZone(event.start).date() <= moment(date).date())
+      moment.parseZone(event.start).date() <= date.date())
     );
     // Only perform action if there is an event to go to
     filteredEvents.length > 0 && getApi().gotoDate(filteredEvents[filteredEvents.length - 1].start);
