@@ -4,7 +4,6 @@
 require 'jwt'
 require 'securerandom'
 require 'pathname'
-require 'net/scp'
 
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
@@ -1281,15 +1280,4 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   url = "http://#{$server.full_hostname}/pub/" + file
   puts "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
-end
-
-And(/^I upload ([^\"]*) to ([^\"]*) on ([^\"]*)$/) do |file, destination, vm|
-  login = 'root'
-  password = 'linux'
-  target = get_target(vm)
-  target.run("mkdir -p #{destination}")
-  Net::SCP.start(target.ip, login, :password => password) do |scp|
-    puts 'SCP Started!'
-    scp.upload(file, destination)
-  end
 end

@@ -6,11 +6,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
-    And I upload ./features/upload_files/install/vmlinuz to /install/Fedora_12_i386/images/pxeboot on server
-    And I upload ./features/upload_files/install/empty.xml to /install on server
-    And I upload ./features/upload_files/install/initrd.img to /install/Fedora_12_i386/images/pxeboot on server
-    And I upload ./features/upload_files/install/initrd to /install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/ on server
-    And I upload ./features/upload_files/install/linux to /install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/ on server
+    And I upload autoinstall mocked files on server
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
@@ -30,7 +26,7 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-FAKE" as "label"
-    And I enter "/install/SLES15-SP2-x86_64/DVD1/" as "basepath"
+    And I enter "/autoinstall/SLES15-SP2-x86_64/DVD1/" as "basepath"
     And I select "SLE-Product-SLES15-SP2-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
@@ -43,7 +39,7 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
-    And I enter "/install/Fedora_12_i386/" as "basepath"
+    And I enter "/autoinstall/Fedora_12_i386/" as "basepath"
     And I select "Fedora" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text

@@ -1563,3 +1563,29 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
 end
+
+And(/^I upload "([^\"]*)" to "([^\"]*)" on "([^\"]*)"$/) do |file, targetdir, host|
+  target = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = targetdir + File.basename(file)
+  return_code = file_inject(target, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  target.run("chmod 644 #{dest}")
+end
+
+And(/^I upload autoinstall mocked files on ([^\"]*)$/) do |host|
+  target = get_target(host)
+  target_dirs = ['/autoinstall/Fedora_12_i386/images/pxeboot/',
+                 '/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/']
+
+  target_dirs.each do |targetdir|
+    puts "Create targetdir: #{targetdir} on server"
+    target.run("mkdir -p #{targetdir}")
+  end
+
+  step %(I upload "autoinstall/cobbler/vmlinuz" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/empty.xml" to "/autoinstall/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/initrd.img" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/initrd" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/linux" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
+end
