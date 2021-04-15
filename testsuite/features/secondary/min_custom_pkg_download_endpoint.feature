@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with

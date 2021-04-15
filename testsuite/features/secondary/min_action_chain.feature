@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
@@ -64,7 +64,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package installation to an action chain on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "virgo-dummy" in the list
@@ -136,8 +135,8 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a remote command to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Remote Command"
+    When I follow "Details" in the content area
+    And I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
       #!/bin/bash
@@ -148,7 +147,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Verify the action chain list on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -206,7 +204,6 @@ Feature: Action chains on Salt minions
     Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle_minion"
 
   Scenario: Ensure again the errata cache is computed before testing on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"

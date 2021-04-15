@@ -1,8 +1,11 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_virtual_host_manager
 Feature: Virtual host manager web UI
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Check the VHM page
     Given I am on the Systems page
@@ -11,9 +14,7 @@ Feature: Virtual host manager web UI
     And I should see a "No Virtual Host Managers." text
 
   Scenario: Check VMware page
-   Given I am on the Systems page
-    When I follow "Virtual Host Managers"
-    And I click on "Create"
+    When I click on "Create"
     And I follow "VMWare-based"
     Then I should see a "Add a VMWare-based Virtual Host Manager" text
     And I should see a "Label" text
@@ -23,10 +24,7 @@ Feature: Virtual host manager web UI
     And I should see a "Password" text
 
   Scenario: Create Virtual Host
-   Given I am on the Systems page
-    When I follow "Virtual Host Managers"
-    And I click on "Create"
-    And I follow "File-based"
+    When I follow "File-based"
     Then I should see a "Add a File-based Virtual Host Manager" text
     When I enter "file-vmware" as "label"
     And I enter "file:///var/tmp/vCenter.json" as "module_url"
@@ -34,12 +32,11 @@ Feature: Virtual host manager web UI
     Then I should see a "file-vmware" link
 
   Scenario: Run virtual-host-gatherer
-   Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems"
-     And I follow "Virtual Host Managers"
-     And I follow "file-vmware"
+    And I follow "Virtual Host Managers"
+    And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
-     And I should see a "SUSE Test" text
+    And I should see a "SUSE Test" text
     When I click on "Refresh Data"
     Then I should see a "Refreshing the data for this Virtual Host Manager has been triggered." text
 
@@ -50,10 +47,9 @@ Feature: Virtual host manager web UI
     Then I should see a "OS: VMware ESXi" text
     When I follow the left menu "Systems > System List > Virtual Systems"
     Then I should see a "vCenter" text
-     And I should see a "NSX-l3gateway" text
+    And I should see a "NSX-l3gateway" text
 
   Scenario: Delete Virtual Host Manager
-    Given I am on the Systems page
     When I follow the left menu "Systems > Virtual Host Managers"
     And I follow "file-vmware"
     And I click on "Delete"

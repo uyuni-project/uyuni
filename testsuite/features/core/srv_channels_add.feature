@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Adding channels

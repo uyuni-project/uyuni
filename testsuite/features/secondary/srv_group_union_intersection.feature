@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature will be fully tested only if we have a CentOS and/or Ubuntu client

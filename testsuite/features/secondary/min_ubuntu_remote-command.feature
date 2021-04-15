@@ -1,15 +1,15 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_ubuntu
+@ubuntu_minion
 Feature: Remote command on Ubuntu Salt minion
   In order to manage an Ubuntu Salt minion
   As an authorized user
   I want to run a remote command on it
 
-@ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
-    Given I am authorized
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "cat /etc/os-release"

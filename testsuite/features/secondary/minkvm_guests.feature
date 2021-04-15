@@ -31,7 +31,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I restart salt-minion on "kvm_server"
 
   Scenario: Enable the virtualization host formula for KVM
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     Then I should see a "Choose formulas" text
     And I should see a "Virtualization" text
@@ -40,7 +39,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then the "virtualization-host" formula should be checked
 
   Scenario: Parametrize the KVM virtualization host
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "NAT" in virtual network mode field
@@ -51,49 +49,43 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Formula saved" text
 
   Scenario: Apply the KVM virtualization host formula via the highstate
-    Given I am on the Systems overview page of this "kvm_server"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then service "libvirtd" is enabled on "kvm_server"
 
   Scenario: Prepare a KVM test virtual machine and list it
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I delete default virtual network on "kvm_server"
     And I create test-net0 virtual network on "kvm_server"
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
     And I create "test-vm" virtual machine on "kvm_server"
+    And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
 
   Scenario: Start a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Start" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
   Scenario: Show the VNC graphical console for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm"
     And I switch to last opened window
     Then I wait until I see the VNC graphical console
     When I close the last opened window
 
   Scenario: Suspend a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I wait until table row for "test-vm" contains button "Suspend"
     And I click on "Suspend" in row "test-vm"
     And I click on "Suspend" in "Suspend Guest" modal
     Then I should see "test-vm" virtual machine paused on "kvm_server"
 
   Scenario: Resume a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I wait until table row for "test-vm" contains button "Resume"
     And I click on "Resume" in row "test-vm"
     Then I should see "test-vm" virtual machine running on "kvm_server"
 
   Scenario: Shutdown a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I wait until table row for "test-vm" contains button "Stop"
     And I wait until virtual machine "test-vm" on "kvm_server" is started
     And I click on "Stop" in row "test-vm"
@@ -101,7 +93,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see "test-vm" virtual machine shut off on "kvm_server"
 
   Scenario: Edit a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     Then I should see "512" in field "memory"
@@ -124,7 +115,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk.qcow2" SCSI disk from pool "tmp"
 
   Scenario: Add a network interface to a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_network"
@@ -134,7 +124,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have 2 NIC using "test-net1" network
 
   Scenario: Delete a network interface from a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_network1"
@@ -143,7 +132,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
 
   Scenario: Add a disk and a cdrom to a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "add_disk"
@@ -156,7 +144,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
 
   Scenario: Attach an image to a cdrom on a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
     And I wait until I do not see "Loading..." text
@@ -166,7 +153,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have "/tmp/test-image.iso" attached to a cdrom
 
   Scenario: Delete a disk from a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I click on "remove_disk2"
@@ -175,13 +161,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have no cdrom
 
   Scenario: Delete a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Delete" in row "test-vm"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm" virtual machine on "kvm_server"
 
   Scenario: Create a KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     And I create empty "/var/lib/libvirt/images/test-pool0/disk1.qcow2" qcow2 disk file on "kvm_server"
     And I refresh the "test-pool0" storage pool of this "kvm_server"
     When I follow "Create Guest"
@@ -203,45 +187,38 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
 
   Scenario: Show the Spice graphical console for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     Then I wait until I see the spice graphical console
     When I close the last opened window
 
   Scenario: Show the virtual storage pools and volumes for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I refresh the "test-pool0" storage pool of this "kvm_server"
     And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system" text
 
   Scenario: delete a running KVM virtual machine
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
   Scenario: Refresh a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Refresh" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" has no sub-list
 
   Scenario: Stop a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Stop" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" contains "inactive" text
 
   Scenario: Start a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Start" in tree item "test-pool0"
     And I wait at most 600 seconds until the tree item "test-pool0" contains "running" text
 
   Scenario: Delete a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Delete" in tree item "test-pool0"
     And I check "purge"
@@ -250,7 +227,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
 
   Scenario: Create a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I follow "Create Pool"
     And I wait until option "dir" appears in list "type"
@@ -265,7 +241,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
 
   Scenario: Edit a virtual storage pool for KVM
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I click on "Edit Pool" in tree item "test-pool1"
     And I wait until I see "General" text
@@ -277,7 +252,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool1" should have 711 permissions on "kvm_server"
 
   Scenario: Delete a virtual volume
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I open the sub-list of the product "tmp"
     And I click on "Delete" in tree item "test-net0.xml"
@@ -285,13 +259,11 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I do not see "test-net0.xml" text
 
   Scenario: List virtual networks
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
     Then I wait until I see "test-net0" text
     And I should see a "test-net1" text
 
   Scenario: Stop virtual network
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
     Then table row for "test-net1" should contain "running"
     When I click on "Stop" in row "test-net1"
@@ -300,14 +272,12 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And table row for "test-net1" should contain "stopped"
 
   Scenario: Start virtual network
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
     And I click on "Start" in row "test-net1"
     Then I wait until table row for "test-net1" contains button "Stop"
     And table row for "test-net1" should contain "running"
 
   Scenario: Delete virtual network
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
     And I click on "Delete" in row "test-net1"
     And I click on "Delete" in "Delete Network" modal
@@ -315,7 +285,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should not see a "test-net1" virtual network on "kvm_server"
 
   Scenario: Create a virtual network
-    Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
     And I follow "Create Network"
     And I wait until option "bridge" appears in list "type"

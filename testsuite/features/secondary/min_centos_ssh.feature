@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete CentOS minion and register as Centos SSH minion
@@ -6,12 +6,12 @@
 # 3) delete CentOS SSH minion client and register as Centos minion
 
 @scope_res
+@centos_minion
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  @centos_minion
   Scenario: Delete the CentOS minion before SSH minion tests
     When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
@@ -20,7 +20,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until I see "has been deleted" text
     Then "ceos_minion" should not be registered
 
-@centos_minion
   Scenario: Bootstrap a SSH-managed CentOS minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -35,7 +34,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until onboarding is completed for "ceos_ssh_minion"
 
 @proxy
-@centos_minion
   Scenario: Check connection from SSH-managed CentOS minion to proxy
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Details" in the content area
@@ -43,14 +41,12 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then I should see "proxy" short hostname
 
 @proxy
-@centos_minion
   Scenario: Check registration on proxy of SSH-managed CentOS minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos_ssh_minion" hostname
 
-@centos_minion
   Scenario: Subscribe the SSH-managed CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
@@ -64,12 +60,10 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-@centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     Then I check for failed events on history event page
 
-@centos_minion
   Scenario: Run a remote command on the SSH-managed CentOS minion
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
@@ -83,12 +77,10 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Then I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
-@centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     Then I check for failed events on history event page
 
-@centos_minion
   Scenario: Cleanup: delete the SSH-managed CentOS minion
     When I am on the Systems overview page of this "ceos_ssh_minion"
     And I follow "Delete System"
@@ -97,7 +89,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until I see "has been deleted" text
     Then "ceos_ssh_minion" should not be registered
 
-@centos_minion
   Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
@@ -112,7 +103,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 
-@centos_minion
   Scenario: Cleanup: re-subscribe the CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area

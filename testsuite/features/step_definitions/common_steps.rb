@@ -337,7 +337,6 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^I am on the manage software channels page$/) do
-  step %(I am authorized as "testing" with password "testing")
   visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 

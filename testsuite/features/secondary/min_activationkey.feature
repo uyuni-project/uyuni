@@ -4,6 +4,9 @@
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete SLES minion system profile
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
@@ -13,7 +16,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then "sle_minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Key Channel" as "cofName"
@@ -23,7 +25,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I should see a "Key Channel" text
 
   Scenario: Add a configuration file to the key configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Create Configuration File or Directory"
@@ -32,7 +33,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I click on "Create Configuration File"
 
   Scenario: Create a complete minion activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Minion testing" as "description"
@@ -50,7 +50,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I should see a "Activation key Minion testing has been modified" text
 
   Scenario: Bootstrap a SLES minion with an activation key
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -66,7 +65,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Verify that minion bootstrapped with Salt key and packages
-    Given I am authorized
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "sle_minion"
@@ -105,14 +103,12 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I remove package "perseus-dummy" from this "sle_minion"
 
   Scenario: Cleanup: remove the key configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Key Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: delete the activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Minion testing" in the content area
     And I follow "Delete Key"

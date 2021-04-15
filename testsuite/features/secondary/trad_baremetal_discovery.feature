@@ -4,6 +4,9 @@
 @scope_traditional_client
 Feature: Bare metal discovery
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"
@@ -14,7 +17,6 @@ Feature: Bare metal discovery
     Then "sle_client" should not be registered
 
   Scenario: Enable bare metal discovery
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Manager Configuration > General"
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
@@ -34,7 +36,6 @@ Feature: Bare metal discovery
     And I should not see a "[Management]" text
 
   Scenario: See the client in unprovisioned systems list
-    Given I am on the Systems page
     When I follow the left menu "Systems > System List > Unprovisioned Systems"
     Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
@@ -50,7 +51,6 @@ Feature: Bare metal discovery
     And I check the MAC address value
 
   Scenario: Check unprovisioned system details
-    Given I am on the Systems page
     When I follow the left menu "Systems > System List"
     When I follow this "sle_client" link
     Then I should see a "Details" link in the content area
@@ -84,8 +84,7 @@ Feature: Bare metal discovery
     Then I am on System Set Manager Overview
 
   Scenario: Check SSM page for bare metal system
-    Given I am authorized as "admin" with password "admin"
-    And I am on System Set Manager Overview
+    Given I am on System Set Manager Overview
     Then I should see a "List the systems" link in the content area
     And I should see a "Autoinstall" link in the content area
     And I should see a "Configure power management" link in the content area
@@ -108,9 +107,8 @@ Feature: Bare metal discovery
     Then "sle_client" should not be registered
 
   Scenario: Cleanup: disable bare metal discovery
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Manager Configuration > General"
-    When I follow "Bare-metal systems" in the content area
+    And I follow "Bare-metal systems" in the content area
     Then I should see a "Allows $PRODUCT to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button
     When I click on "Disable adding to this organization"
@@ -122,5 +120,4 @@ Feature: Bare metal discovery
     Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"

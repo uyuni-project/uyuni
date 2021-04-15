@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_xmlrpc
@@ -6,7 +6,7 @@ Feature: IPMI Power management test for XMLRPC
 
   Scenario: Setup an IPMI host for XMLRPC test
     When the server starts mocking an IPMI host
-
+    
   Scenario: Check the power management settings for XMLRPC test
     Given I am logged in via XML-RPC powermgmt as user "admin" and password "admin"
     And I want to operate on this "sle_client"

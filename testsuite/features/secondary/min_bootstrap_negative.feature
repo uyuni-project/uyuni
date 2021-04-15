@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion

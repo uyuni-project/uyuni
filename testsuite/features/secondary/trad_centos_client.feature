@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete CentOS minion and register a CentOS traditional client

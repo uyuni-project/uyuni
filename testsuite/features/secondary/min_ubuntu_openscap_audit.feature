@@ -1,12 +1,16 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
 @scope_ubuntu
+@ubuntu_minion
 Feature: OpenSCAP audit of Ubuntu Salt minion
   In order to audit an Ubuntu Salt minion
   As an authorized user
   I want to run an OpenSCAP scan on it
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
 @ubuntu_minion
 @uyuni
@@ -29,7 +33,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I follow "Events" in the content area
     And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
 
-@ubuntu_minion
   Scenario: Schedule an OpenSCAP audit job on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
@@ -40,7 +43,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
-@ubuntu_minion
   Scenario: Check the results of the OpenSCAP scan on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
@@ -53,7 +55,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     # TODO: make at least one rule pass on Ubuntu
     Then I should see a "report.html" link
 
-@ubuntu_minion
   Scenario: Cleanup: remove audit scans retention period from Ubuntu minion
     Given I am on the Organizations page
     When I follow "SUSE Test" in the content area
@@ -62,7 +63,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-@ubuntu_minion
   Scenario: Cleanup: delete audit results from Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
@@ -72,7 +72,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I click on "Confirm"
     Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
-@ubuntu_minion
   Scenario: Cleanup: restore audit scans retention period on Ubuntu minion
     Given I am on the Organizations page
     When I follow "SUSE Test" in the content area
@@ -81,7 +80,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
-@ubuntu_minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
     When I disable universe repositories on "ubuntu_minion"

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -53,7 +53,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package removal to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
@@ -65,7 +64,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package installation to an action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "virgo-dummy" in the list
@@ -128,8 +126,8 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a remote command to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
-    When I follow "Remote Command"
+    When I follow "Details" in the content area
+    When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
       #!/bin/bash
@@ -140,7 +138,6 @@ Feature: Salt SSH action chain
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Verify the action chain list on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
@@ -152,7 +149,6 @@ Feature: Salt SSH action chain
     And I should see a "7. Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
-    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
@@ -160,7 +156,6 @@ Feature: Salt SSH action chain
     Given I am authorized for the "Admin" section
 
   Scenario: Execute the action chain from the web UI on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I click on "Save and Schedule"

@@ -1,8 +1,11 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
     Given I am on the Systems overview page of this "sle_minion"
@@ -17,7 +20,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I add pre-generated SSH public key to authorized_keys of host "sle_minion"
 
   Scenario: Bootstrap a SLES minion using SSH key with wrong passphrase
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -30,7 +32,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I wait until I see "Permission denied, no authentication information" text
 
   Scenario: Bootstrap a SLES minion using SSH key
-    Given I am authorized
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -44,7 +45,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
-    Given I am authorized
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the Systems page
