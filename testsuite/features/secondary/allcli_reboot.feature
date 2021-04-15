@@ -10,6 +10,9 @@
 @scope_onboarding
 Feature: Reboot systems managed by SUSE Manager
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
 @ssh_minion
   Scenario: Reboot the SSH-managed SLES minion
     Given I am on the Systems overview page of this "ssh_minion"
