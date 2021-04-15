@@ -201,6 +201,7 @@ When(/^I trigger cobbler system record$/) do
   unless out.include? 'ssh-push-tunnel'
     # normal traditional client
     steps %(
+      Given I am authorized as "testing" with password "testing"
       And I follow this "sle_client" link
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"

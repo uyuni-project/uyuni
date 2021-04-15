@@ -4,6 +4,9 @@
 @scope_traditional_client
 Feature: Client display after registration
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Show links in Details tab
     When I am on the Systems overview page of this "sle_client"
     Then I should see a "Details" link in the content area

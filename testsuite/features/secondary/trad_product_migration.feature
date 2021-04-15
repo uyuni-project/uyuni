@@ -9,7 +9,8 @@
 Feature: Product migration
 
   Scenario: Check the warning message on tab "Software" => "Product Migration"
-    Given I am on the Systems overview page of this "sle_client"
+    Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     Then I should see a "Product Migration - Target" text

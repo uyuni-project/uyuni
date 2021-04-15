@@ -14,6 +14,9 @@ Feature: OpenSCAP audit of traditional client
     And I refresh the metadata for "sle_client"
     And I install OpenSCAP dependencies on "sle_client"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Schedule an OpenSCAP audit job on the traditional client using SUSE profile
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
@@ -25,7 +28,6 @@ Feature: OpenSCAP audit of traditional client
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job SUSE profile
-    Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow first "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text

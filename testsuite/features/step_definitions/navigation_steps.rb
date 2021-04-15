@@ -382,6 +382,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step %(I am authorized as "admin" with password "admin")
   when 'Users'
     step %(I am authorized as "admin" with password "admin")
+  when 'Images'
+    step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
   end
 end
 
@@ -449,13 +451,6 @@ end
 When(/^I uncheck the "([^"]*)" client$/) do |host|
   system_name = get_system_name(host)
   step %(I uncheck "#{system_name}" in the list)
-end
-
-Given(/^I am on the groups page$/) do
-  steps %(
-    Given I am on the Systems page
-    When I follow the left menu "Systems > System Groups"
-  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -545,7 +540,6 @@ Then(/^I am logged in$/) do
 end
 
 Given(/^I am on the patches page$/) do
-  step %(I am authorized)
   visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
 end
 

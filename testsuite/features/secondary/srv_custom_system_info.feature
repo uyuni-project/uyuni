@@ -5,8 +5,8 @@
 @scope_onboarding
 Feature: Custom system info key-value pairs
 
-  Background:
-    Given I am authorized
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Create a new key
     When I follow the left menu "Systems > Custom System Info"

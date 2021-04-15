@@ -4,9 +4,11 @@
 @scope_changing_software_channels
 Feature: Chanel subscription via SSM
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
 @sle_minion
   Scenario: Change child channels for SLES Minion subscribed to a base channel
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "sle_minion" client
@@ -33,7 +35,6 @@ Feature: Chanel subscription via SSM
 
 @sle_client
   Scenario: Change child channels for SLES Client subscribed to a base channel
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "sle_client" client
@@ -138,7 +139,6 @@ Feature: Chanel subscription via SSM
 
 @centos_minion
   Scenario: System default channel can't be determined on the CentOS minion
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "ceos_minion" client
@@ -169,7 +169,6 @@ Feature: Chanel subscription via SSM
 
 @ubuntu_minion
   Scenario: System default channel can't be determined on the Ubuntu minion
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "ubuntu_minion" client
@@ -235,5 +234,4 @@ Feature: Chanel subscription via SSM
     Then channel "Test-Channel-x86_64 Child Channel" should not be enabled on "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"

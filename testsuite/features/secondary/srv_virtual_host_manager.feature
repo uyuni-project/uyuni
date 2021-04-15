@@ -8,8 +8,7 @@ Feature: Virtual host manager web UI
     Given I am authorized for the "Admin" section
 
   Scenario: Check the VHM page
-    Given I am on the Systems page
-    When I follow "Virtual Host Managers"
+    When I follow the left menu "Systems > Virtual Host Managers"
     Then I should see a "Virtual Host Managers" text
     And I should see a "No Virtual Host Managers." text
 
@@ -24,6 +23,8 @@ Feature: Virtual host manager web UI
     And I should see a "Password" text
 
   Scenario: Create Virtual Host
+    When I follow the left menu "Systems > Virtual Host Managers"
+    And I click on "Create"
     When I follow "File-based"
     Then I should see a "Add a File-based Virtual Host Manager" text
     When I enter "file-vmware" as "label"
@@ -32,8 +33,7 @@ Feature: Virtual host manager web UI
     Then I should see a "file-vmware" link
 
   Scenario: Run virtual-host-gatherer
-    When I follow the left menu "Systems"
-    And I follow "Virtual Host Managers"
+    When I follow the left menu "Systems > Virtual Host Managers"
     And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
     And I should see a "SUSE Test" text

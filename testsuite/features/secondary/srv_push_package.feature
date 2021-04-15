@@ -6,8 +6,8 @@ Feature: Push a package with unset vendor
   As an authorized user
   I want to push a package with unset vendor
 
-  Background:
-    Given I am authorized as "admin" with password "admin"
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Push a package with unset vendor
     When I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel

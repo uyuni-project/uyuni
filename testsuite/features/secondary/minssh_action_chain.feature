@@ -149,13 +149,12 @@ Feature: Salt SSH action chain
     And I should see a "7. Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
+    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
   Scenario: Execute the action chain from the web UI on SSH minion
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     Then I click on "Save and Schedule"

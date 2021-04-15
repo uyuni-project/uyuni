@@ -15,7 +15,7 @@ Feature: Configure groups and saltboot formula for terminals
     And I disable repositories after installing branch server
 
   Scenario: Create hardware type group for SLES 15 SP2 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "HWTYPE:Intel-Genuine15" as "name"
     And I enter "Terminal hardware type: genuine Intel15" as "description"
@@ -23,7 +23,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group HWTYPE:Intel-Genuine15 created." text
 
   Scenario: Create hardware type group for SLES 12 SP4 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "HWTYPE:Intel-Genuine12" as "name"
     And I enter "Terminal hardware type: genuine Intel12" as "description"
@@ -31,7 +31,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group HWTYPE:Intel-Genuine12 created." text
 
   Scenario: Create hardware type group for SLES 11 SP3 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "HWTYPE:Intel-Genuine11" as "name"
     And I enter "Terminal hardware type: genuine Intel11" as "description"
@@ -39,7 +39,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group HWTYPE:Intel-Genuine11 created." text
 
   Scenario: Create terminal branch group for terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "example" as "name"
     And I enter "Terminal branch: example.org" as "description"
@@ -47,7 +47,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group example created." text
 
   Scenario: Create all terminals group for terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "TERMINALS" as "name"
     And I enter "All terminals" as "description"
@@ -55,7 +55,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group TERMINALS created." text
 
   Scenario: Create all branch servers group for terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "SERVERS" as "name"
     And I enter "All branch servers" as "description"
@@ -63,7 +63,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "System group SERVERS created." text
 
   Scenario: Enable Saltboot formula for hardware type group of SLES 15 SP2 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "HWTYPE:Intel-Genuine15" in the content area
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
@@ -71,7 +71,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then the "saltboot" formula should be checked
 
   Scenario: Parametrize the Saltboot formula for SLES 15 SP2 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "HWTYPE:Intel-Genuine15" in the content area
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
@@ -95,7 +95,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "Formula saved" text
 
   Scenario: Parametrize the Saltboot formula for SLES 12 SP4 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "HWTYPE:Intel-Genuine12" in the content area
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
@@ -119,7 +119,7 @@ Feature: Configure groups and saltboot formula for terminals
     Then I should see a "Formula saved" text
 
   Scenario: Parametrize the Saltboot formula for SLES 11 SP3 terminals
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "HWTYPE:Intel-Genuine11" in the content area
     When I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area

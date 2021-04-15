@@ -4,8 +4,10 @@
 @scope_configuration_channels
 Feature: Management of configuration of all types of clients in a single channel
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create a configuration channel for mixed client types
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Mixed Channel" as "cofName"
@@ -15,7 +17,6 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Mixed Channel" text
 
   Scenario: Add a configuration file to the mixed configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Create Configuration File or Directory"
@@ -82,7 +83,6 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Deploy the file to all systems
-    Given I am authorized as "admin" with password "admin"
     When I run "rhn-actions-control --enable-all" on "sle_client"
     And I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
@@ -143,7 +143,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @centos_minion
   Scenario: Unsubscribe CentOS minion and delete configuration files
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -154,7 +153,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @ubuntu_minion
   Scenario: Unsubscribe Ubuntu minion and delete configuration files
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -165,7 +163,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -248,7 +245,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_client
   Scenario: Re-add Salt Minion via SSM
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "sle_client" client
@@ -262,7 +258,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Re-add Traditional Client via SSM
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
     And I check the "sle_minion" client
@@ -276,7 +271,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_client
   Scenario: Cleanup: remove remaining Traditional Client from configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -286,7 +280,6 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Cleanup: remove remaining Salt Minion from configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
@@ -295,7 +288,6 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
   Scenario: Cleanup: remove the mixed configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Delete Channel"
@@ -311,5 +303,4 @@ Feature: Management of configuration of all types of clients in a single channel
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"

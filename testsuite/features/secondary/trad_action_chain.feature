@@ -142,10 +142,12 @@ Feature: Action chain on traditional clients
     And I should see a "7. Reboot 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for traditional client
+    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Schedule > Action Chains"
     Then I should not see a "new action chain" link
 
   Scenario: Delete the action chain for traditional client
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
     And I follow "delete action chain" in the content area

@@ -159,12 +159,14 @@ Feature: Action chains on Salt minions
     And I should see a "7. Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for Salt minion
+    Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
 
   Scenario: Execute the action chain from the web UI on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"

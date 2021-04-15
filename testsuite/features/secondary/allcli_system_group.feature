@@ -4,22 +4,25 @@
 @scope_visualization
 Feature: Manage a group of systems
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Fail to create a group with only its name
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "new-systems-group" as "name"
     And I click on "Create Group"
     Then I should see a "Both name and description are required for System Groups." text
 
   Scenario: Fail to create a group with only its description
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "My new group" as "description"
     And I click on "Create Group"
     Then I should see a "Both name and description are required for System Groups." text
 
   Scenario: Create a group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "Create Group"
     And I enter "new-systems-group" as "name"
     And I enter "My new group" as "description"
@@ -27,7 +30,7 @@ Feature: Manage a group of systems
     Then I should see a "System group new-systems-group created." text
 
   Scenario: Add the SLE minion system to the group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "new-systems-group"
     And I follow "Target Systems"
     And I check the "sle_minion" client
@@ -35,7 +38,7 @@ Feature: Manage a group of systems
     Then I should see a "1 systems were added to new-systems-group server group." text
 
   Scenario: Add the SLE client system to the group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "new-systems-group"
     And I follow "Target Systems"
     And I check the "sle_client" client
@@ -54,7 +57,7 @@ Feature: Manage a group of systems
 
 @centos_minion
   Scenario: Add the CentOS minion to the group in a different way
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
     When I follow "new-systems-group"
     And I follow "Target Systems"
@@ -64,7 +67,7 @@ Feature: Manage a group of systems
     Then I should see a "1 systems were added to new-systems-group server group" text
 
   Scenario: Add the new group to SSM
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I click on "Use in SSM" in row "new-systems-group"
     Then I should see a "Selected Systems List" text
     And I should see "sle_client" as link
@@ -75,7 +78,7 @@ Feature: Manage a group of systems
     And I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: New formula page is rendered for the system group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "new-systems-group"
     And I follow "Formulas"
     Then I should see a "Choose formulas:" text
@@ -84,7 +87,7 @@ Feature: Manage a group of systems
 
 @centos_minion
   Scenario: Apply the highstate to the group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     Then I should see a "System Groups" text
     When I follow "new-systems-group"
     And I follow "States"
@@ -112,11 +115,10 @@ Feature: Manage a group of systems
   # CentOS minion is intentionally not removed from group
 
   Scenario: Cleanup: uninstall formula from the server
-    Given I am authorized
     When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove the new group
-    Given I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "new-systems-group" in the content area
     And I follow "Delete Group" in the content area
     And I click on "Confirm Deletion"

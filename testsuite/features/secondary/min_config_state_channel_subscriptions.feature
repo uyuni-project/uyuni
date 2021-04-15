@@ -7,8 +7,10 @@ Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create the 1st state channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
     Then I should see a "New Config State Channel" text
@@ -23,7 +25,6 @@ Feature: State Configuration channels
     And I should see a "Configuration Actions" text
 
   Scenario: Create the 2nd state channel with same name
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create State Channel"
     Then I should see a "New Config State Channel" text
@@ -38,7 +39,6 @@ Feature: State Configuration channels
     And I should see a "Configuration Actions" text
 
   Scenario: Create the 3rd state channel with spacecmd
-    Given I am authorized as "admin" with password "admin"
     When I create channel "statechannel3" from spacecmd of type "state"
     And I follow the left menu "Configuration > Channels"
     Then I should see a "statechannel3" text
@@ -67,7 +67,6 @@ Feature: State Configuration channels
     Then I should see a "State assignments have been saved." text
 
   Scenario: Apply the Configuration channel state
-    When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     And I click on "Search" in element "search-row"
@@ -79,7 +78,6 @@ Feature: State Configuration channels
     And I wait until file "/root/statechannel2" exists on "sle_minion"
 
   Scenario: Subscribe a minion to the 3rd state channel
-    When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     Then I should see a "My State Channel" text
@@ -94,12 +92,10 @@ Feature: State Configuration channels
     Then I should see a "State assignments have been saved." text
 
   Scenario: Apply the Configuration channel state with spacecmd
-    Given I am authorized as "admin" with password "admin"
     When I schedule apply configchannels for "sle_minion"
     And I wait until file "/root/statechannel3" exists on "sle_minion"
 
   Scenario: Cleanup: remove the 1st state channel and the deployed file
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow first "My State Channel"
     And I follow "Delete Channel"
@@ -109,7 +105,6 @@ Feature: State Configuration channels
     And I remove "/root/statechannel" from "sle_minion"
 
   Scenario: Cleanup: remove the 2nd state channel and the deployed file
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow first "My State Channel"
     And I follow "Delete Channel"
@@ -119,7 +114,6 @@ Feature: State Configuration channels
     And I remove "/root/statechannel2" from "sle_minion"
 
   Scenario: Cleanup: remove the 3rd state channel and the deployed file
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow first "statechannel3"
     And I follow "Delete Channel"

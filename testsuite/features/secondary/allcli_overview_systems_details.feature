@@ -4,6 +4,9 @@
 @scope_visualization
 Feature: The system details of each minion and client provides an overview of the system
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Traditional client grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "sle_client"
     Then I can see all system information for "sle_client"

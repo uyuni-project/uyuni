@@ -9,6 +9,9 @@ Feature: Install a package to the traditional client
     When I remove package "andromeda-dummy" from this "sle_client" without error control
     And I remove package "virgo-dummy" from this "sle_client" without error control
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Install a package to the traditional client
     Given I am on the Systems overview page of this "sle_client"
     And metadata generation finished for "test-channel-x86_64"
@@ -28,7 +31,6 @@ Feature: Install a package to the traditional client
     And I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Schedule errata refresh after reverting to old package
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"

@@ -5,8 +5,10 @@
 @scope_onboarding
 Feature: Display patches
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-require: enable old packages to fake a possible installation
-    Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
     And I run "zypper -n ref" on "sle_client"
     And I install old package "andromeda-dummy-1.0" on this "sle_client"
@@ -20,7 +22,6 @@ Feature: Display patches
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Check all patches exist
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see an update in the list
     And I should see a "virgo-dummy-3456" link

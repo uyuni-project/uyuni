@@ -5,7 +5,6 @@
 Feature: System package list is updated if packages are manually installed or removed
 
   Scenario: Pre-requisite: install milkyway-dummy-1.0 package
-    Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
     And I install old package "milkyway-dummy-1.0" on this "sle_minion" without error control
@@ -14,6 +13,9 @@ Feature: System package list is updated if packages are manually installed or re
     When I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "milkyway-dummy-1.0" installed on "sle_minion"
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: ensure the errata cache is computed before package list tests
     Given I am on the Systems overview page of this "sle_minion"
@@ -39,7 +41,6 @@ Feature: System package list is updated if packages are manually installed or re
     And I click on the filter button until page does not contain "milkyway-dummy" text
 
   Scenario: Install manually a package on a minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name

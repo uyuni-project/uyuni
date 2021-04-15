@@ -7,8 +7,10 @@ Feature: The channels page
   As an authorized user
   I want to see all the texts and links
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Completeness of the channels page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     Then I should see a "Full Software Channel List" text
     And I should see a "Channel List" link in the left menu
@@ -26,12 +28,10 @@ Feature: The channels page
     And I should see a "Retired" link in the content area
 
   Scenario: Popular channels
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > Popular"
     Then I should see a "Popular" text
 
   Scenario: Check packages in test channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
@@ -43,7 +43,6 @@ Feature: The channels page
     And I should see package "virgo-dummy-2.0-1.1.noarch"
 
   Scenario: Check package metadata
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
@@ -55,7 +54,6 @@ Feature: The channels page
     And I should see a "packages/1/ba3/andromeda-dummy/2.0-1.1/noarch/ba3f6d939fce43b60f4d20a09887e211f11024b61defb246dd62705bf4f4ced0/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
@@ -66,7 +64,6 @@ Feature: The channels page
     And I should see a "andromeda-dummy = 2.0-1.1" text
 
   Scenario: Check package change log page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
@@ -76,7 +73,6 @@ Feature: The channels page
     And I should see a "version 2.0" text
 
   Scenario: Check package file list page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"

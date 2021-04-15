@@ -5,8 +5,10 @@
 @scope_traditional_client
 Feature: Support for new CVE-ID syntax
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Check perseus-dummy-7891 patches
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > All"
     And I enter "dummy" as the filtered synopsis
     And I click on the filter button
@@ -23,7 +25,6 @@ Feature: Support for new CVE-ID syntax
     And I should have 'reference.*http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
 
   Scenario: Search for CVE ID with the new format
-    Given I am on the patches page
     When I follow the left menu "Patches > Advanced Search"
     When I enter "CVE-1999-12345" as "search_string" in the content area
     And I click on "Search"

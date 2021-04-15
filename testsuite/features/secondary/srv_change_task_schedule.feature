@@ -4,8 +4,10 @@
 @scope_recurring_actions
 Feature: Change the schedule of a task
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Change the schedule of task sandbox-cleanup-default to weekly
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
     And I check radio button "weekly"
@@ -18,7 +20,6 @@ Feature: Change the schedule of a task
     And radio button "weekly" is checked
 
   Scenario: Change the schedule of task sandbox-cleanup-default to monthly
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
     And I check radio button "monthly"
@@ -30,7 +31,6 @@ Feature: Change the schedule of a task
     Then radio button "monthly" is checked
 
   Scenario: Change the schedule of task sandbox-cleanup-default back to daily
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
     And I check radio button "daily"

@@ -25,7 +25,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
 
   Scenario: Group was correctly created
     Given I am authorized for the "Admin" section
-    And I am on the groups page
+    When I follow the left menu "Systems > System Groups"
     When I follow "minions_group"
     Then I should see a "minions_group" text
     And I should see a "System Group Status" text

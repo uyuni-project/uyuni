@@ -12,6 +12,9 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     When I enable the necessary repositories before installing Prometheus exporters on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Apply Prometheus and Prometheus exporter formulas
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Formulas" in the content area
@@ -23,7 +26,6 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     Then I should see a "Formula saved" text
 
   Scenario: Configure Prometheus formula
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Formulas" in the content area
     And I follow "Prometheus" in the content area
     And I enter "admin" as "Username"
@@ -32,7 +34,6 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     Then I should see a "Formula saved" text
 
   Scenario: Configure Prometheus exporter formula
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
@@ -43,7 +44,6 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     Then I should see a "Formula saved" text
 
   Scenario: Apply highstate for Prometheus exporters
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
@@ -56,7 +56,6 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Formulas" in the content area
     And I uncheck the "prometheus" formula
     And I uncheck the "prometheus-exporters" formula
@@ -64,7 +63,6 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     Then I should see a "Formula saved" text
 
   Scenario: Cleanup: apply highstate after test monitoring
-    Given I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text

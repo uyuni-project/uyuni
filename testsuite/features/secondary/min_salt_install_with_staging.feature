@@ -24,8 +24,10 @@ Feature: Install a package on the SLES minion with staging enabled
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: ensure the errata cache is computed before staging tests
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -34,7 +36,6 @@ Feature: Install a package on the SLES minion with staging enabled
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Enable content staging
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Organizations"
     And I follow first "SUSE Test"
     And I follow first "Configuration"
@@ -56,7 +57,6 @@ Feature: Install a package on the SLES minion with staging enabled
     And I wait for "orion-dummy-1.1-1.1" to be installed on "sle_minion"
 
   Scenario: Install patch in the future and check for staging
-    Given I am on the Systems overview page of this "sle_minion"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
@@ -68,7 +68,6 @@ Feature: Install a package on the SLES minion with staging enabled
     And I wait for "virgo-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Cleanup: remove virgo-dummy package from SLES minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "orion-dummy" as the filtered package name

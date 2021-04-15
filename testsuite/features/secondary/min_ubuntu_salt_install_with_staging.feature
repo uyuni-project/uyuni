@@ -26,8 +26,10 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I wait until refresh package list on "ubuntu_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "ubuntu_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: ensure the errata cache is computed for Ubuntu minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -36,7 +38,6 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Enable content staging for Ubuntu minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Organizations"
     And I follow first "SUSE Test"
     And I follow first "Configuration"
@@ -61,7 +62,6 @@ Feature: Install a package on the Ubuntu minion with staging enabled
   # Untested because we don't have patches for Ubuntu
 
   Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from Ubuntu minion
-    Given I am authorized as "admin" with password "admin"
     And I remove package "orion-dummy" from this "ubuntu_minion"
     And I remove package "virgo-dummy" from this "ubuntu_minion"
     And I disable repository "test_repo_deb_pool" on this "ubuntu_minion"
