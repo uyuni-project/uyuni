@@ -129,7 +129,17 @@ public class MaintenanceController {
 
         List<MaintenanceWindowData> events = new ArrayList<>();
         try {
-            events = MM.preprocessMaintenanceWindows(user, operation, id, type, date);
+            if (type.equals("calendar")) {
+                events = MM.preprocessCalendarData(user, operation, id, date);
+            }
+            else if (type.equals("schedule")) {
+                events = MM.preprocessScheduleData(user, operation, id, date);
+            }
+            else {
+                throw new EntityNotExistsException(
+                        "Type: " + type + " does not exist! Choose either 'schedule' or 'calendar'"
+                );
+            }
         }
         catch (EntityNotExistsException e) {
             log.error(e.getMessage());
