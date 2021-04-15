@@ -452,3 +452,49 @@ def help_schedule_list(self):
 
 def do_schedule_list(self, args):
     return self.print_schedule_summary('all', args)
+
+####################
+
+def help_schedule_deletearchived(self):
+    print(_('schedule_deletearchived: Delete all archived actions'))
+    print(_('usage: schedule_deletearchived [BEGINDATE] [ENDDATE]'))
+    print('')
+    print(self.HELP_TIME_OPTS)
+
+def do_schedule_deletearchived(self, args):
+    """
+    This method removes all of the archived actions.
+    """
+    if args:
+        begin_date = parse_time_input(args[0])
+        logging.debug('Begin Date: %s' % begin_date)
+    else:
+        begin_date = None
+
+    if len(args) > 1:
+        end_date = parse_time_input(args[1])
+        logging.debug('End Date:   %s' % end_date)
+    else:
+        end_date = None
+
+    while True:
+        # Needs to happen in a loop, since we can only fetch in batches. 10k is the default.
+        actions = self.client.schedule.listArchivedActions(self.session)
+        logging.debug("actions: {}".format(actions))
+        if actions:
+            # Collect IDs of actions that should be deleted
+            action_ids = []
+            for action in actions:
+                if begin_date:
+                    if action.get('earliest') < begin_date:
+                        continue
+                if end_date:
+                    if action.get('earliest') > end_date:
+                        continue
+                action_ids.append(action.get('id'))
+
+            # Pass list of actions that should be deleted
+            if action_ids:
+                self.client.schedule.deleteActions(self.session, action_ids)
+        else:
+            break

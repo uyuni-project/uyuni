@@ -14,6 +14,64 @@ class TestSCSchedule:
     Test suite for "schedule" module.
     """
 
+    def test_schedule_deletearchived(self, shell):
+        """
+        Test do_schedule_deletearchived without arguments.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_schedule_deletearchived = MagicMock()
+        shell.client.schedule.listArchivedActions = MagicMock(return_value=[])
+        shell.client.schedule.deleteActions = MagicMock()
+        logger = MagicMock()
+
+        spacecmd.schedule.do_schedule_deletearchived(shell, "")
+
+        assert shell.client.schedule.listArchivedActions.called
+
+    def test_schedule_deletearchived_with_archived(self, shell):
+        """
+        Test do_schedule_deletearchived without arguments, but with archived actions.
+
+        :param shell:
+        :return:
+        """
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
+
+        shell.help_schedule_deletearchived = MagicMock()
+        shell.client.schedule.listArchivedActions = MagicMock()
+        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.deleteActions = MagicMock()
+        logger = MagicMock()
+
+        spacecmd.schedule.do_schedule_deletearchived(shell, "")
+
+        assert shell.client.schedule.listArchivedActions.called
+        assert shell.client.schedule.deleteActions.called
+
+    def test_schedule_deletearchived_with_archived_batched(self, shell):
+        """
+        Test do_schedule_deletearchived without arguments, but with archived actions
+        and in a batched way.
+
+        :param shell:
+        :return:
+        """
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
+
+        shell.help_schedule_deletearchived = MagicMock()
+        shell.client.schedule.listArchivedActions = MagicMock()
+        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [archived_dummy_actions] + [[]]
+        shell.client.schedule.deleteActions = MagicMock()
+        logger = MagicMock()
+
+        spacecmd.schedule.do_schedule_deletearchived(shell, "")
+
+        assert shell.client.schedule.listArchivedActions.called
+        assert shell.client.schedule.deleteActions.call_count == 2
+
     def test_schedule_cancel_noargs(self, shell):
         """
         Test do_schedule_cancel without arguments.
