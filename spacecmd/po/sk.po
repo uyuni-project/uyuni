@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-14 17:57+0000\n"
+"PO-Revision-Date: 2021-04-15 20:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -910,41 +910,41 @@ msgstr "Výstupná cesta:   %s"
 
 #: ../src/spacecmd/configchannel.py:372
 msgid "configchannel_details: Show the details of a config channel"
-msgstr ""
+msgstr "configchannel_details: Zobraziť podrobnosti konfiguračného kanála"
 
 #: ../src/spacecmd/configchannel.py:373
 msgid "usage: configchannel_details CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_details KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:403 ../src/spacecmd/kickstart.py:416
 #, python-format
 msgid "Label:       %s"
-msgstr ""
+msgstr "Označenie:       %s"
 
 #: ../src/spacecmd/configchannel.py:404 ../src/spacecmd/kickstart.py:415
 #, python-format
 msgid "Name:        %s"
-msgstr ""
+msgstr "Názov:        %s"
 
 #: ../src/spacecmd/configchannel.py:405 ../src/spacecmd/cryptokey.py:215
 #: ../src/spacecmd/system.py:679
 #, python-format
 msgid "Description: %s"
-msgstr ""
+msgstr "Popis: %s"
 
 #: ../src/spacecmd/configchannel.py:406 ../src/spacecmd/cryptokey.py:216
 #: ../src/spacecmd/kickstart.py:502 ../src/spacecmd/kickstart.py:1901
 #, python-format
 msgid "Type:        %s"
-msgstr ""
+msgstr "Typ:        %s"
 
 #: ../src/spacecmd/configchannel.py:409
 msgid "Files"
-msgstr ""
+msgstr "Súbory"
 
 #: ../src/spacecmd/configchannel.py:419
 msgid "configchannel_create: Create a configuration channel of specific type"
-msgstr ""
+msgstr "configchannel_create: Vytvoriť konfiguračný kanál špecifického typu"
 
 #: ../src/spacecmd/configchannel.py:420
 msgid ""
@@ -956,6 +956,13 @@ msgid ""
 "  -d DESCRIPTION\n"
 "  -t TYPE('normal,'state')"
 msgstr ""
+"použitie: configchannel_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -l OZNAČENIE\n"
+"  -d POPIS\n"
+"  -t TYP('normal,'state')"
 
 #: ../src/spacecmd/configchannel.py:439 ../src/spacecmd/custominfo.py:55
 #: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:72
@@ -978,45 +985,45 @@ msgstr "Popis:"
 
 #: ../src/spacecmd/configchannel.py:442
 msgid "Type [normal, state]:"
-msgstr ""
+msgstr "Typ [normal, state]:"
 
 #: ../src/spacecmd/configchannel.py:449
 msgid "Only [normal/state] values are acceptable for type"
-msgstr ""
+msgstr "Iba hodnoty [normal/state] sú prípustné pre typ"
 
 #: ../src/spacecmd/configchannel.py:453 ../src/spacecmd/distribution.py:110
 #: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
 msgid "A name is required"
-msgstr ""
+msgstr "Názov je povinný"
 
 #: ../src/spacecmd/configchannel.py:462
 msgid "Only [normal/state] values are acceptable for --type parameter"
-msgstr ""
+msgstr "Iba hodnoty [normal/state] sú prípustné pre parameter --type"
 
 #: ../src/spacecmd/configchannel.py:477
 msgid "configchannel_delete: Delete a configuration channel"
-msgstr ""
+msgstr "configchannel_delete: Vymazať konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:478
 msgid "usage: configchannel_delete CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_delete KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:499
 #, python-format
 msgid "No channels matched argument(s): %s"
-msgstr ""
+msgstr "Žiadny kanály sa nezhodujú s argumentom(mi): %s"
 
 #: ../src/spacecmd/configchannel.py:505 ../src/spacecmd/softwarechannel.py:737
 msgid "Delete these channels [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto kanály [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:549
 msgid "Symlink [y/N]:"
-msgstr ""
+msgstr "Symbolický odkaz [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:553
 msgid "Target Path:"
-msgstr ""
+msgstr "Cieľová cesta:"
 
 #: ../src/spacecmd/configchannel.py:554
 msgid "SELinux Context [none]:"
@@ -1024,22 +1031,22 @@ msgstr "Kontext SELinux [žiadny]:"
 
 #: ../src/spacecmd/configchannel.py:562
 msgid "Directory [y/N]:"
-msgstr ""
+msgstr "Adresár [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:571
 #, python-format
 msgid "Owner [%s]:"
-msgstr ""
+msgstr "Vlastník [%s]:"
 
 #: ../src/spacecmd/configchannel.py:572
 #, python-format
 msgid "Group [%s]:"
-msgstr ""
+msgstr "Skupina [%s]:"
 
 #: ../src/spacecmd/configchannel.py:573
 #, python-format
 msgid "Mode [%s]:"
-msgstr ""
+msgstr "Režim [%s]:"
 
 #: ../src/spacecmd/configchannel.py:575
 #, python-format
@@ -1048,11 +1055,11 @@ msgstr "Kontext SELinux [%s]:"
 
 #: ../src/spacecmd/configchannel.py:576 ../src/spacecmd/configchannel.py:912
 msgid "Revision [next]:"
-msgstr ""
+msgstr "Revízia [ďalšia]:"
 
 #: ../src/spacecmd/configchannel.py:594 ../src/spacecmd/configchannel.py:917
 msgid "The revision must be an integer"
-msgstr ""
+msgstr "Revízia musí byť celé číslo"
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:597 ../src/spacecmd/configchannel.py:899
