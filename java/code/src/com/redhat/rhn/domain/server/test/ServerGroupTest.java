@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
@@ -86,8 +87,13 @@ public class ServerGroupTest extends RhnBaseTestCase {
     public void testGetServerGroupTypeFeatures() throws Exception {
         Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         assertTrue(org1.getEntitledServerGroups().size() > 0);
-        assertNotNull(org1.getEntitledServerGroups().get(0).getGroupType().getFeatures());
-        assertTrue(org1.getEntitledServerGroups().get(0).getGroupType().
-                                                        getFeatures().size() > 0);
+
+        // we assume existence of salt entitlement
+        EntitlementServerGroup serverGroup = org1.getEntitledServerGroups().stream()
+                .filter(sg -> sg.getGroupType().equals(ServerConstants.getServerGroupTypeSaltEntitled()))
+                .findFirst()
+                .orElseThrow();
+        assertNotNull(serverGroup.getGroupType().getFeatures());
+        assertTrue(serverGroup.getGroupType().getFeatures().size() > 0);
     }
 }
