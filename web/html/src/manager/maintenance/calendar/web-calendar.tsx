@@ -209,6 +209,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         ref={calendarRef}
         timeZone={""} // Prevent FullCalendar from using the browsers set timezone
         locales={allLocales}
+        // locale strings come with '_' from the backend but FullCalendar expects them with '-' so we exchange these
         locale={window.preferredLocale.replace("_", "-")}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         customButtons={{
