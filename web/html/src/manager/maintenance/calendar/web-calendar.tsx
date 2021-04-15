@@ -52,7 +52,7 @@ const WebCalendar = (props: WebCalendarProps) => {
       const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${date.valueOf()}/${props.id}`;
       return Network.get(endpoint, "application/json").promise
         .then(events => {
-          setEvents(events.data);
+          setEvents(events);
           navigateTo(operation);
           props.clearMessages();
           setCurrentDate(getApi().currentDataManager.data.currentDate);
@@ -71,12 +71,12 @@ const WebCalendar = (props: WebCalendarProps) => {
     const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
-        if (events.data.length === 0) {
+        if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more past maintenance windows")));
         } else {
-          setEvents(events.data);
+          setEvents(events);
           // Skip to next event that is not in current month
-          const filteredEvents = events.data.filter(event =>
+          const filteredEvents = events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month());
           const lastEvent = moment.parseZone(filteredEvents[filteredEvents.length - 1].start);
           getApi().gotoDate(lastEvent.format("YYYY-MM-DD"));
@@ -100,12 +100,12 @@ const WebCalendar = (props: WebCalendarProps) => {
     const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
-        if (events.data.length === 0) {
+        if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));
         } else {
-          setEvents(events.data);
+          setEvents(events);
           // Skip to next event that is not in current month
-          const firstEvent = moment.parseZone(events.data.filter(event =>
+          const firstEvent = moment.parseZone(events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month())[0].start
           );
           getApi().gotoDate(firstEvent.format("YYYY-MM-DD"));
