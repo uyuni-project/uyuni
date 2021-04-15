@@ -182,7 +182,9 @@ const WebCalendar = (props: WebCalendarProps) => {
       moment.parseZone(event.start).date() >= date.date())
     );
     // Only perform action if there is an event to go to
-    filteredEvents.length > 0 && getApi().gotoDate(filteredEvents[0].start);
+    if (filteredEvents.length > 0) {
+      getApi().gotoDate(filteredEvents[0].start);
+    }
     // Return true if there's an event false otherwise
     return filteredEvents.length > 0;
   }
@@ -194,7 +196,9 @@ const WebCalendar = (props: WebCalendarProps) => {
       moment.parseZone(event.start).date() <= date.date())
     );
     // Only perform action if there is an event to go to
-    filteredEvents.length > 0 && getApi().gotoDate(filteredEvents[filteredEvents.length - 1].start);
+    if (filteredEvents.length > 0) {
+      getApi().gotoDate(filteredEvents[filteredEvents.length - 1].start);
+    }
     // Return true if there's an event false otherwise
     return filteredEvents.length > 0;
   }
