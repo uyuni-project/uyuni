@@ -1,3 +1,4 @@
+- Add new SLS files files to operate Ansible control node
 - provide details when bootstrap query is missing 'status'
 - Add new SLS files files to operate Ansible control node
 - add virtual network edit action
