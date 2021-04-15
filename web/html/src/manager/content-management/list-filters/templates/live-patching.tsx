@@ -22,7 +22,7 @@ type Kernel = {
   version: string;
 };
 
-async function getClients(): Cancelable<Client[]> {
+async function getClients(): Promise<Client[]> {
   return [
     {
       id: 1,
@@ -39,7 +39,7 @@ async function getClients(): Cancelable<Client[]> {
   ];
 }
 
-async function getProducts(): Cancelable<Product[]> {
+async function getProducts(): Promise<Product[]> {
   return [
     {
       id: 1,
@@ -49,7 +49,7 @@ async function getProducts(): Cancelable<Product[]> {
 }
 
 // TODO: Specify where and how this data realistically comes from
-async function getKernels(...args: any[]): Cancelable<Kernel[]> {
+async function getKernels(...args: any[]): Promise<Kernel[]> {
   return [
     {
       id: 345,
