@@ -35,7 +35,7 @@
 - features/secondary/srv_notifications.feature
 - features/secondary/srv_monitoring.feature
 - features/secondary/srv_scc_user_credentials.feature
-- features/core/srv_push_package.feature
+- features/secondary/srv_push_package.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
