@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:18:00 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - check minimal required DB schema version during startup
 
 -------------------------------------------------------------------
