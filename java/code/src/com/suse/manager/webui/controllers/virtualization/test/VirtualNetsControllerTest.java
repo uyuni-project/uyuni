@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -35,6 +34,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
@@ -72,7 +72,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionHelper.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
