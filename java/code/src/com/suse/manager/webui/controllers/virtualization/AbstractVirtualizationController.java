@@ -18,27 +18,23 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -47,7 +43,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -154,15 +149,7 @@ public abstract class AbstractVirtualizationController {
                           BiFunction<ScheduledRequestJson, String, Action> actionCreator,
                           Function<ScheduledRequestJson, List<String>> actionKeysGetter,
                           Class<? extends ScheduledRequestJson> jsonClass) {
-        long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
 
         ScheduledRequestJson data;
         try {
@@ -185,22 +172,12 @@ public abstract class AbstractVirtualizationController {
         }
     }
 
-    protected String scheduleAction(String key, User user, Server host,
+    private String scheduleAction(String key, User user, Server host,
                                   BiFunction<ScheduledRequestJson, String, Action> actionCreator,
                                   ScheduledRequestJson data) {
-        Action action = actionCreator.apply(data, key);
-        action.setOrg(user.getOrg());
-        action.setSchedulerUser(user);
-        action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
-
-        Optional<ActionChain> actionChain = data.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
-
         String status = "Failed";
         try {
-            VirtualizationActionCommand.schedule(action, host, actionChain);
-            status = action.getId().toString();
+            status = String.valueOf(VirtualizationActionHelper.scheduleAction(key, user, host, actionCreator, data));
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule virtualization action:", e);

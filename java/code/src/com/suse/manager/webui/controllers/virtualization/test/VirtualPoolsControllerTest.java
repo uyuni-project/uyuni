@@ -31,7 +31,6 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -41,13 +40,13 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolCapabilitiesJson.PoolType;
+import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
-import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -81,7 +80,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionHelper.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
