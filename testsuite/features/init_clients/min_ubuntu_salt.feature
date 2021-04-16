@@ -6,6 +6,13 @@
 
 Feature: Bootstrap an Ubuntu minion and do some basic operations on it
 
+# WORKAROUND: TO BE REMOVED!
+# This is a temporary measure to avoid Errors due to small 
+# salt minion timeout(s) on server side
+When I run "echo \"java.salt_presence_ping_timeout = 15\" >> /etc/rhn/rhn.conf"
+And I run "spacewalk-service restart"
+# %end of workaround 
+
 @ubuntu_minion
   Scenario: Bootstrap an Ubuntu minion
     Given I am authorized
