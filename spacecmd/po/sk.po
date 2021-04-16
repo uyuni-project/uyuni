@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-15 20:57+0000\n"
+"PO-Revision-Date: 2021-04-16 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1066,47 +1066,48 @@ msgstr "Revízia musí byť celé číslo"
 #: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:1956
 #: ../src/spacecmd/snippet.py:142
 msgid "Read an existing file [y/N]:"
-msgstr ""
+msgstr "Čítať existujúci súbor [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:599 ../src/spacecmd/kickstart.py:1958
 msgid "File:"
-msgstr ""
+msgstr "Súbor:"
 
 #: ../src/spacecmd/configchannel.py:617
 msgid "The path is required"
-msgstr ""
+msgstr "Vyžaduje sa cesta"
 
 #: ../src/spacecmd/configchannel.py:631 ../src/spacecmd/configchannel.py:923
 msgid "You must provide the file contents"
-msgstr ""
+msgstr "Musíte poskytnúť obsah súborov"
 
 #: ../src/spacecmd/configchannel.py:635
 msgid "You must provide the target path for a symlink"
-msgstr ""
+msgstr "Musíte uviesť cieľovú cestu pre symbolický odkaz"
 
 #: ../src/spacecmd/configchannel.py:650 ../src/spacecmd/configchannel.py:679
 #, python-format
 msgid "Path:            %s"
-msgstr ""
+msgstr "Cesta:            %s"
 
 #: ../src/spacecmd/configchannel.py:680
 #, python-format
 msgid "Directory:       %s"
-msgstr ""
+msgstr "Adresár:       %s"
 
 #: ../src/spacecmd/configchannel.py:690
 #, python-format
 msgid "Revision:        %i"
-msgstr ""
+msgstr "Revízia:        %i"
 
 #: ../src/spacecmd/configchannel.py:695
 msgid "Contents not displayed (base64 encoded)"
-msgstr ""
+msgstr "Obsah sa nezobrazuje (kódovaný base64)"
 
 #: ../src/spacecmd/configchannel.py:708
 msgid ""
 "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr ""
+"configchannel_addfile/configchannel_updatefile: Vytvoriť konfiguračný súbor"
 
 #: ../src/spacecmd/configchannel.py:709
 msgid ""
