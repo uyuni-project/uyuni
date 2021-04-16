@@ -1,3 +1,5 @@
+- fix check for for mirrorlist URLs when refreshing products (bsc#1184861)
+
 -------------------------------------------------------------------
 Mon Apr 05 09:45:38 CEST 2021 - jgonzalez@suse.com
 
