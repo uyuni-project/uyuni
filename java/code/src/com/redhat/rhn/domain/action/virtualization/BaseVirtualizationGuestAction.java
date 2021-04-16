@@ -17,14 +17,10 @@ package com.redhat.rhn.domain.action.virtualization;
 
 import com.redhat.rhn.domain.action.Action;
 
-import java.util.Map;
-
 /**
  * Base class representing virtualization actions
  */
 public abstract class BaseVirtualizationGuestAction extends Action {
-
-    public static final String FORCE_STRING = "force";
 
     private String uuid;
 
@@ -42,17 +38,6 @@ public abstract class BaseVirtualizationGuestAction extends Action {
      */
     public void setUuid(String stringIn) {
         this.uuid = stringIn;
-    }
-
-    /**
-     * Extract any required parameters from the provided context and call the
-     * appropriate setters.
-     *
-     * @param context Map of strings
-     */
-    public void extractParameters(Map context) {
-        // Most virtualization actions require no parameters, default implementation
-        // therefore does nothing.
     }
 
     @Override
