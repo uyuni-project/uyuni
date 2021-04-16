@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:35:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
 - Fix insecure JMX configuration (bsc#1184617)
 - Add support for notify beacon for Debian/Ubuntu systems
 - Automatically start needed networks and storage pools when creating/starting a VM
