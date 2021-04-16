@@ -1,3 +1,5 @@
+- Bugfix for ubuntu-18.04 repo urls: multiverse, restricted and backports
+
 -------------------------------------------------------------------
 Fri Apr 16 13:24:29 CEST 2021 - jgonzalez@suse.com
 
