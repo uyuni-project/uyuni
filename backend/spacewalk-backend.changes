@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:18:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
 - Fail traditional errata and package actions when they act on retracted items
 - Add advisory_status to reposync and ISS
 - define dependency for DB schema version
