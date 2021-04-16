@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:26:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
 - Add state summary section to highstate pages
 - add warning about missing salt feature for virtual networks
 - add virtual network create action
