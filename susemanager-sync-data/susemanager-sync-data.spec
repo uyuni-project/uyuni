@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-sync-data
-Version:        4.2.4
+Version:        4.2.5
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
