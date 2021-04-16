@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.manager.content.test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -59,10 +56,15 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.UpgradePathJson;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -1748,6 +1750,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "Release");
         assertContains(csm.buildRepoFileUrl(repourl, debrepo), repourl + "InRelease");
         assertEquals(5, csm.buildRepoFileUrl(repourl, debrepo).size());
+
+        repourl = "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock";
+        rpmrepo.setDistroTarget("x86_64");
+
+        URI uri = new URI(repourl);
+        String url1 = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), "/repodata/repomd.xml",
+                uri.getQuery(), null).toString();
+        String url2 = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), "/",
+                uri.getQuery(), null).toString();
+        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), url1);
+        assertContains(csm.buildRepoFileUrl(repourl, rpmrepo), url2);
+        assertEquals(2, csm.buildRepoFileUrl(repourl, rpmrepo).size());
     }
 
 
