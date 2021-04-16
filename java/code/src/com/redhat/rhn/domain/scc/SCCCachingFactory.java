@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.domain.scc;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
@@ -480,22 +481,29 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Returns systems which should be forwarded to SCC
+     * Returns registration items of systems which should be forwarded to SCC
      *
-     * @return list of {@link Server}
+     * @return list of {@link SCCRegCacheItem}
      */
     public static List<SCCRegCacheItem> findSystemsToForwardRegistration() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
-        retryTime.add(Calendar.HOUR, -48);
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
                 .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
                 .getResultList();
     }
 
+    /**
+     * Returns registration items of systems which should be de-registered from SCC
+     *
+     * @return list of {@link SCCRegCacheItem}
+     */
     public static List<SCCRegCacheItem> listDeregisterItems() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
-        retryTime.add(Calendar.HOUR, -48);
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
                 .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
