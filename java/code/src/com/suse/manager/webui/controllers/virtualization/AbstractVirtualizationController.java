@@ -37,7 +37,6 @@ import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -168,22 +167,22 @@ public abstract class AbstractVirtualizationController {
         ScheduledRequestJson data;
         try {
             data = GSON.fromJson(request.body(), jsonClass);
+
+            List<String> actionKeys = actionKeysGetter.apply(data);
+            if (!actionKeys.isEmpty()) {
+                Map<String, String> actionsResults = actionKeys.stream().collect(
+                        Collectors.toMap(Function.identity(),
+                                key -> scheduleAction(key, user, host, actionCreator, data)
+                        ));
+                return json(response, actionsResults);
+            }
+
+            String result = scheduleAction(null, user, host, actionCreator, data);
+            return json(response, result);
         }
-        catch (JsonParseException e) {
+        catch (Exception e) {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
-
-        List<String> actionKeys = actionKeysGetter.apply(data);
-        if (!actionKeys.isEmpty()) {
-            Map<String, String> actionsResults = actionKeys.stream().collect(
-                    Collectors.toMap(Function.identity(),
-                            key -> scheduleAction(key, user, host, actionCreator, data)
-                    ));
-            return json(response, actionsResults);
-        }
-
-        String result = scheduleAction(null, user, host, actionCreator, data);
-        return json(response, result);
     }
 
     protected String scheduleAction(String key, User user, Server host,
