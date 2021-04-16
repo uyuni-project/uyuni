@@ -114,13 +114,28 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
                     LOG.debug("Changing VM " + vms.get(0) + " state to " + state.getLabel());
 
+                    // At the end of a migration we get a stopped/migrated event from the source host
+                    // and a resumed/migrated event from the target host.
+                    // Skip the stopped event since we will update the virtual host in the resumed one.
+                    boolean migrated = message.getDetail().equals("migrated");
+                    if (migrated && event.equals("stopped")) {
+                        return;
+                    }
+
                     // We need to check if the VM is still defined and delete it if needed
-                    if (Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
+                    if (!migrated && Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
                         !virtManager.getGuestDefinition(minionId, message.getDomainName()).isPresent()) {
                         vms.forEach(vm -> VirtualInstanceManager.deleteGuestVirtualInstance(vm));
                         unwatchVirtualMachine(minionId, message.getDomainName());
                     }
                     else {
+                        if (migrated && event.equals("resumed")) {
+                            vms.forEach(vm -> {
+                                VirtualInstanceManager.updateGuestVirtualInstance(vm, vm.getName(), state,
+                                        minion, vm.getGuestSystem(), vm.getNumberOfCPUs(), vm.getTotalMemory());
+                            });
+                            return;
+                        }
                         final Optional<GuestDefinition> updatedDef = message.getDetail().equals("updated") ?
                                 virtManager.getGuestDefinition(minionId, message.getDomainName()) :
                                 Optional.empty();
