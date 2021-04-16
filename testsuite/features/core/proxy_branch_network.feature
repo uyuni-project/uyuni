@@ -72,6 +72,14 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "range end" in dynamic IP range end field
     And I enter the local IP address of "broadcast" in broadcast address field
     And I enter the local IP address of "proxy" in routers field
+    And I press "Add Item" in host reservations section
+    And I enter "client" in first reserved hostname field
+    And I enter the local IP address of "client" in first reserved IP field
+    And I enter the MAC address of "sle_client" in first reserved MAC field
+    And I press "Add Item" in host reservations section
+    And I enter "minion" in second reserved hostname field
+    And I enter the local IP address of "minion" in second reserved IP field
+    And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -169,6 +177,9 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-@pxeboot_minion
-  Scenario: I restart the network on the PXE boot minion
+  Scenario: Set up the terminals too
     When I set up the private network on the terminals
+    Then terminal "sle_client" should have got a retail network IP address
+    And name resolution should work on terminal "sle_client"
+    And terminal "sle_minion" should have got a retail network IP address
+    And name resolution should work on terminal "sle_minion"

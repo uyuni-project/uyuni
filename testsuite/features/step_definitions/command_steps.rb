@@ -976,8 +976,19 @@ When(/^I copy server\'s keys to the proxy$/) do
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
+  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
+  nodes = [$client, $minion]
+  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  file = "/etc/sysconfig/network/ifcfg-eth1"
+  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file2 = "/etc/resolv.conf"
+  nodes.each do |node|
+    next if node.nil?
+    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
+  end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
   nodes = [$ceos_minion]
   file = "/etc/sysconfig/network-scripts/ifcfg-eth1"
@@ -1004,6 +1015,7 @@ When(/^I set up the private network on the terminals$/) do
     step %(I restart the network on the PXE boot minion)
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
