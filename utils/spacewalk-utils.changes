@@ -1,3 +1,4 @@
+- Bugfix for ubuntu-18.04 repo urls: multiverse, restricted and backports
 - Add multiverse, restricted and backports to Ubuntu 16.04, 18.04 and 20.04
 
 -------------------------------------------------------------------
