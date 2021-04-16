@@ -23,17 +23,22 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -48,8 +53,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -63,33 +66,30 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseA
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -135,6 +135,18 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/refresh", withUser(this::refresh));
+        post("/manager/api/systems/details/virtualization/guests/:sid/shutdown",
+                withUser(this::shutdown));
+        post("/manager/api/systems/details/virtualization/guests/:sid/restart",
+                withUser(this::restart));
+        post("/manager/api/systems/details/virtualization/guests/:sid/setVcpu",
+                withUser(this::setVcpu));
+        post("/manager/api/systems/details/virtualization/guests/:sid/setMemory",
+                withUser(this::setMemory));
+        post("/manager/api/systems/details/virtualization/guests/:sid/new",
+                withUser(this::newGuest));
+        post("/manager/api/systems/details/virtualization/guests/:sid/update",
+                withUser(this::update));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
                 withUser(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
@@ -204,11 +216,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     public String getGuest(Request request, Response response, User user) {
         String uuid = request.params("uuid");
         Server host = getServer(request, user);
+        MinionServer minion = host.asMinionServer().orElseThrow(NotFoundException::new);
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
                 .findFirst().orElseThrow(NotFoundException::new);
 
-        GuestDefinition definition = virtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
+        GuestDefinition definition = virtManager.getGuestDefinition(minion.getMinionId(),
                 guest.getName()).orElseThrow(NotFoundException::new);
 
         return json(response, definition);
@@ -237,84 +250,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 new TypeToken<List<DomainCapabilitiesJson>>() { }.getType());
 
         Map<String, Object> allDomainCaps = new HashMap<>();
-        allDomainCaps.put("osTypes", hostCaps.getGuests().stream().map(guest -> guest.getOsType())
+        allDomainCaps.put("osTypes", hostCaps.getGuests().stream().map(HostCapabilitiesJson.Guest::getOsType)
                 .distinct()
                 .collect(Collectors.toList()));
         allDomainCaps.put("domainsCaps", domainsCaps);
 
         return json(response, allDomainCaps);
-    }
-
-    /**
-     * Run an action on one or more virtual machine
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return the json response
-     */
-    public String guestAction(Request request, Response response, User user) {
-        HashMap<String, Class<? extends VirtualGuestsBaseActionJson>> actionsMap = new HashMap<>();
-        actionsMap.put("start", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("suspend", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("resume", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("restart", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("shutdown", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("setVcpu", VirtualGuestSetterActionJson.class);
-        actionsMap.put("setMemory", VirtualGuestSetterActionJson.class);
-        actionsMap.put("delete", VirtualGuestsBaseActionJson.class);
-        actionsMap.put("update", VirtualGuestsUpdateActionJson.class);
-        actionsMap.put("new", VirtualGuestsUpdateActionJson.class);
-
-        Server host = getServer(request, user);
-
-        String action = request.params("action");
-        VirtualGuestsBaseActionJson data;
-        try {
-            data = GSON.fromJson(request.body(), actionsMap.get(action));
-        }
-        catch (JsonParseException e) {
-            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
-        }
-
-        DataResult<VirtualSystemOverview> guests =
-                SystemManager.virtualGuestsForHostList(user, host.getId(), null);
-
-        HashMap<String, String> actionResults = new HashMap<>();
-        if (data.getUuids() == null || data.getUuids().isEmpty()) {
-            String result = triggerGuestUpdateSaltAction(host, null, user, (VirtualGuestsUpdateActionJson)data,
-                    request.raw());
-            actionResults.put("create-guest", result != null ? result : "Failed");
-        }
-        else {
-            for (VirtualSystemOverview guest : guests) {
-                ActionType type = VirtualizationActionCommand.lookupActionType(guest.getStateLabel(), action);
-                if (data.getUuids().contains(guest.getUuid())) {
-                    String result = null;
-                    if (data instanceof VirtualGuestsUpdateActionJson) {
-                        result = triggerGuestUpdateAction(host, guest, user, (VirtualGuestsUpdateActionJson)data,
-                                request.raw());
-                    }
-                    else if (type != null) {
-                        if (data instanceof VirtualGuestSetterActionJson) {
-                            result = triggerGuestSetterAction(host, guest, action, type, user,
-                                                              ((VirtualGuestSetterActionJson)data).getValue());
-                        }
-                        else {
-                            Map<String, String> context = new HashMap<>();
-                            if (data.getForce() != null) {
-                                context.put(BaseVirtualizationGuestAction.FORCE_STRING,
-                                        Boolean.toString(data.getForce()));
-                            }
-                            result = triggerGuestAction(host, guest, type, user, context);
-                        }
-                    }
-                    String status = result != null ? result : "Failed";
-                    actionResults.put(guest.getUuid(), status);
-                }
-            }
-        }
-
-        return json(response, actionResults);
     }
 
     /**
@@ -436,6 +377,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public Boolean refresh(Request request, Response response, User user) {
         Server host = getServer(request, user);
+        if (noHostSupportAction(host, true)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
         VirtualInstanceManager.updateHostVirtualInstance(host,
                 VirtualInstanceFactory.getInstance().getFullyVirtType());
         Optional<List<VmInfo>> plan = virtManager.getGuestsUpdatePlan(host.getMinionId());
@@ -443,168 +388,316 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         return plan.isPresent();
     }
 
-    private String triggerGuestUpdateAction(Server host,
-                                                   VirtualSystemOverview guest,
-                                                   User user,
-                                                   VirtualGuestsUpdateActionJson data,
-                                                   HttpServletRequest request) {
+    /**
+     * Set the memory amount of a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String setMemory(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        return setterAction(request, response, user,
+                ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
+                (data) -> ((VirtualGuestSetterActionJson)data).getValue().intValue(),
+                (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
+                VirtualGuestSetterActionJson.class);
+    }
+
+    /**
+     * Set the number of vCPUs of a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String setVcpu(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        return setterAction(request, response, user,
+                ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
+                (data) -> ((VirtualGuestSetterActionJson)data).getValue().intValue(),
+                (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
+                VirtualGuestSetterActionJson.class);
+    }
+
+    /**
+     * reboot a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String restart(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        return doGuestAction(request, response, user, (data) -> {
+            VirtualizationRebootGuestAction action = (VirtualizationRebootGuestAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
+            action.setName(ActionFactory.TYPE_VIRTUALIZATION_REBOOT.getName());
+            action.setForce(data.getForce());
+            return action;
+        });
+    }
+
+    /**
+     * shut down a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String shutdown(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        return doGuestAction(request, response, user, (data) -> {
+            VirtualizationShutdownGuestAction action = (VirtualizationShutdownGuestAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
+            action.setName(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.getName());
+            action.setForce(data.getForce());
+            return action;
+        });
+    }
+
+    /**
+     * Run a guest action
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the JSON result
+     */
+    public String guestAction(Request request, Response response, User user) {
+        Map<String, ActionType> actionsMap = new HashMap<>();
+        actionsMap.put("start", ActionFactory.TYPE_VIRTUALIZATION_START);
+        actionsMap.put("suspend", ActionFactory.TYPE_VIRTUALIZATION_SUSPEND);
+        actionsMap.put("resume", ActionFactory.TYPE_VIRTUALIZATION_RESUME);
+        actionsMap.put("restart", ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
+        actionsMap.put("delete", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
+
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
+        String actionParam = request.params("action");
+        ActionType actionType = actionsMap.get(actionParam);
+
+        return doGuestAction(request, response, user, (data) -> {
+            BaseVirtualizationGuestAction action = (BaseVirtualizationGuestAction)
+                    ActionFactory.createAction(actionType);
+            action.setName(actionType.getName());
+            return action;
+        });
+    }
+
+    /**
+     * Update the definition of a virtual guest.
+     *
+     * For traditional guests only the vCPU count and memory amount will be changed.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String update(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
+        }
+
         if (host.asMinionServer().isPresent()) {
-            return triggerGuestUpdateSaltAction(host, guest, user, data, request);
+            return newGuest(request, response, user);
         }
 
-        if (data.getUuids().isEmpty()) {
-            LOG.error("Creating a virtual machine is only possible for salt minions not for " + host.getHostname());
-            return null;
-        }
+        String memResult = setterAction(request, response, user,
+                ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
+                (data) -> ((VirtualGuestsUpdateActionJson)data).getMemory().intValue(),
+                (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
+                VirtualGuestsUpdateActionJson.class);
+        Map<String, String> results = new HashMap<>(
+                GSON.fromJson(memResult, new TypeToken<Map<String, String>>() { }.getType())
+        );
 
-        List<String> results = new ArrayList<>();
-        // Comparing against the DB data may not be accurate, but that will change with virt.running state soon
-        if (data.getVcpu().longValue() != guest.getVcpus().longValue()) {
-            results.add(triggerGuestSetterAction(host, guest, "setVcpu", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
-                                                 user, data.getVcpu()));
-        }
-        if (data.getMemory().longValue() != guest.getMemory().longValue()) {
-            results.add(triggerGuestSetterAction(host, guest, "setMemory",
-                                                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
-                                                 user, data.getMemory()));
-        }
-        return GSON.toJson(results);
+        String vcpuResult = setterAction(request, response, user,
+                ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
+                (data) -> ((VirtualGuestsUpdateActionJson)data).getVcpu().intValue(),
+                (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
+                VirtualGuestsUpdateActionJson.class);
+        results.putAll(GSON.fromJson(vcpuResult, new TypeToken<Map<String, String>>() { }.getType()));
+        return json(response, results);
     }
 
-    private String triggerGuestUpdateSaltAction(Server host,
-                                                VirtualSystemOverview guest,
-                                                User user,
-                                                VirtualGuestsUpdateActionJson data,
-                                                HttpServletRequest request) {
-        String status = null;
-        Map<String, Object> context = new HashMap<String, Object>();
-
-        // So far the salt virt.update function doesn't allow renaming a guest,
-        // and that is only possible for the KVM driver.
-        data.setName(guest != null ? guest.getName() : data.getName());
-
-        context.put(VirtualizationCreateGuestAction.TYPE, data.getType());
-        context.put(VirtualizationCreateGuestAction.NAME, data.getName());
-        context.put(VirtualizationCreateGuestAction.OS_TYPE, data.getOsType());
-        context.put(VirtualizationCreateGuestAction.MEMORY, data.getMemory());
-        context.put(VirtualizationCreateGuestAction.VCPUS, data.getVcpu());
-        context.put(VirtualizationCreateGuestAction.ARCH, data.getArch());
-        context.put(VirtualizationCreateGuestAction.GRAPHICS, data.getGraphicsType());
-        context.put(VirtualizationCreateGuestAction.COBBLER_SYSTEM, data.getCobblerId());
-        context.put(VirtualizationCreateGuestAction.KERNEL_OPTIONS, data.getKernelOptions());
-
-        if (data.getDisks() != null) {
-            context.put(VirtualizationCreateGuestAction.DISKS, data.getDisks().stream().map(disk -> {
-                VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
-                details.setDevice(disk.getDevice());
-                details.setTemplate(disk.getTemplate());
-                details.setSize(disk.getSize());
-                details.setBus(disk.getBus());
-                details.setPool(disk.getPool());
-                details.setSourceFile(disk.getSourceFile());
-                details.setFormat(disk.getFormat());
-                return details;
-            }).collect(Collectors.toList()));
+    /**
+     * Create or update a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the action id or "Failed" in case of failure
+     */
+    public String newGuest(Request request, Response response, User user) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, true)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        if (data.getInterfaces() != null) {
-            context.put(VirtualizationCreateGuestAction.INTERFACES, data.getInterfaces().stream().map(nic -> {
-                VirtualizationCreateActionInterfaceDetails details = new VirtualizationCreateActionInterfaceDetails();
-                details.setType(nic.getType());
-                details.setSource(nic.getSource());
-                details.setMac(nic.getMac());
-                return details;
-            }).collect(Collectors.toList()));
-        }
+        return doGuestAction(request, response, user, (data, guest) -> {
+            VirtualizationCreateGuestAction action = (VirtualizationCreateGuestAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_CREATE);
 
-        Optional<ActionChain> actionChain = data.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
+            VirtualGuestsUpdateActionJson createData = (VirtualGuestsUpdateActionJson) data;
 
-        if (guest == null && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
-            // Create cobbler profile
-            KickstartHelper helper = new KickstartHelper(request);
-            Profile cobblerProfile = Profile.lookupById(
-                    CobblerXMLRPCHelper.getConnection(user), data.getCobblerId());
-            KickstartData ksData = KickstartFactory.
-                    lookupKickstartDataByCobblerIdAndOrg(user.getOrg(), cobblerProfile.getId());
-            CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(user, cobblerProfile.getName(),
-                    data.getName(), ksData, host.getName(), host.getOrgId());
-            String ksHost = helper.getKickstartHost();
-            cobblerCmd.setKickstartHost(ksHost);
-            cobblerCmd.store();
+            String actionName = ActionFactory.TYPE_VIRTUALIZATION_CREATE.getName().replaceAll("\\.$", "");
+            actionName += ": " + createData.getName();
+            if (data.getUuids() != null && !data.getUuids().isEmpty()) {
+                actionName = LocalizationService.getInstance().getMessage("virt.update");
+            }
+            action.setName(actionName);
 
-            context.put(VirtualizationCreateGuestAction.COBBLER_SYSTEM, cobblerCmd.getCobblerSystemRecordName());
-            context.put(VirtualizationCreateGuestAction.KICKSTART_HOST, ksHost);
-        }
+            action.setType(createData.getType());
+            // So far the salt virt.update function doesn't allow renaming a guest,
+            // and that is only possible for the KVM driver.
+            action.setGuestName(createData.getName());
+            action.setOsType(createData.getOsType());
+            action.setMemory(createData.getMemory());
+            action.setVcpus(createData.getVcpu());
+            action.setArch(createData.getArch());
+            action.setGraphicsType(createData.getGraphicsType());
+            action.setKernelOptions(createData.getKernelOptions());
 
-        VirtualizationActionCommand cmd
-            = new VirtualizationActionCommand(user,
-                                              MinionActionUtils.getScheduleDate(data.getEarliest()),
-                                              actionChain,
-                                              ActionFactory.TYPE_VIRTUALIZATION_CREATE,
-                                              host,
-                                              guest != null ? guest.getUuid() : null,
-                                              data.getName(),
-                                              context);
-        try {
-            cmd.store();
-            status = String.valueOf(cmd.getAction().getId());
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule virtualization action:");
-            LOG.error(e);
-            return null;
-        }
-        return status;
+            if (guest.isEmpty() && createData.getCobblerId() != null && !createData.getCobblerId().isEmpty()) {
+                // Create cobbler profile
+                KickstartHelper helper = new KickstartHelper(request.raw());
+                Profile cobblerProfile = Profile.lookupById(
+                        CobblerXMLRPCHelper.getConnection(user), createData.getCobblerId());
+                KickstartData ksData = KickstartFactory.
+                        lookupKickstartDataByCobblerIdAndOrg(user.getOrg(), cobblerProfile.getId());
+                CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(user, cobblerProfile.getName(),
+                        createData.getName(), ksData, host.getName(), host.getOrgId());
+                String ksHost = helper.getKickstartHost();
+                cobblerCmd.setKickstartHost(ksHost);
+                cobblerCmd.store();
+
+                action.setCobblerSystem(cobblerCmd.getCobblerSystemRecordName());
+                action.setKickstartHost(ksHost);
+            }
+
+            if (createData.getDisks() != null) {
+                 action.setDisks(createData.getDisks().stream().map(disk -> {
+                    VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
+                    details.setDevice(disk.getDevice());
+                    details.setTemplate(disk.getTemplate());
+                    details.setSize(disk.getSize());
+                    details.setBus(disk.getBus());
+                    details.setPool(disk.getPool());
+                    details.setSourceFile(disk.getSourceFile());
+                    details.setFormat(disk.getFormat());
+                    details.setAction(action);
+                    return details;
+                }).collect(Collectors.toList()));
+            }
+
+            if (createData.getInterfaces() != null) {
+                action.setInterfaces(createData.getInterfaces().stream().map(nic -> {
+                    VirtualizationCreateActionInterfaceDetails details =
+                            new VirtualizationCreateActionInterfaceDetails();
+                    details.setType(nic.getType());
+                    details.setSource(nic.getSource());
+                    details.setMac(nic.getMac());
+                    details.setAction(action);
+                    return details;
+                }).collect(Collectors.toList()));
+            }
+            action.setRemoveDisks(createData.getDisks() != null && createData.getDisks().isEmpty());
+
+            action.setRemoveInterfaces(createData.getInterfaces() != null && createData.getInterfaces().isEmpty());
+
+            return action;
+        }, VirtualGuestsUpdateActionJson.class);
     }
 
-    private String triggerGuestSetterAction(Server host,
-                                                   VirtualSystemOverview guest,
-                                                   String actionName,
-                                                   ActionType actionType,
-                                                   User user,
-                                                   Long value) {
-        if (value == null) {
-            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+    private String setterAction(Request request, Response response, User user, ActionType actionType,
+                                Function<VirtualGuestsBaseActionJson, Integer> getter,
+                                BiConsumer<Action, Integer> setter,
+                                Class<? extends VirtualGuestsBaseActionJson> dataClass) {
+        Server host = getServer(request, user);
+        if (noHostSupportAction(host, false)) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
-        HashMap<String, String> context = new HashMap<>();
-        context.put(actionName, String.valueOf(value));
 
-        return triggerGuestAction(host, guest, actionType, user, context);
+        return doGuestAction(request, response, user, (data, guest) -> {
+            BaseVirtualizationGuestAction action =
+                    (BaseVirtualizationGuestAction)ActionFactory.createAction(actionType);
+            action.setName(actionType.getName());
+            setter.accept(action, getter.apply(data));
+            return action;
+        }, dataClass);
     }
 
-    private String triggerGuestAction(Server host,
-                                             VirtualSystemOverview guest,
-                                             ActionType actionType,
-                                             User user,
-                                             Map<String, String> context) {
+    private boolean noHostSupportAction(Server host, boolean saltOnly) {
         if (host.hasEntitlement(EntitlementManager.FOREIGN)) {
             LOG.warn("Foreign systems don't support virtual guest actions");
-            return null;
+            return true;
         }
         // Traditionally registered systems aren't able to really delete the VM: fail
         // the delete action for them
-        if (host.hasEntitlement(EntitlementManager.MANAGEMENT) &&
-                actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_DELETE)) {
+        if (host.hasEntitlement(EntitlementManager.MANAGEMENT) && saltOnly) {
             LOG.warn("Traditional systems don't support virtual guests deletion");
-            return null;
+            return true;
         }
 
-        VirtualizationActionCommand cmd
-            = new VirtualizationActionCommand(user, new Date(), null, actionType, host, guest.getUuid(),
-                                              guest.getName(), context);
-        Long actionId;
-        try {
-            cmd.store();
-            actionId = cmd.getAction().getId();
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule virtualization action:");
-            LOG.error(e);
-            return null;
-        }
+        return false;
+    }
 
-        return String.valueOf(actionId);
+    private String doGuestAction(Request request, Response response, User user,
+                                 Function<VirtualGuestsBaseActionJson, BaseVirtualizationGuestAction> actionCreator) {
+        BiFunction<VirtualGuestsBaseActionJson, Optional<VirtualSystemOverview>,
+                   BaseVirtualizationGuestAction> creator = (data, vm) -> actionCreator.apply(data);
+        return doGuestAction(request, response, user, creator, VirtualGuestsBaseActionJson.class);
+    }
+
+    private String doGuestAction(Request request, Response response, User user,
+                                 BiFunction<VirtualGuestsBaseActionJson, Optional<VirtualSystemOverview>,
+                                        BaseVirtualizationGuestAction> actionCreator,
+                                 Class<? extends VirtualGuestsBaseActionJson> jsonClass) {
+        Long serverId = getServerId(request);
+        DataResult<VirtualSystemOverview> guests =
+                SystemManager.virtualGuestsForHostList(user, serverId, null);
+        return action(request, response, user,
+                (data, key) -> {
+                    VirtualGuestsBaseActionJson guestData = (VirtualGuestsBaseActionJson)data;
+                    Optional<VirtualSystemOverview> guest = guests.stream()
+                            .filter(item -> item.getUuid().equals(key))
+                            .findFirst();
+                    BaseVirtualizationGuestAction action = actionCreator.apply(guestData, guest);
+                    action.setUuid(key);
+                    if (guest.isPresent()) {
+                        String actionName = action.getName().replaceAll("\\.$", "");
+                        action.setName(actionName + ": " + guest.get().getName());
+                    }
+                    return action;
+                },
+                (data) -> ((VirtualGuestsBaseActionJson)data).getUuids(),
+                jsonClass
+        );
     }
 }
