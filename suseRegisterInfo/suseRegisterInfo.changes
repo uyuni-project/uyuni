@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:26:55 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - Add support for Amazon Linux 2
 - Add support for Alibaba Cloud Linux 2
 
