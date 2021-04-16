@@ -23,6 +23,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import org.apache.log4j.Logger;
 
@@ -194,12 +195,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
     }
 
     private void processServer(Long serverId) {
-        CallableMode m = ModeFactory.getCallableMode(
-                "System_queries", "update_needed_cache");
-        Map inParams = new HashMap();
-        inParams.put("server_id", serverId);
-
-        m.execute(inParams, new HashMap());
+        ServerFactory.updateServerNeededCache(serverId);
     }
 
     private void processImage(Long imageId) {

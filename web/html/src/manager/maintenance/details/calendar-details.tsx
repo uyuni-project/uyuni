@@ -6,13 +6,19 @@ import { Column } from "components/table/Column";
 import { Check } from "components/input/Check";
 import { Form } from "components/input/Form";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
+import { MessageType } from "components/messages";
 
 type CalendarDetailsProps = {
+  id: number;
   name: string;
   scheduleNames: Array<Record<string, string>>;
   url: string;
   data: string;
   onDelete: (...args: any[]) => any;
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
@@ -46,21 +52,30 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
         }
       />
       <MaintenanceCalendarOverview
+        id={props.id}
         name={props.name}
         scheduleNames={props.scheduleNames}
         url={props.url}
         data={props.data}
+        onMessage={props.onMessage}
+        clearMessages={props.clearMessages}
+        responseError={props.responseError}
       />
     </>
   );
 };
 
 type OverviewProps = {
+  id: number;
   name: string;
   scheduleNames: Array<Record<string, string>>;
   url: string;
   data: string;
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
+
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
   const tableData = [
     { left: t("Calendar Name") + ":", right: props.name },
@@ -76,16 +91,20 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
           <Column columnKey="right" cell={row => row.right} />
         </Table>
       </BootstrapPanel>
-      {props.data && (
         <div className="panel panel-default">
           <div className="panel-heading">
             <h4>{props.name}</h4>
           </div>
           <div className="panel-body">
-            <pre>{props.data}</pre>
+              <WebCalendar
+                id={props.id}
+                type={"calendar"}
+                messages={props.onMessage}
+                clearMessages={props.clearMessages}
+                responseError={props.responseError}
+              />
           </div>
         </div>
-      )}
     </div>
   );
 };

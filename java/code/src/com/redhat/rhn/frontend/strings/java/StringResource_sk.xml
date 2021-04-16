@@ -10885,6 +10885,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
       <target state="new" />
   </trans-unit>
-    </body>
+    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <source>Retracted packages: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
+        <source>Retracted patches: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

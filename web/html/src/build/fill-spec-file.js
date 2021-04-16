@@ -3,9 +3,14 @@ const fs = require("fs");
 function fillSpecFile() {
     delete require.cache[require.resolve("../vendors/npm.licenses.structured")];
     const {npmLicensesArray} =  require("../vendors/npm.licenses.structured");
-    const processedLicenses = [...new Set(npmLicensesArray)].sort().join(" and ");
     //https://github.com/metal/metal.js/issues/411
-    const mappedProcessedLicenses = processedLicenses.replace("BSD", "0BSD");
+    const processedLicenses = npmLicensesArray.map(item => {
+        if (item === 'BSD') {
+            return '0BSD';
+        }
+        return item;
+    });
+    const mappedProcessedLicenses = Array.from(new Set(processedLicenses)).sort().join(" and ");
 
     const specFileLocation = "../../spacewalk-web.spec";
 

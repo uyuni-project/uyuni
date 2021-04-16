@@ -96,3 +96,6 @@ suseChannelUserRoleView          :: rhnSharedChannelView \
                                     rhnOrgChannelSettingsType \
                                     rhnChannelPermission \
                                     rhnChannelPermissionRole
+rhnChannelNewestPackageView      :: suseChannelPackageRetractedStatusView
+suseChannelPackageRetractedStatusView :: rhnChannelPackage rhnChannelErrata rhnErrataPackage
+suseServerChannelsRetractedPackagesView :: rhnServerChannel rhnChannelErrata rhnErrataPackage

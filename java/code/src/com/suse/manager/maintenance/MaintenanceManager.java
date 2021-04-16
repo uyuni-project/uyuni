@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,6 +17,7 @@ package com.suse.manager.maintenance;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -38,21 +39,20 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.model.maintenance.CalendarAssignment;
-import com.suse.manager.model.maintenance.CalendarFactory;
-import com.suse.manager.model.maintenance.ScheduleFactory;
-import com.suse.manager.maintenance.rescheduling.FailRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.FailRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.RescheduleException;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
+import com.suse.manager.model.maintenance.CalendarAssignment;
+import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
+import com.suse.manager.model.maintenance.ScheduleFactory;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -61,6 +61,12 @@ import org.apache.http.StatusLine;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.Period;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -510,6 +516,91 @@ public class MaintenanceManager {
 
         MaintenanceSchedule schedule = schedules.iterator().next();
         return icalUtils.calculateUpcomingMaintenanceWindows(schedule);
+    }
+
+    /**
+     * Given a Maintenance Calendar return a list of maintenance windows based on the operation
+     * to perform starting from the given date.
+     *
+     * @param user the current user
+     * @param operation get previous, current or future maintenance windows based on the operation
+     * @param id the id of the calendar or schedule
+     * @param date the date to start looking for maintenance windows
+     * @return the resulting list of maintenance windows
+     */
+    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date) {
+        Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
+        if (calendar.isEmpty()) {
+            throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
+        }
+        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+    }
+
+    /**
+     * Given a Maintenance Schedule return a list of maintenance windows based on the operation
+     * to perform starting from the given date.
+     *
+     * @param user the current user
+     * @param operation get previous, current or future maintenance windows based on the operation
+     * @param id the id of the calendar or schedule
+     * @param date the date to start looking for maintenance windows
+     * @return the resulting list of maintenance windows
+     */
+    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date) {
+        Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
+        if (schedule.isEmpty()) {
+            throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
+        }
+        Optional<MaintenanceCalendar> calendar = schedule.get().getCalendarOpt();
+        if (calendar.isEmpty()) {
+            throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
+        }
+        if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
+            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()), date);
+        }
+        else {
+            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+        }
+    }
+
+    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
+                                                          Optional<String> eventName, Long date) {
+        if (operation.equals("skipBack")) {
+            Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
+            if (lastWindow.isEmpty()) {
+                return new ArrayList<>();
+            }
+            date = lastWindow.get().getToMilliseconds();
+        }
+        else if (operation.equals("skipNext")) {
+            Optional<MaintenanceWindowData> nextWindow = icalUtils.getNextEvent(calendar, eventName, date);
+            if (nextWindow.isEmpty()) {
+                return new ArrayList<>();
+            }
+            date = nextWindow.get().getFromMilliseconds();
+        }
+
+        Map<String, Long> activeRange = getActiveRange(date);
+        Long start = activeRange.get("start");
+        Long end = activeRange.get("end");
+
+        return icalUtils.getCalendarEvents(calendar, eventName, start, end);
+    }
+
+    private Map<String, Long> getActiveRange(Long date) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
+        ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
+        rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
+                rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+
+        ZonedDateTime rangeEnd = rangeStart.plusDays(42);
+
+        // We add one more day to the beginning and end to prevent the potential loss of events due to
+        // timezone shifts.
+        return Map.of(
+                "start", rangeStart.toInstant().minus(Period.ofDays(1)).toEpochMilli(),
+                "end", rangeEnd.toInstant().plus(Period.ofDays(1)).toEpochMilli()
+        );
     }
 
     /**

@@ -76,18 +76,18 @@ public class IcalUtilsTest extends TestCase {
 
     /**
      * Test calculating upcoming windows at:
-     * - 8:00 in New York
+     * - 2:00 in New York
      * - 11:00 in Sri Lanka
      *
-     * Since 11:00 in Sri Lanka equals to 1:30 in NY, we should see the maintenance window starting at 8:00 NY time.
+     * Since 11:00 in Sri Lanka equals to 1:30 in NY, we should see the maintenance window starting at 2:00 NY time.
      */
     public void testSameLocalTimeAhead() {
-        ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T08:00:00-04:00"); // NY
+        ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T02:00:00-04:00"); // NY
 
         List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
-        // Sri Lanka is ahead of NYC, so at 11:00 in Sri Lanka, we still see maint. windows starting at 8:00 in NY
+        // Sri Lanka is ahead of NYC, so at 11:00 in Sri Lanka, we still see maint. windows starting at 2:00 in NY
         ZonedDateTime sriLankaAlike = ZonedDateTime.parse("2020-06-08T11:00:00+05:30");
         List<Pair<Instant, Instant>> listSriLanka = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 sriLankaAlike.toInstant(), 5).collect(Collectors.toList());

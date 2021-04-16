@@ -91,6 +91,8 @@ public class ErrataDetailsSetupAction extends RhnAction {
         request.setAttribute("keywords", keywordsDisplay);
         request.setAttribute("ovalFile", ovalFile);
         request.setAttribute("errataFrom", errata.getErrataFrom());
+        request.setAttribute("advisoryStatus", LocalizationService.getInstance()
+                .getMessage("details.jsp.advisorystatus." + errata.getAdvisoryStatus().getMetadataValue()));
 
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),

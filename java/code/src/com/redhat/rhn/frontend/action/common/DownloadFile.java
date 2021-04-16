@@ -562,28 +562,30 @@ public class DownloadFile extends DownloadAction {
                 channel = child;
             }
 
-            String byteRange = request.getHeader("Range");
-            if (byteRange != null) {
-                Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)",
-                        Pattern.CASE_INSENSITIVE);
-                Matcher match = rangeRegex.matcher(byteRange);
-                int newHeaderEnd = 0;
-                int newHeaderStart = 0;
+            if (child != null || !tree.getInstallType().isSUSE() ||
+                    tree.getKernelOptions().contains("useonlinerepo")) {
+                String byteRange = request.getHeader("Range");
+                if (byteRange != null) {
+                    Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)",
+                            Pattern.CASE_INSENSITIVE);
+                    Matcher match = rangeRegex.matcher(byteRange);
+                    int newHeaderEnd = 0;
+                    int newHeaderStart = 0;
 
-                if (match.find()) {
-                    newHeaderStart = Integer.parseInt(match.group(1));
-                    newHeaderEnd = Integer.parseInt(match.group(2));
-                    int modulo = newHeaderEnd % 8;
-                    if (modulo > 0) {
-                        newHeaderEnd = newHeaderEnd + 8 - modulo;
+                    if (match.find()) {
+                        newHeaderStart = Integer.parseInt(match.group(1));
+                        newHeaderEnd = Integer.parseInt(match.group(2));
+                        int modulo = newHeaderEnd % 8;
+                        if (modulo > 0) {
+                            newHeaderEnd = newHeaderEnd + 8 - modulo;
+                        }
                     }
+                    rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(
+                            channel, fileName, newHeaderStart, newHeaderEnd);
                 }
-                rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(
-                        channel, fileName, newHeaderStart, newHeaderEnd);
-            }
-            else {
-                rpmPackage = ChannelFactory.lookupPackageByFilename(
-                        channel, fileName);
+                else {
+                    rpmPackage = ChannelFactory.lookupPackageByFilename(channel, fileName);
+                }
             }
 
             if (rpmPackage != null) {
@@ -607,8 +609,7 @@ public class DownloadFile extends DownloadAction {
             // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
 
             if (child == null) {
-                if (path.contains("repodata/") && tree.getKernelOptions() != null &&
-                        tree.getKernelOptions().contains("useonlinerepo")) {
+                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
                     if (path.endsWith("/comps.xml")) {
                         diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
                             "/" + tree.getChannel().getComps().getRelativeFilename();
@@ -627,8 +628,7 @@ public class DownloadFile extends DownloadAction {
                                 File.separator + StringUtils.join(split, '/');
                     }
                 }
-                else if (tree.getKernelOptions() != null &&
-                         tree.getKernelOptions().contains("useonlinerepo") &&
+                else if (tree.getKernelOptions().contains("useonlinerepo") &&
                          path.endsWith("/media.1/products")) {
                     MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
                             .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());

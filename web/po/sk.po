@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-06 10:59+0000\n"
-"PO-Revision-Date: 2021-04-04 17:57+0000\n"
+"POT-Creation-Date: 2021-04-14 17:59+0000\n"
+"PO-Revision-Date: 2021-04-14 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
 "test/sk/>\n"
@@ -270,7 +270,7 @@ msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -287,8 +287,8 @@ msgstr "Zrušiť"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
-#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -1884,6 +1884,7 @@ msgstr "Klastre"
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "Typ"
@@ -2050,7 +2051,7 @@ msgstr "Obdobie"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2146,15 +2147,15 @@ msgstr "Životný cyklus prostredia"
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "Hľadaný projekt neexistuje alebo bol vymazaný"
 
-#: ../html/src/manager/content-management/project/project.js:89
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "Projekt životného cyklu obsahu - {0}"
 
-#: ../html/src/manager/content-management/project/project.js:104
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "Vymazať projekt"
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "Naozaj chcete vymazať projekt"
 
@@ -2285,12 +2286,12 @@ msgstr "Obsahuje balík"
 msgid "enable module"
 msgstr "povoliť modul"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "Zostaviť ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2299,23 +2300,31 @@ msgstr "Zostaviť ({0})"
 msgid "Build"
 msgstr "Zostaviť"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "Zostaviť projekt"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "Zostavuje sa projekt.."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+msgid ""
+"The project contains channels with unsynchronized patches. They will be "
+"synchronized depending on your Organization settings."
+msgstr ""
+"Projekt obsahuje kanály s nesynchronizovanými opravami. Budú synchronizované "
+"v závislosti od vašich nastavení organizácie."
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "Správa o verzii"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "História verzie {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "Verzia {0} bola úspešne zabudovaná do {1}"
 
@@ -2513,15 +2522,19 @@ msgstr "žiadne kanály potomkov"
 msgid "This channel is recommended"
 msgstr "Tento kanál je odporúčaný"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+msgid "has unsynchronized patches"
+msgstr "má nesynchronizované opravy"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "Zdroje"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "Zdroje boli úspešne upravené"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "Softvérové kanály"
@@ -3856,6 +3869,7 @@ msgid "Filter by formula name"
 msgstr "Filtrovať podľa názvu vzorca"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr "Vzorec"
 
@@ -3917,13 +3931,56 @@ msgstr "SUSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
-msgstr "Highstate pre {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+msgid "State Summary for {0}"
+msgstr "Súhrn stavu pre {0}"
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "Neexistujú žiadne použiteľné systémy."
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+msgid "State channel"
+msgstr "Stavový kanál"
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+msgid "Config channel"
+msgstr "Konfiguračný kanál"
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+msgid "internal"
+msgstr "interný"
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+msgid "Internal states"
+msgstr "Interné stavy"
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr "Získavanie súhrnu highstate..."
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+msgid "State Source"
+msgstr "Stavový zdroj"
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr "Zdedené z"
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr "Zobraziť úplný výstup highstate"
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+msgid "System Group"
+msgstr "Systémová skupina"
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "Organizácia"
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -3957,12 +4014,6 @@ msgstr "Minion"
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
 msgstr "Skupina"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "Organizácia"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"

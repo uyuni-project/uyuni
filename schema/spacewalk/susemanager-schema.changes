@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:29:49 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- DB schema & migrations for retracted patches
 - Add support for Alibaba Cloud Linux 2
 - Add EPEL 8 GPG key to database so the "content provider" of the package is showed corretly in the UI
 - Raise length limit for kernel options (bsc#1182916)

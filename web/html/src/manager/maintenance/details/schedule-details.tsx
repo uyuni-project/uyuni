@@ -19,20 +19,17 @@ import { Toggler } from "components/toggler";
 import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
 import { MessageType } from "components/messages";
-
-type MaintenanceWindowType = {
-  start: string;
-  end: string;
-};
+import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string;
   type: "SINGLE" | "MULTI";
   calendarName: string;
-  maintenanceWindows?: MaintenanceWindowType[];
   onDelete: (item: { name: string }) => Promise<any>;
   onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
@@ -64,10 +61,13 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
       </div>
       {activeTab === "overview" && (
         <MaintenanceScheduleOverview
+          id={props.id}
           name={props.name}
           calendarName={props.calendarName}
           type={props.type}
-          maintenanceWindows={props.maintenanceWindows}
+          onMessage={props.onMessage}
+          responseError={props.responseError}
+          clearMessages={props.clearMessages}
         />
       )}
       {activeTab === "assignment" && (
@@ -78,10 +78,13 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 };
 
 type OverviewProps = {
+  id: number,
   name: string;
   calendarName: string;
   type: "SINGLE" | "MULTI";
-  maintenanceWindows?: MaintenanceWindowType[];
+  onMessage: (messages: MessageType[]) => void;
+  clearMessages: (messages: void) => void;
+  responseError: (messages: MessageType[]) => void;
 };
 
 const MaintenanceScheduleOverview = (props: OverviewProps) => {
@@ -99,18 +102,22 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
           <Column columnKey="right" cell={row => row.right} />
         </Table>
       </BootstrapPanel>
-      {props.maintenanceWindows && props.maintenanceWindows.length > 0 && (
-        <BootstrapPanel title={t("Upcoming Maintenance Windows")}>
-          <Table
-            data={props.maintenanceWindows || []}
-            identifier={row => (props.maintenanceWindows || []).indexOf(row)}
-            initialItemsPerPage={0}
-          >
-            <Column header={t("Start")} columnKey="start" cell={row => row.start} />
-            <Column header={t("End")} columnKey="end" cell={row => row.end} />
-          </Table>
-        </BootstrapPanel>
-      )}
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h4>
+            {props.name}
+          </h4>
+        </div>
+        <div className="panel-body">
+          <WebCalendar
+            id={props.id}
+            type={"schedule"}
+            messages={props.onMessage}
+            clearMessages={props.clearMessages}
+            responseError={props.responseError}
+          />
+        </div>
+      </div>
     </div>
   );
 };

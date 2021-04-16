@@ -1,3 +1,13 @@
+-------------------------------------------------------------------
+Fri Apr 16 15:56:59 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
+- Add calendar widget to display maintenance windows
+
+-------------------------------------------------------------------
+Fri Apr 16 13:28:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
 - Add identity-obj-proxy dependency to load CSS imports in jest tests
 
 -------------------------------------------------------------------

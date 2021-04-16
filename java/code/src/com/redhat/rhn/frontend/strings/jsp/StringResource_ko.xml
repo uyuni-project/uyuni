@@ -29617,6 +29617,56 @@ given channel.</source>
         </context-group>
         <target state="translated">구성 상태 채널 생성</target>
       </trans-unit>
-    </body>
+    <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
+        <source>Synchronize patches on Content Lifecycle Management build</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
+        <source>Status</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
+        <source>Final</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
+        <source>Stable</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
+        <source>Testing</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
+        <source>Retracted</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/Details</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
+        <source>Retracted Patch</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
+        <source>Package belongs to a Retracted Patch</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

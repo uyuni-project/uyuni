@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react';
 import {Button} from "../../../../../../components/buttons";
 import {closeDialog, Dialog} from "../../../../../../components/dialog/Dialog";
 import {ModalButton} from "../../../../../../components/dialog/ModalButton";
+import {Messages, Utils as MsgUtils} from 'components/messages';
 
 import {Form} from "../../../../../../components/input/Form";
 import {Text} from "../../../../../../components/input/Text";
@@ -23,9 +24,10 @@ type Props = {
   currentHistoryEntry?: ProjectHistoryEntry,
   changesToBuild: Array<string>,
   disabled?: boolean,
+  hasChannelsWithUnsyncedPatches: boolean,
 }
 
-const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, disabled} : Props) => {
+const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, disabled, hasChannelsWithUnsyncedPatches} : Props) => {
 
   const [open, setOpen] = useState(false);
   const [buildVersionForm, setBuildVersionForm] = useState({})
@@ -75,33 +77,42 @@ const Build = ({projectId, onBuild, currentHistoryEntry = {}, changesToBuild, di
               content={
                 isLoading
                   ? <Loading text={t("Building project..")}/>
-                  :
-                  <Form
-                    model={buildVersionForm}
-                    onChange={model => setBuildVersionForm(model)} >
-                    <div className="row">
-                      <Text
-                        name="version"
-                        label={t("Version")}
-                        labelClass="col-md-3"
-                        divClass="col-md-9"
-                        disabled
-                      />
-                    </div>
-                    <div className="row">
-                      <Text
-                        name="message"
-                        label={t("Version Message")}
-                        labelClass="col-md-3"
-                        divClass="col-md-9"/>
-                    </div>
-                    <dl className="row">
-                      <dt className="col-md-3 control-label">{t('Version {0} history', buildVersionForm.version)}:</dt>
-                      <dd className="col-md-9">
-                        <pre>{changesToBuild}</pre>
-                      </dd>
-                    </dl>
-                  </Form>
+                      :
+                  <div>
+                    {hasChannelsWithUnsyncedPatches &&
+                    <Messages items={MsgUtils.info(
+                      <>
+                        {t("The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings.")}
+                      </>
+                    )}/>}
+
+                    <Form
+                      model={buildVersionForm}
+                      onChange={model => setBuildVersionForm(model)} >
+                      <div className="row">
+                        <Text
+                          name="version"
+                          label={t("Version")}
+                          labelClass="col-md-3"
+                          divClass="col-md-9"
+                          disabled
+                        />
+                      </div>
+                      <div className="row">
+                        <Text
+                          name="message"
+                          label={t("Version Message")}
+                          labelClass="col-md-3"
+                          divClass="col-md-9"/>
+                      </div>
+                      <dl className="row">
+                        <dt className="col-md-3 control-label">{t('Version {0} history', buildVersionForm.version)}:</dt>
+                        <dd className="col-md-9">
+                          <pre>{changesToBuild}</pre>
+                        </dd>
+                      </dl>
+                    </Form>
+                  </div>
               }
               buttons={
                 <React.Fragment>

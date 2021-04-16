@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -937,6 +938,37 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
         assertTrue(result.size() == 1);
+        assertEquals(result.get(0).getId(), ce.getId());
+    }
+
+    /**
+     * ChannelManager.listErrataNeedingResync should also list errata in case the advisoryStatus
+     * of clone is different from the original.
+     * @throws Exception
+     */
+    public void testListErrataNeedingResyncRetracted() throws Exception {
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        UserFactory.save(user);
+
+        Channel ochan = ChannelFactoryTest.createTestChannel(user);
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+
+        Errata oe = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(oe);
+        // let's also add an extra erratum to the original, but let's not clone it to the cloned channel
+        // it must not appear in the result
+        Errata notCloned = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(notCloned);
+
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Errata ce = ErrataFactory.lookupById(ceid);
+        ce = ErrataManager.addToChannels(ce, List.of(cchan.getId()), user);
+
+        oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        notCloned.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        assertEquals(1, result.size());
         assertEquals(result.get(0).getId(), ce.getId());
     }
 

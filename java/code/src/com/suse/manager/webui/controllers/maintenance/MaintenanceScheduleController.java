@@ -177,13 +177,6 @@ public class MaintenanceScheduleController {
         json.setName(schedule.getName());
         json.setType(schedule.getScheduleType().toString());
 
-        icalUtils.calculateUpcomingMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
-                windows.stream().map(window -> Map.of(
-                        "start", window.getFrom(),
-                        "end", window.getTo()
-                )).collect(Collectors.toList())
-        ));
-
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
             json.setCalendarName(maintenanceCalendar.getLabel());
         });

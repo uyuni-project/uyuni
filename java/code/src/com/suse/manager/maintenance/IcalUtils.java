@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,17 +25,20 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -135,6 +138,8 @@ public class IcalUtils {
                 .filter(l -> !l.isEmpty())
                 .collect(toList());
 
+        periodLists.add(getInitialEvents(filteredEvents, period));
+
         Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
                 .map(pl -> pl.stream())
                 .reduce(Stream.empty(), Stream::concat)
@@ -143,6 +148,25 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
+    }
+
+    private PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
+        PeriodList periodList = new PeriodList();
+        events.forEach(event -> {
+                    try {
+                        DateTime start = new DateTime(event.getProperty(Property.DTSTART).getValue());
+                        DateTime end = new DateTime(event.getProperty(Property.DTEND).getValue());
+                        // Check if event is contained in given period
+                        if (period.includes(start) && period.includes(end)) {
+                            periodList.add(new Period(start, end));
+                        }
+                    }
+                    catch (ParseException e) {
+                        log.error("Unable to get event range from: " + event.toString(), e);
+                    }
+                }
+        );
+        return periodList;
     }
 
     // given collection of events, filter out those with non-matching SUMMARY
@@ -219,5 +243,74 @@ public class IcalUtils {
             log.error("Unable to build the calendar from reader: " + calendarReader, e);
         }
         return ofNullable(calendar);
+    }
+
+    /**
+     * Given a Maintenance Calendar return the events in the specified range
+     *
+     * @param calendarIn the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param start the start date to look for events
+     * @param end the end date to look for events
+     * @return list of MaintenanceWindowData
+     */
+    public List<MaintenanceWindowData> getCalendarEvents(MaintenanceCalendar calendarIn, Optional<String> eventName,
+                                                         Long start, Long end) {
+        Optional<Calendar> calendar = parseCalendar(calendarIn);
+        if (calendar.isEmpty()) {
+           log.error("Could not parse calendar: " + calendarIn.getLabel());
+           return new ArrayList<>();
+        }
+        Period period = new Period(new DateTime(start), new DateTime(end));
+        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+
+        Collection<CalendarComponent> filteredEvents = eventName
+                .map(summary -> filterEventsBySummary(events, summary))
+                .orElse(events);
+
+        return filteredEvents.stream().map(
+                eventSet -> {
+                    PeriodList pl = eventSet.calculateRecurrenceSet(period);
+                    pl = pl.add(getInitialEvents(List.of(eventSet), period));
+                    return pl.stream()
+                            .filter(l -> !l.isEmpty())
+                            .map(event -> new MaintenanceWindowData(
+                                    eventSet.getProperty("SUMMARY").getValue(),
+                                    event.getStart().toInstant(),
+                                    event.getRangeEnd().toInstant()));
+                })
+                .reduce(Stream.empty(), Stream::concat)
+                .sorted(Comparator.comparing(MaintenanceWindowData::getFromMilliseconds))
+                .collect(toList());
+    }
+
+    /**
+     * Given the date get the next event in the future. Looks a maximum of one year and one month into the future
+     *
+     * @param calendar the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param startDate the date to look at
+     * @return the last event
+     */
+    public Optional<MaintenanceWindowData> getNextEvent(MaintenanceCalendar calendar, Optional<String> eventName,
+                                              Long startDate) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(startDate), ZoneOffset.UTC);
+        Long endDate = t.plusYears(1).plusMonths(1).toInstant().toEpochMilli();
+        return getCalendarEvents(calendar, eventName, startDate, endDate).stream().findFirst();
+    }
+
+    /**
+     * Given the date get the last event in the past. Looks a maximum of one year and one month into the past
+     *
+     * @param calendar the Maintenance Calendar
+     * @param eventName optional name of the event
+     * @param endDate the date to look at
+     * @return the last event
+     */
+    public Optional<MaintenanceWindowData> getLastEvent(MaintenanceCalendar calendar, Optional<String> eventName,
+                                                        Long endDate) {
+        ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(endDate), ZoneOffset.UTC);
+        Long startDate = t.minusYears(1).minusMonths(1).toInstant().toEpochMilli();
+        return getCalendarEvents(calendar, eventName, startDate, endDate).stream().reduce((first, last) -> last);
     }
 }

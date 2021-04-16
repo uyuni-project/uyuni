@@ -117,7 +117,8 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                 WHERE
                          SC.channel_id = :channel_id
                   AND    SC.server_id = S.id
-              AND    p.id in (%s)
+                  AND    p.id in (%s)
+                  AND    NOT EXISTS (SELECT 1 FROM suseServerChannelsRetractedPackagesView WHERE sid = S.id AND pid = P.id)
                   AND    p.package_arch_id = spac.package_arch_id
                   AND    spac.server_arch_id = s.server_arch_id
                   AND    SP_EVR.id = SP.evr_id
@@ -129,7 +130,12 @@ DELETE FROM rhnOrgErrataCacheQueue WHERE org_id = :org_id
                   AND    SP_EVR.evr &lt;  P_EVR.evr
                   AND    SP_EVR.evr = (SELECT MAX(PE.evr) FROM
                                   rhnServerPackage SP2, rhnPackageEvr PE WHERE PE.id = SP2.evr_id
-                                  AND SP2.server_id = SP.server_id AND SP2.name_id = SP.name_id))
+                                  AND SP2.server_id = SP.server_id AND SP2.name_id = SP.name_id)
+                  AND NOT EXISTS (SELECT 1 -- prevent inserting in case cache already contains the row (possibly with non-null errata_id)
+                                  FROM rhnServerNeededCache EXISTING
+                                  WHERE EXISTING.server_id = S.id
+                                  AND EXISTING.package_id = p.id
+                                  AND EXISTING.channel_id = :channel_id))
   </query>
 </write-mode>
 

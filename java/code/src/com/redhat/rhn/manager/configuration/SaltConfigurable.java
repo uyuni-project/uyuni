@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.configuration;
 
+import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Interface implemented by entities which can be subscribed to config channels using Salt
  */
-public interface SaltConfigurable {
+public interface SaltConfigurable extends Identifiable {
 
     /**
      * Subscribes the configurable to the specified config channels.
@@ -45,4 +46,10 @@ public interface SaltConfigurable {
      * @param user user performing the action
      */
     void setConfigChannels(List<ConfigChannel> channels, User user);
+
+    /**
+     * Gets the display name of the configurable
+     * @return the name
+     */
+    String getName();
 }

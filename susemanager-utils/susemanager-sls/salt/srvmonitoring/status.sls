@@ -22,13 +22,13 @@ jmx_tomcat_java_config:
   mgrcompat.module_run:
     - name: file.search
     - path: /etc/sysconfig/tomcat
-    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3333 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
+    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S* -Dcom\\.sun\\.management\\.jmxremote\\.port=3333 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
 
 jmx_taskomatic_java_config:
   mgrcompat.module_run:
     - name: file.search
     - path: /etc/rhn/taskomatic.conf
-    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3334 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
+    - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S* -Dcom\\.sun\\.management\\.jmxremote\\.port=3334 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:

@@ -1,3 +1,22 @@
+-------------------------------------------------------------------
+Fri Apr 16 15:59:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
+- fix check for for mirrorlist URLs when refreshing products (bsc#1184861)
+
+-------------------------------------------------------------------
+Fri Apr 16 15:55:47 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.13-1
+- Add calendar widget to display maintenance windows
+
+-------------------------------------------------------------------
+Fri Apr 16 13:23:01 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
+- for a SUSE system get metadata and package from same source (bsc#1184475)
+- List config state summary for systems in highstate page
+- Implement retracted patches
 - Add support for notify beacon for Debian/Ubuntu systems
 - Check if the directory exists prior to modular data cleanup (bsc#1184311)
 - define dependencies for salt-netapi-client and DB schema version

@@ -62,6 +62,7 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
+import com.suse.manager.webui.services.StateSourceService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
@@ -156,6 +157,7 @@ public class StatesAPI {
         post("/manager/api/states/packages/save", withUser(this::savePackages));
         get("/manager/api/states/packages/match", this::matchPackages);
         get("/manager/api/states/highstate", this::showHighstate);
+        get("/manager/api/states/summary", this::listSummary);
         get("/manager/api/states/:channelId/content", withUser(this::stateContent));
     }
 
@@ -725,5 +727,20 @@ public class StatesAPI {
                         return e.getMessage();
                     }
                 }).orElse("Server not found.");
+    }
+
+    /**
+     * Collect a summary of all the Salt states assigned or inherited to a system, and their origin information
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return JSON array of state origin objects
+     */
+    public String listSummary(Request request, Response response) {
+        return MinionServerFactory
+                .lookupById(Long.valueOf(request.queryParams("sid")))
+                .map(StateSourceService::getSystemStateSources)
+                .map(stateSources -> json(response, stateSources))
+                .orElse("Server not found.");
     }
 }

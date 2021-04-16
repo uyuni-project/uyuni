@@ -114,6 +114,7 @@ Feature: Salt package states
     Given I am on the Systems overview page of this "sle_minion"
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
+    And I click on "Show full highstate output"
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
@@ -122,6 +123,7 @@ Feature: Salt package states
     Then I follow "States" in the content area
     And I run "pkill salt-minion" on "sle_minion"
     And I follow "Highstate" in the content area
+    And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
   Scenario: Cleanup: restart the salt service on SLES minion

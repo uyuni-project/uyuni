@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:27:26 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
 - Enable bootstrap repository creation for openSUSE Leap 15.3 for Uyuni
 - Enable aarch64 for CentOS7/8, Oracle 7/8, Amazon Linux 2
   and Alibaba Linux 2

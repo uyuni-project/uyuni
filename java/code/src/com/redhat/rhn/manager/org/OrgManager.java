@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.org;
 
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -342,5 +344,42 @@ public class OrgManager extends BaseManager {
         // Org's private channel family contains org name in it
         ChannelFamily cf = ChannelFamilyFactory.lookupByOrg(org);
         cf.setName(newName + " (" + org.getId() + ") " + "Channel Family");
+    }
+
+    /**
+     * Sets the content lifecycle management patch synchronization config option.
+     *
+     * @param user the user performing the action
+     * @param orgId the involved org id
+     * @param value the config option value
+     * @throws PermissionException if the user is not authorized to perform this action
+     */
+    public static void setClmSyncPatchesConfig(User user, long orgId, boolean value) {
+        Org org = OrgFactory.lookupById(orgId);
+        ensureOrgPermissions(user, org);
+        org.getOrgConfig().setClmSyncPatches(value);
+    }
+
+    /**
+     * Reads the content lifecycle management patch synchronization config option.
+     *
+     * @param user the user performing the action
+     * @param orgId the involved org id
+     * @return the value of the option
+     * @throws PermissionException if the user is not authorized to perform this action
+     */
+    public static boolean getClmSyncPatchesConfig(User user, long orgId) {
+        Org org = OrgFactory.lookupById(orgId);
+        ensureOrgPermissions(user, org);
+        return org.getOrgConfig().isClmSyncPatches();
+    }
+
+    private static void ensureOrgPermissions(User user, Org org) {
+        if (!user.hasRole(ORG_ADMIN)) {
+            throw new PermissionException(ORG_ADMIN);
+        }
+        if (!user.getOrg().equals(org)) {
+            throw new PermissionException(String.format("User %s is not part of organization %s", user, org));
+        }
     }
 }

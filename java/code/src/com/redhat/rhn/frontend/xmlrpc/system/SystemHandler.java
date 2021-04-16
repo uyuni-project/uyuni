@@ -48,12 +48,14 @@ import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -129,6 +131,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNoBaseChannelException;
+import com.redhat.rhn.frontend.xmlrpc.RetractedPackageFault;
 import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
@@ -1381,7 +1384,7 @@ public class SystemHandler extends BaseHandler {
                         null, loggedInUser.getOrg());
 
                 // build the hash to return
-                if (pkg != null) {
+                if (pkg != null && !pkg.isPartOfRetractedPatch()) {
                     Map<String, Object> pkgMap = new HashMap<String, Object>();
                     pkgMap.put("id", pkg.getId());
                     pkgMap.put("name", pkg.getPackageName().getName());
@@ -1533,7 +1536,23 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
-        return SystemManager.installedPackages(server.getId(), true);
+        DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
+        packageListItems.elaborate();
+        List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
+            Map<String, Object> item = new HashMap<>();
+            item.put("name", pi.getName());
+            item.put("epoch", Optional.ofNullable(pi.getEpoch()).orElse(" "));
+            item.put("version", pi.getVersion());
+            item.put("release", pi.getRelease());
+            item.put("arch", Optional.ofNullable(pi.getArch())
+                    .orElseGet(() -> LocalizationService.getInstance().getMessage("Unknown")));
+            Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> {
+                item.put("installtime", it);
+            });
+            item.put("retracted", pi.isRetracted());
+            return item;
+        }).collect(toList());
+        return maps;
     }
 
     /**
@@ -3068,12 +3087,12 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-    public Object[] getRelevantErrata(User loggedInUser, Integer sid) {
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer sid) {
 
         Server server = lookupServer(loggedInUser, sid);
         DataResult<ErrataOverview> dr = SystemManager.relevantErrata(
                 loggedInUser, server.getId());
-        return dr.toArray();
+        return dr;
     }
 
     /**
@@ -3101,7 +3120,7 @@ public class SystemHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-    public Object[] getRelevantErrataByType(User loggedInUser, Integer serverId,
+    public List<ErrataOverview> getRelevantErrataByType(User loggedInUser, Integer serverId,
             String advisoryType) throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
@@ -3109,7 +3128,7 @@ public class SystemHandler extends BaseHandler {
         DataResult<ErrataOverview> dr = SystemManager.relevantErrataByType(loggedInUser,
                 server.getId(), advisoryType);
 
-        return dr.toArray();
+        return dr;
     }
 
     /**
@@ -3582,6 +3601,32 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
+            List<Package> packages = packageMaps.stream().flatMap(packageMap -> {
+                PackageName packageName = PackageFactory.lookupPackageName(packageMap.get("name_id"));
+                PackageEvr evr = PackageEvrFactory.lookupPackageEvrById(packageMap.get("evr_id"));
+                PackageArch arch = PackageFactory.lookupPackageArchById(packageMap.get("arch_id"));
+
+                return PackageFactory.lookupByNevra(
+                        loggedInUser.getOrg(),
+                        packageName.getName(),
+                        evr.getVersion(),
+                        evr.getRelease(),
+                        evr.getEpoch(),
+                        arch
+                ).stream();
+            }).collect(toList());
+
+            List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
+                    packages.stream().map(p -> p.getId()).collect(toList()),
+                    sids.stream().map(s -> s.longValue()).collect(toList())
+            );
+            if (!pidsidpairs.isEmpty()) {
+                throw new RetractedPackageFault(pidsidpairs.stream().map(t -> t.getA()).collect(toList()));
+            }
+        }
+
+
         for (Integer sid : sids) {
             Server server = SystemManager.lookupByIdAndUser(sid.longValue(),
                     loggedInUser);
@@ -3728,9 +3773,8 @@ public class SystemHandler extends BaseHandler {
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
             List<Integer> packageIds, Date earliestOccurrence) {
 
-        return schedulePackagesAction(loggedInUser, sids,
-                packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false);
+        return schedulePackageInstall(loggedInUser, sids,
+                packageIds, earliestOccurrence, false);
     }
 
     /**
@@ -3756,9 +3800,21 @@ public class SystemHandler extends BaseHandler {
     public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
                                          List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
-        return schedulePackagesAction(loggedInUser, sids,
-                packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, allowModules);
+        List<Tuple2<Long, Long>> retracted = ErrataFactory.retractedPackages(
+                packageIds.stream().map(Integer::longValue).collect(toList()),
+                sids.stream().map(Integer::longValue).collect(toList()));
+
+        List<Long> retractedPids = retracted.stream()
+                .map(t -> t.getA())
+                .collect(toList());
+        if (retracted.isEmpty()) {
+            return schedulePackagesAction(loggedInUser, sids,
+                    packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
+                    ActionFactory.TYPE_PACKAGES_UPDATE, allowModules);
+        }
+        else {
+            throw new RetractedPackageFault(retractedPids);
+        }
     }
 
     /**
@@ -3780,13 +3836,8 @@ public class SystemHandler extends BaseHandler {
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
             List<Integer> packageIds, Date earliestOccurrence) {
-
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false)[0];
+            return schedulePackageInstall(loggedInUser, Collections.singletonList(sid),
+                    packageIds, earliestOccurrence, false)[0];
     }
 
     /**
@@ -3811,13 +3862,8 @@ public class SystemHandler extends BaseHandler {
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
                                        List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
-
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, allowModules)[0];
+        return schedulePackageInstall(loggedInUser, Collections.singletonList(sid),
+                packageIds, earliestOccurrence, allowModules)[0];
     }
 
     /**
@@ -3848,9 +3894,8 @@ public class SystemHandler extends BaseHandler {
     public Long[] schedulePackageInstallByNevra(User loggedInUser, List<Integer> sids,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false);
+        return schedulePackageInstallByNevra(loggedInUser, sids,
+                packageNevraList, earliestOccurrence, false);
     }
 
     /**
@@ -3918,12 +3963,8 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, false)[0];
+        return schedulePackageInstallByNevra(loggedInUser, Collections.singletonList(sid),
+                packageNevraList, earliestOccurrence, false)[0];
     }
 
     /**
@@ -3958,12 +3999,8 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid, List<Map<String,
             String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
 
-        List<Integer> sids = new ArrayList<Integer>();
-        sids.add(sid);
-
-        return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, allowModules)[0];
+        return schedulePackageInstallByNevra(loggedInUser, Collections.singletonList(sid),
+                packageNevraList, earliestOccurrence, allowModules)[0];
     }
 
     /**

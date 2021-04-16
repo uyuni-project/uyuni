@@ -18,6 +18,7 @@ export type ProjectSoftwareSourceType = {
   label: string,
   state: string,
   type: string,
+  hasUnsyncedPatches: boolean,
 }
 
 export type ProjectEnvironmentType = {

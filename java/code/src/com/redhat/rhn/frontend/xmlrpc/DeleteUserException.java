@@ -31,7 +31,7 @@ public class DeleteUserException extends FaultException  {
      * @param resourceKey Resource bundle key for error message to return.
      */
     public DeleteUserException(String resourceKey) {
-        super(2601, "Error deleting user", LocalizationService.getInstance().
+        super(2000, "Error deleting user", LocalizationService.getInstance().
                 getMessage(resourceKey, new Object [] {}));
     }
 

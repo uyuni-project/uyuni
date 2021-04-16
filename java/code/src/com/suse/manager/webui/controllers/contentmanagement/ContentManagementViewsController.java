@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -108,7 +110,12 @@ public class ContentManagementViewsController {
             List<ContentEnvironment> contentEnvironments = ContentManager.listProjectEnvironments(
                     project.getLabel(), user
             );
-            data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments)));
+
+            Set<SoftwareProjectSource> sourcesWithUnsyncedPatches =
+                    ContentManager.listActiveSwSourcesWithUnsyncedPatches(user, project);
+
+            data.put("projectToEdit", GSON.toJson(ResponseMappers.mapProjectFromDB(project, contentEnvironments,
+                    sourcesWithUnsyncedPatches)));
         });
         if (!projectToEdit.isEmpty()) {
             data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(req));

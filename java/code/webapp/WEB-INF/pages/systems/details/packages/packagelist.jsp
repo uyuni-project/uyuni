@@ -62,6 +62,9 @@
                   <rl:column headerkey="packagelist.jsp.packagename" bound="false"
                         sortattr="nvre"
                         sortable="true" filterattr="nvre" defaultsort="asc">
+                    <c:if test="${current.retracted}">
+                        <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
+                    </c:if>
             <c:choose>
                 <c:when test="${not empty current.packageId}">
                     <a href="/rhn/software/packages/Details.do?pid=${current.packageId}">

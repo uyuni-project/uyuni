@@ -1034,6 +1034,10 @@ public class ContentSyncManager {
             urls.add(new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
                     uri.getQuery(), null).toString());
         }
+        // In case url is a mirrorlist test the plain URL as well
+        if (Optional.ofNullable(uri.getQuery()).filter(q -> q.contains("=")).isPresent()) {
+            urls.add(url);
+        }
         return urls;
     }
 

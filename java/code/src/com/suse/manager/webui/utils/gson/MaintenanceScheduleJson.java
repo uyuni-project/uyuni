@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * JSON representation of the Maintenance Window scheduling
  */
@@ -39,9 +36,6 @@ public class MaintenanceScheduleJson {
 
     /** The reschedule strategy */
     private String strategy;
-
-    /** The upcoming maintenance windows */
-    private List<Map<String, String>> maintenanceWindows;
 
     /**
      * Gets the id of the schedule
@@ -149,24 +143,5 @@ public class MaintenanceScheduleJson {
      */
     public void setRescheduleStrategy(String strategyIn) {
         this.strategy = strategyIn;
-    }
-
-
-    /**
-     * Gets the upcoming maintenance windows
-     *
-     * @return the upcoming maintenanceWindows
-     */
-    public List<Map<String, String>> getMaintenanceWindows() {
-        return maintenanceWindows;
-    }
-
-    /**
-     * Sets the upcoming maintenance Windows
-     *
-     * @param maintenanceWindowsIn the upcoming maintenance windows
-     */
-    public void setMaintenanceWindows(List<Map<String, String>> maintenanceWindowsIn) {
-        this.maintenanceWindows = maintenanceWindowsIn;
     }
 }
