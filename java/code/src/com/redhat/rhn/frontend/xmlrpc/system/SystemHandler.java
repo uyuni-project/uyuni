@@ -92,6 +92,7 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
@@ -168,11 +169,13 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.virtualization.VirtualizationActionHelper;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
@@ -185,6 +188,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -5697,23 +5702,18 @@ public class SystemHandler extends BaseHandler {
         VirtualInstance vi = VirtualInstanceFactory.getInstance().lookupByGuestId(
                 loggedInUser.getOrg(), sid.longValue());
 
-        Map<String, String> context = new HashMap<String, String>();
-        //convert from mega to kilo bytes
-        context.put(VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING,
-                Integer.valueOf(memory * 1024).toString());
-
-
-        VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
-                new Date(),
-                null,
-                ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
-                vi.getHostSystem(),
-                vi.getUuid(),
-                vi.getName(),
-                context);
         try {
-            cmd.store();
-            return cmd.getAction().getId().intValue();
+            return VirtualizationActionHelper.scheduleAction(
+                    vi.getUuid(),
+                    loggedInUser,
+                    vi.getHostSystem(),
+                    VirtualizationActionHelper.getGuestSetterActionCreator(
+                            ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
+                            (data) -> memory * 1024,
+                            (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
+                            Map.of(vi.getUuid(), vi.getGuestSystem().getName())
+                    ),
+                    new VirtualGuestSetterActionJson());
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -5742,20 +5742,18 @@ public class SystemHandler extends BaseHandler {
         VirtualInstance vi = VirtualInstanceFactory.getInstance().lookupByGuestId(
                 loggedInUser.getOrg(), sid.longValue());
 
-        Map<String, String> context = new HashMap<String, String>();
-        context.put(VirtualizationSetVcpusGuestAction.SET_CPU_STRING, numOfCpus.toString());
-
-        VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
-                new Date(),
-                null,
-                ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
-                vi.getHostSystem(),
-                vi.getUuid(),
-                vi.getName(),
-                context);
         try {
-            cmd.store();
-            return cmd.getAction().getId().intValue();
+            return VirtualizationActionHelper.scheduleAction(
+                    vi.getUuid(),
+                    loggedInUser,
+                    vi.getHostSystem(),
+                    VirtualizationActionHelper.getGuestSetterActionCreator(
+                            ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
+                            (data) -> numOfCpus,
+                            (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
+                            Map.of(vi.getUuid(), vi.getGuestSystem().getName())
+                    ),
+                    new VirtualGuestSetterActionJson());
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -5805,17 +5803,24 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidActionTypeException();
         }
 
-        VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
-                date == null ? new Date() : date,
-                        null,
-                        action,
-                        vi.getHostSystem(),
-                        vi.getUuid(),
-                        vi.getName(),
-                        new HashMap<String, String>());
         try {
-            cmd.store();
-            return cmd.getAction().getId().intValue();
+            VirtualGuestsBaseActionJson data = new VirtualGuestsBaseActionJson();
+            data.setUuids(List.of(vi.getUuid()));
+            data.setForce(false);
+            data.setEarliest(
+                Optional.ofNullable(date).map((localDate) -> {
+                    ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+                    return LocalDateTime.ofInstant(localDate.toInstant(), zoneId);
+                })
+            );
+            return VirtualizationActionHelper.scheduleAction(
+                    vi.getUuid(),
+                    loggedInUser,
+                    vi.getHostSystem(),
+                    VirtualizationActionHelper.getGuestActionCreator(
+                            action,
+                            Map.of(vi.getUuid(), vi.getGuestSystem().getName())),
+                    data);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
