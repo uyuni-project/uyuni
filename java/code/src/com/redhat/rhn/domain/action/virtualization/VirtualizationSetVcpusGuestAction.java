@@ -14,14 +14,10 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
-import java.util.Map;
-
 /**
  * Class representing TYPE_VIRTUALIZATION_SET_VCPUS
  */
 public class VirtualizationSetVcpusGuestAction extends BaseVirtualizationGuestAction {
-
-    public static final String SET_CPU_STRING = "setVcpu";
 
     private Integer vcpu;
 
@@ -40,16 +36,5 @@ public class VirtualizationSetVcpusGuestAction extends BaseVirtualizationGuestAc
     public Integer getVcpu() {
         return vcpu;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void extractParameters(Map context) {
-        if (context.containsKey(VirtualizationSetVcpusGuestAction.SET_CPU_STRING)) {
-            setVcpu(Integer.valueOf((String)context.get(
-                    VirtualizationSetVcpusGuestAction.SET_CPU_STRING)));
-        }
-    }
-
 }
 
