@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 16 13:14:01 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.3-1
 - require missing python-backports.ssl_match_hostname on SLE 11 (bsc#1183959)
 
 -------------------------------------------------------------------
