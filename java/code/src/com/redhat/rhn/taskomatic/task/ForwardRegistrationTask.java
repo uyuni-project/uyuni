@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -39,6 +40,10 @@ public class ForwardRegistrationTask extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
+        if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
+            log.debug("Forwarding registrations disabled");
+            return;
+        }
         List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
 
