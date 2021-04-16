@@ -19,11 +19,21 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.server.Server;
+
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,15 +42,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -270,6 +276,15 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Store {@link SCCRegCacheItem} to the database.
+     * @param item regcache item
+     */
+    public static void saveRegCacheItem(SCCRegCacheItem item) {
+        item.setModified(new Date());
+        singleton.saveObject(item);
+    }
+
+    /**
      * Clear all order items from the database assigne to the given
      * credentials
      * @param c the credentials
@@ -464,4 +479,26 @@ public class SCCCachingFactory extends HibernateFactory {
         singleton.removeObject(a);
     }
 
+    /**
+     * Returns systems which should be forwarded to SCC
+     *
+     * @return list of {@link Server}
+     */
+    public static List<SCCRegCacheItem> findSystemsToForwardRegistration() {
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -48);
+
+        return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
+                .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
+                .getResultList();
+    }
+
+    public static List<SCCRegCacheItem> listDeregisterItems() {
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -48);
+
+        return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
+                .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
+                .getResultList();
+    }
 }
