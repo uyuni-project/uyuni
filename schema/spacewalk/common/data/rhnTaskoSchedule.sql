@@ -68,6 +68,11 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         (SELECT id FROM rhnTaskoBunch WHERE name='session-cleanup-bunch'),
         current_timestamp, '0 0/15 * * * ?');
 
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'mgr-forward-registration-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-forward-registration-bunch'),
+        current_timestamp, '0 0/15 * * * ?');
+
 -- Every hour
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)

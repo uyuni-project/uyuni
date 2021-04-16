@@ -119,4 +119,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'channel-modular-data-cleanup', 'com.redhat.rhn.taskomatic.task.ModularDataCleanup');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-forward-registration', 'com.redhat.rhn.taskomatic.task.ForwardRegistrationTask');
+
 commit;
