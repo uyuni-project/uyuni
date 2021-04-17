@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-16 18:57+0000\n"
+"PO-Revision-Date: 2021-04-17 13:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -870,7 +870,7 @@ msgstr "SHA256:          %s"
 #: ../src/spacecmd/configchannel.py:260 ../src/spacecmd/configchannel.py:684
 #, python-format
 msgid "Binary:          %s"
-msgstr "Binárne:          %s"
+msgstr "Binárny:          %s"
 
 #: ../src/spacecmd/configchannel.py:264 ../src/spacecmd/configchannel.py:697
 #: ../src/spacecmd/configchannel.py:947 ../src/spacecmd/kickstart.py:1905
@@ -1078,7 +1078,7 @@ msgstr "Vyžaduje sa cesta"
 
 #: ../src/spacecmd/configchannel.py:631 ../src/spacecmd/configchannel.py:923
 msgid "You must provide the file contents"
-msgstr "Musíte poskytnúť obsah súborov"
+msgstr "Musíte poskytnúť obsah súboru"
 
 #: ../src/spacecmd/configchannel.py:635
 msgid "You must provide the target path for a symlink"
@@ -1136,26 +1136,52 @@ msgid ""
 "auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
+"použitie: configchannel_addfile/configchannel_updatefile -c KANÁL - p CESTA -"
+"f CESTA_K_LOKÁLNEMU_SÚBORU [VOĽBY])\n"
+"\n"
+"voľby:\n"
+"  -c KANÁL\n"
+"  -p CESTA\n"
+"  -r REVÍZIA\n"
+"  -o VLASTNÍK [predvolené: root]\n"
+"  -g SKUPINA [predvolené: root]\n"
+"  -m REŽIM [predvolené: 0644]\n"
+"  -x KONTEXT_SELINUX\n"
+"  -d cesta je adresár\n"
+"  -s cesta je symbolický odkaz\n"
+"  -b cesta je binárny (alebo iný súbor, ktorý vyžaduje kódovanie base64)\n"
+"  -t CIEĽ_SYMBOLICKÉHO_ODKAZU\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"  -y automaticky pokračovať s obsahom súboru\n"
+"\n"
+"  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
+"obsahujú\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII ("
+"alebo iné znaky,\n"
+"  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
+"sa určité úsilie\n"
+"  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
+"musieť výslovne určiť.\n"
 
 #: ../src/spacecmd/configchannel.py:771 ../src/spacecmd/softwarechannel.py:820
 #: ../src/spacecmd/softwarechannel.py:941
 #: ../src/spacecmd/softwarechannel.py:948
 msgid "Select:"
-msgstr ""
+msgstr "Vybrať:"
 
 #: ../src/spacecmd/configchannel.py:779 ../src/spacecmd/configchannel.py:885
 #: ../src/spacecmd/softwarechannel.py:1375
 #, python-format
 msgid "%s is not a valid channel"
-msgstr ""
+msgstr "%s nie je platný kanál"
 
 #: ../src/spacecmd/configchannel.py:784
 msgid "Unable to obtain a valid channel. Aborting."
-msgstr ""
+msgstr "Nepodarilo sa získať platný kanál. Prerušuje sa."
 
 #: ../src/spacecmd/configchannel.py:790 ../src/spacecmd/scap.py:161
 msgid "Path:"
-msgstr ""
+msgstr "Cesta:"
 
 #: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/configchannel.py:936
 msgid "No config channel specified!"
