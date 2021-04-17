@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.Server;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -57,6 +58,14 @@ import javax.persistence.Transient;
                         "AND (rci.registrationErrorTime IS NULL " +
                         "     OR rci.registrationErrorTime < :retryTime) " +
                         "ORDER BY s.id ASC"),
+    @NamedQuery(
+            name = "SCCRegCache.newServersRequireRegistration",
+            query = "SELECT s " +
+                    "FROM com.redhat.rhn.domain.server.Server as s " +
+                    "WHERE s.id not in (" +
+                    "    SELECT rci.server.id " +
+                    "    FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci ) " +
+                    "ORDER BY s.id ASC"),
     @NamedQuery(name = "SCCRegCache.listDeRegisterItems",
                 query = "SELECT rci " +
                         "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
@@ -67,13 +76,19 @@ import javax.persistence.Transient;
 })
 public class SCCRegCacheItem extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private Long sccId;
     private boolean sccRegistrationRequired;
     private Server server;
     private String sccPasswd;
     private Credentials credentials;
     private Date registrationErrorTime;
+
+    public SCCRegCacheItem(Server s) {
+        sccRegistrationRequired = true;
+        server = s;
+        sccPasswd = RandomStringUtils.randomAlphanumeric(64);
+    }
 
     /**
      * @return the id
@@ -83,7 +98,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccregcache_seq")
     @SequenceGenerator(name = "sccregcache_seq", sequenceName = "suse_sccregcache_id_seq",
                        allocationSize = 1)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -185,7 +200,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @param idIn the id to set
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 

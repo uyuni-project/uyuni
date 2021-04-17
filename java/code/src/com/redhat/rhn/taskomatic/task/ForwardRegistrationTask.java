@@ -44,6 +44,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             log.debug("Forwarding registrations disabled");
             return;
         }
+        SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
         List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
 

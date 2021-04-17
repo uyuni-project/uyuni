@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
@@ -478,6 +479,22 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static void deleteRepositoryAuth(SCCRepositoryAuth a) {
         singleton.removeObject(a);
+    }
+
+    /**
+     * Initialize new systems to get forwarded to SCC
+     *
+     * @return list of {@link SCCRegCacheItem}
+     */
+    public static void initNewSystemsToForward() {
+
+        List<Server> newServer = getSession()
+                .getNamedQuery("SCCRegCache.newServersRequireRegistration")
+                .getResultList();
+        newServer.stream().forEach(s -> {
+            SCCRegCacheItem rci = new SCCRegCacheItem(s);
+            saveRegCacheItem(rci);
+        });
     }
 
     /**
