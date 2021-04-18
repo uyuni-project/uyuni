@@ -1583,9 +1583,9 @@ And(/^I upload autoinstall mocked files on ([^\"]*)$/) do |host|
     target.run("mkdir -p #{targetdir}")
   end
 
-  step %(I upload "autoinstall/cobbler/vmlinuz" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/empty.xml" to "/autoinstall/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/initrd.img" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/initrd" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/linux" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/fedora12/vmlinuz" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/fedora12/initrd.img" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/mock/empty.xml" to "/autoinstall/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/sles15sp2/initrd" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
+  step %(I upload "autoinstall/cobbler/sles15sp2/linux" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
 end
