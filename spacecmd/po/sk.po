@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-04-17 13:57+0000\n"
+"PO-Revision-Date: 2021-04-18 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1185,15 +1185,15 @@ msgstr "Cesta:"
 
 #: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/configchannel.py:936
 msgid "No config channel specified!"
-msgstr ""
+msgstr "Nie je zadaný žiadny konfiguračný kanál!"
 
 #: ../src/spacecmd/configchannel.py:811 ../src/spacecmd/configchannel.py:941
 msgid "Error obtaining file info"
-msgstr ""
+msgstr "Chyba pri získavaní informácií o súbore"
 
 #: ../src/spacecmd/configchannel.py:846
 msgid "configchannel_updateinitsls: Update init.sls file"
-msgstr ""
+msgstr "configchannel_updateinitsls: Aktualizovať súbor init.sls"
 
 #: ../src/spacecmd/configchannel.py:847
 msgid ""
@@ -1205,51 +1205,60 @@ msgid ""
 "  -f local path to file contents\n"
 "  -y automatically proceed with file contents\n"
 msgstr ""
+"použitie: configchannel_updateinitsls -c KANÁL -f CESTA_K_LOKÁLNEMU_SÚBORU "
+"[VOĽBY])\n"
+"\n"
+"voľby:\n"
+"  -c KANÁL\n"
+"  -r REVÍZIA\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"  -y automaticky pokračovať s obsahom súboru\n"
 
 #: ../src/spacecmd/configchannel.py:895
 #, python-format
 msgid "No existing file information found for %s"
-msgstr ""
+msgstr "Nenašli sa žiadne informácie o existujúcom súbore pre %s"
 
 #: ../src/spacecmd/configchannel.py:945
 #, python-format
 msgid "revision:                 %s"
-msgstr ""
+msgstr "revízia:                 %s"
 
 #: ../src/spacecmd/configchannel.py:946
 #, python-format
 msgid "contents_enc64:           %s"
-msgstr ""
+msgstr "contents_enc64:           %s"
 
 #: ../src/spacecmd/configchannel.py:973
 msgid "configchannel_removefiles: Remove configuration files"
-msgstr ""
+msgstr "configchannel_removefiles: Odstrániť konfiguračné súbory"
 
 #: ../src/spacecmd/configchannel.py:974
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
-msgstr ""
+msgstr "použitie: configchannel_removefiles KANÁL <SÚBOR ...>"
 
 #: ../src/spacecmd/configchannel.py:1011
 msgid "configchannel_verifyfile: Verify a configuration file"
-msgstr ""
+msgstr "configchannel_verifyfile: Overiť konfiguračný súbor"
 
 #: ../src/spacecmd/configchannel.py:1012
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
-msgstr ""
+msgstr "použitie: configchannel_verifyfile KANÁL SÚBOR <SYSTÉMY>"
 
 #: ../src/spacecmd/configchannel.py:1051
 msgid "No valid system selected"
-msgstr ""
+msgstr "Nie je vybraný žiadny platný systém"
 
 #: ../src/spacecmd/configchannel.py:1059 ../src/spacecmd/system.py:510
 #: ../src/spacecmd/system.py:530 ../src/spacecmd/system.py:960
 #, python-format
 msgid "Action ID: %i"
-msgstr ""
+msgstr "ID akcie: %i"
 
 #: ../src/spacecmd/configchannel.py:1067
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
+"configchannel_export: exportovať konfiguračné kanál(y) do súboru formátu json"
 
 #: ../src/spacecmd/configchannel.py:1068
 msgid ""
