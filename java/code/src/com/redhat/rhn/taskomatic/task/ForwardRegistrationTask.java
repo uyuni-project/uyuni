@@ -15,19 +15,31 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
 
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,12 +56,45 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             log.debug("Forwarding registrations disabled");
             return;
         }
-        SCCCachingFactory.initNewSystemsToForward();
-        List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
-        List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
-
-        for (SCCRegCacheItem rci : forwardRegistration) {
-            SCCRegisterSystemJson payload = getPayload(rci);
+        try {
+            if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
+                URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+                //TODO: find a better place to put getUUID
+                String uuid = ContentSyncManager.getUUID();
+                SCCCachingFactory.initNewSystemsToForward();
+                List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
+                List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
+                List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+                credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(credential -> {
+                    SCCConfig config = new SCCConfig(url, credential.getUsername(), credential.getPassword(), uuid);
+                    SCCWebClient sccClient = new SCCWebClient(config);
+                    deregister.forEach(cacheItem -> {
+                        try {
+                            sccClient.deleteSystem(cacheItem.getId());
+                        }
+                        catch (SCCClientException e) {
+                            log.error("Error deregistering system " + cacheItem.getId(), e);
+                        }
+                    });
+                    forwardRegistration.forEach(cacheItem -> {
+                        cacheItem.setCredentials(credential);
+                        try {
+                            SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(getPayload(cacheItem));
+                            cacheItem.setSccId(systemCredentials.getId());
+                            cacheItem.setSccPasswd(systemCredentials.getPassword());
+                            cacheItem.setRegistrationErrorTime(null);
+                        }
+                        catch (SCCClientException e) {
+                            log.error("Error registering system " + cacheItem.getId(), e);
+                            cacheItem.setRegistrationErrorTime(new Date());
+                        }
+                        cacheItem.getOptServer().ifPresent(ServerFactory::save);
+                    });
+                });
+            }
+        }
+        catch (URISyntaxException e) {
+           log.error(e);
         }
     }
 

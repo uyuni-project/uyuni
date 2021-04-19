@@ -2191,7 +2191,7 @@ public class ContentSyncManager {
      * be sent to SCC for debugging purposes.
      * @return this system's UUID
      */
-    private String getUUID() {
+    public static String getUUID() {
         if (uuid == null) {
             BufferedReader reader = null;
             try {
