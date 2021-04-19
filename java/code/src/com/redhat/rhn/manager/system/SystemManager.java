@@ -3611,7 +3611,7 @@ public class SystemManager extends BaseManager {
             packageState.setName(pkgName);
             pkgStates.add(packageState);
         }
-        else if (pkgState == PackageStates.PURGED) { // using PERGED flag for unmanged here for now.
+        else if (pkgState == PackageStates.PURGED) { // using PURGED flag for unmanaged here for now.
             pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
         }
 
