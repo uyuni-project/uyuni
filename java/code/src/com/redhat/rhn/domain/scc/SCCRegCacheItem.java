@@ -80,6 +80,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     private Long sccId;
     private boolean sccRegistrationRequired;
     private Server server;
+    private String sccLogin;
     private String sccPasswd;
     private Credentials credentials;
     private Date registrationErrorTime;
@@ -167,6 +168,22 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     }
 
     /**
+     * @return Returns the sccLogin.
+     */
+    @Column(name = "scc_login")
+    protected String getSccLogin() {
+        return sccLogin;
+    }
+
+    /**
+     * @return return the scc login if set
+     */
+    @Transient
+    public Optional<String> getOptSccLogin() {
+        return ofNullable(sccLogin);
+    }
+
+    /**
      * @return Returns the sccPasswd.
      */
     @Column(name = "scc_passwd")
@@ -239,6 +256,13 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     }
 
     /**
+     * @param sccLoginIn The sccLogin to set.
+     */
+    public void setSccLogin(String sccLoginIn) {
+        sccLogin = sccLoginIn;
+    }
+
+    /**
      * @param sccPasswdIn The sccPasswd to set.
      */
     public void setSccPasswd(String sccPasswdIn) {
@@ -264,6 +288,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
         return new EqualsBuilder()
                 .append(getServer(), otherSCCRegCache.getServer())
                 .append(getSccId(), otherSCCRegCache.getSccId())
+                .append(getSccLogin(), otherSCCRegCache.getSccLogin())
                 .append(getSccPasswd(), otherSCCRegCache.getSccPasswd())
                 .append(getCredentials(), otherSCCRegCache.getCredentials())
                 .isEquals();
@@ -277,6 +302,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
         return new HashCodeBuilder()
                 .append(getServer())
                 .append(getSccId())
+                .append(getSccLogin())
                 .append(getSccPasswd())
                 .append(getCredentials())
                 .append(getRegistrationErrorTime())
@@ -292,6 +318,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
                 .append("server", getServer())
                 .append("regRequired", isSccRegistrationRequired())
                 .append("sccId", getSccId())
+                .append("sccLogin", getSccLogin())
         .toString();
     }
 }
