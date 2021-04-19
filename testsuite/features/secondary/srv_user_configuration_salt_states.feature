@@ -44,7 +44,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I follow "Managers"
 
   Scenario: User Roles were assigned
-    Given I am authorized for the "Users" section
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Users > User List > Active"
     And I follow "user2"
     Then I should see a "User Details" text
@@ -68,7 +68,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: Cleanup: all organizations were successfully removed
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     Then I should not see a "my_org" text
     And I should not see a "my_org2" text
 

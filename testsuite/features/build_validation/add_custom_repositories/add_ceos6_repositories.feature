@@ -7,8 +7,10 @@ Feature: Adding the CentOS 6 distribution custom repositories
   Scenario: Download the iso of CentOS 6 DVD and mount it on the server
     When I mount as "centos-6-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1.iso" in the server
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Add a child channel for CentOS 6 DVD repositories
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     When I enter "Custom Channel for CentOS 6 DVD" as "Channel Name"
@@ -19,7 +21,6 @@ Feature: Adding the CentOS 6 distribution custom repositories
     Then I should see a "Channel Custom Channel for CentOS 6 DVD created" text
 
   Scenario: Add the CentOS 6 DVD repositories
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-6-iso" as "label"
@@ -29,7 +30,6 @@ Feature: Adding the CentOS 6 distribution custom repositories
     Then I should see a "Repository created successfully" text
 
   Scenario: Add the repository to the custom channel for CentOS 6 DVD
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
     And I follow "Repositories" in the content area
@@ -38,7 +38,6 @@ Feature: Adding the CentOS 6 distribution custom repositories
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the custom channel for CentOS 6 DVD
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 6 DVD"
     And I follow "Repositories" in the content area

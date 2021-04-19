@@ -10,8 +10,10 @@ Feature: Bootstrap a Debian 9 Salt minion
   Scenario: Clean up sumaform leftovers on a Debian 9 Salt minion
     When I perform a full salt minion cleanup on "debian9_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a Debian 9 minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "debian9_minion" as "hostname"

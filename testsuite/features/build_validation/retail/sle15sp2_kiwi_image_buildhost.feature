@@ -3,12 +3,13 @@
 
 Feature: Bootstrap a SLES 15 SP2 Salt build host via the GUI
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create the bootstrap repository for a SLES 15 SP2 build host
-     Given I am authorized as "admin" with password "admin"
      When I create the bootstrap repository for "sle15sp2_buildhost" on the server
 
   Scenario: Bootstrap a SLES 15 SP2 build host
-     Given I am authorized as "admin" with password "admin"
      When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle15sp2_buildhost" as "hostname"
@@ -20,7 +21,6 @@ Feature: Bootstrap a SLES 15 SP2 Salt build host via the GUI
      And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped SLES 15 SP2 build host in System Overview page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page

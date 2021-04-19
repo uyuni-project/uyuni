@@ -10,8 +10,10 @@ Feature: Bootstrap a Ubuntu 20.04 Salt minion
   Scenario: Clean up sumaform leftovers on a Ubuntu 20.04 minion
     When I perform a full salt minion cleanup on "ubuntu2004_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a Ubuntu 20.04 minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ubuntu2004_minion" as "hostname"

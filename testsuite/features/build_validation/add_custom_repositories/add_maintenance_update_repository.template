@@ -4,8 +4,10 @@
 @<client>
 Feature: Adding a Maintenance Update custom channel and the custom repositories for <client>
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Add a child channel for <client>
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     When I enter "Custom Channel for <client>" as "Channel Name"
@@ -16,11 +18,9 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
     Then I should see a "Channel Custom Channel for <client> created" text
 
   Scenario: Add the Maintenance update repositories for <client>
-    Given I am authorized as "admin" with password "admin"
     When I create the MU repositories for "<client>"
 
   Scenario: Add the custom repositories to the custom channel for <client>
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I enter "<client>" as the filtered channel name
     And I click on the filter button
@@ -31,7 +31,6 @@ Feature: Adding a Maintenance Update custom channel and the custom repositories 
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repositories in the custom channel for <client>
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I enter "<client>" as the filtered channel name
     And I click on the filter button

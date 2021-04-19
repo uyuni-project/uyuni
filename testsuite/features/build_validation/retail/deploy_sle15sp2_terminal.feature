@@ -7,8 +7,10 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: PXE boot the SLES 15 SP2 retail terminal
-    Given I am authorized as "admin" with password "admin"
     When I run "reboot" on "sle15sp2_terminal"
     And I wait at most 180 seconds until Salt master sees "sle15sp2_terminal" as "unaccepted"
     And I accept "sle15sp2_terminal" key in the Salt master
@@ -29,7 +31,6 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
     Then I should see "proxy" short hostname
 
   Scenario: Install a package on the SLES 15 SP2 retail terminal
-    Given I am on the Systems overview page of this "sle15sp2_terminal"
     When I follow "Software" in the content area
     And I follow "Install"
      And I enter "rust" as the filtered package name
@@ -40,7 +41,6 @@ Feature: PXE boot a SLES 15 SP2 retail terminal
     When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove a package on the SLES 15 SP2 retail terminal
-    Given I am on the Systems overview page of this "sle15sp2_terminal"
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "rust" as the filtered package name

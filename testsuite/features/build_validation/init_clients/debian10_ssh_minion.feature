@@ -10,8 +10,10 @@ Feature: Bootstrap a Debian 10 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a 10 Salt SSH minion
     When I perform a full salt minion cleanup on "debian10_ssh_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a SSH-managed Debian 10 minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "debian10_ssh_minion" as "hostname"

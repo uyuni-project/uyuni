@@ -7,8 +7,10 @@ Feature: Bootstrap a SLES 15 SP2 Salt minion
   Scenario: Clean up sumaform leftovers on a SLES 15 SP2 Salt minion
     When I perform a full salt minion cleanup on "sle15sp2_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a SLES 15 SP2 minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle15sp2_minion" as "hostname"
@@ -22,7 +24,6 @@ Feature: Bootstrap a SLES 15 SP2 Salt minion
     And I wait until onboarding is completed for "sle15sp2_minion"
 
   Scenario: Check the new bootstrapped SLES 15 SP2 minion in System Overview page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "sle15sp2_minion"

@@ -19,8 +19,10 @@ Feature: Setup SUSE Manager proxy
     And I install proxy pattern on the proxy
     And I let squid use avahi on the proxy
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap the proxy as a Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy" as "hostname"
@@ -50,8 +52,7 @@ Feature: Setup SUSE Manager proxy
     And I wait until I see "SUSE Manager Proxy" text, refreshing the page
 
   Scenario: Check events history for failures on the proxy
-    Given I am on the Systems overview page of this "proxy"
-    Then I check for failed events on history event page
+    When I check for failed events on history event page
 
 @private_net
   Scenario: Install the Retail pattern on the server
@@ -86,7 +87,6 @@ Feature: Setup SUSE Manager proxy
 
 @private_net
   Scenario: Apply the branch network formulas via the highstate
-    Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed

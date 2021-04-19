@@ -42,7 +42,7 @@ Feature: Manage users
     Then I should see a "user1" link
 
   Scenario: Access user details
-    Given I am authorized for the "Users" section
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     Then I should see a "User Details" text

@@ -380,26 +380,9 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   case section
   when 'Admin'
     step %(I am authorized as "admin" with password "admin")
-  when 'Users'
-    step %(I am authorized as "admin" with password "admin")
   when 'Images'
     step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
   end
-end
-
-Given(/^I am on the Organizations page$/) do
-  steps %(
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Organizations"
-  )
-end
-
-Given(/^I am on the Products page$/) do
-  steps %(
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I see "Product Description" text
-  )
 end
 
 # access the clients
@@ -1069,4 +1052,8 @@ end
 
 When(/^I clear browser cookies$/) do
   page.driver.browser.manage.delete_all_cookies
+end
+
+When(/^I close the modal dialog$/) do
+  find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
 end

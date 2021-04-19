@@ -101,18 +101,18 @@ After do |scenario|
       puts "Error taking a screenshot: #{e.message}"
     ensure
       debug_server_on_realtime_failure
+      page.reset!
     end
   end
   page.instance_variable_set(:@touched, false)
 end
 
 # Reset the page if it's running the first scenario of a feature
-$first_scenario = true
 Before do
-  next unless $first_scenario
-
-  page.reset!
-  $first_scenario = false
+  unless $page_reset
+    page.reset!
+    $page_reset = true
+  end
 end
 
 AfterStep do

@@ -6,6 +6,9 @@ Feature: Configure groups and saltboot formula for terminals
   As the system administrator
   I configure groups and saltboot formulas for all types of terminals
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Apply configured formulas via the highstate
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area

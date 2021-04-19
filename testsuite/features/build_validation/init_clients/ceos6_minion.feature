@@ -10,8 +10,10 @@ Feature: Bootstrap a CentOS 6 Salt minion
   Scenario: Clean up sumaform leftovers on a CentOS 6 Salt minion
     When I perform a full salt minion cleanup on "ceos6_minion"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a CentOS 6 Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos6_minion" as "hostname"

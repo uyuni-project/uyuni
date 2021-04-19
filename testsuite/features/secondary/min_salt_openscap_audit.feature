@@ -61,7 +61,7 @@ Feature: OpenSCAP audit of Salt minion
     And I should see a "rule-sysctl-ipv6-all-forward" text
 
   Scenario: Cleanup: remove audit scans retention period
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
     And I enter "0" as "scap_retention_period"
@@ -78,7 +78,7 @@ Feature: OpenSCAP audit of Salt minion
     Then I should see a "2 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
   Scenario: Cleanup: restore audit scans retention period
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
     And I enter "90" as "scap_retention_period"
