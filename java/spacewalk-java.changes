@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 19 11:37:19 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.15-1
 - Bugfix: Retracted Patches: Filter minion correctly when executing package install (bsc#1184929)
 
 -------------------------------------------------------------------
