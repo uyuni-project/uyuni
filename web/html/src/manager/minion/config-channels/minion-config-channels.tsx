@@ -25,7 +25,6 @@ function applyRequest(component) {
     }),
     "application/json"
   ).promise.then(data => {
-    console.log("apply action queued:" + data);
     component.setState({
       messages: MessagesUtils.info(
         <span>

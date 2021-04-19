@@ -19,7 +19,7 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
   };
 
   function getMessageText(msg) {
-    return messageTexts[msg] ? t(messageTexts[msg]) : msg;
+    return messageTexts[msg] ? messageTexts[msg] : msg;
   }
 
   function saveRequest(component, selectedFormulas) {
