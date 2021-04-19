@@ -11,6 +11,7 @@ class SpiceClient implements ConsoleClientType {
   connected: Function;
   disconnected: Function;
   askPassword: Function;
+  ignoreErrors: boolean;
 
   constructor(canvasId: string, socketUrl: string, connected: Function, disconnected: Function, askPassword: Function) {
     this.canvasId = canvasId;
@@ -18,10 +19,18 @@ class SpiceClient implements ConsoleClientType {
     this.connected = connected;
     this.disconnected = disconnected;
     this.askPassword = askPassword;
+    this.ignoreErrors = false;
+  }
+
+  removeErrorHandler = () => {
+    this.ignoreErrors = true;
   }
 
   onError = (e: ?Error) => {
     this.disconnect();
+    if (this.ignoreErrors) {
+      return;
+    }
     if (this.disconnected != null && e != null) {
       this.disconnected(e.message);
     }

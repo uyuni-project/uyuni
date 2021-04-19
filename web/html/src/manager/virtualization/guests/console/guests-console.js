@@ -32,7 +32,6 @@ type State = {
 
 class GuestsConsole extends React.Component<Props, State> {
   client: ConsoleClientType;
-  inhibitPopup: boolean;
   popupSubmit: Function;
 
   constructor(props: Props) {
@@ -64,7 +63,7 @@ class GuestsConsole extends React.Component<Props, State> {
     this.connect();
 
     window.onbeforeunload = () => {
-      this.inhibitPopup = true;
+      this.client.removeErrorHandler();
     };
   }
 
@@ -98,12 +97,8 @@ class GuestsConsole extends React.Component<Props, State> {
         connected: false,
       };
     });
-    if (!this.inhibitPopup) {
-      this.popupSubmit = this.connect;
-      this.setState({ popupState: 'errors' }, this.showPopup);
-    } else {
-      hideDialog('popup');
-    }
+    this.popupSubmit = this.connect;
+    this.setState({ popupState: 'errors' }, this.showPopup);
   }
 
   toggleScale = () => {

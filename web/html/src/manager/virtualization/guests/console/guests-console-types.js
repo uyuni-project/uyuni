@@ -11,4 +11,6 @@ export interface ConsoleClientType {
   toggleScale(expanded: boolean): void;
 
   canResize: boolean;
+
+  removeErrorHandler(): void;
 }
