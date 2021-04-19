@@ -22,11 +22,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-03-23 18:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
-"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-client-tools/fi/>\n"
+"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -262,7 +262,7 @@ msgid "Attempting to contact the Spacewalk server."
 msgstr "Yritetään yhdistää Spacewalk-palvelimeen."
 
 #: ../src/up2date_client/rhnreg_constants.py:37
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid "We are attempting to contact the {PRODUCT_NAME} server at %s."
 msgstr "Yritetään yhdistää {PRODUCT_NAME} -palvelimeen osoitteessa %s."
 
@@ -391,8 +391,8 @@ msgid ""
 "You will not be able to take advantage of these subscription privileges "
 "without connecting your system to {PRODUCT_NAME}.\n"
 msgstr ""
-"Et voi hyötyä näistä tilauseduista yhdistämättä järjestelmää {PRODUCT_NAME} "
-"-verkkoon.\n"
+"Et voi hyötyä näistä tilauseduista yhdistämättä järjestelmää {PRODUCT_NAME} -"
+"verkkoon.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:83
 msgid "Take me back to the setup process."
@@ -409,7 +409,7 @@ msgid "{PRODUCT_NAME} Account"
 msgstr "{PRODUCT_NAME} -tili"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
-#, python-brace-format, python-format
+#, python-format, python-brace-format
 msgid ""
 "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 "\n"
@@ -598,9 +598,9 @@ msgid ""
 msgstr ""
 "Tietojen keruu järjestelmäprofiilia varten on valmis.\n"
 "\n"
-"Lähetä järjestelmäprofiili {PRODUCT_NAME} -verkkoon napsauttamalla ”Seuraava”"
-". Tietoja ei lähetetä, jos napsautat ”Peru”. Rekisteröitymisen voi tehdä "
-"myöhemmin komentorivikomennolla ”rhn_register”."
+"Lähetä järjestelmäprofiili {PRODUCT_NAME} -verkkoon napsauttamalla "
+"”Seuraava”. Tietoja ei lähetetä, jos napsautat ”Peru”. Rekisteröitymisen voi "
+"tehdä myöhemmin komentorivikomennolla ”rhn_register”."
 
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:153
@@ -624,11 +624,11 @@ msgid ""
 "the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
 "main {PRODUCT_NAME} web interface.)"
 msgstr ""
-"Nyt viimeisimmät {PRODUCT_NAME} -ohjelmistopäivitykset voi saada ajamalla ”%"
-"s update” järjestelmän komentoriviltä. Aja se säännöllisesti saadaksesi "
+"Nyt viimeisimmät {PRODUCT_NAME} -ohjelmistopäivitykset voi saada ajamalla "
+"”%s update” järjestelmän komentoriviltä. Aja se säännöllisesti saadaksesi "
 "viimeisimmät päivitykset. Vaihtoehtoisesti järjestelmän voi asettaa "
-"päivittymään automaattisesti {PRODUCT_NAME} -verkkokäyttöliittymässä. ("
-"Ohjeet tähän löytyvät {PRODUCT_NAME} -viitekäsikirjasta, jonka saa "
+"päivittymään automaattisesti {PRODUCT_NAME} -verkkokäyttöliittymässä. "
+"(Ohjeet tähän löytyvät {PRODUCT_NAME} -viitekäsikirjasta, jonka saa "
 "{PRODUCT_NAME} -verkkokäyttöliittymän Ohje-painikkeesta.)"
 
 #. Review Window
