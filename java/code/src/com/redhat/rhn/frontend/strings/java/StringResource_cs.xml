@@ -10620,9 +10620,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Systems Grouping</source>
         <target/>
       </trans-unit>
-      <trans-unit id="Salt Entitled Servers" xml:space="preserve" approved="yes">
+      <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
-        <target>Salt</target>
+        <target/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
