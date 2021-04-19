@@ -201,6 +201,7 @@ public class ConfigDefaults {
     public static final String SCC_URL = "server.susemanager.scc_url";
     public static final String FORWARD_REGISTRATION = "server.susemanager.forward_registration";
     public static final String REG_ERROR_EXPIRE_TIME = "server.susemanager.reg_error_expire_time";
+    public static final String SCC_BACKUP_SRV_USR = "server.susemanager.scc_backup_srv_usr";
     public static final String PRODUCT_TREE_TAG = "java.product_tree_tag";
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
