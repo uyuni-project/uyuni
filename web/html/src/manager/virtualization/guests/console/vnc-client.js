@@ -13,6 +13,13 @@ class VncClient implements ConsoleClientType {
   disconnected: Function;
   askPassword: Function;
 
+  disconnectHandler = (e) => {
+    const error = e.detail.clean ? undefined : t('Something went wrong, connection is closed');
+    if (this.disconnected != null) {
+      this.disconnected(error);
+    }
+  }
+
   constructor(canvasId: string, socketUrl: string, connected: Function, disconnected: Function, askPassword: Function) {
     this.canvasId = canvasId;
     this.socketUrl = socketUrl;
@@ -25,12 +32,7 @@ class VncClient implements ConsoleClientType {
     if (this.canvasId != null && this.socketUrl != null) {
       const rfb = new RFB(document.getElementById(this.canvasId), this.socketUrl);
       rfb.addEventListener('connect', this.onConnect);
-      rfb.addEventListener('disconnect', (e) => {
-        const error = e.detail.clean ? undefined : t('Something went wrong, connection is closed');
-        if (this.disconnected != null) {
-          this.disconnected(error);
-        }
-      });
+      rfb.addEventListener('disconnect', this.disconnectHandler);
       rfb.addEventListener('credentialsrequired',
         () => {
           if (this.askPassword != null) {
@@ -41,6 +43,10 @@ class VncClient implements ConsoleClientType {
       rfb.resizeSession = false;
       this.rfb = rfb;
     }
+  }
+
+  removeErrorHandler = () => {
+    this.rfb.removeEventListener('disconnect', this.disconnectHandler);
   }
 
   onConnect = () => {
