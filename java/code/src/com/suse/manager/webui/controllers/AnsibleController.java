@@ -88,7 +88,7 @@ public class AnsibleController {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
 
-        return new ModelAndView(data, "templates/ansible/view.jade");
+        return new ModelAndView(data, "templates/minion/ansible-control-node.jade");
     }
 
     /**
