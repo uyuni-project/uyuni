@@ -98,6 +98,7 @@ fi
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
+%{_sbindir}/uyuni-update-config
 %{_bindir}/rhn-config-satellite.pl
 %{_bindir}/rhn-config-schema.pl
 %{_bindir}/rhn-generate-pem.pl
@@ -125,6 +126,7 @@ fi
 %{_unitdir}/salt-secrets-config.service
 %{_unitdir}/mgr-websockify.service
 %{_unitdir}/uyuni-check-database.service
+%{_unitdir}/uyuni-update-config.service
 %{_unitdir}/*.service.d
 %endif
 
