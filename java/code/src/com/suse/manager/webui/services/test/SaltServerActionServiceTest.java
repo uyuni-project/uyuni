@@ -200,7 +200,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action updateAction = ActionFactory.lookupById(action.getId());
 
         Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction, minionSummaries);
-        RhnBaseTestCase.assertNotEmpty(result.values());
+        assertEquals(1, result.values().size());
+        MinionSummary minionSummary = result.values().iterator().next().iterator().next();
+        assertEquals(new MinionSummary(minion), minionSummary);
     }
 
     public void testPackageRemoveDebian() throws Exception {
