@@ -212,7 +212,7 @@ artifacts:
     jar: log4j12
     repository: Leap
   - artifact: snakeyaml
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
