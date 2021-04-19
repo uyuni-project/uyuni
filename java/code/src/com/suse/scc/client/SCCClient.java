@@ -15,10 +15,7 @@
 package com.suse.scc.client;
 
 import com.redhat.rhn.manager.content.ProductTreeEntry;
-import com.suse.scc.model.SCCRepositoryJson;
-import com.suse.scc.model.SCCOrderJson;
-import com.suse.scc.model.SCCProductJson;
-import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.*;
 
 import java.util.List;
 
@@ -74,4 +71,7 @@ public interface SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     List<ProductTreeEntry> productTree() throws SCCClientException;
+
+    SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system) throws SCCClientException;
+    void deleteSystem(long id) throws SCCClientException;
 }
