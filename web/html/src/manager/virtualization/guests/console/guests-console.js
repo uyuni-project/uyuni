@@ -2,16 +2,13 @@
 
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
-import { Loading } from 'components/utils/Loading';
-import { PopUp } from 'components/popup';
 import { Button } from 'components/buttons';
-import { Form } from 'components/input/Form';
-import { Password } from 'components/input/Password';
 import { showDialog } from 'components/dialog/util';
 import { hideDialog } from 'components/dialog/util';
 import { VncClient } from './vnc-client';
 import type { ConsoleClientType } from './guests-console-types';
 import { SpiceClient } from './spice-client';
+import { MessagePopUp } from './MessagePopUp';
 import styles from './guests-console.css';
 
 type Props = {
@@ -128,33 +125,7 @@ class GuestsConsole extends React.Component<Props, State> {
   }
 
   render() {
-    const buttonValues = {
-      askPassword: {
-        text: t('Submit'),
-      },
-      errors: {
-        text: t('Retry'),
-      },
-    }[this.state.popupState];
     const canResize = this.client != null && this.client.canResize;
-    const popupContent = () => {
-      if (this.state.popupState === 'wait') {
-        return <Loading text={t('Connecting...')} withBorders={false} />;
-      }
-      if (this.state.popupState === 'askPassword') {
-        return (
-          <Form model={this.state} className="form-horizontal" onChange={this.onPasswordChange}>
-            <Password
-              name="password"
-              label={t('Password')}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-          </Form>
-        );
-      }
-      return this.state.error;
-    };
     const areaClassName = `display_area_${this.props.graphicsType}`;
     return (
       <>
@@ -176,32 +147,13 @@ class GuestsConsole extends React.Component<Props, State> {
             </li>
           </ul>
         </header>
-        <PopUp
+        <MessagePopUp
           id="popup"
-          hideHeader
-          content={popupContent()}
-          footer={
-            buttonValues !== undefined && [
-              <Button
-                key="submit"
-                className="btn-primary"
-                text={buttonValues.text}
-                title={buttonValues.text}
-                handler={() => {
-                  if (this.popupSubmit != null) {
-                    this.popupSubmit();
-                  }
-                }}
-              />,
-              <Button
-                key="cancel"
-                className="btn-default"
-                text={t('Cancel')}
-                title={t('Cancel')}
-                handler={() => hideDialog('popup')}
-              />,
-            ]
-          }
+          onSubmit={this.popupSubmit}
+          popupState={this.state.popupState}
+          model={this.state}
+          setModel={this.onPasswordChange}
+          error={this.state.error}
         />
         <div
           id="display-area"
