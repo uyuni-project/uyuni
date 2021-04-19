@@ -618,7 +618,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Patch</target>
+        <target>Errata</target>
       </trans-unit>
       <trans-unit id="exception" xml:space="preserve">
         <source>Exception</source>
@@ -10199,14 +10199,14 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch" xml:space="preserve">
         <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="image_admin" xml:space="preserve">
         <source>Image Administrator</source>
