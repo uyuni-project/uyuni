@@ -6445,11 +6445,11 @@ Follow this url to see the full list of inactive systems:
         <target>킥스타트 배포판은 커널이나 initrd 이미지로의 기본 경로가 잘못되었거나 경로가 존재하지 않기 때문에 유효하지 않습니다. 사용자 지정 배포판을 사용하려면 배포판을 선택하고 기본 경로를 적절하게 변경하십시오.</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <source>Extra kernel parameters can be no longer than 128 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">추가 커널 변수는 128 자를 넘을 수 없습니다.</target>
+        <target>추가 커널 변수는 128 자를 넘을 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>

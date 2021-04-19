@@ -6367,11 +6367,11 @@ Follow this url to see the full list of inactive systems:
         <target>Неверный или несуществующий путь к ядру или initrd привел к ошибкам в дистрибутивах кикстарта. Выберите дистрибутив и откорректируйте путь.</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <source>Extra kernel parameters can be no longer than 128 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">Дополнительные параметры ядра не должны превышать 128 символов.</target>
+        <target>Дополнительные параметры ядра не должны превышать 128 символов.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>

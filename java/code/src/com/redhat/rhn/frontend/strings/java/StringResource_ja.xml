@@ -6442,11 +6442,11 @@ Follow this url to see the full list of inactive systems:
         <target>自動インストール可能なディストリビューションは、カーネルまたは initrd イメージの基本パスが間違っているか、またはパスが存在しないために無効です。独自のディストリビューションを有効にするには、ディストリビューションを選択したあと、基本パスを適切に変更してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <source>Extra kernel parameters can be no longer than 128 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">追加のカーネルパラメーターは 128 文字以内にしてください。</target>
+        <target>追加のカーネルパラメーターは 128 文字以内にしてください。</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>

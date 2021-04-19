@@ -6399,8 +6399,8 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
-        <target state="needs-adaptation" />
+        <source>Extra kernel parameters can be no longer than 128 characters.</source>
+        <target />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>

@@ -6384,11 +6384,11 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         <target>La distribuzione kickstart non è valida a causa di un percorso di base non valido o non esistente per il kernel o immagine initrd. Per convalidare la distribuzione personalizzata selezionare quella desiderata e modificare il percorso di base appropriato.</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <source>Extra kernel parameters can be no longer than 128 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">I parametri aggiuntivi del kernel non possono contenere più di 128 caratteri.</target>
+        <target>I parametri aggiuntivi del kernel non possono contenere più di 128 caratteri.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
