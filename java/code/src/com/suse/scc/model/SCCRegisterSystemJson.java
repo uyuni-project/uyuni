@@ -33,11 +33,9 @@ public class SCCRegisterSystemJson {
     /**
      * Constructor
      *
-     * @param login the login
-     * @param password the password
-     * @param hostname the hostname
-     * @param hwinfo the hardware data
-     * @param products the products
+     * @param hostnameIn the hostname
+     * @param hwinfoIn the hardware data
+     * @param productsIn the products
      */
     public SCCRegisterSystemJson(String loginIn, String passwdIn, String hostnameIn,
             Map<String, String> hwinfoIn, List<SCCMinProductJson> productsIn) {

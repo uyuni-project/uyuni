@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2015 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -20,15 +20,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.scc.model.SCCRepositoryJson;
-import com.suse.scc.model.SCCOrderJson;
-import com.suse.scc.model.SCCProductJson;
-import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.*;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.AbstractHttpMessage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -52,6 +55,10 @@ public class SCCWebClient implements SCCClient {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private static Logger log = Logger.getLogger(SCCWebClient.class);
+    private Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
 
     /** The config object. */
     private final SCCConfig config;
@@ -181,6 +188,93 @@ public class SCCWebClient implements SCCClient {
                 .collect(Collectors.toList());
     }
 
+    private void addHeaders(AbstractHttpMessage request) {
+        request.addHeader("Accept", "application/vnd.scc.suse.com.v4+json");
+        request.addHeader("Accept-Encoding", "gzip, deflate");
+
+        // Send the UUID for debugging if available
+        String uuid = config.getUUID();
+        request.addHeader("SMS", uuid != null ? uuid : "undefined");
+    }
+
+    public void deleteSystem(long id) throws SCCClientException {
+        HttpDelete request = new HttpDelete(config.getUrl() + "/organizations/systems/" + id);
+        addHeaders(request);
+        Reader streamReader = null;
+        try {
+            // Connect and parse the response on success
+            HttpResponse response = httpClient.executeRequest(request,
+                    config.getUsername(), config.getPassword());
+
+            int responseCode = response.getStatusLine().getStatusCode();
+
+            if (responseCode == HttpStatus.SC_NO_CONTENT) {
+                streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
+                        config.getUsername(), config.getLoggingDir());
+
+            }
+            else {
+                // Request was not successful
+                throw new SCCClientException("Got response code " + responseCode +
+                        " connecting to " + request.getURI());
+            }
+        }
+        catch (NoRouteToHostException e) {
+            String proxy = ConfigDefaults.get().getProxyHost();
+            throw new SCCClientException("No route to SCC" +
+                    (proxy != null ? " or the Proxy: " + proxy : ""));
+        }
+        catch (IOException e) {
+            throw new SCCClientException(e);
+        }
+        finally {
+            request.releaseConnection();
+            SCCClientUtils.closeQuietly(streamReader);
+        }
+    }
+
+    @Override
+    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system) throws SCCClientException {
+        HttpPost request = new HttpPost(config.getUrl() + "/organizations/systems");
+        // Additional request headers
+        addHeaders(request);
+        request.setEntity(new StringEntity(gson.toJson(system), ContentType.APPLICATION_JSON));
+
+        Reader streamReader = null;
+        try {
+            // Connect and parse the response on success
+            HttpResponse response = httpClient.executeRequest(request,
+                    config.getUsername(), config.getPassword());
+
+            int responseCode = response.getStatusLine().getStatusCode();
+
+            //TODO only created is documented by scc we still need to check what they return on update.
+            if (responseCode == HttpStatus.SC_CREATED) {
+                streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
+                        config.getUsername(), config.getLoggingDir());
+
+                return gson.fromJson(streamReader, SCCSystemCredentialsJson.class);
+            }
+            else {
+                // Request was not successful
+                throw new SCCClientException("Got response code " + responseCode +
+                        " connecting to " + request.getURI());
+            }
+        }
+        catch (NoRouteToHostException e) {
+            String proxy = ConfigDefaults.get().getProxyHost();
+            throw new SCCClientException("No route to SCC" +
+                    (proxy != null ? " or the Proxy: " + proxy : ""));
+        }
+        catch (IOException e) {
+            throw new SCCClientException(e);
+        }
+        finally {
+            request.releaseConnection();
+            SCCClientUtils.closeQuietly(streamReader);
+        }
+    }
+
     /**
      * Perform HTTP request and parse the result into a given result type.
      *
@@ -208,10 +302,6 @@ public class SCCWebClient implements SCCClient {
                         config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
-                Gson gson = new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
-                        .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
-                        .create();
                 T result = gson.fromJson(streamReader, resultType);
 
                 Optional<Integer> perPageOpt = Optional.ofNullable(response.getFirstHeader("Per-Page"))
