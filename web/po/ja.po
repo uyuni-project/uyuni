@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -90,8 +90,8 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/images/image-stores.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:161
@@ -139,8 +139,8 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
@@ -159,8 +159,8 @@ msgid "Confirm"
 msgstr "確認"
 
 #: ../html/src/components/config-channels.tsx:409
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:171
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:178
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr "変更点の保存"
 
@@ -192,7 +192,7 @@ msgstr "検索"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -247,7 +247,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -264,8 +264,8 @@ msgstr "取り消し"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
-#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -273,8 +273,8 @@ msgstr "取り消し"
 #: ../html/src/manager/images/image-view.tsx:353
 #: ../html/src/manager/images/image-view.tsx:363
 #: ../html/src/manager/images/image-view.tsx:684
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.tsx:51
@@ -718,24 +718,32 @@ msgstr "モニタリングの無効化が正常に完了しました。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+msgstr ""
+"Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されていま"
+"す。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+msgstr ""
+"Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されていま"
+"す。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
-msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
+msgstr ""
+"Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
+"います。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
-msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
+msgstr ""
+"Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
+"います。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -953,13 +961,17 @@ msgstr "なぜ一覧に全ての製品が表示されていないのですか？
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 (ミラークレデンシャル) に直接結びついています。"
+msgstr ""
+"この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
+"(ミラークレデンシャル) に直接結びついています。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情報を追加していることをご確認ください。"
+msgstr ""
+"存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
+"報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -1796,7 +1808,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "概要"
 
@@ -1868,6 +1880,7 @@ msgstr "クラスタ"
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "タイプ"
@@ -2034,7 +2047,7 @@ msgstr "エポック"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2130,15 +2143,15 @@ msgstr "環境ライフサイクル"
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "お探しのプロジェクトは存在していないか、削除されています"
 
-#: ../html/src/manager/content-management/project/project.js:89
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "コンテンツライフサイクルプロジェクト - {0}"
 
-#: ../html/src/manager/content-management/project/project.js:104
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "プロジェクトの削除"
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "プロジェクトを削除してよろしいですか"
 
@@ -2273,12 +2286,12 @@ msgstr "パッケージを含むもの"
 msgid "enable module"
 msgstr "モジュールの有効化"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "ビルド ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2287,23 +2300,29 @@ msgstr "ビルド ({0})"
 msgid "Build"
 msgstr "ビルド"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "プロジェクトのビルド"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "プロジェクトをビルドしています..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+msgid ""
+"The project contains channels with unsynchronized patches. They will be "
+"synchronized depending on your Organization settings."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "バージョンメッセージ"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "バージョン {0} の履歴"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "バージョン {0} を {1} にビルドしました"
 
@@ -2500,15 +2519,19 @@ msgstr "子チャンネル無し"
 msgid "This channel is recommended"
 msgstr "このチャンネルは推奨チャンネルです"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+msgid "has unsynchronized patches"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "ソース"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "ソースを編集しました"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
@@ -2525,25 +2548,33 @@ msgstr "リクエストされたページ {0} が見つかりませんでした�
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr "このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
+msgstr ""
+"このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い"
+"方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンを押して戻ってください。 "
+msgstr ""
+"リンクをたどっている場合、リンクが正しくないか、古くなっている可能性がありま"
+"す。戻るボタンを押して戻ってください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
+msgstr ""
+"ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動して"
+"いる場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージと共にご連絡ください。 "
+msgstr ""
+"このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージ"
+"と共にご連絡ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -3273,13 +3304,47 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:33
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
+#, fuzzy
+msgid "Skip to the last maintenance window"
+msgstr "次のメンテナンスウィンドウはありません"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
+#, fuzzy
+msgid "Skip to the next maintenance window"
+msgstr "次のメンテナンスウィンドウはありません"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
+#, fuzzy
+msgid "There are no more past maintenance windows"
+msgstr "次のメンテナンスウィンドウはありません"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
+#, fuzzy
+msgid "There are no more future maintenance windows"
+msgstr "次のメンテナンスウィンドウはありません"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
+msgid "Today"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
+#, fuzzy
+msgid "Month"
+msgstr "毎月:"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
+#, fuzzy
+msgid "Day"
+msgstr "毎日:"
+
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
 msgid "Delete maintenance calendar"
 msgstr "メンテナンスカレンダーの削除"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:36
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:49
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:42
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:155
@@ -3287,96 +3352,81 @@ msgstr "メンテナンスカレンダーの削除"
 msgid "Are you sure you want to delete the selected item?"
 msgstr "選択した項目を削除してよろしいですか？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:37
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:50
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:43
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
 "この処理により、割り当てられた全てのシステムから現在のスケジュールを削除しま"
 "す。"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:38
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:44
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr "影響する処理をキャンセルしますか？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:66
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:81
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
 msgstr "カレンダー名"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:67
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:82
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:52
 msgid "Used by Schedule"
 msgstr "スケジュールで使用済み"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:69
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:84
 msgid "Url"
 msgstr "URL"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:73
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:88
 msgid "Calendar Details"
 msgstr "カレンダーの詳細"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "メンテナンススケジュールの削除"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:60
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:159
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:166
 msgid "Assigned Systems"
 msgstr "割り当て済みのシステム"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:89
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr "スケジュール名"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:90
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr "割り当てられたカレンダー"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr "スケジュールタイプ"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "シングル"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "マルチ"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:103
-msgid "Upcoming Maintenance Windows"
-msgstr "将来のメンテナンスウィンドウ"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:109
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
-msgid "Start"
-msgstr "開始"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:110
-msgid "End"
-msgstr "終了"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:144
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:151
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:163
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3384,11 +3434,11 @@ msgstr "メンテナンススケジュールを {0} 個のシステムに割り�
 msgid "Cancel affected actions"
 msgstr "影響する動作のキャンセル"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:190
 msgid "Search systems"
 msgstr "システムの検索"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:202
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:209
 msgid "Current Schedule"
 msgstr "現在のスケジュール"
 
@@ -3492,15 +3542,15 @@ msgstr ""
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "割り当てられている全てのシステムからスケジュールを削除します。"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:113
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:114
 msgid "successfully"
 msgstr "成功"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:138
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:139
 msgid "Error when deleting the "
 msgstr "下記の削除に失敗しました "
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:147
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:148
 msgid "Calendar successfully refreshed"
 msgstr "カレンダーを更新しました"
 
@@ -3850,6 +3900,7 @@ msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr "Formula"
 
@@ -3911,13 +3962,63 @@ msgstr "SUSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+#, fuzzy
+msgid "State Summary for {0}"
 msgstr "{0} に対する highstate"
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "該当するシステムはありません。"
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+#, fuzzy
+msgid "State channel"
+msgstr "ソフトウェアチャンネル"
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+#, fuzzy
+msgid "Config channel"
+msgstr "チャンネルを複製しています"
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+#, fuzzy
+msgid "internal"
+msgstr "メンテナンス"
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+#, fuzzy
+msgid "Internal states"
+msgstr "インターフェイス"
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+#, fuzzy
+msgid "State Source"
+msgstr "ソース"
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+#, fuzzy
+msgid "System Group"
+msgstr "システムグループ"
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "組織"
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -3951,12 +4052,6 @@ msgstr "minion"
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
 msgstr "グループ"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "組織"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
@@ -4716,6 +4811,12 @@ msgstr "動作の状態"
 msgid "Create Virtual Network"
 msgstr "仮想ネットワークの作成"
 
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
+msgid "Start"
+msgstr "開始"
+
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:40
 msgid "Virtual Networks"
 msgstr "仮想ネットワーク"
@@ -4729,7 +4830,9 @@ msgstr "これはこのホスト内に設定されている仮想ネットワー
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していません"
+msgstr ""
+"このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していま"
+"せん"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -4943,7 +5046,8 @@ msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや IP アドレス、 DHCP/DNS サービスは追加されません"
+"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
+"IP アドレス、 DHCP/DNS サービスは追加されません"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
@@ -4951,13 +5055,17 @@ msgstr "ホスト IP のルーティングスタックと NAT を使用する仮
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワーク"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
+"ク"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
-msgstr "ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用しない仮想ネットワーク"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
+"ない仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
@@ -4967,7 +5075,9 @@ msgstr "他のネットワークへの接続を持たない仮想ネットワー
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。ゲストとホストの間では通信できません"
+msgstr ""
+"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
+"ゲストとホストの間では通信できません"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
@@ -5367,6 +5477,12 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Upcoming Maintenance Windows"
+#~ msgstr "将来のメンテナンスウィンドウ"
+
+#~ msgid "End"
+#~ msgstr "終了"
 
 #~ msgid ""
 #~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "

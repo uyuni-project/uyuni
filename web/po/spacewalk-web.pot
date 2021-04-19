@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,8 +84,8 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:161
@@ -131,8 +131,8 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
@@ -151,8 +151,8 @@ msgid "Confirm"
 msgstr ""
 
 #: ../html/src/components/config-channels.tsx:409
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:171
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:178
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr ""
 
@@ -184,7 +184,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -237,7 +237,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -254,8 +254,8 @@ msgstr ""
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
-#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -263,8 +263,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:353
 #: ../html/src/manager/images/image-view.tsx:363
 #: ../html/src/manager/images/image-view.tsx:684
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.tsx:51
@@ -1740,7 +1740,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr ""
 
@@ -1808,6 +1808,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr ""
@@ -1972,7 +1973,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2068,15 +2069,15 @@ msgstr ""
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:89
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:104
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr ""
 
@@ -2205,12 +2206,12 @@ msgstr ""
 msgid "enable module"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2219,23 +2220,29 @@ msgstr ""
 msgid "Build"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+msgid ""
+"The project contains channels with unsynchronized patches. They will be "
+"synchronized depending on your Organization settings."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
@@ -2432,15 +2439,19 @@ msgstr ""
 msgid "This channel is recommended"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+msgid "has unsynchronized patches"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr ""
@@ -3181,13 +3192,41 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:33
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
+msgid "Skip to the last maintenance window"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
+msgid "Skip to the next maintenance window"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
+msgid "There are no more past maintenance windows"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
+msgid "There are no more future maintenance windows"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
+msgid "Today"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
+msgid "Month"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
+msgid "Day"
+msgstr ""
+
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
 msgid "Delete maintenance calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:36
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:49
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:42
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:155
@@ -3195,94 +3234,79 @@ msgstr ""
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:37
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:50
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:43
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:38
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:44
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:66
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:81
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:67
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:82
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:52
 msgid "Used by Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:69
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:84
 msgid "Url"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:73
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:88
 msgid "Calendar Details"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:60
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:159
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:166
 msgid "Assigned Systems"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:89
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:90
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:103
-msgid "Upcoming Maintenance Windows"
-msgstr ""
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:109
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
-msgid "Start"
-msgstr ""
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:110
-msgid "End"
-msgstr ""
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:144
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:151
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:163
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3290,11 +3314,11 @@ msgstr ""
 msgid "Cancel affected actions"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:190
 msgid "Search systems"
 msgstr ""
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:202
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:209
 msgid "Current Schedule"
 msgstr ""
 
@@ -3393,15 +3417,15 @@ msgstr ""
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:113
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:114
 msgid "successfully"
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:138
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:139
 msgid "Error when deleting the "
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:147
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:148
 msgid "Calendar successfully refreshed"
 msgstr ""
 
@@ -3744,6 +3768,7 @@ msgid "Filter by formula name"
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr ""
 
@@ -3805,12 +3830,55 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+msgid "State Summary for {0}"
 msgstr ""
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+msgid "State channel"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+msgid "Config channel"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+msgid "internal"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+msgid "Internal states"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+msgid "State Source"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+msgid "System Group"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
 msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:64
@@ -3844,12 +3912,6 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
-msgstr ""
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
@@ -4573,6 +4635,12 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
+msgid "Start"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:40

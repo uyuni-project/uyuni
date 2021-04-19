@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 11:17+0100\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -88,8 +88,8 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/images/image-stores.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:32
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:161
@@ -135,8 +135,8 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
 #: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:25
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:27
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
@@ -155,8 +155,8 @@ msgid "Confirm"
 msgstr "确认"
 
 #: ../html/src/components/config-channels.tsx:409
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:171
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:178
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -188,7 +188,7 @@ msgstr "搜索"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -241,7 +241,7 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -258,8 +258,8 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
-#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
+#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -267,8 +267,8 @@ msgstr "取消"
 #: ../html/src/manager/images/image-view.tsx:353
 #: ../html/src/manager/images/image-view.tsx:363
 #: ../html/src/manager/images/image-view.tsx:684
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:40
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
 #: ../html/src/manager/salt/keys/key-management.tsx:51
@@ -1778,7 +1778,7 @@ msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr "概览"
 
@@ -1847,6 +1847,7 @@ msgstr "群集"
 #: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:241
 msgid "Type"
 msgstr "类型"
@@ -2011,7 +2012,7 @@ msgstr "纪元"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2107,15 +2108,15 @@ msgstr "环境生命周期"
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "您要查找的项目不存在或已删除"
 
-#: ../html/src/manager/content-management/project/project.js:89
+#: ../html/src/manager/content-management/project/project.js:90
 msgid "Content Lifecycle Project - {0}"
 msgstr "内容生命周期项目 - {0}"
 
-#: ../html/src/manager/content-management/project/project.js:104
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Delete Project"
 msgstr "删除项目"
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:106
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
@@ -2244,12 +2245,12 @@ msgstr "包含软件包"
 msgid "enable module"
 msgstr "启用模块"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
 msgid "Build ({0})"
 msgstr "构建 ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2258,23 +2259,29 @@ msgstr "构建 ({0})"
 msgid "Build"
 msgstr "构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
 msgid "Build Project"
 msgstr "构建项目"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
 msgid "Building project.."
 msgstr "正在构建项目..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+msgid ""
+"The project contains channels with unsynchronized patches. They will be "
+"synchronized depending on your Organization settings."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
 msgstr "版本消息"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
 msgid "Version {0} history"
 msgstr "版本 {0} 历史记录"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
 msgid "Version {0} successfully built into {1}"
 msgstr "已成功在 {1} 中构建版本 {0}"
 
@@ -2471,15 +2478,19 @@ msgstr "无子频道"
 msgid "This channel is recommended"
 msgstr "建议使用此频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+msgid "has unsynchronized patches"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
 msgstr "源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
 msgid "Sources edited successfully"
 msgstr "已成功编辑源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr "软件频道"
@@ -3229,13 +3240,47 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:33
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
+#, fuzzy
+msgid "Skip to the last maintenance window"
+msgstr "没有即将到来的维护时段"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
+#, fuzzy
+msgid "Skip to the next maintenance window"
+msgstr "没有即将到来的维护时段"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
+#, fuzzy
+msgid "There are no more past maintenance windows"
+msgstr "没有即将到来的维护时段"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
+#, fuzzy
+msgid "There are no more future maintenance windows"
+msgstr "没有即将到来的维护时段"
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
+msgid "Today"
+msgstr ""
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
+#, fuzzy
+msgid "Month"
+msgstr "每月："
+
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
+#, fuzzy
+msgid "Day"
+msgstr "每日："
+
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
 msgid "Delete maintenance calendar"
 msgstr "删除维护日历"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:36
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:49
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:42
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:155
@@ -3243,94 +3288,79 @@ msgstr "删除维护日历"
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:37
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:50
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:43
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:38
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:44
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr "取消受影响的操作？"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:66
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:81
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
 msgstr "日历名称"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:67
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:82
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:52
 msgid "Used by Schedule"
 msgstr "已由日程安排使用"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:69
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:84
 msgid "Url"
 msgstr "URL"
 
-#: ../html/src/manager/maintenance/details/calendar-details.tsx:73
+#: ../html/src/manager/maintenance/details/calendar-details.tsx:88
 msgid "Calendar Details"
 msgstr "日历细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "删除维护日程安排"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:60
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:159
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:166
 msgid "Assigned Systems"
 msgstr "指派的系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:89
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
 msgid "Schedule name"
 msgstr "日程安排名称"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:90
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Assigned calendar"
 msgstr "指派的日历"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Schedule type"
 msgstr "日程安排类型"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "单个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:91
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "多个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:103
-msgid "Upcoming Maintenance Windows"
-msgstr "即将到来的维护时段"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:109
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
-msgid "Start"
-msgstr "开始"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:110
-msgid "End"
-msgstr "结束"
-
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:144
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:151
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "已将维护日程安排指派到 {0} 个系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:163
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3338,11 +3368,11 @@ msgstr "已将维护日程安排指派到 {0} 个系统"
 msgid "Cancel affected actions"
 msgstr "取消受影响的操作"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:190
 msgid "Search systems"
 msgstr "搜索系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:202
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:209
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
@@ -3441,15 +3471,15 @@ msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除日程安排。"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:113
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:114
 msgid "successfully"
 msgstr "成功"
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:138
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:139
 msgid "Error when deleting the "
 msgstr "删除以下项时出错： "
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:147
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:148
 msgid "Calendar successfully refreshed"
 msgstr "已成功刷新日历"
 
@@ -3793,6 +3823,7 @@ msgid "Filter by formula name"
 msgstr "按公式名称过滤"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:100
+#: ../html/src/manager/state/highstate-summary.tsx:22
 msgid "Formula"
 msgstr "公式"
 
@@ -3855,13 +3886,62 @@ msgstr "SuSE"
 msgid "Manager"
 msgstr "Manager"
 
-#: ../html/src/manager/state/display-highstate.tsx:33
-msgid "Highstate for {0}"
+#: ../html/src/manager/state/display-highstate.tsx:9
+#, fuzzy
+msgid "State Summary for {0}"
 msgstr "{0} Highstate"
 
-#: ../html/src/manager/state/display-highstate.tsx:135
+#: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "没有适用的系统。"
+
+#: ../html/src/manager/state/highstate-summary.tsx:20
+#, fuzzy
+msgid "State channel"
+msgstr "软件频道"
+
+#: ../html/src/manager/state/highstate-summary.tsx:21
+#, fuzzy
+msgid "Config channel"
+msgstr "克隆频道"
+
+#: ../html/src/manager/state/highstate-summary.tsx:23
+#, fuzzy
+msgid "internal"
+msgstr "维护"
+
+#: ../html/src/manager/state/highstate-summary.tsx:32
+msgid "Internal states"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:50
+msgid "Retrieving highstate summary..."
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:58
+#, fuzzy
+msgid "State Source"
+msgstr "源"
+
+#: ../html/src/manager/state/highstate-summary.tsx:60
+msgid "Inherited From"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:78
+msgid "Show full highstate output"
+msgstr ""
+
+#: ../html/src/manager/state/highstate-summary.tsx:132
+#, fuzzy
+msgid "System Group"
+msgstr "系统组"
+
+#: ../html/src/manager/state/highstate-summary.tsx:141
+#: ../html/src/manager/state/recurring-states-details.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+msgid "Organization"
+msgstr "组织"
 
 #: ../html/src/manager/state/highstate.tsx:64
 msgid "Action has been successfully added to the "
@@ -3896,12 +3976,6 @@ msgstr ""
 #, fuzzy
 msgid "Group"
 msgstr "组 ID"
-
-#: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
-msgid "Organization"
-msgstr "组织"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
@@ -4639,6 +4713,12 @@ msgstr "操作状态"
 msgid "Create Virtual Network"
 msgstr "虚拟网络"
 
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
+msgid "Start"
+msgstr "开始"
+
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:40
 msgid "Virtual Networks"
 msgstr "虚拟网络"
@@ -5313,6 +5393,12 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Upcoming Maintenance Windows"
+#~ msgstr "即将到来的维护时段"
+
+#~ msgid "End"
+#~ msgstr "结束"
 
 #~ msgid ""
 #~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
