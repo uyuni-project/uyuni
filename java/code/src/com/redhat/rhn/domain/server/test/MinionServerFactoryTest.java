@@ -14,13 +14,18 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ansible.AnsiblePath;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
+import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +91,48 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
                 .filter(m -> m.getId().equals(minionServer2.getId()))
                 .map(m -> minionServer2.getContactMethod().getLabel())
                 .findFirst().get());
+    }
+
+    /**
+     * Test basic save - read cycle of AnsiblePath implementations
+     * @throws Exception
+     */
+    public void testSaveAndFindAnsiblePath() throws Exception {
+        MinionServer minionServer1 = createTestMinionServer(user);
+        MinionServer minionServer2 = createTestMinionServer(user);
+
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
+        inventoryPath.setPath(Path.of("/tmp/test1"));
+        AnsiblePath playbookPath = new PlaybookPath(minionServer2);
+        playbookPath.setPath(Path.of("/tmp/test2"));
+
+        inventoryPath = MinionServerFactory.saveAnsiblePath(inventoryPath);
+        playbookPath = MinionServerFactory.saveAnsiblePath(playbookPath);
+        assertNotNull(inventoryPath.getId());
+        assertNotNull(playbookPath.getId());
+
+        HibernateFactory.getSession().flush();
+        // let's get those entities out of the session
+        HibernateFactory.getSession().evict(inventoryPath);
+        HibernateFactory.getSession().evict(playbookPath);
+
+        assertEquals(inventoryPath, MinionServerFactory.lookupAnsiblePathById(inventoryPath.getId()).get());
+        assertEquals(playbookPath, MinionServerFactory.lookupAnsiblePathById(playbookPath.getId()).get());
+        assertEquals(1, MinionServerFactory.listAnsiblePaths(minionServer1.getId()).size());
+        assertEquals(inventoryPath, MinionServerFactory.listAnsiblePaths(minionServer1.getId()).iterator().next());
+    }
+
+    /**
+     * Test removing AnsiblePath
+     */
+    public void testRemoveAnsiblePath() throws Exception {
+        MinionServer minionServer1 = createTestMinionServer(user);
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
+        inventoryPath.setPath(Path.of("/tmp/test1"));
+        inventoryPath = MinionServerFactory.saveAnsiblePath(inventoryPath);
+
+        MinionServerFactory.removeAnsiblePath(inventoryPath);
+        assertTrue(MinionServerFactory.lookupAnsiblePathById(inventoryPath.getId()).isEmpty());
     }
 
     /**
