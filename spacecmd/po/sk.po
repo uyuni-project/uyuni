@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-18 18:57+0000\n"
+"PO-Revision-Date: 2021-04-19 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -441,12 +441,12 @@ msgstr ""
 "použitie: activationkey_export [voľby] [<KĽÚČ> ...])\n"
 "\n"
 "voľby:\n"
-"    -f outfile.json : určuje výstupný názov súboru, predvolené hodnoty sú "
+"    -f outfile.json : určuje názov výstupného súboru, predvolené hodnoty sú "
 "<KĽÚČ>.json,\n"
-"                      ak sa exportuje jeden kľúč, akeys.json pre viac "
-"kľúčov,\n"
-"                      alebo akey_all.json, ak nie je zadaný žiadny KĽÚČ "
-"(exportovať VŠETKY)\n"
+"                      ak sa exportuje jeden kľúč, akeys.json pre viac kľúčov,"
+"\n"
+"                      alebo akey_all.json, ak nie je zadaný žiadny KĽÚČ ("
+"exportovať VŠETKY)\n"
 "\n"
 "Poznámka : Zoznam KĽÚČOV je voliteľný, predvolený je export VŠETKÝCH kľúčov "
 
@@ -485,7 +485,7 @@ msgstr "activationkey_import: importovať aktivačné kľúč(e) zo súboru(ov) 
 
 #: ../src/spacecmd/activationkey.py:1316
 msgid "usage: activationkey_import <JSONFILE ...>"
-msgstr "použitie: activationkey_import <SÚBORJSON ...>"
+msgstr "použitie: activationkey_import <SÚBORY_JSON ...>"
 
 #: ../src/spacecmd/activationkey.py:1325
 msgid "No filename passed"
@@ -745,14 +745,12 @@ msgid "This version of the API doesn't support this method"
 msgstr "Táto verzia API nepodporuje túto metódu"
 
 #: ../src/spacecmd/configchannel.py:104
-#, fuzzy
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "configchannel_listsystems: Vypísať zoznam systémov prihlásených k"
+msgstr "configchannel_listgroups: Vypísať zoznam skupín prihlásených k"
 
 #: ../src/spacecmd/configchannel.py:106
-#, fuzzy
 msgid "usage: configchannel_listgroups CHANNEL"
-msgstr "použitie: configchannel_listsystems KANÁL"
+msgstr "použitie: configchannel_listgroups KANÁL"
 
 #: ../src/spacecmd/configchannel.py:139
 msgid "configchannel_listfiles: List the files in a config channel"
@@ -1274,7 +1272,7 @@ msgstr "ID akcie: %i"
 #: ../src/spacecmd/configchannel.py:1102
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
-"configchannel_export: exportovať konfiguračné kanál(y) do súboru formátu json"
+"configchannel_export: exportovať konfiguračný kanál(y) do súboru formátu json"
 
 #: ../src/spacecmd/configchannel.py:1103
 msgid ""
@@ -1288,68 +1286,80 @@ msgid ""
 "\n"
 "Note : CHANNEL list is optional, default is to export ALL"
 msgstr ""
+"použitie: configchannel_export <KANÁL>... [voľby])\n"
+"voľby:\n"
+"    -f outfile.json : určuje názov výstupného súboru, predvolené hodnoty sú "
+"<KANÁL>.json,\n"
+"                      ak sa exportuje jeden kanál, ccs.json pre viac kanálov,"
+"\n"
+"                      alebo cc_all.json, ak nie je zadaný žiadny KANÁL\n"
+"                      napr. (exportovať VŠETKY)\n"
+"\n"
+"Poznámka : Zoznam KANÁLOV je voliteľný, predvolený je export VŠETKÝCH"
 
 #. Get the cc details
 #: ../src/spacecmd/configchannel.py:1119
 #, python-format
 msgid "Getting config channel details for %s"
-msgstr ""
+msgstr "Získanie podrobností konfiguračného kanála pre %s"
 
 #: ../src/spacecmd/configchannel.py:1139
 #, python-format
 msgid "Failed to get details for file %s from %s"
-msgstr ""
+msgstr "Nepodarilo sa získať podrobnosti pre súbor %s z %s"
 
 #: ../src/spacecmd/configchannel.py:1185
 #, python-format
 msgid "File %s could not be exported "
-msgstr ""
+msgstr "Súbor %s sa nepodarilo exportovať "
 
 #: ../src/spacecmd/configchannel.py:1186
 msgid "with this API version(needs base64 encoding)"
-msgstr ""
+msgstr "s touto verziou API (vyžaduje kódovanie base64)"
 
 #: ../src/spacecmd/configchannel.py:1188
 #, python-format
 msgid "File %s could not be exported as"
-msgstr ""
+msgstr "Súbor %s sa nepodarilo exportovať ako"
 
 #: ../src/spacecmd/configchannel.py:1189
 msgid " text...getting base64 encoded version"
-msgstr ""
+msgstr " text...získanie verzie kódovanej base64"
 
 #: ../src/spacecmd/configchannel.py:1220
 #, python-format
 msgid "Exporting ALL config channels to %s"
-msgstr ""
+msgstr "Exportovanie VŠETKÝCH konfiguračných kanálov do %s"
 
 #: ../src/spacecmd/configchannel.py:1227
 msgid ""
 "Error, no valid config channel passed, check name is  correct with spacecmd "
 "configchannel_list"
 msgstr ""
+"Chyba, nebol zadaný žiadny platný konfiguračný kanál, skontrolujte, či je "
+"názov  správny so spacecmd configchannel_list"
 
 #: ../src/spacecmd/configchannel.py:1242
 #, python-format
 msgid "Exporting cc %s to %s"
-msgstr ""
+msgstr "Exportovanie cc %s do %s"
 
 #: ../src/spacecmd/configchannel.py:1249
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "Súbor '{}' existuje, potvrďte prepísanie súboru? (a/n)"
 
 #: ../src/spacecmd/configchannel.py:1252
 #, python-format
 msgid "Error saving exported config channels to file: %s"
-msgstr ""
+msgstr "Chyba pri ukladaní exportovaných konfiguračných kanálov do súboru: %s"
 
 #: ../src/spacecmd/configchannel.py:1261
 msgid "configchannel_import: import config channel(s) from json file"
-msgstr ""
+msgstr "configchannel_import: importovať konfiguračný kanál(y) zo súboru json"
 
 #: ../src/spacecmd/configchannel.py:1262
 msgid "usage: configchannel_import <JSONFILES...>"
-msgstr ""
+msgstr "použitie: configchannel_import <SÚBORY_JSON...>"
 
 #: ../src/spacecmd/configchannel.py:1271 ../src/spacecmd/kickstart.py:2332
 msgid "Error, no filename passed"
@@ -1358,12 +1368,12 @@ msgstr "Chyba, nebol zadaný žiadny názov súboru"
 #: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2340
 #, python-format
 msgid "Error, could not read json data from %s"
-msgstr ""
+msgstr "Chyba, nepodarilo sa prečítať dáta json z %s"
 
 #: ../src/spacecmd/configchannel.py:1283
 #, python-format
 msgid "Error importing configchannel %s"
-msgstr ""
+msgstr "Chyba pri importovaní konfiguračného kanála %s"
 
 #: ../src/spacecmd/configchannel.py:1295
 #, python-format
@@ -2246,42 +2256,32 @@ msgid "Members"
 msgstr ""
 
 #: ../src/spacecmd/group.py:488
-#, fuzzy
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
 msgstr ""
-"activationkey_listconfigchannels: Vypísať zoznam konfiguračných kanálov pre "
-"aktivačný kľúč"
+"group_listconfigchannels: Vypísať zoznam konfiguračných kanálov priradených "
+"k systémovej skupine"
 
 #: ../src/spacecmd/group.py:489
-#, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
-msgstr "použitie: activationkey_listconfigchannels KĽÚČ"
+msgstr "použitie: group_listconfigchannels SKUPINA"
 
 #: ../src/spacecmd/group.py:531
-#, fuzzy
 msgid "group_addconfigchannels: Add config channels to a group"
-msgstr ""
-"activationkey_addconfigchannels: Pridať konfiguračné kanály k aktivačnému "
-"kľúču"
+msgstr "group_addconfigchannels: Pridať konfiguračné kanály ku skupine"
 
 #: ../src/spacecmd/group.py:532
-#, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "použitie: configchannel_details KANÁL ..."
+msgstr "použitie: group_addconfigchannels <SKUPINA> <KANÁL ...>"
 
 #: ../src/spacecmd/group.py:570
-#, fuzzy
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr ""
-"activationkey_removeconfigchannels: Odstrániť konfiguračné kanály z "
-"aktivačného kľúča"
+msgstr "group_removeconfigchannels: Odstrániť konfiguračné kanály zo skupiny"
 
 #: ../src/spacecmd/group.py:571
-#, fuzzy
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "použitie: activationkey_removeconfigchannels KĽÚČ <KANÁL ...>"
+msgstr "použitie: group_removeconfigchannels <SKUPINA> <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
