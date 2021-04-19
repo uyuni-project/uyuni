@@ -50,7 +50,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
 
   renderChildChannels = (loadingChildren: boolean, availableChannels: availableChannelsType) => {
     return loadingChildren ? (
-      <Loading text="Loading child channels.." />
+      <Loading text={t("Loading child channels..")} />
     ) : (
       availableChannels.map(g => {
         const base = g.base;
@@ -90,7 +90,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
           if (loading) {
             return (
               <div className="form-group">
-                <Loading text="Loading.." />
+                <Loading text={t("Loading..")} />
               </div>
             );
           }
@@ -108,7 +108,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   >
                     <option value={this.getDefaultBase().id}>{this.getDefaultBase().name}</option>
                     {availableBaseChannels
-                      .sort((b1, b2) => (b1.name || '').localeCompare(b2.name || ''))
+                      .sort((b1, b2) => (b1.name || "").localeCompare(b2.name || ""))
                       .map(b => (
                         <option key={b.id} value={b.id}>
                           {b.name}
