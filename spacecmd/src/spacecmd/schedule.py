@@ -495,6 +495,7 @@ def do_schedule_deletearchived(self, args):
 
             # Pass list of actions that should be deleted
             if action_ids:
-                self.client.schedule.deleteActions(self.session, action_ids)
+                # set needs to be cast to list, since set cannot be marshalled
+                self.client.schedule.deleteActions(self.session, list(set(action_ids)))
         else:
             break
