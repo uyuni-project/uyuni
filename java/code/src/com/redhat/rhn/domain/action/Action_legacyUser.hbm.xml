@@ -590,6 +590,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
+        <!-- Ansible playbook action -->
+        <subclass name="com.redhat.rhn.domain.action.salt.PlaybookAction" lazy="true" discriminator-value="521">
+            <one-to-one name="details" class="com.redhat.rhn.domain.action.salt.PlaybookActionDetails"
+                        outer-join="false" cascade="all" property-ref="parentAction"/>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
