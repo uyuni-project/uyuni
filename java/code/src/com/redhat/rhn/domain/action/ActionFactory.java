@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.PlaybookAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -502,6 +503,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_CLUSTER_UPGRADE_CLUSTER)) {
             retval = new ClusterUpgradeAction();
+        }
+        else if (typeIn.equals(TYPE_PLAYBOOK)) {
+            retval = new PlaybookAction();
         }
         else {
             retval = new Action();
@@ -1381,5 +1385,10 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_NETWORK_CREATE =
             lookupActionTypeByLabel("virt.network_create");
+
+    /**
+     * The constant representing "Execute an Ansible playbook" [ID:521]
+     */
+    public static final ActionType TYPE_PLAYBOOK = lookupActionTypeByLabel("ansible.playbook");
 }
 
