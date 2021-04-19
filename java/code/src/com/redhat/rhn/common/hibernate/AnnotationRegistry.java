@@ -63,6 +63,9 @@ import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.ansible.AnsiblePath;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
+import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.suse.manager.model.clusters.Cluster;
 
@@ -141,6 +144,9 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(Cluster.class);
         ANNOTATION_CLASSES.add(MaintenanceSchedule.class);
         ANNOTATION_CLASSES.add(MaintenanceCalendar.class);
+        ANNOTATION_CLASSES.add(AnsiblePath.class);
+        ANNOTATION_CLASSES.add(InventoryPath.class);
+        ANNOTATION_CLASSES.add(PlaybookPath.class);
     }
 
     /**
