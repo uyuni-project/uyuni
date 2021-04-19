@@ -10968,14 +10968,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Error during applying the bootstrap state, message: {0}</source>
         <target state="translated">Errore durante l'applicazione dello stato di inizializzazione, messaggio: {0}</target>
       </trans-unit>
-    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
-        <source>Retracted packages: {0}</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
-        <source>Retracted patches: {0}</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+    </body>
   </file>
 </xliff>
