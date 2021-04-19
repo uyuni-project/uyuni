@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 10:24+0000\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-07 19:20+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -27,10 +27,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -42,107 +43,10 @@ msgstr ""
 "す。\n"
 "                   組織の管理者にお問い合わせください。"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "無効なユーザー名とパスワードの組み合わせです"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "ユーザー名 `%s' は予約されていません"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Email アドレスが指定されていません"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "ユーザー名は %d 文字未満にしてください"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Email アドレスは %s 文字以内にしてください"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "パスワードは少なくとも %d 文字に以上にしてください"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "パスワードは %d 文字以内にしてください"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "パスワードに `%s' 文字が含まれています"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "%s で終わるユーザー名は登録できません"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "null org にあるパッケージを管理する権限が与えられていません"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "%s org 内のパッケージの管理は許可されていません"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "管理に関する作業を行う許可がありません"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
-"せん"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               %s アカウントは本サーバー上では無効化されています。\n"
-"                   詳しくは組織の管理者にお問い合わせください。"
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this server."
@@ -166,16 +70,6 @@ msgstr "パッケージ名が期待されています、次ではありません
 #, python-format
 msgid "Expected a package, not: %s"
 msgstr "パッケージが期待されています、 次ではありません: %s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "無効な動作値タイプ %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "動作 %s はサーバー %s に属していません"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -238,34 +132,52 @@ msgstr "無効な値 '%s' − %s (%s)"
 msgid "Invalid value %s (%s)"
 msgstr "無効な値  %s (%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "システムが {PRODUCT_NAME} データベース内には見つかりませんでした"
-
-#: ../server/apacheAuth.py:66
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完全なプロキシ認証トークンです: %s"
+msgid "Invalid action value type %s (%s)"
+msgstr "無効な動作値タイプ %s (%s)"
 
-#: ../server/apacheAuth.py:84
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
+msgid "Action %s does not belong to server %s"
+msgstr "動作 %s はサーバー %s に属していません"
 
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "プロキシ認証が拒否されました"
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "null org にあるパッケージを管理する権限が与えられていません"
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/importlib/userAuth.py:103
 #, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "無効な RPM パッケージ %s を要求しています"
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "%s org 内のパッケージの管理は許可されていません"
 
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "パッケージが見つかりません"
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "管理に関する作業を行う許可がありません"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
+"せん"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               %s アカウントは本サーバー上では無効化されています。\n"
+"                   詳しくは組織の管理者にお問い合わせください。"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "アーキテクチャ `%s' はサポートされていません"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -313,10 +225,89 @@ msgstr "キックスタートセッションの不一致です"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
 
-#: ../server/rhnServer/server_class.py:97
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+
+#: ../server/rhnHandler.py:75
 #, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "アーキテクチャ `%s' はサポートされていません"
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "無効なユーザー名とパスワードの組み合わせです"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "ユーザー名 `%s' は予約されていません"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Email アドレスが指定されていません"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "ユーザー名は %d 文字未満にしてください"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Email アドレスは %s 文字以内にしてください"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "パスワードは少なくとも %d 文字に以上にしてください"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "パスワードは %d 文字以内にしてください"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "パスワードに `%s' 文字が含まれています"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "%s で終わるユーザー名は登録できません"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完全なプロキシ認証トークンです: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "プロキシ認証が拒否されました"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -420,6 +411,16 @@ msgstr ""
 "インしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "無効な RPM パッケージ %s を要求しています"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "パッケージが見つかりません"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1097,18 +1098,198 @@ msgstr "トレースバック: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s の書式は少なくとも YYYYMMDD であるべきです。\n"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 電子メールでログを送信 +++"
-
-#: ../satellite_tools/reposync.py:121
+#: ../satellite_tools/messages.py:26
 #, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同期。 %s からのレポート"
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"エラー: ステップ %s の実行時にエラー:\n"
+"%s\n"
 
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありまし"
+"た。\n"
+"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行して"
+"ありますか？\n"
+"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを"
+"行ない、\n"
+"       一時リポジトリー (%s) 内に再投入してください。\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"エラー: 情報を同期する際に問題がありました。\n"
+"       エラーメッセージ: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"エラー: ISS Master と通信する際に問題がありました。\n"
+"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
+"しく動作\n"
+"       することをご確認のうえ、やり直してください。\n"
+"       エラーメッセージ: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
+"ます。\n"
+"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
+"期させる\n"
+"       必要があります。このトランザクションに対する親が見つかりません:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"エラー: このチャンネルセット内でチャンネルを同期するためのエンタイトルメント"
+"がありません。\n"
+"SUSE Manager に連絡を行なってください\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  エラー: デバイスに十分な空き容量 (%s KB) がありません。"
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s フェッチ成功: %s (%s バイト)"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    廃止されたパッケージ:  %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   合計サイズ: %s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      %s / %s をダウンロード済みです。予測される残り時間: %s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    フェッチ未成功: %s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   RPM フェッチ概要: %s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       成功: %d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       失敗:  %d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       消滅: %d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   *関連する* パッケージのメタデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   エラータのデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   キックスタートのデータを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   キックスタートのツリーファイルを取得／処理しています: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   *関連する* パッケージのメタデータを取り込んでいます: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * 警告: この処理には時間がかかるかもしれません。"
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "チャンネルに対してパッケージのリンクを作成しています"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   *関連する* エラータを取り込んでいます: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   取り込むべき新しいキックスタート可能なツリーはありません"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1131,6 +1312,19 @@ msgstr ""
 "\"%s\" を開いたり書き込んだりする\n"
 "ことができません:\n"
 "%s"
+
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 電子メールでログを送信 +++"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同期。 %s からのレポート"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1913,199 +2107,6 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"エラー: ステップ %s の実行時にエラー:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"エラー: 一時リポジトリーからチャンネルデータにアクセスする際に問題がありまし"
-"た。\n"
-"       このディレクトリに対して、チャンネル ISO からの全てのデータを移行して"
-"ありますか？\n"
-"       チャンネル ISO の内容が全て移行されていることを確認して再度マウントを"
-"行ない、\n"
-"       一時リポジトリー (%s) 内に再投入してください。\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"エラー: 情報を同期する際に問題がありました。\n"
-"       エラーメッセージ: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"エラー: ISS Master と通信する際に問題がありました。\n"
-"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
-"しく動作\n"
-"       することをご確認のうえ、やり直してください。\n"
-"       エラーメッセージ: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
-"ます。\n"
-"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
-"期させる\n"
-"       必要があります。このトランザクションに対する親が見つかりません:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"エラー: このチャンネルセット内でチャンネルを同期するためのエンタイトルメント"
-"がありません。\n"
-"SUSE Manager に連絡を行なってください\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  エラー: デバイスに十分な空き容量 (%s KB) がありません。"
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s フェッチ成功: %s (%s バイト)"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    廃止されたパッケージ:  %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr "   合計サイズ: %s"
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      %s / %s をダウンロード済みです。予測される残り時間: %s"
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    フェッチ未成功: %s"
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   RPM フェッチ概要: %s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr "       成功: %d"
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr "       失敗:  %d"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr "       消滅: %d"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   *関連する* パッケージのメタデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   エラータのデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   キックスタートのデータを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   キックスタートのツリーファイルを取得／処理しています: %s (%s)"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   *関連する* パッケージのメタデータを取り込んでいます: %s (%s)"
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * 警告: この処理には時間がかかるかもしれません。"
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr "チャンネルに対してパッケージのリンクを作成しています"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   *関連する* エラータを取り込んでいます: %s (%s)"
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr "   取り込むべき新しいキックスタート可能なツリーはありません"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "キックスタート可能なツリーを取り込んでいます (%d)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "キックスタート可能なツリーを取り込みました (%d)"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "クラッシュ情報が正しくないか、不完全です"
