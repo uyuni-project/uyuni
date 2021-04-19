@@ -2124,12 +2124,12 @@
         </context-group>
         <target>시스템 재부팅</target>
       </trans-unit>
-      <trans-unit id="clientcert.update_client_cert" xml:space="preserve" approved="yes">
+      <trans-unit id="clientcert.update_client_cert" xml:space="preserve">
         <source>Update of system certificate</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>시스템 인증서 업데이트</target>
+        <target>시스템 인증서 업데이트 </target>
       </trans-unit>
       <trans-unit id="rollback.config" xml:space="preserve">
         <source>Enable or Disable RPM Transaction Rollback</source>
