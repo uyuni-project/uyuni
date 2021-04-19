@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-13 17:54+0000\n"
+"POT-Creation-Date: 2021-04-06 10:59+0000\n"
 "PO-Revision-Date: 2021-03-26 18:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -261,7 +261,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:113
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
@@ -278,8 +278,8 @@ msgstr "Annulla"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/project/project.js:97
 #: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
 #: ../html/src/manager/images/image-profiles.tsx:212
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -1974,7 +1974,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
@@ -2070,15 +2070,15 @@ msgstr ""
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:90
+#: ../html/src/manager/content-management/project/project.js:89
 msgid "Content Lifecycle Project - {0}"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.js:104
 msgid "Delete Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/project/project.js:106
+#: ../html/src/manager/content-management/project/project.js:105
 msgid "Are you sure you want to delete project"
 msgstr ""
 
@@ -2207,12 +2207,12 @@ msgstr ""
 msgid "enable module"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:56
 msgid "Build ({0})"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:59
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:119
 #: ../html/src/manager/images/image-build.tsx:416
 #: ../html/src/manager/images/image-profiles.tsx:200
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2221,29 +2221,23 @@ msgstr ""
 msgid "Build"
 msgstr "Crea"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
 msgid "Build Project"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:77
 msgid "Building project.."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:94
 msgid "Version Message"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:99
 msgid "Version {0} history"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
+#: ../html/src/manager/content-management/shared/components/panels/build/build.js:128
 msgid "Version {0} successfully built into {1}"
 msgstr ""
 
@@ -2440,19 +2434,15 @@ msgstr ""
 msgid "This channel is recommended"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
-msgid "has unsynchronized patches"
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:91
 msgid "Sources"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:109
 msgid "Sources edited successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:134
 #: ../html/src/manager/images/image-build.tsx:299
 msgid "Software Channels"
 msgstr ""
