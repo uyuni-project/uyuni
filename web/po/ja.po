@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-18 01:59+0000\n"
+"POT-Creation-Date: 2021-03-17 18:58+0000\n"
 "PO-Revision-Date: 2021-03-18 01:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -719,32 +719,24 @@ msgstr "モニタリングの無効化が正常に完了しました。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
-"Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されていま"
-"す。 "
+msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
-"Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されていま"
-"す。 "
+msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
-"います。 "
+msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
-"います。 "
+msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -962,17 +954,13 @@ msgstr "なぜ一覧に全ての製品が表示されていないのですか？
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
-"(ミラークレデンシャル) に直接結びついています。"
+msgstr "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 (ミラークレデンシャル) に直接結びついています。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr ""
-"存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
-"報を追加していることをご確認ください。"
+msgstr "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -2538,33 +2526,25 @@ msgstr "リクエストされたページ {0} が見つかりませんでした�
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr ""
-"このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い"
-"方に誤りがないかを再度確認してください。"
+msgstr "このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
-"リンクをたどっている場合、リンクが正しくないか、古くなっている可能性がありま"
-"す。戻るボタンを押して戻ってください。 "
+msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンを押して戻ってください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
-"ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動して"
-"いる場合もあります。 "
+msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
-"このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージ"
-"と共にご連絡ください。 "
+msgstr "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージと共にご連絡ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
