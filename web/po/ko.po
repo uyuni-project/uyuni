@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 10:24+0000\n"
+"POT-Creation-Date: 2021-03-17 11:17+0100\n"
 "PO-Revision-Date: 2021-03-07 02:35+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -38,30 +38,6 @@ msgid ""
 msgstr ""
 "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 "
 "사용하십시오."
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "필수 필드 입력: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "잘못된 필드 유형: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:200
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
-"니다."
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -319,6 +295,34 @@ msgstr "프로젝트 삭제"
 msgid "Are you sure you want to delete project "
 msgstr "프로젝트를 삭제하시겠습니까 "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "필수 필드 입력: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "잘못된 필드 유형: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:200
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
+"니다."
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " 그룹 없음"
@@ -343,14 +347,10 @@ msgid "Save"
 msgstr "저장"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:25
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
 msgid "Formulas"
 msgstr "수식"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
@@ -375,6 +375,7 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -383,7 +384,6 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:45
 msgid "Submit"
 msgstr "제출"
@@ -400,8 +400,8 @@ msgid "Users"
 msgstr "사용자"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
 #: ../html/src/components/input/form.stories.js:26
+#: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
 msgstr "이름"
 
@@ -410,12 +410,12 @@ msgstr "이름"
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
+#: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/InputBase.test.tsx:41
 #: ../html/src/components/input/InputBase.test.tsx:67
 #: ../html/src/components/input/InputBase.test.tsx:95
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr "2자 이상"
 
@@ -615,8 +615,8 @@ msgstr "모두 선택"
 #: ../html/src/components/table/TableDataHandler.tsx:324
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/nets/network-properties.js:438
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
@@ -1540,6 +1540,31 @@ msgstr "구독을 찾을 수 없습니다."
 msgid "Your subscriptions"
 msgstr "구독"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+msgid "Edit Virtual Host Managers"
+msgstr "가상 호스트 관리자 편집"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+msgid "Subscription Matching"
+msgstr "구독 일치"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+msgid "Subscriptions"
+msgstr "구독"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "일치하지 않는 제품"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+msgid "Pins "
+msgstr "핀 "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+msgid "Messages "
+msgstr "메시지 "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "제품 이름"
@@ -1556,11 +1581,6 @@ msgstr "시스템 목록 표시"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "일치하는 제품을 찾지 못했습니다."
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
-msgid "Unmatched Products"
-msgstr "일치하지 않는 제품"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1592,26 +1612,6 @@ msgstr "가상 머신 생성"
 #, fuzzy
 msgid "Per-instance"
 msgstr "인스턴스"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
-msgid "Edit Virtual Host Managers"
-msgstr "가상 호스트 관리자 편집"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
-msgid "Subscription Matching"
-msgstr "구독 일치"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
-msgid "Subscriptions"
-msgstr "구독"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
-msgid "Pins "
-msgstr "핀 "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
-msgid "Messages "
-msgstr "메시지 "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -2379,18 +2379,6 @@ msgstr "빌드되지 않음"
 msgid "Built time"
 msgstr "빌드된 시간"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr "전역 필터를 로드하는 중..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr "프로젝트 필터를 업데이트하는 중..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
-msgstr "새 필터 만들기"
-
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
 msgstr "{0} 필터 편집"
@@ -2423,6 +2411,18 @@ msgstr "필터링"
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "거부를 사용하여 이전에 제외한 경우에도 전체 소스에서 선택"
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr "전역 필터를 로드하는 중..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr "프로젝트 필터를 업데이트하는 중..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
+msgstr "새 필터 만들기"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
@@ -2566,6 +2566,26 @@ msgid ""
 "this group"
 msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
+msgid "Formula saved. Apply the "
+msgstr "수식이 저장되었습니다. 다음을 적용: "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
+msgid "Invalid target type."
+msgstr "잘못된 대상 유형입니다."
+
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
 msgid ""
@@ -2573,26 +2593,6 @@ msgid ""
 "the "
 msgstr ""
 "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 선택한 후 다음을 적용: "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
-msgid "Invalid target type."
-msgstr "잘못된 대상 유형입니다."
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
-msgid "Formula saved. Apply the "
-msgstr "수식이 저장되었습니다. 다음을 적용: "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -3563,8 +3563,8 @@ msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할�
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 #: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
 msgid "Configuration"
 msgstr "구성"
 
@@ -4451,10 +4451,6 @@ msgstr "현재 컨텍스트"
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 파일"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
-msgid "No Virtual Host Managers."
-msgstr "가상 호스트 관리자가 없습니다."
-
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
 msgstr "파일 기반"
@@ -4499,17 +4495,21 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr "libvirt python 모듈을 설치하십시오."
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
+msgid "No Virtual Host Managers."
+msgstr "가상 호스트 관리자가 없습니다."
 
-#: ../html/src/manager/virtualization/ListTab.js:144
-msgid "{0} selected"
-msgstr "{0}개 선택됨"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
+msgid "Toggle full size"
+msgstr "전체 크기 전환"
 
-#: ../html/src/manager/virtualization/ListTab.js:244
-msgid "Action Status"
-msgstr "작업 상태"
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
+msgid "Something went wrong, connection is closed"
+msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
+msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/nets/network-properties.js:167
@@ -4553,18 +4553,6 @@ msgstr "커널 옵션"
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "그래픽"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
-msgid "Toggle full size"
-msgstr "전체 크기 전환"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
-msgid "Something went wrong, connection is closed"
-msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
-msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
@@ -4659,6 +4647,10 @@ msgstr "파일"
 msgid "Format"
 msgstr "형식"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
+msgstr "디스크"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "소스 저장소 풀"
@@ -4674,10 +4666,6 @@ msgstr "디스크 크기(GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "소스 템플릿 이미지 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr "디스크"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
@@ -4701,6 +4689,18 @@ msgstr "네트워크"
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "필드 지우기"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr "libvirt python 모듈을 설치하십시오."
+
+#: ../html/src/manager/virtualization/ListTab.js:144
+msgid "{0} selected"
+msgstr "{0}개 선택됨"
+
+#: ../html/src/manager/virtualization/ListTab.js:244
+msgid "Action Status"
+msgstr "작업 상태"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 #, fuzzy
@@ -4947,6 +4947,44 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+msgid "Virtual network with no connection to other networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+msgid "SR-IOV pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr ""
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 #, fuzzy
 msgid "Network address"
@@ -5051,44 +5089,6 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
