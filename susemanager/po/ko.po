@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-17 11:17+0100\n"
-"PO-Revision-Date: 2021-03-07 03:27+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: 2021-03-18 09:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "ko/>\n"
@@ -33,7 +33,7 @@ msgid ""
 "to #{@product_name} from a #{@product_name} compatible server.</p>"
 msgstr ""
 "<p>#{@product_name}을(를) 처음부터 설정하거나 #{@product_name} 호환 서버에서 "
-"#{@product_name}(으)로 마이그레이션할지를 선택하십시오."
+"#{@product_name}(으)로 마이그레이션할지를 선택하십시오.</p>"
 
 #: ../yast/susemanager_ask.rb:65
 msgid "#{@product_name} Setup"
@@ -45,7 +45,7 @@ msgstr "조직"
 
 #: ../yast/susemanager_cert.rb:45
 msgid "Organization Unit"
-msgstr "조직 구성 단위"
+msgstr "조직 단위"
 
 #: ../yast/susemanager_cert.rb:47
 msgid "City"
@@ -79,7 +79,7 @@ msgid ""
 msgstr ""
 "<p>SSL 인증서를 생성하기 위해 필요한 데이터를 여기에 입력하십시오. 인증서는 "
 "SUSE Manager Proxy 서버로 연결, 브라우저의 HTTPS 프로토콜 등과 같은 다양한 목"
-"적으로 사용됩니다."
+"적으로 사용됩니다.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
@@ -164,7 +164,7 @@ msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
-"관리자 이메일 주소를 <p>입력<b>하십시오</b>. #{@product_name}의 알림에서 사용"
+"<p><b>관리자 이메일 주소</b>를 입력하십시오. #{@product_name}의 알림에서 사용"
 "됩니다.</p>"
 
 #: ../yast/susemanager_manager.rb:152
@@ -343,7 +343,7 @@ msgid ""
 msgstr ""
 "<p>현재 구성 스크립트가 실행 중이며 잠시 시간이 걸립니다.</p>\n"
 "<p>스크립트 출력 및 발생할 수 있는 오류 출력은 이 화면에서 확인할 수 있습니"
-"다."
+"다.</p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"

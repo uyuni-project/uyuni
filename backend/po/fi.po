@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-01 10:58+0000\n"
-"PO-Revision-Date: 2020-12-31 00:37+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: 2021-03-23 15:57+0000\n"
 "Last-Translator: Tommi Nieminen <software@legisign.org>\n"
 "Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/backend/fi/"
 ">\n"
@@ -22,72 +22,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr ""
-
-#: ../server/importlib/userAuth.py:103
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgid "incomplete proxy authentication token: %s"
+msgstr "epätäydellinen välityspalvelintodennusmerkki: %s"
 
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr ""
-
-#: ../server/importlib/userAuth.py:144
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Lähetetty välityspalvelinallekirjoitus %s ei vastaa omaamme (%s)."
 
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "hylätty välityspalvelintodennus"
 
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr ""
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr ""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr ""
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr ""
-
-#: ../server/configFilesHandler.py:129
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -98,10 +51,23 @@ msgstr ""
 "                   Palvelin on passivoinut tilin %s.\n"
 "                   Apua saadaksesi ota yhteyttä Org-ylläpitäjääsi."
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Järjestelmääsi ei löytynyt {PRODUCT_NAME} -tietokannasta"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "ISS ei ole käytössä tällä palvelimella."
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Virheellinen arvo %s (%s)"
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Palvelin ”%s” ei ole aktivoinut ISS:ää."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Virheellinen järjestelmä/toimintatunniste-pari."
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -151,26 +117,17 @@ msgstr "Tietosuojailmoitus"
 
 #: ../server/handlers/xmlrpc/registration.py:1148
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Tuoteparametriksi odotettiin sanastoa"
 
 #: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Virheellinen arvo ”%s” kohteelle %s (%s)"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Virheellinen järjestelmä/toimintatunniste-pari."
-
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Virheellinen toiminnon arvon tyyppi %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Toiminto %s ei kuulu palvelimeen %s"
+msgid "Invalid value %s (%s)"
+msgstr "Virheellinen arvo %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -182,151 +139,166 @@ msgstr "Odotettiin paketin nimeä, ei: %s"
 msgid "Expected a package, not: %s"
 msgstr "Odotettiin pakettia, ei: %s"
 
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "ISS ei ole käytössä tällä palvelimella."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Palvelin ”%s” ei ole aktivoinut ISS:ää."
+msgid "Invalid action value type %s (%s)"
+msgstr "Virheellinen toiminnon arvon tyyppi %s (%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Järjestelmääsi ei löytynyt {PRODUCT_NAME} -tietokannasta"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr ""
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "Username `%s' has not been reserved"
-msgstr ""
+msgid "Action %s does not belong to server %s"
+msgstr "Toiminto %s ei kuulu palvelimeen %s"
 
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr ""
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Sinulla ei ole käyttöoikeuksia tyhjän organisaation paketinhallintaan"
 
-#: ../server/rhnUser.py:509
+#: ../server/importlib/userAuth.py:103
 #, python-format
-msgid "username should be at least %d characters"
-msgstr ""
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Sinulla ei ole käyttöoikeuksia paketinhallintaan alueella %s"
 
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr ""
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Sinulla ei ole käyttöoikeuksia ylläpitotehtäviin"
 
-#: ../server/rhnUser.py:523
+#: ../server/importlib/userAuth.py:144
 #, python-format
-msgid "username = `%s', invalid character `%s'"
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
+"Sinulla ei ole käyttöoikeuksia kanavan %s hallintaan tai kanavaa ei ole "
+"olemassa"
 
-#: ../server/rhnUser.py:542
+#: ../server/importlib/userAuth.py:204
 #, python-format
-msgid "Please limit your e-mail address to %s chars"
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
 msgstr ""
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr ""
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr ""
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr ""
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr ""
+"\n"
+"               Tili %s on passivoitu tässä palvelimessa.\n"
+"               Tarvitessasi lisätietoa ota yhteyttä verkkoalueen ylläpitoon."
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Aja tälle asiakkaalle pääkäyttäjänä rhn_register"
 
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Palvelua ei ole otettu järjestelmäprofiilissa käyttöön: ”%s”"
 
-#: ../server/apacheAuth.py:66
+#: ../server/rhnServer/server_class.py:97
 #, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "epätäydellinen välityspalvelintodennusmerkki: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Lähetetty välityspalvelinallekirjoitus %s ei vastaa omaamme (%s)."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "hylätty välityspalvelintodennus"
+msgid "Architecture `%s' is not supported"
+msgstr "Arkkitehtuuria ”%s” ei tueta"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "Merkkiin ”%s” on kytketty useampi peruskanava"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Ristiriitaisia peruskanavia"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Palvelinta ei voitu lisätä ryhmään %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Kohteen %s enimmäiskäyttömäärä saavutettu"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"Eri pohjaoikeuksisten uudelleenrekisteröintimerkkien pinoamista ei tueta"
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Merkkiä ”%s” ei löydy"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Merkkien verkkoalueet eivät sovi yhteen"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "Epäjohdonmukaisuus Kickstart-istunnossa"
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "Uudelleenrekisteröintimerkkien pinoamista ei tueta"
 
-#: ../server/rhnServer/server_class.py:97
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Virheellinen käyttäjätunnuksen ja salasanan yhdistelmä"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
 #, python-format
-msgid "Architecture `%s' is not supported"
-msgstr ""
+msgid "Username `%s' has not been reserved"
+msgstr "Käyttäjätunnusta ”%s” ei ole varattu"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Sähköpostiosoitetta ei ole määritetty"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "käyttäjätunnuksen tulee olla vähintään %d merkkiä pitkä"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "käyttäjätunnus ei saa olla yli %d merkkiä pitkä"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "käyttäjätunnus = ”%s”, virheellinen merkki ”%s”"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Rajoita sähköpostiosoitteesi %s merkkiin"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "salasanan tulisi olla vähintään %d merkkiä pitkä"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Salasana ei saa olla yli %d merkkiä pitkä"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "salasana sisältää merkin ”%s”"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "käyttäjätunnuksen tulisi olla vähintään %d merkkiä pitkä"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Käyttäjätunnuksia, jotka päättyvät %s, ei voi rekisteröidä"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -334,11 +306,13 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"Tililläsi ei ole pääsyä yhteenkään sopivaan kanavaan "
+"(julkaisu=”%(release)s”, arkkitehtuuri=”%(arch)s”)%(www_activation)s"
 
 #: ../server/rhnChannel.py:2014
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Tilauskäyttöoikeudet eivät riitä julkaisuun (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -346,7 +320,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Järjestelmä on rekisteröity mutta passiivinen"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
@@ -357,6 +331,11 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Virheellinen arkkitehtuurin ja käyttöjärjestelmäjulkaisun yhdistelmä (%s, "
+"%s).\n"
+"Järjestelmä on rekisteröity mutta ei saa päivityksiä, koska peruskanavaa\n"
+"ei voitu tilata. Saadaksesi apua ota yhteyttä verkkoalueen ylläpitoon.\n"
 
 #: ../server/rhnChannel.py:2286
 #, python-format
@@ -367,6 +346,11 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Järjestelmän rekisteröinti onnistui, mutta palveluun ei ole vielä\n"
+"  oikeutta. Oikeuttaaksesi järjestelmälle palvelun, kirjaudu sivustoon:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2294
 #, python-format
@@ -378,87 +362,130 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Järjestelmän rekisteröinti onnistui mutta palveluoikeuksia ei ollut\n"
+"  saatavilla. Oikeuttaaksesi järjestelmälle palvelun, kirjaudu sivustoon:\n"
+"\n"
+"  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Pyydettiin virheellistä RPM-pakettia %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Pakettia ei löytynyt"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Vastaanotettiin virheellinen pyyntö (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"TÄRKEÄ VIESTI:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Suoritettaessa ”%s” saatiin\n"
+"%s: %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Virheellinen URI %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Tämä ei vaikuta kelvolliselta käyttäjätunnukselta."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Virheellinen käyttäjätunnuksen ja salasanan yhdistelmä."
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Tunnus on jo varattu tai salasana on virheellinen."
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
-msgstr ""
+msgstr "Käyttöoikeus hylätty."
 
 #: ../common/rhnException.py:57
 msgid "Object not found."
-msgstr ""
+msgstr "Kohdetta ei löytynyt."
 
 #: ../common/rhnException.py:58
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "Virheellinen järjestelmän digitaalinen tunniste."
 
 #: ../common/rhnException.py:59
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Virheelliset käyttöoikeustiedot."
 
 #: ../common/rhnException.py:60
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "Tietokannasta ei saatu käyttäjän tietoja."
 
 #: ../common/rhnException.py:61
 msgid "Valid username required."
-msgstr ""
+msgstr "Vaaditaan kelvollinen käyttäjätunnus."
 
 #: ../common/rhnException.py:62
 msgid "Valid password required."
-msgstr ""
+msgstr "Vaaditaan kelvollinen salasana."
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Käyttäjätunnuksen vähimmäispituuden rikkomus."
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Salasanan vähimmäispituuden rikkomus."
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
-msgstr ""
+msgstr "Käyttäjätunnuksessa on virheellisiä merkkejä."
 
 #: ../common/rhnException.py:66
 msgid "File not found."
-msgstr ""
+msgstr "Tiedostoa ei löytynyt."
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
+msgstr "Arkkitehtuurin ja käyttöjärjestelmäversion yhdistelmää ei tueta."
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "Tietokannasta ei saatu järjestelmän tietoja."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "Funktiolle välitettiin virheellisiä parametreja."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "Pyydettyä tietuetta ei saatu."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
-msgstr ""
+msgstr "Tietokantatietuetta ei voitu päivittää."
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr ""
+msgstr "Ei-tuettu palvelinarkkitehtuuri."
 
 #: ../common/rhnException.py:73
 #, python-format
@@ -944,200 +971,10 @@ msgstr ""
 msgid "TRACEBACK: %s"
 msgstr ""
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr ""
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr ""
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr ""
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
@@ -1197,9 +1034,17 @@ msgstr ""
 msgid "Skipping..."
 msgstr ""
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:520
@@ -1873,4 +1718,186 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2523
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr ""
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr ""
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr ""
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr ""
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
 msgstr ""

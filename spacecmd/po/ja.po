@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-03-14 11:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -2329,7 +2329,7 @@ msgstr "system_addconfigchannels: システムに設定チャンネルを追加"
 #: ../src/spacecmd/group.py:532
 #, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "使用方法: group_listsystems グループ"
+msgstr "使用方法: kickstart_addchildchannels プロファイル <チャンネル ...>"
 
 #: ../src/spacecmd/group.py:570
 #, fuzzy

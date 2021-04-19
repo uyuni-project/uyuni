@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
-"PO-Revision-Date: 2021-03-07 19:00+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: 2021-04-02 06:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -310,7 +310,7 @@ msgstr "사용 제한:            %s"
 #: ../src/spacecmd/activationkey.py:948
 #, python-format
 msgid "Deploy Config Channels: %s"
-msgstr "구성 채널 배포:"
+msgstr "구성 채널 배포: %s"
 
 #: ../src/spacecmd/activationkey.py:950
 #, python-format
@@ -382,7 +382,7 @@ msgstr "사용법: activationkey_setusagelimit KEY <usage limit>"
 
 #: ../src/spacecmd/activationkey.py:1102
 msgid "usage: activationkey_setusagelimit KEY unlimited "
-msgstr "사용법: activationkey_setusagelimit KEY unlimited "
+msgstr "사용법: activationkey_setusagelimit KEY 무제한 "
 
 #: ../src/spacecmd/activationkey.py:1132
 #, python-format
@@ -526,7 +526,7 @@ msgstr "활성화 키"
 #: ../src/spacecmd/activationkey.py:1464
 #, python-format
 msgid "Key to clone: %s"
-msgstr "복제할 키:"
+msgstr "복제할 키: %s"
 
 #: ../src/spacecmd/activationkey.py:1468
 msgid "Original Key:"
@@ -785,7 +785,7 @@ msgstr "사용법: configchannel_filedetails CHANNEL FILE [REVISION]"
 #: ../src/spacecmd/configchannel.py:252
 #, python-format
 msgid "Invalid revision: %s"
-msgstr "유효하지 않은 리비전:"
+msgstr "유효하지 않은 리비전: %s"
 
 #: ../src/spacecmd/configchannel.py:258
 #, python-format
@@ -805,7 +805,7 @@ msgstr "유형:     %s"
 #: ../src/spacecmd/configchannel.py:278
 #, python-format
 msgid "Revision: %s"
-msgstr "리비전:"
+msgstr "리비전: %s"
 
 #: ../src/spacecmd/configchannel.py:279
 #, python-format
@@ -876,7 +876,7 @@ msgstr ""
 #: ../src/spacecmd/configchannel.py:349 ../src/spacecmd/group.py:268
 #, python-format
 msgid "Could not create output directory: %s"
-msgstr "출력 디렉토리를 생성할 수 없음:"
+msgstr "출력 디렉토리를 생성할 수 없음: %s"
 
 #: ../src/spacecmd/configchannel.py:362
 #, python-format
@@ -994,7 +994,7 @@ msgstr "사용법: configchannel_delete CHANNEL ..."
 #: ../src/spacecmd/configchannel.py:534
 #, python-format
 msgid "No channels matched argument(s): %s"
-msgstr "인수와 일치하는 채널 없음:"
+msgstr "인수와 일치하는 채널 없음: %s"
 
 #: ../src/spacecmd/configchannel.py:540 ../src/spacecmd/softwarechannel.py:737
 msgid "Delete these channels [y/N]:"
@@ -1151,7 +1151,7 @@ msgstr "선택:"
 #: ../src/spacecmd/softwarechannel.py:1375
 #, python-format
 msgid "%s is not a valid channel"
-msgstr "%s은(는) 유효한 문자가 아닙니다."
+msgstr "%s은(는) 유효한 채널이 아닙니다."
 
 #: ../src/spacecmd/configchannel.py:819
 msgid "Unable to obtain a valid channel. Aborting."
@@ -1313,7 +1313,7 @@ msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 #: ../src/spacecmd/configchannel.py:1252
 #, python-format
 msgid "Error saving exported config channels to file: %s"
-msgstr "내보낸 구성 채널을 파일로 저장하는 중 오류:"
+msgstr "내보낸 구성 채널을 파일로 저장하는 중 오류: %s"
 
 #: ../src/spacecmd/configchannel.py:1261
 msgid "configchannel_import: import config channel(s) from json file"
@@ -1346,7 +1346,7 @@ msgstr "구성 채널 %s이(가) 이미 있습니다! 건너뜁니다!"
 #: ../src/spacecmd/configchannel.py:1300
 #, python-format
 msgid "Importing config channel  %s"
-msgstr "cc를 생성합니다. cc 이름에서 조직 접두어를 삭제해야 함"
+msgstr "구성 채널 %s을(를) 가져오는 중"
 
 #: ../src/spacecmd/configchannel.py:1315
 #, python-format
@@ -1412,7 +1412,7 @@ msgstr "구성 채널"
 #: ../src/spacecmd/configchannel.py:1417
 #, python-format
 msgid "Channel to clone: %s"
-msgstr "복제할 채널:"
+msgstr "복제할 채널: %s"
 
 #: ../src/spacecmd/configchannel.py:1421
 msgid "Channel to clone:"
@@ -1825,7 +1825,7 @@ msgstr "적용할 패치 없음"
 #. a summary of which errata we're going to apply
 #: ../src/spacecmd/errata.py:162
 msgid "Errata             Systems"
-msgstr "오류 시스템"
+msgstr "오류             시스템"
 
 #: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:231
 #: ../src/spacecmd/system.py:468 ../src/spacecmd/system.py:821
@@ -1967,7 +1967,7 @@ msgstr "삭제할 패치 없음"
 
 #: ../src/spacecmd/errata.py:471
 msgid "Erratum            Channels"
-msgstr "오류 채널"
+msgstr "오류            채널"
 
 #: ../src/spacecmd/errata.py:479
 msgid "Delete these patches [y/N]:"
@@ -1984,7 +1984,7 @@ msgstr "errata_publish: 채널에 패치 게시"
 
 #: ../src/spacecmd/errata.py:496
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
-msgstr "오류: errata_publish ERRATA|search:XXX <CHANNEL ...>"
+msgstr "사용법: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 
 #: ../src/spacecmd/errata.py:523
 msgid "No patches to publish"
@@ -2201,7 +2201,7 @@ msgstr "계속 [y/N]:"
 #: ../src/spacecmd/group.py:372 ../src/spacecmd/group.py:375
 #, python-format
 msgid "Updating description for group: %s"
-msgstr "다음 그룹에 대한 설명 업데이트:"
+msgstr "다음 그룹에 대한 설명 업데이트: %s"
 
 #: ../src/spacecmd/group.py:378
 #, python-format
@@ -2286,7 +2286,7 @@ msgstr "system_addconfigchannels: 시스템에 구성 채널 추가"
 #: ../src/spacecmd/group.py:532
 #, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "사용법: group_listsystems GROUP"
+msgstr "사용법: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 
 #: ../src/spacecmd/group.py:570
 #, fuzzy
@@ -2861,7 +2861,7 @@ msgstr "사용법: kickstart_removepackages PROFILE <PACKAGE ...>"
 
 #: ../src/spacecmd/kickstart.py:1871
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
-msgstr "kickstart_listscripts: 킥스사트 프로파일을 위한 스크립트 나열"
+msgstr "kickstart_listscripts: 킥스타트 프로파일을 위한 스크립트 나열"
 
 #: ../src/spacecmd/kickstart.py:1873
 msgid "usage: kickstart_listscripts PROFILE"
@@ -3028,15 +3028,15 @@ msgid ""
 "Note : KSPROFILE list is optional, default is to export ALL"
 msgstr ""
 "사용법: kickstart_export <KSPROFILE>... [옵션])\n"
-"options:\n"
+"옵션:\n"
 "    -f outfile.json : 출력 파일 이름을 지정합니다. 기본값은 단일 킥스타트를 "
 "내보내는 경우\n"
 "                      <KSPROFILE>.json, 여러 킥스타트의 경우 profiles.json\n"
 "                      또는 KSPROFILE이 지정되지 않은 경우 ks_all.json입니"
 "다.\n"
-"                      예: (export ALL)\n"
+"                      예: (모두 내보내기)\n"
 "\n"
-"참고 : KSPROFILE 목록은 선택 사항이며, 기본값은 export ALL입니다."
+"참고 : KSPROFILE 목록은 선택 사항이며, 기본값은 모두 내보내기입니다."
 
 #: ../src/spacecmd/kickstart.py:2273
 #, python-format
@@ -3567,7 +3567,7 @@ msgstr "%s에 가입한 시스템 없음"
 
 #: ../src/spacecmd/misc.py:935
 msgid "Is this ok [y/N]:"
-msgstr "계속하시겠습니까"
+msgstr "계속하시겠습니까 [y/N]:"
 
 #: ../src/spacecmd/org.py:48
 msgid "org_create: Create an organization"
@@ -3761,12 +3761,12 @@ msgstr "다음 이후 트러스트됨:          %s"
 #: ../src/spacecmd/org.py:323
 #, python-format
 msgid "Systems Migrated From:  %i"
-msgstr "시스템 마이그레이션 출처:"
+msgstr "시스템 마이그레이션 출처:  %i"
 
 #: ../src/spacecmd/org.py:324
 #, python-format
 msgid "Systems Migrated To:    %i"
-msgstr "시스템 마이그레이션 대상:"
+msgstr "시스템 마이그레이션 대상:    %i"
 
 #: ../src/spacecmd/org.py:326
 msgid "Channels Consumed"
@@ -4407,15 +4407,15 @@ msgstr "SID:"
 
 #: ../src/spacecmd/scap.py:160
 msgid "Action_ID:"
-msgstr "Action_ID:"
+msgstr "작업_ID:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "OSCAP_Parameters:"
-msgstr "OSCAP_Parameters:"
+msgstr "OSCAP_파라미터:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Test_Result:"
-msgstr "Test_Result:"
+msgstr "테스트_결과:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Benchmark:"
@@ -4423,7 +4423,7 @@ msgstr "벤치마크:"
 
 #: ../src/spacecmd/scap.py:164
 msgid "Benchmark_Version:"
-msgstr "Benchmark_Version:"
+msgstr "벤치마크_버전:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Profile:"
@@ -4431,15 +4431,15 @@ msgstr "프로파일:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Profile_Title:"
-msgstr "Profile_Title:"
+msgstr "프로파일_제목:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Start_Time:"
-msgstr "Start_Time:"
+msgstr "시작_시간:"
 
 #: ../src/spacecmd/scap.py:167
 msgid "End_Time:"
-msgstr "End_Time:"
+msgstr "종료_시간:"
 
 #: ../src/spacecmd/scap.py:168
 msgid "Errors:"
@@ -4464,7 +4464,7 @@ msgid ""
 "To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
 msgstr ""
 "\n"
-"ssm에서 시스템을 사용하여면 앞에 \"ssm\" 키워드를 전달하십시오. 예:"
+"ssm에서 시스템을 사용하려면 앞에 \"ssm\" 키워드를 전달하십시오. 예:"
 
 #: ../src/spacecmd/schedule.py:89
 msgid "ID      Date                 C    F    P     Action"
@@ -5331,7 +5331,7 @@ msgstr "GPG 확인"
 
 #: ../src/spacecmd/softwarechannel.py:972
 msgid "Disable GPG Check [y/N]? "
-msgstr "GPG 확인을 비호라성화하시겠습니까? [y/N] "
+msgstr "GPG 확인을 비활성화하시겠습니까? [y/N] "
 
 #: ../src/spacecmd/softwarechannel.py:1024
 #: ../src/spacecmd/softwarechannel.py:1122
@@ -5649,7 +5649,7 @@ msgstr "소스 채널 %s이(가) 없습니다!"
 #: ../src/spacecmd/softwarechannel.py:1760
 #, python-format
 msgid "dest channel %s does not exist!"
-msgstr "대상 채널  %s이(가) 이미 있습니다!"
+msgstr "대상 채널 %s이(가) 이미 있습니다!"
 
 #: ../src/spacecmd/softwarechannel.py:1813
 msgid "No patch to add"
@@ -6161,7 +6161,7 @@ msgstr "패키지를 가져오는 중"
 #: ../src/spacecmd/softwarechannel.py:2917
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
-msgstr "%s 패얼에서 수신된 %s 패키지가 손상되었습니다. 컨텐트가 너무 짧습니다."
+msgstr "%s 채널에서 수신된 %s 패키지가 손상되었습니다. 컨텐트가 너무 짧습니다."
 
 #: ../src/spacecmd/softwarechannel.py:2921
 #, python-format
@@ -6352,7 +6352,7 @@ msgstr "유효하지 않은 검색 필드"
 
 #: ../src/spacecmd/system.py:352
 msgid "system_runscript: Schedule a script to run on the list of"
-msgstr "system_runscript: 다음 목록에서 실행할 스크립트 예약:"
+msgstr "system_runscript: 다음 목록에서 실행할 스크립트 예약"
 
 #: ../src/spacecmd/system.py:353
 msgid "                  systems provided"
@@ -6536,7 +6536,7 @@ msgstr "메모리"
 #: ../src/spacecmd/system.py:643
 #, python-format
 msgid "RAM:  %i"
-msgstr "RAM:"
+msgstr "RAM:  %i"
 
 #: ../src/spacecmd/system.py:644
 #, python-format
@@ -6700,7 +6700,7 @@ msgstr "사용법: system_listupgrades <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:1176
 msgid "system_listinstalledpackages: List the installed packages on a"
-msgstr "system_listinstalledpackages: 다음에 설치된 패키지 나열:"
+msgstr "system_listinstalledpackages: 다음에 설치된 패키지 나열"
 
 #: ../src/spacecmd/system.py:1177
 msgid "                              system"
@@ -7540,7 +7540,7 @@ msgstr "Missing_in_channel"
 
 #: ../src/spacecmd/system.py:3839
 msgid "system_comparewithchannel: Compare the installed packages on a"
-msgstr "system_comparewithchannel: 다음에 설치된 패키지 비교:"
+msgstr "system_comparewithchannel: 다음에 설치된 패키지 비교"
 
 #: ../src/spacecmd/system.py:3840
 msgid "                           system with those in the channels it is"

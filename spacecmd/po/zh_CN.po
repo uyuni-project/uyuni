@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -2287,7 +2287,7 @@ msgstr "system_addconfigchannels：将配置频道添加到系统"
 #: ../src/spacecmd/group.py:532
 #, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "用法：group_listsystems GROUP"
+msgstr "用法：kickstart_addchildchannels PROFILE <频道 ...>"
 
 #: ../src/spacecmd/group.py:570
 #, fuzzy

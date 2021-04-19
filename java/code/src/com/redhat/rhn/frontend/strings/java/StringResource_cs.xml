@@ -991,7 +991,7 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Search" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Search" xml:space="preserve">
         <source>Search</source>
         <target>Hledat</target>
         <context-group name="ctx">
@@ -1170,7 +1170,7 @@
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="User List" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="User List" xml:space="preserve">
         <source>User List</source>
         <target>Seznam uživatelů</target>
         <context-group name="ctx">
@@ -2524,9 +2524,9 @@ and try again.
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="script.run" xml:space="preserve">
+      <trans-unit approved="yes" id="script.run" xml:space="preserve">
         <source>Run an arbitrary script</source>
-        <target />
+        <target>Spustit libovolný skript</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -2647,9 +2647,9 @@ and try again.
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="errataconfirm.nosystems" xml:space="preserve">
+      <trans-unit approved="yes" id="errataconfirm.nosystems" xml:space="preserve">
         <source>You must select at least one system.</source>
-        <target />
+        <target>Musíte vybrat alespoň jeden systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
@@ -10620,7 +10620,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Systems Grouping</source>
         <target />
       </trans-unit>
-      <trans-unit id="Salt Entitled Servers" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
         <target>Salt</target>
         <context-group name="ctx">
@@ -10850,7 +10850,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Filter {0} created successfully</source>
         <target state="new" />
       </trans-unit>
-      <trans-unit id="contentmanagement.filter_updated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
         <target state="final">Filtr {0} úspěšně aktualizován</target>
       </trans-unit>

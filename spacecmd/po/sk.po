@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
-"PO-Revision-Date: 2021-03-10 13:38+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: 2021-04-18 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
 ">\n"
@@ -26,7 +26,7 @@ msgstr "activationkey_addpackages: Pridať balíky k aktivačnému kľúču"
 
 #: ../src/spacecmd/activationkey.py:51
 msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: activationkey_addpackages KĽÚČ <BALÍK ...>"
 
 #: ../src/spacecmd/activationkey.py:84
 msgid "activationkey_removepackages: Remove packages from an activation key"
@@ -34,7 +34,7 @@ msgstr "activationkey_removepackages: Odstrániť balíky z aktivačného kľú�
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: activationkey_removepackages KĽÚČ <BALÍK ...>"
 
 #: ../src/spacecmd/activationkey.py:122
 msgid "activationkey_addgroups: Add groups to an activation key"
@@ -42,7 +42,7 @@ msgstr "activationkey_addgroups: Pridať skupiny k aktivačnému kľúču"
 
 #: ../src/spacecmd/activationkey.py:123
 msgid "usage: activationkey_addgroups KEY <GROUP ...>"
-msgstr ""
+msgstr "použitie: activationkey_addgroups KĽÚČ <SKUPINA ...>"
 
 #: ../src/spacecmd/activationkey.py:161
 msgid "activationkey_removegroups: Remove groups from an activation key"
@@ -50,7 +50,7 @@ msgstr "activationkey_removegroups: Odstrániť skupiny z aktivačného kľúča
 
 #: ../src/spacecmd/activationkey.py:162
 msgid "usage: activationkey_removegroups KEY <GROUP ...>"
-msgstr ""
+msgstr "použitie: activationkey_removegroups KĽÚČ <SKUPINA ...>"
 
 #: ../src/spacecmd/activationkey.py:209
 msgid "activationkey_addentitlements: Add entitlements to an activation key"
@@ -58,7 +58,7 @@ msgstr "activationkey_addentitlements: Pridať oprávnenia k aktivačnému kľú
 
 #: ../src/spacecmd/activationkey.py:211
 msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "použitie: activationkey_addentitlements KĽÚČ <OPRÁVNENIE ...>"
 
 #: ../src/spacecmd/activationkey.py:246
 msgid ""
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:248
 msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
-msgstr ""
+msgstr "použitie: activationkey_removeentitlements KĽÚČ <OPRÁVNENIE ...>"
 
 #: ../src/spacecmd/activationkey.py:286
 msgid "activationkey_addchildchannels: Add child channels to an activation key"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:288
 msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_addchildchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:338
 msgid ""
@@ -89,7 +89,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:340
 msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_removechildchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:377
 msgid ""
@@ -101,7 +101,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:379
 msgid "usage: activationkey_listchildchannels KEY"
-msgstr ""
+msgstr "použitie: activationkey_listchildchannels KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:408
 msgid ""
@@ -112,7 +112,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:410
 msgid "usage: activationkey_listbasechannel KEY"
-msgstr ""
+msgstr "použitie: activationkey_listbasechannel KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:438
 msgid "activationkey_listgroups: List the groups for an activation key"
@@ -120,7 +120,7 @@ msgstr "activationkey_listgroups: Vypísať zoznam skupín pre aktivačný kľú
 
 #: ../src/spacecmd/activationkey.py:440
 msgid "usage: activationkey_listgroups KEY"
-msgstr ""
+msgstr "použitie: activationkey_listgroups KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:471
 msgid ""
@@ -130,7 +130,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:473
 msgid "usage: activationkey_listentitlements KEY"
-msgstr ""
+msgstr "použitie: activationkey_listentitlements KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:502
 msgid "activationkey_listpackages: List the packages for an activation key"
@@ -138,7 +138,7 @@ msgstr "activationkey_listpackages: Vypísať zoznam balíkov pre aktivačný k�
 
 #: ../src/spacecmd/activationkey.py:504
 msgid "usage: activationkey_listpackages KEY"
-msgstr ""
+msgstr "použitie: activationkey_listpackages KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:536
 msgid ""
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:538
 msgid "usage: activationkey_listconfigchannels KEY"
-msgstr ""
+msgstr "použitie: activationkey_listconfigchannels KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:571
 msgid ""
@@ -167,6 +167,11 @@ msgid ""
 "  -t add channels to the top of the list\n"
 "  -b add channels to the bottom of the list"
 msgstr ""
+"použitie: activationkey_addconfigchannels KĽÚČ <KANÁL ...> [voľby])\n"
+"\n"
+"voľby:\n"
+"  -t pridá kanály na začiatok zoznamu\n"
+"  -b pridá kanály na koniec zoznamu"
 
 #: ../src/spacecmd/activationkey.py:626
 msgid ""
@@ -178,21 +183,23 @@ msgstr ""
 
 #: ../src/spacecmd/activationkey.py:628
 msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_removeconfigchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/activationkey.py:667
 msgid ""
 "activationkey_setconfigchannelorder: Set the ranked order of configuration "
 "channels"
 msgstr ""
+"activationkey_setconfigchannelorder: Nastavte poradie podľa hodnotenia "
+"konfiguračných kanálov"
 
 #: ../src/spacecmd/activationkey.py:669
 msgid "usage: activationkey_setconfigchannelorder KEY"
-msgstr ""
+msgstr "použitie: activationkey_setconfigchannelorder KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:699
 msgid "New Configuration Channels:"
-msgstr ""
+msgstr "Nové konfiguračné kanály:"
 
 #: ../src/spacecmd/activationkey.py:713
 msgid "activationkey_create: Create an activation key"
@@ -209,32 +216,40 @@ msgid ""
 "  -u set key as universal default\n"
 "  -e [enterprise_entitled,virtualization_host]"
 msgstr ""
+"použitie: activationkey_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -d POPIS\n"
+"  -b ZÁKLADNÝ_KANÁL\n"
+"  -u nastaviť kľúč ako univerzálny predvolený\n"
+"  -e [podnikový_oprávnený,virtualizačný_hostiteľ]"
 
 #: ../src/spacecmd/activationkey.py:735
 msgid "Name (blank to autogenerate):"
-msgstr ""
+msgstr "Názov (prázdne na automatické vygenerovanie):"
 
 #: ../src/spacecmd/activationkey.py:736
 msgid "Description [None]:"
-msgstr ""
+msgstr "Popis [Žiadny]:"
 
 #: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
 #: ../src/spacecmd/softwarechannel.py:928
 msgid "Base Channels"
-msgstr ""
+msgstr "Základné kanály"
 
 #: ../src/spacecmd/activationkey.py:744
 msgid "Base Channel (blank for default):"
-msgstr ""
+msgstr "Základný kanál (prázdne pre predvolený):"
 
 #: ../src/spacecmd/activationkey.py:752
 #, python-format
 msgid "%s Entitlement [y/N]:"
-msgstr ""
+msgstr "%s Oprávnenie [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:756
 msgid "Universal Default [y/N]:"
-msgstr ""
+msgstr "Univerzálny predvolený [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:783
 #, python-format
@@ -247,13 +262,13 @@ msgstr "activationkey_delete: Vymazať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:792
 msgid "usage: activationkey_delete KEY"
-msgstr ""
+msgstr "použitie: activationkey_delete KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:814 ../src/spacecmd/cryptokey.py:140
 #: ../src/spacecmd/cryptokey.py:198 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
-msgstr ""
+msgstr "Žiadny kľúč sa nezhoduje s argumentom %s"
 
 #: ../src/spacecmd/activationkey.py:820
 msgid "Delete activation key(s) [y/N]:"
@@ -261,62 +276,63 @@ msgstr "Vymazať aktivačný kľúč(e) [a/N]:"
 
 #: ../src/spacecmd/activationkey.py:833
 msgid "activationkey_list: List all activation keys"
-msgstr ""
+msgstr "activationkey_list: Vypísať zoznam všetkých aktivačných kľúčov"
 
 #: ../src/spacecmd/activationkey.py:834
 msgid "usage: activationkey_list"
-msgstr ""
+msgstr "použitie: activationkey_list"
 
 #: ../src/spacecmd/activationkey.py:858
 msgid "activationkey_listsystems: List systems registered with a key"
 msgstr ""
+"activationkey_listsystems: Vypísať zoznam systémov registrovaných s kľúčom"
 
 #: ../src/spacecmd/activationkey.py:859
 msgid "usage: activationkey_listsystems KEY"
-msgstr ""
+msgstr "použitie: activationkey_listsystems KĹÚČ"
 
 #: ../src/spacecmd/activationkey.py:882 ../src/spacecmd/activationkey.py:931
 #, python-format
 msgid "%s is not a valid activation key"
-msgstr ""
+msgstr "%s nie je platný aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:896
 msgid "activationkey_details: Show the details of an activation key"
-msgstr ""
+msgstr "activationkey_details: Zobraziť podrobnosti aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:897
 msgid "usage: activationkey_details KEY ..."
-msgstr ""
+msgstr "použitie: activationkey_details KĽÚČ ..."
 
 #: ../src/spacecmd/activationkey.py:944
 #, python-format
 msgid "Key:                    %s"
-msgstr ""
+msgstr "Kľúč:                    %s"
 
 #: ../src/spacecmd/activationkey.py:945
 #, python-format
 msgid "Description:            %s"
-msgstr ""
+msgstr "Popis:            %s"
 
 #: ../src/spacecmd/activationkey.py:946
 #, python-format
 msgid "Universal Default:      %s"
-msgstr ""
+msgstr "Univerzálny predvolený:      %s"
 
 #: ../src/spacecmd/activationkey.py:947
 #, python-format
 msgid "Usage Limit:            %s"
-msgstr ""
+msgstr "Limit použitia:            %s"
 
 #: ../src/spacecmd/activationkey.py:948
 #, python-format
 msgid "Deploy Config Channels: %s"
-msgstr ""
+msgstr "Nasadiť konfiguračné kanály: %s"
 
 #: ../src/spacecmd/activationkey.py:950
 #, python-format
 msgid "Contact Method:         %s"
-msgstr ""
+msgstr "Kontaktná metóda:         %s"
 
 #: ../src/spacecmd/activationkey.py:953 ../src/spacecmd/kickstart.py:427
 #: ../src/spacecmd/system.py:3066
@@ -330,11 +346,11 @@ msgstr "Konfiguračné kanály"
 
 #: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3080
 msgid "Entitlements"
-msgstr ""
+msgstr "Oprávnenia"
 
 #: ../src/spacecmd/activationkey.py:972 ../src/spacecmd/system.py:3086
 msgid "System Groups"
-msgstr ""
+msgstr "Systémové skupiny"
 
 #: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
 #: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1391
@@ -347,59 +363,68 @@ msgstr "Balíky"
 #: ../src/spacecmd/activationkey.py:992
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr ""
+"activationkey_enableconfigdeployment: Povoliť nasadenie konfiguračného kanála"
 
 #: ../src/spacecmd/activationkey.py:994
 msgid "usage: activationkey_enableconfigdeployment KEY"
-msgstr ""
+msgstr "použitie: activationkey_enableconfigdeployment KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1021
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr ""
+"activationkey_disableconfigdeployment: Zakázať nasadenie konfiguračného "
+"kanála"
 
 #: ../src/spacecmd/activationkey.py:1023
 msgid "usage: activationkey_disableconfigdeployment KEY"
-msgstr ""
+msgstr "použitie: activationkey_disableconfigdeployment KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1050
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr ""
+"activationkey_setbasechannel: Nastaviť základný kanál aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1052
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
-msgstr ""
+msgstr "použitie: activationkey_setbasechannel KĽÚČ KANÁL"
 
 #: ../src/spacecmd/activationkey.py:1099
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
 msgstr ""
+"activationkey_setusagelimit: Nastavte limit použitia aktivačného kľúča, môže "
+"byť číslo alebo \"unlimited\""
 
 #: ../src/spacecmd/activationkey.py:1101
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
-msgstr ""
+msgstr "usage: activationkey_setusagelimit KĽÚČ <limit použitia>"
 
 #: ../src/spacecmd/activationkey.py:1102
 msgid "usage: activationkey_setusagelimit KEY unlimited "
-msgstr ""
+msgstr "použitie: activationkey_setusagelimit KĽÚČ unlimited "
 
 #: ../src/spacecmd/activationkey.py:1132
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
-msgstr ""
+msgstr "Nepodarilo sa previesť argument %s na celé číslo"
 
 #: ../src/spacecmd/activationkey.py:1154
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr ""
+"activationkey_setuniversaldefault: Nastaviť tento kľúč ako univerzálny "
+"predvolený"
 
 #: ../src/spacecmd/activationkey.py:1156
 msgid "usage: activationkey_setuniversaldefault KEY"
-msgstr ""
+msgstr "použitie: activationkey_setuniversaldefault KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1197
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr ""
+"activationkey_export: Exportovať aktivačné kľúč(e) do súboru vo formáte JSON"
 
 #: ../src/spacecmd/activationkey.py:1198
 msgid ""
@@ -413,71 +438,82 @@ msgid ""
 "\n"
 "Note : KEY list is optional, default is to export ALL keys "
 msgstr ""
+"použitie: activationkey_export [voľby] [<KĽÚČ> ...])\n"
+"\n"
+"voľby:\n"
+"    -f outfile.json : určuje výstupný názov súboru, predvolené hodnoty sú "
+"<KĽÚČ>.json,\n"
+"                      ak sa exportuje jeden kľúč, akeys.json pre viac "
+"kľúčov,\n"
+"                      alebo akey_all.json, ak nie je zadaný žiadny KĽÚČ "
+"(exportovať VŠETKY)\n"
+"\n"
+"Poznámka : Zoznam KĽÚČOV je voliteľný, predvolený je export VŠETKÝCH kľúčov "
 
 #. Get the key details
 #: ../src/spacecmd/activationkey.py:1214
 #, python-format
 msgid "Getting activation key details for %s"
-msgstr ""
+msgstr "Získanie podrobností aktivačného kľúča pre %s"
 
 #: ../src/spacecmd/activationkey.py:1268
 #, python-format
 msgid "Exporting ALL activation keys to %s"
-msgstr ""
+msgstr "Exportovanie VŠETKÝCH aktivačných kľúčov do %s"
 
 #: ../src/spacecmd/activationkey.py:1277
 msgid "Invalid activation key passed"
-msgstr ""
+msgstr "Zadaný neplatný aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1292
 #, python-format
 msgid "Exporting key %s to %s"
-msgstr ""
+msgstr "Exportovanie kľúča %s do %s"
 
 #: ../src/spacecmd/activationkey.py:1301
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "Súbor %s existuje, potvrďte prepísanie súboru?  (a/n)"
 
 #: ../src/spacecmd/activationkey.py:1306
 msgid "Failed to save exported keys to file: {}"
-msgstr ""
+msgstr "Zlyhalo uloženie exportovaných kľúčov do súboru: {}"
 
 #: ../src/spacecmd/activationkey.py:1315
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
-msgstr ""
+msgstr "activationkey_import: importovať aktivačné kľúč(e) zo súboru(ov) JSON"
 
 #: ../src/spacecmd/activationkey.py:1316
 msgid "usage: activationkey_import <JSONFILE ...>"
-msgstr ""
+msgstr "použitie: activationkey_import <SÚBORJSON ...>"
 
 #: ../src/spacecmd/activationkey.py:1325
 msgid "No filename passed"
-msgstr ""
+msgstr "Nebol zadaný žiadny názov súboru"
 
 #: ../src/spacecmd/activationkey.py:1334
 #, python-format
 msgid "Could not read json data from %s"
-msgstr ""
+msgstr "Nepodarilo sa prečítať dáta json z %s"
 
 #: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
 #, python-format
 msgid "Failed to import key %s"
-msgstr ""
+msgstr "Nepodarilo sa importovať kľúč %s"
 
 #: ../src/spacecmd/activationkey.py:1353
 #, python-format
 msgid "%s already exists! Skipping!"
-msgstr ""
+msgstr "%s už existuje! Preskočenie!"
 
 #: ../src/spacecmd/activationkey.py:1408
 #, python-format
 msgid "System group %s doesn't exist, creating"
-msgstr ""
+msgstr "Systémová skupina %s neexistuje, vytvorenie"
 
 #: ../src/spacecmd/activationkey.py:1429
 msgid "activationkey_clone: Clone an activation key"
-msgstr ""
+msgstr "activationkey_clone: Klonovať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1430
 msgid ""
@@ -496,128 +532,147 @@ msgid ""
 "                   clone description, base-channel label, child-channel\n"
 "                   labels, config-channel names "
 msgstr ""
+"príklady použitia:\n"
+"                 activationkey_clone foo_key -c bar_key\n"
+"                 activationkey_clone foo_key1 foo_key2 -c prefix\n"
+"                 activationkey_clone foo_key -x \"s/foo/bar\"\n"
+"                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
+"\n"
+"voľby:\n"
+"  -c NÁZOV_KLONU  : Názov výsledného kľúča, považuje sa za predponu pre "
+"viac\n"
+"                   kľúčov\n"
+"  -x \"s/foo/bar\" : Voliteľná náhrada regulárneho výrazu, nahrádza foo s "
+"bar\n"
+"                   v popise klonu, označenie základného kanála, označenie "
+"kanálov\n"
+"                   potomkov, názvy konfiguračných kanálov "
 
 #: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3061
 msgid "Activation Keys"
-msgstr ""
+msgstr "Aktivačné kľúče"
 
 #: ../src/spacecmd/activationkey.py:1464
 #, python-format
 msgid "Key to clone: %s"
-msgstr ""
+msgstr "Kľúč na klonovanie: %s"
 
 #: ../src/spacecmd/activationkey.py:1468
 msgid "Original Key:"
-msgstr ""
+msgstr "Originálny kľúč:"
 
 #: ../src/spacecmd/activationkey.py:1470
 msgid "Cloned Key:"
-msgstr ""
+msgstr "Klonovaný kľúč:"
 
 #: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1425
 msgid "Error - must specify either -c or -x options!"
-msgstr ""
+msgstr "Chyba - musia sa zadať voľby -c alebo -x!"
 
 #: ../src/spacecmd/activationkey.py:1478
 #, python-format
 msgid "Key %s already exists"
-msgstr ""
+msgstr "Kľúč %s už existuje"
 
 #: ../src/spacecmd/activationkey.py:1482
 msgid "Error no activationkey to clone passed!"
-msgstr ""
+msgstr "Chyba, nebol zadaný žiadny aktivačný kľúč na klonovanie!"
 
 #: ../src/spacecmd/activationkey.py:1536
 #, python-format
 msgid "Found child channel %s key %s, %s"
-msgstr ""
+msgstr "Nájdený kľúč %s kanála potomka %s, %s"
 
 #: ../src/spacecmd/activationkey.py:1538
 msgid " does not exist, skipping!"
-msgstr ""
+msgstr " neexistuje, preskakuje sa!"
 
 #: ../src/spacecmd/activationkey.py:1545
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr ""
+"Výsledkom nahradenia regulárneho výrazu je nový základný kanál %s, ktorý "
+"neexistuje!"
 
 #: ../src/spacecmd/activationkey.py:1561
 #, python-format
 msgid "Found config channel %s for key %s, %s "
-msgstr ""
+msgstr "Nájdený konfiguračný kanál %s pre kľúč %s, %s "
 
 #: ../src/spacecmd/activationkey.py:1563
 msgid "does not exist, skipping!"
-msgstr ""
+msgstr "neexistuje, preskakuje sa!"
 
 #: ../src/spacecmd/activationkey.py:1581
 #, python-format
 msgid "Cloning key %s as %s"
-msgstr ""
+msgstr "Klonovanie kľúča %s ako %s"
 
 #: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1477
 #, python-format
 msgid "Failed to clone %s to %s"
-msgstr ""
+msgstr "Nepodarilo sa klonovať %s do %s"
 
 #: ../src/spacecmd/activationkey.py:1603
 msgid "no activationkey label given"
-msgstr ""
+msgstr "nie je dané označenie aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1606
 msgid "invalid activationkey label "
-msgstr ""
+msgstr "neplatné označenie aktivačného kľúča "
 
 #: ../src/spacecmd/activationkey.py:1623
 msgid "activationkey_diff: Diff activation keys"
-msgstr ""
+msgstr "activationkey_diff: Porovnať aktivačné kľúče"
 
 #: ../src/spacecmd/activationkey.py:1625
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
-msgstr ""
+msgstr "použitie: activationkey_diff ZDROJOVÝ_KĽÚČ CIEĽOVÝ_KĽÚČ"
 
 #: ../src/spacecmd/activationkey.py:1674
 msgid "activationkey_disable: Disable an activation key"
-msgstr ""
+msgstr "activationkey_disable: Zakázať aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1676
 msgid "usage: activationkey_disable KEY [KEY ...]"
-msgstr ""
+msgstr "použitie: activationkey_disable KĽÚČ [KĽÚČ ...]"
 
 #: ../src/spacecmd/activationkey.py:1708
 msgid "activationkey_enable: Enable an activation key"
-msgstr ""
+msgstr "activationkey_enable: Povoliť aktivačný kľúč"
 
 #: ../src/spacecmd/activationkey.py:1710
 msgid "usage: activationkey_enable KEY [KEY ...]"
-msgstr ""
+msgstr "použitie: activationkey_enable KĽÚČ [KĽÚČ ...]"
 
 #: ../src/spacecmd/activationkey.py:1742
 msgid "activationkey_setdescription: Set the activation key description"
-msgstr ""
+msgstr "activationkey_setdescription: Nastaviť popis aktivačného kľúča"
 
 #: ../src/spacecmd/activationkey.py:1744
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
-msgstr ""
+msgstr "použitie: activationkey_setdescription KĽÚČ POPIS"
 
 #: ../src/spacecmd/activationkey.py:1776
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
 msgstr ""
+"activationkey_setcontactmethod: Nastaviť kontaktnú metódu, ktorá sa má "
+"použiť pre systémy registrované s týmto kľúčom."
 
 #: ../src/spacecmd/activationkey.py:1778 ../src/spacecmd/system.py:4150
 msgid "Available contact methods: "
-msgstr ""
+msgstr "Dostupné kontaktné metódy: "
 
 #: ../src/spacecmd/activationkey.py:1779
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
-msgstr ""
+msgstr "použitie: activationkey_setcontactmethod KĽÚČ KONTAKTNÁ_METÓDA"
 
 #: ../src/spacecmd/api.py:45
 msgid "api: call server API with arguments directly"
-msgstr ""
+msgstr "api: volať API servera priamo s argumentmi"
 
 #: ../src/spacecmd/api.py:46
 #, python-format
@@ -637,192 +692,208 @@ msgid ""
 "  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
 "      channel.software.listAllPackages\n"
 msgstr ""
+"použitie: api [voľby] REŤAZEC_API)\n"
+"\n"
+"voľby:\n"
+"  -A, --args  Argumenty pre API iné ako id sedenia v reťazcoch oddelených\n"
+"              čiarkou alebo vo výraze JSON\n"
+"  -F, --format   Výstupný formát\n"
+"  -o, --output   Výstupný súbor\n"
+"\n"
+"príklady:\n"
+"  api api.getApiCallList\n"
+"  api --args \"sysgroup_A\" systemgroup.listSystems\n"
+"  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
+"      channel.software.listAllPackages\n"
 
 #: ../src/spacecmd/api.py:82
 msgid "Could not open to write: "
-msgstr ""
+msgstr "Nepodarilo sa otvoriť na zápis: "
 
 #: ../src/spacecmd/api.py:83
 msgid "Fallback output to stdout"
-msgstr ""
+msgstr "Núdzový výstup na stdout"
 
 #: ../src/spacecmd/api.py:92
 msgid "No such API: "
-msgstr ""
+msgstr "Žiadne také API: "
 
 #: ../src/spacecmd/configchannel.py:51
 msgid "configchannel_list: List all configuration channels"
-msgstr ""
+msgstr "configchannel_list: Vypísať zoznam všetkých konfiguračných kanálov"
 
 #: ../src/spacecmd/configchannel.py:52
 msgid "usage: configchannel_list"
-msgstr ""
+msgstr "použitie: configchannel_list"
 
 #: ../src/spacecmd/configchannel.py:69
 msgid "configchannel_listsystems: List the systems subscribed to a"
-msgstr ""
+msgstr "configchannel_listsystems: Vypísať zoznam systémov prihlásených k"
 
 #: ../src/spacecmd/configchannel.py:70 ../src/spacecmd/configchannel.py:105
 msgid "                           configuration channel"
-msgstr ""
+msgstr "                           konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:71
 msgid "usage: configchannel_listsystems CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_listsystems KANÁL"
 
 #: ../src/spacecmd/configchannel.py:80 ../src/spacecmd/configchannel.py:115
 #: ../src/spacecmd/group.py:496 ../src/spacecmd/group.py:549
 #: ../src/spacecmd/group.py:588
 msgid "This version of the API doesn't support this method"
-msgstr ""
+msgstr "Táto verzia API nepodporuje túto metódu"
 
 #: ../src/spacecmd/configchannel.py:104
 #, fuzzy
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "activationkey_listgroups: Vypísať zoznam skupín pre aktivačný kľúč"
+msgstr "configchannel_listsystems: Vypísať zoznam systémov prihlásených k"
 
 #: ../src/spacecmd/configchannel.py:106
+#, fuzzy
 msgid "usage: configchannel_listgroups CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_listsystems KANÁL"
 
 #: ../src/spacecmd/configchannel.py:139
 msgid "configchannel_listfiles: List the files in a config channel"
-msgstr ""
+msgstr "configchannel_listfiles: Vypísať zoznam súborov v konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:140
 msgid "usage: configchannel_listfiles CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_listfiles KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:169
 msgid "configchannel_forcedeploy: Forces a redeployment"
-msgstr ""
+msgstr "configchannel_forcedeploy: Vynúti opätovné nasadenie"
 
 #: ../src/spacecmd/configchannel.py:170
 msgid "                           of files within this channel"
-msgstr ""
+msgstr "                           súborov v tomto kanáli"
 
 #: ../src/spacecmd/configchannel.py:171
 msgid "                           on all subscribed systems"
-msgstr ""
+msgstr "                           vo všetkých prihlásených systémoch"
 
 #: ../src/spacecmd/configchannel.py:172
 msgid "usage: configchannel_forcedeploy CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_forcedeploy KANÁL"
 
 #: ../src/spacecmd/configchannel.py:194
 msgid "No files within selected configchannel."
-msgstr ""
+msgstr "Žiadne súbory vo vybranom konfiguračnom kanáli."
 
 #: ../src/spacecmd/configchannel.py:200
 msgid "Channel has no subscribed Systems"
-msgstr ""
+msgstr "Kanál nemá žiadne prihlásené systémy"
 
 #: ../src/spacecmd/configchannel.py:203
 msgid "Force deployment of the following configfiles:"
-msgstr ""
+msgstr "Vynútiť nasadenie nasledujúcich konfiguračných súborov:"
 
 #: ../src/spacecmd/configchannel.py:206
 msgid ""
 "\n"
 "On these systems:"
 msgstr ""
+"\n"
+"Na týchto systémoch:"
 
 #: ../src/spacecmd/configchannel.py:209
 msgid "Really force deployment [y/N]:"
-msgstr ""
+msgstr "Naozaj vynútiť nasadenie [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:218
 msgid "configchannel_filedetails: Show the details of a file"
-msgstr ""
+msgstr "configchannel_filedetails: Zobraziť podrobnosti súboru"
 
 #: ../src/spacecmd/configchannel.py:219
 msgid "in a configuration channel"
-msgstr ""
+msgstr "v konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:220
 msgid "usage: configchannel_filedetails CHANNEL FILE [REVISION]"
-msgstr ""
+msgstr "použitie: configchannel_filedetails KANÁL SÚBOR [REVÍZIA]"
 
 #: ../src/spacecmd/configchannel.py:252
 #, python-format
 msgid "Invalid revision: %s"
-msgstr ""
+msgstr "Neplatná revízia: %s"
 
 #: ../src/spacecmd/configchannel.py:258
 #, python-format
 msgid "%s is not in this configuration channel"
-msgstr ""
+msgstr "%s nie je v tomto konfiguračnom kanáli"
 
 #: ../src/spacecmd/configchannel.py:276
 #, python-format
 msgid "Path:     %s"
-msgstr ""
+msgstr "Cesta:     %s"
 
 #: ../src/spacecmd/configchannel.py:277
 #, python-format
 msgid "Type:     %s"
-msgstr ""
+msgstr "Typ:     %s"
 
 #: ../src/spacecmd/configchannel.py:278
 #, python-format
 msgid "Revision: %s"
-msgstr ""
+msgstr "Revízia: %s"
 
 #: ../src/spacecmd/configchannel.py:279
 #, python-format
 msgid "Created:  %s"
-msgstr ""
+msgstr "Vytvorený:  %s"
 
 #: ../src/spacecmd/configchannel.py:280
 #, python-format
 msgid "Modified: %s"
-msgstr ""
+msgstr "Zmenený: %s"
 
 #: ../src/spacecmd/configchannel.py:284 ../src/spacecmd/configchannel.py:686
 #, python-format
 msgid "Target Path:     %s"
-msgstr ""
+msgstr "Cieľová cesta:     %s"
 
 #: ../src/spacecmd/configchannel.py:287 ../src/spacecmd/configchannel.py:716
 #, python-format
 msgid "Owner:           %s"
-msgstr ""
+msgstr "Vlastník:           %s"
 
 #: ../src/spacecmd/configchannel.py:288 ../src/spacecmd/configchannel.py:717
 #, python-format
 msgid "Group:           %s"
-msgstr ""
+msgstr "Skupina:           %s"
 
 #: ../src/spacecmd/configchannel.py:289 ../src/spacecmd/configchannel.py:718
 #, python-format
 msgid "Mode:            %s"
-msgstr ""
+msgstr "Režim:            %s"
 
 #: ../src/spacecmd/configchannel.py:291 ../src/spacecmd/configchannel.py:687
 #: ../src/spacecmd/configchannel.py:720
 #, python-format
 msgid "SELinux Context: %s"
-msgstr ""
+msgstr "Kontext SELinux: %s"
 
 #: ../src/spacecmd/configchannel.py:294
 #, python-format
 msgid "SHA256:          %s"
-msgstr ""
+msgstr "SHA256:          %s"
 
 #: ../src/spacecmd/configchannel.py:295 ../src/spacecmd/configchannel.py:719
 #, python-format
 msgid "Binary:          %s"
-msgstr ""
+msgstr "Binárny:          %s"
 
 #: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:732
 #: ../src/spacecmd/configchannel.py:982 ../src/spacecmd/kickstart.py:1905
 #: ../src/spacecmd/snippet.py:162
 msgid "Contents"
-msgstr ""
+msgstr "Obsah"
 
 #: ../src/spacecmd/configchannel.py:309
 msgid "configchannel_backup: backup a config channel"
-msgstr ""
+msgstr "configchannel_backup: zálohovať konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:310
 msgid ""
@@ -830,62 +901,66 @@ msgid ""
 "\n"
 "OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL\n"
 msgstr ""
+"použitie: configchannel_backup KANÁL [VÝST_ADR])\n"
+"\n"
+"VÝST_ADR predvolená hodnota je $HOME/spacecmd-backup/configchannel/YYYY-MM-"
+"DD/KANÁL\n"
 
 #: ../src/spacecmd/configchannel.py:349 ../src/spacecmd/group.py:268
 #, python-format
 msgid "Could not create output directory: %s"
-msgstr ""
+msgstr "Nepodarilo sa vytvoriť výstupný adresár: %s"
 
 #: ../src/spacecmd/configchannel.py:362
 #, python-format
 msgid "Could not create \"%s\" file: %s"
-msgstr ""
+msgstr "Nepodarilo sa vytvoriť súbor \"%s\": %s"
 
 #: ../src/spacecmd/configchannel.py:368
 #, python-format
 msgid "Output Path:   %s"
-msgstr ""
+msgstr "Výstupná cesta:   %s"
 
 #: ../src/spacecmd/configchannel.py:407
 msgid "configchannel_details: Show the details of a config channel"
-msgstr ""
+msgstr "configchannel_details: Zobraziť podrobnosti konfiguračného kanála"
 
 #: ../src/spacecmd/configchannel.py:408
 msgid "usage: configchannel_details CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_details KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:438 ../src/spacecmd/group.py:520
 #: ../src/spacecmd/kickstart.py:416
 #, python-format
 msgid "Label:       %s"
-msgstr ""
+msgstr "Označenie:       %s"
 
 #: ../src/spacecmd/configchannel.py:439 ../src/spacecmd/group.py:521
 #: ../src/spacecmd/kickstart.py:415
 #, python-format
 msgid "Name:        %s"
-msgstr ""
+msgstr "Názov:        %s"
 
 #: ../src/spacecmd/configchannel.py:440 ../src/spacecmd/cryptokey.py:215
 #: ../src/spacecmd/group.py:522 ../src/spacecmd/system.py:679
 #, python-format
 msgid "Description: %s"
-msgstr ""
+msgstr "Popis: %s"
 
 #: ../src/spacecmd/configchannel.py:441 ../src/spacecmd/cryptokey.py:216
 #: ../src/spacecmd/group.py:523 ../src/spacecmd/kickstart.py:502
 #: ../src/spacecmd/kickstart.py:1901
 #, python-format
 msgid "Type:        %s"
-msgstr ""
+msgstr "Typ:        %s"
 
 #: ../src/spacecmd/configchannel.py:444
 msgid "Files"
-msgstr ""
+msgstr "Súbory"
 
 #: ../src/spacecmd/configchannel.py:454
 msgid "configchannel_create: Create a configuration channel of specific type"
-msgstr ""
+msgstr "configchannel_create: Vytvoriť konfiguračný kanál špecifického typu"
 
 #: ../src/spacecmd/configchannel.py:455
 msgid ""
@@ -897,6 +972,13 @@ msgid ""
 "  -d DESCRIPTION\n"
 "  -t TYPE('normal,'state')"
 msgstr ""
+"použitie: configchannel_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -l OZNAČENIE\n"
+"  -d POPIS\n"
+"  -t TYP('normal,'state')"
 
 #: ../src/spacecmd/configchannel.py:474 ../src/spacecmd/custominfo.py:55
 #: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:72
@@ -919,128 +1001,129 @@ msgstr "Popis:"
 
 #: ../src/spacecmd/configchannel.py:477
 msgid "Type [normal, state]:"
-msgstr ""
+msgstr "Typ [normal, state]:"
 
 #: ../src/spacecmd/configchannel.py:484
 msgid "Only [normal/state] values are acceptable for type"
-msgstr ""
+msgstr "Iba hodnoty [normal/state] sú prípustné pre typ"
 
 #: ../src/spacecmd/configchannel.py:488 ../src/spacecmd/distribution.py:110
 #: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
 msgid "A name is required"
-msgstr ""
+msgstr "Názov je povinný"
 
 #: ../src/spacecmd/configchannel.py:497
 msgid "Only [normal/state] values are acceptable for --type parameter"
-msgstr ""
+msgstr "Iba hodnoty [normal/state] sú prípustné pre parameter --type"
 
 #: ../src/spacecmd/configchannel.py:512
 msgid "configchannel_delete: Delete a configuration channel"
-msgstr ""
+msgstr "configchannel_delete: Vymazať konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:513
 msgid "usage: configchannel_delete CHANNEL ..."
-msgstr ""
+msgstr "použitie: configchannel_delete KANÁL ..."
 
 #: ../src/spacecmd/configchannel.py:534
 #, python-format
 msgid "No channels matched argument(s): %s"
-msgstr ""
+msgstr "Žiadny kanály sa nezhodujú s argumentom(mi): %s"
 
 #: ../src/spacecmd/configchannel.py:540 ../src/spacecmd/softwarechannel.py:737
 msgid "Delete these channels [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto kanály [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:584
 msgid "Symlink [y/N]:"
-msgstr ""
+msgstr "Symbolický odkaz [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:588
 msgid "Target Path:"
-msgstr ""
+msgstr "Cieľová cesta:"
 
 #: ../src/spacecmd/configchannel.py:589
 msgid "SELinux Context [none]:"
-msgstr ""
+msgstr "Kontext SELinux [žiadny]:"
 
 #: ../src/spacecmd/configchannel.py:597
 msgid "Directory [y/N]:"
-msgstr ""
+msgstr "Adresár [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:606
 #, python-format
 msgid "Owner [%s]:"
-msgstr ""
+msgstr "Vlastník [%s]:"
 
 #: ../src/spacecmd/configchannel.py:607
 #, python-format
 msgid "Group [%s]:"
-msgstr ""
+msgstr "Skupina [%s]:"
 
 #: ../src/spacecmd/configchannel.py:608
 #, python-format
 msgid "Mode [%s]:"
-msgstr ""
+msgstr "Režim [%s]:"
 
 #: ../src/spacecmd/configchannel.py:610
 #, python-format
 msgid "SELinux Context [%s]:"
-msgstr ""
+msgstr "Kontext SELinux [%s]:"
 
 #: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:947
 msgid "Revision [next]:"
-msgstr ""
+msgstr "Revízia [ďalšia]:"
 
 #: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:952
 msgid "The revision must be an integer"
-msgstr ""
+msgstr "Revízia musí byť celé číslo"
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:934
 #: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:1956
 #: ../src/spacecmd/snippet.py:142
 msgid "Read an existing file [y/N]:"
-msgstr ""
+msgstr "Čítať existujúci súbor [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:634 ../src/spacecmd/kickstart.py:1958
 msgid "File:"
-msgstr ""
+msgstr "Súbor:"
 
 #: ../src/spacecmd/configchannel.py:652
 msgid "The path is required"
-msgstr ""
+msgstr "Vyžaduje sa cesta"
 
 #: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:958
 msgid "You must provide the file contents"
-msgstr ""
+msgstr "Musíte poskytnúť obsah súboru"
 
 #: ../src/spacecmd/configchannel.py:670
 msgid "You must provide the target path for a symlink"
-msgstr ""
+msgstr "Musíte uviesť cieľovú cestu pre symbolický odkaz"
 
 #: ../src/spacecmd/configchannel.py:685 ../src/spacecmd/configchannel.py:714
 #, python-format
 msgid "Path:            %s"
-msgstr ""
+msgstr "Cesta:            %s"
 
 #: ../src/spacecmd/configchannel.py:715
 #, python-format
 msgid "Directory:       %s"
-msgstr ""
+msgstr "Adresár:       %s"
 
 #: ../src/spacecmd/configchannel.py:725
 #, python-format
 msgid "Revision:        %i"
-msgstr ""
+msgstr "Revízia:        %i"
 
 #: ../src/spacecmd/configchannel.py:730
 msgid "Contents not displayed (base64 encoded)"
-msgstr ""
+msgstr "Obsah sa nezobrazuje (kódovaný base64)"
 
 #: ../src/spacecmd/configchannel.py:743
 msgid ""
 "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr ""
+"configchannel_addfile/configchannel_updatefile: Vytvoriť konfiguračný súbor"
 
 #: ../src/spacecmd/configchannel.py:744
 msgid ""
@@ -1069,38 +1152,64 @@ msgid ""
 "auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
+"použitie: configchannel_addfile/configchannel_updatefile -c KANÁL - p CESTA -"
+"f CESTA_K_LOKÁLNEMU_SÚBORU [VOĽBY])\n"
+"\n"
+"voľby:\n"
+"  -c KANÁL\n"
+"  -p CESTA\n"
+"  -r REVÍZIA\n"
+"  -o VLASTNÍK [predvolené: root]\n"
+"  -g SKUPINA [predvolené: root]\n"
+"  -m REŽIM [predvolené: 0644]\n"
+"  -x KONTEXT_SELINUX\n"
+"  -d cesta je adresár\n"
+"  -s cesta je symbolický odkaz\n"
+"  -b cesta je binárny (alebo iný súbor, ktorý vyžaduje kódovanie base64)\n"
+"  -t CIEĽ_SYMBOLICKÉHO_ODKAZU\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"  -y automaticky pokračovať s obsahom súboru\n"
+"\n"
+"  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
+"obsahujú\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII "
+"(alebo iné znaky,\n"
+"  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
+"sa určité úsilie\n"
+"  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
+"musieť výslovne určiť.\n"
 
 #: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/softwarechannel.py:820
 #: ../src/spacecmd/softwarechannel.py:941
 #: ../src/spacecmd/softwarechannel.py:948
 msgid "Select:"
-msgstr ""
+msgstr "Vybrať:"
 
 #: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:920
 #: ../src/spacecmd/softwarechannel.py:1375
 #, python-format
 msgid "%s is not a valid channel"
-msgstr ""
+msgstr "%s nie je platný kanál"
 
 #: ../src/spacecmd/configchannel.py:819
 msgid "Unable to obtain a valid channel. Aborting."
-msgstr ""
+msgstr "Nepodarilo sa získať platný kanál. Prerušuje sa."
 
 #: ../src/spacecmd/configchannel.py:825 ../src/spacecmd/scap.py:161
 msgid "Path:"
-msgstr ""
+msgstr "Cesta:"
 
 #: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:971
 msgid "No config channel specified!"
-msgstr ""
+msgstr "Nie je zadaný žiadny konfiguračný kanál!"
 
 #: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:976
 msgid "Error obtaining file info"
-msgstr ""
+msgstr "Chyba pri získavaní informácií o súbore"
 
 #: ../src/spacecmd/configchannel.py:881
 msgid "configchannel_updateinitsls: Update init.sls file"
-msgstr ""
+msgstr "configchannel_updateinitsls: Aktualizovať súbor init.sls"
 
 #: ../src/spacecmd/configchannel.py:882
 msgid ""
@@ -1112,51 +1221,60 @@ msgid ""
 "  -f local path to file contents\n"
 "  -y automatically proceed with file contents\n"
 msgstr ""
+"použitie: configchannel_updateinitsls -c KANÁL -f CESTA_K_LOKÁLNEMU_SÚBORU "
+"[VOĽBY])\n"
+"\n"
+"voľby:\n"
+"  -c KANÁL\n"
+"  -r REVÍZIA\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"  -y automaticky pokračovať s obsahom súboru\n"
 
 #: ../src/spacecmd/configchannel.py:930
 #, python-format
 msgid "No existing file information found for %s"
-msgstr ""
+msgstr "Nenašli sa žiadne informácie o existujúcom súbore pre %s"
 
 #: ../src/spacecmd/configchannel.py:980
 #, python-format
 msgid "revision:                 %s"
-msgstr ""
+msgstr "revízia:                 %s"
 
 #: ../src/spacecmd/configchannel.py:981
 #, python-format
 msgid "contents_enc64:           %s"
-msgstr ""
+msgstr "contents_enc64:           %s"
 
 #: ../src/spacecmd/configchannel.py:1008
 msgid "configchannel_removefiles: Remove configuration files"
-msgstr ""
+msgstr "configchannel_removefiles: Odstrániť konfiguračné súbory"
 
 #: ../src/spacecmd/configchannel.py:1009
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
-msgstr ""
+msgstr "použitie: configchannel_removefiles KANÁL <SÚBOR ...>"
 
 #: ../src/spacecmd/configchannel.py:1046
 msgid "configchannel_verifyfile: Verify a configuration file"
-msgstr ""
+msgstr "configchannel_verifyfile: Overiť konfiguračný súbor"
 
 #: ../src/spacecmd/configchannel.py:1047
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
-msgstr ""
+msgstr "použitie: configchannel_verifyfile KANÁL SÚBOR <SYSTÉMY>"
 
 #: ../src/spacecmd/configchannel.py:1086
 msgid "No valid system selected"
-msgstr ""
+msgstr "Nie je vybraný žiadny platný systém"
 
 #: ../src/spacecmd/configchannel.py:1094 ../src/spacecmd/system.py:510
 #: ../src/spacecmd/system.py:530 ../src/spacecmd/system.py:960
 #, python-format
 msgid "Action ID: %i"
-msgstr ""
+msgstr "ID akcie: %i"
 
 #: ../src/spacecmd/configchannel.py:1102
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
+"configchannel_export: exportovať konfiguračné kanál(y) do súboru formátu json"
 
 #: ../src/spacecmd/configchannel.py:1103
 msgid ""
@@ -1235,7 +1353,7 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1271 ../src/spacecmd/kickstart.py:2332
 msgid "Error, no filename passed"
-msgstr ""
+msgstr "Chyba, nebol zadaný žiadny názov súboru"
 
 #: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2340
 #, python-format
@@ -1968,7 +2086,7 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:167
 msgid "group_create: Create a system group"
-msgstr ""
+msgstr "group_create: Vytvoriť systémovú skupinu"
 
 #: ../src/spacecmd/group.py:168
 msgid "usage: group_create [NAME] [DESCRIPTION]"
@@ -1976,7 +2094,7 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:194
 msgid "group_delete: Delete a system group"
-msgstr ""
+msgstr "group_delete: Vymazať systémovú skupinu"
 
 #: ../src/spacecmd/group.py:195
 msgid "usage: group_delete NAME ..."
@@ -2071,7 +2189,7 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:387
 msgid "group_list: List available system groups"
-msgstr ""
+msgstr "group_list: Vypísať zoznam dostupných systémových skupín"
 
 #: ../src/spacecmd/group.py:388
 msgid "usage: group_list"
@@ -2092,7 +2210,7 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:441
 msgid "group_details: Show the details of a system group"
-msgstr ""
+msgstr "group_details: Zobraziť podrobnosti o systémovej skupine"
 
 #: ../src/spacecmd/group.py:442
 msgid "usage: group_details GROUP ..."
@@ -2137,8 +2255,9 @@ msgstr ""
 "aktivačný kľúč"
 
 #: ../src/spacecmd/group.py:489
+#, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
-msgstr ""
+msgstr "použitie: activationkey_listconfigchannels KĽÚČ"
 
 #: ../src/spacecmd/group.py:531
 #, fuzzy
@@ -2148,8 +2267,9 @@ msgstr ""
 "kľúču"
 
 #: ../src/spacecmd/group.py:532
+#, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: configchannel_details KANÁL ..."
 
 #: ../src/spacecmd/group.py:570
 #, fuzzy
@@ -2159,8 +2279,9 @@ msgstr ""
 "aktivačného kľúča"
 
 #: ../src/spacecmd/group.py:571
+#, fuzzy
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: activationkey_removeconfigchannels KĽÚČ <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
@@ -2441,6 +2562,8 @@ msgid ""
 "kickstart_listactivationkeys: List the activation keys associated with a "
 "Kickstart profile"
 msgstr ""
+"kickstart_listactivationkeys: Vypísať zoznam aktivačných kľúčov priradených "
+"k profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:711
 msgid "usage: kickstart_listactivationkeys PROFILE"
@@ -2449,6 +2572,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:741
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
 msgstr ""
+"kickstart_addactivationkeys: Pridať aktivačné kľúče do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:743
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
@@ -2459,6 +2583,7 @@ msgid ""
 "kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
 "profile"
 msgstr ""
+"kickstart_removeactivationkeys: Odstrániť aktivačné kľúče z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:774
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
@@ -3599,12 +3724,12 @@ msgstr ""
 #: ../src/spacecmd/org.py:457
 #, python-format
 msgid "System Groups:          %i"
-msgstr ""
+msgstr "Systémové skupiny:          %i"
 
 #: ../src/spacecmd/org.py:458
 #, python-format
 msgid "Activation Keys:        %i"
-msgstr ""
+msgstr "Aktivačné kľúče:        %i"
 
 #: ../src/spacecmd/org.py:459
 #, python-format
@@ -5065,7 +5190,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1097
 msgid "Base Channels:"
-msgstr ""
+msgstr "Základné kanály:"
 
 #: ../src/spacecmd/softwarechannel.py:1105
 #: ../src/spacecmd/softwarechannel.py:1195
@@ -5825,7 +5950,7 @@ msgstr ""
 
 #: ../src/spacecmd/ssm.py:113
 msgid "               systems passed as arguments"
-msgstr ""
+msgstr "               systémy zadané ako argumenty"
 
 #: ../src/spacecmd/ssm.py:114
 msgid "usage: ssm_intersect <SYSTEMS>"
@@ -6843,7 +6968,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:3011
 #, python-format
 msgid "Contact Method:%s"
-msgstr ""
+msgstr "Kontaktná metóda:%s"
 
 #: ../src/spacecmd/system.py:3055
 #, python-format
@@ -7135,7 +7260,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:4149
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
-msgstr ""
+msgstr "system_setcontactmethod: Nastaviť kontaktnú metódu pre dané systém(y)."
 
 #: ../src/spacecmd/system.py:4151
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"

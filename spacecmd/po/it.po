@@ -4,20 +4,21 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: ../src/bin/spacecmd:60
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
-"PO-Revision-Date: 2020-10-16 10:51+0200\n"
-"Last-Translator: Pascal Arlt <parlt@suse.com>\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: 2021-03-25 12:57+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
 ">\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -326,7 +327,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1575
 #: ../src/spacecmd/softwarechannel.py:1821
 msgid "Packages"
-msgstr ""
+msgstr "Pacchetti"
 
 #: ../src/spacecmd/activationkey.py:992
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
@@ -1936,7 +1937,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1476 ../src/spacecmd/system.py:1784
 #: ../src/spacecmd/system.py:4248
 msgid "Systems"
-msgstr ""
+msgstr "Sistemi"
 
 #: ../src/spacecmd/group.py:151
 msgid "Remove these systems [y/N]:"
@@ -4041,7 +4042,7 @@ msgstr ""
 
 #: ../src/spacecmd/report.py:283
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: ../src/spacecmd/report.py:297
 msgid "report_duplicates: List duplicate system profiles"

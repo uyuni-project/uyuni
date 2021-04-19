@@ -3,7 +3,7 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ko">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccount.subject" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -15,7 +15,7 @@
         </context-group>
         <target>고객님의 @@PRODUCT_NAME@@ 계정이 준비되었습니다.</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -62,7 +62,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -109,7 +109,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newaccount.pam.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -151,7 +151,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -165,7 +165,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target>생성된 @@PRODUCT_NAME@@ 사용자: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body" xml:space="preserve">
+      <trans-unit approved="yes" id="email.newuser.body" xml:space="preserve">
         <source>Hello,
 
 A new user has been added to your account.
@@ -205,7 +205,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@을(를) 사용해 주셔서 감사합니다.
 {2}</target>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.summary" xml:space="preserve">
           <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
@@ -254,7 +254,7 @@ Summary:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
           <source>
 ---------------------
 Affected Systems List
@@ -278,7 +278,7 @@ as root on the system in question to refresh your software profile.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.onesystem" xml:space="preserve">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -291,7 +291,7 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.numsystems" xml:space="preserve">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
@@ -309,7 +309,7 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
           <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -347,7 +347,7 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -388,7 +388,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -400,7 +400,7 @@ click the "Details" tab.
         </context-group>
         <target>{0}에 대한 일간 @@PRODUCT_NAME@@ 현황 보고서</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -453,7 +453,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password" xml:space="preserve">
+      <trans-unit approved="yes" id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -495,7 +495,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins" xml:space="preserve">
+      <trans-unit approved="yes" id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -541,7 +541,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.reset.password" xml:space="preserve">
+      <trans-unit approved="yes" id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
