@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-02 10:58+0000\n"
+"POT-Creation-Date: 2021-04-01 19:58+0000\n"
 "PO-Revision-Date: 2021-04-02 10:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -713,32 +713,28 @@ msgstr "모니터링이 비활성화되었습니다."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
-"Tomcat Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. "
+msgstr "Tomcat Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
-"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. "
+msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
 msgstr ""
-"Taskomatic Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니"
-"다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 "
-"Prometheus 내보내기를 중지하십시오. "
+"Taskomatic Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 "
+"활성화하거나 비활성화를 클릭하여 Prometheus 내보내기를 중지하십시오. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
 msgstr ""
-"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성"
-"화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내"
-"보내기를 시작하십시오. "
+"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 "
+"비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -957,17 +953,13 @@ msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩"
-"니다."
+msgstr "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr ""
-"제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인"
-"하십시오."
+msgstr "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -1791,8 +1783,7 @@ msgstr "클러스터를 삭제하시겠습니까?"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:106
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
+msgstr "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
@@ -2519,33 +2510,25 @@ msgstr "요청한 페이지 {0}을(를) 찾을 수 없습니다."
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr ""
-"이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오. 복사"
-"한 주소가 오래되었을 수도 있습니다."
+msgstr "이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오. 복사한 주소가 오래되었을 수도 있습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
-"링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클"
-"릭하십시오. "
+msgstr "링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클릭하십시오. "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
-"책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했"
-"을 수 있습니다. "
+msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
-"이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하"
-"십시오. "
+msgstr "이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하십시오. "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
@@ -4028,9 +4011,7 @@ msgstr "예약 성공"
 
 #: ../html/src/manager/state/recurring-states.tsx:172
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
-"작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시"
-"오."
+msgstr "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
@@ -4695,8 +4676,7 @@ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr ""
-"이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
+msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -5005,9 +4985,7 @@ msgstr "태그되지 않음"
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
-msgstr ""
-"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
-"DNS 서비스가 추가되지 않았습니다."
+msgstr "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/DNS 서비스가 추가되지 않았습니다."
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
@@ -5031,9 +5009,7 @@ msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr ""
-"물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. 게스트와 호스"
-"트 간의 통신이 불가능합니다."
+msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. 게스트와 호스트 간의 통신이 불가능합니다."
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
