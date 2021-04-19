@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 17:58+0000\n"
-"PO-Revision-Date: 2021-03-24 21:57+0000\n"
+"PO-Revision-Date: 2021-03-23 17:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -213,7 +213,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 #: ../html/src/components/config-channels.tsx:473
 msgid "Configuration Channels"
@@ -1574,7 +1574,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:61
 msgid "Add"
-msgstr "Aggiungi"
+msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:80
 msgid "Name:"
@@ -2219,7 +2219,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:675
 #: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
-msgstr "Crea"
+msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:69
 msgid "Build Project"
@@ -3090,11 +3090,11 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
-msgstr "Immagini"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
-msgstr "Creazione"
+msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:236
@@ -3698,7 +3698,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:218
 msgid "Remote Commands"
-msgstr "Comandi remoti"
+msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:231
 msgid "Type the command here"
@@ -3834,7 +3834,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"
-msgstr "Applica lo stato alto"
+msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:135
 msgid "Create Recurring"
@@ -3846,7 +3846,7 @@ msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
 msgid "Group"
-msgstr "Gruppo"
+msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
@@ -4356,7 +4356,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
-msgstr "Gestore dell'host virtuale"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
@@ -4364,7 +4364,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
-msgstr "Gestori di host virtuali"
+msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
@@ -4565,13 +4565,13 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
 msgid "Networks"
-msgstr "Reti"
+msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/nets/network-properties.js:431
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
-msgstr "Cancella i campi"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
