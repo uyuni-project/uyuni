@@ -1107,19 +1107,19 @@ public class SaltServerActionService {
         List<Long> sids = minionSummaries.stream().map(s -> s.getServerId()).collect(toList());
         List<Long> pids = packages.stream().map(p -> p.getId()).collect(toList());
 
-        List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(pids, sids);
-        Map<Long, List<Long>> pidsBySid = pidsidpairs.stream()
+        List<Tuple2<Long, Long>> retractedPidSidPairs = ErrataFactory.retractedPackages(pids, sids);
+        Map<Long, List<Long>> retractedPidsBySid = retractedPidSidPairs.stream()
                 .collect(groupingBy(t -> t.getB(), mapping(t -> t.getA(), toList())));
         action.getServerActions().forEach(sa -> {
-            List<Long> packageIds = pidsBySid.get(sa.getServerId());
+            List<Long> packageIds = retractedPidsBySid.get(sa.getServerId());
             if (packageIds != null) {
                 sa.fail("contains retracted packages: " +
                         packageIds.stream().map(i -> i.toString()).collect(joining(",")));
             }
         });
         List<MinionSummary> filteredMinions = minionSummaries.stream()
-                .filter(ms -> pidsBySid.get(ms.getServerId()) != null &&
-                        !pidsBySid.get(ms.getServerId()).isEmpty())
+                .filter(ms -> retractedPidsBySid.get(ms.getServerId()) != null &&
+                        !retractedPidsBySid.get(ms.getServerId()).isEmpty())
                 .collect(toList());
 
         List<List<String>> pkgs = action
