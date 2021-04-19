@@ -84,6 +84,9 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     private Credentials credentials;
     private Date registrationErrorTime;
 
+    public SCCRegCacheItem() {
+    }
+
     public SCCRegCacheItem(Server s) {
         sccRegistrationRequired = true;
         server = s;
@@ -207,7 +210,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @param sccIdIn the sccId to set
      */
-    public void setSccId(long sccIdIn) {
+    public void setSccId(Long sccIdIn) {
         sccId = sccIdIn;
     }
 
