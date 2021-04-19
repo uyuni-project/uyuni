@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-24 13:38+0000\n"
+"POT-Creation-Date: 2021-03-17 10:24+0000\n"
 "PO-Revision-Date: 2020-12-29 08:37+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -26,11 +26,10 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
 #, python-format
 msgid ""
 "\n"
@@ -41,6 +40,66 @@ msgstr ""
 "                   已在此服务器上停用 %s 帐户。\n"
 "                   请联系您的组织管理员取得更多帮助。"
 
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "无效的用户名/口令组合"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "未保留用户名 `%s'"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "未指定电子邮件地址"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "用户名应至少为 %d 个字符"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "用户名应小于 %d 个字符"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "用户名 = `%s'，字符 `%s' 无效"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "请将您的电子邮件地址限制为 %s 个字符"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "口令必须至少为 %d 个字符"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "口令必须短于 %d 个字符"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "口令包含字符 `%s'"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "用户名长度应至少为 %d 个字符"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "无法注册以 %s 结尾的用户名"
+
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
 msgstr "请在此客户端中以 root 身份运行 rhn_register"
@@ -49,6 +108,232 @@ msgstr "请在此客户端中以 root 身份运行 rhn_register"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "未为系统配置文件启用服务：\"%s\""
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "未授权您管理 null 组织中的软件包"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "不允许您管理 %s 组织中的软件包"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "不允许您执行管理任务"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "不允许您管理频道 %s 或不存在的频道"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               已在此服务器上停用 %s 帐户。\n"
+"               请联系您的组织管理员取得更多帮助。"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "已在此服务器上禁用 ISS。"
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "未为 ISS 启用服务器 \"%s\"。"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "无效的 system_id/action_id 对。"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "预期需要提供软件包名称，而不是：%s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "预期需要提供软件包，而不是：%s"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "无效的操作值类型 %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "操作 %s 不属于服务器 %s"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "无效会话密钥"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "此服务器 ID 不再存在"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "缺少必需的数据"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "缺少必需的成员"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "尝试将系统注册到无效的用户名"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "请求了无效的系统发行版"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr "{PRODUCT_NAME} 欢迎消息"
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+msgid "Privacy Statement"
+msgstr "隐私声明"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "预期需要提供一个字典作为产品参数"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "值 '%s'（为 %s (%s) 提供）无效"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "无效的值 %s (%s)"
+
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完整的代理身份验证令牌：%s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "发送的代理签名 %s 与我们的 %s 不匹配。"
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "已拒绝代理身份验证"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "请求的 RPM 软件包 %s 无效"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "找不到软件包"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "为令牌 `%s' 指派了多个基础频道"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "有冲突的基础频道"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "无法将服务器添加到组 %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "已达到 %s 的最大用量计数"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr "不支持将重新注册令牌与不同的基础权利堆叠到一起"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "找不到令牌 '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "来自不匹配的组织的令牌"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Kickstart 会话不匹配"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "不支持堆叠重新注册令牌"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "不支持体系结构 `%s'"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "收到的请求无效 (%s)。"
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"重要消息如下：\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"运行 '%s' 时捕获到\n"
+"%s：%s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "无效的 URI %s"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -117,292 +402,6 @@ msgstr ""
 "服务权利。要为此系统赋予服务权利，请登录网站：\n"
 "\n"
 "  %(entitlement_url)s\n"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "请求的 RPM 软件包 %s 无效"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "找不到软件包"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "无效的用户名/口令组合"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "未保留用户名 `%s'"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "未指定电子邮件地址"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "用户名应至少为 %d 个字符"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "用户名应小于 %d 个字符"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "用户名 = `%s'，字符 `%s' 无效"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "请将您的电子邮件地址限制为 %s 个字符"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "口令必须至少为 %d 个字符"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "口令必须短于 %d 个字符"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "口令包含字符 `%s'"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "用户名长度应至少为 %d 个字符"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "无法注册以 %s 结尾的用户名"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "不支持体系结构 `%s'"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "为令牌 `%s' 指派了多个基础频道"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "有冲突的基础频道"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "无法将服务器添加到组 %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "已达到 %s 的最大用量计数"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr "不支持将重新注册令牌与不同的基础权利堆叠到一起"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "找不到令牌 '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "来自不匹配的组织的令牌"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Kickstart 会话不匹配"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "不支持堆叠重新注册令牌"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "未授权您管理 null 组织中的软件包"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "不允许您管理 %s 组织中的软件包"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "不允许您执行管理任务"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "不允许您管理频道 %s 或不存在的频道"
-
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               已在此服务器上停用 %s 帐户。\n"
-"               请联系您的组织管理员取得更多帮助。"
-
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "在 {PRODUCT_NAME} 数据库中未找到您的系统"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "无效的值 %s (%s)"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "未为服务器配置文件启用 SUSE Manager Proxy 服务：\"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "无效会话密钥"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "此服务器 ID 不再存在"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "无效的 system_id/action_id 对。"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "无效的操作值类型 %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "操作 %s 不属于服务器 %s"
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "预期需要提供软件包名称，而不是：%s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "预期需要提供软件包，而不是：%s"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "缺少必需的数据"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "缺少必需的成员"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "尝试将系统注册到无效的用户名"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "请求了无效的系统发行版"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr "找不到有效的网络接口，ipaddr 和 ip6addr 均未找到。"
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr "{PRODUCT_NAME} 欢迎消息"
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-msgid "Privacy Statement"
-msgstr "隐私声明"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "预期需要提供一个字典作为产品参数"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "值 '%s'（为 %s (%s) 提供）无效"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "已在此服务器上禁用 ISS。"
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "未为 ISS 启用服务器 \"%s\"。"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "收到的请求无效 (%s)。"
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"重要消息如下：\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"运行 '%s' 时捕获到\n"
-"%s：%s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "无效的 URI %s"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完整的代理身份验证令牌：%s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "发送的代理签名 %s 与我们的 %s 不匹配。"
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "已拒绝代理身份验证"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1057,6 +1056,19 @@ msgstr "回溯：%s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "%s 至少应采用 YYYYMMDD 格式。\n"
 
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ 正在以电子邮件形式发送日志 +++"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s 同步报告，来自 %s"
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1143,18 +1155,10 @@ msgstr "SUSE Manager 主服务器不支持同步组织数据。"
 msgid "Skipping..."
 msgstr "正在跳过..."
 
-#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
-msgid "+++ sending log as an email +++"
-msgstr "+++ 正在以电子邮件形式发送日志 +++"
-
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "来自 %s 的 SUSE Manager 服务器间同步报告"
-
-#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 已请求电子邮件，但没有可发送的内容 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2028,11 +2032,6 @@ msgstr "正在导入 kickstart 树 (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "已导入 kickstart 树 (%d)"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s 同步报告，来自 %s"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "崩溃信息无效或不完整"
