@@ -175,7 +175,7 @@ export function GuestsList(props: Props) {
                         title={t('Graphical Console')}
                         className="btn-default btn-sm"
                         icon="fa-desktop"
-                        href={`/rhn/manager/systems/details/virtualization/guests/${props.serverId}/console/${row.uuid}`}
+                        href={`/rhn/manager/systems/details/virtualization/guests/console/${row.uuid}`}
                         target="_blank"
                       />
                     )}
