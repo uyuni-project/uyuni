@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 19 11:37:47 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.6-1
 - Bugfix for ubuntu-18.04 repo urls: multiverse, restricted and backports
 
 -------------------------------------------------------------------
