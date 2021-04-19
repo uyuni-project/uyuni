@@ -81,6 +81,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                         try {
                             SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(getPayload(cacheItem));
                             cacheItem.setSccId(systemCredentials.getId());
+                            cacheItem.setSccLogin(systemCredentials.getLogin());
                             cacheItem.setSccPasswd(systemCredentials.getPassword());
                             cacheItem.setRegistrationErrorTime(null);
                         }
@@ -159,6 +160,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             hwinfo.put("hypervisor", null);
         }
 
+        String login = rci.getOptSccLogin().orElseGet(() -> {
+            String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
+            rci.setSccLogin(l);
+            SCCCachingFactory.saveRegCacheItem(rci);
+            return l;
+        });
         String passwd = rci.getOptSccPasswd().orElseGet(() -> {
             String pw = RandomStringUtils.randomAlphanumeric(64);
             rci.setSccPasswd(pw);
@@ -166,7 +173,6 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             return pw;
         });
 
-        return new SCCRegisterSystemJson(srv.getId().toString(), passwd, srv.getHostname(),
-                hwinfo, products);
+        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products);
     }
 }
