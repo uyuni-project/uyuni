@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-02 10:58+0000\n"
-"PO-Revision-Date: 2021-04-02 19:57+0000\n"
+"PO-Revision-Date: 2021-04-01 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4796,19 +4796,19 @@ msgstr "Podľa fyzickej funkcie"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By virtual functions"
-msgstr "Podľa virtuálnych funkcií"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By interfaces"
-msgstr "Podľa rozhraní"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Interfaces"
-msgstr "Rozhrania"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:290
 msgid "Physical Function"
-msgstr "Fyzická funkcia"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:305
 msgid "Virtual Functions"
@@ -4816,21 +4816,21 @@ msgstr "Virtuálne funkcie"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:329
 msgid "VLAN tag"
-msgstr "Značka VLAN"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:333
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
-msgstr "Celé číslo medzi 0 a 4095"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:340
 msgid "VLAN tags trunking"
-msgstr "Trunking značiek VLAN"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:350
 #: ../html/src/manager/virtualization/nets/network-properties.js:351
 msgid "NAT IPv4 range"
-msgstr "Rozsah IPv4 NAT"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:360
 msgid "Both values has to be IPv4 addresses"
@@ -4859,25 +4859,25 @@ msgstr "Názov domény"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
-msgstr "DNS"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
-msgstr "Forwardery"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
-msgstr "Doména"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
-msgstr "Adresa DNS servera"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
-msgstr "Musí byť platný kvalifikovaný názov hostiteľa"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
@@ -4895,15 +4895,15 @@ msgstr "Adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
-msgstr "názvy hostiteľov (oddelené čiarkami)"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
-msgstr "Musí byť zoznam názvov hostiteľov oddelený čiarkami"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
-msgstr "Záznamy SRV"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
 msgid "Service name"
@@ -4911,7 +4911,7 @@ msgstr "Názov služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
-msgstr "Protokol"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
 msgid "Service domain name"
@@ -4936,11 +4936,11 @@ msgstr "Váha cieľa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
-msgstr "Záznamy TXT"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
-msgstr "Hodnota"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
@@ -5032,27 +5032,25 @@ msgstr "Natívny režim"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
-msgstr "Označené"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr "Neoznačené"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
-"Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané žiadne "
-"pravidlo iptables, IP adresa alebo služba DHCP/DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
