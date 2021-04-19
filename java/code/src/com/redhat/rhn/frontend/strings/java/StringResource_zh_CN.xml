@@ -6445,11 +6445,11 @@ Follow this url to see the full list of inactive systems:
         <target state="translated">可自动安装的发行套件无效，因为内核或 initrd 映像的基础路径错误或不存在。要使您的自定义发行套件有效，请选择该发行套件并相应修改其基础路径。</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="translated">额外的内核参数不能多于 128 个字符。</target>
+        <target state="needs-adaptation">额外的内核参数不能多于 128 个字符。</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -10979,6 +10979,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
       <target state="new" />
   </trans-unit>
-    </body>
+    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <source>Retracted packages: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
+        <source>Retracted patches: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

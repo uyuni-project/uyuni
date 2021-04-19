@@ -6207,8 +6207,8 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
-        <target>অতিরিক্ত কার্নেল পরামিতি ১২৮-টি অক্ষরের মধ্যে সীমাবদ্ধ রাখা আবশ্যক।</target>
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
+        <target state="needs-adaptation">অতিরিক্ত কার্নেল পরামিতি ১২৮-টি অক্ষরের মধ্যে সীমাবদ্ধ রাখা আবশ্যক।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
@@ -10237,6 +10237,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
       <target state="new" />
   </trans-unit>
-    </body>
+    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <source>Retracted packages: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
+        <source>Retracted patches: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

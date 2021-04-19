@@ -6415,11 +6415,11 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         <target>La distribución kickstart no es válida debido a un error en la ruta base del kernel o la imagen initrd. Para hacer que su distribución personalizada sea válida, seleccione la distribución y modifique apropiadamente su ruta base .</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
-        <source>Extra kernel parameters can be no longer than 128 characters.</source>
+        <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target>Los parámetros adicionales del kernel no pueden tener más de 128 caracteres.</target>
+        <target state="needs-adaptation">Los parámetros adicionales del kernel no pueden tener más de 128 caracteres.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -10629,6 +10629,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
       <target state="new" />
   </trans-unit>
-    </body>
+    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <source>Retracted packages: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
+        <source>Retracted patches: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
