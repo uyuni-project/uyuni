@@ -1,6 +1,9 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { Messages } from "components/messages";
+import { TextField } from "components/fields";
+import { Panel } from "components/panels/Panel";
+import { AsyncButton } from "components/buttons";
 
 type Minion = {
   id: Number;
@@ -30,16 +33,60 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     };
   }
 
+  addPath(type: string, newPath: string) {
+    if (type === "playbook") {
+      this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newPath)});
+    }
+    else {
+      this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newPath)});
+    }
+  }
+
   render () {
+    console.log(this.state.playbooksPaths);
+    console.log(this.state.inventoriesPaths);
     const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages} /> : null;
-    const buttons = [];
-    const buttonsLeft = [];
     return (
       <div>
         {messages}
-        {this.state.system.name} - {this.state.system.id}
-        {this.state.playbooksPaths.map(p => <div>{p}</div>)}
-        {this.state.inventoriesPaths.map(p => <div>{p}</div>)}
+        <div className="col-md-6">
+          <Panel
+            headingLevel="h3"
+            title="Playbooks Paths"
+          >
+            {this.state.playbooksPaths.map(p =>
+              <pre>
+                {p}
+              </pre>
+            )}
+            <hr/>
+            <div className="form-group">
+              <TextField placeholder={t("New playbook path")} onPressEnter={(e) => this.addPath("playbook", e.target.value.toString())} />
+            </div>
+            <div className="pull-right btn-group">
+              <AsyncButton text={t("Save")} icon="fa-save" className="btn-success" />
+            </div>
+          </Panel>
+        </div>
+        <div className="col-md-6">
+          <Panel
+            headingLevel="h3"
+            title="Inventories Paths"
+          >
+            {this.state.inventoriesPaths.map(p =>
+              <pre>
+                {p}
+              </pre>
+            )}
+            <hr/>
+            <div className="form-group">
+              <TextField placeholder={t("New inventory path")} onPressEnter={(e) => this.addPath("inventory", e.target.value.toString())} />
+            </div>
+            <div className="pull-right btn-group">
+              <AsyncButton text={t("Save")} icon="fa-save" className="btn-success" />
+            </div>
+          </Panel>
+        </div>
       </div>
     );
   }
