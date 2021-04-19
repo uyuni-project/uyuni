@@ -1118,8 +1118,8 @@ public class SaltServerActionService {
             }
         });
         List<MinionSummary> filteredMinions = minionSummaries.stream()
-                .filter(ms -> retractedPidsBySid.get(ms.getServerId()) != null &&
-                        !retractedPidsBySid.get(ms.getServerId()).isEmpty())
+                .filter(ms -> retractedPidsBySid.get(ms.getServerId()) == null ||
+                        retractedPidsBySid.get(ms.getServerId()).isEmpty())
                 .collect(toList());
 
         List<List<String>> pkgs = action
