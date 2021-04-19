@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-18 01:59+0000\n"
-"PO-Revision-Date: 2021-03-18 06:56+0000\n"
+"PO-Revision-Date: 2021-03-18 01:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2829,7 +2829,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
-msgstr "資格情報の使用"
+msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
@@ -3151,8 +3151,9 @@ msgid "Updated"
 msgstr "更新済み"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:31
+#, fuzzy
 msgid "Loading runtime information..."
-msgstr "ランタイム情報を読み込んでいます..."
+msgstr "追加情報"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:65
 msgid "Instance is consistent with SUSE Manager"
@@ -3269,7 +3270,7 @@ msgstr ""
 
 #: ../html/src/manager/login/login.tsx:109
 msgid "Learn more about"
-msgstr "下記についてさらに詳しく"
+msgstr ""
 
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
@@ -3542,8 +3543,9 @@ msgid "Maintenance schedule has been cleared"
 msgstr "メンテナンススケジュールを消去しました"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
+#, fuzzy
 msgid "Maintenance schedule has been assigned"
-msgstr "メンテナンススケジュールを割り当てました"
+msgstr "メンテナンススケジュールを消去しました"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
@@ -3879,6 +3881,7 @@ msgid "Accept"
 msgstr "受け入れる"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:42
+#, fuzzy
 msgid "Reject"
 msgstr "拒否済み"
 
@@ -3896,7 +3899,7 @@ msgstr "拒否済み"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:146
 msgid "Keys"
-msgstr "キー"
+msgstr ""
 
 #: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
@@ -3967,11 +3970,12 @@ msgstr "繰り返し作成"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:14
 msgid "Minion"
-msgstr "minion"
+msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
+#, fuzzy
 msgid "Group"
-msgstr "グループ"
+msgstr "グループ ID"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:18
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
@@ -4034,20 +4038,23 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "このスケジュールを削除してよろしいですか？"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
+#, fuzzy
 msgid "Update "
-msgstr "更新 "
+msgstr "更新"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
+#, fuzzy
 msgid "Create "
-msgstr "作成 "
+msgstr "作成"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
-msgstr "一覧に戻る"
+msgstr ""
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
+#, fuzzy
 msgid "Schedule Recurring Highstate"
-msgstr "繰り返しの Highstate のスケジュール"
+msgstr "繰り返し状態"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
@@ -4734,8 +4741,9 @@ msgid "Clear Fields"
 msgstr "項目の消去"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
+#, fuzzy
 msgid "Create Virtual Network"
-msgstr "仮想ネットワークの作成"
+msgstr "仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:40
 msgid "Virtual Networks"
@@ -4750,7 +4758,7 @@ msgstr "これはこのホスト内に設定されている仮想ネットワー
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していません"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -4768,16 +4776,18 @@ msgid "Bridge"
 msgstr "ブリッジ"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:157
+#, fuzzy
 msgid "network properties"
-msgstr "ネットワークプロパティ"
+msgstr "プロパティの編集"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:175
+#, fuzzy
 msgid "Network type"
-msgstr "ネットワークの種類"
+msgstr "ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:187
 msgid "Macvtap mode"
-msgstr "Macvtap モード"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:196
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
@@ -4786,120 +4796,130 @@ msgstr "仮想ホストの起動時に起動"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:204
 msgid "Connectivity"
-msgstr "接続性"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:219
 msgid "Maximum Transmission Unit (MTU)"
-msgstr "最大送信単位 (MTU)"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
+#, fuzzy
 msgid "The value has to be a positive integer"
-msgstr "値は正の整数でなければなりません"
+msgstr "両方の値は正の整数である必要があります"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:231
+#, fuzzy
 msgid "Virtual Port Type"
-msgstr "仮想ポートの種類"
+msgstr "仮想マシンのタイプ"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Select interfaces"
-msgstr "インターフェイスの選択"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:257
 msgid "By physical function"
-msgstr "物理機能"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By virtual functions"
-msgstr "仮想機能"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:258
 msgid "By interfaces"
-msgstr "インターフェイス"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Interfaces"
-msgstr "インターフェイス"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:290
 msgid "Physical Function"
-msgstr "物理機能"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:305
+#, fuzzy
 msgid "Virtual Functions"
-msgstr "仮想機能"
+msgstr "仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:329
 msgid "VLAN tag"
-msgstr "VLAN タグ"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:333
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
-msgstr "0 から 4095 の範囲内の整数"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:340
 msgid "VLAN tags trunking"
-msgstr "VLAN タグトランキング"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:350
 #: ../html/src/manager/virtualization/nets/network-properties.js:351
 msgid "NAT IPv4 range"
-msgstr "NAT IPv4 範囲"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:360
+#, fuzzy
 msgid "Both values has to be IPv4 addresses"
-msgstr "両方の値は IPv4 アドレスでなければなりません"
+msgstr "両方の値は正の整数である必要があります"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:364
 #: ../html/src/manager/virtualization/nets/network-properties.js:365
+#, fuzzy
 msgid "NAT port range"
-msgstr "NAT ポート範囲"
+msgstr "ポート範囲"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:375
+#, fuzzy
 msgid "Both values has to be positive integers"
-msgstr "両方の値は正の整数でなければなりません"
+msgstr "両方の値は正の整数である必要があります"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:385
+#, fuzzy
 msgid "Addressing"
-msgstr "アドレス"
+msgstr "MAC アドレス"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:391
+#, fuzzy
 msgid "Enable IPv6"
-msgstr "IPv6 の有効化"
+msgstr "有効"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:397
+#, fuzzy
 msgid "Domain name"
-msgstr "ドメイン名"
+msgstr "イメージ名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
-msgstr "DNS"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
-msgstr "フォワーダ"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
-msgstr "ドメイン"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
-msgstr "DNS サーバのアドレス"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
-msgstr "正しい修飾ホスト名でなければなりません"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
+#, fuzzy
 msgid "Has to be an IP address"
-msgstr "IP アドレスでなければなりません"
+msgstr "アダプタの親 PCI アドレス"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
@@ -4907,36 +4927,40 @@ msgid "Hosts"
 msgstr "ホスト"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
+#, fuzzy
 msgid "Address"
-msgstr "アドレス"
+msgstr "MAC アドレス"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
-msgstr "ホスト名 (カンマ区切り)"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
-msgstr "カンマ区切りのホスト名リストでなければなりません"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
-msgstr "SRV レコード"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
+#, fuzzy
 msgid "Service name"
-msgstr "サービス名"
+msgstr "ソース名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
-msgstr "プロトコル"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
+#, fuzzy
 msgid "Service domain name"
-msgstr "サービスドメイン名"
+msgstr "ソース名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
+#, fuzzy
 msgid "Target hostname"
-msgstr "ターゲットホスト名"
+msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
@@ -4944,24 +4968,27 @@ msgid "Port"
 msgstr "ポート"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
+#, fuzzy
 msgid "Target priority"
-msgstr "ターゲット優先順位"
+msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
+#, fuzzy
 msgid "Target weight"
-msgstr "ターゲットウエイト"
+msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
-msgstr "TXT レコード"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
-msgstr "値"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
+#, fuzzy
 msgid "Network address"
-msgstr "ネットワークアドレス"
+msgstr "ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
@@ -4969,134 +4996,144 @@ msgstr "ネットワークアドレス"
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
-msgstr "v6"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
+#, fuzzy
 msgid "IP address"
-msgstr "IP アドレス"
+msgstr "MAC アドレス"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
-msgstr "DHCP ユニーク識別子 (DUID)"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
+#, fuzzy
 msgid "Needs to be a MAC address"
-msgstr "MAC アドレスである必要があります"
+msgstr "MAC アドレスを生成する場合は何も入力しないでください"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
+#, fuzzy
 msgid "BOOTP image file"
-msgstr "BOOTP イメージファイル"
+msgstr "イメージプロファイル"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
-msgstr "BOOTP サーバ"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
-msgstr "TFTP ルートパス"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
-msgstr "パラメータ"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
+#, fuzzy
 msgid "By profile id"
-msgstr "プロファイル ID"
+msgstr "プロファイルの編集"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
-msgstr "仮想ステーションインターフェイス (VSI) パラメータ"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
-msgstr "プロファイル ID"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
-msgstr "インターフェイス ID"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
+#, fuzzy
 msgid "VSI manager id"
-msgstr "VSI マネージャ ID"
+msgstr "管理対象外"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
-msgstr "VSI タイプ ID"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
+#, fuzzy
 msgid "VSI type id version"
-msgstr "VSI タイプ ID バージョン"
+msgstr "イメージバージョン"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
+#, fuzzy
 msgid "VSI instance id"
-msgstr "VSI インスタンス ID"
+msgstr "インスタンス"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
-msgstr "値は正しい UUID である必要があります"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
-msgstr "VLAN"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
+#, fuzzy
 msgid "Tag"
-msgstr "タグ"
+msgstr "ターゲット"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
+#, fuzzy
 msgid "Native mode"
-msgstr "ネイティブモード"
+msgstr "収集モジュール"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
-msgstr "タグ有り"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr "タグ無し"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや IP アドレス、 DHCP/DNS サービスは追加されません"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワーク"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
-msgstr "ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用しない仮想ネットワーク"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
-msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。ゲストとホストの間では通信できません"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
-msgstr "SR-IOV プール"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
+msgstr ""
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
+#, fuzzy
 msgid "Could not get network devices from the server. Please try again."
-msgstr "サーバからネットワークデバイスを取得できません。再試行してください。"
+msgstr ""
+"サーバからストレージプールの機能を取得できませんでした。再試行してください。"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
