@@ -19,9 +19,10 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -286,5 +288,52 @@ public class MinionServerFactory extends HibernateFactory {
         List<Object[]> results = findByIds(serverIds, "Server.findSimpleMinionsByServerIds", "serverIds");
         return results.stream().map(row -> new MinionIds(((BigDecimal) row[0]).longValue(), row[1].toString()))
                 .collect(toList());
+    }
+
+    /**
+     * Lookup an {@link AnsiblePath} by id
+     *
+     * @param id the id
+     * @return the {@link AnsiblePath}
+     */
+    public static Optional<AnsiblePath> lookupAnsiblePathById(long id) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM AnsiblePath p WHERE id = :id")
+                .setParameter("id", id)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * List {@link AnsiblePath}s associated with a {@link MinionServer} with given id
+     *
+     * @param minionId the id of {@link MinionServer}
+     * @return the list of {@link AnsiblePath}s
+     */
+    public static List<AnsiblePath> listAnsiblePaths(long minionId) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM AnsiblePath p " +
+                        "WHERE p.minionServer.id = :mid ")
+                .setParameter("mid", minionId)
+                .list();
+    }
+
+    /**
+     * Save an {@link AnsiblePath}
+     *
+     * @param path the {@link AnsiblePath}
+     * @return the updated {@link AnsiblePath}
+     */
+    public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
+        HibernateFactory.getSession().saveOrUpdate(path);
+        return path;
+    }
+
+    /**
+     * Remove an {@link AnsiblePath}
+     *
+     * @param path the {@link AnsiblePath}
+     */
+    public static void removeAnsiblePath(AnsiblePath path) {
+        HibernateFactory.getSession().delete(path);
     }
 }
