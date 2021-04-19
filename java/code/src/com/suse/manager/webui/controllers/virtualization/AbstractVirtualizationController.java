@@ -66,7 +66,7 @@ public abstract class AbstractVirtualizationController {
             .serializeNulls()
             .create();
 
-    private final String jadeTemplatesPath;
+    protected final String jadeTemplatesPath;
     protected final VirtManager virtManager;
 
     /**

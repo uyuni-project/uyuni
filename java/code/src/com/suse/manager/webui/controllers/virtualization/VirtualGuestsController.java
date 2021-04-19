@@ -121,7 +121,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::edit)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/new",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::create)))), jade);
-        get("/manager/systems/details/virtualization/guests/:sid/console/:guestuuid",
+        get("/manager/systems/details/virtualization/guests/console/:guestuuid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
@@ -321,13 +321,18 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public ModelAndView console(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        long hostId = getServerId(request);
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
 
-        VirtualInstance guest = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByHostIdAndUuid(hostId, guestUuid);
+        List<VirtualInstance> guests = VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid(guestUuid);
+        if (guests.isEmpty()) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
+        }
+        if (guests.size() > 1) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine machine this UUID");
+        }
+        VirtualInstance guest = guests.get(0);
         Server host = guest.getHostSystem();
 
         String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
@@ -337,6 +342,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         int port = def.getGraphics().getPort();
 
         /* For the rest of the template */
+        data.put("serverId", guest.getHostSystem().getId());
         data.put("guestUuid", guestUuid);
         data.put("guestName", guest.getName());
         data.put("graphicsType", def.getGraphics().getType());
@@ -355,7 +361,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         }
         data.put("token", token);
 
-        return renderPage(request, response, user, "console", () -> data);
+        return new ModelAndView(data, jadeTemplatesPath + "/console.jade");
     }
 
     /**
