@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
+"POT-Creation-Date: 2021-03-18 15:01+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -707,8 +707,7 @@ msgid "usage: configchannel_listsystems CHANNEL"
 msgstr "用法：configchannel_listsystems CHANNEL"
 
 #: ../src/spacecmd/configchannel.py:80 ../src/spacecmd/configchannel.py:115
-#: ../src/spacecmd/group.py:496 ../src/spacecmd/group.py:549
-#: ../src/spacecmd/group.py:588
+#: ../src/spacecmd/group.py:496
 msgid "This version of the API doesn't support this method"
 msgstr "此 API 版本不支持此方法"
 
@@ -2278,26 +2277,6 @@ msgstr "system_listconfigchannels：列出系统的配置频道"
 #, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
 msgstr "用法：group_listsystems GROUP"
-
-#: ../src/spacecmd/group.py:531
-#, fuzzy
-msgid "group_addconfigchannels: Add config channels to a group"
-msgstr "system_addconfigchannels：将配置频道添加到系统"
-
-#: ../src/spacecmd/group.py:532
-#, fuzzy
-msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "用法：group_listsystems GROUP"
-
-#: ../src/spacecmd/group.py:570
-#, fuzzy
-msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr "system_removeconfigchannels：从系统中去除配置频道"
-
-#: ../src/spacecmd/group.py:571
-#, fuzzy
-msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "用法：system_removeconfigchannels <系统> <频道 ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"

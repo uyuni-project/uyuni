@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:24+0000\n"
+"POT-Creation-Date: 2021-03-18 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -654,8 +654,7 @@ msgid "usage: configchannel_listsystems CHANNEL"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:80 ../src/spacecmd/configchannel.py:115
-#: ../src/spacecmd/group.py:496 ../src/spacecmd/group.py:549
-#: ../src/spacecmd/group.py:588
+#: ../src/spacecmd/group.py:496
 msgid "This version of the API doesn't support this method"
 msgstr ""
 
@@ -2117,22 +2116,6 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:489
 msgid "usage: group_listconfigchannels GROUP"
-msgstr ""
-
-#: ../src/spacecmd/group.py:531
-msgid "group_addconfigchannels: Add config channels to a group"
-msgstr ""
-
-#: ../src/spacecmd/group.py:532
-msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr ""
-
-#: ../src/spacecmd/group.py:570
-msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr ""
-
-#: ../src/spacecmd/group.py:571
-msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:74
