@@ -541,6 +541,12 @@
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Ansible" xml:space="preserve">
+        <source>Ansible</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu (system details)</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Misc" xml:space="preserve">
         <source>Misc</source>
         <context-group name="ctx">
