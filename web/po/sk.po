@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-30 19:58+0000\n"
-"PO-Revision-Date: 2021-03-31 19:57+0000\n"
+"PO-Revision-Date: 2021-03-30 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -793,7 +793,7 @@ msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
-msgstr " exportéri pre ukázanie metriky o vašom prostredí."
+msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Refer to the "
@@ -805,7 +805,7 @@ msgstr "dokumentácia"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
-msgstr " naučiť sa, ako tieto metriky využívať."
+msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:242
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:262
@@ -1449,8 +1449,6 @@ msgstr "Vymazať pripnutie"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
 msgstr ""
-"Nie sú definované žiadne pripnutia. Môžete si ich vytvoriť pomocou tlačidla "
-"nižšie."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
@@ -1578,11 +1576,11 @@ msgstr "Nepriradené systémy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
-msgstr "Stiahnuť CSV"
+msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
-msgstr "Iba fyzické nasadenie"
+msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
 msgid "Unlimited Virtual Machines"
