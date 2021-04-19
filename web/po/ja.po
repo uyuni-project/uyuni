@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-18 06:58+0000\n"
+"POT-Creation-Date: 2021-03-18 01:59+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4750,9 +4750,7 @@ msgstr "これはこのホスト内に設定されている仮想ネットワー
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr ""
-"このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していま"
-"せん"
+msgstr "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していません"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -5062,8 +5060,7 @@ msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
-"IP アドレス、 DHCP/DNS サービスは追加されません"
+"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや IP アドレス、 DHCP/DNS サービスは追加されません"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
@@ -5071,17 +5068,13 @@ msgstr "ホスト IP のルーティングスタックと NAT を使用する仮
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
-"ク"
+msgstr "ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
-"ない仮想ネットワーク"
+msgstr "ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用しない仮想ネットワーク"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
@@ -5091,9 +5084,7 @@ msgstr "他のネットワークへの接続を持たない仮想ネットワー
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr ""
-"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
-"ゲストとホストの間では通信できません"
+msgstr "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。ゲストとホストの間では通信できません"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
