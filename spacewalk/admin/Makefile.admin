@@ -37,7 +37,7 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-generate-pem.pl \
                salt-secrets-config.py
 
-SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl
+SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper mgr-monitoring-ctl uyuni-update-config
 
 CONF_FILES = service-list
 
@@ -45,7 +45,7 @@ GPGKEY_FILES = RHN-GPG-KEY
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service \
-		mgr-websockify.service uyuni-check-database.service
+		mgr-websockify.service uyuni-check-database.service uyuni-update-config.service
 
 SYSTEMD_OVERRIDE_SERVICES = tomcat.service apache2.service salt-master.service salt-api.service rhn-search.service \
 			    taskomatic.service salt-secrets-config.service
