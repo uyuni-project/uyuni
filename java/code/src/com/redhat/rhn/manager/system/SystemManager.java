@@ -68,6 +68,9 @@ import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.server.ansible.AnsiblePath;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
+import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -98,6 +101,7 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -124,6 +128,7 @@ import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.IDN;
+import java.nio.file.Path;
 import java.sql.Date;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -3617,5 +3622,95 @@ public class SystemManager extends BaseManager {
 
         StateFactory.save(stateRev);
         StatesAPI.generateServerPackageState(minion);
+    }
+
+    /**
+     * Lookup ansible path by id
+     *
+     * @param id the id
+     * @param user the user doing the lookup
+     * @return AnsiblePath or empty if not found
+     * @throws LookupException if the user does not have permissions to the minion
+     */
+    public static Optional<AnsiblePath> lookupAnsiblePathById(long id, User user) {
+        Optional<AnsiblePath> ansiblePath = MinionServerFactory.lookupAnsiblePathById(id);
+        ansiblePath.ifPresent(p -> ensureAvailableToUser(user, p.getMinionServer().getId()));
+        return ansiblePath;
+    }
+
+    /**
+     * List ansible paths by minion
+     *
+     * @param minionId the minion id
+     * @param user the user performing the action
+     * @return the list of AnsiblePaths of minion
+     * @throws LookupException if the user does not have permissions to the minion
+     */
+    public static List<AnsiblePath> listAnsiblePaths(long minionId, User user) {
+        ensureAvailableToUser(user, minionId);
+        return MinionServerFactory.listAnsiblePaths(minionId);
+    }
+
+    /**
+     * Create and save a new ansible path
+     *
+     * @param type  the type
+     * @param minionServerId minion server id
+     * @param path the path
+     * @param user the user performing the action
+     * @return the created and saved AnsiblePath
+     * @throws LookupException if the user does not have permissions or server not found
+     */
+    public static AnsiblePath createAnsiblePath(AnsiblePath.Type type, long minionServerId, String path, User user) {
+        MinionServer minionServer = Optional.ofNullable(SystemManager.lookupByIdAndUser(minionServerId, user))
+                .flatMap(s -> s.asMinionServer())
+                .orElseThrow(() -> new LookupException("Minion " + minionServerId + " not found."));
+
+        AnsiblePath ansiblePath;
+        switch (type) {
+            case INVENTORY:
+                ansiblePath = new InventoryPath();
+                break;
+            case PLAYBOOK:
+                ansiblePath = new PlaybookPath();
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported type " + type);
+        }
+
+        ansiblePath.setMinionServer(minionServer);
+        ansiblePath.setPath(Path.of(path));
+
+        return MinionServerFactory.saveAnsiblePath(ansiblePath);
+    }
+
+    /**
+     * Update an existing ansible path
+     *
+     * @param existingPathId the path id
+     * @param newPath the new path
+     * @param user the user performing the action
+     * @return the updated path
+     * @throws LookupException if the user does not have permissions or existing path not found
+     */
+    public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
+        AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
+                .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
+        existing.setPath(Path.of(newPath));
+        return MinionServerFactory.saveAnsiblePath(existing);
+    }
+
+    /**
+     *
+     * Remove ansible path
+     *
+     * @param path the {@link AnsiblePath}
+     * @param user the user performing the action
+     * @throws LookupException if the user does not have permissions
+     */
+    public static void removeAnsiblePath(AnsiblePath path, User user) {
+        ensureAvailableToUser(user, path.getMinionServer().getId());
+        MinionServerFactory.removeAnsiblePath(path);
+
     }
 }
