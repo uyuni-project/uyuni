@@ -20,6 +20,9 @@ import static java.util.Collections.singletonList;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.PlaybookAction;
+import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -111,4 +114,28 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
                 actions.iterator().next());
     }
 
+    /**
+     * Schedule Ansible playbook application for a control node.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testScheduleAnsiblePlaybook() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        Date earliestAction = new Date();
+        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
+                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction);
+
+        // Look it up and verify
+        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        assertNotNull(savedAction);
+        assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
+        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertEquals(earliestAction, savedAction.getEarliestAction());
+
+        // Verify the details
+        PlaybookActionDetails details = savedAction.getDetails();
+        assertNotNull(details);
+        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("/path/to/hosts", details.getInventoryPath());
+    }
 }

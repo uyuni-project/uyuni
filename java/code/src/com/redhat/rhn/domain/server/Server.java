@@ -1545,6 +1545,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if this system has Ansible control node entitlement,
+     * <code>false</code> otherwise.
+     * @return <code>true</code> if this system has Ansible control node entitlement,
+     *      <code>false</code> otherwise.
+     */
+    public boolean hasAnsibleControlNodeEntitlement() {
+        return hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE);
+    }
+
+    /**
      * Return <code>true</code> if this is a bare metal system.
      * @return <code>true</code> if this is bare metal
      */

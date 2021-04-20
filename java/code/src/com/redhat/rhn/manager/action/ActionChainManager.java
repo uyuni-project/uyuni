@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.PlaybookAction;
+import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
@@ -45,6 +47,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.utils.MinionServerUtils;
+import org.apache.commons.io.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +62,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 /**
@@ -775,6 +779,35 @@ public class ActionChainManager {
         }
 
         ImageInfoFactory.save(info);
+
+        return action;
+    }
+
+    /**
+     * Schedule execution of a playbook on an Ansible control node.
+     *
+     * @param scheduler the user who is scheduling
+     * @param controlNodeId server ID of the Ansible control node
+     * @param playbookPath path to the playbook file in the control node
+     * @param inventoryPath path to the inventory file in the control node
+     * @param actionChain the action chain to add to or null
+     * @param earliest action will not be executed before this date
+     * @return the action object
+     */
+    public static PlaybookAction scheduleExecutePlaybook(User scheduler, Long controlNodeId, String playbookPath,
+            String inventoryPath, ActionChain actionChain, Date earliest) throws TaskomaticApiException {
+        String playbookName = FileUtils.getFile(playbookPath).getName();
+
+        PlaybookAction action = (PlaybookAction) scheduleActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
+                String.format("Execute playbook '%s'", playbookName), earliest, actionChain, null,
+                singleton(controlNodeId)).stream().findFirst()
+                .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
+
+        PlaybookActionDetails details = new PlaybookActionDetails();
+        details.setPlaybookPath(playbookPath);
+        details.setInventoryPath(inventoryPath);
+        action.setDetails(details);
+        ActionFactory.save(action);
 
         return action;
     }

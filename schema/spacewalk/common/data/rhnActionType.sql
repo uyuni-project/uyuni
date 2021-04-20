@@ -90,5 +90,6 @@ insert into rhnActionType values (517, 'cluster.remove_node', 'Remove node from 
 insert into rhnActionType values (518, 'cluster.upgrade_cluster', 'Upgrade cluster', 'N', 'N', 'Y');
 insert into rhnActionType values (519, 'virt.network_state', 'Change a virtual network state', 'N', 'N', 'N');
 insert into rhnActionType values (520, 'virt.network_create', 'Creates a virtual network', 'N', 'N', 'N');
+insert into rhnActionType values (521, 'ansible.playbook', 'Execute an Ansible playbook', 'N', 'N', 'N');
 commit;
 

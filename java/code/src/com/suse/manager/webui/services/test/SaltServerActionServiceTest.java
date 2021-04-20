@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.salt.PlaybookAction;
+import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -962,5 +964,25 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
         saltServerActionService.setSaltUtils(saltUtils);
+    }
+
+    public void testAnsiblePlaybookAction() throws Exception {
+        MinionServer controlNode = MinionServerFactoryTest.createTestMinionServer(user);
+
+        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_PLAYBOOK);
+        PlaybookActionDetails details = new PlaybookActionDetails();
+        details.setInventoryPath("/path/to/my/hosts");
+        details.setPlaybookPath("/path/to/myplaybook.yml");
+        action.setDetails(details);
+
+        ActionFactory.addServerToAction(controlNode, action);
+
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action,
+                Collections.singletonList(new MinionSummary(controlNode)));
+
+        LocalCall<?> saltCall = result.keySet().iterator().next();
+        assertStateApplyWithPillar("ansible.runplaybook", "playbook_path", "/path/to/myplaybook.yml", saltCall);
+        assertStateApplyWithPillar("ansible.runplaybook", "rundir", "/path/to", saltCall);
+        assertStateApplyWithPillar("ansible.runplaybook", "inventory_path", "/path/to/my/hosts", saltCall);
     }
 }
