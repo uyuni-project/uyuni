@@ -3,8 +3,6 @@
 Test suite for spacecmd.schedule module.
 """
 
-from datetime import datetime, timedelta
-
 from unittest.mock import MagicMock, patch
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.schedule
