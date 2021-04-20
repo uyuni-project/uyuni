@@ -1592,10 +1592,10 @@ When(/^I copy autoinstall mocked files on server$/) do
     # else
     #   raise 'File source not supported' unless return_code.zero?
     # end
+      source = current_dir + '/../upload_files/autoinstall/cobbler' + file_to_copy
+      dest = target_dir + File.basename(file_to_copy)
+      return_code = file_inject($server, source, dest)
+      raise 'File injection failed' unless return_code.zero?
+      target.run("chmod 644 #{dest}")
   end
-  source = current_dir + '/../upload_files/autoinstall/cobbler' + file
-  dest = target_dir + File.basename(file)
-  return_code = file_inject($server, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  target.run("chmod 644 #{dest}")
 end
