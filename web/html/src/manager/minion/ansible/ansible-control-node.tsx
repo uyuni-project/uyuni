@@ -70,8 +70,6 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
   }
 
   render () {
-    console.log(this.state.playbooksPaths);
-    console.log(this.state.inventoriesPaths);
     const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages} /> : null;
     return (
       <div>
