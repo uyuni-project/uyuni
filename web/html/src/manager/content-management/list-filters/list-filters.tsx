@@ -89,7 +89,11 @@ const ListFilters = (props: Props) => {
             row.projects
               .sort((a, b) => a.right.toLowerCase().localeCompare(b.right.toLowerCase()))
               .map(p => (
-                <a className="project-tag-link js-spa" href={`/rhn/manager/contentmanagement/project/${p.left}`}>
+                <a
+                  className="project-tag-link js-spa"
+                  href={`/rhn/manager/contentmanagement/project/${p.left}`}
+                  key={`project-tag-link-${p.left}`}
+                >
                   {p.right}
                 </a>
               ))
