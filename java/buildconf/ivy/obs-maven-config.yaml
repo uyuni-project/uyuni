@@ -131,13 +131,13 @@ artifacts:
   - artifact: javassist
     repository: Uyuni_Other
   - artifact: jboss-logging
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jcommon
     repository: Uyuni_Other
   - artifact: jdom
     repository: Leap
   - artifact: joda-time
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j
