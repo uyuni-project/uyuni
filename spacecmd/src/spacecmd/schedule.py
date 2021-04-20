@@ -463,11 +463,22 @@ def do_schedule_deletearchived(self, args):
     """
     This method removes all of the archived actions.
     """
+    user_already_prompted = False
     while True:
         # Needs to happen in a loop, since we can only fetch in batches. 10k is the default.
         actions = self.client.schedule.listArchivedActions(self.session)
         logging.debug("actions: {}".format(actions))
         if actions:
+            if not user_already_prompted:
+                if len(actions) >= 10000:
+                    action_length = ">10000"
+                else:
+                    action_length = len(actions)
+                user_answer = prompt_user(_("Do you want to delete all ({}) archived actions? [y/N]").format(action_length))
+                if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
+                    break
+                else:
+                    user_already_prompted = True
             # Collect IDs of actions that should be deleted
             action_ids = [action.get('id') for action in actions]
 
@@ -476,4 +487,6 @@ def do_schedule_deletearchived(self, args):
                 # set needs to be cast to list, since set cannot be marshalled
                 self.client.schedule.deleteActions(self.session, list(set(action_ids)))
         else:
+            if not user_already_prompted:
+                print(_("No archived actions found."))
             break

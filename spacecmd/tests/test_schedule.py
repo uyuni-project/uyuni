@@ -32,6 +32,8 @@ class TestSCSchedule:
         assert shell.client.schedule.listArchivedActions.called
         assert not shell.client.schedule.deleteActions.called
 
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
     def test_schedule_deletearchived_with_archived(self, shell):
         """
         Test do_schedule_deletearchived with archived actions.
@@ -52,6 +54,52 @@ class TestSCSchedule:
         assert shell.client.schedule.deleteActions.call_count == 1
         assert shell.client.schedule.deleteActions.call_args[0][1] == [1, 2, 3]
 
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='n'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='n'))
+    def test_schedule_deletearchived_with_archived_but_user_answer_is_no(self, shell):
+        """
+        Test do_schedule_deletearchived with archived actions and the user answers with
+        no "n".
+
+        :param shell:
+        :return:
+        """
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
+
+        shell.help_schedule_deletearchived = MagicMock()
+        shell.client.schedule.listArchivedActions = MagicMock()
+        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.deleteActions = MagicMock()
+        logger = MagicMock()
+
+        spacecmd.schedule.do_schedule_deletearchived(shell, "")
+
+        assert shell.client.schedule.deleteActions.call_count == 0
+
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value=''))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value=''))
+    def test_schedule_deletearchived_with_archived_but_no_user_answer(self, shell):
+        """
+        Test do_schedule_deletearchived with archived actions, but the user gives no answer.
+        This should default to no.
+
+        :param shell:
+        :return:
+        """
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
+
+        shell.help_schedule_deletearchived = MagicMock()
+        shell.client.schedule.listArchivedActions = MagicMock()
+        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
+        shell.client.schedule.deleteActions = MagicMock()
+        logger = MagicMock()
+
+        spacecmd.schedule.do_schedule_deletearchived(shell, "")
+
+        assert shell.client.schedule.deleteActions.call_count == 0
+
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
     def test_schedule_deletearchived_with_archived_batched(self, shell):
         """
         Test do_schedule_deletearchived with archived actions
