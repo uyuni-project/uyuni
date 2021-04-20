@@ -1579,7 +1579,7 @@ When(/^I copy autoinstall mocked files on server$/) do
                 when "/fedora12"
                   "/autoinstall/Fedora_12_i386/images/pxeboot/"
                 when "/mock"
-                  "/autoinstall/mock"
+                  "/autoinstall/mock/"
                 when "/sles15sp2"
                   "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/"
                 end
