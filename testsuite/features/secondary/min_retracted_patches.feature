@@ -6,7 +6,7 @@ Feature: Retracted patches
 
   Scenario: Installed retracted package should show icon in the system packages list
     Given I am authorized as "admin" with password "admin"
-    When I install package "rute-dummy=2.1-1.1" on this "sle_minion"
+    When I install package "rute-dummy-2.1-1.1" on this "sle_minion"
     And I wait until package "rute-dummy-2.1-1.1.x86_64" is installed on "sle_minion" via spacecmd
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
@@ -27,7 +27,7 @@ Feature: Retracted patches
 
   Scenario: Retracted package should not be available for upgrade
     Given I am authorized as "admin" with password "admin"
-    When I install old package "rute-dummy=2.0-1.2" on this "sle_minion"
+    When I install old package "rute-dummy-2.0-1.2" on this "sle_minion"
     And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
@@ -38,7 +38,7 @@ Feature: Retracted patches
 
   Scenario: Retracted patch should not affect any system
     Given I am authorized as "admin" with password "admin"
-    When I install package "rute-dummy=2.0-1.2" on this "sle_minion"
+    When I install package "rute-dummy-2.0-1.2" on this "sle_minion"
     And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
     And I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"

@@ -19,7 +19,7 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     When I enable repository "test_repo_deb_pool" on this "ubuntu_minion"
     And I run "apt update" on "ubuntu_minion"
     And I remove package "orion-dummy" from this "ubuntu_minion"
-    And I install old package "virgo-dummy=1.0" on this "ubuntu_minion"
+    And I install old package "virgo-dummy-1.0" on this "ubuntu_minion"
 
   Scenario: Pre-requisite: refresh package list on Ubuntu minion
     When I refresh packages list via spacecmd on "ubuntu_minion"

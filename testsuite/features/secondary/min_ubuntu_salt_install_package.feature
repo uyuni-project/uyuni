@@ -9,7 +9,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     When I enable repository "test_repo_deb_pool" on this "ubuntu_minion"
     And I run "apt update" on "ubuntu_minion" with logging
     And I remove package "andromeda-dummy" from this "ubuntu_minion"
-    And I install old package "virgo-dummy=1.0" on this "ubuntu_minion"
+    And I install old package "virgo-dummy-1.0" on this "ubuntu_minion"
     And I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
