@@ -1,6 +1,6 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import { Messages } from "components/messages";
+import { Messages, Utils } from "components/messages";
 import { TextField } from "components/fields";
 import { Panel } from "components/panels/Panel";
 import { AsyncButton } from "components/buttons";
@@ -19,11 +19,11 @@ type PropsType = {
 
 type StateType = {
   systemId: Number;
-  messages: any[];
   playbooksPaths: AnsiblePath[];
   inventoriesPaths: AnsiblePath[];
   newPlaybookPath: string;
   newInventoryPath: string;
+  errors: string[];
 };
 
 class AnsibleControlNode extends React.Component<PropsType, StateType> {
@@ -32,11 +32,11 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
 
     this.state = {
       systemId: props.system.id,
-      messages: [],
       playbooksPaths: [],
       inventoriesPaths: [],
       newPlaybookPath: "",
       newInventoryPath: "",
+      errors: [],
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/"+props.system.id)
@@ -74,14 +74,17 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
           this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "" });
         }
       }
+      else {
+        this.setState({ errors: data.errors.path });
+      }
     });
   }
   
   render () {
-    const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages} /> : null;
+    const errors = this.state.errors.length > 0 ? <Messages items={Utils.error(this.state.errors)} /> : null;
     return (
       <div>
-        {messages}
+        {errors}
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
