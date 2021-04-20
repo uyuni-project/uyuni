@@ -117,6 +117,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().evict(playbookPath);
 
         assertEquals(inventoryPath, MinionServerFactory.lookupAnsiblePathById(inventoryPath.getId()).get());
+        assertEquals(inventoryPath, MinionServerFactory.lookupAnsiblePathByPathAndMinion(Path.of("/tmp/test1"), minionServer1.getId()).get());
         assertEquals(playbookPath, MinionServerFactory.lookupAnsiblePathById(playbookPath.getId()).get());
         assertEquals(1, MinionServerFactory.listAnsiblePaths(minionServer1.getId()).size());
         assertEquals(inventoryPath, MinionServerFactory.listAnsiblePaths(minionServer1.getId()).iterator().next());

@@ -15,8 +15,11 @@
 package com.redhat.rhn.manager.system;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -128,6 +131,7 @@ import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.IDN;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.sql.Date;
 import java.sql.Types;
@@ -146,8 +150,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyMap;
 
 /**
  * SystemManager
@@ -3660,11 +3662,14 @@ public class SystemManager extends BaseManager {
      * @param user the user performing the action
      * @return the created and saved AnsiblePath
      * @throws LookupException if the user does not have permissions or server not found
+     * @throws ValidatorException if the validation fails
      */
     public static AnsiblePath createAnsiblePath(AnsiblePath.Type type, long minionServerId, String path, User user) {
         MinionServer minionServer = Optional.ofNullable(SystemManager.lookupByIdAndUser(minionServerId, user))
                 .flatMap(s -> s.asMinionServer())
                 .orElseThrow(() -> new LookupException("Minion " + minionServerId + " not found."));
+
+        validateAnsiblePath(path, empty(), minionServerId);
 
         AnsiblePath ansiblePath;
         switch (type) {
@@ -3692,12 +3697,45 @@ public class SystemManager extends BaseManager {
      * @param user the user performing the action
      * @return the updated path
      * @throws LookupException if the user does not have permissions or existing path not found
+     * @throws ValidatorException if the validation fails
      */
     public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
         AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
+        validateAnsiblePath(newPath, of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
         return MinionServerFactory.saveAnsiblePath(existing);
+    }
+
+    private static void validateAnsiblePath(String path, Optional<Long> pathId, long minionServerId) {
+        ValidatorResult result = new ValidatorResult();
+
+        if (path == null || path.isBlank()) {
+            result.addFieldError("path", "ansible.invalid_path");
+        }
+        try {
+            Path.of(path);
+        }
+        catch (InvalidPathException e) {
+            result.addFieldError("path", "ansible.invalid_path");
+        }
+
+        Optional<AnsiblePath> duplicatePath = MinionServerFactory
+                .lookupAnsiblePathByPathAndMinion(Path.of(path), minionServerId);
+        duplicatePath.ifPresent(dup -> { // an ansible path with same minion and path exists
+            pathId.ifPresentOrElse(p -> { // if we're updating, the IDs must be same
+                        if (!p.equals(dup.getId())) {
+                            result.addFieldError("path", "ansible.duplicate_path");
+                        }
+                    },
+                    () -> { // creating is illegal in this case
+                        result.addFieldError("path", "ansible.duplicate_path");
+                    });
+        });
+
+        if (result.hasErrors()) {
+            throw new ValidatorException(result);
+        }
     }
 
     /**
