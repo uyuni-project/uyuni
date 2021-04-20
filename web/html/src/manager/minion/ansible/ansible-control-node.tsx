@@ -6,20 +6,22 @@ import { Panel } from "components/panels/Panel";
 import { AsyncButton } from "components/buttons";
 import Network from "utils/network";
 
-type Minion = {
+type AnsiblePath = {
   id: Number;
-  name: String;
+  minionId: Number;
+  type: String;
+  path: String;
 }
 
 type PropsType = {
-  system: Minion;
+  id: Number;
 };
 
 type StateType = {
-  system: Minion;
+  systemId: Number;
   messages: any[];
-  playbooksPaths: string[];
-  inventoriesPaths: string[];
+  playbooksPaths: AnsiblePath[];
+  inventoriesPaths: AnsiblePath[];
   newPlaybookPath: string;
   newInventoryPath: string;
 };
@@ -29,13 +31,18 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     super(props);
 
     this.state = {
-      system: props.system,
+      systemId: props.system.id,
       messages: [],
-      playbooksPaths: ["/usr/share/playbooks", "/srv/playbooks"],
-      inventoriesPaths: ["/usr/share/inventories", "/srv/inventories"],
+      playbooksPaths: [],
+      inventoriesPaths: [],
       newPlaybookPath: "",
       newInventoryPath: "",
     };
+
+    Network.get("/rhn/manager/api/systems/details/ansible/paths/"+props.system.id)
+    .promise.then(data => {
+      this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
+    });
   }
 
   newPath(type: string, newPath: string) {
@@ -52,18 +59,19 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
       JSON.stringify({
-        minionId: this.state.system.id,
+        minionId: this.state.systemId,
         type: type,
         path: newPath
       }),
       "application/json"
     ).promise.then(data => {
-      if (data) {
+      if (data.success) {
+        const newAnsiblePath = { id: data.newPathId, minionId: this.state.systemId, type: type, path: newPath};
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(this.state.newPlaybookPath) });
+          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(this.state.newInventoryPath) });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "" });
         }
       }
     });
@@ -80,14 +88,14 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Playbooks Paths"
           >
             {this.state.playbooksPaths.map(p =>
-              <pre>
-                {p}
+              <pre key={p.id.toString()}>
+                {p.path}
               </pre>
             )}
             <hr/>
             <h4>{t("Add a Playbook path to discover")}</h4>
             <div className="form-group">
-              <TextField placeholder={t("New playbook path")} onChange={(e) => this.newPath("playbook", e.target.value.toString())} />
+              <TextField placeholder={t("New playbook path")} value={this.state.newPlaybookPath} onChange={(e) => this.newPath("playbook", e.target.value.toString())} />
             </div>
             <div className="pull-right btn-group">
               <AsyncButton
@@ -105,14 +113,14 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Inventories Paths"
           >
             {this.state.inventoriesPaths.map(p =>
-              <pre>
-                {p}
+              <pre key={p.id.toString()}>
+                {p.path}
               </pre>
             )}
             <hr/>
             <h4>{t("Add an Inventory path to discover")}</h4>
             <div className="form-group">
-              <TextField placeholder={t("New inventory path")} onChange={(e) => this.newPath("inventory", e.target.value.toString())} />
+              <TextField placeholder={t("New inventory path")} value={this.state.newInventoryPath} onChange={(e) => this.newPath("inventory", e.target.value.toString())} />
             </div>
             <div className="pull-right btn-group">
               <AsyncButton
