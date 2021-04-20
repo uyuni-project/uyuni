@@ -1596,6 +1596,6 @@ When(/^I copy autoinstall mocked files on server$/) do
       dest = target_dir + File.basename(file_to_copy)
       return_code = file_inject($server, source, dest)
       raise 'File injection failed' unless return_code.zero?
-      target.run("chmod 644 #{dest}")
+      $server.run("chmod 644 #{dest}")
   end
 end
