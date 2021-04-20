@@ -6,14 +6,16 @@ Feature: Retracted patches
 
   Scenario: Installed retracted package should show icon in the system packages list
     Given I am authorized as "admin" with password "admin"
-    When I wait until package "rute-dummy-2.1-1.1.x86_64" is installed on "sle_minion" via spacecmd
+    When I install package "rute-dummy=2.1-1.1" on this "sle_minion"
+    And I wait until package "rute-dummy-2.1-1.1.x86_64" is installed on "sle_minion" via spacecmd
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "List / Remove"
     And I enter "rute-dummy" as the filtered package name
     And I click on the filter button until page does contain "rute-dummy" text
     Then the table row for "rute-dummy-2.1-1.1" should contain "retracted" icon
-    When I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
+    When I remove package "rute-dummy" from this "sle_minion"
+    And I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
 
   Scenario: Retracted package should not be available for installation
     Given I am authorized as "admin" with password "admin"
@@ -25,23 +27,27 @@ Feature: Retracted patches
 
   Scenario: Retracted package should not be available for upgrade
     Given I am authorized as "admin" with password "admin"
-    When I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
+    When I install old package "rute-dummy=2.0-1.2" on this "sle_minion"
+    And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "Upgrade"
     Then I should not see a "rute-dummy-2.1-1.1" text
-    When I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
+    When I remove package "rute-dummy" from this "sle_minion"
+    And I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
 
   Scenario: Retracted patch should not affect any system
     Given I am authorized as "admin" with password "admin"
-    When I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
+    When I install package "rute-dummy=2.0-1.2" on this "sle_minion"
+    And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
     And I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Patches" in the content area
     And I follow "rute-dummy-0817"
     And I follow "Affected Systems"
     Then I should see a "No systems." text
-    When I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
+    When I remove package "rute-dummy" from this "sle_minion"
+    And I wait until package "rute-dummy" is removed from "sle_minion" via spacecmd
    
   Scenario: Target systems for stable packages should not be empty
     Given I am authorized as "admin" with password "admin"
