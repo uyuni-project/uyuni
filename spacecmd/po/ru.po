@@ -1,0 +1,7551 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: ../src/bin/spacecmd:60
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/spacecmd/activationkey.py:50
+msgid "activationkey_addpackages: Add packages to an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:51
+msgid "usage: activationkey_addpackages KEY <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:84
+msgid "activationkey_removepackages: Remove packages from an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:86
+msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:122
+msgid "activationkey_addgroups: Add groups to an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:123
+msgid "usage: activationkey_addgroups KEY <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:161
+msgid "activationkey_removegroups: Remove groups from an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:162
+msgid "usage: activationkey_removegroups KEY <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:209
+msgid "activationkey_addentitlements: Add entitlements to an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:211
+msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:246
+msgid ""
+"activationkey_removeentitlements: Remove entitlements from an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:248
+msgid "usage: activationkey_removeentitlements KEY <ENTITLEMENT ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:286
+msgid "activationkey_addchildchannels: Add child channels to an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:288
+msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:338
+msgid ""
+"activationkey_removechildchannels: Remove child channels from an activation "
+"key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:340
+msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:377
+msgid ""
+"activationkey_listchildchannels: List the child channels for an activation "
+"key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:379
+msgid "usage: activationkey_listchildchannels KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:408
+msgid ""
+"activationkey_listbasechannel: List the base channels for an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:410
+msgid "usage: activationkey_listbasechannel KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:438
+msgid "activationkey_listgroups: List the groups for an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:440
+msgid "usage: activationkey_listgroups KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:471
+msgid ""
+"activationkey_listentitlements: List the entitlements for an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:473
+msgid "usage: activationkey_listentitlements KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:502
+msgid "activationkey_listpackages: List the packages for an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:504
+msgid "usage: activationkey_listpackages KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:536
+msgid ""
+"activationkey_listconfigchannels: List the configuration channels for an "
+"activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:538
+msgid "usage: activationkey_listconfigchannels KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:571
+msgid ""
+"activationkey_addconfigchannels: Add config channels to an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:573
+msgid ""
+"usage: activationkey_addconfigchannels KEY <CHANNEL ...> [options])\n"
+"\n"
+"options:\n"
+"  -t add channels to the top of the list\n"
+"  -b add channels to the bottom of the list"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:626
+msgid ""
+"activationkey_removeconfigchannels: Remove config channels from an "
+"activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:628
+msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:667
+msgid ""
+"activationkey_setconfigchannelorder: Set the ranked order of configuration "
+"channels"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:669
+msgid "usage: activationkey_setconfigchannelorder KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:699
+msgid "New Configuration Channels:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:713
+msgid "activationkey_create: Create an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:714
+msgid ""
+"usage: activationkey_create [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -d DESCRIPTION\n"
+"  -b BASE_CHANNEL\n"
+"  -u set key as universal default\n"
+"  -e [enterprise_entitled,virtualization_host]"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:735
+msgid "Name (blank to autogenerate):"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:736
+msgid "Description [None]:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:739 ../src/spacecmd/distribution.py:79
+#: ../src/spacecmd/softwarechannel.py:928
+msgid "Base Channels"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:744
+msgid "Base Channel (blank for default):"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:752
+#, python-format
+msgid "%s Entitlement [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:756
+msgid "Universal Default [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:783
+#, python-format
+msgid "Created activation key %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:791
+msgid "activationkey_delete: Delete an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:792
+msgid "usage: activationkey_delete KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:814 ../src/spacecmd/cryptokey.py:140
+#: ../src/spacecmd/cryptokey.py:198 ../src/spacecmd/custominfo.py:97
+#, python-format
+msgid "No keys matched argument %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:820
+msgid "Delete activation key(s) [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:833
+msgid "activationkey_list: List all activation keys"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:834
+msgid "usage: activationkey_list"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:858
+msgid "activationkey_listsystems: List systems registered with a key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:859
+msgid "usage: activationkey_listsystems KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:882 ../src/spacecmd/activationkey.py:931
+#, python-format
+msgid "%s is not a valid activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:896
+msgid "activationkey_details: Show the details of an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:897
+msgid "usage: activationkey_details KEY ..."
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:944
+#, python-format
+msgid "Key:                    %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:945
+#, python-format
+msgid "Description:            %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:946
+#, python-format
+msgid "Universal Default:      %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:947
+#, python-format
+msgid "Usage Limit:            %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:948
+#, python-format
+msgid "Deploy Config Channels: %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:950
+#, python-format
+msgid "Contact Method:         %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:953 ../src/spacecmd/kickstart.py:427
+#: ../src/spacecmd/system.py:3066
+msgid "Software Channels"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:961 ../src/spacecmd/configchannel.py:801
+#: ../src/spacecmd/configchannel.py:908 ../src/spacecmd/system.py:3075
+msgid "Configuration Channels"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:967 ../src/spacecmd/system.py:3080
+msgid "Entitlements"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:972 ../src/spacecmd/system.py:3086
+msgid "System Groups"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1391
+#: ../src/spacecmd/softwarechannel.py:1493
+#: ../src/spacecmd/softwarechannel.py:1575
+#: ../src/spacecmd/softwarechannel.py:1821
+msgid "Packages"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:992
+msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:994
+msgid "usage: activationkey_enableconfigdeployment KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1021
+msgid ""
+"activationkey_disableconfigdeployment: Disable config channel deployment"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1023
+msgid "usage: activationkey_disableconfigdeployment KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1050
+msgid "activationkey_setbasechannel: Set the base channel of an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1052
+msgid "usage: activationkey_setbasechannel KEY CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1099
+msgid ""
+"activationkey_setusagelimit: Set the usage limit of an activation key, can "
+"be a number or \"unlimited\""
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1101
+msgid "usage: activationkey_setusagelimit KEY <usage limit>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1102
+msgid "usage: activationkey_setusagelimit KEY unlimited "
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1132
+#, python-format
+msgid "Couldn't convert argument %s to an integer"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1154
+msgid ""
+"activationkey_setuniversaldefault: Set this key as the universal default"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1156
+msgid "usage: activationkey_setuniversaldefault KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1197
+msgid "activationkey_export: Export activation key(s) to JSON format file"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1198
+msgid ""
+"usage: activationkey_export [options] [<KEY> ...])\n"
+"\n"
+"options:\n"
+"    -f outfile.json : specify an output filename, defaults to <KEY>.json\n"
+"                      if exporting a single key, akeys.json for multiple "
+"keys,\n"
+"                      or akey_all.json if no KEY specified (export ALL)\n"
+"\n"
+"Note : KEY list is optional, default is to export ALL keys "
+msgstr ""
+
+#. Get the key details
+#: ../src/spacecmd/activationkey.py:1214
+#, python-format
+msgid "Getting activation key details for %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1268
+#, python-format
+msgid "Exporting ALL activation keys to %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1277
+msgid "Invalid activation key passed"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1292
+#, python-format
+msgid "Exporting key %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1301
+#, python-format
+msgid "File %s exists, confirm overwrite file? (y/n)"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1306
+msgid "Failed to save exported keys to file: {}"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1315
+msgid "activationkey_import: import activation key(s) from JSON file(s)"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1316
+msgid "usage: activationkey_import <JSONFILE ...>"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1325
+msgid "No filename passed"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1334
+#, python-format
+msgid "Could not read json data from %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1339 ../src/spacecmd/activationkey.py:1383
+#, python-format
+msgid "Failed to import key %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1353
+#, python-format
+msgid "%s already exists! Skipping!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1408
+#, python-format
+msgid "System group %s doesn't exist, creating"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1429
+msgid "activationkey_clone: Clone an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1430
+msgid ""
+"usage examples:\n"
+"                 activationkey_clone foo_key -c bar_key\n"
+"                 activationkey_clone foo_key1 foo_key2 -c prefix\n"
+"                 activationkey_clone foo_key -x \"s/foo/bar\"\n"
+"                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
+"\n"
+"options:\n"
+"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for "
+"multiple\n"
+"                   keys\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
+"the\n"
+"                   clone description, base-channel label, child-channel\n"
+"                   labels, config-channel names "
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
+#: ../src/spacecmd/system.py:3061
+msgid "Activation Keys"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1464
+#, python-format
+msgid "Key to clone: %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1468
+msgid "Original Key:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1470
+msgid "Cloned Key:"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1473 ../src/spacecmd/configchannel.py:1425
+msgid "Error - must specify either -c or -x options!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1478
+#, python-format
+msgid "Key %s already exists"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1482
+msgid "Error no activationkey to clone passed!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1536
+#, python-format
+msgid "Found child channel %s key %s, %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1538
+msgid " does not exist, skipping!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1545
+#, python-format
+msgid "Regex-replacement results in new base-channel %s which does not exist!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1561
+#, python-format
+msgid "Found config channel %s for key %s, %s "
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1563
+msgid "does not exist, skipping!"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1581
+#, python-format
+msgid "Cloning key %s as %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1585 ../src/spacecmd/configchannel.py:1477
+#, python-format
+msgid "Failed to clone %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1603
+msgid "no activationkey label given"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1606
+msgid "invalid activationkey label "
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1623
+msgid "activationkey_diff: Diff activation keys"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1625
+msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1674
+msgid "activationkey_disable: Disable an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1676
+msgid "usage: activationkey_disable KEY [KEY ...]"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1708
+msgid "activationkey_enable: Enable an activation key"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1710
+msgid "usage: activationkey_enable KEY [KEY ...]"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1742
+msgid "activationkey_setdescription: Set the activation key description"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1744
+msgid "usage: activationkey_setdescription KEY DESCRIPTION"
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1776
+msgid ""
+"activationkey_setcontactmethod: Set the contact method to use for systems "
+"registered with this key."
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1778 ../src/spacecmd/system.py:4150
+msgid "Available contact methods: "
+msgstr ""
+
+#: ../src/spacecmd/activationkey.py:1779
+msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
+msgstr ""
+
+#: ../src/spacecmd/api.py:45
+msgid "api: call server API with arguments directly"
+msgstr ""
+
+#: ../src/spacecmd/api.py:46
+#, python-format
+msgid ""
+"usage: api [options] API_STRING)\n"
+"\n"
+"options:\n"
+"  -A, --args  Arguments for the API other than session id in comma "
+"separated\n"
+"              strings or JSON expression\n"
+"  -F, --format   Output format\n"
+"  -o, --output   Output file\n"
+"\n"
+"examples:\n"
+"  api api.getApiCallList\n"
+"  api --args \"sysgroup_A\" systemgroup.listSystems\n"
+"  api -A \"rhel-i386-server-5,2011-04-01,2011-05-01\" -F \"%(name)s\" \\\n"
+"      channel.software.listAllPackages\n"
+msgstr ""
+
+#: ../src/spacecmd/api.py:82
+msgid "Could not open to write: "
+msgstr ""
+
+#: ../src/spacecmd/api.py:83
+msgid "Fallback output to stdout"
+msgstr ""
+
+#: ../src/spacecmd/api.py:92
+msgid "No such API: "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:51
+msgid "configchannel_list: List all configuration channels"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:52
+msgid "usage: configchannel_list"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:69
+msgid "configchannel_listsystems: List the systems subscribed to a"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:70 ../src/spacecmd/configchannel.py:105
+msgid "                           configuration channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:71
+msgid "usage: configchannel_listsystems CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:80 ../src/spacecmd/configchannel.py:115
+#: ../src/spacecmd/group.py:496 ../src/spacecmd/group.py:549
+#: ../src/spacecmd/group.py:588
+msgid "This version of the API doesn't support this method"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:104
+msgid "configchannel_listgroups: List the groups subscribed to a"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:106
+msgid "usage: configchannel_listgroups CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:139
+msgid "configchannel_listfiles: List the files in a config channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:140
+msgid "usage: configchannel_listfiles CHANNEL ..."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:169
+msgid "configchannel_forcedeploy: Forces a redeployment"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:170
+msgid "                           of files within this channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:171
+msgid "                           on all subscribed systems"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:172
+msgid "usage: configchannel_forcedeploy CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:194
+msgid "No files within selected configchannel."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:200
+msgid "Channel has no subscribed Systems"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:203
+msgid "Force deployment of the following configfiles:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:206
+msgid ""
+"\n"
+"On these systems:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:209
+msgid "Really force deployment [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:218
+msgid "configchannel_filedetails: Show the details of a file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:219
+msgid "in a configuration channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:220
+msgid "usage: configchannel_filedetails CHANNEL FILE [REVISION]"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:252
+#, python-format
+msgid "Invalid revision: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:258
+#, python-format
+msgid "%s is not in this configuration channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:276
+#, python-format
+msgid "Path:     %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:277
+#, python-format
+msgid "Type:     %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:278
+#, python-format
+msgid "Revision: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:279
+#, python-format
+msgid "Created:  %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:280
+#, python-format
+msgid "Modified: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:284 ../src/spacecmd/configchannel.py:686
+#, python-format
+msgid "Target Path:     %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:287 ../src/spacecmd/configchannel.py:716
+#, python-format
+msgid "Owner:           %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:288 ../src/spacecmd/configchannel.py:717
+#, python-format
+msgid "Group:           %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:289 ../src/spacecmd/configchannel.py:718
+#, python-format
+msgid "Mode:            %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:291 ../src/spacecmd/configchannel.py:687
+#: ../src/spacecmd/configchannel.py:720
+#, python-format
+msgid "SELinux Context: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:294
+#, python-format
+msgid "SHA256:          %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:295 ../src/spacecmd/configchannel.py:719
+#, python-format
+msgid "Binary:          %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:299 ../src/spacecmd/configchannel.py:732
+#: ../src/spacecmd/configchannel.py:982 ../src/spacecmd/kickstart.py:1905
+#: ../src/spacecmd/snippet.py:162
+msgid "Contents"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:309
+msgid "configchannel_backup: backup a config channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:310
+msgid ""
+"usage: configchannel_backup CHANNEL [OUTDIR])\n"
+"\n"
+"OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL\n"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:349 ../src/spacecmd/group.py:268
+#, python-format
+msgid "Could not create output directory: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:362
+#, python-format
+msgid "Could not create \"%s\" file: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:368
+#, python-format
+msgid "Output Path:   %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:407
+msgid "configchannel_details: Show the details of a config channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:408
+msgid "usage: configchannel_details CHANNEL ..."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:438 ../src/spacecmd/group.py:520
+#: ../src/spacecmd/kickstart.py:416
+#, python-format
+msgid "Label:       %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:439 ../src/spacecmd/group.py:521
+#: ../src/spacecmd/kickstart.py:415
+#, python-format
+msgid "Name:        %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:440 ../src/spacecmd/cryptokey.py:215
+#: ../src/spacecmd/group.py:522 ../src/spacecmd/system.py:679
+#, python-format
+msgid "Description: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:441 ../src/spacecmd/cryptokey.py:216
+#: ../src/spacecmd/group.py:523 ../src/spacecmd/kickstart.py:502
+#: ../src/spacecmd/kickstart.py:1901
+#, python-format
+msgid "Type:        %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:444
+msgid "Files"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:454
+msgid "configchannel_create: Create a configuration channel of specific type"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:455
+msgid ""
+"usage: configchannel_create [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -l LABEL\n"
+"  -d DESCRIPTION\n"
+"  -t TYPE('normal,'state')"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:474 ../src/spacecmd/custominfo.py:55
+#: ../src/spacecmd/custominfo.py:199 ../src/spacecmd/distribution.py:72
+#: ../src/spacecmd/filepreservation.py:70 ../src/spacecmd/group.py:179
+#: ../src/spacecmd/repo.py:350 ../src/spacecmd/repo.py:462
+#: ../src/spacecmd/softwarechannel.py:801
+msgid "Name:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:475
+msgid "Label:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:476 ../src/spacecmd/cryptokey.py:67
+#: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:204
+#: ../src/spacecmd/group.py:184 ../src/spacecmd/softwarechannel.py:813
+#: ../src/spacecmd/system.py:3537
+msgid "Description:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:477
+msgid "Type [normal, state]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:484
+msgid "Only [normal/state] values are acceptable for type"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:488 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
+msgid "A name is required"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:497
+msgid "Only [normal/state] values are acceptable for --type parameter"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:512
+msgid "configchannel_delete: Delete a configuration channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:513
+msgid "usage: configchannel_delete CHANNEL ..."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:534
+#, python-format
+msgid "No channels matched argument(s): %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:540 ../src/spacecmd/softwarechannel.py:737
+msgid "Delete these channels [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:584
+msgid "Symlink [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:588
+msgid "Target Path:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:589
+msgid "SELinux Context [none]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:597
+msgid "Directory [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:606
+#, python-format
+msgid "Owner [%s]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:607
+#, python-format
+msgid "Group [%s]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:608
+#, python-format
+msgid "Mode [%s]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:610
+#, python-format
+msgid "SELinux Context [%s]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:611 ../src/spacecmd/configchannel.py:947
+msgid "Revision [next]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:629 ../src/spacecmd/configchannel.py:952
+msgid "The revision must be an integer"
+msgstr ""
+
+#. get the contents of the script
+#: ../src/spacecmd/configchannel.py:632 ../src/spacecmd/configchannel.py:934
+#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:1956
+#: ../src/spacecmd/snippet.py:142
+msgid "Read an existing file [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:634 ../src/spacecmd/kickstart.py:1958
+msgid "File:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:652
+msgid "The path is required"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:666 ../src/spacecmd/configchannel.py:958
+msgid "You must provide the file contents"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:670
+msgid "You must provide the target path for a symlink"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:685 ../src/spacecmd/configchannel.py:714
+#, python-format
+msgid "Path:            %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:715
+#, python-format
+msgid "Directory:       %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:725
+#, python-format
+msgid "Revision:        %i"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:730
+msgid "Contents not displayed (base64 encoded)"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:743
+msgid ""
+"configchannel_addfile/configchannel_updatefile: Create a configuration file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:744
+msgid ""
+"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
+"LOCAL_FILE_PATH [OPTIONS])\n"
+"\n"
+"options:\n"
+"  -c CHANNEL\n"
+"  -p PATH\n"
+"  -r REVISION\n"
+"  -o OWNER [default: root]\n"
+"  -g GROUP [default: root]\n"
+"  -m MODE [defualt: 0644]\n"
+"  -x SELINUX_CONTEXT\n"
+"  -d path is a directory\n"
+"  -s path is a symlink\n"
+"  -b path is a binary (or other file which needs base64 encoding)\n"
+"  -t SYMLINK_TARGET\n"
+"  -f local path to file contents\n"
+"  -y automatically proceed with file contents\n"
+"\n"
+"  Note re binary/base64: Some text files, notably those containing trailing\n"
+"  newlines, those containing ASCII escape characters (or other charaters "
+"not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
+"auto-\n"
+"  detect files which require this, but you may need to explicitly specify.\n"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:806 ../src/spacecmd/softwarechannel.py:820
+#: ../src/spacecmd/softwarechannel.py:941
+#: ../src/spacecmd/softwarechannel.py:948
+msgid "Select:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:814 ../src/spacecmd/configchannel.py:920
+#: ../src/spacecmd/softwarechannel.py:1375
+#, python-format
+msgid "%s is not a valid channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:819
+msgid "Unable to obtain a valid channel. Aborting."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:825 ../src/spacecmd/scap.py:161
+msgid "Path:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:841 ../src/spacecmd/configchannel.py:971
+msgid "No config channel specified!"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:846 ../src/spacecmd/configchannel.py:976
+msgid "Error obtaining file info"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:881
+msgid "configchannel_updateinitsls: Update init.sls file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:882
+msgid ""
+"usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
+"\n"
+"options:\n"
+"  -c CHANNEL\n"
+"  -r REVISION\n"
+"  -f local path to file contents\n"
+"  -y automatically proceed with file contents\n"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:930
+#, python-format
+msgid "No existing file information found for %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:980
+#, python-format
+msgid "revision:                 %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:981
+#, python-format
+msgid "contents_enc64:           %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1008
+msgid "configchannel_removefiles: Remove configuration files"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1009
+msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1046
+msgid "configchannel_verifyfile: Verify a configuration file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1047
+msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1086
+msgid "No valid system selected"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1094 ../src/spacecmd/system.py:510
+#: ../src/spacecmd/system.py:530 ../src/spacecmd/system.py:960
+#, python-format
+msgid "Action ID: %i"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1102
+msgid "configchannel_export: export config channel(s) to json format file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1103
+msgid ""
+"usage: configchannel_export <CHANNEL>... [options])\n"
+"options:\n"
+"    -f outfile.json : specify an output filename, defaults to <CHANNEL>."
+"json\n"
+"                      if exporting a single channel, ccs.json for multiple\n"
+"                      channels, or cc_all.json if no CHANNEL specified\n"
+"                      e.g (export ALL)\n"
+"\n"
+"Note : CHANNEL list is optional, default is to export ALL"
+msgstr ""
+
+#. Get the cc details
+#: ../src/spacecmd/configchannel.py:1119
+#, python-format
+msgid "Getting config channel details for %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1139
+#, python-format
+msgid "Failed to get details for file %s from %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1185
+#, python-format
+msgid "File %s could not be exported "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1186
+msgid "with this API version(needs base64 encoding)"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1188
+#, python-format
+msgid "File %s could not be exported as"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1189
+msgid " text...getting base64 encoded version"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1220
+#, python-format
+msgid "Exporting ALL config channels to %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1227
+msgid ""
+"Error, no valid config channel passed, check name is  correct with spacecmd "
+"configchannel_list"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1242
+#, python-format
+msgid "Exporting cc %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1249
+msgid "File '{}' exists, confirm overwrite file? (y/n)"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1252
+#, python-format
+msgid "Error saving exported config channels to file: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1261
+msgid "configchannel_import: import config channel(s) from json file"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1262
+msgid "usage: configchannel_import <JSONFILES...>"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1271 ../src/spacecmd/kickstart.py:2332
+msgid "Error, no filename passed"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1279 ../src/spacecmd/kickstart.py:2340
+#, python-format
+msgid "Error, could not read json data from %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1283
+#, python-format
+msgid "Error importing configchannel %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1295
+#, python-format
+msgid "Config channel %s already exists! Skipping!"
+msgstr ""
+
+#. create the cc, we need to drop the org prefix from the cc name
+#: ../src/spacecmd/configchannel.py:1300
+#, python-format
+msgid "Importing config channel  %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1315
+#, python-format
+msgid "Found %s %s for cc %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1343
+#, python-format
+msgid "Failed trying to import file %s (empty content)"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1345
+msgid "Older APIs can't export encoded files"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1368
+#, python-format
+msgid "Error adding file %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1378
+msgid "configchannel_clone: Clone config channel(s)"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1379
+msgid ""
+"usage examples:\n"
+"                 configchannel_clone foo_label -c bar_label\n"
+"                 configchannel_clone foo_label1 foo_label2 -c prefix\n"
+"                 configchannel_clone foo_label -x \"s/foo/bar\"\n"
+"                 configchannel_clone foo_label1 foo_label2 -x \"s/foo/bar\"\n"
+"\n"
+"options:\n"
+"  -c CLONE_LABEL : name/label of the resulting cc (note does not update\n"
+"                   description, see -x option), treated as a prefix if\n"
+"                   multiple keys are passed\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
+"the\n"
+"                   clone name, label and description\n"
+"  Note : If no -c or -x option is specified, interactive is assumed"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1408
+msgid "No config channels found"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1411
+msgid "Config Channels"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1417
+#, python-format
+msgid "Channel to clone: %s"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1421
+msgid "Channel to clone:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1422
+msgid "Clone label:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1431
+msgid "Error no channel label passed!"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1440
+msgid "No suitable channels to clone has been found."
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1493
+msgid "no configchannel given"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1496
+msgid "invalid configchannel label "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1522
+msgid "configchannel_diff: diff between config channels"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1524
+msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1573
+msgid "configchannel_sync:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1574
+msgid "sync config files between two config channels"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1576
+msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1614
+msgid "syncing files from configchannel "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1621
+msgid "files common in both channels:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1627
+msgid "files only in source "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1633
+msgid "files only in target "
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1638
+msgid ""
+"files that are in both channels will be overwritten in the target channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1640
+msgid "files only in the source channel will be added to the target channel"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1642
+msgid "files only in the target channel will be deleted"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1645
+msgid "nothing to do"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1649
+msgid "perform synchronisation [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/configchannel.py:1701
+msgid "unknown file type "
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:44
+msgid "cryptokey_create: Create a cryptographic key"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:45
+msgid ""
+"usage: cryptokey_create [options])\n"
+"\n"
+"options:\n"
+"  -t GPG or SSL\n"
+"  -d DESCRIPTION\n"
+"  -f KEY_FILE"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:63
+msgid "GPG or SSL [G/S]:"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:76
+msgid "The key type is required"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:80
+msgid "A description is required"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:84
+msgid "A file containing the key is required"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:92
+msgid "No contents of the file"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:101
+msgid "Invalid key type"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:115
+msgid "cryptokey_delete: Delete a cryptographic key"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:116
+msgid "usage: cryptokey_delete NAME"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:146
+msgid "Delete key(s) [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:157
+msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:158
+msgid "usage: cryptokey_list"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:175
+msgid "cryptokey_details: Show the contents of a cryptographic key"
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:176
+msgid "usage: cryptokey_details KEY ..."
+msgstr ""
+
+#: ../src/spacecmd/cryptokey.py:208
+#, python-format
+msgid "%s is not a valid crypto key"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:40
+msgid "custominfo_createkey: Create a custom key"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:41
+msgid "usage: custominfo_createkey [NAME] [DESCRIPTION]"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:74
+msgid "custominfo_deletekey: Delete a custom key"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:75
+msgid "usage: custominfo_deletekey KEY ..."
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:115
+msgid "custominfo_listkeys: List all custom keys"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:116
+msgid "usage: custominfo_listkeys"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:133
+msgid "custominfo_details: Show the details of a custom key"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:134
+msgid "usage: custominfo_details KEY ..."
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:156
+msgid "No keys matched argument '{}'."
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:173
+#, python-format
+msgid "Label:        %s"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:174
+#, python-format
+msgid "Description:  %s"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:175
+#, python-format
+msgid "Modified:     %s"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:176
+#, python-format
+msgid "System Count: %i"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:184
+msgid "custominfo_updatekey: Update a custom key"
+msgstr ""
+
+#: ../src/spacecmd/custominfo.py:185
+msgid "usage: custominfo_updatekey [NAME] [DESCRIPTION]"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:43
+msgid "distribution_create: Create a Kickstart tree"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:44
+msgid ""
+"usage: distribution_create [options]\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -p path to tree\n"
+"  -b base channel to associate with\n"
+"  -t install type [fedora|rhel_4/5/6|generic_rpm]"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:67
+msgid "The name of the distribution is required"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:74
+msgid "Path to Kickstart Tree:"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:84
+msgid "Base Channel:"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:87
+msgid "Invalid channel label"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:98
+msgid "Install Types"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:103
+msgid "Install Type:"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:106
+msgid "Invalid install type"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:114
+msgid "A path is required"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2557
+msgid "A base channel is required"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:122
+msgid "An install type is required"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:144
+msgid "distribution_list: List the available autoinstall trees"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:145
+msgid "usage: distribution_list"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:169
+msgid "distribution_delete: Delete a Kickstart tree"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:170
+msgid "usage: distribution_delete LABEL"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
+#, python-format
+msgid "No distributions matched argument %s"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:200
+msgid "Delete distribution tree(s) [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:210
+msgid "distribution_details: Show the details of a Kickstart tree"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:211
+msgid "usage: distribution_details LABEL"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:249 ../src/spacecmd/package.py:92
+#, python-format
+msgid "Name:    %s"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:250 ../src/spacecmd/package.py:99
+#, python-format
+msgid "Path:    %s"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:657
+#, python-format
+msgid "Channel: %s"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:259
+msgid "distribution_rename: Rename a Kickstart tree"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:260
+msgid "usage: distribution_rename OLDNAME NEWNAME"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:289
+msgid "distribution_update: Update the path of a Kickstart tree"
+msgstr ""
+
+#: ../src/spacecmd/distribution.py:290
+msgid ""
+"usage: distribution_update NAME [options]\n"
+"\n"
+"options:\n"
+"  -p path to tree\n"
+"  -b base channel to associate with\n"
+"  -t install type [fedora|rhel_4/5/6|generic_rpm]"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:50
+msgid "errata_list: List all patches"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:51
+msgid "usage: errata_list"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:67
+msgid "errata_summary: Print a summary of all errata"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:68
+msgid "usage: errata_summary"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:82
+msgid "errata_apply: Apply an erratum to all affected systems"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:83
+msgid ""
+"usage: errata_apply [options] ERRATA|search:XXX ...)\n"
+"\n"
+"options:\n"
+"  -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:110 ../src/spacecmd/system.py:418
+#: ../src/spacecmd/system.py:726 ../src/spacecmd/system.py:881
+#: ../src/spacecmd/system.py:1016 ../src/spacecmd/system.py:1763
+#: ../src/spacecmd/system.py:3691 ../src/spacecmd/system.py:4001
+#: ../src/spacecmd/system.py:4063 ../src/spacecmd/system.py:4227
+msgid "Start Time [now]:"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:158
+msgid "No patches to apply"
+msgstr ""
+
+#. a summary of which errata we're going to apply
+#: ../src/spacecmd/errata.py:162
+msgid "Errata             Systems"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:231
+#: ../src/spacecmd/system.py:468 ../src/spacecmd/system.py:821
+#: ../src/spacecmd/system.py:943 ../src/spacecmd/system.py:1080
+#: ../src/spacecmd/system.py:1782 ../src/spacecmd/system.py:3703
+#: ../src/spacecmd/system.py:4246
+#, python-format
+msgid "Start Time: %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:168
+msgid "Apply these patches [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:197
+#, python-format
+msgid "Scheduled %i system(s) for %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:218
+#, python-format
+msgid "No patches to schedule for %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:227
+#, python-format
+msgid "Scheduled %i patches for %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:236
+msgid "errata_listaffectedsystems: List of systems affected by an patch"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:237
+msgid "usage: errata_listaffectedsystems ERRATA|search:XXX ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:275
+msgid "errata_listcves: List of CVEs addressed by an patch"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:276
+msgid "usage: errata_listcves ERRATA|search:XXX ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:312
+msgid "No errata has been found"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:319
+msgid "errata_findbycve: List errata addressing a CVE"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:320
+msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:354
+msgid "errata_details: Show the details of an patch"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:355
+msgid "usage: errata_details ERRATA|search:XXX ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:390
+#, python-format
+msgid "%s is not a valid erratum"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:397
+#, python-format
+msgid "Name:       %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:398
+#, python-format
+msgid "Product:    %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:399
+#, python-format
+msgid "Type:       %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:400
+#, python-format
+msgid "Issue Date: %s"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:402
+msgid "Topic"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:106
+#: ../src/spacecmd/softwarechannel.py:592
+msgid "Description"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:412
+msgid "Notes"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:417
+msgid "CVEs"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:421
+msgid "Solution"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:425
+msgid "References"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:429
+msgid "Affected Channels"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:279
+msgid "Affected Systems"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:437
+msgid "Affected Packages"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:447
+msgid "errata_delete: Delete an patch"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:448
+msgid "usage: errata_delete ERRATA|search:XXX ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:468
+msgid "No patches to delete"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:471
+msgid "Erratum            Channels"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:479
+msgid "Delete these patches [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:485
+#, python-format
+msgid "Deleted %i patches"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:495
+msgid "errata_publish: Publish an patch to a channel"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:496
+msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:523
+msgid "No patches to publish"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:528
+msgid "Publish these patches [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:540
+msgid "errata_search: List patches that meet the given criteria"
+msgstr ""
+
+#: ../src/spacecmd/errata.py:541
+msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
+msgstr ""
+
+#: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
+msgid "Example:"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:42
+msgid "filepreservation_list: List all file preservations"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:43
+msgid "usage: filepreservation_list"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:58
+msgid "filepreservation_create: Create a file preservation list"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:59
+msgid "usage: filepreservation_create [NAME] [FILE ...]"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:78
+#: ../src/spacecmd/filepreservation.py:92
+msgid "File List"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:83
+msgid "File [blank to finish]:"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:109
+msgid "filepreservation_delete: Delete a file preservation list"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:110
+msgid "usage: filepreservation_delete NAME"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:128
+msgid "Delete this list [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:139
+msgid ""
+"filepreservation_details: Show the details of a file\n"
+"'preservation list"
+msgstr ""
+
+#: ../src/spacecmd/filepreservation.py:141
+msgid "usage: filepreservation_details NAME"
+msgstr ""
+
+#: ../src/spacecmd/group.py:52
+msgid "group_addsystems: Add systems to a group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:53
+msgid "usage: group_addsystems GROUP <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/group.py:54
+msgid "       group_addsystems GROUP <ssm>"
+msgstr ""
+
+#: ../src/spacecmd/group.py:105
+msgid "group_removesystems: Remove systems from a group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:106
+msgid "usage: group_removesystems GROUP <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/group.py:147 ../src/spacecmd/system.py:119
+#: ../src/spacecmd/system.py:233 ../src/spacecmd/system.py:476
+#: ../src/spacecmd/system.py:1476 ../src/spacecmd/system.py:1784
+#: ../src/spacecmd/system.py:4248
+msgid "Systems"
+msgstr ""
+
+#: ../src/spacecmd/group.py:151
+msgid "Remove these systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
+#: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
+#: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
+#: ../src/spacecmd/system.py:4347
+msgid "No systems found"
+msgstr ""
+
+#: ../src/spacecmd/group.py:167
+msgid "group_create: Create a system group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:168
+msgid "usage: group_create [NAME] [DESCRIPTION]"
+msgstr ""
+
+#: ../src/spacecmd/group.py:194
+msgid "group_delete: Delete a system group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:195
+msgid "usage: group_delete NAME ..."
+msgstr ""
+
+#: ../src/spacecmd/group.py:214
+msgid "Delete these groups [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/group.py:226
+msgid "group_backup: backup a system group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:227
+msgid ""
+"usage: group_backup <NAME> [OUTDIR])\n"
+"                    group_backup ALL\n"
+"\n"
+"\"OUTDIR\" defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME\n"
+"\"ALL\" is a keyword and collects all groups\n"
+msgstr ""
+
+#: ../src/spacecmd/group.py:272
+#, python-format
+msgid "Backup Group: %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:275
+#, python-format
+msgid "Output File: %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:286
+msgid "group_restore: restore a system group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:287
+msgid ""
+"\n"
+"usage: group_restore INPUTDIR [NAME] ...\n"
+"       group_restore INPUTDIR ALL\n"
+"       group_restore INPUTDIR\n"
+"       group_restore .\n"
+"\n"
+"Specifying only INPUTDIR will default to ALL groups.\n"
+"Setting dot (.) instead of full INPUTDIR will imply current directory.\n"
+"    "
+msgstr ""
+
+#: ../src/spacecmd/group.py:331
+#, python-format
+msgid "Restore dir %s does not exits or is not a directory"
+msgstr ""
+
+#: ../src/spacecmd/group.py:335
+#, python-format
+msgid "Restore dir %s has no restore items"
+msgstr ""
+
+#: ../src/spacecmd/group.py:342
+#, python-format
+msgid "Group %s was not found in backup"
+msgstr ""
+
+#: ../src/spacecmd/group.py:345
+#, python-format
+msgid "Found %s missing groups, terminating"
+msgstr ""
+
+#: ../src/spacecmd/group.py:360
+#, python-format
+msgid "Group %s already restored"
+msgstr ""
+
+#: ../src/spacecmd/group.py:367
+msgid "Changing description from:"
+msgstr ""
+
+#: ../src/spacecmd/group.py:369
+msgid "Continue [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/group.py:372 ../src/spacecmd/group.py:375
+#, python-format
+msgid "Updating description for group: %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:378
+#, python-format
+msgid "Creating new group %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:387
+msgid "group_list: List available system groups"
+msgstr ""
+
+#: ../src/spacecmd/group.py:388
+msgid "usage: group_list"
+msgstr ""
+
+#: ../src/spacecmd/group.py:405
+msgid "group_listsystems: List the members of a group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:406
+msgid "usage: group_listsystems GROUP"
+msgstr ""
+
+#: ../src/spacecmd/group.py:428
+#, python-format
+msgid "%s is not a valid group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:441
+msgid "group_details: Show the details of a system group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:442
+msgid "usage: group_details GROUP ..."
+msgstr ""
+
+#: ../src/spacecmd/group.py:465 ../src/spacecmd/group.py:513
+#, python-format
+msgid "The group \"%s\" is invalid"
+msgstr ""
+
+#: ../src/spacecmd/group.py:472
+#, python-format
+msgid "ID:                %i"
+msgstr ""
+
+#: ../src/spacecmd/group.py:473
+#, python-format
+msgid "Name:              %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:474
+#, python-format
+msgid "Description:       %s"
+msgstr ""
+
+#: ../src/spacecmd/group.py:475
+#, python-format
+msgid "Number of Systems: %i"
+msgstr ""
+
+#: ../src/spacecmd/group.py:479
+msgid "Members"
+msgstr ""
+
+#: ../src/spacecmd/group.py:488
+msgid ""
+"group_listconfigchannels: List configuration channels assigned to a system "
+"group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:489
+msgid "usage: group_listconfigchannels GROUP"
+msgstr ""
+
+#: ../src/spacecmd/group.py:531
+msgid "group_addconfigchannels: Add config channels to a group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:532
+msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/group.py:570
+msgid "group_removeconfigchannels: Remove config channels from a group"
+msgstr ""
+
+#: ../src/spacecmd/group.py:571
+msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:74
+msgid "kickstart_list: List the available Kickstart profiles"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:75
+msgid "usage: kickstart_list"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:87 ../src/spacecmd/kickstart.py:2110
+msgid "No kickstart profiles available"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:93
+msgid "kickstart_create: Create a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:94
+msgid ""
+"usage: kickstart_create [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -d DISTRIBUTION\n"
+"  -p ROOT_PASSWORD\n"
+"  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:115 ../src/spacecmd/kickstart.py:251
+msgid "Virtualization Types"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:120 ../src/spacecmd/kickstart.py:256
+msgid "Virtualization Type [none]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:128 ../src/spacecmd/kickstart.py:264
+msgid "Distributions"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:138
+msgid "Root Password: "
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:139 ../src/spacecmd/org.py:91
+#: ../src/spacecmd/user.py:86
+msgid "Repeat Password: "
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:144 ../src/spacecmd/org.py:96
+#: ../src/spacecmd/user.py:91
+msgid "Password must be at least 5 characters"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:146 ../src/spacecmd/org.py:98
+#: ../src/spacecmd/user.py:93
+msgid "Passwords don't match"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:149 ../src/spacecmd/kickstart.py:272
+#: ../src/spacecmd/kickstart.py:1982 ../src/spacecmd/kickstart.py:2124
+msgid "The Kickstart name is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:153 ../src/spacecmd/kickstart.py:276
+msgid "The distribution is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:160
+msgid "A root password is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:179
+msgid "kickstart_delete: Delete kickstart profile(s)"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:180
+msgid "usage: kickstart_delete PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:181
+msgid "usage: kickstart_delete PROFILE1 PROFILE2"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:182
+msgid "usage: kickstart_delete \"PROF*\""
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:205 ../src/spacecmd/kickstart.py:2598
+#: ../src/spacecmd/kickstart.py:2654 ../src/spacecmd/kickstart.py:2696
+msgid "No valid kickstart labels passed as arguments!"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:211
+msgid "The following kickstart labels are invalid:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:216
+#, python-format
+msgid "Delete profile %s [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:224
+msgid "kickstart_import: Import a Kickstart profile from a file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:225
+msgid ""
+"usage: kickstart_import [options])\n"
+"\n"
+"options:\n"
+"  -f FILE\n"
+"  -n NAME\n"
+"  -d DISTRIBUTION\n"
+"  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:280 ../src/spacecmd/kickstart.py:1986
+msgid "A filename is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:310
+msgid ""
+"kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:311
+msgid ""
+"usage: kickstart_import_raw [options])\n"
+"\n"
+"options:\n"
+"  -f FILE\n"
+"  -n NAME\n"
+"  -d DISTRIBUTION\n"
+"  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:327
+msgid "kickstart_details: Show the details of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:328
+msgid "usage: kickstart_details PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:355
+msgid "Invalid Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:417
+#, python-format
+msgid "Tree:        %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:418
+#, python-format
+msgid "Active:      %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:419
+#, python-format
+msgid "Advanced:    %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:420
+#, python-format
+msgid "Org Default: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:423
+#, python-format
+msgid "Configuration Management: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:424
+#, python-format
+msgid "Remote Commands:          %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:436
+msgid "Advanced Options"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:444
+msgid "Custom Options"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:451
+msgid "Partitioning"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:456
+msgid "Software"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:469
+msgid "Crypto Keys"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:476
+msgid "File Preservations"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:485
+msgid "Variables"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:492
+msgid "Scripts"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:503 ../src/spacecmd/kickstart.py:1902
+#, python-format
+msgid "Chroot:      %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:506 ../src/spacecmd/kickstart.py:1903
+#, python-format
+msgid "Interpreter: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:532
+msgid "Could not retrieve the Kickstart file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:538
+msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:539
+msgid "                   as they would be presented to a client"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:540
+msgid "usage: kickstart_getcontents LABEL"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:574
+msgid "kickstart_rename: Rename a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:575
+msgid "usage: kickstart_rename OLDNAME NEWNAME"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:603
+msgid ""
+"kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
+"profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:605
+msgid "usage: kickstart_listcryptokeys PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:634
+msgid "No crypto keys has been found"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:640
+msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:641
+msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:667
+msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:669
+msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:709
+msgid ""
+"kickstart_listactivationkeys: List the activation keys associated with a "
+"Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:711
+msgid "usage: kickstart_listactivationkeys PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:741
+msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:743
+msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:772
+msgid ""
+"kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
+"profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:774
+msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:798
+msgid "Remove these keys [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:813
+msgid ""
+"kickstart_enableconfigmanagement: Enable configuration management on a "
+"Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:815
+msgid "usage: kickstart_enableconfigmanagement PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:846
+msgid ""
+"kickstart_disableconfigmanagement: Disable configuration management on a "
+"Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:848
+msgid "usage: kickstart_disableconfigmanagement PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:879
+msgid ""
+"kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:881
+msgid "usage: kickstart_enableremotecommands PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:912
+msgid ""
+"kickstart_disableremotecommands: Disable remote commands on a Kickstart "
+"profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:914
+msgid "usage: kickstart_disableremotecommands PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:944
+msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:945
+msgid "usage: kickstart_setlocale PROFILE LOCALE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:983
+msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:985
+msgid "usage: kickstart_setselinux PROFILE MODE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1020
+msgid ""
+"kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1022
+msgid "usage: kickstart_setpartitions PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1071
+msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1073
+msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1107
+msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1108
+msgid "usage: kickstart_enablelogging PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1140
+msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1141
+msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1179
+msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1181
+msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1216
+msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1218
+msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1267
+msgid "kickstart_listvariables: List the variables of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1269
+msgid "usage: kickstart_listvariables PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1302
+msgid "kickstart_addoption: Set an option for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1303
+msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1350
+#, python-format
+msgid "%s needs to be set as a custom option"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1358
+msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1359
+msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1411
+msgid "kickstart_listoptions: List the options of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1413
+msgid "usage: kickstart_listoptions PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1447
+msgid ""
+"kickstart_listcustomoptions: List the custom options of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1449
+msgid "usage: kickstart_listcustomoptions PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1483
+msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1485
+msgid "usage: kickstart_setcustomoptions PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1533
+msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1535
+msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1593
+msgid ""
+"kickstart_removechildchannels: Remove child channels from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1595
+msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1638
+msgid ""
+"kickstart_listchildchannels: List the child channels of a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1640
+msgid "usage: kickstart_listchildchannels PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1674
+msgid ""
+"kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1676
+msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1711
+msgid ""
+"kickstart_removefilepreservations: Remove file preservations from a "
+"Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1713
+msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1758
+msgid "kickstart_listpackages: List the packages for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1760
+msgid "usage: kickstart_listpackages PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1792
+msgid "kickstart_addpackages: Add packages to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1793
+msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1826
+msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1828
+msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1871
+msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1873
+msgid "usage: kickstart_listscripts PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1892
+#, python-format
+msgid "No scripts has been found for profile '%s'"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1900
+#, python-format
+msgid "ID:          %i"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1915
+msgid "kickstart_addscript: Add a script to a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1916
+msgid ""
+"usage: kickstart_addscript PROFILE [options])\n"
+"\n"
+"options:\n"
+"  -p PROFILE\n"
+"  -e EXECUTION_TIME ['pre', 'post']\n"
+"  -i INTERPRETER\n"
+"  -f FILE\n"
+"  -c execute in a chroot environment\n"
+"  -t ENABLING_TEMPLATING"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1949
+msgid "Profile Name:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1951
+msgid "Pre/Post Script [post]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1952
+msgid "Chrooted [Y/n]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1953
+msgid "Interpreter [/bin/bash]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:1990
+msgid "The execution time is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2006
+#, python-format
+msgid "Profile Name:   %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2007
+#, python-format
+msgid "Execution Time: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2008
+#, python-format
+msgid "Chroot:         %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2009
+#, python-format
+msgid "Template:       %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2010
+#, python-format
+msgid "Interpreter:    %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2011
+msgid "Contents:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2031
+msgid "kickstart_removescript: Remove a script from a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2032
+msgid "usage: kickstart_removescript PROFILE [ID]"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2060 ../src/spacecmd/kickstart.py:2073
+msgid "Invalid script ID"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2068
+msgid "Script ID:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2075
+msgid "Remove this script [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2088
+msgid "kickstart_clone: Clone a Kickstart profile"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2089
+msgid ""
+"usage: kickstart_clone [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -c CLONE_NAME"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2114
+msgid "Kickstart Profiles"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2119
+msgid "Original Profile:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2120
+msgid "Cloned Profile:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2128
+msgid "The Kickstart clone name is required"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2133
+msgid "Kickstart profile you've entered was not found"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2146
+msgid "kickstart_export: export kickstart profile(s) to json format file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2147
+msgid ""
+"usage: kickstart_export <KSPROFILE>... [options])\n"
+"options:\n"
+"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>."
+"json\n"
+"                      if exporting a single kickstart, profiles.json for "
+"multiple\n"
+"                      kickstarts, or ks_all.json if no KSPROFILE specified\n"
+"                      e.g (export ALL)\n"
+"\n"
+"Note : KSPROFILE list is optional, default is to export ALL"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2273
+#, python-format
+msgid "Exporting ALL kickstart profiles to %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2281
+msgid ""
+"Error, no valid kickstart profile passed, check name is  correct with "
+"spacecmd kickstart_list"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2301
+#, python-format
+msgid "Exporting ks %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2308
+#, python-format
+msgid "File %s exists, "
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2309
+msgid "confirm overwrite file? (y/n)"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2312
+msgid "Error saving exported kickstart profiles to file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2322
+msgid "kickstart_import: import kickstart profile(s) from json file"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2323
+msgid "usage: kickstart_import <JSONFILES...>"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2344
+#, python-format
+msgid "Error importing kickstart %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2357
+#, python-format
+msgid "ERROR : kickstart profile %s already exists! Skipping!"
+msgstr ""
+
+#. create the ks, we need to drop the org prefix from the ks name
+#: ../src/spacecmd/kickstart.py:2361
+#, python-format
+msgid "Found ks %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2417
+#, python-format
+msgid "Error adding %s script"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2425
+#, python-format
+msgid "failed to add ip range %s-%s, continuing"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2439
+#, python-format
+msgid "failed to add file preservation %s, skipping"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2441
+#, python-format
+msgid "file preservation list %s doesn't exist, skipping"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2452
+#, python-format
+msgid "Actvationkey %s does not exist on the "
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2463
+#, python-format
+msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
+msgstr ""
+
+#. There are some frustrating ommisions from the API which means we can't
+#. export/import some settings, so we post a warning that some manual
+#. fixup may be required
+#: ../src/spacecmd/kickstart.py:2472
+msgid ""
+"Due to API ommissions, there are some settings which cannot be imported, "
+"please check and fixup manually if necessary"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2474
+msgid " * Details->Preserve ks.cfg"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2475
+msgid " * Details->Comment"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2479
+msgid " * Details->Organization Default Profile"
+msgstr ""
+
+#. No way to set the kernel options
+#: ../src/spacecmd/kickstart.py:2481
+msgid " * Details->Kernel Options"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2485
+#, python-format
+msgid " * Details->Post Kernel Options : %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2501
+msgid "no kickstart label given"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2504
+msgid "invalid kickstart label "
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2521
+msgid "kickstart_diff: diff kickstart files"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2523
+msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2572
+msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2573
+msgid "usage: kickstart_getupdatetype PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2574
+msgid "usage: kickstart_getupdatetype PROFILE1 PROFILE2"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2575
+msgid "usage: kickstart_getupdatetype \"PROF*\""
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2604 ../src/spacecmd/kickstart.py:2660
+#: ../src/spacecmd/kickstart.py:2702
+#, python-format
+msgid "kickstart label %s doesn't exist!"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2620
+msgid "kickstart_setupdatetype: Set the update type for a kickstart profile(s)"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2621
+msgid ""
+"usage: kickstart_setupdatetype [options] KS_LABEL)\n"
+"\n"
+"options:\n"
+"    -u UPDATE_TYPE ['red_hat', 'all', 'none']"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2635
+msgid "Update Types"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2640
+msgid "Update Type [none]:"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2671
+msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2672
+msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2673
+msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2708
+#, python-format
+msgid "noBase:        %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2709
+#, python-format
+msgid "ignoreMissing: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2711
+#, python-format
+msgid "Kickstart Label: %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2712
+#, python-format
+msgid "noBase:          %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2713
+#, python-format
+msgid "ignoreMissing:   %s"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2722
+msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2723
+msgid ""
+"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2724
+msgid ""
+"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
+"KICKSTART_PACKAGES_INFO VALUE"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2758
+msgid "Selected profile does not exist"
+msgstr ""
+
+#: ../src/spacecmd/kickstart.py:2761 ../src/spacecmd/kickstart.py:2766
+msgid "Enter valid input"
+msgstr ""
+
+#. list of system selection options for the help output
+#: ../src/spacecmd/misc.py:58
+msgid ""
+"<SYSTEMS> can be any of the following:\n"
+"name\n"
+"ssm (see 'help ssm')\n"
+"search:QUERY (see 'help system_search')\n"
+"group:GROUP\n"
+"channel:CHANNEL\n"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:66
+msgid ""
+"Dates can be any of the following:\n"
+"Explicit Dates:\n"
+"Dates can be expressed as explicit date strings in the YYYYMMDD[HHMMSS]\n"
+"format.  The year, month and day are required, while the hours and\n"
+"minutes are not; the hours and minutes will default to 0000 if no\n"
+"values are provided.\n"
+"\n"
+"Deltas:\n"
+"Dates can be expressed as delta values.  For example, '2h' would\n"
+"mean 2 hours in the future.  You can also use negative values to\n"
+"express times in the past (e.g., -7d would be one week ago).\n"
+"\n"
+"Units:\n"
+"s -> seconds\n"
+"m -> minutes\n"
+"h -> hours\n"
+"d -> days\n"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:121
+msgid "clear: clear the screen"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:122
+msgid "usage: clear"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:133
+msgid "clear_caches: Clear the internal caches kept for systems and packages"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:134
+msgid "usage: clear_caches"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:147
+msgid "get_apiversion: Display the API version of the server"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:148
+msgid "usage: get_apiversion"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:159
+msgid "get_serverversion: Display the version of the server"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:160
+msgid "usage: get_serverversion"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:172
+msgid "list_proxies: List the proxies within the user's organization "
+msgstr ""
+
+#: ../src/spacecmd/misc.py:173
+msgid "usage: list_proxies"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:185
+msgid "get_session: Show the current session string"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:186
+msgid "usage: get_session"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:194
+msgid "No session found"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:201
+msgid "help: Show help for the given command"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:202
+msgid "usage: help COMMAND"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:208
+msgid "history: List your command history"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:209
+msgid "usage: history"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:221
+msgid "toggle_confirmations: Toggle confirmation messages on/off"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:222
+msgid "usage: toggle_confirmations"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:227
+msgid "Confirmation messages are"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:227
+msgid "enabled"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:234
+msgid "login: Connect to a Spacewalk server"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:235
+msgid "usage: login [USERNAME] [SERVER]"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:245
+msgid "You are already logged in"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:257
+msgid "No server specified"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:302
+#, python-format
+msgid "Failed to connect to %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:310
+#, python-format
+msgid "API (%s) is too old (>= %s required)"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
+#: ../src/spacecmd/utils.py:561
+#, python-format
+msgid "Could not read %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:349
+msgid "Cached credentials are invalid"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:356
+#, python-format
+msgid "Spacewalk Username: %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:358
+msgid "Spacewalk Username:"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:369
+msgid "Spacewalk Password: "
+msgstr ""
+
+#: ../src/spacecmd/misc.py:375
+msgid "Invalid credentials"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:393
+#, python-format
+msgid "Could not write session file: %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:402
+#, python-format
+msgid "Connected to %s as %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:410
+msgid "logout: Disconnect from the server"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:411
+msgid "usage: logout"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:428
+msgid "whoami: Print the name of the currently logged in user"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:429
+msgid "usage: whoami"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:437
+msgid "You are not logged in"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:444
+msgid "whoamitalkingto: Print the name of the server"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:445
+msgid "usage: whoamitalkingto"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:453
+msgid "Yourself"
+msgstr ""
+
+#. tell the user what's going on
+#: ../src/spacecmd/misc.py:525
+msgid "** Generating errata cache **"
+msgstr ""
+
+#. tell the user what's going on
+#: ../src/spacecmd/misc.py:574
+msgid "** Generating package cache **"
+msgstr ""
+
+#. tell the user what's going on
+#: ../src/spacecmd/misc.py:681
+msgid "** Generating system cache **"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:716
+#, python-format
+msgid "Could not create directory %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:788
+#, python-format
+msgid "Can't find system ID for %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:793
+msgid "Duplicate system profile names found!"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:794
+msgid "Please reference systems by ID or resolve the"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:795
+msgid "underlying issue with 'system_delete' or 'system_rename'"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:861
+#, python-format
+msgid "No systems in group %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:875
+#, python-format
+msgid "No systems subscribed to %s"
+msgstr ""
+
+#: ../src/spacecmd/misc.py:935
+msgid "Is this ok [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:48
+msgid "org_create: Create an organization"
+msgstr ""
+
+#: ../src/spacecmd/org.py:49
+#, python-format
+msgid ""
+"usage: org_create [options])\n"
+"\n"
+"options:\n"
+"  -n ORG_NAME\n"
+"  -u USERNAME\n"
+"  -P PREFIX (%s)\n"
+"  -f FIRST_NAME\n"
+"  -l LAST_NAME\n"
+"  -e EMAIL\n"
+"  -p PASSWORD\n"
+"  --pam enable PAM authentication"
+msgstr ""
+
+#: ../src/spacecmd/org.py:76
+msgid "Organization Name:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:77 ../src/spacecmd/user.py:74
+msgid "Username:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:78
+#, python-format
+msgid "Prefix (%s):"
+msgstr ""
+
+#: ../src/spacecmd/org.py:80 ../src/spacecmd/user.py:75
+msgid "First Name:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:81 ../src/spacecmd/user.py:76
+msgid "Last Name:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:82 ../src/spacecmd/user.py:77
+msgid "Email:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:83 ../src/spacecmd/user.py:78
+msgid "PAM Authentication [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:90 ../src/spacecmd/user.py:85
+msgid "Password: "
+msgstr ""
+
+#: ../src/spacecmd/org.py:101
+msgid "An organization name is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:105 ../src/spacecmd/user.py:96
+msgid "A username is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:109 ../src/spacecmd/user.py:100
+msgid "A first name is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:113 ../src/spacecmd/user.py:104
+msgid "A last name is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:117 ../src/spacecmd/user.py:108
+msgid "An email address is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:121 ../src/spacecmd/user.py:112
+msgid "A password is required"
+msgstr ""
+
+#: ../src/spacecmd/org.py:128
+msgid "Dr."
+msgstr ""
+
+#: ../src/spacecmd/org.py:130
+msgid "Miss"
+msgstr ""
+
+#: ../src/spacecmd/org.py:149
+msgid "org_delete: Delete an organization"
+msgstr ""
+
+#: ../src/spacecmd/org.py:150
+msgid "usage: org_delete NAME"
+msgstr ""
+
+#: ../src/spacecmd/org.py:169 ../src/spacecmd/org.py:200
+#: ../src/spacecmd/org.py:234 ../src/spacecmd/org.py:270
+#: ../src/spacecmd/org.py:378 ../src/spacecmd/org.py:414
+#, python-format
+msgid "No organisation found for the name %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:170 ../src/spacecmd/org.py:201
+#: ../src/spacecmd/org.py:235 ../src/spacecmd/org.py:271
+#: ../src/spacecmd/org.py:379 ../src/spacecmd/org.py:415
+msgid "Organisation '{}' was not found"
+msgstr ""
+
+#: ../src/spacecmd/org.py:172
+msgid "Delete this organization [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:180
+msgid "org_rename: Rename an organization"
+msgstr ""
+
+#: ../src/spacecmd/org.py:181
+msgid "usage: org_rename OLDNAME NEWNAME"
+msgstr ""
+
+#: ../src/spacecmd/org.py:212
+msgid "org_addtrust: Add a trust between two organizations"
+msgstr ""
+
+#: ../src/spacecmd/org.py:213
+msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
+msgstr ""
+
+#: ../src/spacecmd/org.py:238 ../src/spacecmd/org.py:274
+#, python-format
+msgid "No trust organisation found for the name %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:239 ../src/spacecmd/org.py:275
+msgid "Organisation '{}' to trust for, was not found"
+msgstr ""
+
+#: ../src/spacecmd/org.py:249
+msgid "org_removetrust: Remove a trust between two organizations"
+msgstr ""
+
+#: ../src/spacecmd/org.py:250
+msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
+msgstr ""
+
+#: ../src/spacecmd/org.py:285
+msgid "None"
+msgstr ""
+
+#: ../src/spacecmd/org.py:287
+msgid "Remove this trust [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/org.py:293
+msgid "org_trustdetails: Show the details of an organizational trust"
+msgstr ""
+
+#: ../src/spacecmd/org.py:294
+msgid "usage: org_trustdetails TRUSTED_ORG"
+msgstr ""
+
+#: ../src/spacecmd/org.py:313
+#, python-format
+msgid "No trusted organisation found for the name %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:314
+msgid "Trusted organisation '{}' was not found"
+msgstr ""
+
+#: ../src/spacecmd/org.py:321
+#, python-format
+msgid "Trusted Organization:   %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:322
+#, python-format
+msgid "Trusted Since:          %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:323
+#, python-format
+msgid "Systems Migrated From:  %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:324
+#, python-format
+msgid "Systems Migrated To:    %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:326
+msgid "Channels Consumed"
+msgstr ""
+
+#: ../src/spacecmd/org.py:333
+msgid "Channels Provided"
+msgstr ""
+
+#: ../src/spacecmd/org.py:341
+msgid "org_list: List all organizations"
+msgstr ""
+
+#: ../src/spacecmd/org.py:342
+msgid "usage: org_list"
+msgstr ""
+
+#: ../src/spacecmd/org.py:359
+msgid "org_listtrusts: List an organization's trusts"
+msgstr ""
+
+#: ../src/spacecmd/org.py:360
+msgid "usage: org_listtrusts NAME"
+msgstr ""
+
+#: ../src/spacecmd/org.py:384 ../src/spacecmd/org.py:385
+msgid "No trust organisation has been found"
+msgstr ""
+
+#: ../src/spacecmd/org.py:395
+msgid "org_listusers: List an organization's users"
+msgstr ""
+
+#: ../src/spacecmd/org.py:396
+msgid "usage: org_listusers NAME"
+msgstr ""
+
+#: ../src/spacecmd/org.py:426
+msgid "org_details: Show the details of an organization"
+msgstr ""
+
+#: ../src/spacecmd/org.py:427
+msgid "usage: org_details NAME"
+msgstr ""
+
+#: ../src/spacecmd/org.py:447
+#, python-format
+msgid "Name:                   %s"
+msgstr ""
+
+#: ../src/spacecmd/org.py:448
+#, python-format
+msgid "Active Users:           %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:449
+#, python-format
+msgid "Systems:                %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:453 ../src/spacecmd/org.py:455
+#, python-format
+msgid "Trusts:                 %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:457
+#, python-format
+msgid "System Groups:          %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:458
+#, python-format
+msgid "Activation Keys:        %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:459
+#, python-format
+msgid "Kickstart Profiles:     %i"
+msgstr ""
+
+#: ../src/spacecmd/org.py:460
+#, python-format
+msgid "Configuration Channels: %i"
+msgstr ""
+
+#: ../src/spacecmd/package.py:48
+msgid "Show the details of a software package"
+msgstr ""
+
+#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
+#: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
+msgid "No packages found"
+msgstr ""
+
+#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:401
+#, python-format
+msgid "%s is not a valid package"
+msgstr ""
+
+#: ../src/spacecmd/package.py:93
+#, python-format
+msgid "Version: %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:94
+#, python-format
+msgid "Release: %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:95
+#, python-format
+msgid "Epoch:   %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:96
+#, python-format
+msgid "Arch:    %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:98
+#, python-format
+msgid "File:    %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:100
+#, python-format
+msgid "Size:    %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:104
+#, python-format
+msgid "Installed Systems: %i"
+msgstr ""
+
+#: ../src/spacecmd/package.py:110
+msgid "Available From Channels"
+msgstr ""
+
+#: ../src/spacecmd/package.py:124
+#, python-format
+msgid "usage: %s NAME|QUERY"
+msgstr ""
+
+#: ../src/spacecmd/package.py:126
+#, python-format
+msgid "Example: %s kernel"
+msgstr ""
+
+#: ../src/spacecmd/package.py:128
+msgid "Advanced Search:"
+msgstr ""
+
+#: ../src/spacecmd/package.py:129
+msgid ""
+"Available Fields: name, epoch, version, release, arch, description, summary"
+msgstr ""
+
+#: ../src/spacecmd/package.py:130
+msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
+msgstr ""
+
+#: ../src/spacecmd/package.py:179
+msgid "package_remove: Remove a package from Spacewalk"
+msgstr ""
+
+#: ../src/spacecmd/package.py:180
+msgid "usage: package_remove PACKAGE ..."
+msgstr ""
+
+#: ../src/spacecmd/package.py:200
+msgid "No packages found to remove"
+msgstr ""
+
+#: ../src/spacecmd/package.py:203 ../src/spacecmd/package.py:260
+#: ../src/spacecmd/softwarechannel.py:1579 ../src/spacecmd/system.py:945
+msgid "Remove these packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/package.py:204
+msgid "No packages has been removed"
+msgstr ""
+
+#: ../src/spacecmd/package.py:216 ../src/spacecmd/package.py:272
+#, python-format
+msgid "Failed to remove package ID %i"
+msgstr ""
+
+#: ../src/spacecmd/package.py:227
+msgid "package_listorphans: List packages that are not in a channel"
+msgstr ""
+
+#: ../src/spacecmd/package.py:228
+msgid "usage: package_listorphans"
+msgstr ""
+
+#: ../src/spacecmd/package.py:247
+msgid "package_removeorphans: Remove packages that are not in a channel"
+msgstr ""
+
+#: ../src/spacecmd/package.py:248
+msgid "usage: package_removeorphans"
+msgstr ""
+
+#: ../src/spacecmd/package.py:256
+msgid "No orphaned packages has been found"
+msgstr ""
+
+#: ../src/spacecmd/package.py:257
+msgid "No orphaned packages"
+msgstr ""
+
+#: ../src/spacecmd/package.py:261
+msgid "No packages were removed"
+msgstr ""
+
+#: ../src/spacecmd/package.py:282
+msgid "List the systems with a package installed"
+msgstr ""
+
+#: ../src/spacecmd/package.py:329
+msgid "List the errata that provide this package"
+msgstr ""
+
+#: ../src/spacecmd/package.py:375
+msgid "List the dependencies for a package"
+msgstr ""
+
+#: ../src/spacecmd/package.py:406
+#, python-format
+msgid "Package Name: %s"
+msgstr ""
+
+#: ../src/spacecmd/package.py:408
+#, python-format
+msgid "Dependency: %s Type: %s Modifier: %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:48
+msgid "repo_list: List all available user repos"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:49
+msgid "usage: repo_list"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:66
+msgid "repo_details: Show the details of a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:67
+msgid "usage: repo_details <repo ...>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:95
+#, python-format
+msgid "Repository Label:                  %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:96
+#, python-format
+msgid "Repository URL:                    %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:97
+#, python-format
+msgid "Repository Type:                   %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:98
+#, python-format
+msgid "Repository SSL Ca Certificate:     %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:99
+#, python-format
+msgid "Repository SSL Client Certificate: %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:100
+#, python-format
+msgid "Repository SSL Client Key:         %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:102
+msgid "No repositories found for '{}' query"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:111
+msgid "repo_listfilters: Show the filters for a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:112
+msgid "usage: repo_listfilters repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:133
+msgid "No filters found"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:142
+msgid "repo_addfilters: Add filters for a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:143
+msgid "usage: repo_addfilters repo <filter ...>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:167 ../src/spacecmd/repo.py:204
+#: ../src/spacecmd/repo.py:243
+msgid "Each filter must start with + or -"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:181
+msgid "repo_removefilters: Remove filters from a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:182
+msgid "usage: repo_removefilters repo <filter ...>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:218
+msgid "repo_setfilters: Set the filters for a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:219
+msgid "usage: repo_setfilters repo <filter ...>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:256
+msgid "repo_clearfilters: Clears the filters for a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:257
+msgid ""
+"usage: repo_clearfilters repo <options>\n"
+"\n"
+"options:\n"
+"  -y, --yes   Confirm without prompt\n"
+"\n"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:279
+msgid "Remove these filters [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:288
+msgid "repo_delete: Delete a user repo"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:289
+msgid "usage: repo_delete <repo ...>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:308 ../src/spacecmd/softwarechannel.py:611
+msgid "Repos"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:312
+msgid "Delete these repos [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:317
+#, python-format
+msgid "Failed to remove repo %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:325
+msgid "repo_create: Create a user repository"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:326
+msgid ""
+"usage: repo_create <options>)\n"
+"\n"
+"options:\n"
+"  -n, --name   name of repository\n"
+"  -u, --url    url of repository\n"
+"  -t, --type   type of repository (defaults to yum)\n"
+"\n"
+"  --ca         SSL CA certificate (not required)\n"
+"  --cert       SSL Client certificate (not required)\n"
+"  --key        SSL Client key (not required)"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:351
+msgid "URL:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:352
+msgid "Type:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:463
+msgid "SSL CA cert:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:354 ../src/spacecmd/repo.py:464
+msgid "SSL Client cert:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:355 ../src/spacecmd/repo.py:465
+msgid "SSL Client key:"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:362
+msgid "A URL is required"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:382
+msgid "repo_rename: Rename a user repository"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:383
+msgid "usage: repo_rename OLDNAME NEWNAME"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:405
+#, python-format
+msgid "Could not find repo %s"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:418
+msgid "repo_updateurl: Change the URL of a user repository"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:419
+msgid "usage: repo_updateurl <repo> <url>"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:444
+msgid "repo_updatessl: Change the SSL certificates of a user repository"
+msgstr ""
+
+#: ../src/spacecmd/repo.py:445
+msgid ""
+"usage: repo_updatessl <options>)\n"
+"options:\n"
+"  --ca         SSL CA certificate (not required)\n"
+"  --cert       SSL Client certificate (not required)\n"
+"  --key        SSL Client key (not required)"
+msgstr ""
+
+#: ../src/spacecmd/report.py:44
+msgid "report_inactivesystems: List all inactive systems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:45
+msgid "usage: report_inactivesystems [DAYS]"
+msgstr ""
+
+#: ../src/spacecmd/report.py:85
+msgid "report_outofdatesystems: List all out-of-date systems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:86
+msgid "usage: report_outofdatesystems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:113
+msgid "report_ungroupedsystems: List all ungrouped systems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:114
+msgid "usage: report_ungroupedsystems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:131
+msgid "report_errata: List all errata and how many systems they affect"
+msgstr ""
+
+#: ../src/spacecmd/report.py:132
+msgid "usage: report_errata [ERRATA|search:XXX ...]"
+msgstr ""
+
+#: ../src/spacecmd/report.py:144
+msgid "All errata requested - this may take a few minutes, please be patient!"
+msgstr ""
+
+#: ../src/spacecmd/report.py:167
+#, python-format
+msgid "%s  # Systems"
+msgstr ""
+
+#: ../src/spacecmd/report.py:174
+msgid "No errata found for '{}'"
+msgstr ""
+
+#: ../src/spacecmd/report.py:181
+msgid "report_ipaddresses: List the hostname and IP of each system"
+msgstr ""
+
+#: ../src/spacecmd/report.py:182
+msgid "usage: report_ipaddresses [<SYSTEMS>]"
+msgstr ""
+
+#: ../src/spacecmd/report.py:202 ../src/spacecmd/report.py:266
+#: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:208
+#: ../src/spacecmd/system.py:214 ../src/spacecmd/system.py:395
+#: ../src/spacecmd/system.py:580 ../src/spacecmd/system.py:744
+#: ../src/spacecmd/system.py:899 ../src/spacecmd/system.py:1034
+#: ../src/spacecmd/system.py:1135 ../src/spacecmd/system.py:1205
+#: ../src/spacecmd/system.py:1260 ../src/spacecmd/system.py:1359
+#: ../src/spacecmd/system.py:1592 ../src/spacecmd/system.py:1655
+#: ../src/spacecmd/system.py:1698 ../src/spacecmd/system.py:1778
+#: ../src/spacecmd/system.py:1920 ../src/spacecmd/system.py:1962
+#: ../src/spacecmd/system.py:2050 ../src/spacecmd/system.py:2117
+#: ../src/spacecmd/system.py:2199 ../src/spacecmd/system.py:2254
+#: ../src/spacecmd/system.py:2314 ../src/spacecmd/system.py:2373
+#: ../src/spacecmd/system.py:2431 ../src/spacecmd/system.py:2490
+#: ../src/spacecmd/system.py:2567 ../src/spacecmd/system.py:2648
+#: ../src/spacecmd/system.py:2703 ../src/spacecmd/system.py:2973
+#: ../src/spacecmd/system.py:3126 ../src/spacecmd/system.py:3195
+#: ../src/spacecmd/system.py:3241 ../src/spacecmd/system.py:3300
+#: ../src/spacecmd/system.py:3364 ../src/spacecmd/system.py:3420
+#: ../src/spacecmd/system.py:3595 ../src/spacecmd/system.py:3873
+#: ../src/spacecmd/system.py:4016 ../src/spacecmd/system.py:4078
+#: ../src/spacecmd/system.py:4126 ../src/spacecmd/system.py:4184
+#: ../src/spacecmd/system.py:4242
+msgid "No systems selected"
+msgstr ""
+
+#: ../src/spacecmd/report.py:245
+msgid "report_kernels: List the running kernel of each system"
+msgstr ""
+
+#: ../src/spacecmd/report.py:246
+msgid "usage: report_kernels [<SYSTEMS>]"
+msgstr ""
+
+#: ../src/spacecmd/report.py:283
+#, python-format
+msgid "%s  Kernel"
+msgstr ""
+
+#: ../src/spacecmd/report.py:283
+msgid "System"
+msgstr ""
+
+#: ../src/spacecmd/report.py:297
+msgid "report_duplicates: List duplicate system profiles"
+msgstr ""
+
+#: ../src/spacecmd/report.py:298
+msgid "usage: report_duplicates"
+msgstr ""
+
+#: ../src/spacecmd/report.py:320 ../src/spacecmd/report.py:342
+#: ../src/spacecmd/report.py:360 ../src/spacecmd/report.py:378
+msgid "System ID   Last Checkin"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:44
+msgid ""
+"scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
+"systems"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:45
+msgid "usage: scap_listxccdfscans <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:609
+#: ../src/spacecmd/system.py:1221 ../src/spacecmd/system.py:1273
+#: ../src/spacecmd/system.py:1372 ../src/spacecmd/system.py:2061
+#: ../src/spacecmd/system.py:2384 ../src/spacecmd/system.py:2442
+#: ../src/spacecmd/system.py:2661 ../src/spacecmd/system.py:2716
+#: ../src/spacecmd/system.py:3139 ../src/spacecmd/system.py:3256
+#: ../src/spacecmd/system.py:3313
+#, python-format
+msgid "System: %s"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:89
+#, python-format
+msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:97
+msgid ""
+"scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
+"OpenSCAP XCCDF scan"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:98
+msgid "usage: scap_getxccdfscanruleresults <XID>"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:118 ../src/spacecmd/scap.py:154
+#, python-format
+msgid "XID: %s"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:125
+#, python-format
+msgid "IDref: %s Result: %s Idents: (%s)"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:133
+msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:134
+msgid "usage: scap_getxccdfscandetails <XID>"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:160
+msgid "XID:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:160
+msgid "SID:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:160
+msgid "Action_ID:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:162
+msgid "OSCAP_Parameters:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:163
+msgid "Test_Result:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:163
+msgid "Benchmark:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:164
+msgid "Benchmark_Version:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:165
+msgid "Profile:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:166
+msgid "Profile_Title:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:166
+msgid "Start_Time:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:167
+msgid "End_Time:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:168
+msgid "Errors:"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:176
+msgid "scap_schedulexccdfscan: Schedule Scap XCCDF scan"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:177
+msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:178
+msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
+msgstr ""
+
+#: ../src/spacecmd/scap.py:183
+msgid ""
+"\n"
+"To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:89
+msgid "ID      Date                 C    F    P     Action"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:135
+msgid "schedule_cancel: Cancel scheduled actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:136
+msgid "usage: schedule_cancel ID|* ..."
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:158
+msgid "Cancel all pending actions [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:159
+msgid "All pending actions left untouched"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:174 ../src/spacecmd/schedule.py:235
+#, python-format
+msgid "\"%s\" is not a valid ID"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:180
+#, python-format
+msgid "Canceled action: %i"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:183
+#, python-format
+msgid "Failed action: %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:185
+#, python-format
+msgid "Canceled %i action(s)"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:193
+msgid "schedule_reschedule: Reschedule failed actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:194
+msgid "usage: schedule_reschedule ID|* ..."
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:221
+msgid "Reschedule all failed actions [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:233
+#, python-format
+msgid "\"%i\" is not a failed action"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:239
+msgid "No failed actions to reschedule"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:243
+#, python-format
+msgid "Rescheduled %i action(s)"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:251
+msgid "schedule_details: Show the details of a scheduled action"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:252
+msgid "usage: schedule_details ID"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:269
+#, python-format
+msgid "The ID \"%s\" is invalid"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:278
+#, python-format
+msgid "ID:        %i"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:279
+#, python-format
+msgid "Action:    %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:280
+#, python-format
+msgid "User:      %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:281
+#, python-format
+msgid "Date:      %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
+#: ../src/spacecmd/system.py:3263
+#, python-format
+msgid "Completed: %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:284
+#, python-format
+msgid "Failed:    %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:285
+#, python-format
+msgid "Pending:   %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:289
+msgid "Completed Systems"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:296
+msgid "Failed Systems"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:303
+msgid "Pending Systems"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:308
+#, python-format
+msgid "No action found with the ID \"%s\""
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:317
+msgid "schedule_getoutput: Show the output from an action"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:318
+msgid "usage: schedule_getoutput ID"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:333
+#, python-format
+msgid "\"%s\" is not a valid action ID"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:355
+#, python-format
+msgid "System:      %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:356
+#, python-format
+msgid "Start Time:  %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:357
+#, python-format
+msgid "Stop Time:   %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:358
+#, python-format
+msgid "Return Code: %i"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:360 ../src/spacecmd/schedule.py:382
+msgid "Output"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:379
+#, python-format
+msgid "System:    %s"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:395
+msgid "schedule_listpending: List pending actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:396
+msgid "usage: schedule_listpending [BEGINDATE] [ENDDATE]"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:408
+msgid "schedule_listcompleted: List completed actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:409
+msgid "usage: schedule_listcompleted [BEGINDATE] [ENDDATE]"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:421
+msgid "schedule_listfailed: List failed actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:422
+msgid "usage: schedule_listfailed [BEGINDATE] [ENDDATE]"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:434
+msgid "schedule_listarchived: List archived actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:435
+msgid "usage: schedule_listarchived [BEGINDATE] [ENDDATE]"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:447
+msgid "schedule_list: List all actions"
+msgstr ""
+
+#: ../src/spacecmd/schedule.py:448
+msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
+msgstr ""
+
+#: ../src/spacecmd/shell.py:121
+msgid "Could not read history file"
+msgstr ""
+
+#. pylint: disable=W0702
+#: ../src/spacecmd/shell.py:125
+msgid "Exception occurred: {}"
+msgstr ""
+
+#: ../src/spacecmd/shell.py:189 ../src/spacecmd/shell.py:228
+#, python-format
+msgid "%s: event not found"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:43
+msgid "snippet_list: List the available Kickstart snippets"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:44
+msgid "usage: snippet_list"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:61
+msgid "snippet_details: Show the contents of a snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:62
+msgid "usage: snippet_details SNIPPET ..."
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:91
+#, python-format
+msgid "%s is not a valid snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:98
+#, python-format
+msgid "Name:   %s"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:99
+#, python-format
+msgid "Macro:  %s"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:100
+#, python-format
+msgid "File:   %s"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:111
+msgid "snippet_create: Create a Kickstart snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:112
+msgid ""
+"usage: snippet_create [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -f FILE"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:150
+msgid "A name is required for the snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:154
+msgid "A file is required"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:161
+#, python-format
+msgid "Snippet: %s"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:177
+msgid "snippet_update: Update a Kickstart snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:178
+msgid "usage: snippet_update NAME"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:200
+msgid "snippet_delete: Delete a Kickstart snippet"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:201
+msgid "usage: snippet_delete NAME"
+msgstr ""
+
+#: ../src/spacecmd/snippet.py:219
+msgid "Remove this snippet [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:58
+msgid "softwarechannel_list: List all available software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:59
+msgid ""
+"usage: softwarechannel_list [options]')\n"
+"options:\n"
+"  -v verbose (display label and summary)\n"
+"  -t tree view (pretty-print(child-channels))\n"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:107
+msgid "softwarechannel_listmanageablechannels: List all software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:108
+msgid "                                        manageable by current user"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:109
+msgid ""
+"usage: softwarechannel_listmanageablechannels [options]\n"
+"options:\n"
+"  -v verbose (display label and summary)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:144
+msgid "softwarechannel_listbasechannels: List all base software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:145
+msgid ""
+"usage: softwarechannel_listbasechannels [options])\n"
+"options:\n"
+"  -v verbose (display label and summary)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:173
+msgid "softwarechannel_listchildchannels: List child software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:174
+#: ../src/spacecmd/softwarechannel.py:2734
+msgid "usage:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:175
+msgid "softwarechannel_listchildchannels [options]"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:176
+msgid "softwarechannel_listchildchannels : List all child channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:177
+msgid ""
+"softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
+"channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:179
+msgid ""
+"options:\n"
+" -v verbose (display label and summary)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:207
+msgid "softwarechannel_listsystems: List all systems subscribed to"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:208
+msgid "                             a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:209
+msgid "usage: softwarechannel_listsystems CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:243
+msgid "softwarechannel_listpackages: List the most recent packages"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:244
+msgid "                              available from a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:245
+msgid "usage: softwarechannel_listpackages CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:282
+msgid "softwarechannel_listallpackages: List all packages in a channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:283
+msgid "usage: softwarechannel_listallpackages CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:341
+msgid ""
+"softwarechannel_listlatestpackages: List the newest version of all packages "
+"in a channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:342
+msgid "usage: softwarechannel_listlatestpackages CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:381
+msgid "softwarechannel_setdetails: Modify details of a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:382
+#, python-format
+msgid ""
+"usage: softwarechannel_setdetails [options] <CHANNEL ...>)\n"
+"\n"
+"options, at least one of which must be given:\n"
+"  -n NAME\n"
+"  -d DESCRIPTION\n"
+"  -s SUMMARY\n"
+"  -c CHECKSUM %s\n"
+"  -m MAINTAINER_NAME\n"
+"  -e MAINTAINER_EMAIL\n"
+"  -p MAINTAINER_PHONE\n"
+"  -u GPG_URL\n"
+"  -i GPG_ID\n"
+"  -f GPG_FINGERPRINT"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:444
+msgid "At least one attribute to set must be given"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:450
+msgid "No channels matching that label"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:462
+msgid "Setting same name for more than one channel will fail"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:470
+#, python-format
+msgid "Name \"%s\" already in use by channel %s"
+msgstr ""
+
+#. get confirmation
+#: ../src/spacecmd/softwarechannel.py:475
+msgid "Setting following attributes..."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:478
+#, python-format
+msgid "Name:             %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:480
+#, python-format
+msgid "Summary:          %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:482
+#, python-format
+msgid "Description:      %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:484
+#, python-format
+msgid "Checksum:         %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:486
+#, python-format
+msgid "Maintainer name:  %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:488
+#, python-format
+msgid "Maintainer email: %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:490
+#, python-format
+msgid "Maintainer phone: %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:492
+#, python-format
+msgid "GPG Key:          %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:494
+#, python-format
+msgid "GPG Fingerprint:  %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:496
+#, python-format
+msgid "GPG URL:          %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:498
+msgid "... for the following channels:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:501
+msgid "Apply? [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:513
+#, python-format
+msgid "Could not get details for %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:525
+#, python-format
+msgid "Error while setting details for %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:528
+#, python-format
+msgid "Channels changed: %d"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:536
+msgid "softwarechannel_details: Show the details of a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:537
+msgid "usage: softwarechannel_details <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:577
+#, python-format
+msgid "Label:              %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:578
+#, python-format
+msgid "Name:               %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:579
+#, python-format
+msgid "Architecture:       %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:580
+#, python-format
+msgid "Parent:             %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:581
+#, python-format
+msgid "Systems Subscribed: %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:582
+#, python-format
+msgid "Number of Packages: %i"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:586
+msgid "Summary"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:597
+#, python-format
+msgid "GPG Key:            %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:598
+#, python-format
+msgid "GPG Fingerprint:    %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:599
+#, python-format
+msgid "GPG URL:            %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:600
+#, python-format
+msgid "GPG CHECK:          %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:604
+msgid "Kickstart Trees"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:622
+msgid "softwarechannel_listerrata: List the errata associated with a"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:623
+msgid "                            software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:624
+msgid ""
+"usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:682
+msgid "softwarechannel_listarches: lists the potential software"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:683
+msgid "                            channel architectures that can be created"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:684
+msgid "usage: softwarechannel_listarches"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:685 ../src/spacecmd/system.py:3844
+msgid "options:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:686
+msgid "    -v verbose (display label and name)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:707
+msgid "softwarechannel_delete: Delete a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:708
+msgid "usage: softwarechannel_delete <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:733
+msgid "Channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:761
+msgid "softwarechannel_update: Update a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:762
+#, python-format
+msgid ""
+"usage: softwarechannel_update LABEL(To identify the channel) [options]\n"
+"options:\n"
+"  -l LABEL(Required)\n"
+"  -n NAME\n"
+"  -s SUMMARY\n"
+"  -d DESCRIPTION\n"
+"  -c CHECKSUM %s\n"
+"  -u GPG-URL\n"
+"  -i GPG-ID\n"
+"  -f GPG-FINGERPRINT\n"
+"  -g DISABLE-GPG-CHECK"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:793
+#: ../src/spacecmd/softwarechannel.py:925
+#: ../src/spacecmd/softwarechannel.py:1095
+msgid "Channel Label:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:798
+msgid "New Name (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:804
+msgid "New Summary (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:807
+msgid "Summary:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:810
+msgid "New Description (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:816
+msgid "New Checksum type (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:823
+msgid "New GPG URL (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:826
+#: ../src/spacecmd/softwarechannel.py:954
+#: ../src/spacecmd/softwarechannel.py:1108
+#: ../src/spacecmd/softwarechannel.py:1197
+msgid "GPG URL:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:829
+msgid "New GPG ID (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:832
+#: ../src/spacecmd/softwarechannel.py:960
+#: ../src/spacecmd/softwarechannel.py:1109
+#: ../src/spacecmd/softwarechannel.py:1198
+msgid "GPG ID:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:835
+msgid "New GPG Fingerprint (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:838
+#: ../src/spacecmd/softwarechannel.py:966
+#: ../src/spacecmd/softwarechannel.py:1110
+#: ../src/spacecmd/softwarechannel.py:1199
+msgid "GPG Fingerprint:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:841
+msgid "Disable GPG CHECK (blank to keep unchanged)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:844
+#: ../src/spacecmd/softwarechannel.py:1111
+#: ../src/spacecmd/softwarechannel.py:1200
+msgid "Disable GPG Check [yes/no]? "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:847
+msgid "A channel label is required to identify the channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:850
+msgid "Only [yes/no] values are acceptable for --disable_gpg_check"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:890
+msgid "softwarechannel_create: Create a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:891
+#, python-format
+msgid ""
+"usage: softwarechannel_create [options])\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -l LABEL\n"
+"  -s SUMMARY\n"
+"  -p PARENT_CHANNEL\n"
+"  -a ARCHITECTURE\n"
+"  -c CHECKSUM %s\n"
+"  -u GPG_URL\n"
+"  -i GPG_ID\n"
+"  -f GPG_FINGERPRINT\n"
+"  -g DISABLE_GPG_CHECK"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:924
+#: ../src/spacecmd/softwarechannel.py:1094
+msgid "Channel Name:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:926
+msgid "Channel Summary:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:934
+#: ../src/spacecmd/softwarechannel.py:1102
+msgid "Select Parent [blank to create a base channel]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:937
+msgid "Architecture"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:944
+msgid "Checksum type"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:951
+msgid "GPG URL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:957
+msgid "GPG ID"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:963
+msgid "GPG Fingerprint"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:969
+msgid "GPG CHECK"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:972
+msgid "Disable GPG Check [y/N]? "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1024
+#: ../src/spacecmd/softwarechannel.py:1122
+msgid "A channel name is required"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1028
+#: ../src/spacecmd/softwarechannel.py:1126
+msgid "A channel label is required"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1041
+#, python-format
+msgid "Name %s already in use by channel %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1045
+#, python-format
+msgid "Label %s already in use by channel %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1053
+msgid "softwarechannel_clone: Clone a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1054
+msgid ""
+"usage: softwarechannel_clone [options])\n"
+"\n"
+"options:\n"
+"  -s SOURCE_CHANNEL\n"
+"  -n NAME\n"
+"  -l LABEL\n"
+"  -p PARENT_CHANNEL\n"
+"  --gpg-copy/-g (copy SOURCE_CHANNEL GPG details)\n"
+"  --gpg-url GPG_URL\n"
+"  --gpg-id GPG_ID\n"
+"  --gpg-fingerprint(GPG_FINGERPRINT)\n"
+"  --disable-gpg-check DISABLE_GPG_CHECK\n"
+"  -o do not clone any patches\n"
+"  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
+"        replaces foo with bar in the clone name and label"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1089
+#: ../src/spacecmd/softwarechannel.py:1189
+msgid "Source Channels:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1093
+#: ../src/spacecmd/softwarechannel.py:1192
+msgid "Select source channel:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1097
+msgid "Base Channels:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1105
+#: ../src/spacecmd/softwarechannel.py:1195
+msgid "Copy source channel GPG details? [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1114
+#: ../src/spacecmd/softwarechannel.py:1203
+msgid "Original State (No Errata) [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1118
+#: ../src/spacecmd/softwarechannel.py:1206
+msgid "A source channel is required"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1139
+#: ../src/spacecmd/softwarechannel.py:1217
+msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1155
+msgid ""
+"softwarechannel_clonetree: Clone a software channel and its child channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1156
+msgid ""
+"usage: softwarechannel_clonetree [options])\n"
+"             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar"
+"\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
+"\n"
+"options:\n"
+"  -s/--source-channel SOURCE_CHANNEL\n"
+"  -p/--prefix PREFIX (is prepended to the label and name of all channels)\n"
+"  --gpg-copy/-g (copy GPG details for correspondoing source channel))\n"
+"  --gpg-url GPG_URL (applied to all channels)\n"
+"  --gpg-id GPG_ID (applied to all channels)\n"
+"  --gpg-fingerprint(GPG_FINGERPRINT (applied to all channels))\n"
+"  --disable-gpg-check DISABLE_GPG_CHECK(applied to all channels)\n"
+"  -o do not clone any errata\n"
+"  --regex/-x \"s/foo/bar\" : Optional regex replacement,\n"
+"        replaces foo with bar in the clone name, label and description"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1193
+msgid "Prefix:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1210
+msgid "A prefix or regex is required"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1222
+#: ../src/spacecmd/softwarechannel.py:1993
+#: ../src/spacecmd/softwarechannel.py:2033
+msgid "Channel does not exist or is not a base channel!"
+msgstr ""
+
+#. Shouldn't ever get here due to earlier checks
+#: ../src/spacecmd/softwarechannel.py:1249
+msgid "called without prefix or regex option!"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1301
+#, python-format
+msgid "Cloning %s as %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1349
+msgid "softwarechannel_addpackages: Add packages to a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1350
+msgid "usage: softwarechannel_addpackages CHANNEL <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1388
+msgid "No packages to add"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1395
+msgid "Add these packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1407
+msgid ""
+"softwarechannel_mergepackages: Merge packages from one software channel into "
+"another"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1408
+msgid "usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1432
+msgid "softwarechannel_removeerrata: Remove patches from a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1434
+msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1487
+msgid "No patches to remove"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1498
+#: ../src/spacecmd/softwarechannel.py:1827
+#, python-format
+msgid "Total Errata:   %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1499
+#: ../src/spacecmd/softwarechannel.py:1830
+#, python-format
+msgid "Total Packages: %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1501
+msgid "Remove these patches [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1516
+msgid "softwarechannel_removepackages: Remove packages from a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1518
+msgid "usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1572
+msgid "No packages to remove"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1592
+msgid ""
+"softwarechannel_adderratabydate: Add errata from one channel into another "
+"channel based on a date range"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1594
+msgid ""
+"usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
+"ENDDATE"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1595
+#: ../src/spacecmd/softwarechannel.py:1670
+msgid "Date format : YYYYMMDD"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1596
+#: ../src/spacecmd/softwarechannel.py:1727
+#: ../src/spacecmd/softwarechannel.py:2619
+#: ../src/spacecmd/softwarechannel.py:2662
+#: ../src/spacecmd/softwarechannel.py:2878
+msgid "Options:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1597
+msgid "        -p/--publish : Publish errata to the channel (don't clone)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1624
+#: ../src/spacecmd/softwarechannel.py:1629
+#: ../src/spacecmd/softwarechannel.py:1695
+#: ../src/spacecmd/softwarechannel.py:1700
+#, python-format
+msgid "%s is an invalid date"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1642
+msgid "No patches found between the given dates"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1649
+#, python-format
+msgid "Publishing errata %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1667
+msgid ""
+"softwarechannel_listerratabydate: list errata from channelbased on a date "
+"range"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1669
+msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1713
+msgid "No errata found between the given dates"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1724
+msgid ""
+"softwarechannel_adderrata: Add patches from one channel into another channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1726
+msgid "usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1728
+msgid "    -q/--quick : Don't display list of packages (slightly faster)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1729
+msgid "    -s/--skip :  Skip errata which appear to exist already in DEST"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1755
+#, python-format
+msgid "source channel %s does not exist!"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1760
+#, python-format
+msgid "dest channel %s does not exist!"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1813
+msgid "No patch to add"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1832
+msgid "Add these patches [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1846
+msgid "Using the old errata.clone function"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1847
+msgid ""
+"If you have base channels for multiple OS versions, check no unexpected "
+"packages have been added"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1860
+msgid ""
+"softwarechannel_getorgaccess: Get the org-access for the software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1861
+msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1899
+msgid ""
+"softwarechannel_setorgaccess: Set the org-access for the software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1900
+msgid ""
+"usage : softwarechannel_setorgaccess <CHANNEL> [options])\n"
+"-d,--disable : disable org access (private, no org sharing)\n"
+"-e,--enable : enable org access (public access to all trusted orgs)\n"
+"-p,--protected ORG : protected org access for ORG only (multiple instances "
+"of -p ORG are allowed)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1940
+#, python-format
+msgid "Making org sharing public for channel : %s "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1945
+#, python-format
+msgid "Making org sharing private for channel : %s "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1950
+#, python-format
+msgid "Making org sharing protected for channel : %s "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1956
+#, python-format
+msgid "Enabling %s access for channel : %s "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1961
+#, python-format
+msgid "Disabling %s access for channel : %s "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1974
+msgid ""
+"softwarechannel_getorgaccesstree: Get the org-access for a software base "
+"channel and its children"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:1975
+msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2008
+msgid ""
+"softwarechannel_setorgaccesstree: set the org-access for a software base "
+"channel and its children"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2009
+msgid ""
+"usage: softwarechannel_setorgaccesstree <CHANNEL> [options])\n"
+"-d,--disable : disable org access (private, no org sharing)\n"
+"-e,--enable : enable org access (public access to all trusted orgs)\n"
+"-p,--protected ORG : protected org access for ORG only (multiple instances "
+"of -p ORG are allowed)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2048
+msgid "softwarechannel_regenerateneededcache: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2049
+msgid "Regenerate the needed errata and package cache for all systems"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2051
+msgid "usage: softwarechannel_regenerateneededcache"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2065
+msgid "softwarechannel_regenerateyumcache: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2066
+msgid "Regenerate the YUM cache for a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2068
+msgid ""
+"usage: softwarechannel_regenerateyumcache [options] <CHANNEL ...>\n"
+"\n"
+"    options:\n"
+"      -f force cache regeneration\n"
+"    "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2112
+msgid "no softwarechannel label given"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2115
+msgid "invalid softwarechannel label "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2133
+msgid "softwarechannel_diff: diff softwarechannel files"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2135
+msgid "usage: softwarechannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2196
+msgid "softwarechannel_errata_diff: diff softwarechannel files"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2198
+msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2247
+msgid "softwarechannel_sync: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2248
+msgid "sync the packages of two software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2250
+msgid ""
+"usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
+"    -q,--quiet : quiet mode (omits the output of common packages in both "
+"channels)"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2292
+#, python-format
+msgid "%s packages from softwarechannel %s to %s"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2311
+#: ../src/spacecmd/softwarechannel.py:2319
+#: ../src/spacecmd/softwarechannel.py:2433
+#: ../src/spacecmd/softwarechannel.py:2441
+#: ../src/spacecmd/softwarechannel.py:2573
+#: ../src/spacecmd/softwarechannel.py:2581
+msgid "failed to read key id"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2322
+msgid "packages common in both channels:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2327
+msgid "Omitting common packages in both specified channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2332
+msgid "packages to add to channel \""
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2340
+msgid "packages to remove from channel \""
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2346
+#: ../src/spacecmd/softwarechannel.py:2468
+#: ../src/spacecmd/softwarechannel.py:2598
+msgid "summary:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2347
+#: ../src/spacecmd/softwarechannel.py:2348
+msgid " packages"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2349
+msgid "    add    "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2350
+msgid " packages to   "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2353
+msgid "    remove "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2354
+msgid " packages from "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2356
+#: ../src/spacecmd/softwarechannel.py:2476
+msgid "Perform these changes to channel "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2377
+msgid "softwarechannel_errata_sync: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2378
+msgid "sync errata of two software channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2380
+msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2419
+msgid "syncing errata from softwarechannel "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2420
+#: ../src/spacecmd/softwarechannel.py:2552
+msgid " to "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2444
+msgid "errata common in both channels:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2453
+msgid "errata to add to channel \""
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2462
+msgid "errata to remove from channel \""
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2471
+#: ../src/spacecmd/softwarechannel.py:2601
+msgid "    add   "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2472
+msgid "errata to  "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2473
+msgid "    remove"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2474
+msgid "errata from"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2499
+msgid "softwarechannel_errata_merge: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2500
+msgid "merge errata of one software channel into another"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2502
+msgid ""
+"usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
+"[FROM_DATE] [TO_DATE]"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2503
+msgid ""
+"example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
+"2018-01-01"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2504
+msgid ""
+"note:    Providing only FROM_DATE will merge all errata since that date."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2505
+msgid "note:    When no date is provided, all errata will be merged."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2535
+#: ../src/spacecmd/softwarechannel.py:2542
+msgid "wrong dateformat: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2535
+#: ../src/spacecmd/softwarechannel.py:2542
+msgid " please specify as: YYYY-MM-DD"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2551
+msgid "merging errata from softwarechannel "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2588
+msgid "{} contains no errata which is not already present in {}"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2593
+msgid "errata to add to channel {}: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2599
+#: ../src/spacecmd/softwarechannel.py:2600
+msgid " errata"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2602
+msgid " errata to  "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2604
+msgid "Perform these changes to channel {} [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2615
+msgid "softwarechannel_syncrepos: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2616
+msgid "Sync users repos for a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2618
+msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2620
+#: ../src/spacecmd/softwarechannel.py:2663
+msgid "    -e/--no-errata : Do not sync errata"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2621
+#: ../src/spacecmd/softwarechannel.py:2664
+msgid "    -f/--fail : Terminate upon any error"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2622
+#: ../src/spacecmd/softwarechannel.py:2665
+msgid "    -k/--sync-kickstart : Create kickstartable tree"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2623
+#: ../src/spacecmd/softwarechannel.py:2666
+msgid "    -l/--latest : Only download latest package versions when repo syncs"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2658
+msgid "softwarechannel_setsyncschedule: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2659
+msgid "Sets the repo sync schedule for a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2661
+msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2668
+msgid ""
+"The schedule is specified in Quartz CronTrigger format without enclosing "
+"quotes."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2669
+msgid ""
+"For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
+"1 * * ?"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2670
+msgid "If <SCHEDULE> is left empty, it will be disabled."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2705
+msgid "softwarechannel_removesyncschedule: "
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2706
+msgid "Removes the repo sync schedule for a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2708
+msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2733
+msgid ""
+"softwarechannel_listsyncschedule: List sync schedules for all software "
+"channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2735
+msgid "softwarechannel_listsyncschedule : List all channels"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2758
+msgid "key"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2758
+msgid "Channel Name"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2758
+msgid "Update Schedule"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2770
+msgid "softwarechannel_addrepo: Add a repo to a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2771
+msgid "usage: softwarechannel_addrepo CHANNEL REPO"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2804
+msgid "softwarechannel_removerepo: Remove a repo from a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2805
+msgid "usage: softwarechannel_removerepo CHANNEL REPO"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2845
+msgid "softwarechannel_listrepos: List the repos for a software channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2846
+msgid "usage: softwarechannel_listrepos CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2869
+msgid "No repos have been found for this channel."
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2876
+msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2877
+msgid "usage: softwarechannel_mirrorpackages CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2879
+msgid "    -l/--latest : Only mirror latest package version"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2910
+msgid "Skipping"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2912
+msgid "Fetching package"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2917
+#, python-format
+msgid "Received package %s from channel %s is broken. Content is too short"
+msgstr ""
+
+#: ../src/spacecmd/softwarechannel.py:2921
+#, python-format
+msgid "Could not fetch package %s from channel %s"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:43
+msgid "The System Set Manager (SSM) is a group of systems that you "
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:44
+msgid "can perform tasks on as a whole."
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:46
+msgid "Adding Systems:"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:52
+msgid "Intersections:"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:56
+msgid "Using the SSM:"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:64
+msgid "ssm_add: Add systems to the SSM"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:65
+msgid "usage: ssm_add <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:67 ../src/spacecmd/ssm.py:116
+#: ../src/spacecmd/ssm.py:166 ../src/spacecmd/ssm.py:210
+msgid "see 'help ssm' for more details"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:93
+#, python-format
+msgid "%s is already in the list"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:111
+msgid "ssm_intersect: Replace the current SSM with the intersection"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:112
+msgid "               of the current list of systems and the list of"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:113
+msgid "               systems passed as arguments"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:114
+msgid "usage: ssm_intersect <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:163
+msgid "ssm_remove: Remove systems from the SSM"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:164
+msgid "usage: ssm_remove <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:207
+msgid "ssm_list: List the systems currently in the SSM"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:208
+msgid "usage: ssm_list"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:227
+msgid "ssm_clear: Remove all systems from the SSM"
+msgstr ""
+
+#: ../src/spacecmd/ssm.py:228
+msgid "usage: ssm_clear"
+msgstr ""
+
+#: ../src/spacecmd/system.py:50
+msgid "Same"
+msgstr ""
+
+#: ../src/spacecmd/system.py:51
+msgid "Only here"
+msgstr ""
+
+#: ../src/spacecmd/system.py:52
+msgid "Newer here"
+msgstr ""
+
+#: ../src/spacecmd/system.py:53
+msgid "Only there"
+msgstr ""
+
+#: ../src/spacecmd/system.py:54
+msgid "Newer there"
+msgstr ""
+
+#: ../src/spacecmd/system.py:74 ../src/spacecmd/system.py:3789
+msgid "Package"
+msgstr ""
+
+#: ../src/spacecmd/system.py:75
+msgid "This System"
+msgstr ""
+
+#: ../src/spacecmd/system.py:76
+msgid "Other System"
+msgstr ""
+
+#: ../src/spacecmd/system.py:77 ../src/spacecmd/system.py:3792
+msgid "Difference"
+msgstr ""
+
+#: ../src/spacecmd/system.py:125
+msgid "Removing Channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:128
+msgid "Adding Channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:164
+msgid "system_list: List all system profiles"
+msgstr ""
+
+#: ../src/spacecmd/system.py:165
+msgid "usage: system_list"
+msgstr ""
+
+#: ../src/spacecmd/system.py:181
+msgid "system_reboot: Reboot a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:182
+msgid ""
+"usage: system_reboot <SYSTEMS> [options])\n"
+"\n"
+"options:\n"
+"  -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:237
+msgid "Reboot these systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:253
+msgid "system_search: List systems that match the given criteria"
+msgstr ""
+
+#: ../src/spacecmd/system.py:254
+msgid "usage: system_search QUERY"
+msgstr ""
+
+#: ../src/spacecmd/system.py:256
+msgid "Available Fields:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:259
+msgid "Examples:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:260
+msgid "> system_search device:vmware"
+msgstr ""
+
+#: ../src/spacecmd/system.py:261
+msgid "> system_search ip:192.168.82"
+msgstr ""
+
+#: ../src/spacecmd/system.py:279 ../src/spacecmd/system.py:286
+msgid "Invalid query"
+msgstr ""
+
+#: ../src/spacecmd/system.py:322
+msgid "Invalid search field"
+msgstr ""
+
+#: ../src/spacecmd/system.py:352
+msgid "system_runscript: Schedule a script to run on the list of"
+msgstr ""
+
+#: ../src/spacecmd/system.py:353
+msgid "                  systems provided"
+msgstr ""
+
+#: ../src/spacecmd/system.py:354
+msgid ""
+"usage: system_runscript <SYSTEMS> [options])\n"
+"\n"
+"options:\n"
+"  -u USER\n"
+"  -g GROUP\n"
+"  -t TIMEOUT\n"
+"  -s START_TIME\n"
+"  -l LABEL\n"
+"  -f FILE"
+msgstr ""
+
+#: ../src/spacecmd/system.py:399
+msgid "User [root]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:400
+msgid "Group [root]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:409
+msgid "Timeout (in seconds) [600]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:415
+msgid "Invalid timeout"
+msgstr ""
+
+#: ../src/spacecmd/system.py:421
+msgid "Label/Short Description [default]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:425
+msgid "Script File [create]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:438
+msgid "No script provided"
+msgstr ""
+
+#: ../src/spacecmd/system.py:457
+msgid "A script file is required"
+msgstr ""
+
+#: ../src/spacecmd/system.py:465
+#, python-format
+msgid "User:       %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:466
+#, python-format
+msgid "Group:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:467
+#, python-format
+msgid "Timeout:    %i seconds"
+msgstr ""
+
+#: ../src/spacecmd/system.py:471
+#, python-format
+msgid "Label:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:472
+msgid "Script Contents"
+msgstr ""
+
+#: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
+#: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
+#: ../src/spacecmd/system.py:4376
+#, python-format
+msgid "Failed to schedule %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:537
+#, python-format
+msgid "Scheduled: %i system(s)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:544 ../src/spacecmd/utils.py:246
+#, python-format
+msgid "Could not remove %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:553
+msgid "system_listhardware: List the hardware details of a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:554
+msgid "usage: system_listhardware <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:613
+msgid "Network"
+msgstr ""
+
+#: ../src/spacecmd/system.py:622
+#, python-format
+msgid "Interface:   %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:623
+#, python-format
+msgid "MAC Address: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:624
+#, python-format
+msgid "IP Address:  %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:625
+#, python-format
+msgid "Netmask:     %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:626
+#, python-format
+msgid "Broadcast:   %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:627
+#, python-format
+msgid "Module:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:631
+msgid "CPU"
+msgstr ""
+
+#: ../src/spacecmd/system.py:633
+#, python-format
+msgid "Count:    %i"
+msgstr ""
+
+#: ../src/spacecmd/system.py:634
+#, python-format
+msgid "Arch:     %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:635
+#, python-format
+msgid "MHz:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:636
+#, python-format
+msgid "Cache:    %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:637
+#, python-format
+msgid "Vendor:   %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:638
+#, python-format
+msgid "Model:    %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:641
+msgid "Memory"
+msgstr ""
+
+#: ../src/spacecmd/system.py:643
+#, python-format
+msgid "RAM:  %i"
+msgstr ""
+
+#: ../src/spacecmd/system.py:644
+#, python-format
+msgid "Swap: %i"
+msgstr ""
+
+#: ../src/spacecmd/system.py:648
+msgid "DMI"
+msgstr ""
+
+#: ../src/spacecmd/system.py:649
+#, python-format
+msgid "Vendor:       %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:650
+#, python-format
+msgid "System:       %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:651
+#, python-format
+msgid "Product:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:652
+#, python-format
+msgid "Board:        %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:655
+msgid "Asset"
+msgstr ""
+
+#: ../src/spacecmd/system.py:661
+#, python-format
+msgid "BIOS Release: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:662
+#, python-format
+msgid "BIOS Vendor:  %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:663
+#, python-format
+msgid "BIOS Version: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:667
+msgid "Devices"
+msgstr ""
+
+#: ../src/spacecmd/system.py:677
+msgid "Description: None"
+msgstr ""
+
+#: ../src/spacecmd/system.py:681
+#, python-format
+msgid "Driver:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:682
+#, python-format
+msgid "Class:       %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:683
+#, python-format
+msgid "Bus:         %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:691
+msgid "system_installpackage: Install a package on a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:692
+msgid ""
+"usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])\n"
+"\n"
+"options:\n"
+"    -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:793
+msgid "No packages to install"
+msgstr ""
+
+#: ../src/spacecmd/system.py:817
+#, python-format
+msgid "%s does not have access to all requested packages"
+msgstr ""
+
+#: ../src/spacecmd/system.py:823
+msgid "Install these packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:838 ../src/spacecmd/system.py:965
+#: ../src/spacecmd/system.py:1099
+#, python-format
+msgid "Scheduled %i system(s)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:846
+msgid "system_removepackage: Remove a package from a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:847
+msgid ""
+"usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])\n"
+"\n"
+"options:\n"
+"    -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:973
+msgid "system_upgradepackage: Upgrade a package on a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:974
+msgid ""
+"usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')\n"
+"\n"
+"options:\n"
+"    -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1052 ../src/spacecmd/system.py:1148
+#, python-format
+msgid "No upgrades available for %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1075
+#, python-format
+msgid "Couldn't get name for package %i"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1082
+msgid "Upgrade these packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1107
+msgid "system_listupgrades: List the available upgrades for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1108
+msgid "usage: system_listupgrades <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1176
+msgid "system_listinstalledpackages: List the installed packages on a"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1177
+msgid "                              system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1178
+msgid "usage: system_listinstalledpackages <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1232
+msgid "system_listconfigchannels: List the config channels of a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1233
+msgid "usage: system_listconfigchannels <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1279 ../src/spacecmd/system.py:1382
+#, python-format
+msgid "%s does not support configuration channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1316
+msgid "system_listconfigfiles: List the managed config files of a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1317
+msgid ""
+"usage: system_listconfigfiles <SYSTEMS>')\n"
+"options:\n"
+"  -s/--sandbox : list only system-sandbox files\n"
+"  -l/--local   : list only locally managed files\n"
+"  -c/--central : list only centrally managed files\n"
+"  -q/--quiet   : quiet mode (omits the header)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1405
+#, python-format
+msgid "Error, unexpected channel type label %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1417
+msgid "system_addconfigfile: Create a configuration file"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1418
+msgid "Note this is only for system sandbox or locally-managed files"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1419
+msgid "Centrally managed files should be created via configchannel_addfile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1420
+msgid ""
+"usage: system_addconfigfile [SYSTEM] [options]\n"
+"\n"
+"options:\n"
+"  -S/--sandbox : list only system-sandbox files\n"
+"  -L/--local   : list only locally managed files\n"
+"  -p PATH\n"
+"  -r REVISION\n"
+"  -o OWNER [default: root]\n"
+"  -g GROUP [default: root]\n"
+"  -m MODE [defualt: 0644]\n"
+"  -x SELINUX_CONTEXT\n"
+"  -d path is a directory\n"
+"  -s path is a symlink\n"
+"  -b path is a binary (or other file which needs base64 encoding)\n"
+"  -t SYMLINK_TARGET\n"
+"  -f local path to file contents\n"
+"\n"
+"  Note re binary/base64: Some text files, notably those containing trailing\n"
+"  newlines, those containing ASCII escape characters (or other charaters "
+"not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
+"auto-\n"
+"  detect files which require this, but you may need to explicitly specify.\n"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1488
+#, python-format
+msgid "%s is not a valid system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1498
+msgid "System-Sandbox or Locally-Managed? [S/L]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1514
+msgid "Must choose system-sandbox or locally-managed option"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1519
+msgid "Must provide system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1553
+msgid "system_addconfigchannels: Add config channels to a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1554
+msgid ""
+"usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]\n"
+"\n"
+"options:\n"
+"  -t add channels to the top of the list\n"
+"  -b add channels to the bottom of the list"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1598
+msgid "Add to top or bottom? [T/b]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1622
+msgid "system_removeconfigchannels: Remove config channels from a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1623
+msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1672
+msgid ""
+"system_setconfigchannelorder: Set the ranked order of configuration channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1673
+msgid "usage: system_setconfigchannelorder <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1713
+msgid "New Configuration Channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1733
+msgid "system_deployconfigfiles: Deploy all configuration files for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1734
+msgid ""
+"usage: system_deployconfigfiles <SYSTEMS> [options]\n"
+"\n"
+"options:\n"
+"    -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1788
+msgid "Deploy ALL configuration files to these systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1798
+#, python-format
+msgid "Scheduled deployment for %i system(s)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1806
+msgid "system_delete: Delete a system profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1807
+msgid ""
+"usage: system_delete [options] <SYSTEMS>\n"
+"\n"
+"    options:\n"
+"          -c TYPE - Possible values:\n"
+"             *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,\n"
+"             *  'NO_CLEANUP' - do not cleanup, just delete,\n"
+"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway "
+"in case of error\n"
+"    "
+msgstr ""
+
+#: ../src/spacecmd/system.py:1851
+msgid "No systems to delete"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1859
+#, python-format
+msgid "%s  System ID"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1859
+msgid "Profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1867
+msgid "Delete these systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1874
+#, python-format
+msgid "%i system(s) scheduled for removal"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1894
+msgid "system_lock: Lock a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1895
+msgid "usage: system_lock <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1936
+msgid "system_unlock: Unlock a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1937
+msgid "usage: system_unlock <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1978
+msgid "system_rename: Rename a system profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:1979
+msgid "usage: system_rename OLDNAME NEWNAME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2024
+msgid "system_listcustomvalues: List the custom values for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2025
+msgid "usage: system_listcustomvalues <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2080
+msgid "system_addcustomvalue: Set a custom value for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2081
+msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2135
+msgid "system_updatecustomvalue: Update a custom value for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2136
+msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2167
+msgid "system_removecustomvalues: Remove a custom value for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2168
+msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2204
+msgid "Delete these values [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2222
+msgid "system_addnote: Set a note for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2223
+msgid ""
+"usage: system_addnote <SYSTEM> [options]\n"
+"\n"
+"options:\n"
+"  -s SUBJECT\n"
+"  -b BODY"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2258
+msgid "Subject of the Note:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2260
+msgid "Note Body (ctrl-D to finish):"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2264
+msgid "A subject is required"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2268
+msgid "A body is required"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2287
+msgid "system_deletenotes: Delete notes from a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2288
+msgid "usage: system_deletenotes <SYSTEM> <ID|*>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2320
+msgid "No notes to delete"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2335
+#, python-format
+msgid "%s is not a valid note ID"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2347
+msgid "system_listnotes: List the available notes for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2348
+msgid "usage: system_listnotes <SYSTEM>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2406
+msgid "system_listfqdns: List the associated FQDNs for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2407
+msgid "usage: system_listfqdns <SYSTEM>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2459
+msgid "system_setbasechannel: Set a system's base software channel"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2460
+msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2507 ../src/spacecmd/system.py:2594
+#, python-format
+msgid "System:           %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2508 ../src/spacecmd/system.py:2595
+#, python-format
+msgid "Old Base Channel: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2509 ../src/spacecmd/system.py:2597
+#, python-format
+msgid "New Base Channel: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2528
+msgid ""
+"system_schedulechangechannels: Schedule changing a system's software channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2529
+msgid ""
+"usage: system_setbasechannel <SYSTEMS> [options]\n"
+"\n"
+"options:\n"
+"  -b BASE_CHANNEL base channel label\n"
+"  -c CHILD_CHANNEL child channel labels (allowed multiple times)\n"
+"  -s START_TIME time defaults to now"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2596
+#, python-format
+msgid "Old Child Channels: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2598
+#, python-format
+msgid "New Child channels %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2613 ../src/spacecmd/system.py:4261
+#, python-format
+msgid "Scheduled action id: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2620
+msgid "system_listbasechannel: List the base channel for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2621
+msgid "usage: system_listbasechannel <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2675
+msgid "system_listchildchannels: List the child channels for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2676
+msgid "usage: system_listchildchannels <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2730
+msgid "system_addchildchannels: Add child channels to a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2731
+msgid "usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2755
+#, python-format
+msgid "This method was removed since API version %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2758
+#, python-format
+msgid "This method is deprecated and will be removed in API version %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2762
+msgid ""
+"system_listcrashedsystems: List all systems that have experienced a crash "
+"and reported by spacewalk-abrt"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2763
+msgid "usage: system_listcrashedsystems"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2771
+msgid "Count | System ID | Profile Name"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2785
+msgid "system_deletecrashes: Delete crashes reported by spacewalk-abrt."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2786
+msgid ""
+"usage: Delete all crashes for all systems    : system_deletecrashes [--"
+"verbose]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2787
+msgid ""
+"usage: Delete all crashes for a single system: system_deletecrashes -i "
+"sys_id [--verbose]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2788
+msgid ""
+"usage: Delete a single crash record          : system_deletecrashes -c "
+"crash_id [--verbose]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2808
+#, python-format
+msgid "Deleting crash with id %s."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2815
+#, python-format
+msgid "Deleting all crashes from system with systemid %s [y/N]:"
+msgstr ""
+
+#. all systems
+#: ../src/spacecmd/system.py:2817
+msgid "Deleting all crashes from all systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2829
+#, python-format
+msgid "Deleting crash with id %s from system %s."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2838
+msgid "system_listcrashesbysystem: List all reported crashes for a system."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2839 ../src/spacecmd/system.py:2853
+msgid "usage: system_listcrashesbysystem -i sys_id"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2852
+msgid "# System id must be provided."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2858
+msgid "Crash ID | Crash Name"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2869
+msgid "system_getcrashfiles: Download all files for a crash record."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2870
+msgid "usage: system_getcrashfiles -c crash_id [--verbose]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2871 ../src/spacecmd/system.py:2887
+msgid ""
+"usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--"
+"verbose]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2886
+msgid "# Crash id must be provided."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2913
+#, python-format
+msgid "# All files we downloaded to %s."
+msgstr ""
+
+#: ../src/spacecmd/system.py:2922
+msgid "system_removechildchannels: Remove child channels from a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2923
+msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2945
+msgid "system_details: Show the details of a system profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2946
+msgid "usage: system_details <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2999
+#, python-format
+msgid "Name:          %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3000
+#, python-format
+msgid "System ID:     %i"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3003
+#, python-format
+msgid "UUID:          %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3005
+#, python-format
+msgid "Locked:        %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3006
+#, python-format
+msgid "Registered:    %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3007
+#, python-format
+msgid "Last Checkin:  %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3008
+#, python-format
+msgid "OSA Status:    %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3009
+#, python-format
+msgid "Last Boot:     %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3011
+#, python-format
+msgid "Contact Method:%s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3055
+#, python-format
+msgid "Hostname:      %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3056
+#, python-format
+msgid "IP Address:    %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3057
+#, python-format
+msgid "Kernel:        %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3098
+msgid "system_listerrata: List available errata for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3099
+msgid "usage: system_listerrata <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3153
+msgid "system_applyerrata: Apply errata to a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3154
+msgid ""
+"usage: system_applyerrata [options] <SYSTEMS>\n"
+"[ERRATA|search:XXX ...]\n"
+"\n"
+"options:\n"
+"  -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3215
+msgid "system_listevents: List the event history for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3216
+msgid "usage: system_listevents <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3262
+#, python-format
+msgid "Summary:   %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3264
+#, python-format
+msgid "Details:   %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3272
+msgid "system_listentitlements: List the entitlements for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3273
+msgid "usage: system_listentitlements <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3326
+msgid "system_addentitlements: Add entitlements to a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3327
+msgid "usage: system_addentitlements <SYSTEMS> ENTITLEMENT"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3382
+msgid "system_removeentitlement: Remove an entitlement from a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3383
+msgid "usage: system_removeentitlement <SYSTEMS> ENTITLEMENT"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3438
+msgid "system_listpackageprofiles: List all package profiles"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3439
+msgid "usage: system_listpackageprofiles"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3458
+msgid "system_deletepackageprofile: Delete a package profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3459
+msgid "usage: system_deletepackageprofile PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3483
+msgid "Delete this profile [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3494
+#, python-format
+msgid "%s is not a valid profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3505
+msgid "system_createpackageprofile: Create a package profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3506
+msgid ""
+"usage: system_createpackageprofile SYSTEM [options]\n"
+"\n"
+"options:\n"
+"  -n NAME\n"
+"  -d DESCRIPTION"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3536
+msgid "Profile Label:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3540
+msgid "A profile name is required"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3544
+msgid "A profile description is required"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3552
+#, python-format
+msgid "Created package profile '%s'"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3560
+msgid ""
+"system_comparepackageprofile: Compare a system against a package profile"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3561
+msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3624
+msgid "system_comparepackages: Compare the packages between two systems"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3625
+msgid "usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3656
+msgid "system_syncpackages: Sync packages between two systems"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3657
+msgid ""
+"usage: system_syncpackages SOURCE TARGET [options]\n"
+"\n"
+"options:\n"
+"    -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3705
+msgid "Sync packages [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3747
+#, python-format
+msgid "Failed to filter package list, package %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3748
+msgid "found with no arch or arch_label"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3790
+msgid "System Version"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3791
+msgid "Channel Version"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3813
+msgid "Channel_newer_than_system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3826
+msgid "System_newer_than_channel"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3835
+msgid "Missing_in_channel"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3839
+msgid "system_comparewithchannel: Compare the installed packages on a"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3840
+msgid "                           system with those in the channels it is"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3841
+msgid "                           registerd to, or optionally some other"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3842
+msgid "                           channel"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3843
+msgid "usage: system_comparewithchannel <SYSTEMS> [options]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3845
+msgid "         -c/--channel : Specific channel to compare against,"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3846
+msgid "                        default is those subscribed to, including"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3847
+msgid "                        child channels"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3898
+msgid "Specified channel does not exist"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3909
+#, python-format
+msgid "system %s is not subscribed to any channel!"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3911
+msgid "Please subscribe to a channel, or specify achannel to compare with"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3945
+#, python-format
+msgid ""
+"\n"
+"System: %s"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3971
+msgid ""
+"system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:3972
+msgid ""
+"usage: system_schedulehardwarerefresh <SYSTEMS> [options]\n"
+"\n"
+"options:\n"
+"  -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4034
+msgid ""
+"system_schedulepackagerefresh: Schedule a software package refresh for a "
+"system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4035
+msgid ""
+"usage: system_schedulepackagerefresh <SYSTEMS> [options])\n"
+"\n"
+"options:\n"
+"  -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4096
+msgid ""
+"system_show_packageversion: Shows version of installed package on given "
+"system(s)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4097
+msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4129
+msgid "Package\tVersion\tRelease\tEpoch\tArch\tSystem"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4149
+msgid "system_setcontactmethod: Set the contact method for given system(s)."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4151
+msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4200
+msgid ""
+"system_scheduleapplyconfigchannels: Schedule applying the assigned config "
+"channels to the System (Minion only)"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4201
+msgid ""
+"usage: scheduleapplyconfigchannels <SYSTEMS> [options]\n"
+"\n"
+"    options:\n"
+"        -s START_TIME"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4252
+msgid "Schedule applying config channels to these systems [y/N]:"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4269
+msgid ""
+"system_listmigrationtargets: List possible migration targets for given "
+"systems."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4270
+msgid "usage: system_listmigrationtargets <SYSTEMS>"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4297
+msgid "WARN: Cannot find system "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4300
+msgid "System "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4304
+msgid "  No migration targets"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4307
+msgid "  Target #"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4308
+msgid "    IDs: "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4309
+msgid "    Friendly names: "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4315
+msgid ""
+"system_schedulespmigration: Schedule a Service Pack migration for systems."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4316
+msgid ""
+"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
+"<MIGRATION_TARGET> [options] \n"
+"    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    Options: \n"
+"        -s START_TIME \n"
+"        -d pass this flag, if you want to do a dry run \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
+"spaces))"
+msgstr ""
+
+#: ../src/spacecmd/system.py:4366
+msgid "Cannot find system "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4366
+msgid ". Skipping it."
+msgstr ""
+
+#: ../src/spacecmd/system.py:4369
+msgid "Scheduling Service Pack migration for system "
+msgstr ""
+
+#: ../src/spacecmd/system.py:4374
+msgid "Scheduled action ID: "
+msgstr ""
+
+#: ../src/spacecmd/user.py:50
+msgid "user_create: Create an user"
+msgstr ""
+
+#: ../src/spacecmd/user.py:51
+msgid ""
+"usage: user_create [options])\n"
+"\n"
+"options:\n"
+"  -u USERNAME\n"
+"  -f FIRST_NAME\n"
+"  -l LAST_NAME\n"
+"  -e EMAIL\n"
+"  -p PASSWORD\n"
+"  --pam enable PAM authentication"
+msgstr ""
+
+#: ../src/spacecmd/user.py:120
+msgid "Note: password was ignored due to PAM mode"
+msgstr ""
+
+#: ../src/spacecmd/user.py:139
+msgid "user_delete: Delete an user"
+msgstr ""
+
+#: ../src/spacecmd/user.py:140
+msgid "usage: user_delete NAME"
+msgstr ""
+
+#: ../src/spacecmd/user.py:168
+msgid "user_disable: Disable an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:169
+msgid "usage: user_disable NAME"
+msgstr ""
+
+#: ../src/spacecmd/user.py:195
+msgid "user_enable: Enable an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:196
+msgid "usage: user_enable NAME"
+msgstr ""
+
+#: ../src/spacecmd/user.py:222
+msgid "user_list: List all users"
+msgstr ""
+
+#: ../src/spacecmd/user.py:223
+msgid "usage: user_list"
+msgstr ""
+
+#: ../src/spacecmd/user.py:240
+msgid "user_listavailableroles: List all available roles for users"
+msgstr ""
+
+#: ../src/spacecmd/user.py:241
+msgid "usage: user_listavailableroles"
+msgstr ""
+
+#: ../src/spacecmd/user.py:253
+msgid "No roles has been found"
+msgstr ""
+
+#: ../src/spacecmd/user.py:259
+msgid "user_addrole: Add a role to an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:260
+msgid "usage: user_addrole USER ROLE"
+msgstr ""
+
+#: ../src/spacecmd/user.py:293
+msgid "user_removerole: Remove a role from an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:294
+msgid "usage: user_removerole USER ROLE"
+msgstr ""
+
+#: ../src/spacecmd/user.py:328
+msgid "user_details: Show the details of an user"
+msgstr ""
+
+#: ../src/spacecmd/user.py:329
+msgid "usage: user_details USER ..."
+msgstr ""
+
+#: ../src/spacecmd/user.py:361
+#, python-format
+msgid "%s is not a valid user"
+msgstr ""
+
+#: ../src/spacecmd/user.py:372
+#, python-format
+msgid "Username:      %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:373
+#, python-format
+msgid "First Name:    %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:374
+#, python-format
+msgid "Last Name:     %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:375
+#, python-format
+msgid "Email Address: %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:376
+#, python-format
+msgid "Organisation:  %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:377
+#, python-format
+msgid "Last Login:    %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:378
+#, python-format
+msgid "Created:       %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:379
+#, python-format
+msgid "Enabled:       %s"
+msgstr ""
+
+#: ../src/spacecmd/user.py:383
+msgid "Roles"
+msgstr ""
+
+#: ../src/spacecmd/user.py:389
+msgid "Assigned Groups"
+msgstr ""
+
+#: ../src/spacecmd/user.py:395
+msgid "Default Groups"
+msgstr ""
+
+#: ../src/spacecmd/user.py:405
+msgid "user_addgroup: Add a group to an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:406
+msgid "usage: user_addgroup USER <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/user.py:443
+msgid "user_adddefaultgroup: Add a default group to an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:444
+msgid "usage: user_adddefaultgroup USER <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/user.py:480
+msgid "user_removegroup: Remove a group to an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:481
+msgid "usage: user_removegroup USER <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/user.py:521
+msgid "user_removedefaultgroup: Remove a default group from an user account"
+msgstr ""
+
+#: ../src/spacecmd/user.py:523
+msgid "usage: user_removedefaultgroup USER <GROUP ...>"
+msgstr ""
+
+#: ../src/spacecmd/user.py:562
+msgid "user_setfirstname: Set an user accounts first name field"
+msgstr ""
+
+#: ../src/spacecmd/user.py:563
+msgid "usage: user_setfirstname USER FIRST_NAME"
+msgstr ""
+
+#: ../src/spacecmd/user.py:597
+msgid "user_setlastname: Set an user accounts last name field"
+msgstr ""
+
+#: ../src/spacecmd/user.py:598
+msgid "usage: user_setlastname USER LAST_NAME"
+msgstr ""
+
+#: ../src/spacecmd/user.py:632
+msgid "user_setemail: Set an user accounts email field"
+msgstr ""
+
+#: ../src/spacecmd/user.py:633
+msgid "usage: user_setemail USER EMAIL"
+msgstr ""
+
+#: ../src/spacecmd/user.py:667
+msgid "user_setprefix: Set an user accounts name prefix field"
+msgstr ""
+
+#: ../src/spacecmd/user.py:668
+msgid "usage: user_setprefix USER PREFIX"
+msgstr ""
+
+#: ../src/spacecmd/user.py:707
+msgid "user_setpassword: Set an user accounts name prefix field"
+msgstr ""
+
+#: ../src/spacecmd/user.py:708
+msgid "usage: user_setpassword USER PASSWORD"
+msgstr ""
+
+#. If cache generation is interrupted (e.g by ctrl-c) you can end up
+#. with an EOFError exception due to the partial picked file
+#. So we catch this error and remove the corrupt partial file
+#. If you don't do this then spacecmd will fail with an unhandled
+#. exception until the partial file is manually removed
+#: ../src/spacecmd/utils.py:134
+#, python-format
+msgid "Loading cache file %s failed"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:135
+#, python-format
+msgid "Cache generation was probably interrupted,removing corrupt %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:140
+#, python-format
+msgid "Couldn't load cache from %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:161
+#, python-format
+msgid "Couldn't write to %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:206
+msgid "Could not open the temporary file"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:226
+#, python-format
+msgid "Editor \"%s\" exited with code %i"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:228
+#, python-format
+msgid "General failure running editor: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:231
+msgid "No editors found"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:368
+msgid "Invalid time provided"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:456
+#, python-format
+msgid "%s is an unknown errata type"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:464
+msgid "Security Errata"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:473
+msgid "Bug Fix Errata"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:482
+msgid "Enhancement Errata"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:492
+msgid "Current Selections"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:502
+msgid "Available Configuration Channels"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:508 ../src/spacecmd/utils.py:528
+msgid "Channel:"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+msgid "Invalid channel"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:515
+msgid "New Rank:"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:522 ../src/spacecmd/utils.py:525
+msgid "Invalid rank"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:536
+msgid "Clearing current selections"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:691
+msgid "Could not generate json data object!"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:698
+#, python-format
+msgid "Could not open file %s for writing: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:709
+#, python-format
+msgid "Could not open file %s for reading: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:711
+#, python-format
+msgid "Could not parse JSON data from %s: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:713
+#, python-format
+msgid "Error processing file %s: %s"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:741
+msgid "Skipping usage of common strings: both strings are equal"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:757
+msgid "Skipping usage of common strings: number of substrings differ"
+msgstr ""
+
+#: ../src/spacecmd/utils.py:843
+msgid "Parameter {} not a string type, but {}."
+msgstr ""
+
+#: ../src/bin/spacecmd:75
+msgid "Unhandled exception occurred while getting FQDN:"
+msgstr ""
