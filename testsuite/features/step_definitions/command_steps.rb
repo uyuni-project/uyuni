@@ -752,7 +752,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
+	      "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
@@ -1164,7 +1164,7 @@ When(/^I delete ([^ ]*) virtual network on "([^"]*)"((?: without error control)?
     steps %(
       When I run "virsh net-destroy #{net_name}" on "#{host}"#{error_control}
       And I run "virsh net-undefine #{net_name}" on "#{host}"#{error_control}
-    )
+          )
   end
 end
 
@@ -1200,7 +1200,7 @@ When(/^I delete ([^ ]*) virtual storage pool on "([^"]*)"((?: without error cont
     steps %(
       When I run "virsh pool-destroy #{pool_name}" on "#{host}"#{error_control}
       And I run "virsh pool-undefine #{pool_name}" on "#{host}"#{error_control}
-    )
+          )
   end
 
   # only delete the folders we created
@@ -1308,7 +1308,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$
     disks = tree.xpath("//disk")
     disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
     break if (disk_index.nil? && presence == 'no') ||
-             (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
+      (!disk_index.nil? && disks[disk_index].xpath('target/@bus')[0].to_s == bus && presence == 'a')
     sleep 3
   end
 end
@@ -1564,28 +1564,38 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
 end
 
-And(/^I upload "([^\"]*)" to "([^\"]*)" on "([^\"]*)"$/) do |file, targetdir, host|
-  target = get_target(host)
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = targetdir + File.basename(file)
-  return_code = file_inject(target, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  target.run("chmod 644 #{dest}")
-end
-
-And(/^I upload autoinstall mocked files on ([^\"]*)$/) do |host|
-  target = get_target(host)
-  target_dirs = ['/autoinstall/Fedora_12_i386/images/pxeboot/',
-                 '/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/']
-
+When(/^I copy autoinstall mocked files on server$/) do
+  target_dirs = %w[/autoinstall/Fedora_12_i386/images/pxeboot/ /autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/ /autoinstall/mock]
+  files_to_copy = %w[/fedora12/vmlinuz /fedora12/initrd.img /mock/empty.xml /sles15sp2/initrd /sles15sp2/linux]
   target_dirs.each do |targetdir|
     puts "Create targetdir: #{targetdir} on server"
-    target.run("mkdir -p #{targetdir}")
+    $server.run("mkdir -p #{targetdir}")
   end
-
-  step %(I upload "autoinstall/cobbler/fedora12/vmlinuz" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/fedora12/initrd.img" to "/autoinstall/Fedora_12_i386/images/pxeboot/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/mock/empty.xml" to "/autoinstall/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/sles15sp2/initrd" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
-  step %(I upload "autoinstall/cobbler/sles15sp2/linux" to "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/" on "#{host}")
+  current_dir = File.dirname(__FILE__)
+  target_dir = ''
+  files_to_copy.each do |file_to_copy|
+    source_dir = File.dirname(file_to_copy)
+    target_dir = case source_dir
+                when "/fedora12"
+                  "/autoinstall/Fedora_12_i386/images/pxeboot/"
+                when "/mock"
+                  "/autoinstall/mock"
+                when "/sles15sp2"
+                  "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/"
+                end
+    # if source_dir == "/fedora12"
+    #   targetdir = "/autoinstall/Fedora_12_i386/images/pxeboot/"
+    # elsif source_dir == "/mock"
+    #   targetdir = "/autoinstall/mock"
+    # elsif source_dir == "/sles15sp2"
+    #   targetdir = "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/"
+    # else
+    #   raise 'File source not supported' unless return_code.zero?
+    # end
+  end
+  source = current_dir + '/../upload_files/autoinstall/cobbler' + file
+  dest = target_dir + File.basename(file)
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  target.run("chmod 644 #{dest}")
 end
