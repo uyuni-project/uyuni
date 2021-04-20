@@ -69,12 +69,18 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                     SCCConfig config = new SCCConfig(url, credential.getUsername(), credential.getPassword(), uuid);
                     SCCWebClient sccClient = new SCCWebClient(config);
                     deregister.forEach(cacheItem -> {
-                        try {
-                            sccClient.deleteSystem(cacheItem.getId());
-                        }
-                        catch (SCCClientException e) {
-                            log.error("Error deregistering system " + cacheItem.getId(), e);
-                        }
+                        cacheItem.getOptSccId().ifPresentOrElse(
+                            sccId -> {
+                                try {
+                                    sccClient.deleteSystem(sccId);
+                                    SCCCachingFactory.deleteRegCacheItem(cacheItem);
+                                }
+                                catch (SCCClientException e) {
+                                    log.error("Error deregistering system " + cacheItem.getId(), e);
+                                }
+                            },
+                            () -> SCCCachingFactory.deleteRegCacheItem(cacheItem)
+                        );
                     });
                     forwardRegistration.forEach(cacheItem -> {
                         cacheItem.setCredentials(credential);

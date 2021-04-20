@@ -287,6 +287,14 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Delete {@link SCCRegCacheItem} from the database.
+     * @param item regcache item
+     */
+    public static void deleteRegCacheItem(SCCRegCacheItem item) {
+        singleton.removeObject(item);
+    }
+
+    /**
      * Clear all order items from the database assigne to the given
      * credentials
      * @param c the credentials
