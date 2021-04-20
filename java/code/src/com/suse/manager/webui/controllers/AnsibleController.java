@@ -22,6 +22,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.Server;
@@ -29,20 +31,14 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-
-import org.apache.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -89,7 +85,6 @@ public class AnsibleController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
-
         return new ModelAndView(data, "templates/minion/ansible-control-node.jade");
     }
 
@@ -120,15 +115,16 @@ public class AnsibleController {
     public static String saveAnsiblePath(Request req, Response res, User user) {
         AnsiblePathJson json = GSON.fromJson(req.body(), AnsiblePathJson.class);
 
+        AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                SystemManager.createAnsiblePath(AnsiblePath.Type.fromLabel(json.getType()),
+                currentPath = SystemManager.createAnsiblePath(AnsiblePath.Type.fromLabel(json.getType()),
                         json.getMinionId(),
                         json.getPath(),
                         user);
             }
             else {
-                SystemManager.updateAnsiblePath(json.getId(),
+                currentPath = SystemManager.updateAnsiblePath(json.getId(),
                         json.getPath(),
                         user);
             }
@@ -138,7 +134,11 @@ public class AnsibleController {
                     ValidationUtils.convertValidationErrors(e),
                     ValidationUtils.convertFieldValidationErrors(e)));
         }
-        return json(res, ResultJson.success());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("success", ResultJson.success());
+        data.put("newPathId", currentPath.getId());
+        return json(res, data);
     }
 
 }

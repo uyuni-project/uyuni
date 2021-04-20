@@ -7,4 +7,4 @@ script(type='text/javascript').
 
 script(type='text/javascript').
     spaImportReactPage('minion/ansible')
-        .then(function (module) { module.renderer('ansible-control-node', {id: #{server.id}, name: "#{server.name}"}) });
+        .then(function (module) { module.renderer('ansible-control-node', {id: #{server.id} }) });
