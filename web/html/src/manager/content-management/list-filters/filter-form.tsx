@@ -227,11 +227,7 @@ const FilterForm = (props: Props) => {
               </>
             )}
 
-            {![
-              clmFilterOptions.STREAM.key,
-              clmFilterOptions.LIVE_PATCHING_SYSTEM.key,
-              clmFilterOptions.LIVE_PATCHING_PRODUCT.key,
-            ].includes(filterType) && (
+            {clmFilterOptions.STREAM.key !== filterType && (
               <Radio
                 inline
                 name="rule"
