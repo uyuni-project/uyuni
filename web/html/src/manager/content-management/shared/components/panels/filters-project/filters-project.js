@@ -54,16 +54,15 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
   }
 
   return (
-    <>
+    <React.Fragment key={`filter_list_item_${filter.id}`}>
       <li
-        key={`filter_list_item_${filter.id}`}
         className={`list-group-item ${styles.wrapper} ${filterClassName}`}>
-        {filterIconName && <i class={`fa ${filterIconName}`}></i>}
+        {filterIconName && <i className={`fa ${filterIconName}`}></i>}
         {descr}
         {filterButton}
       </li>
       {!last && <div style={{margin: "4px"}} className="row text-center">{symbol}</div>}
-    </>
+    </React.Fragment>
   );
 }
 
@@ -158,7 +157,7 @@ const FiltersProject = (props:  FiltersProps) => {
                   <ul className="list-group">
                     {
                       denyFilters.map((filter, index) => renderFilterEntry(filter, props.projectId,
-                        <i class="fa fa-filter"/>, index === denyFilters.length - 1))
+                        <i className="fa fa-filter"/>, index === denyFilters.length - 1))
                     }
                   </ul>
                 </>
