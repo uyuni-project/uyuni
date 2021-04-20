@@ -30,6 +30,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -300,6 +301,22 @@ public class MinionServerFactory extends HibernateFactory {
         return HibernateFactory.getSession()
                 .createQuery("SELECT p FROM AnsiblePath p WHERE id = :id")
                 .setParameter("id", id)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Lookup {@link AnsiblePath} by path and minion id
+     *
+     * @param path the path
+     * @param minionServerId the minion id
+     * @return optional of {@link AnsiblePath}
+     */
+    public static Optional<AnsiblePath> lookupAnsiblePathByPathAndMinion(Path path, long minionServerId) {
+        return HibernateFactory.getSession().createQuery("SELECT p FROM AnsiblePath p " +
+                "WHERE p.path = :path " +
+                "AND p.minionServer.id = :minionServerId")
+                .setParameter("path", path)
+                .setParameter("minionServerId", minionServerId)
                 .uniqueResultOptional();
     }
 

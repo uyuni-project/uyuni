@@ -9022,6 +9022,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ansible.invalid_path" xml:space="preserve">
+        <source>Invalid path.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ansible.duplicate_path" xml:space="preserve">
+        <source>Path already exists.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
         <context-group name="ctx">
