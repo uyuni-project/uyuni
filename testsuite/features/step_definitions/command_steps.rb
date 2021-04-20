@@ -1583,15 +1583,6 @@ When(/^I copy autoinstall mocked files on server$/) do
                 when "/sles15sp2"
                   "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/"
                 end
-    # if source_dir == "/fedora12"
-    #   targetdir = "/autoinstall/Fedora_12_i386/images/pxeboot/"
-    # elsif source_dir == "/mock"
-    #   targetdir = "/autoinstall/mock"
-    # elsif source_dir == "/sles15sp2"
-    #   targetdir = "/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/"
-    # else
-    #   raise 'File source not supported' unless return_code.zero?
-    # end
       source = current_dir + '/../upload_files/autoinstall/cobbler' + file_to_copy
       dest = target_dir + File.basename(file_to_copy)
       return_code = file_inject($server, source, dest)
