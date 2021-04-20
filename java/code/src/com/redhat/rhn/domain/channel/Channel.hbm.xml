@@ -147,16 +147,19 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="Channel.findAllByUserOrderByChild">
         <![CDATA[
+    with user_channel_roles as materialized(
+        select * from suseChannelUserRoleView s
+        where s.user_id = :userId
+        and s.deny_reason is null
+    )
     SELECT {channel.*}
     FROM rhnChannel {channel}
         LEFT OUTER JOIN rhnChannel parent ON channel.parent_channel = parent.id
         LEFT OUTER JOIN rhnChannelCloned channel_1_ ON channel.id = channel_1_.id
     WHERE EXISTS (
         SELECT 1
-        FROM suseChannelUserRoleView scur
+        FROM user_channel_roles scur
         WHERE scur.channel_id = channel.id
-        AND scur.user_id = :userId
-        AND scur.deny_reason IS NULL
     )
     AND (
         channel.parent_channel IS NULL
@@ -164,10 +167,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             channel.parent_channel IS NOT NULL
             AND EXISTS (
                 SELECT 1
-                FROM suseChannelUserRoleView scur
+                FROM user_channel_roles scur
                 WHERE scur.channel_id = channel.parent_channel
-                AND scur.user_id = :userId
-                AND scur.deny_reason IS NULL
             )
         )
     )
