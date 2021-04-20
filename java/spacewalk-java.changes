@@ -1,3 +1,4 @@
+- Speed up pages to compare or add packages to channels (bsc#1178767)
 - Implement CLM filter templates
 - Parse ansible inventory and show registered systems
 - fix problem reading product_tree.json from wrong location in offline setups (bsc#1184283)
