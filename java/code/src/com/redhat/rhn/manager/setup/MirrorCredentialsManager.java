@@ -20,14 +20,19 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.apache.log4j.Logger;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -162,6 +167,32 @@ public class MirrorCredentialsManager {
                             log.error("Invalid Credential");
                         }
                     });
+            }
+        }
+
+        // Check for systems registered under this credentials and start delete requests
+        List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
+        if (!itemList.isEmpty() ) {
+            try {
+                URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+                String uuid = ContentSyncManager.getUUID();
+                SCCConfig config = new SCCConfig(url, dbCreds.getUsername(), dbCreds.getPassword(), uuid);
+                SCCWebClient sccClient = new SCCWebClient(config);
+                itemList.stream().forEach(i -> {
+                    i.getOptSccId().ifPresent(scc_id -> {
+                        try {
+                            sccClient.deleteSystem(scc_id);
+                        }
+                        catch (SCCClientException e) {
+                            log.error("Error deregistering system with scc_id " + scc_id, e);
+                        }
+                    });
+                    // force delete also when deregister failed
+                    SCCCachingFactory.deleteRegCacheItem(i);
+                });
+            }
+            catch (URISyntaxException e) {
+                log.error("Invalid SCC URL configured.", e);
             }
         }
 
