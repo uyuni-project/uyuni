@@ -44,7 +44,7 @@ import javax.persistence.Transient;
  * Represents path to an Ansible entity (inventory, playbook).
  */
 @Entity
-@Table(name = "suseAnsiblePAth")
+@Table(name = "suseAnsiblePath")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 public abstract class AnsiblePath extends BaseDomainHelper {
