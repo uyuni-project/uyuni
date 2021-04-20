@@ -16,9 +16,9 @@ class TestSCSchedule:
     Test suite for "schedule" module.
     """
 
-    def test_schedule_deletearchived(self, shell):
+    def test_schedule_deletearchived_without_archived(self, shell):
         """
-        Test do_schedule_deletearchived without arguments.
+        Test do_schedule_deletearchived with no archived actions.
 
         :param shell:
         :return:
@@ -32,10 +32,11 @@ class TestSCSchedule:
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
         assert shell.client.schedule.listArchivedActions.called
+        assert not shell.client.schedule.deleteActions.called
 
     def test_schedule_deletearchived_with_archived(self, shell):
         """
-        Test do_schedule_deletearchived without arguments, but with archived actions.
+        Test do_schedule_deletearchived with archived actions.
 
         :param shell:
         :return:
@@ -50,12 +51,12 @@ class TestSCSchedule:
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
-        assert shell.client.schedule.listArchivedActions.called
-        assert shell.client.schedule.deleteActions.called
+        assert shell.client.schedule.deleteActions.call_count == 1
+        assert shell.client.schedule.deleteActions.call_args[0][1] == [1, 2, 3]
 
     def test_schedule_deletearchived_with_archived_batched(self, shell):
         """
-        Test do_schedule_deletearchived without arguments, but with archived actions
+        Test do_schedule_deletearchived with archived actions
         and in a batched way.
 
         :param shell:
@@ -74,64 +75,6 @@ class TestSCSchedule:
         assert shell.client.schedule.listArchivedActions.called
         assert shell.client.schedule.deleteActions.call_count == 2
         assert shell.client.schedule.deleteActions.call_args[0][1] == [1, 2, 3]
-
-    def test_schedule_deletearchived_with_begin_date(self, shell):
-        """
-        Test do_schedule_deletearchived with a begin date. Only one action
-        should be deleted and that's action 1.
-
-        :param shell:
-        :return:
-        """
-        timestamp = datetime.now()
-        timestamp_future = timestamp + timedelta(hours=1)
-        timestamp_past = timestamp - timedelta(hours=1)
-        archived_dummy_actions = [
-            {'id': 1, 'earliest': timestamp_future},
-            {'id': 2, 'earliest': timestamp_past},
-            {'id': 3, 'earliest': timestamp_past},
-        ]
-
-        shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
-        shell.client.schedule.deleteActions = MagicMock()
-        logger = MagicMock()
-
-        fun_args = [timestamp.strftime("%Y%m%d%H%M")]
-        spacecmd.schedule.do_schedule_deletearchived(shell, fun_args)
-
-        assert shell.client.schedule.deleteActions.call_count == 1
-        assert shell.client.schedule.deleteActions.call_args[0][1] == [1]
-
-    def test_schedule_deletearchived_with_end_date(self, shell):
-        """
-        Test do_schedule_deletearchived with a begin and end date. Only one action
-        should be deleted and that's action 1.
-
-        :param shell:
-        :return:
-        """
-        timestamp = datetime.now()
-        timestamp_future = timestamp + timedelta(hours=1)
-        timestamp_past = timestamp - timedelta(hours=1)
-        archived_dummy_actions = [
-            {'id': 1, 'earliest': timestamp},
-            {'id': 2, 'earliest': timestamp_future},
-            {'id': 3, 'earliest': timestamp_future},
-        ]
-
-        shell.help_schedule_deletearchived = MagicMock()
-        shell.client.schedule.listArchivedActions = MagicMock()
-        shell.client.schedule.listArchivedActions.side_effect = [archived_dummy_actions] + [[]]
-        shell.client.schedule.deleteActions = MagicMock()
-        logger = MagicMock()
-
-        fun_args = [timestamp_past.strftime("%Y%m%d%H%M"), timestamp_future.strftime("%Y%m%d%H%M")]
-        spacecmd.schedule.do_schedule_deletearchived(shell, fun_args)
-
-        assert shell.client.schedule.deleteActions.call_count == 1
-        assert shell.client.schedule.deleteActions.call_args[0][1] == [1]
 
     def test_schedule_cancel_noargs(self, shell):
         """
