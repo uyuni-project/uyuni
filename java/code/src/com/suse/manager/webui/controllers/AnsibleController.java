@@ -70,6 +70,9 @@ public class AnsibleController {
         // todo no CSRF?
         post("/manager/api/systems/details/ansible/paths/save",
                 withUser(AnsibleController::saveAnsiblePath));
+
+        post("/manager/api/systems/details/ansible/paths/delete",
+                withUser(AnsibleController::deleteAnsiblePath));
     }
 
     /**
@@ -138,6 +141,30 @@ public class AnsibleController {
         Map<String, Object> data = new HashMap<>();
         data.put("success", ResultJson.success());
         data.put("newPathId", currentPath.getId());
+        return json(res, data);
+    }
+    /**
+     * Delete an Ansible path
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the string with JSON response
+     */
+    public static String deleteAnsiblePath(Request req, Response res, User user) {
+        AnsiblePathJson json = GSON.fromJson(req.body(), AnsiblePathJson.class);
+
+        try {
+            SystemManager.removeAnsiblePath(SystemManager.lookupAnsiblePathById(json.getId(), user).get(), user);
+        }
+        catch (ValidatorException e) {
+            return json(res, ResultJson.error(
+                    ValidationUtils.convertValidationErrors(e),
+                    ValidationUtils.convertFieldValidationErrors(e)));
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("success", ResultJson.success());
         return json(res, data);
     }
 
