@@ -8,7 +8,7 @@ help() {
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t]"
+  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
   echo ""
   echo "Where: "
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
@@ -17,6 +17,7 @@ help() {
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
+  echo "  -n  If used, update PROJECT instead of the projects specified with -d"
   echo ""
 }
 
@@ -27,6 +28,7 @@ while getopts ":d:c:p:vth" opts; do
     c) export OSCRC=${OPTARG};;
     v) export VERBOSE=1;;
     t) export TEST=1;;
+    n) export OBS_TEST_PROJECT=${OPTARG};;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"

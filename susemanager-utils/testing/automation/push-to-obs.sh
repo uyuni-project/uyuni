@@ -10,7 +10,7 @@ help() {
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t]"
+  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t] [-n PROJECT]"
   echo ""
   echo "Where: "
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
@@ -19,6 +19,7 @@ help() {
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
+  echo "  -n  If used, update PROJECT instead of the projects specified with -d"
   echo ""
 }
 
@@ -29,6 +30,7 @@ while getopts ":d:c:p:vth" opts; do
     c) CREDENTIALS=${OPTARG};;
     v) VERBOSE="-v";;
     t) TEST="-t";;
+    n) OBS_TEST_PROJECT="-n ${OPTARG};;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -53,7 +55,7 @@ if [ ! -f ${CREDENTIALS} ]; then
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${PACKAGES}' ${VERBOSE} ${TEST}"
+CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${PACKAGES}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
