@@ -220,7 +220,7 @@ Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do 
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/autoinstall/empty.xml')
+  ct.profile_create('testprofile', 'testdistro', '/autoinstall/mock/empty.xml')
 end
 
 When(/^I remove kickstart profiles and distros$/) do
