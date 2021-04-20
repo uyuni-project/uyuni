@@ -6,7 +6,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
-    And I upload autoinstall mocked files on server
+    When I copy autoinstall mocked files on server
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
