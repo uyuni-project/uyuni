@@ -70,6 +70,8 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
 {%- elif grains['os'] == 'AstraLinuxCE' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/astra/' ~ grains['oscodename'] ~ '/bootstrap/' %}
+{%- elif grains['os'] == 'Raspbian' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/raspbian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
@@ -127,16 +129,39 @@ bootstrap_repo:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 {%- endif %}
 
+{%- if grains['os_family'] == 'RedHat' %}
+trust_res_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
+    - runas: root
+{%- elif grains['os_family'] == 'Debian' %}
+install_gnupg_debian:
+  pkg.latest:
+    - pkgs:
+      - gnupg
+{%- endif %}
+
 {% include 'channels/gpg-keys.sls' %}
+
+{%- set salt_minion_name = 'salt-minion' %}
+{%- set salt_config_dir = '/etc/salt' %}
+{% set venv_available_request = salt['http.query'](bootstrap_repo_url + 'venv-enabled-' + grains['osarch'] + '.txt', status=True, verify_ssl=False) %}
+{# Prefer venv-salt-minion if available and not disabled #}
+{%- set use_venv_salt = (0 < venv_available_request.get('status', 404) < 300) and not salt['pillar.get']('mgr_avoid_venv_salt_minion') %}
+{%- if use_venv_salt %}
+{%- set salt_minion_name = 'venv-salt-minion' %}
+{%- set salt_config_dir = '/etc/opt/venv-salt-minion' %}
+{%- endif -%}
 
 salt-minion-package:
   pkg.installed:
-    - name: salt-minion
+    - name: {{ salt_minion_name }}
     - install_recommends: False
     - require:
       - file: bootstrap_repo
 
-/etc/salt/minion.d/susemanager.conf:
+{{ salt_config_dir }}/minion.d/susemanager.conf:
   file.managed:
     - source:
       - salt://bootstrap/susemanager.conf
@@ -145,7 +170,7 @@ salt-minion-package:
     - require:
       - pkg: salt-minion-package
 
-/etc/salt/minion_id:
+{{ salt_config_dir }}/minion_id:
   file.managed:
     - contents_pillar: minion_id
     - require:
@@ -170,7 +195,7 @@ mgr_update_basic_pkgs:
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
-/etc/salt/pki/minion/minion.pub:
+{{ salt_config_dir }}/pki/minion/minion.pub:
   file.managed:
     - contents_pillar: minion_pub
     - mode: 644
@@ -178,7 +203,7 @@ mgr_update_basic_pkgs:
     - require:
       - pkg: salt-minion-package
 
-/etc/salt/pki/minion/minion.pem:
+{{ salt_config_dir }}/pki/minion/minion.pem:
   file.managed:
     - contents_pillar: minion_pem
     - mode: 400
@@ -186,25 +211,26 @@ mgr_update_basic_pkgs:
     - require:
       - pkg: salt-minion-package
 
-salt-minion:
+{{ salt_minion_name }}:
   service.running:
+    - name: {{ salt_minion_name }}
     - enable: True
     - require:
       - pkg: salt-minion-package
       - host: mgr_server_localhost_alias_absent
     - watch:
-      - file: /etc/salt/minion_id
-      - file: /etc/salt/pki/minion/minion.pem
-      - file: /etc/salt/pki/minion/minion.pub
-      - file: /etc/salt/minion.d/susemanager.conf
+      - file: {{ salt_config_dir }}/minion_id
+      - file: {{ salt_config_dir }}/pki/minion/minion.pem
+      - file: {{ salt_config_dir }}/pki/minion/minion.pub
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
 {% else %}
-salt-minion:
+{{ salt_minion_name }}:
   service.running:
     - enable: True
     - require:
       - pkg: salt-minion-package
       - host: mgr_server_localhost_alias_absent
     - watch:
-      - file: /etc/salt/minion_id
-      - file: /etc/salt/minion.d/susemanager.conf
+      - file: {{ salt_config_dir }}/minion_id
+      - file: {{ salt_config_dir }}/minion.d/susemanager.conf
 {% endif %}

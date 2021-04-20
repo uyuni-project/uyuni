@@ -1,3 +1,6 @@
+- Add support for bootstrapping Raspbian 9 and 10
+- Add support for bootstrapping with salt bundle
+
 -------------------------------------------------------------------
 Thu Jun 10 13:46:47 CEST 2021 - jgonzalez@suse.com
 

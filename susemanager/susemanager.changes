@@ -1,3 +1,5 @@
+- Add the salt bundle support to mgr-create-bootstrap-repo
+
 -------------------------------------------------------------------
 Fri Jun 18 12:41:57 CEST 2021 - jgonzalez@suse.com
 
@@ -9,7 +11,7 @@ Wed Jun 16 10:59:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.16-1
 - Fix database corruption after migrating the server to PostgreSQL 13 (bsc#1187217)
- 
+
 -------------------------------------------------------------------
 Mon Jun 14 17:33:40 CEST 2021 - jgonzalez@suse.com
 
