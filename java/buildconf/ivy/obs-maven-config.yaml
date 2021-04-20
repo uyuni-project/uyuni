@@ -4,10 +4,10 @@ repositories:
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
 artifacts:
   - artifact: asm
     package: asm3
