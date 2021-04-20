@@ -198,7 +198,7 @@ public class SCCWebClient implements SCCClient {
     }
 
     public void deleteSystem(long id) throws SCCClientException {
-        HttpDelete request = new HttpDelete(config.getUrl() + "/organizations/systems/" + id);
+        HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
         addHeaders(request);
         Reader streamReader = null;
         try {
@@ -235,7 +235,7 @@ public class SCCWebClient implements SCCClient {
 
     @Override
     public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system) throws SCCClientException {
-        HttpPost request = new HttpPost(config.getUrl() + "/organizations/systems");
+        HttpPost request = new HttpPost(config.getUrl() + "/connect/organizations/systems");
         // Additional request headers
         addHeaders(request);
         request.setEntity(new StringEntity(gson.toJson(system), ContentType.APPLICATION_JSON));
