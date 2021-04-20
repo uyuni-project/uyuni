@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.server.ansible;
 
 import com.redhat.rhn.common.hibernate.PathConverter;
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -46,7 +47,7 @@ import javax.persistence.Transient;
 @Table(name = "suseAnsiblePAth")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class AnsiblePath {
+public abstract class AnsiblePath extends BaseDomainHelper {
 
     private Long id;
     private MinionServer minionServer;
