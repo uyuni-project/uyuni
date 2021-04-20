@@ -534,4 +534,17 @@ public class SCCCachingFactory extends HibernateFactory {
                 .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
                 .getResultList();
     }
+
+    /**
+     * Returns registration items of systems which were registered under the specified
+     * organization credentials
+     *
+     * @return list of {@link SCCRegCacheItem}
+     */
+    public static List<SCCRegCacheItem> listRegItemsByCredentials(Credentials cred) {
+
+        return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")
+                .setParameter("creds", cred)
+                .getResultList();
+    }
 }

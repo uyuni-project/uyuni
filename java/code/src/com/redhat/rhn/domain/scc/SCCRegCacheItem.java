@@ -73,6 +73,11 @@ import javax.persistence.Transient;
                         "AND (rci.registrationErrorTime IS NULL " +
                         "     OR rci.registrationErrorTime < :retryTime) " +
                         "ORDER BY rci.sccId ASC"),
+    @NamedQuery(name = "SCCRegCache.listRegItemsByCredentials",
+                query = "SELECT rci " +
+                        "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
+                        "WHERE rci.credentials = :creds " +
+                        "ORDER BY rci.sccId ASC"),
 })
 public class SCCRegCacheItem extends BaseDomainHelper {
 
