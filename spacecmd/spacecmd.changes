@@ -1,4 +1,4 @@
-- Adds schedule_deletearchived to delete bulk delete archived actions (bsc#1181223)
+- Adds schedule_deletearchived to bulk delete archived actions (bsc#1181223)
 - Add group_addconfigchannel and group_removeconfigchannel
 - Add group_listconfigchannels and configchannel_listgroups
 - Handle SIGPIPE without user-visible Exception (bsc#1181124)
