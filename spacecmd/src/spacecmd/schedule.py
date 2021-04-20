@@ -465,6 +465,7 @@ def do_schedule_deletearchived(self, args):
     """
     This method removes all of the archived actions.
     """
+    args = args.split() or []
     if args:
         begin_date = parse_time_input(args[0])
         logging.debug('Begin Date: %s' % begin_date)
