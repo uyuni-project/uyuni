@@ -19,7 +19,6 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -30,7 +29,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -289,68 +287,5 @@ public class MinionServerFactory extends HibernateFactory {
         List<Object[]> results = findByIds(serverIds, "Server.findSimpleMinionsByServerIds", "serverIds");
         return results.stream().map(row -> new MinionIds(((BigDecimal) row[0]).longValue(), row[1].toString()))
                 .collect(toList());
-    }
-
-    /**
-     * Lookup an {@link AnsiblePath} by id
-     *
-     * @param id the id
-     * @return the {@link AnsiblePath}
-     */
-    public static Optional<AnsiblePath> lookupAnsiblePathById(long id) {
-        return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM AnsiblePath p WHERE id = :id")
-                .setParameter("id", id)
-                .uniqueResultOptional();
-    }
-
-    /**
-     * Lookup {@link AnsiblePath} by path and minion id
-     *
-     * @param path the path
-     * @param minionServerId the minion id
-     * @return optional of {@link AnsiblePath}
-     */
-    public static Optional<AnsiblePath> lookupAnsiblePathByPathAndMinion(Path path, long minionServerId) {
-        return HibernateFactory.getSession().createQuery("SELECT p FROM AnsiblePath p " +
-                "WHERE p.path = :path " +
-                "AND p.minionServer.id = :minionServerId")
-                .setParameter("path", path)
-                .setParameter("minionServerId", minionServerId)
-                .uniqueResultOptional();
-    }
-
-    /**
-     * List {@link AnsiblePath}s associated with a {@link MinionServer} with given id
-     *
-     * @param minionServerId the id of {@link MinionServer}
-     * @return the list of {@link AnsiblePath}s
-     */
-    public static List<AnsiblePath> listAnsiblePaths(long minionServerId) {
-        return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM AnsiblePath p " +
-                        "WHERE p.minionServer.id = :sid ")
-                .setParameter("sid", minionServerId)
-                .list();
-    }
-
-    /**
-     * Save an {@link AnsiblePath}
-     *
-     * @param path the {@link AnsiblePath}
-     * @return the updated {@link AnsiblePath}
-     */
-    public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().saveOrUpdate(path);
-        return path;
-    }
-
-    /**
-     * Remove an {@link AnsiblePath}
-     *
-     * @param path the {@link AnsiblePath}
-     */
-    public static void removeAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().delete(path);
     }
 }

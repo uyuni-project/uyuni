@@ -55,6 +55,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -3635,7 +3636,7 @@ public class SystemManager extends BaseManager {
      * @throws LookupException if the user does not have permissions to the minion
      */
     public static Optional<AnsiblePath> lookupAnsiblePathById(long id, User user) {
-        Optional<AnsiblePath> ansiblePath = MinionServerFactory.lookupAnsiblePathById(id);
+        Optional<AnsiblePath> ansiblePath = AnsibleFactory.lookupAnsiblePathById(id);
         ansiblePath.ifPresent(p -> ensureAvailableToUser(user, p.getMinionServer().getId()));
         return ansiblePath;
     }
@@ -3650,7 +3651,7 @@ public class SystemManager extends BaseManager {
      */
     public static List<AnsiblePath> listAnsiblePaths(long minionServerId, User user) {
         lookupAnsibleControlNode(minionServerId, user);
-        return MinionServerFactory.listAnsiblePaths(minionServerId);
+        return AnsibleFactory.listAnsiblePaths(minionServerId);
     }
 
     /**
@@ -3685,7 +3686,7 @@ public class SystemManager extends BaseManager {
         ansiblePath.setMinionServer(minionServer);
         ansiblePath.setPath(Path.of(path));
 
-        return MinionServerFactory.saveAnsiblePath(ansiblePath);
+        return AnsibleFactory.saveAnsiblePath(ansiblePath);
     }
 
     /**
@@ -3703,7 +3704,7 @@ public class SystemManager extends BaseManager {
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
         validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
-        return MinionServerFactory.saveAnsiblePath(existing);
+        return AnsibleFactory.saveAnsiblePath(existing);
     }
 
     private static void validateAnsiblePath(String path, Optional<String> typeLabel, Optional<Long> pathId,
@@ -3735,7 +3736,7 @@ public class SystemManager extends BaseManager {
             result.addFieldError("path", "ansible.invalid_path");
         }
 
-        Optional<AnsiblePath> duplicatePath = MinionServerFactory
+        Optional<AnsiblePath> duplicatePath = AnsibleFactory
                 .lookupAnsiblePathByPathAndMinion(actualPath, minionServerId);
         duplicatePath.ifPresent(dup -> { // an ansible path with same minion and path exists
             pathId.ifPresentOrElse(p -> { // if we're updating, the IDs must be same
@@ -3764,7 +3765,7 @@ public class SystemManager extends BaseManager {
     public static void removeAnsiblePath(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
-        MinionServerFactory.removeAnsiblePath(path);
+        AnsibleFactory.removeAnsiblePath(path);
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
