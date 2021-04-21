@@ -10,7 +10,7 @@ const NewAnsiblePath = (props) => {
         <TextField
           placeholder={t("New path")}
           value={props.newInventoryPath}
-          onChange={(e) => props.newPath(e.target.value.toString())}
+          onChange={(e: any) => props.newPath(e.target.value.toString())}
         />
       </div>
       <div className="pull-right btn-group">
