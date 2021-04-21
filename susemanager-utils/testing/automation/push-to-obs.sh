@@ -22,6 +22,11 @@ help() {
   echo "  -n  If used, update PROJECT instead of the projects specified with -d,"
   echo "      for example, if you want to package only the changes from a PR on"
   echo "      a separate project, instead of updating the projects specified by -d"
+  echo "      For this option, you don't need to specify the API. The API will be"
+  echo "      extracted from the -d parameter. For example:"
+  echo "       ${SCRIPT} -d API|PROJECT1 -n PROJECT_TEST ; This will add the changed"
+  echo "      packages in API|PROJECT1 into API|PROJECT_TEST"
+  echo "      When using the -n parameter, use only one project in -d."
   echo ""
 }
 
