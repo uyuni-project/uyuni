@@ -24,6 +24,8 @@ import static spark.Spark.post;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.Server;
@@ -42,6 +44,7 @@ import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -155,12 +158,10 @@ public class AnsibleController {
         AnsiblePathJson json = GSON.fromJson(req.body(), AnsiblePathJson.class);
 
         try {
-            SystemManager.removeAnsiblePath(SystemManager.lookupAnsiblePathById(json.getId(), user).get(), user);
+            SystemManager.removeAnsiblePath(json.getId(), user);
         }
-        catch (ValidatorException e) {
-            return json(res, ResultJson.error(
-                    ValidationUtils.convertValidationErrors(e),
-                    ValidationUtils.convertFieldValidationErrors(e)));
+        catch (LookupException e) {
+            Spark.halt(404);
         }
 
         Map<String, Object> data = new HashMap<>();
