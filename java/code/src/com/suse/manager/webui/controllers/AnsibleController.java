@@ -155,10 +155,10 @@ public class AnsibleController {
      * @return the string with JSON response
      */
     public static String deleteAnsiblePath(Request req, Response res, User user) {
-        AnsiblePathJson json = GSON.fromJson(req.body(), AnsiblePathJson.class);
+        Long ansiblePathId = GSON.fromJson(req.body(), Long.class);
 
         try {
-            SystemManager.removeAnsiblePath(json.getId(), user);
+            SystemManager.removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
             Spark.halt(404);

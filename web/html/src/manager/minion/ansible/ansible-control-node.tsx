@@ -63,12 +63,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
   deletePath(path: AnsiblePath) {
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/delete",
-      JSON.stringify({
-        id: path.id,
-        minionServerId: path.minionServerId,
-        type: path.type,
-        path: path.path
-      }),
+      JSON.stringify(path.id),
       "application/json"
     ).promise.then(data => {
       if (data.success) {
