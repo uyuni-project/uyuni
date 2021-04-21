@@ -115,6 +115,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -123,6 +124,7 @@ import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -3654,6 +3656,32 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * List playbook paths by minion
+     *
+     * @param minionId the minion id
+     * @param user the user performing the action
+     * @return the list of PlaybookPaths of minion
+     * @throws LookupException if the user does not have permissions to the minion
+     */
+    public static List<PlaybookPath> listAnsiblePlaybookPaths(long minionId, User user) {
+        ensureAvailableToUser(user, minionId);
+        return MinionServerFactory.listAnsiblePlaybookPaths(minionId);
+    }
+
+    /**
+     * List inventory paths by minion
+     *
+     * @param minionId the minion id
+     * @param user the user performing the action
+     * @return the list of InventoryPaths of minion
+     * @throws LookupException if the user does not have permissions to the minion
+     */
+    public static List<InventoryPath> listAnsibleInventoryPaths(long minionId, User user) {
+        ensureAvailableToUser(user, minionId);
+        return MinionServerFactory.listAnsibleInventoryPaths(minionId);
+    }
+
+    /**
      * Create and save a new ansible path
      *
      * @param typeLabel the type label
@@ -3765,6 +3793,62 @@ public class SystemManager extends BaseManager {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
         MinionServerFactory.removeAnsiblePath(path);
+    }
+
+    /**
+     * Discover playbooks in given {@link PlaybookPath} id
+     * Uses a synchronous salt call for this discovery.
+     *
+     * The result has following structure:
+     * Map of playbook path string -> Map of playbook name -> Playbook information as {@link AnsiblePlaybookResponse}.
+     *
+     * @param pathId the {@link PlaybookPath} id
+     * @param user the user
+     * @return the structure containing the playbooks information or empty optional if minion does not respond
+     * @throws LookupException if the user does not have permissions to the minion associated with the path
+     */
+    public static Optional<Map<String, Map<String, AnsiblePlaybookResponse>>> discoverPlaybooks(long pathId,
+            User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
+
+        if (!(path instanceof PlaybookPath)) {
+            throw new IllegalArgumentException(String.format("Path id %d not a Playbook path", path.getId()));
+        }
+
+        LocalCall<Map<String, Map<String, AnsiblePlaybookResponse>>> discoverCall = new LocalCall<>(
+                "ansible.discover_playbooks",
+                of(List.of(path.getPath().toString())),
+                empty(),
+                new TypeToken<>() { });
+        return saltApi.callSync(discoverCall, path.getMinionServer().getMinionId());
+    }
+
+    /**
+     * Introspect inventory in given {@link InventoryPath}
+     * Uses a synchronous salt call for this discovery.
+     *
+     * todo tune the shape of the return value!
+     *
+     * @param pathId the {@link InventoryPath} id
+     * @param user the user
+     * @return the structure with the inventory contents
+     * @throws LookupException if the user does not have permissions to the minion associated with the path
+     */
+    public static Optional<Map<String, Map<String, Object>>> introspectInventory(long pathId, User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
+
+        if (!(path instanceof InventoryPath)) {
+            throw new IllegalArgumentException(String.format("Path %d not an Inventory path", path.getId()));
+        }
+
+        LocalCall<Map<String, Map<String, Object>>> call = new LocalCall<>(
+                "ansible.targets",
+                empty(),
+                of(Map.of("inventory", path.getPath().toString())),
+                new TypeToken<>() { });
+        return saltApi.callSync(call, path.getMinionServer().getMinionId());
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {

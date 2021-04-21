@@ -20,6 +20,8 @@ import static java.util.stream.Collectors.toList;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
+import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -331,6 +333,34 @@ public class MinionServerFactory extends HibernateFactory {
                 .createQuery("SELECT p FROM AnsiblePath p " +
                         "WHERE p.minionServer.id = :sid ")
                 .setParameter("sid", minionServerId)
+                .list();
+    }
+
+    /**
+     * List {@link PlaybookPath}s associated with a {@link MinionServer} with given id
+     *
+     * @param minionId the id of {@link MinionServer}
+     * @return the list of {@link PlaybookPath}s
+     */
+    public static List<PlaybookPath> listAnsiblePlaybookPaths(long minionId) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM PlaybookPath p " +
+                        "WHERE p.minionServer.id = :mid ")
+                .setParameter("mid", minionId)
+                .list();
+    }
+
+    /**
+     * List {@link InventoryPath}s associated with a {@link MinionServer} with given id
+     *
+     * @param minionId the id of {@link MinionServer}
+     * @return the list of {@link PlaybookPath}s
+     */
+    public static List<InventoryPath> listAnsibleInventoryPaths(long minionId) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM InventoryPath p " +
+                        "WHERE p.minionServer.id = :mid ")
+                .setParameter("mid", minionId)
                 .list();
     }
 
