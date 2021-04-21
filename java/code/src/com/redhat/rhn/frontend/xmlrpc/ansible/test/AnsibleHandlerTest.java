@@ -24,9 +24,12 @@ import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -36,6 +39,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -43,6 +47,7 @@ import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 
 import java.util.Date;
+import java.util.Map;
 
 public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
@@ -84,6 +89,115 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+    }
+
+    public void testCreateAndGetAnsiblePath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+
+        AnsiblePath inventoryPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "inventory",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/ansible/hosts"
+                ));
+
+        AnsiblePath playbookPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "playbook",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/playbooks"
+                ));
+
+        assertContains(
+                handler.listAnsiblePaths(admin, controlNode.getId().intValue()),
+                inventoryPath
+        );
+        assertContains(
+                handler.listAnsiblePaths(admin, controlNode.getId().intValue()),
+                playbookPath
+        );
+
+        assertEquals(inventoryPath, handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()));
+        assertEquals(playbookPath, handler.lookupAnsiblePathById(admin, playbookPath.getId().intValue()));
+    }
+
+    public void testCreateInvalidAnsiblePath() {
+        try {
+            handler.createAnsiblePath(admin, Map.of());
+            fail("An exception shold have been thrown");
+        }
+        catch (ValidationException e) {
+            // expected
+        }
+    }
+
+    public void testUpdateAnsiblePath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+
+        AnsiblePath inventoryPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "inventory",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/ansible/hosts"
+                ));
+
+        handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("path", "/tmp/new-location"));
+        assertEquals("/tmp/new-location", handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue()).getPath().toString());
+    }
+
+    public void testUpdateInvalidAnsiblePath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+
+        AnsiblePath inventoryPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "inventory",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/ansible/hosts"
+                ));
+
+        try {
+            handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("my-path", "/tmp/new-location"));
+            fail("An exception shold have been thrown");
+        }
+        catch (ValidationException e) {
+            // expected
+        }
+    }
+
+    public void testRemoveAnsiblePath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+
+        AnsiblePath inventoryPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "inventory",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/ansible/hosts"
+                ));
+
+        int result = handler.removeAnsiblePath(admin, inventoryPath.getId().intValue());
+        assertEquals(1, result);
+        try {
+            handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue());
+            fail("An exception shold have been thrown");
+        }
+        catch (EntityNotExistsFaultException e) {
+            //expected
+        }
+    }
+
+    public void testRemoveInvalidAnsiblePath() throws Exception {
+        try {
+            handler.lookupAnsiblePathById(admin, -1234);
+            fail("An exception shold have been thrown");
+        }
+        catch (EntityNotExistsFaultException e) {
+            //expected
+        }
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
