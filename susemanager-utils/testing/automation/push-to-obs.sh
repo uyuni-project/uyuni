@@ -32,7 +32,7 @@ while getopts ":d:c:p:vth" opts; do
     c) CREDENTIALS=${OPTARG};;
     v) VERBOSE="-v";;
     t) TEST="-t";;
-    n) OBS_TEST_PROJECT="-n ${OPTARG};;
+    n) OBS_TEST_PROJECT="-n ${OPTARG}";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
