@@ -3643,14 +3643,14 @@ public class SystemManager extends BaseManager {
     /**
      * List ansible paths by minion
      *
-     * @param minionId the minion id
+     * @param minionServerId the minion id
      * @param user the user performing the action
      * @return the list of AnsiblePaths of minion
      * @throws LookupException if the user does not have permissions to the minion
      */
-    public static List<AnsiblePath> listAnsiblePaths(long minionId, User user) {
-        ensureAvailableToUser(user, minionId);
-        return MinionServerFactory.listAnsiblePaths(minionId);
+    public static List<AnsiblePath> listAnsiblePaths(long minionServerId, User user) {
+        ensureAvailableToUser(user, minionServerId);
+        return MinionServerFactory.listAnsiblePaths(minionServerId);
     }
 
     /**

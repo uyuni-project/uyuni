@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 public class AnsiblePathJson {
 
     private Long id;
-    private Long minionId;
+    private Long minionServerId;
     private String type;
     private String path;
 
@@ -34,7 +34,7 @@ public class AnsiblePathJson {
      */
     public AnsiblePathJson(AnsiblePath entity) {
         this.id = entity.getId();
-        this.minionId = entity.getMinionServer().getId();
+        this.minionServerId = entity.getMinionServer().getId();
         this.type = entity.getEntityType().getLabel();
         this.path = entity.getPath().toString();
     }
@@ -49,12 +49,12 @@ public class AnsiblePathJson {
     }
 
     /**
-     * Gets the minionId.
+     * Gets the minion server id.
      *
-     * @return minionId
+     * @return minionServerId
      */
-    public Long getMinionId() {
-        return minionId;
+    public Long getMinionServerId() {
+        return minionServerId;
     }
 
     /**

@@ -8,7 +8,7 @@ import Network from "utils/network";
 
 type AnsiblePath = {
   id: Number;
-  minionId: Number;
+  minionServerId: Number;
   type: String;
   path: String;
 }
@@ -59,14 +59,14 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
       JSON.stringify({
-        minionId: this.state.systemId,
+        minionServerId: this.state.systemId,
         type: type,
         path: newPath
       }),
       "application/json"
     ).promise.then(data => {
       if (data.success) {
-        const newAnsiblePath = { id: data.newPathId, minionId: this.state.systemId, type: type, path: newPath};
+        const newAnsiblePath = { id: data.newPathId, minionServerId: this.state.systemId, type: type, path: newPath};
         if (type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
         }

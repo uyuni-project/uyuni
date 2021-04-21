@@ -323,14 +323,14 @@ public class MinionServerFactory extends HibernateFactory {
     /**
      * List {@link AnsiblePath}s associated with a {@link MinionServer} with given id
      *
-     * @param minionId the id of {@link MinionServer}
+     * @param minionServerId the id of {@link MinionServer}
      * @return the list of {@link AnsiblePath}s
      */
-    public static List<AnsiblePath> listAnsiblePaths(long minionId) {
+    public static List<AnsiblePath> listAnsiblePaths(long minionServerId) {
         return HibernateFactory.getSession()
                 .createQuery("SELECT p FROM AnsiblePath p " +
-                        "WHERE p.minionServer.id = :mid ")
-                .setParameter("mid", minionId)
+                        "WHERE p.minionServer.id = :sid ")
+                .setParameter("sid", minionServerId)
                 .list();
     }
 
