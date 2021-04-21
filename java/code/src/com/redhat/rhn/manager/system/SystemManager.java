@@ -18,8 +18,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -55,7 +53,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -72,9 +69,6 @@ import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
-import com.redhat.rhn.domain.server.ansible.AnsiblePath;
-import com.redhat.rhn.domain.server.ansible.InventoryPath;
-import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -105,7 +99,6 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
-import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -132,8 +125,6 @@ import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.IDN;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
 import java.sql.Date;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -3625,158 +3616,5 @@ public class SystemManager extends BaseManager {
 
         StateFactory.save(stateRev);
         StatesAPI.generateServerPackageState(minion);
-    }
-
-    /**
-     * Lookup ansible path by id
-     *
-     * @param id the id
-     * @param user the user doing the lookup
-     * @return AnsiblePath or empty if not found
-     * @throws LookupException if the user does not have permissions to the minion
-     */
-    public static Optional<AnsiblePath> lookupAnsiblePathById(long id, User user) {
-        Optional<AnsiblePath> ansiblePath = AnsibleFactory.lookupAnsiblePathById(id);
-        ansiblePath.ifPresent(p -> ensureAvailableToUser(user, p.getMinionServer().getId()));
-        return ansiblePath;
-    }
-
-    /**
-     * List ansible paths by minion
-     *
-     * @param minionServerId the minion id
-     * @param user the user performing the action
-     * @return the list of AnsiblePaths of minion
-     * @throws LookupException if the user does not have permissions to the minion
-     */
-    public static List<AnsiblePath> listAnsiblePaths(long minionServerId, User user) {
-        lookupAnsibleControlNode(minionServerId, user);
-        return AnsibleFactory.listAnsiblePaths(minionServerId);
-    }
-
-    /**
-     * Create and save a new ansible path
-     *
-     * @param typeLabel the type label
-     * @param minionServerId minion server id
-     * @param path the path
-     * @param user the user performing the action
-     * @return the created and saved AnsiblePath
-     * @throws LookupException if the user does not have permissions or server not found
-     * @throws ValidatorException if the validation fails
-     */
-    public static AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
-        MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
-
-        validateAnsiblePath(path, of(typeLabel), empty(), minionServerId);
-
-        AnsiblePath ansiblePath;
-        AnsiblePath.Type type = AnsiblePath.Type.fromLabel(typeLabel);
-        switch (type) {
-            case INVENTORY:
-                ansiblePath = new InventoryPath();
-                break;
-            case PLAYBOOK:
-                ansiblePath = new PlaybookPath();
-                break;
-            default:
-                throw new UnsupportedOperationException("Unsupported type " + type);
-        }
-
-        ansiblePath.setMinionServer(minionServer);
-        ansiblePath.setPath(Path.of(path));
-
-        return AnsibleFactory.saveAnsiblePath(ansiblePath);
-    }
-
-    /**
-     * Update an existing ansible path
-     *
-     * @param existingPathId the path id
-     * @param newPath the new path
-     * @param user the user performing the action
-     * @return the updated path
-     * @throws LookupException if the user does not have permissions or existing path not found
-     * @throws ValidatorException if the validation fails
-     */
-    public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
-        AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
-                .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
-        validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
-        existing.setPath(Path.of(newPath));
-        return AnsibleFactory.saveAnsiblePath(existing);
-    }
-
-    private static void validateAnsiblePath(String path, Optional<String> typeLabel, Optional<Long> pathId,
-            long minionServerId) {
-        ValidatorResult result = new ValidatorResult();
-
-        typeLabel.ifPresent(lbl -> {
-            try {
-                AnsiblePath.Type.fromLabel(lbl);
-            }
-            catch (IllegalArgumentException e) {
-                result.addFieldError("type", "ansible.invalid_path_type");
-            }
-        });
-
-        if (path == null || path.isBlank()) {
-            result.addFieldError("path", "ansible.invalid_path");
-        }
-        try {
-            Path.of(path);
-        }
-        catch (InvalidPathException e) {
-            result.addFieldError("path", "ansible.invalid_path");
-        }
-
-        Path actualPath = Path.of(path);
-
-        if (!actualPath.isAbsolute()) {
-            result.addFieldError("path", "ansible.invalid_path");
-        }
-
-        Optional<AnsiblePath> duplicatePath = AnsibleFactory
-                .lookupAnsiblePathByPathAndMinion(actualPath, minionServerId);
-        duplicatePath.ifPresent(dup -> { // an ansible path with same minion and path exists
-            pathId.ifPresentOrElse(p -> { // if we're updating, the IDs must be same
-                        if (!p.equals(dup.getId())) {
-                            result.addFieldError("path", "ansible.duplicate_path");
-                        }
-                    },
-                    () -> { // creating is illegal in this case
-                        result.addFieldError("path", "ansible.duplicate_path");
-                    });
-        });
-
-        if (result.hasErrors()) {
-            throw new ValidatorException(result);
-        }
-    }
-
-    /**
-     *
-     * Remove ansible path
-     *
-     * @param pathId the id of {@link AnsiblePath}
-     * @param user the user performing the action
-     * @throws LookupException if the user does not have permissions or if entity does not exist
-     */
-    public static void removeAnsiblePath(long pathId, User user) {
-        AnsiblePath path = lookupAnsiblePathById(pathId, user)
-                .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
-        AnsibleFactory.removeAnsiblePath(path);
-    }
-
-    private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
-        Server controlNode = lookupByIdAndUser(systemId, user);
-        if (controlNode == null) {
-            throw new LookupException("Ansible control node " + systemId + " not found/accessible.");
-        }
-        if (!controlNode.hasAnsibleControlNodeEntitlement()) {
-            throw new LookupException(controlNode.getHostname() + " is not an Ansible control node");
-        }
-
-        return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
     }
 }
