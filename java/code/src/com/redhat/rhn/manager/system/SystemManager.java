@@ -3665,9 +3665,7 @@ public class SystemManager extends BaseManager {
      * @throws ValidatorException if the validation fails
      */
     public static AnsiblePath createAnsiblePath(AnsiblePath.Type type, long minionServerId, String path, User user) {
-        MinionServer minionServer = Optional.ofNullable(SystemManager.lookupByIdAndUser(minionServerId, user))
-                .flatMap(s -> s.asMinionServer())
-                .orElseThrow(() -> new LookupException("Minion " + minionServerId + " not found."));
+        MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
 
         validateAnsiblePath(path, empty(), minionServerId);
 
@@ -3750,5 +3748,17 @@ public class SystemManager extends BaseManager {
         ensureAvailableToUser(user, path.getMinionServer().getId());
         MinionServerFactory.removeAnsiblePath(path);
 
+    }
+
+    private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
+        Server controlNode = lookupByIdAndUser(systemId, user);
+        if (controlNode == null) {
+            throw new LookupException("Ansible control node " + systemId + " not found/accessible.");
+        }
+        if (!controlNode.hasAnsibleControlNodeEntitlement()) {
+            throw new LookupException(controlNode.getHostname() + " is not an Ansible control node");
+        }
+
+        return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
     }
 }

@@ -24,6 +24,7 @@ import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -1770,7 +1771,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception
      */
     public void testSaveAndLookupAnsiblePath() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);
         path.setPath(Path.of("/tmp/test1"));
         path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
@@ -1788,7 +1789,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testSaveAndLookupAnsiblePathNoPerms() throws Exception {
         User chuck = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);
         path.setPath(Path.of("/tmp/test1"));
 
@@ -1839,13 +1840,25 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception
      */
     public void testUpdateAnsiblePath() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
         path = SystemManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(path);
         AnsiblePath updated = SystemManager.lookupAnsiblePathById(path.getId(), user).get();
         assertEquals(path, updated);
+    }
+
+    public void testCreateAnsiblePathNormalSystem() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        try {
+            AnsiblePath path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
     }
 
     private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {
@@ -1861,6 +1874,17 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ipv4.setInterfaceId(iface.getInterfaceId());
         ipv4.setAddress(ip4address);
         ServerNetworkFactory.saveServerNetAddress4(ipv4);
+    }
+
+    private MinionServer createAnsibleControlNode(User user) throws Exception {
+        SystemEntitlementManager entitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
+        server.setServerArch(a);
+        TestUtils.saveAndFlush(server);
+        entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
+        return server;
     }
 
     private Set<Long> listDupesByIpAddress(String byIpAdress) {
