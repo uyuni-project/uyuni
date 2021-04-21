@@ -162,7 +162,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Playbooks Paths"
           >
             {this.state.playbooksPaths.map(p =>
-                this.state.editPlaybookPath && this.state.editPlaybookPath.path == p.path ?
+                this.state.editPlaybookPath?.path == p.path ?
                   <EditAnsiblePath
                     key={p.id}
                     ansiblePath={p}
@@ -195,7 +195,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Inventories Paths"
           >
             {this.state.inventoriesPaths.map(p =>
-                this.state.editInventoryPath && this.state.editInventoryPath.path == p.path ?
+                this.state.editInventoryPath?.path == p.path ?
                   <EditAnsiblePath
                     key={p.id}
                     ansiblePath={p}
