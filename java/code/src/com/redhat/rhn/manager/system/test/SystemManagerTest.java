@@ -32,6 +32,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
@@ -1855,10 +1856,26 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         try {
-            AnsiblePath path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+            SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests creating an {@link AnsiblePath} with a relative path. This is forbidden.
+     *
+     * @throws Exception
+     */
+    public void testSaveAnsibleRelativePath() throws Exception {
+        MinionServer minion = createAnsibleControlNode(user);
+        try {
+            SystemManager.createAnsiblePath("inventory", minion.getId(), "relative/path", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (ValidatorException e) {
             // expected
         }
     }
