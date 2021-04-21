@@ -217,8 +217,7 @@
     <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
   </rhn-tab>
 
-  <!-- TODO <rhn-tab name="Ansible" acl="system_feature(ftr_ansible_control_node)">-->
-  <rhn-tab name="Ansible" acl="system_has_salt_entitlement()">
+  <rhn-tab name="Ansible" acl="system_has_ansible_control_node_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/ansible</rhn-tab-url>
   </rhn-tab>
 
