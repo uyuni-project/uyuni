@@ -16,7 +16,7 @@ type AnsiblePath = {
 }
 
 type PropsType = {
-  id: number;
+  minionServerId: number;
 };
 
 type StateType = {
@@ -35,7 +35,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     super(props);
 
     this.state = {
-      minionServerId: props.system.id,
+      minionServerId: props.minionServerId,
       playbooksPaths: [],
       inventoriesPaths: [],
       newPlaybookPath: "",
@@ -45,7 +45,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       errors: [],
     };
 
-    Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.system.id)
+    Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
     .promise.then(data => {
       this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
     });
@@ -227,4 +227,4 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
   }
 }
 
-export const renderer = (id: string, system: any) => SpaRenderer.renderNavigationReact(<AnsibleControlNode system={system} />, document.getElementById(id));
+export const renderer = (renderId: string, { id }) => SpaRenderer.renderNavigationReact(<AnsibleControlNode minionServerId={ id } />, document.getElementById(renderId));
