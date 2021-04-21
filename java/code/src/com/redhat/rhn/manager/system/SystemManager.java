@@ -3649,7 +3649,7 @@ public class SystemManager extends BaseManager {
      * @throws LookupException if the user does not have permissions to the minion
      */
     public static List<AnsiblePath> listAnsiblePaths(long minionServerId, User user) {
-        ensureAvailableToUser(user, minionServerId);
+        lookupAnsibleControlNode(minionServerId, user);
         return MinionServerFactory.listAnsiblePaths(minionServerId);
     }
 
