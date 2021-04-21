@@ -65,12 +65,17 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
                 List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
                 List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
-                credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(credential -> {
-                    SCCConfig config = new SCCConfig(url, credential.getUsername(), credential.getPassword(), uuid);
-                    SCCWebClient sccClient = new SCCWebClient(config);
+                credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(primaryCredentials -> {
                     deregister.forEach(cacheItem -> {
                         cacheItem.getOptSccId().ifPresentOrElse(
                             sccId -> {
+                                Credentials itemCredentials = cacheItem.getOptCredentials().get();
+                                SCCWebClient sccClient = new SCCWebClient(new SCCConfig(
+                                        url,
+                                        itemCredentials.getUsername(),
+                                        itemCredentials.getPassword(),
+                                        uuid
+                                ));
                                 try {
                                     sccClient.deleteSystem(sccId);
                                     SCCCachingFactory.deleteRegCacheItem(cacheItem);
@@ -83,14 +88,21 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                         );
                     });
                     forwardRegistration.forEach(cacheItem -> {
-                        cacheItem.setCredentials(credential);
                         try {
+                            Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredentials);
+                            SCCWebClient sccClient = new SCCWebClient(new SCCConfig(
+                                    url,
+                                    itemCredentials.getUsername(),
+                                    itemCredentials.getPassword(),
+                                    uuid
+                            ));
                             SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(getPayload(cacheItem));
                             cacheItem.setSccId(systemCredentials.getId());
                             cacheItem.setSccLogin(systemCredentials.getLogin());
                             cacheItem.setSccPasswd(systemCredentials.getPassword());
                             cacheItem.setSccRegistrationRequired(false);
                             cacheItem.setRegistrationErrorTime(null);
+                            cacheItem.setCredentials(itemCredentials);
                         }
                         catch (SCCClientException e) {
                             log.error("Error registering system " + cacheItem.getId(), e);
