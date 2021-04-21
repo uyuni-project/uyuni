@@ -23,7 +23,8 @@ TEST_MANAGER_STATIC_TOP = {
         "formulas",
         "services.salt-minion",
         "services.docker",
-        "services.kiwi-image-server"
+        "services.kiwi-image-server",
+        "ansible"
     ]
 }
 
