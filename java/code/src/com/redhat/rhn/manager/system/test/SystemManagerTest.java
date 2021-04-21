@@ -24,7 +24,6 @@ import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -32,7 +31,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
@@ -75,8 +73,6 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.domain.server.ansible.AnsiblePath;
-import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.test.CPUTest;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -119,9 +115,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -1768,118 +1764,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
     }
 
-    /**
-     * Test saving and looking up {@link AnsiblePath} by given user
-     *
-     * @throws Exception
-     */
-    public void testSaveAndLookupAnsiblePath() throws Exception {
-        MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = new InventoryPath(minion);
-        path.setPath(Path.of("/tmp/test1"));
-        path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict( path);
-        assertEquals(path, SystemManager.lookupAnsiblePathById(path.getId(), user).get());
-    }
-
-    /**
-     * Test saving, listing and looking up {@link AnsiblePath} by an unauthorized user
-     *
-     * @throws Exception
-     */
-    public void testSaveAndLookupAnsiblePathNoPerms() throws Exception {
-        User chuck = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
-
-        MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = new InventoryPath(minion);
-        path.setPath(Path.of("/tmp/test1"));
-
-        try {
-            SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", chuck);
-            fail("An exception should have been thrown.");
-        }
-        catch (LookupException e) {
-            // expected
-        }
-
-        // now save with allowed user
-        path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-
-        try {
-            SystemManager.lookupAnsiblePathById(path.getId(), chuck);
-            fail("An exception should have been thrown.");
-        }
-        catch (LookupException e) {
-            // expected
-        }
-
-        try {
-            SystemManager.listAnsiblePaths(minion.getId(), chuck);
-            fail("An exception should have been thrown.");
-        }
-        catch (LookupException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Test updating non existing ansible path
-     */
-    public void testUpdateNonExistingAnsiblePath() {
-        try {
-            SystemManager.updateAnsiblePath(-12345, "/tmp/test", user);
-            fail("An exception should have been thrown.");
-        }
-        catch (LookupException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Test updating an existing ansible path
-     *
-     * @throws Exception
-     */
-    public void testUpdateAnsiblePath() throws Exception {
-        MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-        path = SystemManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(path);
-        AnsiblePath updated = SystemManager.lookupAnsiblePathById(path.getId(), user).get();
-        assertEquals(path, updated);
-    }
-
-    public void testCreateAnsiblePathNormalSystem() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-
-        try {
-            SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-            fail("An exception should have been thrown.");
-        }
-        catch (LookupException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Tests creating an {@link AnsiblePath} with a relative path. This is forbidden.
-     *
-     * @throws Exception
-     */
-    public void testSaveAnsibleRelativePath() throws Exception {
-        MinionServer minion = createAnsibleControlNode(user);
-        try {
-            SystemManager.createAnsiblePath("inventory", minion.getId(), "relative/path", user);
-            fail("An exception should have been thrown.");
-        }
-        catch (ValidatorException e) {
-            // expected
-        }
-    }
-
     private static void createIfaceForServer(Server server, String ifaceName, String ip4address, String hwAddr) {
         NetworkInterface iface = new NetworkInterface();
         iface.setHwaddr(hwAddr);
@@ -1893,17 +1777,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ipv4.setInterfaceId(iface.getInterfaceId());
         ipv4.setAddress(ip4address);
         ServerNetworkFactory.saveServerNetAddress4(ipv4);
-    }
-
-    private MinionServer createAnsibleControlNode(User user) throws Exception {
-        SystemEntitlementManager entitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
-
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
-        server.setServerArch(a);
-        TestUtils.saveAndFlush(server);
-        entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
-        return server;
     }
 
     private Set<Long> listDupesByIpAddress(String byIpAdress) {

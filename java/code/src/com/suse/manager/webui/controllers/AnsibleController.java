@@ -32,7 +32,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
+
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -104,7 +105,7 @@ public class AnsibleController {
      */
     public static String listAnsiblePathsByMinion(Request req, Response res, User user) {
         long minionServerId = Long.parseLong(req.params("minionServerId"));
-        List<AnsiblePathJson> paths = SystemManager.listAnsiblePaths(minionServerId, user).stream()
+        List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
                 .collect(Collectors.toList());
         return json(res, paths);
@@ -124,13 +125,13 @@ public class AnsibleController {
         AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                currentPath = SystemManager.createAnsiblePath(json.getType(),
+                currentPath = AnsibleManager.createAnsiblePath(json.getType(),
                         json.getMinionServerId(),
                         json.getPath(),
                         user);
             }
             else {
-                currentPath = SystemManager.updateAnsiblePath(json.getId(),
+                currentPath = AnsibleManager.updateAnsiblePath(json.getId(),
                         json.getPath(),
                         user);
             }
@@ -158,7 +159,7 @@ public class AnsibleController {
         Long ansiblePathId = GSON.fromJson(req.body(), Long.class);
 
         try {
-            SystemManager.removeAnsiblePath(ansiblePathId, user);
+            AnsibleManager.removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
             Spark.halt(404);

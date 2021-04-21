@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -96,7 +96,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public List<AnsiblePath> listAnsiblePaths(User loggedInUser, Integer controlNodeId) {
         try {
-            return SystemManager.listAnsiblePaths(controlNodeId, loggedInUser);
+            return AnsibleManager.listAnsiblePaths(controlNodeId, loggedInUser);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException(e);
@@ -118,7 +118,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public AnsiblePath lookupAnsiblePathById(User loggedInUser, Integer pathId) {
         try {
-            return SystemManager.lookupAnsiblePathById(pathId, loggedInUser)
+            return AnsibleManager.lookupAnsiblePathById(pathId, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException(pathId));
         }
         catch (LookupException e) {
@@ -151,7 +151,7 @@ public class AnsibleHandler extends BaseHandler {
         String path = getFieldValue(props, "path");
 
         try {
-            return SystemManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
+            return AnsibleManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(controlNodeId);
@@ -182,7 +182,7 @@ public class AnsibleHandler extends BaseHandler {
     public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
         try {
             String newPath = getFieldValue(props, "path");
-            return SystemManager.updateAnsiblePath(pathId, newPath, loggedInUser);
+            return AnsibleManager.updateAnsiblePath(pathId, newPath, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(pathId);
@@ -208,7 +208,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public int removeAnsiblePath(User loggedInUser, Integer pathId) {
         try {
-            SystemManager.removeAnsiblePath(pathId, loggedInUser);
+            AnsibleManager.removeAnsiblePath(pathId, loggedInUser);
             return 1;
         }
         catch (LookupException e) {
