@@ -260,7 +260,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[ select s
                   from com.redhat.rhn.domain.server.Server as s
                   join s.fqdns as fqdn
-                  where fqdn.name = :name
+                  where LOWER(fqdn.name) = LOWER(:name)
         ]]>
     </query>
 

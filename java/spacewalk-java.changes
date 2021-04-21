@@ -1,3 +1,4 @@
+- Lower case fqdn comparation when calculating minion connection path (bsc#1184849)
 - Bugfix: Retracted Patches: Filter minion correctly when executing package install (bsc#1184929)
 - Implement retracted patches
 - for a SUSE system get metadata and package from same source (bsc#1184475)
