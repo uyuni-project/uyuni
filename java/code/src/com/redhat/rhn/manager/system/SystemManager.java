@@ -3715,7 +3715,7 @@ public class SystemManager extends BaseManager {
                 AnsiblePath.Type.fromLabel(lbl);
             }
             catch (IllegalArgumentException e) {
-                result.addFieldError("type", "ansible.invalid_type");
+                result.addFieldError("type", "ansible.invalid_path_type");
             }
         });
 
