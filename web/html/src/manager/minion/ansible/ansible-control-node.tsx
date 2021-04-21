@@ -20,7 +20,7 @@ type PropsType = {
 };
 
 type StateType = {
-  systemId: number;
+  minionServerId: number;
   playbooksPaths: AnsiblePath[];
   inventoriesPaths: AnsiblePath[];
   newPlaybookPath: string;
@@ -35,7 +35,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     super(props);
 
     this.state = {
-      systemId: props.system.id,
+      minionServerId: props.system.id,
       playbooksPaths: [],
       inventoriesPaths: [],
       newPlaybookPath: "",
@@ -45,7 +45,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       errors: [],
     };
 
-    Network.get("/rhn/manager/api/systems/details/ansible/paths/"+props.system.id)
+    Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.system.id)
     .promise.then(data => {
       this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
     });
@@ -127,14 +127,14 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
       JSON.stringify({
-        minionServerId: this.state.systemId,
+        minionServerId: this.state.minionServerId,
         type: type,
         path: newPath
       }),
       "application/json"
     ).promise.then(data => {
       if (data.success) {
-        const newAnsiblePath = { id: data.newPathId, minionServerId: this.state.systemId, type: type, path: newPath};
+        const newAnsiblePath = { id: data.newPathId, minionServerId: this.state.minionServerId, type: type, path: newPath};
         if (type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
         }
