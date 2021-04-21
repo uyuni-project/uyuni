@@ -32,9 +32,11 @@ grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
 Usage: push-packages-to-obs.sh [PACKAGE]..
 Submitt changed packages from \$WORKSPACE/SRPMS/<package> ($WORKSPACE)
 to OBS ($OBS_PROJ). Without argument all packages in SRPMS are processed.
-If OBS_TEST_PROJECT environment variable has been set, packages will be
-submitted to it, instead. This is useful for, for example, building a project
-that contains packages that have been changed in a Pull Request.
+If OBS_TEST_PROJECT environment variable has been set, packages changed in
+OBS_PROJ will be submitted to OBS_TEST_PROJECT, instead, so leaving the
+packages in OBS_PROJ unchanged. This can be used for submitting changed
+packages in a Pull Request to a separate project without changing the
+project that contains the packages for master branch.
 EOF
   exit 0
 }
@@ -287,8 +289,12 @@ while read PKG_NAME; do
       $OSC status
       if [ -z "$FAKE_COMITTOBS" ]; then
         if [ -z "$OBS_TEST_PROJECT" ]; then
+          # submit to original project  
       	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
         else
+          # submit to a new project
+          # we are creating a link and updating this so the
+          # release number is higher in the OBS_TEST_PROJECT  
           $OSC linkpac -c -f $OBS_PROJ $PKG_NAME $OBS_TEST_PROJECT
           $OSC co $OBS_TEST_PROJECT $PKG_NAME
           cp -v * $OBS_TEST_PROJECT/$PKG_NAME  

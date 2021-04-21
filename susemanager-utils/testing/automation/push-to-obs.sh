@@ -21,7 +21,7 @@ help() {
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
   echo "  -n  If used, update PROJECT instead of the projects specified with -d,"
   echo "      for example, if you want to package only the changes from a PR on"
-  echo "      a separate project"
+  echo "      a separate project, instead of updating the projects specified by -d"
   echo ""
 }
 
