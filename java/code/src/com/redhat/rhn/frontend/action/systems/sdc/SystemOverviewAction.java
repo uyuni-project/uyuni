@@ -147,7 +147,6 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("minionId", s.getMinionId());
         request.setAttribute("hasLocation",
                 !(s.getLocation() == null || s.getLocation().isEmpty()));
-        request.setAttribute("activationKey", SystemManager.getActivationKeys(s));
         request.setAttribute("kernelLiveVersion",
                 s.asMinionServer().map(MinionServer::getKernelLiveVersion).orElse(null));
 
