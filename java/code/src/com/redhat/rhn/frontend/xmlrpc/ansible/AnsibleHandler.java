@@ -229,13 +229,13 @@ public class AnsibleHandler extends BaseHandler {
     private static <T> T getFieldValue(Map<String, Object> props, String field) {
         Object val = props.get(field);
         if (val == null) {
-            throw new InvalidParameterException(String.format("Missing field '%s'", field));
+            throw new ValidationException(String.format("Missing field '%s'", field));
         }
         try {
             return (T) val;
         }
         catch (ClassCastException e) {
-            throw new InvalidParameterException(String.format("Invalid type of field '%s'", field));
+            throw new ValidationException(String.format("Invalid type of field '%s'", field));
         }
     }
 }
