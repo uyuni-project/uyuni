@@ -3656,7 +3656,7 @@ public class SystemManager extends BaseManager {
     /**
      * Create and save a new ansible path
      *
-     * @param type  the type
+     * @param typeLabel the type label
      * @param minionServerId minion server id
      * @param path the path
      * @param user the user performing the action
@@ -3664,12 +3664,13 @@ public class SystemManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or server not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath createAnsiblePath(AnsiblePath.Type type, long minionServerId, String path, User user) {
+    public static AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
         MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
 
-        validateAnsiblePath(path, empty(), minionServerId);
+        validateAnsiblePath(path, of(typeLabel), empty(), minionServerId);
 
         AnsiblePath ansiblePath;
+        AnsiblePath.Type type = AnsiblePath.Type.fromLabel(typeLabel);
         switch (type) {
             case INVENTORY:
                 ansiblePath = new InventoryPath();
@@ -3700,13 +3701,23 @@ public class SystemManager extends BaseManager {
     public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
         AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
-        validateAnsiblePath(newPath, of(existingPathId), existing.getMinionServer().getId());
+        validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
         return MinionServerFactory.saveAnsiblePath(existing);
     }
 
-    private static void validateAnsiblePath(String path, Optional<Long> pathId, long minionServerId) {
+    private static void validateAnsiblePath(String path, Optional<String> typeLabel, Optional<Long> pathId,
+            long minionServerId) {
         ValidatorResult result = new ValidatorResult();
+
+        typeLabel.ifPresent(lbl -> {
+            try {
+                AnsiblePath.Type.fromLabel(lbl);
+            }
+            catch (IllegalArgumentException e) {
+                result.addFieldError("type", "ansible.invalid_type");
+            }
+        });
 
         if (path == null || path.isBlank()) {
             result.addFieldError("path", "ansible.invalid_path");
@@ -3740,14 +3751,14 @@ public class SystemManager extends BaseManager {
      *
      * Remove ansible path
      *
-     * @param path the {@link AnsiblePath}
+     * @param pathId the id of {@link AnsiblePath}
      * @param user the user performing the action
-     * @throws LookupException if the user does not have permissions
+     * @throws LookupException if the user does not have permissions or if entity does not exist
      */
-    public static void removeAnsiblePath(AnsiblePath path, User user) {
-        ensureAvailableToUser(user, path.getMinionServer().getId());
+    public static void removeAnsiblePath(long pathId, User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
         MinionServerFactory.removeAnsiblePath(path);
-
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {

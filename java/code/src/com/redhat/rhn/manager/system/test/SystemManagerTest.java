@@ -1774,7 +1774,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);
         path.setPath(Path.of("/tmp/test1"));
-        path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
+        path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict( path);
@@ -1794,7 +1794,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         path.setPath(Path.of("/tmp/test1"));
 
         try {
-            SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", chuck);
+            SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", chuck);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -1802,7 +1802,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         // now save with allowed user
-        path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
+        path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         try {
             SystemManager.lookupAnsiblePathById(path.getId(), chuck);
@@ -1841,7 +1841,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testUpdateAnsiblePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
+        AnsiblePath path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
         path = SystemManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(path);
@@ -1853,7 +1853,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         try {
-            AnsiblePath path = SystemManager.createAnsiblePath(AnsiblePath.Type.INVENTORY, minion.getId(), "/tmp/test", user);
+            AnsiblePath path = SystemManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {

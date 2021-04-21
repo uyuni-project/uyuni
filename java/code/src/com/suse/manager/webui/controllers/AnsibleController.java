@@ -121,7 +121,7 @@ public class AnsibleController {
         AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                currentPath = SystemManager.createAnsiblePath(AnsiblePath.Type.fromLabel(json.getType()),
+                currentPath = SystemManager.createAnsiblePath(json.getType(),
                         json.getMinionServerId(),
                         json.getPath(),
                         user);
