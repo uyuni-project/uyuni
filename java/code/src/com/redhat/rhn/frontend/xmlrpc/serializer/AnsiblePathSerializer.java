@@ -43,7 +43,8 @@ public class AnsiblePathSerializer extends RhnXmlRpcCustomSerializer {
     }
 
     @Override
-    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer) throws XmlRpcException, IOException {
+    protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
+            throws XmlRpcException, IOException {
         AnsiblePath path = (AnsiblePath) obj;
         SerializerHelper helper = new SerializerHelper(serializer);
 

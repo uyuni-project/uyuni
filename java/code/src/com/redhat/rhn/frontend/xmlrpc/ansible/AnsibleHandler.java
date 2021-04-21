@@ -165,6 +165,7 @@ public class AnsibleHandler extends BaseHandler {
      * Update ansible path
      *
      * @param loggedInUser the logged in user
+     * @param pathId the path id
      * @param props the props with the path properties
      * @return updated path
      *
@@ -180,7 +181,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
         try {
-            String newPath = getFieldValue(props,"path");
+            String newPath = getFieldValue(props, "path");
             return SystemManager.updateAnsiblePath(pathId, newPath, loggedInUser);
         }
         catch (LookupException e) {
