@@ -32,6 +32,9 @@ grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
 Usage: push-packages-to-obs.sh [PACKAGE]..
 Submitt changed packages from \$WORKSPACE/SRPMS/<package> ($WORKSPACE)
 to OBS ($OBS_PROJ). Without argument all packages in SRPMS are processed.
+If OBS_TEST_PROJECT environment variable has been set, packages will be
+submitted to it, instead. This is useful for, for example, building a project
+that contains packages that have been changed in a Pull Request.
 EOF
   exit 0
 }
@@ -283,7 +286,16 @@ while read PKG_NAME; do
       $OSC addremove >/dev/null
       $OSC status
       if [ -z "$FAKE_COMITTOBS" ]; then
-	$OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+        if [ -z "$OBS_TEST_PROJECT" ]; then
+      	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+        else
+          $OSC linkpac -c -f $OBS_PROJ $PKG_NAME $OBS_TEST_PROJECT
+          $OSC co $OBS_TEST_PROJECT $PKG_NAME
+          cp -v * $OBS_TEST_PROJECT/$PKG_NAME  
+          cd $OBS_TEST_PROJECT/$PKG_NAME
+      	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+          cd -
+        fi  
       else
 	echo "FAKE: Not comitting to OBS..."
 	false
