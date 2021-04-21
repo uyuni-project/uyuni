@@ -216,7 +216,6 @@ public class AnsibleHandler extends BaseHandler {
     }
 
     private Server validateAnsibleControlNode(long systemId, Org org) {
-        // todo fkobzik: ask cbb about perms checking
         Server controlNode = ServerFactory.lookupByIdAndOrg(systemId, org);
         if (controlNode == null) {
             throw new NoSuchSystemException();
