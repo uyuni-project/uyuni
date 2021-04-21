@@ -14,17 +14,17 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
-
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
@@ -89,6 +89,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                             cacheItem.setSccId(systemCredentials.getId());
                             cacheItem.setSccLogin(systemCredentials.getLogin());
                             cacheItem.setSccPasswd(systemCredentials.getPassword());
+                            cacheItem.setSccRegistrationRequired(false);
                             cacheItem.setRegistrationErrorTime(null);
                         }
                         catch (SCCClientException e) {
