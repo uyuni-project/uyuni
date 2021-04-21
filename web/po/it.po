@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"POT-Creation-Date: 2021-04-21 14:10+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -35,6 +35,28 @@ msgstr ""
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:200
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
 msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:48
@@ -290,32 +312,6 @@ msgstr ""
 msgid "Are you sure you want to delete project "
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:200
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr ""
@@ -337,9 +333,13 @@ msgid "Save"
 msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 msgid "Formulas"
+msgstr ""
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
@@ -365,7 +365,6 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/FormMultiInput.stories.js:262
-#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -374,6 +373,7 @@ msgstr ""
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:45
 msgid "Submit"
 msgstr ""
@@ -390,8 +390,8 @@ msgid "Users"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
+#: ../html/src/components/input/form.stories.js:26
 msgid "First Name"
 msgstr ""
 
@@ -400,12 +400,12 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/InputBase.test.tsx:41
 #: ../html/src/components/input/InputBase.test.tsx:67
 #: ../html/src/components/input/InputBase.test.tsx:95
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
+#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr ""
 
@@ -603,8 +603,8 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:324
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/nets/network-properties.js:438
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
@@ -1474,31 +1474,6 @@ msgstr ""
 msgid "Your subscriptions"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
-msgid "Edit Virtual Host Managers"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
-msgid "Subscription Matching"
-msgstr "Abbinamento della sottoscrizione"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
-msgid "Subscriptions"
-msgstr "Sottoscrizioni"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-msgid "Unmatched Products"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
-msgid "Pins "
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
-msgid "Messages "
-msgstr ""
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr ""
@@ -1514,6 +1489,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+msgid "Unmatched Products"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
@@ -1542,6 +1522,26 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+msgid "Edit Virtual Host Managers"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+msgid "Subscription Matching"
+msgstr "Abbinamento della sottoscrizione"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+msgid "Subscriptions"
+msgstr "Sottoscrizioni"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+msgid "Pins "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+msgid "Messages "
 msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
@@ -2307,6 +2307,18 @@ msgstr ""
 msgid "Built time"
 msgstr ""
 
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
+msgstr ""
+
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
 msgstr ""
@@ -2338,18 +2350,6 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
@@ -2495,31 +2495,31 @@ msgid ""
 "this group"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
-msgid "Formula saved. Apply the "
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
-msgid "Invalid target type."
-msgstr ""
-
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
+msgid "Invalid target type."
+msgstr ""
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
+msgid "Formula saved. Apply the "
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:35
@@ -3488,8 +3488,8 @@ msgstr ""
 msgid "Applying the config channels has been "
 msgstr ""
 
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 msgid "Configuration"
 msgstr ""
 
@@ -4384,6 +4384,10 @@ msgstr ""
 msgid "Kubeconfig file"
 msgstr ""
 
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
+msgid "No Virtual Host Managers."
+msgstr ""
+
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
 msgstr ""
@@ -4428,20 +4432,16 @@ msgstr "Gestori di host virtuali"
 msgid "Add a virtual host manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
-msgid "No Virtual Host Managers."
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
-msgid "Toggle full size"
+#: ../html/src/manager/virtualization/ListTab.js:144
+msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
-msgid "Something went wrong, connection is closed"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
+#: ../html/src/manager/virtualization/ListTab.js:244
+msgid "Action Status"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
@@ -4485,6 +4485,18 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
+msgid "Toggle full size"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
+msgid "Something went wrong, connection is closed"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
@@ -4580,10 +4592,6 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr ""
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr ""
@@ -4598,6 +4606,10 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
@@ -4622,18 +4634,6 @@ msgstr "Reti"
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "Cancella i campi"
-
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.js:144
-msgid "{0} selected"
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.js:244
-msgid "Action Status"
-msgstr ""
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
@@ -4867,44 +4867,6 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
-
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr ""
@@ -4999,6 +4961,44 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+msgid "Virtual network with no connection to other networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+msgid "SR-IOV pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
