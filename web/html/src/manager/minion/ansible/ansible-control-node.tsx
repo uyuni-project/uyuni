@@ -3,26 +3,30 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages";
 import { TextField } from "components/fields";
 import { Panel } from "components/panels/Panel";
-import { AsyncButton } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import Network from "utils/network";
+import NewAnsiblePath from "./new-ansible-path";
+import EditAnsiblePath from "./edit-ansible-path";
 
 type AnsiblePath = {
-  id: Number;
-  minionServerId: Number;
-  type: String;
-  path: String;
+  id?: number;
+  minionServerId?: number;
+  type?: string;
+  path?: string;
 }
 
 type PropsType = {
-  id: Number;
+  id: number;
 };
 
 type StateType = {
-  systemId: Number;
+  systemId: number;
   playbooksPaths: AnsiblePath[];
   inventoriesPaths: AnsiblePath[];
   newPlaybookPath: string;
   newInventoryPath: string;
+  editPlaybookPath?: AnsiblePath;
+  editInventoryPath?: AnsiblePath;
   errors: string[];
 };
 
@@ -36,6 +40,8 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       inventoriesPaths: [],
       newPlaybookPath: "",
       newInventoryPath: "",
+      editPlaybookPath: undefined,
+      editInventoryPath: undefined,
       errors: [],
     };
 
@@ -52,6 +58,68 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     else {
       this.setState({ newInventoryPath: newPath });
     }
+  }
+
+  deletePath(path: AnsiblePath) {
+    Network.post(
+      "/rhn/manager/api/systems/details/ansible/paths/delete",
+      JSON.stringify({
+        id: path.id,
+        minionServerId: path.minionServerId,
+        type: path.type,
+        path: path.path
+      }),
+      "application/json"
+    ).promise.then(data => {
+      if (data.success) {
+        if (path.type === "playbook") {
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id != path.id) });
+        }
+        else {
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id != path.id) });
+        }
+      }
+      else {
+        this.setState({ errors: data.errors.path });
+      }
+    });
+  }
+
+  editPath(path: AnsiblePath, newValue: string ) {
+    path.path = newValue;
+    if (path.type === "playbook") {
+      this.setState({ editPlaybookPath: path });
+    }
+    else {
+      this.setState({ editInventoryPath: path });
+    }
+  }
+
+  saveEditPath(type?: string) {
+    const editPath = type === "playbook" ? this.state.editPlaybookPath : this.state.editInventoryPath;
+    Network.post(
+      "/rhn/manager/api/systems/details/ansible/paths/save",
+      JSON.stringify({
+        minionServerId: editPath?.minionServerId,
+        type: editPath?.type,
+        path: editPath?.path,
+        id: editPath?.id
+      }),
+      "application/json"
+    ).promise.then(data => {
+      if (data.success) {
+        const newAnsiblePath: AnsiblePath = { id: editPath?.id, minionServerId: editPath?.minionServerId, type: editPath?.type, path: editPath?.path};
+        if (type === "playbook") {
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id != editPath?.id).concat(newAnsiblePath), editPlaybookPath: undefined});
+        }
+        else {
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id != editPath?.id).concat(newAnsiblePath), editInventoryPath: undefined });
+        }
+      }
+      else {
+        this.setState({ errors: data.errors.path });
+      }
+    });
   }
 
   savePath(type: string) {
@@ -85,29 +153,48 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     return (
       <div>
         {errors}
+        <p>
+          {t("Ansible Control Node Configuration: add Paths to discover Playbooks and Inventories.")}
+        </p>
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
             title="Playbooks Paths"
           >
             {this.state.playbooksPaths.map(p =>
-              <pre key={p.id.toString()}>
-                {p.path}
-              </pre>
+                this.state.editPlaybookPath && this.state.editPlaybookPath.path == p.path ?
+                  <EditAnsiblePath
+                    key={p.id}
+                    ansiblePath={p}
+                    editPath={(newValue: string) => this.editPath(p, newValue)}
+                    saveEditPath={() => this.saveEditPath(p.type)}
+                    editPlaybookPath={this.state.editPlaybookPath}
+                    cancelHandler={() => this.setState({ editPlaybookPath: undefined })}
+                    deletePath={() => this.deletePath(p)}
+                  />
+                  :
+                  <div className="d-block" key={p.id}>
+                    <pre>
+                      {p.path}
+                    </pre>
+                    <div className="btn-group pull-right">
+                      <Button
+                        className="btn-default btn-sm"
+                        icon="fa-edit"
+                        title={t("Edit")}
+                        handler={() => this.setState({ editPlaybookPath: p })}
+                      />
+                    </div>
+                  </div>
             )}
             <hr/>
-            <h4>{t("Add a Playbook path to discover")}</h4>
-            <div className="form-group">
-              <TextField placeholder={t("New playbook path")} value={this.state.newPlaybookPath} onChange={(e) => this.newPath("playbook", e.target.value.toString())} />
-            </div>
-            <div className="pull-right btn-group">
-              <AsyncButton
-                action={() => this.savePath("playbook")}
-                defaultType="btn-success"
-                text={t("Save")}
-                icon="fa-save"
-              />
-            </div>
+            <NewAnsiblePath
+              title={t("Add an Playbook path to discover")}
+              pathType="playbook"
+              newInventoryPath={this.state.newPlaybookPath}
+              newPath={(path: string) => this.newPath("playbook", path)}
+              savePath={() => this.savePath("playbook")}
+            />
           </Panel>
         </div>
         <div className="col-md-6">
@@ -116,23 +203,39 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Inventories Paths"
           >
             {this.state.inventoriesPaths.map(p =>
-              <pre key={p.id.toString()}>
-                {p.path}
-              </pre>
+                this.state.editInventoryPath && this.state.editInventoryPath.path == p.path ?
+                  <EditAnsiblePath
+                    key={p.id}
+                    ansiblePath={p}
+                    editPath={(newValue: string) => this.editPath(p, newValue)}
+                    saveEditPath={() => this.saveEditPath(p.type)}
+                    editEntity={this.state.editInventoryPath}
+                    cancelHandler={() => this.setState({ editInventoryPath: undefined })}
+                    deletePath={() => this.deletePath(p)}
+                  />
+                  :
+                  <div className="d-block" key={p.id}>
+                    <pre>
+                      {p.path}
+                    </pre>
+                    <div className="btn-group pull-right">
+                      <Button
+                        className="btn-default btn-sm"
+                        icon="fa-edit"
+                        title={t("Edit")}
+                        handler={() => this.setState({ editInventoryPath: p })}
+                      />
+                    </div>
+                  </div>
             )}
             <hr/>
-            <h4>{t("Add an Inventory path to discover")}</h4>
-            <div className="form-group">
-              <TextField placeholder={t("New inventory path")} value={this.state.newInventoryPath} onChange={(e) => this.newPath("inventory", e.target.value.toString())} />
-            </div>
-            <div className="pull-right btn-group">
-              <AsyncButton
-                action={() => this.savePath("inventory")}
-                defaultType="btn-success"
-                text={t("Save")}
-                icon="fa-save"
-              />
-            </div>
+            <NewAnsiblePath
+              title={t("Add an Inventory path to discover")}
+              pathType="inventory"
+              newInventoryPath={this.state.newInventoryPath}
+              newPath={(path: string) => this.newPath("inventory", path)}
+              savePath={() => this.savePath("inventory")}
+            />
           </Panel>
         </div>
       </div>
