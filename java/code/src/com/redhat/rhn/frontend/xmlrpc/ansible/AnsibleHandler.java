@@ -240,6 +240,24 @@ public class AnsibleHandler extends BaseHandler {
                 .orElseThrow(() -> new MinionNotRespondingFaultException());
     }
 
+    /**
+     * Introspect inventory under given inventory path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the inventory contents under given path
+     *
+     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype todo update
+     */
+    // todo: more fitting structure?
+    public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
+        return SystemManager.introspectInventory(pathId, loggedInUser)
+                .orElseThrow(() -> new MinionNotRespondingFaultException());
+    }
+
     private Server validateAnsibleControlNode(long systemId, Org org) {
         Server controlNode = ServerFactory.lookupByIdAndOrg(systemId, org);
         if (controlNode == null) {
