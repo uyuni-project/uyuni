@@ -174,17 +174,9 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
                   />
                   :
                   <div className="d-block" key={p.id}>
-                    <pre>
-                      {p.path}
+                    <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
+                      {p.path}<i className="fa fa-edit pull-right" />
                     </pre>
-                    <div className="btn-group pull-right">
-                      <Button
-                        className="btn-default btn-sm"
-                        icon="fa-edit"
-                        title={t("Edit")}
-                        handler={() => this.setState({ editPlaybookPath: p })}
-                      />
-                    </div>
                   </div>
             )}
             <hr/>
@@ -215,17 +207,9 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
                   />
                   :
                   <div className="d-block" key={p.id}>
-                    <pre>
-                      {p.path}
+                    <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
+                      {p.path}<i className="fa fa-edit pull-right" />
                     </pre>
-                    <div className="btn-group pull-right">
-                      <Button
-                        className="btn-default btn-sm"
-                        icon="fa-edit"
-                        title={t("Edit")}
-                        handler={() => this.setState({ editInventoryPath: p })}
-                      />
-                    </div>
                   </div>
             )}
             <hr/>
