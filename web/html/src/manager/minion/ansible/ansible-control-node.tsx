@@ -149,12 +149,12 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       <div>
         {errors}
         <p>
-          {t("Ansible Control Node Configuration: add Paths to discover Playbooks and Inventories.")}
+          {t("Ansible Control Node Configuration: add Paths to discover Directories containing one or more Playbooks and Inventory Files.")}
         </p>
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
-            title="Playbooks Paths"
+            title="Playbooks Directories"
           >
             {this.state.playbooksPaths.map(p =>
                 this.state.editPlaybookPath?.path == p.path ?
@@ -176,7 +176,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             )}
             <hr/>
             <NewAnsiblePath
-              title={t("Add a Playbook path to discover")}
+              title={t("Add a Playbook directory to discover")}
               pathType="playbook"
               newInventoryPath={this.state.newPlaybookPath}
               newPath={(path: string) => this.newPath("playbook", path)}
@@ -187,7 +187,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
-            title="Inventories Paths"
+            title="Inventory Files"
           >
             {this.state.inventoriesPaths.map(p =>
                 this.state.editInventoryPath?.path == p.path ?
@@ -209,7 +209,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             )}
             <hr/>
             <NewAnsiblePath
-              title={t("Add an Inventory path to discover")}
+              title={t("Add an Inventory file to discover")}
               pathType="inventory"
               newInventoryPath={this.state.newInventoryPath}
               newPath={(path: string) => this.newPath("inventory", path)}
