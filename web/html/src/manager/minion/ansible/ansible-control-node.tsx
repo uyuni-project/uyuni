@@ -68,10 +68,10 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     ).promise.then(data => {
       if (data.success) {
         if (path.type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id != path.id) });
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== path.id) });
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id != path.id) });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== path.id) });
         }
       }
       else {
@@ -105,10 +105,10 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       if (data.success) {
         const newAnsiblePath: AnsiblePath = { id: editPath?.id, minionServerId: editPath?.minionServerId, type: editPath?.type, path: editPath?.path};
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id != editPath?.id).concat(newAnsiblePath), editPlaybookPath: undefined});
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newAnsiblePath), editPlaybookPath: undefined});
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id != editPath?.id).concat(newAnsiblePath), editInventoryPath: undefined });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== editPath?.id).concat(newAnsiblePath), editInventoryPath: undefined });
         }
       }
       else {
@@ -157,7 +157,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Playbooks Directories"
           >
             {this.state.playbooksPaths.map(p =>
-                this.state.editPlaybookPath?.path == p.path ?
+                this.state.editPlaybookPath?.path === p.path ?
                   <EditAnsiblePath
                     key={p.id}
                     ansiblePath={p}
@@ -190,7 +190,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             title="Inventory Files"
           >
             {this.state.inventoriesPaths.map(p =>
-                this.state.editInventoryPath?.path == p.path ?
+                this.state.editInventoryPath?.path === p.path ?
                   <EditAnsiblePath
                     key={p.id}
                     ansiblePath={p}
