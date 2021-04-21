@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
@@ -1904,6 +1905,12 @@ public class ErrataManager extends BaseManager {
 
         // compute id to errata map
         List<Errata> errataList = ErrataManager.lookupErrataByIds(errataIds, user);
+        List<Errata> retracted = errataList.stream()
+                .filter(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED)
+                .collect(toList());
+        if (!retracted.isEmpty()) {
+            throw new RetractedErrataException(retracted.stream().map(Errata::getId).collect(toList()));
+        }
 
         Map<Long, Errata> errataMap = errataList.stream()
             .collect(toMap(

@@ -68,6 +68,24 @@ public interface Errata {
     void setAdvisoryType(String advisoryTypeIn);
 
     /**
+     * Getter for advisoryStatus
+     * @return String to get
+     */
+    AdvisoryStatus getAdvisoryStatus();
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn);
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    void setAdvisoryStatus(String advisoryStatusIn);
+
+    /**
      * Getter for product
      * @return String to get
     */
@@ -418,6 +436,7 @@ public interface Errata {
     /**
      * {@inheritDoc}
      */
+    @Override
     String toString();
 
     /**

@@ -50,6 +50,7 @@ const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
 }
 
 const renderSourceEntry = (source) => {
+  const unsyncedPatches = source.hasUnsyncedPatches ? "(" + t("has unsynchronized patches") + ")" : "";
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
       <div
@@ -57,6 +58,8 @@ const renderSourceEntry = (source) => {
         href="#">
         <i className='fa fa-plus'/>
         <b>{source.name}</b>
+        &nbsp;
+        {unsyncedPatches}
       </div>
     );
   }
@@ -71,6 +74,8 @@ const renderSourceEntry = (source) => {
   return (
     <div className={styles.built}>
       {source.name}
+      &nbsp;
+      {unsyncedPatches}
     </div>
   );
 }

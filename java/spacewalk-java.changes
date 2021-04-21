@@ -1,3 +1,5 @@
+- Bugfix: Retracted Patches: Filter minion correctly when executing package install (bsc#1184929)
+- Implement retracted patches
 - for a SUSE system get metadata and package from same source (bsc#1184475)
 - Check if the directory exists prior to modular data cleanup (bsc#1184311)
 - assign right base product for res8 (bsc#1184005)

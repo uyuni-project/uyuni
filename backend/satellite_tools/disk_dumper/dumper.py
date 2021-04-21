@@ -958,6 +958,7 @@ class ErrataDumper(exportLib.ErrataDumper):
                 e.advisory,
                 e.advisory_type,
                 e.advisory_rel,
+                e.advisory_status,
                 e.product,
                 e.description,
                 e.synopsis,

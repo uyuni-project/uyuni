@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.channel.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
@@ -28,6 +27,7 @@ import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -70,6 +71,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -283,7 +285,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        c = (Channel) reload(c);
+        c = reload(c);
         ChannelManager.deleteChannel(user, c.getLabel(), true);
         assertNull(reload(c));
     }
@@ -296,7 +298,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone2 = (Channel) reload(cClone2);
+        cClone2 = reload(cClone2);
         ChannelManager.deleteChannel(user, cClone2.getLabel(), true);
         assertNotNull(reload(c));
         assertNotNull(reload(cClone1));
@@ -311,7 +313,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone1 = (Channel) reload(cClone1);
+        cClone1 = reload(cClone1);
         try {
             ChannelManager.deleteChannel(user, cClone1.getLabel(), true);
             fail();
@@ -344,7 +346,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         errataList.add(e);
         ErrataFactory.publishToChannel(errataList, c, user, false);
 
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
 
         List<ErrataOverview> errata = ChannelManager.listErrata(c, null, null, false, user);
         boolean found = false;
@@ -868,7 +870,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         errataList.add(e);
         ErrataFactory.publishToChannel(errataList, c, user, false);
 
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
 
         assertTrue(e.getChannels().contains(c));
 
@@ -876,7 +878,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         eids.add(e.getId());
 
         ChannelManager.removeErrata(c, eids, user);
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         assertFalse(e.getChannels().contains(c));
         c = ChannelManager.lookupByLabel(user.getOrg(), c.getLabel());
         assertFalse(c.getErratas().contains(eids));
@@ -900,10 +902,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         c.addErrata(e);
 
-        c = (Channel) TestUtils.saveAndReload(c);
-        e = (Errata) TestUtils.saveAndReload(e);
+        c = TestUtils.saveAndReload(c);
+        e = TestUtils.saveAndReload(e);
 
-        bothP = (Package) TestUtils.saveAndReload(bothP);
+        bothP = TestUtils.saveAndReload(bothP);
 
 
         List<PackageDto> list = ChannelManager.listErrataPackages(c, e);
@@ -938,6 +940,37 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
          assertTrue(result.size() == 1);
          assertEquals(result.get(0).getId(), ce.getId());
 
+    }
+
+    /**
+     * ChannelManager.listErrataNeedingResync should also list errata in case the advisoryStatus
+     * of clone is different from the original.
+     * @throws Exception
+     */
+    public void testListErrataNeedingResyncRetracted() throws Exception {
+        user.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
+        UserFactory.save(user);
+
+        Channel ochan = ChannelFactoryTest.createTestChannel(user);
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+
+        Errata oe = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(oe);
+        // let's also add an extra erratum to the original, but let's not clone it to the cloned channel
+        // it must not appear in the result
+        Errata notCloned = ErrataFactoryTest.createTestErrata(null);
+        ochan.addErrata(notCloned);
+
+        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Errata ce = ErrataFactory.lookupById(ceid);
+        ce = ErrataManager.addChannelsToErrata(ce, List.of(cchan.getId()), user);
+
+        oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+        notCloned.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        assertEquals(1, result.size());
+        assertEquals(result.get(0).getId(), ce.getId());
     }
 
     public void testListErrataPackagesForResync() throws Exception {

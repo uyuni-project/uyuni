@@ -25,6 +25,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -766,6 +767,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
         errataInfo.put("description", TestUtils.randomString());

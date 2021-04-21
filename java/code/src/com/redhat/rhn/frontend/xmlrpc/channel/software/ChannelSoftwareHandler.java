@@ -185,7 +185,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * should include the new packages, they will not be included when they
      * should. This method updates all the errata in the given cloned channel
      * with packages that have recently been added, and ensures that all the
-     * packages you expect are in the channel.
+     * packages you expect are in the channel. It also updates cloned errata
+     * attributes like advisoryStatus.
      * @param loggedInUser The current user
      * @param channelLabel Label of cloned channel to update
      * @return Returns 1 if successfull, FaultException otherwise
@@ -198,7 +199,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * should include the new packages, they will not be included when they
      * should. This method updates all the errata in the given cloned channel
      * with packages that have recently been added, and ensures that all the
-     * packages you expect are in the channel.
+     * packages you expect are in the channel. It also updates cloned errata
+     * attributes like advisoryStatus.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to update")
      * @xmlrpc.returntype  #return_int_success()
@@ -1788,36 +1790,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @throws NoSuchChannelException thrown if there is no channel matching
      * channelLabel.
      *
-     * When removing deprecation, swtich this method over to using
-     *     listErrata(sessionKey, null, null) after deleting
-     *     listErrata(String, String, String, String), then update docs
-     *     to use  $ErrataOverviewSerializer
-     *
-     *
      * @xmlrpc.doc List the errata applicable to a channel
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
      *    #array_begin()
-     *      #struct_begin("errata")
-     *        #prop_desc("int", "id", "Errata Id")
-     *        #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
-     *        #prop_desc("string", "advisory_type", "Type label such as Security, Bug Fix")
-     *        #prop_desc("string", "advisory_name", "Name such as RHSA, etc")
-     *        #prop_desc("string","advisory", "name of the advisory (Deprecated)")
-     *        #prop_desc("string","issue_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS (Deprecated)")
-     *        #prop_desc("string","update_date",
-     *                        "date format follows YYYY-MM-DD HH24:MI:SS (Deprecated)")
-     *        #prop("string","synopsis (Deprecated)")
-     *        #prop_desc("string","last_modified_date",
-     *                         "date format follows YYYY-MM-DD HH24:MI:SS (Deprecated)")
-     *      #struct_end()
+     *          $ErrataOverviewSerializer
      *    #array_end()
      */
-    public List<Map<String, Object>> listErrata(User loggedInUser, String channelLabel)
+    public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, "", "");
+        return listErrata(loggedInUser, channelLabel, (Date) null);
     }
 
     /**

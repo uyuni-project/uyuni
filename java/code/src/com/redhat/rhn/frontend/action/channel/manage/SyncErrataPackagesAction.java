@@ -86,6 +86,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
                 pkgDecl);
 
         helper.setPreSelectAll(true);
+        helper.ignoreEmptySelection();
         helper.execute();
 
         if (helper.isDispatched()) {

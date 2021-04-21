@@ -84,6 +84,7 @@ const Project = (props: Props) => {
         || (project.environments[1] || {}).status === "building" // promoting 1st env to 2nd: we can't build as it would affect this promotion
         || hasErrors;
 
+    const hasChannelsWithUnsyncedPatches = project.softwareSources.filter(s => s.hasUnsyncedPatches).length > 0;
   return (
     <TopPanel
       title={t('Content Lifecycle Project - {0}', project.properties.name)}
@@ -156,6 +157,7 @@ const Project = (props: Props) => {
           cancelRefreshAction();
         }}
         changesToBuild={changesToBuild}
+        hasChannelsWithUnsyncedPatches={hasChannelsWithUnsyncedPatches}
       />
 
       <EnvironmentLifecycle

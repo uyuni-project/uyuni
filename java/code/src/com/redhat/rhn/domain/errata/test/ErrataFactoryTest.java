@@ -15,6 +15,8 @@
 package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -22,12 +24,15 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.ClonedErrata;
+import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
@@ -37,10 +42,20 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.dto.ErrataCacheDto;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ErrataTestUtils;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -55,6 +70,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * ErrataFactoryTest
@@ -549,6 +565,124 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         List<PublishedErrata> errata = ErrataFactory.listByChannel(user.getOrg(), chan);
         assertEquals(1, errata.size());
         assertEquals(e, errata.iterator().next());
+    }
+
+    /**
+     * Tests that syncing errata details syncs advisoryStatus attribute.
+     * @throws Exception
+     */
+    public void testSyncErrataAdvisoryStatus() throws Exception {
+        Errata oe = ErrataFactoryTest.createTestErrata(null);
+
+        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        PublishedClonedErrata ce = (PublishedClonedErrata) ErrataFactory.lookupById(ceid);
+
+        oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
+
+        ErrataFactory.syncErrataDetails(ce);
+        assertEquals(AdvisoryStatus.RETRACTED, ce.getAdvisoryStatus());
+    }
+
+    /**
+     * Tests cache consistency when vendor retracts a patch.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
+     */
+    public void testUpdateCacheConsistencyOnRetractingPatch() throws Exception {
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.FINAL, AdvisoryStatus.RETRACTED);
+    }
+
+    /**
+     * Tests cache consistency when vendor turns a 'retracted' patch to 'final'.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
+     */
+    public void testUpdateCacheConsistencyOnUnretractingPatch() throws Exception {
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.RETRACTED, AdvisoryStatus.FINAL);
+    }
+
+    /**
+     * Tests cache consistency when vendor turns a 'stable' patch to 'final'.
+     * See updatePatchAndCheckUpdateCacheConsistency.
+     * @throws Exception when anything goes wrong
+     */
+    public void testUpdateCacheConsistencyForNonRetractedPatches() throws Exception {
+        updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus.STABLE, AdvisoryStatus.FINAL);
+    }
+
+    /**
+     * Helper method for testing cache consistency when syncing vendor patch
+     * into cloned patch when the vendor patch changes advisoryStatus over time.
+     *
+     * @throws Exception when anything goes wrong
+     */
+    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
+        originalErratum.setAdvisoryStatus(oldStatus);
+        Long clonedErratumId = PublishErrataHelper.cloneErrataFaster(originalErratum.getId(), user.getOrg());
+        PublishedClonedErrata clonedErratum = (PublishedClonedErrata) ErrataFactory.lookupById(clonedErratumId);
+
+        Channel originalChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel cloneChannel = ChannelFactoryTest.createTestClonedChannel(originalChannel, user);
+        originalChannel.getErratas().add(originalErratum);
+        originalChannel.getPackages().addAll(originalErratum.getPackages());
+        cloneChannel.getErratas().add(clonedErratum);
+        cloneChannel.getPackages().addAll(clonedErratum.getPackages());
+
+        // install an older pkg on server
+        Package pkg = clonedErratum.getPackages().iterator().next();
+        InstalledPackage installedPackage = PackageTestUtils.createInstalledPackage(pkg);
+        PackageEvr evr = pkg.getPackageEvr();
+        installedPackage.setEvr((PackageEvrFactory.lookupOrCreatePackageEvr(evr.getEpoch(), "0.1.0", evr.getRelease(), pkg.getPackageType()))); // older version
+        // assumption
+        assertTrue(pkg.getPackageEvr().compareTo(installedPackage.getEvr()) > 0);
+        installedPackage.setServer(server);
+        server.getPackages().add(installedPackage);
+        SystemManager.subscribeServerToChannel(user, server, cloneChannel);
+        ServerFactory.updateServerNeededCache(server.getId());
+
+        // test itself
+        originalErratum.setAdvisoryStatus(newStatus);
+        ErrataFactory.syncErrataDetails(clonedErratum);
+        Set<ErrataCacheDto> needingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        regenerateNeededUpdatesCache(server);
+        Set<ErrataCacheDto> regeneratedNeedingUpdates = intoSet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        assertEquals(regeneratedNeedingUpdates, needingUpdates);
+    }
+
+    private Set<ErrataCacheDto> intoSet(DataResult packagesNeedingUpdates) {
+        return (Set<ErrataCacheDto>) packagesNeedingUpdates.stream().collect(Collectors.toSet());
+    }
+
+    // flush the needed updates cache for a server and re-generate it from scratch.
+    private void regenerateNeededUpdatesCache(Server server) {
+        HibernateFactory.getSession()
+                .createNativeQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
+                .setParameter("sid", server.getId())
+                .executeUpdate();
+        ServerFactory.updateServerNeededCache(server.getId());
+    }
+
+    /**
+     * Tests that listErrata honors the subclass mapping (e.g. returns ClonedErrata instance in case the erratum is cloned)
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListErrataSubclassMapping() throws Exception {
+        Cve cveOriginal = ErrataTestUtils.createTestCve("testcveorig-1");
+        Errata original = ErrataTestUtils.createTestErrata(user, Set.of(cveOriginal));
+
+        Cve cveClone = ErrataTestUtils.createTestCve("testcveclone-1");
+        Errata clone = ErrataTestUtils.createTestClonedErrata(user, original, Set.of(cveClone), original.getPackages().iterator().next());
+
+        // let's evict from the cache, otherwise hibernate does not refresh the class
+        HibernateFactory.getSession().evict(original);
+        HibernateFactory.getSession().evict(clone);
+
+        assertFalse(ErrataFactory.listErrata(Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());
+        assertTrue(ErrataFactory.listErrata(Set.of(clone.getId()), user.getOrg().getId()).iterator().next().isCloned());
     }
 }
 

@@ -31,30 +31,33 @@ public class PublishedErrata extends AbstractErrata {
 
     private static Logger log = Logger.getLogger(PublishedErrata.class);
 
-    private Set channels = new HashSet();
+    private Set<Channel> channels = new HashSet<>();
     private Set<Cve> cves = new HashSet<Cve>();
 
     /**
      * {@inheritDoc}
      */
-    public Set getChannels() {
+    @Override
+    public Set<Channel> getChannels() {
         return channels;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setChannels(Set channelsIn) {
+    @Override
+    public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addChannel(Channel channelIn) {
         log.debug("addChannel called: " + channelIn.getLabel());
         if (this.channels == null) {
-            this.channels = new HashSet();
+            this.channels = new HashSet<>();
         }
         channels.add(channelIn);
     }
@@ -62,6 +65,7 @@ public class PublishedErrata extends AbstractErrata {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPublished() {
         return true;
     }
@@ -69,18 +73,21 @@ public class PublishedErrata extends AbstractErrata {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCloned() {
         return false;
     }
     /**
      * @param cvesIn sets cves
      */
+    @Override
     public void setCves(Set<Cve> cvesIn) {
         this.cves = cvesIn;
     }
     /**
      * @return Returns cves
      */
+    @Override
     public Set<Cve> getCves() {
         return cves;
     }

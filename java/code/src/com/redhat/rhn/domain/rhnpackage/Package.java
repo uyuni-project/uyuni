@@ -18,6 +18,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.org.Org;
@@ -100,6 +101,14 @@ public class Package extends BaseDomainHelper {
      */
     public Boolean isLockPending() {
         return lockPending;
+    }
+
+    /** Check if the package is part of a retracted patch
+     *
+     * @return true if the package is part of a retracted patch
+     */
+    public Boolean isPartOfRetractedPatch() {
+        return publishedErrata.stream().anyMatch(e -> e.getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
     }
 
     /**

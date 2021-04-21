@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -93,9 +94,11 @@ public class ResponseMappers {
      * Map a list of db sources entities to a list of view response beans
      *
      * @param sourcesDB the list of db envs
+     * @param swSourcesWithUnsyncedPatches
      * @return the List&lt;EnvironmentResponse&gt; view beans
      */
-    public static List<ProjectSoftwareSourceResponse> mapSourcesFromDB(List<SoftwareProjectSource> sourcesDB) {
+    public static List<ProjectSoftwareSourceResponse> mapSourcesFromDB(List<SoftwareProjectSource> sourcesDB,
+            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches) {
         return sourcesDB
                 .stream()
                 .map(sourceDb -> {
@@ -105,6 +108,7 @@ public class ResponseMappers {
                     projectSourceResponse.setLabel(sourceDb.getChannel().getLabel());
                     projectSourceResponse.setType(ProjectSource.Type.SW_CHANNEL.getLabel());
                     projectSourceResponse.setState(sourceDb.getState().name());
+                    projectSourceResponse.setHasUnsyncedPatches(swSourcesWithUnsyncedPatches.contains(sourceDb));
                     return projectSourceResponse;
                 })
                 .collect(Collectors.toList());
@@ -148,9 +152,11 @@ public class ResponseMappers {
      *
      * @param projectDB the project db entity
      * @param envsDB the list of db envs
+     * @param swSourcesWithUnsyncedPatches set of {@link SoftwareProjectSource}s with patches out of sync
      * @return full project view response bean
      */
-    public static ProjectResponse mapProjectFromDB(ContentProject projectDB, List<ContentEnvironment> envsDB) {
+    public static ProjectResponse mapProjectFromDB(ContentProject projectDB, List<ContentEnvironment> envsDB,
+            Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches) {
 
         ProjectResponse project = new ProjectResponse();
 
@@ -159,7 +165,8 @@ public class ResponseMappers {
                 projectDB.getSources()
                         .stream()
                         .flatMap(source -> stream(source.asSoftwareSource()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                swSourcesWithUnsyncedPatches
         ));
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));

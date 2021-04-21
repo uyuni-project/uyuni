@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
@@ -33,6 +34,7 @@ import com.google.gson.GsonBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.Response;
@@ -63,8 +65,11 @@ public class ControllerApiUtils {
 
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
 
+        Set<SoftwareProjectSource> swSourcesWithUnsyncedPatches =
+                ContentManager.listActiveSwSourcesWithUnsyncedPatches(user, dbContentProject);
+
         return json(GSON, res, ResultJson.success(
-                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments)
+                ResponseMappers.mapProjectFromDB(dbContentProject, dbContentEnvironments, swSourcesWithUnsyncedPatches)
         ));
     }
 

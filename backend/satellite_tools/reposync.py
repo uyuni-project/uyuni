@@ -731,10 +731,17 @@ class RepoSync(object):
         log(0, '')
         log(0, "  Patches in repo: %s." % len(notices))
         if notices:
+            processed_updates_count = 0
             if notices_type == 'updateinfo':
-                self.upload_updates(notices)
+                processed_updates_count = self.upload_updates(notices)
             elif notices_type == 'patches':
-                self.upload_patches(notices)
+                processed_updates_count = self.upload_patches(notices)
+
+            if processed_updates_count:
+                # some errata could get retracted and this needs to be reflected in the newest package cache
+                log(3, "Updating channel newest cache for channel ID %s." % self.channel['id'])
+                refresh_newest_package = rhnSQL.Procedure("rhn_channel.refresh_newest_package")
+                refresh_newest_package(self.channel['id'], 'backend.importPatches')
 
     @staticmethod
     def _get_decompressed_file_checksum(abspath, hashtype):
@@ -865,8 +872,9 @@ class RepoSync(object):
         else:
             updated_date = self._to_db_date(notice['issued'])
         if (existing_errata and
+            existing_errata['advisory_status'] == notice['status'] and
             not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
-            return None
+               return None
 
         log(0, "Add Patch %s" % patch_name)
         e = importLib.Erratum()
@@ -874,6 +882,7 @@ class RepoSync(object):
         e['advisory'] = e['advisory_name'] = patch_name
         e['advisory_rel']  = notice['version']
         e['advisory_type'] = errata_typemap.get(notice['type'], 'Product Enhancement Advisory')
+        e['advisory_status'] = notice['status']
         e['product']       = notice['release'] or 'Unknown'
         e['description']   = notice['description'] or 'not set'
         e['synopsis']      = notice['title'] or notice['update_id']
@@ -919,6 +928,7 @@ class RepoSync(object):
 
     def upload_updates(self, notices):
         batch = []
+        processed_updates = 0
         backend = SQLBackend()
         channel_advisory_names = self.list_errata()
         for notice in notices:
@@ -939,6 +949,7 @@ class RepoSync(object):
                     importer = ErrataImport(batch, backend)
                     importer.run()
                     batch = []
+                processed_updates += 1
             except Exception:
                 e = "Skipped %s - %s" % (notice['update_id'], sys.exc_info()[1])
                 log2(1, 1, e, stream=sys.stderr)
@@ -952,6 +963,7 @@ class RepoSync(object):
             self.regen = True
         elif notices:
             log(0, "    No new patch to sync.")
+        return processed_updates
 
     def import_packages(self, plug, source_id, url, is_non_local_repo):
         failed_packages = 0
@@ -1507,7 +1519,7 @@ class RepoSync(object):
         """
         h = rhnSQL.prepare("""
             select e.id, e.advisory,
-                   e.advisory_name, e.advisory_rel,
+                   e.advisory_name, e.advisory_rel, e.advisory_status,
                    TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
               from rhnerrata e
              where e.advisory = :name
@@ -1794,13 +1806,16 @@ class RepoSync(object):
         return url.getURL()
 
     def upload_patches(self, notices):
-        """Insert the information from patches into the database
+        """Insert the information from patches into the database.
+        Returns the number of processed patches (i.e. skipped patches and patches
+        not needing updates are excluded.).
 
         :arg notices: a list of ElementTree roots from individual patch files
 
         """
         backend = SQLBackend()
         skipped_updates = 0
+        processed_updates = 0
         batch = []
 
         for notice in notices:
@@ -1814,6 +1829,7 @@ class RepoSync(object):
             e['advisory_rel'] = version
             e['advisory_type'] = errata_typemap.get(category,
                                              'Product Enhancement Advisory')
+            e['advisory_status'] = 'final'
 
             existing_errata = self.get_errata(e['advisory'])
 
@@ -1891,6 +1907,7 @@ class RepoSync(object):
                 importer = ErrataImport(batch, backend)
                 importer.run()
                 batch = []
+            processed_updates += 1
 
         if skipped_updates > 0:
             log(0, "%d patches skipped because of incomplete package list." % skipped_updates)
@@ -1898,6 +1915,7 @@ class RepoSync(object):
             importer = ErrataImport(batch, backend)
             importer.run()
         self.regen = True
+        return processed_updates
 
     def errata_needs_update(self, existing_errata, new_errata_version, new_errata_changedate):
         """check, if the errata in the DB needs an update

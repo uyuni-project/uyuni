@@ -43,6 +43,10 @@ create table rhnOrgConfiguration
                                    default ('N') not null
                                    constraint rhn_org_conf_scap_upload_chk
                                    check (scapfile_upload_enabled in ('Y', 'N')),
+    clm_sync_patches           char(1)
+                                   default ('Y') not null
+                                   constraint rhn_org_conf_clm_sync_patches
+                                   check (clm_sync_patches in ('Y', 'N')),
     scap_file_sizelimit        NUMERIC
                                    default(2097152) not null
                                    constraint rhn_org_conf_scap_szlmt_chk

@@ -28,6 +28,9 @@
       <rl:decorator name="PageSizeDecorator"/>
       <rl:column bound="false" sortable="false" headerkey="packagesearch.jsp.name">
         <a href="/rhn/software/packages/Details.do?pid=${current.package_id}">${current.nvrea}</a>
+        <c:if test="${current.retracted}">
+            <rhn:icon type="errata-retracted" title="errata.jsp.retracted-package-tooltip" />
+        </c:if>
       </rl:column>
       <rl:column bound="false" sortable="false" headerkey="ssmchildsubs.jsp.channelname">
         ${current.channel_name}

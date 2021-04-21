@@ -58,6 +58,8 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentPropertiesValidator;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
@@ -417,6 +419,31 @@ public class ContentManager {
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
         return ContentProjectFactory.lookupProjectSource(project, sourceType, sourceLabel, user);
+    }
+
+    /**
+     * List {@link SoftwareProjectSource}s that have patches needing resync.
+     *
+     * @param user the User
+     * @param project the Project
+     * @return a list of {@link SoftwareProjectSource}s that have patches needing resync
+     */
+    public static Set<SoftwareProjectSource> listActiveSwSourcesWithUnsyncedPatches(User user, ContentProject project) {
+        if (project.getFirstEnvironmentOpt().isEmpty()) {
+            return Set.of();
+        }
+        ContentEnvironment firstEnv = project.getFirstEnvironmentOpt().orElseThrow();
+
+        return project.getActiveSources().stream()
+                .flatMap(src -> src.asSoftwareSource().stream())
+                .filter(src -> {
+                    // we are interested in sources that have targets with patches needing resync
+                    Optional<SoftwareEnvironmentTarget> tgt = lookupTarget(src.getChannel(), firstEnv, user);
+                    return tgt
+                            .map(t -> !ChannelManager.listErrataNeedingResync(t.getChannel(), user).isEmpty())
+                            .orElse(false);
+                })
+                .collect(toSet());
     }
 
     /**
@@ -927,11 +954,18 @@ public class ContentManager {
         List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
         List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
 
-        // align packages and the cache (rhnServerNeededCache)
+        Set<Package> oldTgtPackages = new HashSet<>(tgt.getPackages());
+
+        // align packages
         alignPackages(src, tgt, packageFilters);
 
         // align errata and the cache (rhnServerNeededCache)
         alignErrata(src, tgt, errataFilters, user);
+
+        // align the package cache
+        // this must be done after aligning errata since some packages may belong to a retracted erratum and we don't
+        // want them in the cache. For this we need the errata to be up-to-date in target
+        alignPackageCache(tgt, oldTgtPackages);
 
         // a lot was inserted into rhnChannelPackage at this point. Make sure stats are up-to-date before continuing
         ChannelFactory.analyzeChannelPackages();
@@ -945,6 +979,18 @@ public class ContentManager {
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
+    private void alignPackageCache(Channel channel, Set<Package> oldChannelPackages) {
+        // remove entries for deleted packages
+        Set<Package> removedPackages = new HashSet<>(oldChannelPackages);
+        removedPackages.removeAll(channel.getPackages());
+        ErrataCacheManager.deleteCacheEntriesForChannelPackages(channel.getId(), extractPackageIds(removedPackages));
+
+        // add cache entries for new ones
+        Set<Package> newTgtPackages = new HashSet<>(channel.getPackages());
+        newTgtPackages.removeAll(oldChannelPackages);
+        ErrataCacheManager.insertCacheForChannelPackages(channel.getId(), null, extractPackageIds(newTgtPackages));
+    }
+
     // helper for extracting certain filter types
     // it's not optimal to run this method multiple times for same collection of filters, but at least it's clear
     private static <T> List<T> extractFiltersOfType(Collection<ContentFilter> filters, Class<T> type) {
@@ -955,22 +1001,10 @@ public class ContentManager {
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
-        Set<Package> oldTgtPackages = new HashSet<>(tgtChannel.getPackages());
-        Set<Package> onlyInSrc = new HashSet<>(srcChannel.getPackages());
-        onlyInSrc.removeAll(tgtChannel.getPackages());
-
-        // align the packages
         tgtChannel.getPackages().clear();
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.getPackages().addAll(newPackages);
-
-        // remove cache entries for only in tgt
-        oldTgtPackages.removeAll(newPackages);
-        ErrataCacheManager.deleteCacheEntriesForChannelPackages(tgtChannel.getId(), extractPackageIds(oldTgtPackages));
-
-        // add cache entries for new ones
-        ErrataCacheManager.insertCacheForChannelPackages(tgtChannel.getId(), null,
-                extractPackageIds(filterEntities(onlyInSrc, filters).getLeft()));
+        ChannelFactory.save(tgtChannel);
     }
 
     /**
@@ -999,6 +1033,14 @@ public class ContentManager {
         excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
+
+        // Also check if content of cloned errata needs alignment (advisory status etc.)
+        if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
+            ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
+                PublishedClonedErrata cloned = (PublishedClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
+                ErrataFactory.syncErrataDetails(cloned);
+            });
+        }
     }
 
     /**

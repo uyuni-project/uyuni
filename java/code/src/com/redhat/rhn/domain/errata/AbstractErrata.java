@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.errata.impl.PublishedKeyword;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.struts.Selectable;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -48,6 +49,7 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     private Long id;
     private String advisory;
     private String advisoryType;
+    private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
     private String product;
     private String description;
     private String synopsis;
@@ -116,6 +118,31 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
      */
     public void setAdvisoryType(String advisoryTypeIn) {
         this.advisoryType = advisoryTypeIn;
+    }
+
+    /**
+     * Getter for advisoryStatus
+     * @return String to get
+     */
+    public AdvisoryStatus getAdvisoryStatus() {
+        return this.advisoryStatus;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
+    }
+
+    /**
+     * Setter for advisoryStatus
+     * @param advisoryStatusIn to set
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
     }
 
     /**

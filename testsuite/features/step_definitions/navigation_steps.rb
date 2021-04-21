@@ -216,6 +216,11 @@ When(/^I enter the URI of the registry as "([^"]*)"$/) do |arg1|
   fill_in arg1, with: $no_auth_registry
 end
 
+# Go back in the browser history
+When(/^I go back$/) do
+  page.driver.go_back
+end
+
 #
 # Click on a button
 #
@@ -461,6 +466,24 @@ Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
+  end
+end
+
+Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |row, should_not, icon|
+  case icon
+  when 'retracted'
+    content_selector = "i[class*='errata-retracted']"
+  else
+    raise "Unsupported icon '#{icon}' in the step definition"
+  end
+
+  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
+  within(:xpath, xpath_query) do
+    if should_not
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: DEFAULT_TIMEOUT)
+    else
+      raise "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: DEFAULT_TIMEOUT)
+    end
   end
 end
 

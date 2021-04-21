@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.org.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -212,6 +213,18 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         ServerTestUtils.createTestSystem();
         List<Org> totalOrgs = OrgFactory.lookupAllOrgs();
         assertTrue(totalOrgs.size() > 0);
+    }
+
+    public void testClmSyncPatchesConfig() throws Exception {
+        Org org = createTestOrg();
+
+        org.getOrgConfig().setClmSyncPatches(false);
+        org = HibernateFactory.reload(org);
+        assertFalse(org.getOrgConfig().isClmSyncPatches());
+
+        org.getOrgConfig().setClmSyncPatches(true);
+        org = HibernateFactory.reload(org);
+        assertTrue(org.getOrgConfig().isClmSyncPatches());
     }
 
 }

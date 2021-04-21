@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -39,6 +40,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -995,10 +997,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
 
-        List<Map<String, Object>> fromList = handler
+        List<ErrataOverview> fromList = handler
                 .listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 0);
-        List<Map<String, Object>> toList = handler.listErrata(admin, mergeTo.getLabel());
+        List<ErrataOverview> toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
         Map<String, Object> errataInfo = new HashMap<String, Object>();
@@ -1007,6 +1009,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
         errataInfo.put("description", TestUtils.randomString());
@@ -1045,6 +1048,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("synopsis", TestUtils.randomString());
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("advisory_type", "Bug Fix Advisory");
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
@@ -1065,7 +1069,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             bugs, keywords, packages, channels);
         TestUtils.flushAndEvict(errata);
 
-        List<Map<String, Object>> fromList = handler
+        List<ErrataOverview> fromList = handler
                 .listErrata(admin, mergeFrom.getLabel());
         assertEquals(1, fromList.size());
 
@@ -1081,10 +1085,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
 
-        List<Map<String, Object>> fromList = handler
+        List<ErrataOverview> fromList = handler
                 .listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 0);
-        List<Map<String, Object>> toList = handler.listErrata(admin, mergeTo.getLabel());
+        List<ErrataOverview> toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
         Map<String, Object> errataInfo = new HashMap<String, Object>();
@@ -1093,6 +1097,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("advisory_name", advisoryName);
         errataInfo.put("advisory_release", 2);
         errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
         errataInfo.put("product", TestUtils.randomString());
         errataInfo.put("topic", TestUtils.randomString());
         errataInfo.put("description", TestUtils.randomString());
