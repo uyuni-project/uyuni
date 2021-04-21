@@ -1,3 +1,4 @@
+- Lower case fqdn comparation when calculating minion connection path (bsc#1184849)
 - Add the Ansible Control Node system type
 
 -------------------------------------------------------------------

@@ -1419,6 +1419,48 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests looking up of a proxy server, assuming the proxy's FQDN is
+     * in rhnServer and FQDN name have different cases.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testLookupProxyServerFQDNWithCaseName() throws Exception {
+        Server s = createTestServer(user,
+                false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                TYPE_SERVER_PROXY);
+        String hostCaseName = "fooBeer.bar.com";
+        s.setHostname(hostCaseName);
+        s.addFqdn(hostCaseName);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // FQDN: precise lookup
+        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName).get());
+    }
+
+    /**
+     * Tests looking up of a proxy server, assuming the proxy's FQDN is
+     * in rhnServer and FQDN name with case different from the used in query.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testLookupProxyServerFQDNIgnoreCase() throws Exception {
+        Server s = createTestServer(user,
+                false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                TYPE_SERVER_PROXY);
+        String hostCaseName = "fooBeer.bar.com";
+        s.setHostname(hostCaseName);
+        s.addFqdn(hostCaseName);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // FQDN: precise lookup
+        assertEquals(s, ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).get());
+    }
+
+    /**
      * Tests looking up of a proxy server, assuming the proxy's simple name is
      * in rhnServer.
      * @throws Exception - if anything goes wrong.
