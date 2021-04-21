@@ -152,6 +152,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(MaintenanceCalendarSerializer.class);
         SERIALIZER_CLASSES.add(RescheduleResultSerializer.class);
         SERIALIZER_CLASSES.add(AnsiblePathSerializer.class);
+        SERIALIZER_CLASSES.add(AnsiblePlaybookSerializer.class);
     }
 
     /**

@@ -24,10 +24,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.MinionNotRespondingFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.system.AnsiblePlaybookResponse;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -214,6 +216,28 @@ public class AnsibleHandler extends BaseHandler {
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(pathId);
         }
+    }
+
+    /**
+     * Discover playbooks under given playbook path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the playbooks under given path
+     *
+     * @xmlrpc.doc Discover playbooks under given playbook path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype
+     * #struct_begin("playbooks")
+     *     #struct_begin("playbook")
+     *         $AnsiblePathSerializer
+     *     #struct_end()
+     * #struct_end()
+     */
+    public Map<String, Map<String, AnsiblePlaybookResponse>> discoverPlaybooks(User loggedInUser, Integer pathId) {
+        return SystemManager.discoverPlaybooks(pathId, loggedInUser)
+                .orElseThrow(() -> new MinionNotRespondingFaultException());
     }
 
     private Server validateAnsibleControlNode(long systemId, Org org) {
