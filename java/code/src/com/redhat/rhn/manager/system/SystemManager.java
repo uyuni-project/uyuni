@@ -3729,8 +3729,14 @@ public class SystemManager extends BaseManager {
             result.addFieldError("path", "ansible.invalid_path");
         }
 
+        Path actualPath = Path.of(path);
+
+        if (!actualPath.isAbsolute()) {
+            result.addFieldError("path", "ansible.invalid_path");
+        }
+
         Optional<AnsiblePath> duplicatePath = MinionServerFactory
-                .lookupAnsiblePathByPathAndMinion(Path.of(path), minionServerId);
+                .lookupAnsiblePathByPathAndMinion(actualPath, minionServerId);
         duplicatePath.ifPresent(dup -> { // an ansible path with same minion and path exists
             pathId.ifPresentOrElse(p -> { // if we're updating, the IDs must be same
                         if (!p.equals(dup.getId())) {
