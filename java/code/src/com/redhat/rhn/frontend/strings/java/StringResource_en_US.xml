@@ -9017,13 +9017,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
-        <source>Invalid path.</source>
+        <source>Invalid path</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
-        <source>Path already exists.</source>
+        <source>Path already exists</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
+        <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
