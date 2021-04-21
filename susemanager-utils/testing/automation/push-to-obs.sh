@@ -19,7 +19,9 @@ help() {
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
-  echo "  -n  If used, update PROJECT instead of the projects specified with -d"
+  echo "  -n  If used, update PROJECT instead of the projects specified with -d,"
+  echo "      for example, if you want to package only the changes from a PR on"
+  echo "      a separate project"
   echo ""
 }
 
