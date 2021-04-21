@@ -65,7 +65,7 @@ public class AnsibleController {
         get("/manager/systems/details/ansible",
                 withCsrfToken(withDocsLocale(withUser(AnsibleController::view))), jade);
 
-        get("/manager/api/systems/details/ansible/paths/:minionId",
+        get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
         // todo no CSRF?
         post("/manager/api/systems/details/ansible/paths/save",
@@ -97,8 +97,8 @@ public class AnsibleController {
      * @return string with JSON representation of the paths
      */
     public static String listAnsiblePathsByMinion(Request req, Response res, User user) {
-        long minionId = Long.parseLong(req.params("minionId"));
-        List<AnsiblePathJson> paths = SystemManager.listAnsiblePaths(minionId, user).stream()
+        long minionServerId = Long.parseLong(req.params("minionServerId"));
+        List<AnsiblePathJson> paths = SystemManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
                 .collect(Collectors.toList());
         return json(res, paths);
@@ -119,7 +119,7 @@ public class AnsibleController {
         try {
             if (json.getId() == null) {
                 currentPath = SystemManager.createAnsiblePath(AnsiblePath.Type.fromLabel(json.getType()),
-                        json.getMinionId(),
+                        json.getMinionServerId(),
                         json.getPath(),
                         user);
             }
