@@ -32,7 +32,9 @@ grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
 Usage: push-packages-to-obs.sh [PACKAGE]..
 Submitt changed packages from \$WORKSPACE/SRPMS/<package> ($WORKSPACE)
 to OBS ($OBS_PROJ). Without argument all packages in SRPMS are processed.
-If $OBS_TEST_PROJECT is specified, packages will be submitted to it, instead.
+If OBS_TEST_PROJECT environment variable has been set, packages will be
+submitted to it, instead. This is useful for, for example, building a project
+that contains packages that have been changed in a Pull Request.
 EOF
   exit 0
 }
