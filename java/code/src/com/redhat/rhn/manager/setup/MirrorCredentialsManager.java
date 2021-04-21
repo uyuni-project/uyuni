@@ -24,9 +24,8 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.redhat.rhn.taskomatic.SCCSystemRegistry;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.apache.log4j.Logger;
@@ -172,28 +171,14 @@ public class MirrorCredentialsManager {
 
         // Check for systems registered under this credentials and start delete requests
         List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
-        if (!itemList.isEmpty() ) {
-            try {
-                URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
-                String uuid = ContentSyncManager.getUUID();
-                SCCConfig config = new SCCConfig(url, dbCreds.getUsername(), dbCreds.getPassword(), uuid);
-                SCCWebClient sccClient = new SCCWebClient(config);
-                itemList.stream().forEach(i -> {
-                    i.getOptSccId().ifPresent(scc_id -> {
-                        try {
-                            sccClient.deleteSystem(scc_id);
-                        }
-                        catch (SCCClientException e) {
-                            log.error("Error deregistering system with scc_id " + scc_id, e);
-                        }
-                    });
-                    // force delete also when deregister failed
-                    SCCCachingFactory.deleteRegCacheItem(i);
-                });
-            }
-            catch (URISyntaxException e) {
-                log.error("Invalid SCC URL configured.", e);
-            }
+        try {
+            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            String uuid = ContentSyncManager.getUUID();
+            SCCSystemRegistry sccSystemRegistry = new SCCSystemRegistry(url, uuid);
+            sccSystemRegistry.deregister(itemList, true);
+        }
+        catch (URISyntaxException e) {
+            log.error("Invalid SCC URL configured.", e);
         }
 
         // Clear Repository Authentications
