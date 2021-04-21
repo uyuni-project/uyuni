@@ -36,6 +36,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +45,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class AnsibleManager extends BaseManager {
@@ -277,6 +279,62 @@ public class AnsibleManager extends BaseManager {
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
                 inventoryPath, null, earliestOccurrence).getId();
+    }
+
+    /**
+     * Discover playbooks in given {@link PlaybookPath} id
+     * Uses a synchronous salt call for this discovery.
+     *
+     * The result has following structure:
+     * Map of playbook path string -> Map of playbook name -> Playbook information as {@link AnsiblePlaybookSlsResult}.
+     *
+     * @param pathId the {@link PlaybookPath} id
+     * @param user the user
+     * @return the structure containing the playbooks information or empty optional if minion does not respond
+     * @throws LookupException if the user does not have permissions to the minion associated with the path
+     */
+    public static Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverPlaybooks(long pathId,
+            User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
+
+        if (!(path instanceof PlaybookPath)) {
+            throw new IllegalArgumentException(String.format("Path id %d not a Playbook path", path.getId()));
+        }
+
+        LocalCall<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverCall = new LocalCall<>(
+                "ansible.discover_playbooks",
+                of(List.of(path.getPath().toString())),
+                empty(),
+                new TypeToken<>() { });
+        return saltApi.callSync(discoverCall, path.getMinionServer().getMinionId());
+    }
+
+    /**
+     * Introspect inventory in given {@link InventoryPath}
+     * Uses a synchronous salt call for this discovery.
+     *
+     * todo tune the shape of the return value!
+     *
+     * @param pathId the {@link InventoryPath} id
+     * @param user the user
+     * @return the structure with the inventory contents
+     * @throws LookupException if the user does not have permissions to the minion associated with the path
+     */
+    public static Optional<Map<String, Map<String, Object>>> introspectInventory(long pathId, User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException(String.format("Path id %d not found", pathId)));
+
+        if (!(path instanceof InventoryPath)) {
+            throw new IllegalArgumentException(String.format("Path %d not an Inventory path", path.getId()));
+        }
+
+        LocalCall<Map<String, Map<String, Object>>> call = new LocalCall<>(
+                "ansible.targets",
+                empty(),
+                of(Map.of("inventory", path.getPath().toString())),
+                new TypeToken<>() { });
+        return saltApi.callSync(call, path.getMinionServer().getMinionId());
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
