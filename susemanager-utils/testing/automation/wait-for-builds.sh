@@ -1,14 +1,16 @@
 #!/bin/bash
 
 usage() {
-  echo "Usage: $0 -a api -c config_file -p project -u"
+  echo "Usage: $0 -a api -c config_file -p project -u -r"
   echo "project is mandatory. The rest are optionals."
   echo "u option is for unlocking the package after the build has finished"
+  echo "r option is for releasing the package after"
 }
 
 api=https://api.opensuse.org
 config_file=$HOME/.oscrc
 lock="yes"
+release="no"
 
 while getopts ":a:c:p:u" o;do
     case "${o}" in
@@ -23,6 +25,9 @@ while getopts ":a:c:p:u" o;do
             ;;
         u)
             lock="no"
+            ;;
+        r)
+            release="yes"
             ;;    
         :)
             echo "ERROR: Option -$OPTARG requires an argument"
@@ -51,3 +56,8 @@ for i in $(osc -A $api -c $config_file ls $project);do
       osc -A $api -c $config_file lock $project $i
     fi  
 done
+
+if [ "$release" == "yes" ];then
+    echo "Releasing"
+    osc -A $api -c $config_file release $project
+fi
