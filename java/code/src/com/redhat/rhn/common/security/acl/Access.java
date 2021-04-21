@@ -250,6 +250,27 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if any system has an Ansible Control Node entitlement.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system has salt entitlement, false otherwise.
+     */
+    public boolean aclSystemHasAnsibleControlNodeEntitlement(Object ctx, String[] params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE);
+            }
+        }
+        return ret;
+    }
+
+    /**
      * Check if any system has a Foreign entitlement.
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
