@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-19 17:57+0000\n"
+"PO-Revision-Date: 2021-04-21 17:46+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.5.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -473,7 +473,7 @@ msgstr "Exportovanie kľúča %s do %s"
 #: ../src/spacecmd/activationkey.py:1301
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
-msgstr "Súbor %s existuje, potvrďte prepísanie súboru?  (a/n)"
+msgstr "Súbor %s existuje, potvrďte prepísanie súboru? (a/n)"
 
 #: ../src/spacecmd/activationkey.py:1306
 msgid "Failed to save exported keys to file: {}"
@@ -504,7 +504,7 @@ msgstr "Nepodarilo sa importovať kľúč %s"
 #: ../src/spacecmd/activationkey.py:1353
 #, python-format
 msgid "%s already exists! Skipping!"
-msgstr "%s už existuje! Preskočenie!"
+msgstr "%s už existuje! Preskakuje sa!"
 
 #: ../src/spacecmd/activationkey.py:1408
 #, python-format
@@ -544,9 +544,9 @@ msgstr ""
 "                   kľúčov\n"
 "  -x \"s/foo/bar\" : Voliteľná náhrada regulárneho výrazu, nahrádza foo s "
 "bar\n"
-"                   v popise klonu, označenie základného kanála, označenie "
+"                   v popise klonu, označení základného kanála, označení "
 "kanálov\n"
-"                   potomkov, názvy konfiguračných kanálov "
+"                   potomkov, názvoch konfiguračných kanálov "
 
 #: ../src/spacecmd/activationkey.py:1458 ../src/spacecmd/kickstart.py:462
 #: ../src/spacecmd/system.py:3061
@@ -1378,36 +1378,36 @@ msgstr "Chyba pri importovaní konfiguračného kanála %s"
 #: ../src/spacecmd/configchannel.py:1295
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
-msgstr ""
+msgstr "Konfiguračný kanál %s už existuje! Preskakuje sa!"
 
 #. create the cc, we need to drop the org prefix from the cc name
 #: ../src/spacecmd/configchannel.py:1300
 #, python-format
 msgid "Importing config channel  %s"
-msgstr ""
+msgstr "Importovanie konfiguračného kanála  %s"
 
 #: ../src/spacecmd/configchannel.py:1315
 #, python-format
 msgid "Found %s %s for cc %s"
-msgstr ""
+msgstr "Nájdené %s %s pre cc %s"
 
 #: ../src/spacecmd/configchannel.py:1343
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
-msgstr ""
+msgstr "Zlyhal pokus o import súboru %s (prázdny obsah)"
 
 #: ../src/spacecmd/configchannel.py:1345
 msgid "Older APIs can't export encoded files"
-msgstr ""
+msgstr "Staršie rozhrania API nemôžu exportovať kódované súbory"
 
 #: ../src/spacecmd/configchannel.py:1368
 #, python-format
 msgid "Error adding file %s to %s"
-msgstr ""
+msgstr "Chyba pri pridávaní súboru %s do %s"
 
 #: ../src/spacecmd/configchannel.py:1378
 msgid "configchannel_clone: Clone config channel(s)"
-msgstr ""
+msgstr "configchannel_clone: Klonovať konfiguračný kanál(y)"
 
 #: ../src/spacecmd/configchannel.py:1379
 msgid ""
@@ -1426,14 +1426,28 @@ msgid ""
 "                   clone name, label and description\n"
 "  Note : If no -c or -x option is specified, interactive is assumed"
 msgstr ""
+"príklady použitia:\n"
+"                 configchannel_clone foo_label -c bar_label\n"
+"                 configchannel_clone foo_label1 foo_label2 -c prefix\n"
+"                 configchannel_clone foo_label -x \"s/foo/bar\"\n"
+"                 configchannel_clone foo_label1 foo_label2 -x \"s/foo/bar\"\n"
+"\n"
+"voľby:\n"
+"  -c OZNAČENIE_KLONU : názov/označenie výsledného cc (poznámka\n"
+"                   neaktualizuje popis, pozrite voľbu -x), považuje sa\n"
+"                    za predponu, ak je zadaných viac kľúčov\n"
+"  -x \"s/foo/bar\" : Voliteľná náhrada regulárneho výrazu, nahrádza foo s "
+"bar\n"
+"                   v názve klonu, označení a popise\n"
+"  Note : Ak nie je zadaná voľba -c alebo -x, predpokladá sa interaktívna"
 
 #: ../src/spacecmd/configchannel.py:1408
 msgid "No config channels found"
-msgstr ""
+msgstr "Nenašli sa žiadne konfiguračné kanály"
 
 #: ../src/spacecmd/configchannel.py:1411
 msgid "Config Channels"
-msgstr ""
+msgstr "Konfiguračné kanály"
 
 #: ../src/spacecmd/configchannel.py:1417
 #, python-format
