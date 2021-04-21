@@ -159,14 +159,6 @@
           </tr>
           <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
           <tr>
-            <td><bean:message key="sdc.details.overview.activationkey"/></td>
-            <td>
-              <c:forEach items="${activationKey}" var="key">
-                <c:out value="${key.token}" /></br>
-              </c:forEach>
-            </td>
-          </tr>
-          <tr>
             <td><bean:message key="sdc.details.overview.installedproducts"/></td>
             <td>
               <c:choose>
