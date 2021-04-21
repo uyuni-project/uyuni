@@ -45,9 +45,7 @@ fi
 echo "Waiting for $project to build"
 osc -A $api -c $config_file results $project -w --xml
 
-for i in $(osc -A $api -c $config_file ls $project);do
-    if [ $lock == "yes" ];then
-      echo "Locking $project/$i so there are not further rebuilds"
-      osc -A $api -c $config_file lock $project $i
-    fi  
-done
+if [ $lock == "yes" ];then
+  echo "Locking $project so there are not further rebuilds"
+  osc -A $api -c $config_file lock $project
+fi  
