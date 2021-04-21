@@ -28,6 +28,8 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
+import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -237,6 +239,46 @@ public class AnsibleHandler extends BaseHandler {
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException(e.getMessage());
         }
+    }
+
+    /**
+     * Discover playbooks under given playbook path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the playbooks under given path
+     *
+     * @xmlrpc.doc Discover playbooks under given playbook path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype
+     * #struct_begin("playbooks")
+     *     #struct_begin("playbook")
+     *         $AnsiblePathSerializer
+     *     #struct_end()
+     * #struct_end()
+     */
+    public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
+        return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
+                .orElseThrow(() -> new MinionNotRespondingFaultException());
+    }
+
+    /**
+     * Introspect inventory under given inventory path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the inventory contents under given path
+     *
+     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype todo update
+     */
+    // todo: more fitting structure?
+    public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
+        return AnsibleManager.introspectInventory(pathId, loggedInUser)
+                .orElseThrow(() -> new MinionNotRespondingFaultException());
     }
 
     private static <T> T getFieldValue(Map<String, Object> props, String field) {
