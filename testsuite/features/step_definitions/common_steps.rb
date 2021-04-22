@@ -1283,12 +1283,18 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
 end
 
 When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
-  playbooks_dir = 'ansible/'
   target = get_target(host)
-  dest = "/srv/playbooks/"
+  dest = "/srv/playbooks/example_playbook2_orion_dummy/"
   target.run("mkdir -p #{dest}")
-  source = File.dirname(__FILE__) + '/../upload_files/' + playbooks_dir
-  return_code = file_inject(target, source, dest)
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml'
+  return_code = file_inject(target, source, dest + "example_playbook2_orion_dummy.yml")
+  raise 'File injection failed' unless return_code.zero?
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/hosts'
+  return_code = file_inject(target, source, dest + "hosts")
+  raise 'File injection failed' unless return_code.zero?
+  dest = "/srv/playbooks/"
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook1_ping.yml'
+  return_code = file_inject(target, source, dest + "example_playbook1_ping.yml")
   raise 'File injection failed' unless return_code.zero?
 end
 
