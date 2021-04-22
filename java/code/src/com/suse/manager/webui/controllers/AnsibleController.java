@@ -75,8 +75,14 @@ public class AnsibleController {
      * @param jade the Jade engine to use to render the pages
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/systems/details/ansible",
+        get("/manager/systems/details/ansible/control-node",
                 withCsrfToken(withDocsLocale(withUser(AnsibleController::view))), jade);
+
+        get("/manager/systems/details/ansible/playbooks",
+                withCsrfToken(withDocsLocale(withUser(AnsibleController::playbooks))), jade);
+
+        get("/manager/systems/details/ansible/inventories",
+                withCsrfToken(withDocsLocale(withUser(AnsibleController::inventories))), jade);
 
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
@@ -114,6 +120,40 @@ public class AnsibleController {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         return new ModelAndView(data, "templates/minion/ansible-control-node.jade");
+    }
+
+    /**
+     * Returns the ansible playbooks page
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView playbooks(Request req, Response res, User user) {
+        String serverId = req.queryParams("sid");
+        Map<String, Object> data = new HashMap<>();
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        data.put("server", server);
+        data.put("pathContentType", "playbooks");
+        return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
+    }
+
+    /**
+     * Returns the ansible inventories page
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView inventories(Request req, Response res, User user) {
+        String serverId = req.queryParams("sid");
+        Map<String, Object> data = new HashMap<>();
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        data.put("server", server);
+        data.put("pathContentType", "inventories");
+        return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
     }
 
     /**
