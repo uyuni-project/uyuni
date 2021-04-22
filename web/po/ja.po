@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-21 17:47+0000\n"
+"POT-Creation-Date: 2021-04-22 09:02+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -126,6 +126,7 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
 msgid "Edit"
 msgstr "編集"
 
@@ -390,7 +391,7 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.js:45
+#: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "送信"
 
@@ -621,7 +622,7 @@ msgstr "すべてを選択"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
-#: ../html/src/manager/virtualization/nets/network-properties.js:438
+#: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr "読み込んでいます..."
@@ -833,7 +834,7 @@ msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/nets/network-properties.js:160
+#: ../html/src/manager/virtualization/nets/network-properties.js:224
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "全般"
@@ -1244,7 +1245,7 @@ msgstr "監査イメージ"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
-#: ../html/src/manager/virtualization/nets/network-properties.js:165
+#: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
@@ -2160,6 +2161,7 @@ msgstr "プロジェクトを削除してよろしいですか"
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
 #: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
@@ -2759,6 +2761,7 @@ msgstr "追加の独自 info 鍵の作成"
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
+#: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "更新"
@@ -3485,7 +3488,7 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/nets/network-properties.js:407
+#: ../html/src/manager/virtualization/nets/network-properties.js:471
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr "スケジュール"
@@ -4617,7 +4620,7 @@ msgid "Action Status"
 msgstr "動作の状態"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/nets/network-properties.js:167
+#: ../html/src/manager/virtualization/nets/network-properties.js:231
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr "下記の文字を含めることはできません: /\\"
@@ -4802,7 +4805,7 @@ msgid "Networks"
 msgstr "ネットワーク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/nets/network-properties.js:431
+#: ../html/src/manager/virtualization/nets/network-properties.js:495
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "項目の消去"
@@ -4845,114 +4848,114 @@ msgid "Persistent"
 msgstr "恒久"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:81
-#: ../html/src/manager/virtualization/nets/network-properties.js:210
+#: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr "ブリッジ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:157
+#: ../html/src/manager/virtualization/nets/network-properties.js:221
 msgid "network properties"
 msgstr "ネットワークプロパティ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:175
+#: ../html/src/manager/virtualization/nets/network-properties.js:239
 msgid "Network type"
 msgstr "ネットワークの種類"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:187
+#: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
 msgstr "Macvtap モード"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:196
+#: ../html/src/manager/virtualization/nets/network-properties.js:260
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr "仮想ホストの起動時に起動"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:204
+#: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
 msgstr "接続性"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:219
+#: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
 msgstr "最大送信単位 (MTU)"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:223
+#: ../html/src/manager/virtualization/nets/network-properties.js:287
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
 msgid "The value has to be a positive integer"
 msgstr "値は正の整数でなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:231
+#: ../html/src/manager/virtualization/nets/network-properties.js:295
 msgid "Virtual Port Type"
 msgstr "仮想ポートの種類"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:251
+#: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
 msgstr "インターフェイスの選択"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:257
+#: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
 msgstr "物理機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
 msgstr "仮想機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
 msgstr "インターフェイス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:268
+#: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
 msgstr "インターフェイス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:290
+#: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
 msgstr "物理機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:305
+#: ../html/src/manager/virtualization/nets/network-properties.js:369
 msgid "Virtual Functions"
 msgstr "仮想機能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:329
+#: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
 msgstr "VLAN タグ"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:333
+#: ../html/src/manager/virtualization/nets/network-properties.js:397
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
 msgstr "0 から 4095 の範囲内の整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:340
+#: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
 msgstr "VLAN タグトランキング"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:350
-#: ../html/src/manager/virtualization/nets/network-properties.js:351
+#: ../html/src/manager/virtualization/nets/network-properties.js:414
+#: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 範囲"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:360
+#: ../html/src/manager/virtualization/nets/network-properties.js:424
 msgid "Both values has to be IPv4 addresses"
 msgstr "両方の値は IPv4 アドレスでなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:364
-#: ../html/src/manager/virtualization/nets/network-properties.js:365
+#: ../html/src/manager/virtualization/nets/network-properties.js:428
+#: ../html/src/manager/virtualization/nets/network-properties.js:429
 msgid "NAT port range"
 msgstr "NAT ポート範囲"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:375
+#: ../html/src/manager/virtualization/nets/network-properties.js:439
 msgid "Both values has to be positive integers"
 msgstr "両方の値は正の整数でなければなりません"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:385
+#: ../html/src/manager/virtualization/nets/network-properties.js:449
 msgid "Addressing"
 msgstr "アドレス"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:391
+#: ../html/src/manager/virtualization/nets/network-properties.js:455
 msgid "Enable IPv6"
 msgstr "IPv6 の有効化"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:397
+#: ../html/src/manager/virtualization/nets/network-properties.js:461
 msgid "Domain name"
 msgstr "ドメイン名"
 
