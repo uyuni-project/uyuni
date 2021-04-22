@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-21 17:47+0000\n"
+"POT-Creation-Date: 2021-04-22 09:02+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -122,6 +122,7 @@ msgstr "Canal de configuración: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
 msgid "Edit"
 msgstr "Editar"
 
@@ -380,7 +381,7 @@ msgstr "Conmutar visibilidad de sección"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.js:45
+#: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "Enviar"
 
@@ -613,7 +614,7 @@ msgstr "Seleccionar todo"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
-#: ../html/src/manager/virtualization/nets/network-properties.js:438
+#: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
 msgstr ""
@@ -823,7 +824,7 @@ msgstr "Configure la supervisión del servidor de SUSE Manager."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:131
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/nets/network-properties.js:160
+#: ../html/src/manager/virtualization/nets/network-properties.js:224
 #: ../html/src/manager/virtualization/pools/pool-properties.js:232
 msgid "General"
 msgstr "Generales"
@@ -1224,7 +1225,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
-#: ../html/src/manager/virtualization/nets/network-properties.js:165
+#: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:341
@@ -2129,6 +2130,7 @@ msgstr "¿Confirma que quiere eliminar el proyecto"
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
 #: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
 #: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
@@ -2714,6 +2716,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
+#: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
 msgid "Update"
 msgstr "Actualizar"
@@ -3431,7 +3434,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/nets/network-properties.js:407
+#: ../html/src/manager/virtualization/nets/network-properties.js:471
 #: ../html/src/manager/virtualization/pools/pool-properties.js:566
 msgid "Schedule"
 msgstr ""
@@ -4537,7 +4540,7 @@ msgid "Action Status"
 msgstr "Estado de acción"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/nets/network-properties.js:167
+#: ../html/src/manager/virtualization/nets/network-properties.js:231
 #: ../html/src/manager/virtualization/pools/pool-properties.js:239
 msgid "Can not contain the following characters: /\\"
 msgstr ""
@@ -4726,7 +4729,7 @@ msgid "Networks"
 msgstr "Redes"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/nets/network-properties.js:431
+#: ../html/src/manager/virtualization/nets/network-properties.js:495
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr ""
@@ -4771,121 +4774,121 @@ msgid "Persistent"
 msgstr "Persistente"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:81
-#: ../html/src/manager/virtualization/nets/network-properties.js:210
+#: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:157
+#: ../html/src/manager/virtualization/nets/network-properties.js:221
 #, fuzzy
 msgid "network properties"
 msgstr "Editar propiedades"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:175
+#: ../html/src/manager/virtualization/nets/network-properties.js:239
 #, fuzzy
 msgid "Network type"
 msgstr "Red"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:187
+#: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:196
+#: ../html/src/manager/virtualization/nets/network-properties.js:260
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
 msgid "Start during virtual host boot"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:204
+#: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:219
+#: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:223
+#: ../html/src/manager/virtualization/nets/network-properties.js:287
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
 msgid "The value has to be a positive integer"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:231
+#: ../html/src/manager/virtualization/nets/network-properties.js:295
 #, fuzzy
 msgid "Virtual Port Type"
 msgstr "Recuento de CPU virtuales"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:251
+#: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:257
+#: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:258
+#: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:268
+#: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:290
+#: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:305
+#: ../html/src/manager/virtualization/nets/network-properties.js:369
 #, fuzzy
 msgid "Virtual Functions"
 msgstr "Redes"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:329
+#: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:333
+#: ../html/src/manager/virtualization/nets/network-properties.js:397
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:340
+#: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:350
-#: ../html/src/manager/virtualization/nets/network-properties.js:351
+#: ../html/src/manager/virtualization/nets/network-properties.js:414
+#: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:360
+#: ../html/src/manager/virtualization/nets/network-properties.js:424
 msgid "Both values has to be IPv4 addresses"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:364
-#: ../html/src/manager/virtualization/nets/network-properties.js:365
+#: ../html/src/manager/virtualization/nets/network-properties.js:428
+#: ../html/src/manager/virtualization/nets/network-properties.js:429
 #, fuzzy
 msgid "NAT port range"
 msgstr "Importar imagen"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:375
+#: ../html/src/manager/virtualization/nets/network-properties.js:439
 msgid "Both values has to be positive integers"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:385
+#: ../html/src/manager/virtualization/nets/network-properties.js:449
 #, fuzzy
 msgid "Addressing"
 msgstr "Dirección MAC"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:391
+#: ../html/src/manager/virtualization/nets/network-properties.js:455
 #, fuzzy
 msgid "Enable IPv6"
 msgstr "Activar"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:397
+#: ../html/src/manager/virtualization/nets/network-properties.js:461
 #, fuzzy
 msgid "Domain name"
 msgstr "Nombre de imagen"
