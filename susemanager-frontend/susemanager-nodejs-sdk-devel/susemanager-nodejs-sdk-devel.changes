@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 22 14:40:05 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- Add MPL-2.0 license to the list for NoVNC
+
+-------------------------------------------------------------------
 Fri Apr 16 15:56:59 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.9-1
