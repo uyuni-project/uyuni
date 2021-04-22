@@ -1281,3 +1281,26 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   puts "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end
+
+When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
+  target = get_target(host)
+  dest = "/srv/playbooks/example_playbook2_orion_dummy/"
+  target.run("mkdir -p #{dest}")
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml'
+  return_code = file_inject(target, source, dest + "example_playbook2_orion_dummy.yml")
+  raise 'File injection failed' unless return_code.zero?
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/hosts'
+  return_code = file_inject(target, source, dest + "hosts")
+  raise 'File injection failed' unless return_code.zero?
+  dest = "/srv/playbooks/"
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook1_ping.yml'
+  return_code = file_inject(target, source, dest + "example_playbook1_ping.yml")
+  raise 'File injection failed' unless return_code.zero?
+end
+
+When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host|
+  playbooks_dir = 'ansible/'
+  target = get_target(host)
+  dest = "/srv/playbooks/"
+  target.run("rm -rf #{dest}")
+end
