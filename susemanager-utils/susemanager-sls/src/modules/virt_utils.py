@@ -63,7 +63,6 @@ def vm_info(name=None):
     infos = __salt__["virt.vm_info"](name)
     all_vms = {
         vm_name: {
-            "cluster_primitive": None,
             "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
         }
         for vm_name in infos.keys()
@@ -89,6 +88,7 @@ def vm_info(name=None):
             # Don't provide infos on VMs managed by the cluster that aren't running on this node
             if name_node is not None and name_node.text in all_vms:
                 all_vms[name_node.text]["cluster_primitive"] = primitive.get("id")
+                all_vms[name_node.text]["definition_path"] = path
 
             # No need to parse more XML files if we already had the ones we're looking for
             if name is not None and name_node == name:
