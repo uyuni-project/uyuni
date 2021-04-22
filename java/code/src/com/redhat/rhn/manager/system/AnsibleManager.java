@@ -39,7 +39,6 @@ import com.suse.salt.netapi.calls.LocalCall;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class AnsibleManager extends BaseManager {
@@ -211,6 +210,42 @@ public class AnsibleManager extends BaseManager {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
         AnsibleFactory.removeAnsiblePath(path);
+    }
+
+    /**
+     * Fetch playbook contents of based on given {@link PlaybookPath} id and relative path inside it.
+     *
+     * For instance, if the {@link PlaybookPath} has path attribute equal to "/root/playbooks", calling this method with
+     * playbook relative path equal to "lamp_ha/site.yml" will result in fetching "/root/playbooks/lamp_ha/site.yml"
+     * file from the control node assigned to this {@link PlaybookPath}.
+     *
+     * <strong>Uses a synchronous salt call for fetching.</strong>
+     *
+     * @param pathId the path id
+     * @param playbookRelPathStr the relative path to the playbook file
+     * @param user the user
+     * @return the playbook contents or empty if minion did not respond
+     */
+    public static Optional<String> fetchPlaybookContents(long pathId, String playbookRelPathStr, User user) {
+        AnsiblePath path = lookupAnsiblePathById(pathId, user)
+                .orElseThrow(() -> new LookupException("Ansible playbook path id " + pathId + " not found."));
+        if (!(path instanceof PlaybookPath)) {
+            throw new LookupException("Path id " + pathId + " is not a playbook path id ");
+        }
+
+        Path playbookRelPath = Path.of(playbookRelPathStr);
+        if (playbookRelPath.isAbsolute()) {
+            throw new IllegalArgumentException("Path must be relative: " + playbookRelPathStr);
+        }
+
+        Path localPath = path.getPath().resolve(playbookRelPath);
+        LocalCall<String> call = new LocalCall<>(
+                "cp.get_file_str",
+                of(List.of(localPath.toString())),
+                empty(),
+                new TypeToken<>() { }
+        );
+        return saltApi.callSync(call, path.getMinionServer().getMinionId());
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
