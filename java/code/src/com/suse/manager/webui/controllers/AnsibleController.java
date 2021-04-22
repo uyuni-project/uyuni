@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
+import com.suse.manager.webui.utils.AnsiblePlaybookIdJson;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import java.util.HashMap;
@@ -77,6 +78,9 @@ public class AnsibleController {
 
         post("/manager/api/systems/details/ansible/paths/delete",
                 withUser(AnsibleController::deleteAnsiblePath));
+
+        post("/manager/api/systems/details/ansible/paths/playbook-contents",
+                withUser(AnsibleController::fetchPlaybookContents));
     }
 
     /**
@@ -170,4 +174,24 @@ public class AnsibleController {
         return json(res, data);
     }
 
+    /**
+     * Fetch playbook contents using a salt sync call
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the response with the playbook contents or with a localized error message when minion not responding
+     */
+    public static String fetchPlaybookContents(Request req, Response res, User user) {
+        try {
+            AnsiblePlaybookIdJson params = GSON.fromJson(req.body(), AnsiblePlaybookIdJson.class);
+            return AnsibleManager.fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
+                    .map(contents -> json(res, contents))
+                    .orElseGet(() -> json(res,
+                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (LookupException e) {
+            throw Spark.halt(404);
+        }
+    }
 }
