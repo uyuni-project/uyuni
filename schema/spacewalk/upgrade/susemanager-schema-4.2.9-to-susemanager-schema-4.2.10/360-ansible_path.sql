@@ -20,19 +20,15 @@ CREATE TABLE IF NOT EXISTS suseAnsiblePath(
 
     modified    TIMESTAMPTZ
         DEFAULT (current_timestamp) NOT NULL
-
 );                                                                                                                                                       
 
 CREATE SEQUENCE IF NOT EXISTS suse_ansible_path_seq;
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_ansible_path_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ansible_path_type_uq
     ON suseAnsiblePath(server_id, path, type);
 
-CREATE INDEX IF NOT EXISTS suse_ansible_path_server_id_idx
-    ON suseAnsiblePath(server_id);
-
-CREATE INDEX IF NOT EXISTS suse_ansible_server_id_type_idx
-    ON suseAnsiblePath(server_id, type);
+CREATE UNIQUE INDEX IF NOT EXISTS suse_ansible_type_path_uq
+    ON suseAnsiblePath(server_id, type, path);
 
 CREATE OR REPLACE function suse_ansible_path_mod_trig_fun() RETURNS TRIGGER AS
 $$
