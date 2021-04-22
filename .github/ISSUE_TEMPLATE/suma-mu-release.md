@@ -1,8 +1,8 @@
 ---
 name: SUSE Manager MU release
 about: Use this template for SUSE Manager MU releases (announcements)
-title: ''
-labels: hexagon
+title: 'X.Y Maintenance Update release (X.Y.Z)'
+labels: vega-squad
 assignees: 'juliogonzalez'
 
 ---
