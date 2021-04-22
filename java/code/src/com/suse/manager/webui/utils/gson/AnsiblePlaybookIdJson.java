@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.utils;
+package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
