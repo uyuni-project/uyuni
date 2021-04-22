@@ -9028,6 +9028,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
+        <source>Control node is not responding</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
