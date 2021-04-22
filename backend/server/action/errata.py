@@ -30,6 +30,8 @@ def update(serverId, actionId, dry_run=0):
         select r1.errata_id, e.advisory_status
         from rhnactionerrataupdate r1
         join rhnErrata e on r1.errata_id = e.id
+        where r1.action_id = :action_id
+    """
     h = rhnSQL.prepare(statement)
     h.execute(action_id=actionId)
     ret = h.fetchall_dict()
