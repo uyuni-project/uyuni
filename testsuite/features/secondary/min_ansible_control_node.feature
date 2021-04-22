@@ -18,7 +18,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I wait until event "Apply highstate scheduled by admin" is completed
     Then "ansible" should be installed on "sle_minion"
 
-  Scenario: The "ansible" tab appears in the UI
+  Scenario: The Ansible tab appears in the system overview page
      Given I am on the Systems overview page of this "sle_minion"
      When I follow "Ansible" in the content area
      Then I should see a "Ansible Control Node Configuration" text
