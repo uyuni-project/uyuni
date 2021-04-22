@@ -320,10 +320,10 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("server", getServer())
+                .append("server", getOptServer().map(s -> s.getId().toString()).orElse(""))
                 .append("regRequired", isSccRegistrationRequired())
-                .append("sccId", getSccId())
-                .append("sccLogin", getSccLogin())
+                .append("sccId", getOptSccId().map(Object::toString).orElse(""))
+                .append("sccLogin", getOptSccLogin().orElse(""))
         .toString();
     }
 }

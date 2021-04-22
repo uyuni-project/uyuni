@@ -46,7 +46,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 String uuid = ContentSyncManager.getUUID();
                 SCCCachingFactory.initNewSystemsToForward();
                 List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
+                log.debug(forwardRegistration.size() + " RegCacheItems found to forward");
                 List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
+                log.debug(deregister.size() + " RegCacheItems found to delete");
                 List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
                 SCCSystemRegistry sccSystemRegistry = new SCCSystemRegistry(url, uuid);
                 credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(primaryCredentials -> {

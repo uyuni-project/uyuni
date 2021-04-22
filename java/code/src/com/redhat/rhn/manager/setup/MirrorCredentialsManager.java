@@ -171,6 +171,7 @@ public class MirrorCredentialsManager {
 
         // Check for systems registered under this credentials and start delete requests
         List<SCCRegCacheItem> itemList = SCCCachingFactory.listRegItemsByCredentials(dbCreds);
+        log.debug(itemList.size() + " RegCacheItems found to force delete");
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();

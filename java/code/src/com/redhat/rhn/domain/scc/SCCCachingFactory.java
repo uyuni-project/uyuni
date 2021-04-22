@@ -502,6 +502,7 @@ public class SCCCachingFactory extends HibernateFactory {
         newServer.stream().forEach(s -> {
             SCCRegCacheItem rci = new SCCRegCacheItem(s);
             saveRegCacheItem(rci);
+            log.debug("New RegCacheItem saved: " + rci);
         });
     }
 
