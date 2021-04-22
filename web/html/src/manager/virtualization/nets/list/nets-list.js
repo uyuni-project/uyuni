@@ -48,18 +48,21 @@ export function NetsList(props: Props) {
           (createModalButton, onAction) => {
             const columns = [
               <Column
+                key="name"
                 columnKey="name"
                 comparator={Utils.sortByText}
                 header={t('Name')}
                 cell={row => row.name}
               />,
               <Column
+                key="state"
                 columnKey="state"
                 header={t('State')}
                 comparator={ListUtils.sortByState}
                 cell={row => row.active ? 'running' : 'stopped'}
               />,
               <Column
+                key="autostart"
                 columnKey="autostart"
                 header={t('Autostart')}
                 cell={
@@ -68,6 +71,7 @@ export function NetsList(props: Props) {
                 }
               />,
               <Column
+                key="persistent"
                 columnKey="persistent"
                 header={t('Persistent')}
                 cell={
@@ -76,6 +80,7 @@ export function NetsList(props: Props) {
                 }
               />,
               <Column
+                key="bridge"
                 columnKey="bridge"
                 comparator={Utils.sortByText}
                 header={t('Bridge')}
