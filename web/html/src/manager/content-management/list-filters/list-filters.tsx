@@ -23,10 +23,8 @@ type Props = {
 };
 
 const ListFilters = (props: Props) => {
-  const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] = useState(
-    mapResponseToFilterForm(props.filters)
-  );
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [displayedFilters, setDisplayedFilters] = useState<FilterFormType[]>(mapResponseToFilterForm(props.filters));
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
@@ -36,7 +34,7 @@ const ListFilters = (props: Props) => {
     }
   }, []);
 
-  const searchData = (row, criteria) => {
+  const searchData = (row: FilterFormType, criteria?: string) => {
     const keysToSearch = ["filter_name", "projects.right"];
     if (criteria) {
       return keysToSearch
@@ -49,8 +47,13 @@ const ListFilters = (props: Props) => {
     return true;
   };
 
-  const onSelect = items => {
+  const onSelect = (items: string[]) => {
     setSelectedItems(items);
+  };
+
+  const onSelectUnused = () => {
+    const unused = displayedFilters.filter(item => !item.projects?.length);
+    setSelectedItems(unused.map(identifier));
   };
 
   const panelButtons = (
@@ -69,8 +72,15 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  const sortedProjects = row => {
-    return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase()));
+  const unusedFilter = (
+    <button className="btn-link" onClick={onSelectUnused}>
+      {t("Select unused")}
+    </button>
+  );
+
+  const identifier = row => row.filter_name;
+  const sortedProjects = (row: FilterFormType) => {
+    return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
 
   return (
@@ -82,13 +92,14 @@ const ListFilters = (props: Props) => {
     >
       <Table
         data={displayedFilters}
-        identifier={row => row.filter_name}
+        identifier={identifier}
         initialSortColumnKey="filter_name"
         initialItemsPerPage={window.userPrefPageSize}
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name or project")} />}
         selectable={true}
         onSelect={onSelect}
         selectedItems={selectedItems}
+        additionalFilters={[unusedFilter]}
       >
         <Column
           columnKey="filter_name"
@@ -99,7 +110,7 @@ const ListFilters = (props: Props) => {
         <Column
           columnKey="projects"
           header={t("Projects in use")} // {left: project label, right: project name}
-          comparator={(aRow, bRow, _, sortDirection) => {
+          comparator={(aRow: FilterFormType, bRow: FilterFormType, _, sortDirection) => {
             const aProjects = sortedProjects(aRow)
               .map(project => project.right)
               .join();
