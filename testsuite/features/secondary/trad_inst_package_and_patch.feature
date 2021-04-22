@@ -48,7 +48,7 @@ Feature: Install a package to the traditional client
     Then I should see a "1 patch update has been scheduled for" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "andromeda-dummy-2.0-1.1" should be installed on "sle_client"
-    And vendor change should be enabled for "package actions" on "sle_client"
+    And vendor change should be enabled for package actions on "sle_client"
     And The metadata buildtime from package "andromeda-dummy" match the one in the rpm on "sle_client"
 
   Scenario: Cleanup: remove packages and restore non-update repo

@@ -54,7 +54,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait at most 600 seconds until event "Service Pack Migration scheduled by admin" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
-    And vendor change should be enabled for "SP migration" on "ssh_spack_migrated_minion"
+    And vendor change should be enabled for SP migration on "ssh_spack_migrated_minion"
 
 @proxy
   Scenario: Check connection from SSH minion to proxy

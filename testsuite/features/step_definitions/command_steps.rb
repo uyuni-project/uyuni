@@ -188,7 +188,7 @@ When(/^I query latest Salt changes on ubuntu system "(.*?)"$/) do |host|
   end
 end
 
-When(/^vendor change should be enabled for "(?:[^"]*)" on "([^"]*)"$/) do |host|
+When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   node = get_target(host)
   pattern = '--allow-vendor-change'
   log = '/var/log/zypper.log'
