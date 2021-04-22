@@ -287,3 +287,4 @@ rhnChildChannelArchCompat      :: rhnChannelArch
 rhnResetPassword               :: web_contact
 suseUserNotification           :: suseNotificationMessage web_contact
 suseRecurringAction            :: web_customer web_contact rhnServerGroup suseMinionInfo
+suseAnsiblePath                :: rhnServer
