@@ -4,9 +4,9 @@ CREATE TABLE suseAnsiblePath(
     id NUMERIC NOT NULL
         CONSTRAINT suse_ansible_path_id_pk PRIMARY KEY,
 
-    server_id NUMERIC NOT NULL -- references minion
+    server_id NUMERIC NOT NULL
         CONSTRAINT suse_ansible_path_sid_fk
-        REFERENCES suseMinionInfo (server_id)
+        REFERENCES rhnServer(id)
         ON DELETE CASCADE,
 
     path VARCHAR(1024) NOT NULL,
