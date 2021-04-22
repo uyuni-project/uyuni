@@ -8,7 +8,7 @@ const NewAnsiblePath = (props) => {
       <h4>{props.title}</h4>
       <div className="form-group">
         <TextField
-          placeholder={t("New path")}
+          placeholder={props.placeholder}
           value={props.newInventoryPath}
           onChange={(e: any) => props.newPath(e.target.value.toString())}
         />
