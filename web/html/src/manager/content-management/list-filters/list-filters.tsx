@@ -13,6 +13,7 @@ import { mapResponseToFilterForm } from "./filter.utils";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
+import { getValue } from "utils/data";
 
 type Props = {
   filters: Array<FilterServerType>;
@@ -25,6 +26,7 @@ const ListFilters = (props: Props) => {
   const [displayedFilters, setDisplayedFilters]: [Array<FilterFormType>, Function] = useState(
     mapResponseToFilterForm(props.filters)
   );
+  const [selectedItems, setSelectedItems] = useState([]);
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
@@ -35,15 +37,20 @@ const ListFilters = (props: Props) => {
   }, []);
 
   const searchData = (row, criteria) => {
-    const keysToSearch = ["filter_name"];
+    const keysToSearch = ["filter_name", "projects.right"];
     if (criteria) {
       return keysToSearch
-        .map(key => row[key])
+        .map(key => getValue(row, key))
+        .filter(Boolean)
         .join()
         .toLowerCase()
         .includes(criteria.toLowerCase());
     }
     return true;
+  };
+
+  const onSelect = items => {
+    setSelectedItems(items);
   };
 
   const panelButtons = (
@@ -74,7 +81,10 @@ const ListFilters = (props: Props) => {
         identifier={row => row.filter_name}
         initialSortColumnKey="filter_name"
         initialItemsPerPage={window.userPrefPageSize}
-        searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
+        searchField={<SearchField filter={searchData} placeholder={t("Filter by name or project")} />}
+        selectable={true}
+        onSelect={onSelect}
+        selectedItems={selectedItems}
       >
         <Column
           columnKey="filter_name"
