@@ -547,6 +547,24 @@
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Ansible Control Node" xml:space="preserve">
+        <source>Ansible Control Node</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu (system details)</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Playbooks" xml:space="preserve">
+        <source>Playbooks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu (system details)</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Inventories" xml:space="preserve">
+        <source>Inventories</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu (system details)</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Misc" xml:space="preserve">
         <source>Misc</source>
         <context-group name="ctx">
