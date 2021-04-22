@@ -31,13 +31,18 @@ import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -246,6 +251,30 @@ public class AnsibleManager extends BaseManager {
                 new TypeToken<>() { }
         );
         return saltApi.callSync(call, path.getMinionServer().getMinionId());
+    }
+
+    /**
+     * Schedules playbook execution
+     *
+     * @param playbookPath playbook path
+     * @param inventoryPath inventory path
+     * @param controlNodeId control node id
+     * @param earliestOccurrence earliestOccurrence
+     * @param user the user
+     * @return the scheduled action id
+     * @throws TaskomaticApiException if taskomatic is down
+     * @throws IllegalArgumentException if playbook path is empty
+     */
+    public static Long schedulePlaybook(String playbookPath, String inventoryPath, Integer controlNodeId,
+            Date earliestOccurrence, User user) throws TaskomaticApiException {
+        if (StringUtils.isBlank(playbookPath)) {
+            throw new IllegalArgumentException("Playbook path cannot be empty.");
+        }
+
+        Server controlNode = lookupAnsibleControlNode(controlNodeId, user);
+
+        return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
+                inventoryPath, null, earliestOccurrence).getId();
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
