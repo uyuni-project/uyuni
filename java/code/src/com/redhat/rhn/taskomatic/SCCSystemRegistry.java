@@ -118,36 +118,8 @@ public class SCCSystemRegistry {
         Optional.ofNullable(srv.getCpu().getNrsocket()).ifPresent(c -> hwinfo.put("sockets", c.toString()));
         hwinfo.put("arch", srv.getServerArch().getLabel().split("-")[0]);
         if (srv.isVirtualGuest()) {
-            String cloud = "";
-            String hv = srv.getVirtualInstance().getType().getLabel();
-            switch(hv) {
-                case "fully_virtualized":
-                case "para_virtualized":
-                    hv = "XEN";
-                    break;
-                case "qemu":
-                    hv = "KVM";
-                    break;
-                case "vmware":
-                case "hyperv":
-                    break;
-                case "nutanix":
-                    hv = "Nutanix";
-                    break;
-                case "azure":
-                    cloud = "Microsoft";
-                    break;
-                case "aws":
-                    cloud = "Amazon";
-                    break;
-                case "gce":
-                    cloud = "Google";
-                    break;
-                default:
-                    break;
-            }
-            hwinfo.put("hypervisor", hv);
-            hwinfo.put("cloud_provider", cloud);
+            hwinfo.put("hypervisor", srv.getVirtualInstance().getType().getHypervisor().orElse(""));
+            hwinfo.put("cloud_provider", srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
             Optional.ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(uuid -> {
                 hwinfo.put("uuid", uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                         "$1-$2-$3-$4-$5"));
