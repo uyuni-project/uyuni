@@ -33,18 +33,3 @@ CREATE INDEX suse_ansible_path_server_id_idx
 CREATE INDEX suse_ansible_server_id_type_idx
     ON suseAnsiblePath(server_id, type);
 
-CREATE OR REPLACE function suse_ansible_path_mod_trig_fun() RETURNS TRIGGER AS
-$$
-BEGIN
-        new.modified := current_timestamp;
-        RETURN new;
-END;
-$$ language plpgsql;
-
-DROP TRIGGER IF EXISTS suse_ansible_path_mod_trig ON suseAnsiblePath;
-CREATE TRIGGER
-suse_ansible_path_mod_trig
-BEFORE INSERT OR UPDATE ON suseAnsiblePath
-FOR EACH ROW
-EXECUTE PROCEDURE suse_ansible_path_mod_trig_fun();
-
