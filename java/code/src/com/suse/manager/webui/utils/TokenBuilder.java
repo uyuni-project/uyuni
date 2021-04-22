@@ -19,10 +19,14 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 
@@ -162,5 +166,34 @@ public class TokenBuilder {
                     () -> new IllegalArgumentException("No secret has been set"))));
 
         return jws.getCompactSerialization();
+    }
+
+
+    /**
+     * Verify that a token is one that we built.
+     *
+     * @param token token to verify
+     *
+     * @return true if the token is valid, false otherwise
+     */
+    public static boolean verifyToken(String token) {
+        JwtConsumer consumer = new JwtConsumerBuilder()
+                .setRequireExpirationTime()
+                .setVerificationKey(getKeyForSecret(
+                    getServerSecret().orElseThrow(
+                            () -> new IllegalArgumentException("No secret has been set"))))
+                .setJwsAlgorithmConstraints(
+                        new AlgorithmConstraints(
+                                AlgorithmConstraints.ConstraintType.WHITELIST,
+                                AlgorithmIdentifiers.HMAC_SHA256)
+                )
+                .build();
+        try {
+            consumer.processToClaims(token);
+        }
+        catch (InvalidJwtException e) {
+            return false;
+        }
+        return true;
     }
 }
