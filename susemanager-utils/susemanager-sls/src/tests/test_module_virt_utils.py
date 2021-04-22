@@ -132,6 +132,7 @@ def test_vminfo_cluster():
                 info = virt_utils.vm_info()
                 assert info["vm01"].get("cluster_primitive") == "vm01"
                 assert info["vm01"].get("graphics_type") =="vnc"
+                assert info["vm01"].get("definition_path") == "/srv/clusterfs/vm01.xml"
 
 
 def test_host_info():
