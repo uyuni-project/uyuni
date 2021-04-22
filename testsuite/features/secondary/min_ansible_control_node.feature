@@ -26,7 +26,7 @@ Feature: Operate an Ansible control node
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
      Given I deploy testing playbooks and inventory files to "sle_minion" 
 
-  Scenario: Cleanup: Deploy test playbooks and inventory file
+  Scenario: Cleanup: Disable Ansible and remove test playbooks and inventory file
      Given I am on the Systems overview page of this "sle_minion"
      When I follow "Properties" in the content area
      And I uncheck "ansible_control_node"
@@ -64,11 +64,11 @@ Feature: Operate an Ansible control node
      Then I should see a "Ansible Control Node Configuration" text
 
 @ssh_minion
-  Scenario: Pre-requisite: Deploy test playbooks and inventory file
+  Scenario: Pre-requisite: Deploy test playbooks and inventory file on SSH minion
      Given I deploy testing playbooks and inventory files to "ssh_minion" 
 
 @ssh_minion
-  Scenario: Cleanup: Deploy test playbooks and inventory file
+  Scenario: Cleanup: Disable Ansible and remove test playbooks and inventory file on SSH minion
      Given I am on the Systems overview page of this "ssh_minion"
      When I follow "Properties" in the content area
      And I uncheck "ansible_control_node"
@@ -79,10 +79,10 @@ Feature: Operate an Ansible control node
      And I remove testing playbooks and inventory files to "ssh_minion" 
 
 @ssh_minion
-  Scenario: Configure some inventory and playbooks path
+  Scenario: Configure some inventory and playbooks path on SSH minion
 @ssh_minion
-  Scenario: Display inventories
+  Scenario: Display inventories on SSH minion
 @ssh_minion
-  Scenario: Discover playbooks and display them
+  Scenario: Discover playbooks and display them on SSH minion
 @ssh_minion
-  Scenario: Run a playbook
+  Scenario: Run a playbook on SSH minion
