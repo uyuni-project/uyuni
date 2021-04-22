@@ -6,5 +6,5 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('minion/ansible')
+    spaImportReactPage('minion/ansible/control-node')
         .then(function (module) { module.renderer('ansible-control-node', {id: #{server.id} }) });
