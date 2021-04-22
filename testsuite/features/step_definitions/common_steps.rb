@@ -1301,9 +1301,16 @@ end
 When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   playbooks_dir = 'ansible/'
   target = get_target(host)
-  target.run("mkdir -p /srv/playbooks")
   dest = "/srv/playbooks/"
+  target.run("mkdir -p #{dest}")
   source = File.dirname(__FILE__) + '/../upload_files/' + playbooks_dir
-  return_code = file_inject($proxy, source, dest)
+  return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
+end
+
+When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host|
+  playbooks_dir = 'ansible/'
+  target = get_target(host)
+  dest = "/srv/playbooks/"
+  target.run("rm -rf #{dest}")
 end
