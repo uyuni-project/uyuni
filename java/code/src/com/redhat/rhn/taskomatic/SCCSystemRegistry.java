@@ -57,7 +57,7 @@ public class SCCSystemRegistry {
                         }
                         catch (SCCClientException e) {
                             LOG.error("Error deregistering system " + cacheItem.getId(), e);
-                            if (forceDBDeletion) {
+                            if (forceDBDeletion || e.getHttpStatusCode() == 404) {
                                 SCCCachingFactory.deleteRegCacheItem(cacheItem);
                             }
                         }
