@@ -69,6 +69,10 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
+  const sortedProjects = row => {
+    return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase()));
+  };
+
   return (
     <TopPanel
       title={t("Content Lifecycle Filters")}
@@ -95,18 +99,25 @@ const ListFilters = (props: Props) => {
         <Column
           columnKey="projects"
           header={t("Projects in use")} // {left: project label, right: project name}
+          comparator={(aRow, bRow, _, sortDirection) => {
+            const aProjects = sortedProjects(aRow)
+              .map(project => project.right)
+              .join();
+            const bProjects = sortedProjects(bRow)
+              .map(project => project.right)
+              .join();
+            return aProjects.localeCompare(bProjects) * sortDirection;
+          }}
           cell={row =>
-            row.projects
-              .sort((a, b) => a.right.toLowerCase().localeCompare(b.right.toLowerCase()))
-              .map((p, index) => (
-                <a
-                  className="project-tag-link js-spa"
-                  href={`/rhn/manager/contentmanagement/project/${p.left}`}
-                  key={`project-tag-link-${index}`}
-                >
-                  {p.right}
-                </a>
-              ))
+            sortedProjects(row).map((p, index) => (
+              <a
+                className="project-tag-link js-spa"
+                href={`/rhn/manager/contentmanagement/project/${p.left}`}
+                key={`project-tag-link-${index}`}
+              >
+                {p.right}
+              </a>
+            ))
           }
         />
         <Column
