@@ -7,6 +7,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
@@ -14,6 +15,7 @@ import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -49,6 +51,7 @@ public class SCCSystemRegistry {
                                 uuid
                         ));
                         try {
+                            LOG.debug("de-register system " + cacheItem);
                             sccClient.deleteSystem(sccId);
                             SCCCachingFactory.deleteRegCacheItem(cacheItem);
                         }
@@ -59,7 +62,10 @@ public class SCCSystemRegistry {
                             }
                         }
                     },
-                    () -> SCCCachingFactory.deleteRegCacheItem(cacheItem)
+                    () -> {
+                        LOG.debug("delete not registered cache item " + cacheItem);
+                        SCCCachingFactory.deleteRegCacheItem(cacheItem);
+                    }
             );
         });
     }
@@ -74,6 +80,7 @@ public class SCCSystemRegistry {
                         itemCredentials.getPassword(),
                         uuid
                 ));
+                LOG.debug("Forward registration of " + cacheItem);
                 SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(getPayload(cacheItem));
                 cacheItem.setSccId(systemCredentials.getId());
                 cacheItem.setSccLogin(systemCredentials.getLogin());
