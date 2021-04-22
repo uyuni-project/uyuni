@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.MinionNotRespondingFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
@@ -213,6 +214,32 @@ public class AnsibleHandler extends BaseHandler {
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(pathId);
+        }
+    }
+
+    /**
+     * Fetch the playbook content from the control node using a synchronous salt call.
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the PlaybookPath id
+     * @param playbookRelPath the relative path to playbook (inside PlaybookPath)
+     * @return the playbook contents or empty optional if minion did not respond
+     * @throws LookupException when path not found or not accessible
+     *
+     * @xmlrpc.doc Fetch the playbook content from the control node using a synchronous salt call.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "playbook path id")
+     * @xmlrpc.param #param_desc("string", "playbookRelPath", "relative path of playbook (inside path specified by
+     * pathId)")
+     * @xmlrpc.returntype #param_desc("string", "contents", "Text contents of the playbook")
+     */
+    public String fetchPlaybookConents(User loggedInUser, Integer pathId, String playbookRelPath) {
+        try {
+            return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
+                    .orElseThrow(() -> new MinionNotRespondingFaultException());
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(e);
         }
     }
 
