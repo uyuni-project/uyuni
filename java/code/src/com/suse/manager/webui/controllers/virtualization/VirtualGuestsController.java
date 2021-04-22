@@ -23,6 +23,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -58,6 +59,7 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseA
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
@@ -125,6 +127,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
+        post("/manager/api/systems/details/virtualization/guests/consoleToken/:guestuuid",
+                withUser(this::refreshConsoleToken));
         post("/manager/api/systems/details/virtualization/guests/:sid/refresh", withUser(this::refresh));
         post("/manager/api/systems/details/virtualization/guests/:sid/shutdown",
                 withUser(this::shutdown));
@@ -324,16 +328,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
-
-        List<VirtualInstance> guests = VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid(guestUuid);
-        if (guests.isEmpty()) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
-        }
-        if (guests.size() > 1) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine machine this UUID");
-        }
-        VirtualInstance guest = guests.get(0);
+        VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
         Server host = guest.getHostSystem();
+
+        try {
+            ensureAccessToVirtualInstance(user, guest);
+        }
+        catch (LookupException e) {
+            Spark.halt(HttpStatus.SC_UNAUTHORIZED, e.getLocalizedMessage());
+        }
 
         String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
         GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
@@ -345,10 +348,70 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("serverId", guest.getHostSystem().getId());
         data.put("guestUuid", guestUuid);
         data.put("guestName", guest.getName());
+        data.put("guestState", guest.getState().getLabel());
         data.put("graphicsType", def.getGraphics().getType());
+        data.put("token", getConsoleToken(hostname, def));
+
+        return new ModelAndView(data, jadeTemplatesPath + "/console.jade");
+    }
+
+    /**
+     * Refresh the JWT token to be used for the console display.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     *
+     * @return the new JWT token
+     */
+    public String refreshConsoleToken(Request request, Response response, User user) {
+        if (!TokenBuilder.verifyToken(request.body())) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN, "Invalid token");
+        }
+
+        String guestUuid = request.params("guestuuid");
+        VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
+        Server host = guest.getHostSystem();
+        try {
+            ensureAccessToVirtualInstance(user, guest);
+        }
+        catch (LookupException e) {
+            Spark.halt(HttpStatus.SC_UNAUTHORIZED, e.getLocalizedMessage());
+        }
+
+        String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
+        GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
+                orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
+        String hostname = host.getName();
+
+        return json(response, getConsoleToken(hostname, def));
+    }
+
+    private void ensureAccessToVirtualInstance(User user, VirtualInstance guest) throws LookupException {
+        if (guest.getGuestSystem() != null) {
+            SystemManager.ensureAvailableToUser(user, guest.getGuestSystem().getId());
+        }
+        else {
+            SystemManager.ensureAvailableToUser(user, guest.getHostSystem().getId());
+        }
+    }
+
+    private VirtualInstance getVirtualInstanceFromUuid(String uuid) {
+        List<VirtualInstance> guests = VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid(uuid);
+        if (guests.isEmpty()) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
+        }
+        if (guests.size() > 1) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine machine this UUID");
+        }
+        return guests.get(0);
+    }
+
+    private String getConsoleToken(String hostname, GuestDefinition guest) {
+        int port = guest.getGraphics().getPort();
 
         String token = null;
-        if (Arrays.asList("spice", "vnc").contains(def.getGraphics().getType())) {
+        if (Arrays.asList("spice", "vnc").contains(guest.getGraphics().getType())) {
             try {
                 WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
                 tokenBuilder.useServerSecret();
@@ -359,9 +422,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
             }
         }
-        data.put("token", token);
-
-        return new ModelAndView(data, jadeTemplatesPath + "/console.jade");
+        return token;
     }
 
     /**
