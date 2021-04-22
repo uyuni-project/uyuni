@@ -21,7 +21,7 @@ help() {
   echo ""
 }
 
-while getopts ":d:c:p:vth" opts; do
+while getopts ":d:c:p:n:vth" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
