@@ -55,7 +55,7 @@ Feature: Operate an Ansible control node
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
-    Then And "ansible" should be installed on "ssh_minion"
+    Then "ansible" should be installed on "ssh_minion"
 
 @ssh_minion
   Scenario: The "ansible" tab appears in the UI on SSH minion
