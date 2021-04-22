@@ -16,9 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.ansible;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -28,10 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.MinionNotRespondingFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
-import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -65,17 +59,15 @@ public class AnsibleHandler extends BaseHandler {
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
             Integer controlNodeId, Date earliestOccurrence) {
-        if (StringUtils.isEmpty(playbookPath)) {
-            throw new InvalidParameterException("Playbook path cannot be empty.");
-        }
-        Server controlNode = validateAnsibleControlNode(controlNodeId, loggedInUser.getOrg());
-
         try {
-            return ActionChainManager.scheduleExecutePlaybook(loggedInUser, controlNode.getId(), playbookPath,
-                    inventoryPath, null, earliestOccurrence).getId();
+            return AnsibleManager
+                    .schedulePlaybook(playbookPath, inventoryPath, controlNodeId, earliestOccurrence, loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
         }
     }
 
@@ -241,17 +233,6 @@ public class AnsibleHandler extends BaseHandler {
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(e);
         }
-    }
-
-    private Server validateAnsibleControlNode(long systemId, Org org) {
-        Server controlNode = ServerFactory.lookupByIdAndOrg(systemId, org);
-        if (controlNode == null) {
-            throw new NoSuchSystemException();
-        }
-        if (!controlNode.hasAnsibleControlNodeEntitlement()) {
-            throw new NoSuchSystemException(controlNode.getHostname() + " is not an Ansible control node");
-        }
-        return controlNode;
     }
 
     private static <T> T getFieldValue(Map<String, Object> props, String field) {
