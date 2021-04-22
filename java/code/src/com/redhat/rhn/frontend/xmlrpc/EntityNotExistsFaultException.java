@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.manager.EntityNotExistsException;
 
 /**
  * Fault that conveys an information about nonexistence of an Entity
@@ -31,7 +30,7 @@ public class EntityNotExistsFaultException extends FaultException {
      *
      * @param cause the EntityNotExistsException cause
      */
-    public EntityNotExistsFaultException(EntityNotExistsException cause) {
+    public EntityNotExistsFaultException(Exception cause) {
         super(ERROR_CODE, ERROR_LABEL, cause.getMessage(), cause);
     }
 
