@@ -16,14 +16,20 @@ package com.suse.scc.client;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
+
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.manager.content.ProductTreeEntry;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.scc.model.*;
 
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
@@ -197,6 +203,7 @@ public class SCCWebClient implements SCCClient {
         request.addHeader("SMS", uuid != null ? uuid : "undefined");
     }
 
+    @Override
     public void deleteSystem(long id) throws SCCClientException {
         HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
         addHeaders(request);
@@ -215,8 +222,8 @@ public class SCCWebClient implements SCCClient {
             }
             else {
                 // Request was not successful
-                throw new SCCClientException("Got response code " + responseCode +
-                        " connecting to " + request.getURI());
+                throw new SCCClientException(responseCode, request.getURI().toString(),
+                        "Got response code " + responseCode + " connecting to " + request.getURI());
             }
         }
         catch (NoRouteToHostException e) {
@@ -257,8 +264,8 @@ public class SCCWebClient implements SCCClient {
             }
             else {
                 // Request was not successful
-                throw new SCCClientException("Got response code " + responseCode +
-                        " connecting to " + request.getURI());
+                throw new SCCClientException(responseCode, request.getURI().toString(),
+                        "Got response code " + responseCode + " connecting to " + request.getURI());
             }
         }
         catch (NoRouteToHostException e) {
@@ -328,8 +335,8 @@ public class SCCWebClient implements SCCClient {
             }
             else {
                 // Request was not successful
-                throw new SCCClientException("Got response code " + responseCode +
-                        " connecting to " + request.getURI());
+                throw new SCCClientException(responseCode, request.getURI().toString(),
+                        "Got response code " + responseCode + " connecting to " + request.getURI());
             }
         }
         catch (NoRouteToHostException e) {
