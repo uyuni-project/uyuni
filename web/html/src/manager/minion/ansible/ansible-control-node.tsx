@@ -154,7 +154,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
-            title="Playbook Directories"
+            title={t("Playbook Directories")}
           >
             {this.state.playbooksPaths.map(p =>
                 this.state.editPlaybookPath?.path === p.path ?
@@ -188,7 +188,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         <div className="col-md-6">
           <Panel
             headingLevel="h3"
-            title="Inventory Files"
+            title={t("Inventory Files")}
           >
             {this.state.inventoriesPaths.map(p =>
                 this.state.editInventoryPath?.path === p.path ?
