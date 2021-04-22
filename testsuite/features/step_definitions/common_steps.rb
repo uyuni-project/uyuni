@@ -1281,3 +1281,13 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   puts "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
 end
+
+When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
+  playbooks_dir = 'ansible/'
+  target = get_target(host)
+  target.run("mkdir -p /srv/playbooks")
+  dest = "/srv/playbooks/"
+  source = File.dirname(__FILE__) + '/../upload_files/' + playbooks_dir
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+end
