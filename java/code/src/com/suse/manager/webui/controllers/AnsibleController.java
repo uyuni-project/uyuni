@@ -23,7 +23,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -33,11 +32,15 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.AnsibleManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
-import com.suse.manager.webui.utils.AnsiblePlaybookIdJson;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
+import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
+import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.utils.Json;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +57,8 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AnsibleController {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = Json.GSON;
+
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
     private static Logger log = Logger.getLogger(AnsibleController.class);
@@ -81,6 +85,9 @@ public class AnsibleController {
 
         post("/manager/api/systems/details/ansible/paths/playbook-contents",
                 withUser(AnsibleController::fetchPlaybookContents));
+
+        post("/manager/api/systems/details/ansible/schedule-playbook",
+                withUser(AnsibleController::schedulePlaybook));
     }
 
     /**
@@ -192,6 +199,33 @@ public class AnsibleController {
         }
         catch (LookupException e) {
             throw Spark.halt(404);
+        }
+    }
+
+    /**
+     * Schedule playbook execution
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the json with the scheduled action id or with a localized error message when taskomatic is down
+     */
+    public static String schedulePlaybook(Request req, Response res, User user) {
+        try {
+            AnsiblePlaybookExecutionJson params = GSON.fromJson(req.body(), AnsiblePlaybookExecutionJson.class);
+            Long actionId = AnsibleManager.schedulePlaybook(
+                    params.getPlaybookPath(),
+                    params.getInventoryPath().orElse(null),
+                    params.getControlNodeId(),
+                    params.getEarliest().orElse(new Date()),
+                    user);
+            return json(res, actionId);
+        }
+        catch (LookupException e) {
+            throw Spark.halt(404);
+        }
+        catch (TaskomaticApiException e) {
+            return json(res, ResultJson.error(LOCAL.getMessage("taskscheduler.down")));
         }
     }
 }
