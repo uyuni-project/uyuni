@@ -39,7 +39,7 @@ export function useVirtNotification(
 
       ws.onopen = () => {
         // Tell the websocket that we want to hear from all action results on this virtual host.
-        ws.send(serverId);
+        ws.send(`{sid: ${serverId}}`);
       };
 
       ws.onclose = () => {
