@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-21 17:46+0000\n"
+"PO-Revision-Date: 2021-04-22 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.5.1\n"
+"X-Generator: Weblate 4.6\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -1452,43 +1452,43 @@ msgstr "Konfiguračné kanály"
 #: ../src/spacecmd/configchannel.py:1417
 #, python-format
 msgid "Channel to clone: %s"
-msgstr ""
+msgstr "Kanál na klonovanie: %s"
 
 #: ../src/spacecmd/configchannel.py:1421
 msgid "Channel to clone:"
-msgstr ""
+msgstr "Kanál na klonovanie:"
 
 #: ../src/spacecmd/configchannel.py:1422
 msgid "Clone label:"
-msgstr ""
+msgstr "Označenie klonu:"
 
 #: ../src/spacecmd/configchannel.py:1431
 msgid "Error no channel label passed!"
-msgstr ""
+msgstr "Chyba, nezadané žiadne označenie kanála!"
 
 #: ../src/spacecmd/configchannel.py:1440
 msgid "No suitable channels to clone has been found."
-msgstr ""
+msgstr "Neboli nájdené žiadne vhodné kanály na klonovanie."
 
 #: ../src/spacecmd/configchannel.py:1493
 msgid "no configchannel given"
-msgstr ""
+msgstr "nebol zdaný žiadny konfiguračný kanál"
 
 #: ../src/spacecmd/configchannel.py:1496
 msgid "invalid configchannel label "
-msgstr ""
+msgstr "neplatné označenie konfiguračného kanála "
 
 #: ../src/spacecmd/configchannel.py:1522
 msgid "configchannel_diff: diff between config channels"
-msgstr ""
+msgstr "configchannel_diff: rozdiel medzi konfiguračnými kanálmi"
 
 #: ../src/spacecmd/configchannel.py:1524
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_diff ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/configchannel.py:1573
 msgid "configchannel_sync:"
-msgstr ""
+msgstr "configchannel_sync:"
 
 #: ../src/spacecmd/configchannel.py:1574
 msgid "sync config files between two config channels"
