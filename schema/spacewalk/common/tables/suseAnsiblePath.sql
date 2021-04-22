@@ -24,12 +24,9 @@ CREATE TABLE suseAnsiblePath(
 
 CREATE SEQUENCE suse_ansible_path_seq;
 
-CREATE UNIQUE INDEX suse_ansible_path_uq
+CREATE UNIQUE INDEX suse_ansible_path_type_uq
     ON suseAnsiblePath(server_id, path, type);
 
-CREATE INDEX suse_ansible_path_server_id_idx
-    ON suseAnsiblePath(server_id);
-
-CREATE INDEX suse_ansible_server_id_type_idx
-    ON suseAnsiblePath(server_id, type);
+CREATE UNIQUE INDEX suse_ansible_type_path_uq
+    ON suseAnsiblePath(server_id, type, path);
 
