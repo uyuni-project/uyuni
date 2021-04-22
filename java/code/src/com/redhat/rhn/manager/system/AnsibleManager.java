@@ -265,7 +265,7 @@ public class AnsibleManager extends BaseManager {
      * @throws TaskomaticApiException if taskomatic is down
      * @throws IllegalArgumentException if playbook path is empty
      */
-    public static Long schedulePlaybook(String playbookPath, String inventoryPath, Integer controlNodeId,
+    public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId,
             Date earliestOccurrence, User user) throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
