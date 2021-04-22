@@ -4,6 +4,12 @@ import { Messages, Utils } from "components/messages";
 import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
 
+type AnsiblePath = {
+  id: number;
+  minionServerId: number;
+  type: string;
+  path: string;
+}
 
 type PropsType = {
   minionServerId: number;
@@ -13,6 +19,7 @@ type PropsType = {
 type StateType = {
   minionServerId: number;
   pathContentType: string;
+  pathList: AnsiblePath[];
   errors: string[];
 };
 
@@ -24,13 +31,14 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     this.state = {
       minionServerId: props.minionServerId,
       pathContentType: props.pathContentType,
+      pathList: [],
       errors: [],
     };
 
-    // Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
-    // .promise.then(data => {
-    //   this.setState({  });
-    // });
+    Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.pathContentType + "/" + props.minionServerId)
+    .promise.then(data => {
+      this.setState({ pathList: data });
+    });
   }
   
   render () {
@@ -42,6 +50,9 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
           {this.state.pathContentType}
         </p>
         <Panel headingLevel="h3" title="Path content">          
+          {
+            this.state.pathList.map(p => <div>{p.id} - {p.path} - {p.type} - {p.minionServerId} - </div>)
+          }
         </Panel>
       </div>
     );
