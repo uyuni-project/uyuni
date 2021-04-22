@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
-import com.redhat.rhn.taskomatic.SCCSystemRegistry;
+import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCSubscriptionJson;
 
@@ -175,8 +175,8 @@ public class MirrorCredentialsManager {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();
-            SCCSystemRegistry sccSystemRegistry = new SCCSystemRegistry(url, uuid);
-            sccSystemRegistry.deregister(itemList, true);
+            SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(url, uuid);
+            sccSystemRegistrationManager.deregister(itemList, true);
         }
         catch (URISyntaxException e) {
             log.error("Invalid SCC URL configured.", e);

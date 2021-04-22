@@ -1,4 +1,4 @@
-package com.redhat.rhn.taskomatic;
+package com.suse.scc;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -28,13 +28,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class SCCSystemRegistry {
+public class SCCSystemRegistrationManager {
 
-    private final Logger LOG = Logger.getLogger(SCCSystemRegistry.class);
+    private final Logger LOG = Logger.getLogger(SCCSystemRegistrationManager.class);
     private final URI sccURI;
     private final String uuid;
 
-    public SCCSystemRegistry(URI sccURIIn, String uuidIn) {
+    public SCCSystemRegistrationManager(URI sccURIIn, String uuidIn) {
         this.sccURI = sccURIIn;
         this.uuid = uuidIn;
     }
