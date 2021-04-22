@@ -25,7 +25,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
-
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -34,8 +33,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.AnsibleManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
@@ -49,7 +48,6 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -86,6 +84,12 @@ public class AnsibleController {
 
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
+
+        get("/manager/api/systems/details/ansible/paths/playbooks/:minionServerId",
+                withUser(AnsibleController::listPlaybookPathsByMinion));
+
+        get("/manager/api/systems/details/ansible/paths/inventories/:minionServerId",
+                withUser(AnsibleController::listInventoryPathsByMinion));
 
         post("/manager/api/systems/details/ansible/paths/save",
                 withUser(AnsibleController::saveAnsiblePath));
@@ -154,6 +158,38 @@ public class AnsibleController {
         data.put("server", server);
         data.put("pathContentType", "inventories");
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
+    }
+
+    /**
+     * List Ansible Playbook Paths by minion
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return string with JSON representation of the paths
+     */
+    public static String listPlaybookPathsByMinion(Request req, Response res, User user) {
+        long minionServerId = Long.parseLong(req.params("minionServerId"));
+        List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePlaybookPaths(minionServerId, user).stream()
+                .map(AnsiblePathJson::new)
+                .collect(Collectors.toList());
+        return json(res, paths);
+    }
+
+    /**
+     * List Ansible Inventory Paths by minion
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return string with JSON representation of the paths
+     */
+    public static String listInventoryPathsByMinion(Request req, Response res, User user) {
+        long minionServerId = Long.parseLong(req.params("minionServerId"));
+        List<AnsiblePathJson> paths = AnsibleManager.listAnsibleInventoryPaths(minionServerId, user).stream()
+                .map(AnsiblePathJson::new)
+                .collect(Collectors.toList());
+        return json(res, paths);
     }
 
     /**
