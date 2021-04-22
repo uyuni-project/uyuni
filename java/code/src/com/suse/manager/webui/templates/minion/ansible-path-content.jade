@@ -1,0 +1,15 @@
+include ./minion-header.jade
+
+#ansible-path-content
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('minion/ansible/path-content')
+        .then(function (module) {
+            module.renderer(
+                'ansible-path-content',
+                {id: #{server.id}, pathContentType: '#{pathContentType}'}
+            )
+        });
