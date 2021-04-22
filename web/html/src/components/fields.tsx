@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = React.HTMLProps<HTMLInputElement> & {
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   onPressEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 

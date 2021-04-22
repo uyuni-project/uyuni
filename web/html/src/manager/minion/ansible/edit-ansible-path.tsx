@@ -9,7 +9,7 @@ const EditAnsiblePath = (props) => {
         <div className="col-md-10">
           <TextField
             value={props.ansiblePath.path}
-            onChange={(e: any) => props.editPath(e.target.value.toString())}
+            onChange={(e) => props.editPath(e.target.value.toString())}
           />
         </div>
         <div className="btn-group pull-right">
