@@ -36,7 +36,7 @@ Feature: Operate an Ansible control node in SSH minion
      Then I should see a "System properties changed" text
      And I apply highstate on "ssh_minion"
      And "ansible" should be installed on "ssh_minion"
-     And I remove testing playbooks and inventory files to "ssh_minion" 
+     And I remove testing playbooks and inventory files from "ssh_minion"
 
   Scenario: Configure some inventory and playbooks path
   Scenario: Display inventories

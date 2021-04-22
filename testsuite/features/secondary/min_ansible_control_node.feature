@@ -34,7 +34,7 @@ Feature: Operate an Ansible control node in a normal minion
      Then I should see a "System properties changed" text
      And I apply highstate on "sle_minion"
      And "ansible" should be installed on "sle_minion"
-     And I remove testing playbooks and inventory files to "sle_minion" 
+     And I remove testing playbooks and inventory files from "sle_minion"
 
   Scenario: Configure some inventory and playbooks path
   Scenario: Display inventories
