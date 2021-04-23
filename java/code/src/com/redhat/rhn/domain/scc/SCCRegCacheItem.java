@@ -64,7 +64,8 @@ import javax.persistence.Transient;
                     "FROM com.redhat.rhn.domain.server.Server as s " +
                     "WHERE s.id not in (" +
                     "    SELECT rci.server.id " +
-                    "    FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci ) " +
+                    "    FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
+                    "    WHERE rci.server.id IS NOT NULL) " +
                     "ORDER BY s.id ASC"),
     @NamedQuery(name = "SCCRegCache.listDeRegisterItems",
                 query = "SELECT rci " +
