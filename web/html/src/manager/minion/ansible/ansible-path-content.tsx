@@ -1,9 +1,9 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages";
-import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
 import { AnsiblePath } from "./ansible-path-type";
+import AccordionPathContent from "./accordion-path-content";
 
 type PropsType = {
   minionServerId: number;
@@ -43,11 +43,7 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
         <p>
           {this.state.pathContentType}
         </p>
-        <Panel headingLevel="h3" title="Path content">
-          {
-            this.state.pathList.map(p => <div>{p.id} - {p.path} - {p.type} - {p.minionServerId} - </div>)
-          }
-        </Panel>
+        { this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} /> ) }
       </div>
     );
   }
