@@ -26,6 +26,13 @@ function getURL(path: AnsiblePath) {
   return baseUrl + path.id;
 }
 
+interface PlaybookDetails {
+  path: AnsiblePath,
+  fullPath: string,
+  customInventory?: string
+  name: string,
+}
+
 class AccordionPathContent extends React.Component<PropsType, StateType> {
   constructor(props) {
     super(props);
@@ -40,29 +47,95 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
   onToggle() {
     const path: AnsiblePath = this.props.path;
-    if (!this.state.open && this.state.content === null) {
-      this.setState({ loading: true });
-      Network.get(getURL(path))
-      .promise.then(data => {
-        if (data.success) {
-          this.setState({ content: ["element 1", "element 2"] });
-        }
-        else {
-          this.setState({ errors: data.messages });
-        }
-        this.setState({ open: true, loading: false });
-      });
+    if (!this.state.open) {
+      if (this.state.content === null) {
+        this.setState({ loading: true });
+        Network.get(getURL(path))
+        .promise.then(data => {
+          //TODO reverse business logic from the expected one: when everything is fine, data.success is not present at all
+          // if it fails instead data.success is present and it is `false`
+          if (!data.success) {
+            this.setState({
+              content: this.props.path.type === "playbook" ?
+                this.digestPlaybookPathContent(data)
+                :
+                this.digestInventoryPathContent(data)
+            });
+          }
+          else {
+            this.setState({ errors: data.messages });
+          }
+          this.setState({ open: true, loading: false });
+        });
+      }
+      else {
+        this.setState({ open: true });
+      }
     }
     else {
       this.setState({ open: false, errors: [] });
     }
   }
 
+  digestPlaybookPathContent(blob: any) {
+    const content: Map<string, {}> = blob[this.props.path.path];
+    const playbookNameList: string[] = Object.keys(content);
+
+    const playbookDetailsList: PlaybookDetails[] = [];
+    playbookNameList.forEach(playbookName => {
+        const playbookObj = content[playbookName];
+        const playbookObjKeys = Object.keys(playbookObj);
+        const newPlaybookObject: PlaybookDetails = {
+          name: playbookName,
+          fullPath: playbookObjKeys.includes("fullpath") ? playbookObj["fullpath"] : "-",
+          path: this.props.path,
+          customInventory: playbookObjKeys.includes("custom_inventory") ? playbookObj["custom_inventory"] : "-"
+        }
+        playbookDetailsList.push(newPlaybookObject);
+      }
+    );
+
+    return playbookDetailsList;
+  }
+
+  renderPlaybookPathContent() {
+    if (this.state.content === null || this.state.content.length === 0) {
+      return <div>{t("No Playbook found.")}</div>
+    }
+
+    const content: PlaybookDetails[] = this.state.content;
+    return content.map((p, i) =>
+      <div>
+        { i === 0 ? <br/> : null }
+        <dl className="row">
+          <dt className="col-xs-2">{t('Playbook File Name')}:</dt>
+          <dd className="col-xs-8">{p.name}</dd>
+        </dl>
+        <dl className="row">
+          <dt className="col-xs-2">{t('Full Path')}:</dt>
+          <dd className="col-xs-8">{p.fullPath}</dd>
+        </dl>
+        <dl className="row">
+          <dt className="col-xs-2">{t('Custom Inventory')}:</dt>
+          <dd className="col-xs-8">{p.customInventory}</dd>
+        </dl>
+        { i < content.length -1 ? <hr/> : null }
+      </div>
+    );
+  }
+
+  digestInventoryPathContent(blob: any) {
+    //TODO
+  }
+  renderInventoryPathContent() {
+    //TODO
+  }
+
   render() {
     const header =
       <div className="panel-heading pointer" onClick={() => this.onToggle()}>
         <h6>
-          <i className={this.state.open || this.state.loading ? "fa fa-chevron-up" : "fa fa-chevron-right"} />
+          <i className={this.state.open || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
           { this.props.path.path }
         </h6>
       </div>;
@@ -78,19 +151,12 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
               :
               this.state.open ?
                 <>
-                  {errors}
-                  <ul>
-                    {
-                      this.state.content?.map((element: string) =>
-                        <li key={element}>
-                          {
-                            this.props.path.type === "playbook" ?
-                              <a>{element}</a>
-                            : element
-                          }
-                        </li>
-                    )}
-                  </ul>
+                  {
+                    this.state.errors.length > 0 ?
+                      errors
+                      :
+                      this.props.path.type === "playbook" ? this.renderPlaybookPathContent() : this.renderInventoryPathContent()
+                  }
                 </>
                 : null
           }
