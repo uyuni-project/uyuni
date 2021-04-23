@@ -3,13 +3,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages";
 import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
-
-type AnsiblePath = {
-  id: number;
-  minionServerId: number;
-  type: string;
-  path: string;
-}
+import { AnsiblePath } from "./ansible-path-type";
 
 type PropsType = {
   minionServerId: number;
