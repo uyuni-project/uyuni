@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-22 19:57+0000\n"
+"PO-Revision-Date: 2021-04-23 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1492,44 +1492,44 @@ msgstr "configchannel_sync:"
 
 #: ../src/spacecmd/configchannel.py:1574
 msgid "sync config files between two config channels"
-msgstr ""
+msgstr "synchronizovať konfiguračné súbory medzi dvoma konfiguračnými kanálmi"
 
 #: ../src/spacecmd/configchannel.py:1576
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr ""
+msgstr "použitie: configchannel_sync ZDROJOVÝ_KANÁL CIEĽOVÝ_KANÁL"
 
 #: ../src/spacecmd/configchannel.py:1614
 msgid "syncing files from configchannel "
-msgstr ""
+msgstr "synchronizované súbory z konfiguračného kanála "
 
 #: ../src/spacecmd/configchannel.py:1621
 msgid "files common in both channels:"
-msgstr ""
+msgstr "súbory spoločné v oboch kanáloch:"
 
 #: ../src/spacecmd/configchannel.py:1627
 msgid "files only in source "
-msgstr ""
+msgstr "súbory iba v zdroji "
 
 #: ../src/spacecmd/configchannel.py:1633
 msgid "files only in target "
-msgstr ""
+msgstr "súbory iba v cieli "
 
 #: ../src/spacecmd/configchannel.py:1638
 msgid ""
 "files that are in both channels will be overwritten in the target channel"
-msgstr ""
+msgstr "súbory, ktoré sú v oboch kanáloch, budú prepísané v cieľovom kanáli"
 
 #: ../src/spacecmd/configchannel.py:1640
 msgid "files only in the source channel will be added to the target channel"
-msgstr ""
+msgstr "súbory iba v zdrojovom kanáli budú pridané do cieľového kanála"
 
 #: ../src/spacecmd/configchannel.py:1642
 msgid "files only in the target channel will be deleted"
-msgstr ""
+msgstr "súbory iba v cieľovom kanáli budú vymazané"
 
 #: ../src/spacecmd/configchannel.py:1645
 msgid "nothing to do"
-msgstr ""
+msgstr "niet čo robiť"
 
 #: ../src/spacecmd/configchannel.py:1649
 msgid "perform synchronisation [y/N]:"
