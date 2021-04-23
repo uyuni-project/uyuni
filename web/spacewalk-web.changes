@@ -1,3 +1,4 @@
+- Improved filtering, deleting etc in CLM filter list
 - Simplify state channels selection
 - Fix rendering of select items in modal dialogs (bsc#1183997)
 - Show the info about unsynced patches in the Content Lifecycle Management screens
