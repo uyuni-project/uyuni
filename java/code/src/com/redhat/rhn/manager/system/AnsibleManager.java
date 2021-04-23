@@ -283,7 +283,8 @@ public class AnsibleManager extends BaseManager {
 
     /**
      * Discover playbooks in given {@link PlaybookPath} id
-     * Uses a synchronous salt call for this discovery.
+     *
+     * <strong>Uses a synchronous salt call for fetching.</strong>
      *
      * The result has following structure:
      * Map of playbook path string -> Map of playbook name -> Playbook information as {@link AnsiblePlaybookSlsResult}.
@@ -314,7 +315,7 @@ public class AnsibleManager extends BaseManager {
      * Introspect inventory in given {@link InventoryPath}
      * Uses a synchronous salt call for this discovery.
      *
-     * todo tune the shape of the return value!
+     * <strong>Uses a synchronous salt call for fetching.</strong>
      *
      * @param pathId the {@link InventoryPath} id
      * @param user the user
