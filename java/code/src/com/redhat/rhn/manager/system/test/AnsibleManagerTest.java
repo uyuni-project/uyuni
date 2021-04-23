@@ -149,6 +149,35 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Tests fetching non existing playbook path
+     */
+    public void testFetchPlaybookInvalidPath() {
+        try {
+            AnsibleManager.fetchPlaybookContents(-1234, "path/to/playbook", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Tests fetching playbook path using an absolute path
+     */
+    public void testFetchPlaybookAbsolutePath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+
+        try {
+            AnsibleManager.fetchPlaybookContents(path.getId(), "/absolute", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
     private static MinionServer createAnsibleControlNode(User user) throws Exception {
         SystemEntitlementManager entitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
