@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.MinionNotRespondingFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -232,6 +233,9 @@ public class AnsibleHandler extends BaseHandler {
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidArgsException(e.getMessage());
         }
     }
 
