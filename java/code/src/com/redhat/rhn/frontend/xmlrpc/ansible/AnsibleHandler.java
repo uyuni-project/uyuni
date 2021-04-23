@@ -225,7 +225,7 @@ public class AnsibleHandler extends BaseHandler {
      * pathId)")
      * @xmlrpc.returntype #param_desc("string", "contents", "Text contents of the playbook")
      */
-    public String fetchPlaybookConents(User loggedInUser, Integer pathId, String playbookRelPath) {
+    public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
         try {
             return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
                     .orElseThrow(() -> new MinionNotRespondingFaultException());
