@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -239,7 +240,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
             handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "/tmp/123");
             fail("An exception shold have been thrown");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidArgsException e) {
             // expected
         }
     }
