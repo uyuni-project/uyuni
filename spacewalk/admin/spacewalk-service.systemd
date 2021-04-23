@@ -61,7 +61,7 @@ list() {
 
 start() {
     echo "Starting spacewalk services..."
-    DISABLE_FILE=/var/run/spacewalk-wait-for-tomcat-disable
+    DISABLE_FILE=/run/spacewalk-wait-for-tomcat-disable
     if [ "$WAIT_FOR_TOMCAT" == "1" ] ; then
         rm -f $DISABLE_FILE
     else
