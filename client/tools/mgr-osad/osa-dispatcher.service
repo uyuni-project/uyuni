@@ -7,9 +7,9 @@ Requires=spacewalk-wait-for-jabberd.service
 [Service]
 Type=forking
 EnvironmentFile=-/etc/sysconfig/osa-dispatcher
-PIDFile=/var/run/osa-dispatcher.pid
-ExecStart=/usr/sbin/osa-dispatcher --pid-file /var/run/osa-dispatcher.pid
-ExecStartPre=/bin/rm -f /var/run/osa-dispatcher.pid
+PIDFile=/run/osa-dispatcher.pid
+ExecStart=/usr/sbin/osa-dispatcher --pid-file /run/osa-dispatcher.pid
+ExecStartPre=/bin/rm -f /run/osa-dispatcher.pid
 
 [Install]
 WantedBy=multi-user.target
