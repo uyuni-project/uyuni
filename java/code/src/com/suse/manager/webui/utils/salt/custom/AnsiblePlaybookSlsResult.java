@@ -28,6 +28,22 @@ public class AnsiblePlaybookSlsResult {
     private String customInventory;
 
     /**
+     * Constructor
+     */
+    public AnsiblePlaybookSlsResult() {
+    }
+
+    /**
+     * Constructor
+     * @param fullPath full path to playbook
+     * @param customInventory custom inventory of playbook
+     */
+    public AnsiblePlaybookSlsResult(String fullPath, String customInventory) {
+        this.fullPath = fullPath;
+        this.customInventory = customInventory;
+    }
+
+    /**
      * Gets the fullPath.
      *
      * @return fullPath
