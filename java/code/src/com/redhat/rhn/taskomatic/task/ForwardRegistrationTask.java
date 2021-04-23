@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+
 import com.suse.scc.SCCSystemRegistrationManager;
 
 import org.quartz.JobExecutionContext;
@@ -41,6 +42,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         try {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
+                //TODO: randomize the start a bit to not flood SCC with requests exactly every 15 minutes
                 URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
                 //TODO: find a better place to put getUUID
                 String uuid = ContentSyncManager.getUUID();
@@ -51,8 +53,8 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 log.debug(deregister.size() + " RegCacheItems found to delete");
                 List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
                 SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(url, uuid);
+                sccSystemRegistrationManager.deregister(deregister, false);
                 credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(primaryCredentials -> {
-                    sccSystemRegistrationManager.deregister(deregister, false);
                     sccSystemRegistrationManager.register(forwardRegistration, primaryCredentials);
                 });
             }
