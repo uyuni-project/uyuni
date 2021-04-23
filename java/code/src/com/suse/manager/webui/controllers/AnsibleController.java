@@ -99,10 +99,10 @@ public class AnsibleController {
         post("/manager/api/systems/details/ansible/schedule-playbook",
                 withUser(AnsibleController::schedulePlaybook));
 
-        get("/manager/api/systems/details/ansible/paths/introspect-inventory/:pathId",
+        get("/manager/api/systems/details/ansible/introspect-inventory/:pathId",
                 withUser(AnsibleController::introspectInventory));
 
-        get("/manager/api/systems/details/ansible/paths/discover-playbooks/:pathId",
+        get("/manager/api/systems/details/ansible/discover-playbooks/:pathId",
                 withUser(AnsibleController::discoverPlaybooks));
     }
 
