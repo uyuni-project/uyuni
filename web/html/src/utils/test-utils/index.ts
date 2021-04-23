@@ -3,6 +3,7 @@ import { setupServer } from "msw/node";
 
 // See https://testing-library.com/docs/ecosystem-user-event/#api
 import userEvent from "@testing-library/user-event";
+import * as selectEvent from "react-select-event";
 
 // Reexport everything so we can get all of our utilities from a single location
 // See https://testing-library.com/docs/react-testing-library/api/
@@ -47,6 +48,10 @@ export const type = async (elementOrPromiseOfElement, text) => {
 };
 
 export * from "./forms";
+
+export const select = async (...[input, option, config]: Parameters<typeof selectEvent.select>) => {
+  return selectEvent.select(input, option, Object.assign({}, {container: document.body}, config));
+}
 
 const baseServer = setupServer();
 const serverAddons = {

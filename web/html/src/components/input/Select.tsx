@@ -79,6 +79,10 @@ export function Select(props: Props) {
       ...styles,
       zIndex: 3,
     }),
+    menuPortal: (styles: {}) => ({
+      ...styles,
+      zIndex: 9999
+    }),
   };
 
   return (
@@ -112,6 +116,7 @@ export function Select(props: Props) {
             styles={bootstrapStyles}
             isMulti={props.isMulti}
             aria-label={props.title}
+            menuPortalTarget={document.body}
           />
         );
       }}
