@@ -95,6 +95,9 @@ public class AnsibleController {
 
         get("/manager/api/systems/details/ansible/paths/introspect-inventory/:pathId",
                 withUser(AnsibleController::introspectInventory));
+
+        get("/manager/api/systems/details/ansible/paths/discover-playbooks/:pathId",
+                withUser(AnsibleController::discoverPlaybooks));
     }
 
     /**
@@ -250,6 +253,28 @@ public class AnsibleController {
         try {
             return AnsibleManager.introspectInventory(pathId, user)
                     .map(inventory -> json(res, YAML.dump(inventory)))
+                    .orElseGet(() -> json(res,
+                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (LookupException e) {
+            throw Spark.halt(404);
+        }
+    }
+
+    /**
+     * Discover ansible playbooks
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the json with structure of the discovered playbooks (@see AnsibleManager.discoverPlaybooks doc}
+     */
+    public static String discoverPlaybooks(Request req, Response res, User user) {
+        long pathId = Long.parseLong(req.params("pathId"));
+
+        try {
+            return AnsibleManager.discoverPlaybooks(pathId, user)
+                    .map(inventory -> json(res, inventory))
                     .orElseGet(() -> json(res,
                             ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
