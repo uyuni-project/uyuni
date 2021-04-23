@@ -1,12 +1,11 @@
 function getObjectValue(obj: object, path: string, defaultValue?: any) {
-  return (
-    path.split(".").reduce((target, key) => {
-      if (Array.isArray(target)) {
-        return target.map(item => item?.[key]);
-      }
-      return target?.[key];
-    }, obj) ?? defaultValue
-  );
+  const value = path.split(".").reduce((target, key) => {
+    if (Array.isArray(target)) {
+      return target.map(item => item?.[key]);
+    }
+    return target?.[key];
+  }, obj);
+  return typeof value !== "undefined" ? value : defaultValue;
 }
 
 /**
@@ -15,5 +14,5 @@ function getObjectValue(obj: object, path: string, defaultValue?: any) {
  * if it exists, `defaultValue` otherwise.
  */
 export function getValue(data: object, path: string, defaultValue?: any) {
-  return getObjectValue(data || {}, path, defaultValue);
+  return getObjectValue(data, path, defaultValue);
 }
