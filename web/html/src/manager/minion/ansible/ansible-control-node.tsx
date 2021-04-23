@@ -1,9 +1,7 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages";
-import { TextField } from "components/fields";
 import { Panel } from "components/panels/Panel";
-import { AsyncButton, Button } from "components/buttons";
 import Network from "utils/network";
 import NewAnsiblePath from "./new-ansible-path";
 import EditAnsiblePath from "./edit-ansible-path";
@@ -46,7 +44,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
-    .promise.then(data => {
+    .promise.then((data: AnsiblePath[]) => {
       this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
     });
   }
