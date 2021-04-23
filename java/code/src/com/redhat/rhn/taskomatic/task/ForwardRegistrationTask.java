@@ -44,6 +44,10 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         try {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
                 int waitTime = ThreadLocalRandom.current().nextInt(1, 7 * 60);
+                if (log.isDebugEnabled()) {
+                    // no waiting when debug is on
+                    waitTime = 1;
+                }
                 try {
                     Thread.sleep(waitTime * 1000);
                 }
