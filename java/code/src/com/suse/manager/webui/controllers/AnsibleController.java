@@ -46,6 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -58,6 +61,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class AnsibleController {
 
     private static final Gson GSON = Json.GSON;
+    private static final Yaml YAML = new Yaml(new SafeConstructor());
 
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
@@ -88,6 +92,9 @@ public class AnsibleController {
 
         post("/manager/api/systems/details/ansible/schedule-playbook",
                 withUser(AnsibleController::schedulePlaybook));
+
+        get("/manager/api/systems/details/ansible/paths/introspect-inventory/:pathId",
+                withUser(AnsibleController::introspectInventory));
     }
 
     /**
@@ -226,6 +233,28 @@ public class AnsibleController {
         }
         catch (TaskomaticApiException e) {
             return json(res, ResultJson.error(LOCAL.getMessage("taskscheduler.down")));
+        }
+    }
+
+    /**
+     * Introspect ansible inventory
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the string in YAML format representing the structure of the inventory
+     */
+    public static String introspectInventory(Request req, Response res, User user) {
+        long pathId = Long.parseLong(req.params("pathId"));
+
+        try {
+            return AnsibleManager.introspectInventory(pathId, user)
+                    .map(inventory -> json(res, YAML.dump(inventory)))
+                    .orElseGet(() -> json(res,
+                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (LookupException e) {
+            throw Spark.halt(404);
         }
     }
 }
