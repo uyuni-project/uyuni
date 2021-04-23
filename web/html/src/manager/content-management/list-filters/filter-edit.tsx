@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { ModalLink } from "components/dialog/ModalLink";
-import { closeDialog, Dialog } from "components/dialog/Dialog";
+import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { Button } from "components/buttons";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { Loading } from "components/utils/Loading";

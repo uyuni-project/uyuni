@@ -5,7 +5,7 @@ import Network from "utils/network";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import { Utils } from "utils/functions";
-import { Dialog } from "components/dialog/Dialog";
+import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 
