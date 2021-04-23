@@ -91,9 +91,17 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     private Credentials credentials;
     private Date registrationErrorTime;
 
+    /**
+     * Constructor
+     */
     public SCCRegCacheItem() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param s a Sever item
+     */
     public SCCRegCacheItem(Server s) {
         sccRegistrationRequired = true;
         server = s;

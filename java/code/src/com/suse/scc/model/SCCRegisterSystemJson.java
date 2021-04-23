@@ -32,7 +32,8 @@ public class SCCRegisterSystemJson {
 
     /**
      * Constructor
-     *
+     * @param loginIn the login
+     * @param passwdIn the password
      * @param hostnameIn the hostname
      * @param hwinfoIn the hardware data
      * @param productsIn the products

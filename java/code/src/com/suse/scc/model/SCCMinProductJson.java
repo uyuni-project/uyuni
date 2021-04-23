@@ -29,14 +29,14 @@ public class SCCMinProductJson {
     /**
      * Constructor
      *
-     * @param id the scc id
-     * @param identifier the identifier
-     * @param version the version
-     * @param releaseType the release
-     * @param arch the arch
+     * @param idIn the scc id
+     * @param identifierIn the identifier
+     * @param versionIn the version
+     * @param releaseTypeIn the release
+     * @param archIn the arch
      */
-    public SCCMinProductJson(long id, String identifier, String version, String releaseType,
-            String arch) {
+    public SCCMinProductJson(long idIn, String identifierIn, String versionIn,
+            String releaseTypeIn, String archIn) {
         this.id = id;
         this.identifier = identifier;
         this.version = version;
