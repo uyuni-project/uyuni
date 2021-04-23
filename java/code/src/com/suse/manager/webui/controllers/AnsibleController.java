@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.system.AnsibleManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
@@ -89,11 +88,8 @@ public class AnsibleController {
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
 
-        get("/manager/api/systems/details/ansible/paths/playbooks/:minionServerId",
-                withUser(AnsibleController::listPlaybookPathsByMinion));
-
-        get("/manager/api/systems/details/ansible/paths/inventories/:minionServerId",
-                withUser(AnsibleController::listInventoryPathsByMinion));
+        get("/manager/api/systems/details/ansible/paths/:pathType/:minionServerId",
+                withUser(AnsibleController::listTypedPathsByMinion));
 
         post("/manager/api/systems/details/ansible/paths/save",
                 withUser(AnsibleController::saveAnsiblePath));
@@ -143,7 +139,7 @@ public class AnsibleController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
-        data.put("pathContentType", "playbooks");
+        data.put("pathContentType", AnsiblePath.Type.PLAYBOOK.getLabel());
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
     }
 
@@ -160,39 +156,33 @@ public class AnsibleController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
-        data.put("pathContentType", "inventories");
+        data.put("pathContentType", AnsiblePath.Type.INVENTORY.getLabel());
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
     }
 
     /**
-     * List Ansible Playbook Paths by minion
+     * List Ansible Paths by minion and by path type (Playbook or Inventory)
      *
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
      * @return string with JSON representation of the paths
      */
-    public static String listPlaybookPathsByMinion(Request req, Response res, User user) {
+    public static String listTypedPathsByMinion(Request req, Response res, User user) {
+        String pathType = req.params("pathType");
         long minionServerId = Long.parseLong(req.params("minionServerId"));
-        List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePlaybookPaths(minionServerId, user).stream()
-                .map(AnsiblePathJson::new)
-                .collect(Collectors.toList());
-        return json(res, paths);
-    }
+        List<AnsiblePathJson> paths;
 
-    /**
-     * List Ansible Inventory Paths by minion
-     *
-     * @param req the request object
-     * @param res the response object
-     * @param user the authorized user
-     * @return string with JSON representation of the paths
-     */
-    public static String listInventoryPathsByMinion(Request req, Response res, User user) {
-        long minionServerId = Long.parseLong(req.params("minionServerId"));
-        List<AnsiblePathJson> paths = AnsibleManager.listAnsibleInventoryPaths(minionServerId, user).stream()
-                .map(AnsiblePathJson::new)
-                .collect(Collectors.toList());
+        if (pathType.equalsIgnoreCase(AnsiblePath.Type.PLAYBOOK.getLabel())) {
+            paths = AnsibleManager.listAnsiblePlaybookPaths(minionServerId, user).stream()
+                    .map(AnsiblePathJson::new)
+                    .collect(Collectors.toList());
+        }
+        else {
+            paths = AnsibleManager.listAnsibleInventoryPaths(minionServerId, user).stream()
+                    .map(AnsiblePathJson::new)
+                    .collect(Collectors.toList());
+        }
         return json(res, paths);
     }
 
