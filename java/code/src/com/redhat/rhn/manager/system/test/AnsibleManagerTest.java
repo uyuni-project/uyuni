@@ -33,9 +33,41 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
+import com.suse.salt.netapi.calls.LocalCall;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+
 import java.nio.file.Path;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class AnsibleManagerTest extends BaseTestCaseWithUser {
+
+    private Mockery CONTEXT;
+
+    private SaltApi originalSaltApi;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        CONTEXT = new JUnit3Mockery() {{
+            setThreadingPolicy(new Synchroniser());
+        }};
+        originalSaltApi = AnsibleManager.getSaltApi();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        AnsibleManager.setSaltApi(originalSaltApi);
+    }
 
     /**
      * Test saving and looking up {@link AnsiblePath} by given user
@@ -171,6 +203,143 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
 
         try {
             AnsibleManager.fetchPlaybookContents(path.getId(), "/absolute", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test scheduling playbook with an empty path
+     *
+     * @throws Exception
+     */
+    public void testSchedulePlaybookBlankPath() throws Exception {
+        MinionServer minion = createAnsibleControlNode(user);
+        try {
+            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), new Date(), user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test scheduling playbook on an non-existing minion
+     *
+     * @throws Exception
+     */
+    public void testSchedulePlaybookNonexistingMinion() throws Exception {
+        try {
+            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, new Date(), user);
+            fail("An exception should have been thrown.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test discover playbooks
+     *
+     * @throws Exception
+     */
+    public void testDiscoverPlaybooks() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+
+        Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> expected = Optional.of(Map.of("/tmp/test", Map.of("site.yml",
+                new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts"))));
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(expected));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+        Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> result = AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
+        assertEquals(expected, result);
+    }
+
+    /**
+     * Test discover playbooks in an non-existing path
+     *
+     * @throws Exception
+     */
+    public void testDiscoverPlaybooksNonExistingPath() throws Exception {
+        try {
+            AnsibleManager.discoverPlaybooks(-1234, user);
+            fail("An exception should have been thrown.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test discover playbooks in an inventory path
+     *
+     * @throws Exception
+     */
+    public void testDiscoverPlaybooksInInventory() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+        try {
+            AnsibleManager.discoverPlaybooks(inventoryPath.getId(), user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test introspect inventory
+     */
+    public void testIntrospectInventory() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+
+        Optional<Map<String, Map<String, Object>>> expected =
+                Optional.of(Map.of("local",  Map.of("all", Map.of("children", List.of("host1", "host2")))));
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(expected));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+        Optional<Map<String, Map<String, Object>>> result = AnsibleManager.introspectInventory(inventoryPath.getId(), user);
+        assertEquals(expected, result);
+    }
+
+    /**
+     * Test introspecting inventory in an non-existing path
+     */
+    public void testIntrospectInventoryNonExistingPath() {
+        try {
+            AnsibleManager.introspectInventory(-1234, user);
+            fail("An exception should have been thrown.");
+        }
+        catch (LookupException e) {
+            // expected
+        }
+    }
+
+    /**
+     * Test discover playbooks in an inventory path
+     *
+     * @throws Exception
+     */
+    public void testIntrospectInventoryInPlaybook() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        try {
+            AnsibleManager.introspectInventory(playbookPath.getId(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
