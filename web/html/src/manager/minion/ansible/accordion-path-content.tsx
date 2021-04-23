@@ -1,8 +1,8 @@
 import * as React from "react";
 import { AnsiblePath } from "./ansible-path-type";
-import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
 import { Messages, Utils } from "components/messages";
+import { Loading } from "components/utils/Loading";
 
 type PropsType = {
   path: AnsiblePath;
@@ -10,8 +10,9 @@ type PropsType = {
 
 type StateType = {
   open: boolean; 
-  content: Map<string, any>;
+  content: any;
   errors: string[];
+  loading: boolean;
 };
 
 function getURL(path: AnsiblePath) {
@@ -31,62 +32,67 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
     this.state = {
       open: false,
-      content: new Map<string, any>(),
+      content: null,
       errors: [],
+      loading: false,
     };
   }
 
-  onOpen() {
-    if (!this.state.open) {
-      const path: AnsiblePath = this.props.path;
-      if (Object.keys(this.state.content).includes(path.path)) {
-        this.setState({ open: true });
-      }
-      else {
-        Network.get(getURL(path))
-        .promise.then(data => {
-          if (data.success) {
-            this.setState({ content: this.state.content.set(path.path, ["element 1", "element 2"]), open: true});
-          }
-          else {
-            this.setState({ errors: data.messages });
-          }
-        });
-      }
+  onToggle() {
+    const path: AnsiblePath = this.props.path;
+    if (!this.state.open && this.state.content === null) {
+      this.setState({ loading: true });
+      Network.get(getURL(path))
+      .promise.then(data => {
+        if (data.success) {
+          this.setState({ content: ["element 1", "element 2"] });
+        }
+        else {
+          this.setState({ errors: data.messages });
+        }
+        this.setState({ open: true, loading: false });
+      });
     }
     else {
-      this.setState({ open: false });
+      this.setState({ open: false, errors: [] });
     }
   }
 
   render() {
     const header =
-      <div className="accordion-toggle" onClick={() => this.onOpen()}>
-        { this.props.path.path }
+      <div className="panel-heading accordion-toggle" onClick={() => this.onToggle()}>
+        <i className={this.state.open || this.state.loading ? "fa fa-chevron-up" : "fa fa-chevron-down"} />{ this.props.path.path }
       </div>;
 
     const errors = this.state.errors.length > 0 ? <Messages items={Utils.error(this.state.errors)} /> : null;
     return (
-      <Panel header={header} headingLevel="h5">
+      <div className="panel panel-default">
+        {header}
         <div>
-          {errors}
-          { this.state.open ? 
-              <ul>
-                {
-                  this.state.content.get(this.props.path.path).map((element: string) =>
-                    <li key={element}>
-                      {
-                        this.props.path.type === "playbook" ? 
-                          <a>{element}</a>
-                        : element
-                      }
-                    </li>
-                )}
-              </ul>
-            : null
+          {
+            this.state.loading?
+              <Loading text={t("Loading content..")} />
+              :
+              this.state.open ?
+                <>
+                  {errors}
+                  <ul>
+                    {
+                      this.state.content?.map((element: string) =>
+                        <li key={element}>
+                          {
+                            this.props.path.type === "playbook" ?
+                              <a>{element}</a>
+                            : element
+                          }
+                        </li>
+                    )}
+                  </ul>
+                </>
+                : null
           }
         </div>
-      </Panel>
+      </div>
     )
   }
 };
