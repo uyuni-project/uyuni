@@ -6,8 +6,8 @@ After=syslog.target network.target
 Type=forking
 KillMode=process
 EnvironmentFile=-/etc/sysconfig/osad
-PIDFile=/var/run/osad.pid
-ExecStart=/usr/sbin/osad --pid-file /var/run/osad.pid
+PIDFile=/run/osad.pid
+ExecStart=/usr/sbin/osad --pid-file /run/osad.pid
 
 [Install]
 WantedBy=multi-user.target
