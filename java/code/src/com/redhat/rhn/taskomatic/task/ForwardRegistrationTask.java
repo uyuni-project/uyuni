@@ -30,6 +30,7 @@ import org.quartz.JobExecutionException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ForwardRegistrationTask extends RhnJavaJob {
@@ -42,7 +43,13 @@ public class ForwardRegistrationTask extends RhnJavaJob {
         }
         try {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
-                //TODO: randomize the start a bit to not flood SCC with requests exactly every 15 minutes
+                int waitTime = ThreadLocalRandom.current().nextInt(1, 7 * 60);
+                try {
+                    Thread.sleep(waitTime * 1000);
+                }
+                catch (InterruptedException e) {
+                    log.debug("Sleep interrupted", e);
+                }
                 URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
                 //TODO: find a better place to put getUUID
                 String uuid = ContentSyncManager.getUUID();
