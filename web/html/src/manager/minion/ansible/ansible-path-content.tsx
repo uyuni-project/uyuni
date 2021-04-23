@@ -40,9 +40,6 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     return (
       <div>
         {errors}
-        <p>
-          {this.state.pathContentType}
-        </p>
         { this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} /> ) }
       </div>
     );
