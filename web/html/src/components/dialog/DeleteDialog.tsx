@@ -1,6 +1,6 @@
 import * as React from "react";
-import { DangerDialog } from "./DangerDialog";
-import { DialogProps } from "./Dialog";
+import { DangerDialog } from "./LegacyDangerDialog";
+import { DialogProps } from "./LegacyDialog";
 
 type DeleteDialogProps = DialogProps & {
   item?: any;
