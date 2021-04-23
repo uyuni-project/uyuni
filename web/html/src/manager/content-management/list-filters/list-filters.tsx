@@ -6,14 +6,15 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
-import { showSuccessToastr } from "components/toastr/toastr";
+import { showSuccessToastr, showErrorToastr } from "components/toastr/toastr";
 import withPageWrapper from "components/general/with-page-wrapper";
 import FilterEdit from "./filter-edit";
-import { mapResponseToFilterForm } from "./filter.utils";
+import { mapFilterFormToRequest, mapResponseToFilterForm } from "./filter.utils";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import { getValue } from "utils/data";
+import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 
 type Props = {
   filters: Array<FilterServerType>;
@@ -23,8 +24,10 @@ type Props = {
 };
 
 const ListFilters = (props: Props) => {
+  const { onAction } = useLifecycleActionsApi({ resource: "filters" });
+
   const [displayedFilters, setDisplayedFilters] = useState<FilterFormType[]>(mapResponseToFilterForm(props.filters));
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedIdentifiers, setSelectedIdentifiers] = useState<string[]>([]);
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
@@ -48,20 +51,44 @@ const ListFilters = (props: Props) => {
   };
 
   const onSelect = (identifiers: string[]) => {
-    setSelectedItems(identifiers);
+    setSelectedIdentifiers(identifiers);
   };
 
   const onSelectUnused = () => {
     const unused = displayedFilters.filter(row => !row.projects?.length);
-    setSelectedItems(unused.map(identifier));
+    setSelectedIdentifiers(unused.map(identifier));
   };
 
-  const deletable = (row: FilterFormType) => {
+  const isDeletable = (row: FilterFormType) => {
     return !row.projects?.length;
   };
 
-  const onDelete = (row: FilterFormType) => {
-    console.log("delete row", row);
+  const deleteRow = async (row: FilterFormType) => {
+    try {
+      const remainingFilters = await onAction(mapFilterFormToRequest(row), "delete", row.id?.toString());
+      setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
+      const remainingSelection = selectedIdentifiers.filter(item => item !== identifier(row));
+      setSelectedIdentifiers(remainingSelection);
+    } catch (error) {
+      showErrorToastr(error?.messages ?? error);
+    }
+  };
+
+  const deleteSelectedRows = async () => {
+    const rows = displayedFilters.filter(row => selectedIdentifiers.includes(identifier(row)));
+    if (!rows.every(isDeletable)) {
+      showErrorToastr(t("Some of the selected filters are used in projects and can not be deleted."));
+      return;
+    }
+    try {
+      await Promise.all(rows.map(row => onAction(mapFilterFormToRequest(row), "delete", row.id?.toString())));
+      setSelectedIdentifiers([]);
+
+      const remainingFilters = await onAction(undefined, "get");
+      setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
+    } catch (error) {
+      showErrorToastr(error?.messages ?? error);
+    }
   };
 
   const identifier = row => row.filter_name;
@@ -92,6 +119,16 @@ const ListFilters = (props: Props) => {
     </button>
   );
 
+  const deleteSelected = (
+    <button
+      className={`btn ${selectedIdentifiers.length ? "btn-danger" : "btn-disabled"}`}
+      disabled={!selectedIdentifiers.length}
+      onClick={deleteSelectedRows}
+    >
+      {t("Delete selected")}
+    </button>
+  );
+
   return (
     <TopPanel
       title={t("Content Lifecycle Filters")}
@@ -107,10 +144,10 @@ const ListFilters = (props: Props) => {
         searchField={<SearchField filter={searchData} placeholder={t("Filter by name or project")} />}
         selectable={true}
         onSelect={onSelect}
-        selectedItems={selectedItems}
-        deletable={deletable}
-        onDelete={onDelete}
-        additionalFilters={[unusedFilter]}
+        selectedItems={selectedIdentifiers}
+        deletable={isDeletable}
+        onDelete={deleteRow}
+        additionalFilters={[unusedFilter, deleteSelected]}
       >
         <Column
           columnKey="filter_name"
