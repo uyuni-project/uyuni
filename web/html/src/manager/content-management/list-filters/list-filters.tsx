@@ -47,13 +47,27 @@ const ListFilters = (props: Props) => {
     return true;
   };
 
-  const onSelect = (items: string[]) => {
-    setSelectedItems(items);
+  const onSelect = (identifiers: string[]) => {
+    setSelectedItems(identifiers);
   };
 
   const onSelectUnused = () => {
-    const unused = displayedFilters.filter(item => !item.projects?.length);
+    const unused = displayedFilters.filter(row => !row.projects?.length);
     setSelectedItems(unused.map(identifier));
+  };
+
+  const deletable = (row: FilterFormType) => {
+    return !row.projects?.length;
+  };
+
+  const onDelete = (row: FilterFormType) => {
+    console.log("delete row", row);
+  };
+
+  const identifier = row => row.filter_name;
+
+  const sortProjects = (row: FilterFormType) => {
+    return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
   };
 
   const panelButtons = (
@@ -78,11 +92,6 @@ const ListFilters = (props: Props) => {
     </button>
   );
 
-  const identifier = row => row.filter_name;
-  const sortedProjects = (row: FilterFormType) => {
-    return row.projects?.sort((a, b) => a.right?.toLowerCase().localeCompare(b.right?.toLowerCase())) ?? [];
-  };
-
   return (
     <TopPanel
       title={t("Content Lifecycle Filters")}
@@ -99,6 +108,8 @@ const ListFilters = (props: Props) => {
         selectable={true}
         onSelect={onSelect}
         selectedItems={selectedItems}
+        deletable={deletable}
+        onDelete={onDelete}
         additionalFilters={[unusedFilter]}
       >
         <Column
@@ -111,16 +122,16 @@ const ListFilters = (props: Props) => {
           columnKey="projects"
           header={t("Projects in use")} // {left: project label, right: project name}
           comparator={(aRow: FilterFormType, bRow: FilterFormType, _, sortDirection) => {
-            const aProjects = sortedProjects(aRow)
+            const aProjects = sortProjects(aRow)
               .map(project => project.right)
               .join();
-            const bProjects = sortedProjects(bRow)
+            const bProjects = sortProjects(bRow)
               .map(project => project.right)
               .join();
             return aProjects.localeCompare(bProjects) * sortDirection;
           }}
           cell={row =>
-            sortedProjects(row).map((p, index) => (
+            sortProjects(row).map((p, index) => (
               <a
                 className="project-tag-link js-spa"
                 href={`/rhn/manager/contentmanagement/project/${p.left}`}
