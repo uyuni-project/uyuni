@@ -5,13 +5,7 @@ import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
 import NewAnsiblePath from "./new-ansible-path";
 import EditAnsiblePath from "./edit-ansible-path";
-
-type AnsiblePath = {
-  id?: number;
-  minionServerId?: number;
-  type?: string;
-  path?: string;
-}
+import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
 
 type PropsType = {
   minionServerId: number;
@@ -23,8 +17,8 @@ type StateType = {
   inventoriesPaths: AnsiblePath[];
   newPlaybookPath: string;
   newInventoryPath: string;
-  editPlaybookPath?: AnsiblePath;
-  editInventoryPath?: AnsiblePath;
+  editPlaybookPath: Partial<AnsiblePath>;
+  editInventoryPath: Partial<AnsiblePath>;
   errors: string[];
 };
 
@@ -38,8 +32,8 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       inventoriesPaths: [],
       newPlaybookPath: "",
       newInventoryPath: "",
-      editPlaybookPath: undefined,
-      editInventoryPath: undefined,
+      editPlaybookPath: {},
+      editInventoryPath: {},
       errors: [],
     };
 
@@ -88,8 +82,8 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     }
   }
 
-  saveEditPath(type?: string) {
-    const editPath = type === "playbook" ? this.state.editPlaybookPath : this.state.editInventoryPath;
+  saveEditPath(type: string) {
+    const editPath: Partial<AnsiblePath> = type === "playbook" ? this.state.editPlaybookPath : this.state.editInventoryPath;
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
       JSON.stringify({
@@ -101,12 +95,12 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       "application/json"
     ).promise.then(data => {
       if (data.success) {
-        const newAnsiblePath: AnsiblePath = { id: editPath?.id, minionServerId: editPath?.minionServerId, type: editPath?.type, path: editPath?.path};
+        const newPath = createNewAnsiblePath({ id: editPath.id, minionServerId: editPath.minionServerId, type: editPath.type, path: editPath.path});
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newAnsiblePath), editPlaybookPath: undefined});
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newPath), editPlaybookPath: {}});
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== editPath?.id).concat(newAnsiblePath), editInventoryPath: undefined });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== editPath?.id).concat(newPath), editInventoryPath: {} });
         }
       }
       else {
@@ -162,7 +156,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     editPath={(newValue: string) => this.editPath(p, newValue)}
                     saveEditPath={() => this.saveEditPath(p.type)}
                     editPlaybookPath={this.state.editPlaybookPath}
-                    cancelHandler={() => this.setState({ editPlaybookPath: undefined })}
+                    cancelHandler={() => this.setState({ editPlaybookPath: {} })}
                     deletePath={() => this.deletePath(p)}
                   />
                   :
@@ -196,7 +190,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     editPath={(newValue: string) => this.editPath(p, newValue)}
                     saveEditPath={() => this.saveEditPath(p.type)}
                     editEntity={this.state.editInventoryPath}
-                    cancelHandler={() => this.setState({ editInventoryPath: undefined })}
+                    cancelHandler={() => this.setState({ editInventoryPath: {} })}
                     deletePath={() => this.deletePath(p)}
                   />
                   :
