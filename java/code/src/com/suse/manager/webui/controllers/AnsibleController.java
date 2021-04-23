@@ -76,7 +76,7 @@ public class AnsibleController {
 
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
-        // todo no CSRF?
+
         post("/manager/api/systems/details/ansible/paths/save",
                 withUser(AnsibleController::saveAnsiblePath));
 
