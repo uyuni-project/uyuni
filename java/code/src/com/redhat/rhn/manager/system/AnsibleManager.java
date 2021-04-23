@@ -288,4 +288,22 @@ public class AnsibleManager extends BaseManager {
 
         return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
     }
+
+    /**
+     * Sets the saltApi for testing
+     *
+     * @param saltApiIn the saltApi
+     */
+    public static void setSaltApi(SaltApi saltApiIn) {
+        AnsibleManager.saltApi = saltApiIn;
+    }
+
+    /**
+     * Gets the saltApi.
+     *
+     * @return saltApi
+     */
+    public static SaltApi getSaltApi() {
+        return saltApi;
+    }
 }
