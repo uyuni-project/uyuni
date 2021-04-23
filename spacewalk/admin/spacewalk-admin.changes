@@ -1,3 +1,5 @@
+- change deprecated path /var/run into /run for systemd (bsc#1185059)
+
 -------------------------------------------------------------------
 Tue Apr 20 16:27:53 CEST 2021 - jgonzalez@suse.com
 
