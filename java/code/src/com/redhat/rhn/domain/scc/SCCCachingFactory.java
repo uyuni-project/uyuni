@@ -491,9 +491,8 @@ public class SCCCachingFactory extends HibernateFactory {
 
     /**
      * Initialize new systems to get forwarded to SCC
-     *
-     * @return list of {@link SCCRegCacheItem}
      */
+    @SuppressWarnings("unchecked")
     public static void initNewSystemsToForward() {
 
         List<Server> newServer = getSession()
@@ -511,13 +510,14 @@ public class SCCCachingFactory extends HibernateFactory {
      *
      * @return list of {@link SCCRegCacheItem}
      */
+    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> findSystemsToForwardRegistration() {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
-                .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
 
@@ -526,13 +526,14 @@ public class SCCCachingFactory extends HibernateFactory {
      *
      * @return list of {@link SCCRegCacheItem}
      */
+    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listDeregisterItems() {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
-                .setParameter("retryTime", new Date (retryTime.getTimeInMillis()))
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
 
@@ -540,8 +541,10 @@ public class SCCCachingFactory extends HibernateFactory {
      * Returns registration items of systems which were registered under the specified
      * organization credentials
      *
+     * @param cred the organization credential
      * @return list of {@link SCCRegCacheItem}
      */
+    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listRegItemsByCredentials(Credentials cred) {
 
         return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")

@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2021 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.scc;
 
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -34,11 +48,23 @@ public class SCCSystemRegistrationManager {
     private final URI sccURI;
     private final String uuid;
 
+    /**
+     * Constructor
+     *
+     * @param sccURIIn SCC URL
+     * @param uuidIn the UUID of this server
+     */
     public SCCSystemRegistrationManager(URI sccURIIn, String uuidIn) {
         this.sccURI = sccURIIn;
         this.uuid = uuidIn;
     }
 
+    /**
+     * De-register a system from SCC
+     *
+     * @param items the cache item identify the system to de-register
+     * @param forceDBDeletion force delete the cache item when set to true
+     */
     public void deregister(List<SCCRegCacheItem> items, boolean forceDBDeletion) {
         items.forEach(cacheItem -> {
             cacheItem.getOptSccId().ifPresentOrElse(
@@ -70,6 +96,12 @@ public class SCCSystemRegistrationManager {
         });
     }
 
+    /**
+     * Register a system at SCC
+     *
+     * @param items the items to register
+     * @param primaryCredential the current primary organization credential
+     */
     public void register(List<SCCRegCacheItem> items, Credentials primaryCredential) {
         items.forEach(cacheItem -> {
             try {
@@ -120,8 +152,8 @@ public class SCCSystemRegistrationManager {
         if (srv.isVirtualGuest()) {
             hwinfo.put("hypervisor", srv.getVirtualInstance().getType().getHypervisor().orElse(""));
             hwinfo.put("cloud_provider", srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-            Optional.ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(uuid -> {
-                hwinfo.put("uuid", uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+            Optional.ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(u -> {
+                hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                         "$1-$2-$3-$4-$5"));
             });
         }
@@ -145,5 +177,4 @@ public class SCCSystemRegistrationManager {
 
         return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products);
     }
-
 }

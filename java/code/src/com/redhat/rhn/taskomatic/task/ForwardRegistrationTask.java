@@ -52,11 +52,13 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
                 log.debug(deregister.size() + " RegCacheItems found to delete");
                 List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
-                SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(url, uuid);
-                sccSystemRegistrationManager.deregister(deregister, false);
-                credentials.stream().filter(c -> c.isPrimarySCCCredential()).findFirst().ifPresent(primaryCredentials -> {
-                    sccSystemRegistrationManager.register(forwardRegistration, primaryCredentials);
-                });
+                SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(url, uuid);
+                sccRegManager.deregister(deregister, false);
+                credentials.stream()
+                    .filter(c -> c.isPrimarySCCCredential())
+                    .findFirst().ifPresent(primaryCredentials -> {
+                        sccRegManager.register(forwardRegistration, primaryCredentials);
+                    });
             }
         }
         catch (URISyntaxException e) {

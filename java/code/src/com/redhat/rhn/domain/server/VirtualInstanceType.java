@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2021 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,9 +25,15 @@ import java.util.Optional;
  */
 public class VirtualInstanceType extends Label {
 
+    /**
+     * Constructor
+     */
     VirtualInstanceType() {
     }
 
+    /**
+     * @return the cloud provider as string when available
+     */
     public Optional<String> getCloudProvider() {
         switch(getLabel()) {
             case "azure": return Optional.of("Microsoft");
@@ -36,12 +43,15 @@ public class VirtualInstanceType extends Label {
         }
     }
 
+    /**
+     * @return the hypervisor as string when available
+     */
     public Optional<String> getHypervisor() {
         switch(getLabel()) {
             case "fully_virtualized": return Optional.of("Xen");
             case "para_virtualized": return Optional.of("Xen");
             case "qemu": return Optional.of("KVM");
-            case "vmware":return Optional.of("VMware");
+            case "vmware": return Optional.of("VMware");
             case "hyperv": return Optional.of("Hyper-V");
             case "nutanix": return Optional.of("Nutanix");
             case "virtualbox": return Optional.of("VirtualBox");

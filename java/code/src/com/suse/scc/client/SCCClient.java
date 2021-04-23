@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,7 +15,13 @@
 package com.suse.scc.client;
 
 import com.redhat.rhn.manager.content.ProductTreeEntry;
-import com.suse.scc.model.*;
+
+import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRepositoryJson;
+import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCSystemCredentialsJson;
 
 import java.util.List;
 
@@ -72,6 +78,18 @@ public interface SCCClient {
      */
     List<ProductTreeEntry> productTree() throws SCCClientException;
 
+    /**
+     * Create a System at SCC
+     * @param system the system
+     * @return registration result
+     * @throws SCCClientException
+     */
     SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system) throws SCCClientException;
+
+    /**
+     * Delete a System at SCC
+     * @param id the scc system id
+     * @throws SCCClientException
+     */
     void deleteSystem(long id) throws SCCClientException;
 }

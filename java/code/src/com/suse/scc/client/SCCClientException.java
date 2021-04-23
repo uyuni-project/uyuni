@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2015 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,8 +19,8 @@ package com.suse.scc.client;
  */
 public class SCCClientException extends Exception {
 
-    int httpStatusCode = 0;
-    String httpRequestURI;
+    private int httpStatusCode = 0;
+    private String httpRequestURI;
 
     /**
      * Constructor expecting a custom cause.
