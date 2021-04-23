@@ -230,6 +230,8 @@ public class AnsibleManager extends BaseManager {
      * @param playbookRelPathStr the relative path to the playbook file
      * @param user the user
      * @return the playbook contents or empty if minion did not respond
+     * @throws LookupException when playbook path not found or accessible
+     * @throws IllegalArgumentException when the specified relative path is absolute
      */
     public static Optional<String> fetchPlaybookContents(long pathId, String playbookRelPathStr, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
