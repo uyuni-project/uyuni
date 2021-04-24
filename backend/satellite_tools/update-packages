@@ -58,7 +58,7 @@ except ImportError:
 #   i.e., lock against multiple instances of updatePackages
 LOCK = None
 try:
-    LOCK = rhnLockfile.Lockfile('/var/run/update-packages.pid')
+    LOCK = rhnLockfile.Lockfile('/run/update-packages.pid')
 except rhnLockfile.LockfileLockedException:
     systemExit(1, "ERROR: attempting to run more than one instance of update-packages. Exiting.")
 

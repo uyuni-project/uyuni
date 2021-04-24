@@ -683,7 +683,7 @@ def main():
 
     global LOCK
     try:
-        LOCK = rhnLockfile.Lockfile('/var/run/mgr-create-bootstrap-repo.pid')
+        LOCK = rhnLockfile.Lockfile('/run/mgr-create-bootstrap-repo.pid')
     except rhnLockfile.LockfileLockedException:
         sys.stderr.write("ERROR: attempting to run more than one instance of "
                          "mgr-create-bootstrap-repo Exiting.\n")

@@ -65,7 +65,7 @@ except ImportError:
 #   i.e., lock against multiple instances of satellite-sync
 LOCK = None
 try:
-    LOCK = rhnLockfile.Lockfile('/var/run/satellite-sync.pid')
+    LOCK = rhnLockfile.Lockfile('/run/satellite-sync.pid')
 except rhnLockfile.LockfileLockedException:
     systemExit(1, "SYNC ERROR: attempting to run more than one instance of mgr-inter-sync. Exiting.")
 

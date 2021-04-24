@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
         # acquire lock/check for other instances of cdn-sync
         #   i.e., lock against multiple instances of cdn-sync
-        LOCK = rhnLockfile.Lockfile('/var/run/cdn-sync.pid')
+        LOCK = rhnLockfile.Lockfile('/run/cdn-sync.pid')
 
         args = process_commandline()
 

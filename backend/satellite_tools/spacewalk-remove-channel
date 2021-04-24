@@ -69,7 +69,7 @@ options_table = [
 ]
 
 LOCK = []
-LOCK_DIR = '/var/run'
+LOCK_DIR = '/run'
 
 
 def main():

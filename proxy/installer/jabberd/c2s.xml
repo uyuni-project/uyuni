@@ -6,7 +6,7 @@
   <!-- The process ID file. comment this out if you don't need to know
        to know the process ID from outside the process (eg for control
        scripts) -->
-  <pidfile>/var/run/jabberd/jabberd-c2s.pid</pidfile>
+  <pidfile>/run/jabberd/jabberd-c2s.pid</pidfile>
 
   <!-- Router connection configuration -->
   <router>
