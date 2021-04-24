@@ -94,7 +94,7 @@ PG_IDENT="$PG_DATA/pg_ident.conf"
 POSTGRESQL="$PG_DATA/postgresql.conf"
 POSTGRESQL_SW_APPEND=/usr/share/spacewalk/setup/postgresql.conf
 PORT=5432
-PG_PIDFILE="/var/run/postmaster.$PORT.pid"
+PG_PIDFILE="/run/postmaster.$PORT.pid"
 if isSUSE ; then
     PG_PIDFILE="$PG_DATA/postmaster.pid"
 fi

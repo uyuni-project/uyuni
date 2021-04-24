@@ -69,7 +69,7 @@ def main():
 
     global LOCK
     try:
-        LOCK = rhnLockfile.Lockfile('/var/run/spacewalk-repo-sync.pid')
+        LOCK = rhnLockfile.Lockfile('/run/spacewalk-repo-sync.pid')
     except rhnLockfile.LockfileLockedException:
         systemExit(1, "ERROR: attempting to run more than one instance of "
                       "spacewalk-repo-sync Exiting.")

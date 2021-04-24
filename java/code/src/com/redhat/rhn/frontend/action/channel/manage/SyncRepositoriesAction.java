@@ -54,7 +54,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SyncRepositoriesAction extends RhnAction implements Listable {
 
-    private static final String REPOSYNC_LOCKFILE = "/var/run/spacewalk-repo-sync.pid";
+    private static final String REPOSYNC_LOCKFILE = "/run/spacewalk-repo-sync.pid";
 
   /**
    *
