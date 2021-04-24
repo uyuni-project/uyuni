@@ -1,3 +1,4 @@
+- change deprecated path /var/run into /run for systemd (bsc#1185059)
 - add virtual network edit action
 - Lower case fqdn comparation when calculating minion connection path (bsc#1184849)
 - Add the Ansible Control Node system type
