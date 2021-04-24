@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-23 18:57+0000\n"
+"PO-Revision-Date: 2021-04-24 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1533,15 +1533,15 @@ msgstr "niet čo robiť"
 
 #: ../src/spacecmd/configchannel.py:1649
 msgid "perform synchronisation [y/N]:"
-msgstr ""
+msgstr "vykonať synchronizáciu [a/N]:"
 
 #: ../src/spacecmd/configchannel.py:1701
 msgid "unknown file type "
-msgstr ""
+msgstr "neznámy typ súboru "
 
 #: ../src/spacecmd/cryptokey.py:44
 msgid "cryptokey_create: Create a cryptographic key"
-msgstr ""
+msgstr "cryptokey_create: Vytvoriť kryptografický kľúč"
 
 #: ../src/spacecmd/cryptokey.py:45
 msgid ""
@@ -1552,30 +1552,36 @@ msgid ""
 "  -d DESCRIPTION\n"
 "  -f KEY_FILE"
 msgstr ""
+"použitie: cryptokey_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -t GPG alebo SSL\n"
+"  -d POPIS\n"
+"  -f SÚBOR_KĽÚČA"
 
 #: ../src/spacecmd/cryptokey.py:63
 msgid "GPG or SSL [G/S]:"
-msgstr ""
+msgstr "GPG alebo SSL [G/S]:"
 
 #: ../src/spacecmd/cryptokey.py:76
 msgid "The key type is required"
-msgstr ""
+msgstr "Vyžaduje sa typ kľúča"
 
 #: ../src/spacecmd/cryptokey.py:80
 msgid "A description is required"
-msgstr ""
+msgstr "Vyžaduje sa popis"
 
 #: ../src/spacecmd/cryptokey.py:84
 msgid "A file containing the key is required"
-msgstr ""
+msgstr "Vyžaduje sa súbor obsahujúci kľúč"
 
 #: ../src/spacecmd/cryptokey.py:92
 msgid "No contents of the file"
-msgstr ""
+msgstr "Žiadny obsah súboru"
 
 #: ../src/spacecmd/cryptokey.py:101
 msgid "Invalid key type"
-msgstr ""
+msgstr "Neplatný typ kľúča"
 
 #: ../src/spacecmd/cryptokey.py:115
 msgid "cryptokey_delete: Delete a cryptographic key"
