@@ -6,7 +6,7 @@ const EditAnsiblePath = (props) => {
   return (
     <>
       <div className="d-block">
-        <div className="col-md-10">
+        <div className="col-md-9">
           <TextField
             value={props.ansiblePath.path}
             onChange={(e) => props.editPath(e.target.value.toString())}
