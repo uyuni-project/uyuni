@@ -159,7 +159,7 @@ def main(args):
     global LOCK
     LOCK = None
     try:
-        LOCK = rhnLockfile.Lockfile('/var/run/mgr-refresh-pkg-extra-tags.pid')
+        LOCK = rhnLockfile.Lockfile('/run/mgr-refresh-pkg-extra-tags.pid')
     except rhnLockfile.LockfileLockedException:
         systemExit(1, 'ERROR: attempting to run more than one instance of '
                       'mgr-refresh-pkg-metadata Exiting.')
