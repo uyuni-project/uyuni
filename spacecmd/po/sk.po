@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-24 19:57+0000\n"
+"PO-Revision-Date: 2021-04-25 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1585,44 +1585,45 @@ msgstr "Neplatný typ kľúča"
 
 #: ../src/spacecmd/cryptokey.py:115
 msgid "cryptokey_delete: Delete a cryptographic key"
-msgstr ""
+msgstr "cryptokey_delete: Vymazať kryptografický kľúč"
 
 #: ../src/spacecmd/cryptokey.py:116
 msgid "usage: cryptokey_delete NAME"
-msgstr ""
+msgstr "použitie: cryptokey_delete NÁZOV"
 
 #: ../src/spacecmd/cryptokey.py:146
 msgid "Delete key(s) [y/N]:"
-msgstr ""
+msgstr "Vymazať kľúč(e) [a/N]:"
 
 #: ../src/spacecmd/cryptokey.py:157
 msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
 msgstr ""
+"cryptokey_list: Vypísať zoznam všetkých kryptografických kľúčov (SSL, GPG)"
 
 #: ../src/spacecmd/cryptokey.py:158
 msgid "usage: cryptokey_list"
-msgstr ""
+msgstr "použitie: cryptokey_list"
 
 #: ../src/spacecmd/cryptokey.py:175
 msgid "cryptokey_details: Show the contents of a cryptographic key"
-msgstr ""
+msgstr "cryptokey_details: Zobraziť obsah kryptografického kľúča"
 
 #: ../src/spacecmd/cryptokey.py:176
 msgid "usage: cryptokey_details KEY ..."
-msgstr ""
+msgstr "použitie: cryptokey_details KĽÚČ ..."
 
 #: ../src/spacecmd/cryptokey.py:208
 #, python-format
 msgid "%s is not a valid crypto key"
-msgstr ""
+msgstr "%s nie je platný krypto kľúč"
 
 #: ../src/spacecmd/custominfo.py:40
 msgid "custominfo_createkey: Create a custom key"
-msgstr ""
+msgstr "custominfo_createkey: Vytvoriť vlastný kľúč"
 
 #: ../src/spacecmd/custominfo.py:41
 msgid "usage: custominfo_createkey [NAME] [DESCRIPTION]"
-msgstr ""
+msgstr "použitie: custominfo_createkey [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/custominfo.py:74
 msgid "custominfo_deletekey: Delete a custom key"
