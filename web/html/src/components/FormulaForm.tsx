@@ -44,7 +44,7 @@ type Props = {
   /** current active scope (system or group) */
   scope: "system" | "group";
 
-  messageTexts: string[];
+  messageTexts: any;
 };
 
 type State = {
