@@ -9,6 +9,7 @@ import allLocales from "@fullcalendar/core/locales-all";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
+import {convertNumbers} from "components/input/form-utils";
 
 type WebCalendarProps = {
   id: number;
@@ -49,10 +50,11 @@ const WebCalendar = (props: WebCalendarProps) => {
   const getEvents = (operation) => {
     const date = getDate(operation);
     if (operation === "initial" || needsUpdate(date)) {
-      const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${date.valueOf()}/${props.id}`;
+      const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
+      const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
       return Network.get(endpoint, "application/json").promise
         .then(events => {
-          setEvents(events);
+          setEvents(colorEvents(events));
           navigateTo(operation);
           props.clearMessages();
           setCurrentDate(getApi().currentDataManager.data.currentDate);
@@ -68,13 +70,14 @@ const WebCalendar = (props: WebCalendarProps) => {
     if (!needsUpdate(date) && skipToPrevEvent(date)) {
       return;
     }
-    const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${date.valueOf()}/${props.id}`;
+    const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
+    const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more past maintenance windows")));
         } else {
-          setEvents(events);
+          setEvents(colorEvents(events));
           // Skip to next event that is not in current month
           const filteredEvents = events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month());
@@ -97,13 +100,14 @@ const WebCalendar = (props: WebCalendarProps) => {
     if (getApi().currentDataManager.data.currentViewType === "timeGridDay" && date.date() !== 1) {
       date = date.add(1, 'month').startOf('month');
     }
-    const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date.valueOf()}/${props.id}`;
+    const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
+    const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
     return Network.get(endpoint, "application/json").promise
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));
         } else {
-          setEvents(events);
+          setEvents(colorEvents(events));
           // Skip to next event that is not in current month
           const firstEvent = moment.parseZone(events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month())[0].start
@@ -201,6 +205,13 @@ const WebCalendar = (props: WebCalendarProps) => {
     }
     // Return true if there's an event false otherwise
     return filteredEvents.length > 0;
+  }
+
+  const colorEvents = (events) => {
+    events.map(event =>
+      Object.assign(event, {color: 'red'})
+    );
+    return events;
   }
 
   return (

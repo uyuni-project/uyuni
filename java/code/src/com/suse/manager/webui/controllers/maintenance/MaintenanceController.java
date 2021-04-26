@@ -79,7 +79,7 @@ public class MaintenanceController {
         // upcoming maintenance windows for systems
         post("/manager/api/maintenance/upcoming-windows",
                 withUser(MaintenanceController::getUpcomingMaintenanceWindows));
-        get("/manager/api/maintenance/events/:operation/:type/:date/:id",
+        get("/manager/api/maintenance/events/:operation/:type/:startOfWeek/:date/:id",
                 withUser(MaintenanceController::getEvents));
     }
 
@@ -128,14 +128,15 @@ public class MaintenanceController {
         Long date = Long.parseLong(request.params("date"));
         Long id = Long.parseLong(request.params("id"));
         String operation = request.params("operation");
+        Long startOfWeek = Long.parseLong(request.params("startOfWeek"));
 
         List<MaintenanceWindowData> events = new ArrayList<>();
         try {
             if (type.equals("calendar")) {
-                events = MM.preprocessCalendarData(user, operation, id, date);
+                events = MM.preprocessCalendarData(user, operation, id, date, startOfWeek);
             }
             else if (type.equals("schedule")) {
-                events = MM.preprocessScheduleData(user, operation, id, date);
+                events = MM.preprocessScheduleData(user, operation, id, date, startOfWeek);
             }
             else {
                 throw new EntityNotExistsException(

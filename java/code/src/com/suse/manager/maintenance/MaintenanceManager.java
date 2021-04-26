@@ -528,12 +528,13 @@ public class MaintenanceManager {
      * @param date the date to start looking for maintenance windows
      * @return the resulting list of maintenance windows
      */
-    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date) {
+    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date,
+                                                              Long startOfWeek) {
         Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
         if (calendar.isEmpty()) {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
-        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+        return getCalendarEvents(user, operation, calendar.get(), Optional.empty(), date, startOfWeek);
     }
 
     /**
@@ -546,7 +547,8 @@ public class MaintenanceManager {
      * @param date the date to start looking for maintenance windows
      * @return the resulting list of maintenance windows
      */
-    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date) {
+    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date,
+                                                              Long startOfWeek) {
         Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
         if (schedule.isEmpty()) {
             throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
@@ -556,15 +558,16 @@ public class MaintenanceManager {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
         if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
-            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()), date);
+            return getCalendarEvents(user, operation, calendar.get(), ofNullable(schedule.get().getName()),
+                    date, startOfWeek);
         }
         else {
-            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+            return getCalendarEvents(user, operation, calendar.get(), Optional.empty(), date, startOfWeek);
         }
     }
 
-    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
-                                                          Optional<String> eventName, Long date) {
+    private List<MaintenanceWindowData> getCalendarEvents(User user, String operation, MaintenanceCalendar calendar,
+                                                          Optional<String> eventName, Long date, Long startOfWeek) {
         if (operation.equals("skipBack")) {
             Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
             if (lastWindow.isEmpty()) {
@@ -580,18 +583,24 @@ public class MaintenanceManager {
             date = nextWindow.get().getFromMilliseconds();
         }
 
-        Map<String, Long> activeRange = getActiveRange(date);
+        Map<String, Long> activeRange = getActiveRange(user, date, startOfWeek);
         Long start = activeRange.get("start");
         Long end = activeRange.get("end");
 
         return icalUtils.getCalendarEvents(calendar, eventName, start, end);
     }
 
-    private Map<String, Long> getActiveRange(Long date) {
+    private Map<String, Long> getActiveRange(User user, Long date, Long startOfWeek) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
-        rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
-                rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+        if (startOfWeek == 0) {
+            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
+                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+        }
+        else {
+            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.MONDAY) ? rangeStart :
+                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+        }
 
         ZonedDateTime rangeEnd = rangeStart.plusDays(42);
 
