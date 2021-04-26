@@ -19,6 +19,7 @@ import static java.util.Optional.ofNullable;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -105,6 +106,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     public SCCRegCacheItem(Server s) {
         sccRegistrationRequired = true;
         server = s;
+        sccLogin = String.format("%s-%s", ContentSyncManager.getUUID(), s.getId().toString());
         sccPasswd = RandomStringUtils.randomAlphanumeric(64);
     }
 
