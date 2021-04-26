@@ -53,6 +53,7 @@ Feature: State Configuration channels
     When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
+    And I click on "Search" in element "search-row"
     Then I should see a "My State Channel" text
     And I should see a "statechannel" text
     And I should see a "statechannel2" text
@@ -69,6 +70,7 @@ Feature: State Configuration channels
     When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
+    And I click on "Search" in element "search-row"
     Then I should see a "Execute States" button
     When I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
