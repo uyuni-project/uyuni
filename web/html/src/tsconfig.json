@@ -9,7 +9,8 @@
     "utils/**/*.ts",
     "utils/**/*.tsx",
     "global.d.ts",
-    "imports.d.ts"
+    "imports.d.ts",
+    "lib.es5.d.ts"
   ],
   "exclude": ["**/node_modules", "**/\\.*/", "flow-typed/**"],
   "compilerOptions": {

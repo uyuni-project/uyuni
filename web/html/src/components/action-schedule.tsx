@@ -26,7 +26,7 @@ type ActionScheduleProps = {
   actionChains?: Array<ActionChain>;
   onDateTimeChanged: (date: Date) => void;
   onActionChainChanged?: (actionChain: ActionChain | null | undefined) => void;
-  systemIds?: Array<number>;
+  systemIds?: Array<string | number>;
   actionType?: string;
 };
 
@@ -40,7 +40,7 @@ type ActionScheduleState = {
   multiMaintenanceWindows: boolean;
   maintenanceWindow: MaintenanceWindow;
   maintenanceWindows: Array<MaintenanceWindow>;
-  systemIds: Array<number>;
+  systemIds: Array<string | number>;
   actionType: string;
 };
 

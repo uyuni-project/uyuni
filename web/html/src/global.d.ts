@@ -54,6 +54,9 @@ declare global {
   var DWRItemSelector: any;
   var dwr: any;
 
+  // Defined in spacewalk-checkall.js
+  var numericValidate: (event: any) => any;
+
   /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
   var localTime: string | undefined;
 }
