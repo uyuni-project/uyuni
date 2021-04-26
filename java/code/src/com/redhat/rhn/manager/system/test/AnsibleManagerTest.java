@@ -33,6 +33,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -255,8 +257,9 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(expected));
+            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(new Gson().fromJson(
+                    "{'/tmp/test': {'site.yml': {'fullpath': '/tmp/test/site.yml', 'custom_inventory': '/tmp/test/hosts'}}}", JsonElement.class))));
         }});
         AnsibleManager.setSaltApi(saltApi);
 
@@ -304,12 +307,13 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
         Optional<Map<String, Map<String, Object>>> expected =
-                Optional.of(Map.of("local",  Map.of("all", Map.of("children", List.of("host1", "host2")))));
+                Optional.of(Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2")))));
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(expected));
+            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(new Gson().fromJson(
+                    "{'minion': {'all': {'children': ['host1', 'host2']}}}", JsonElement.class))));
         }});
         AnsibleManager.setSaltApi(saltApi);
 

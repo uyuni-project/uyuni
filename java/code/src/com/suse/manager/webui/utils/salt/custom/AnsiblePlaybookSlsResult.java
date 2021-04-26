@@ -17,6 +17,8 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AnsiblePlaybookSlsResult {
@@ -67,5 +69,31 @@ public class AnsiblePlaybookSlsResult {
                 .append("fullPath", fullPath)
                 .append("customInventory", customInventory)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AnsiblePlaybookSlsResult that = (AnsiblePlaybookSlsResult) o;
+
+        return new EqualsBuilder()
+                .append(fullPath, that.fullPath)
+                .append(customInventory, that.customInventory)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(fullPath)
+                .append(customInventory)
+                .toHashCode();
     }
 }

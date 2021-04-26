@@ -34,6 +34,8 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
@@ -41,6 +43,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Date;
@@ -293,6 +296,7 @@ public class AnsibleManager extends BaseManager {
      * @param user the user
      * @return the structure containing the playbooks information or empty optional if minion does not respond
      * @throws LookupException if the user does not have permissions to the minion associated with the path
+     * @throws IllegalStateException if there is an error during the salt call
      */
     public static Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverPlaybooks(long pathId,
             User user) {
@@ -303,12 +307,14 @@ public class AnsibleManager extends BaseManager {
             throw new IllegalArgumentException(String.format("Path id %d not a Playbook path", path.getId()));
         }
 
+        TypeToken<Map<String, Map<String, AnsiblePlaybookSlsResult>>> type = new TypeToken<>() { };
         LocalCall<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverCall = new LocalCall<>(
                 "ansible.discover_playbooks",
                 of(List.of(path.getPath().toString())),
                 empty(),
-                new TypeToken<>() { });
-        return saltApi.callSync(discoverCall, path.getMinionServer().getMinionId());
+                type);
+        Optional<JsonElement> jsonResult = saltApi.rawJsonCall(discoverCall, path.getMinionServer().getMinionId());
+        return jsonResult.map(j -> parseJsonResponse(j, type.getType()));
     }
 
     /**
@@ -321,6 +327,7 @@ public class AnsibleManager extends BaseManager {
      * @param user the user
      * @return the structure with the inventory contents
      * @throws LookupException if the user does not have permissions to the minion associated with the path
+     * @throws IllegalStateException if there is an error during the salt call
      */
     public static Optional<Map<String, Map<String, Object>>> introspectInventory(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
@@ -330,12 +337,14 @@ public class AnsibleManager extends BaseManager {
             throw new IllegalArgumentException(String.format("Path %d not an Inventory path", path.getId()));
         }
 
+        TypeToken<Map<String, Map<String, Object>>> type = new TypeToken<>() { };
         LocalCall<Map<String, Map<String, Object>>> call = new LocalCall<>(
                 "ansible.targets",
                 empty(),
                 of(Map.of("inventory", path.getPath().toString())),
-                new TypeToken<>() { });
-        return saltApi.callSync(call, path.getMinionServer().getMinionId());
+                type);
+        Optional<JsonElement> jsonResult = saltApi.rawJsonCall(call, path.getMinionServer().getMinionId());
+        return jsonResult.map(j -> parseJsonResponse(j, type.getType()));
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
@@ -348,6 +357,24 @@ public class AnsibleManager extends BaseManager {
         }
 
         return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
+    }
+
+    private static <T> T parseJsonResponse(JsonElement j, Type type) {
+        // this method assumes the returned string describes an error
+        // only use it for parsing non-string (success) values
+        if (type.getClass().isAssignableFrom(String.class)) {
+            throw new RuntimeException("Can't parse into string");
+        }
+
+        if (j.isJsonPrimitive() && j.getAsJsonPrimitive().isString()) {
+            throw new IllegalStateException(j.getAsString());
+        }
+        else {
+            if (j.isJsonObject()) {
+                j.getAsJsonObject().remove("retcode");
+            }
+            return new Gson().fromJson(j, type);
+        }
     }
 
     /**
