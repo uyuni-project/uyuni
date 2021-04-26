@@ -58,7 +58,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       path.id?.toString(),
       "application/json"
     ).promise.then(data => {
-      if (data.success) {
+      if (!Object.keys(data).includes("success") || data.success) {
         if (path.type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== path.id) });
         }
@@ -94,7 +94,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       }),
       "application/json"
     ).promise.then(data => {
-      if (data.success) {
+      if (!Object.keys(data).includes("success") || data.success) {
         const newPath = createNewAnsiblePath({ id: editPath.id, minionServerId: editPath.minionServerId, type: editPath.type, path: editPath.path});
         if (type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newPath), editPlaybookPath: {}});
@@ -120,7 +120,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       }),
       "application/json"
     ).promise.then(data => {
-      if (data.success) {
+      if (!Object.keys(data).includes("success") || data.success) {
         const newAnsiblePath = { id: data.newPathId, minionServerId: this.state.minionServerId, type: type, path: newPath};
         if (type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
