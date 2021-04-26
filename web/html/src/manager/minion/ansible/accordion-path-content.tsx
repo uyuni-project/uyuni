@@ -53,9 +53,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
         this.setState({ loading: true });
         Network.get(getURL(path))
         .promise.then(data => {
-          //TODO reverse business logic from the expected one: when everything is fine, data.success is not present at all
-          // if it fails instead data.success is present and it is `false`
-          if (!data.success) {
+          if (!Object.keys(data).includes("success") || data.success) {
             this.setState({
               content: this.props.path.type === "playbook" ?
                 this.digestPlaybookPathContent(data)
