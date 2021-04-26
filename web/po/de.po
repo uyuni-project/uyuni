@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-24 19:58+0000\n"
+"POT-Creation-Date: 2021-04-26 08:42+0000\n"
 "PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -114,9 +114,9 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:161
 #: ../html/src/manager/state/recurring-states-details.tsx:163
 #: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:101
 msgid "Edit"
@@ -160,17 +160,18 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:123
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Back"
 msgstr ""
 
 #: ../html/src/components/config-channels.tsx:401
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:669
 msgid "Confirm"
 msgstr ""
 
@@ -209,8 +210,8 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
 msgstr ""
@@ -268,8 +269,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
-#: ../html/src/manager/systems/delete-system.js:74
-#: ../html/src/manager/systems/delete-system.js:75
+#: ../html/src/manager/systems/delete-system.tsx:80
+#: ../html/src/manager/systems/delete-system.tsx:81
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
@@ -295,9 +296,9 @@ msgstr ""
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
 #: ../html/src/manager/state/recurring-states-list.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:29
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
@@ -427,7 +428,7 @@ msgstr ""
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
 msgstr ""
@@ -497,9 +498,9 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:23
 #: ../html/src/manager/admin/setup/products/products.tsx:392
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
 msgid "Prev"
 msgstr ""
 
@@ -510,9 +511,9 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:112
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:45
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:970
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1080
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
 msgid "Next"
 msgstr ""
 
@@ -526,7 +527,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:103
 #: ../html/src/manager/admin/setup/products/products.tsx:403
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:869
 msgid "of"
 msgstr ""
 
@@ -602,8 +603,8 @@ msgid "Select All"
 msgstr ""
 
 #: ../html/src/components/table/TableDataHandler.tsx:324
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
@@ -628,20 +629,20 @@ msgid "Help"
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:13
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:6
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
 msgid "Base channel not found or not authorized."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:14
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:25
 msgid "Child channel not found or not authorized."
 msgstr ""
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:15
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:26
 msgid "Invalid channel id"
 msgstr ""
 
@@ -878,7 +879,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:126
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
 msgstr ""
 
@@ -995,17 +996,17 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
-#: ../html/src/manager/systems/activation-key/child-channels.js:135
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:140
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
 msgid "recommended"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
-#: ../html/src/manager/systems/activation-key/child-channels.js:166
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:169
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
 msgid "include recommended"
 msgstr ""
 
@@ -1141,7 +1142,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.tsx:129
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Status"
 msgstr ""
 
@@ -1197,7 +1198,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
@@ -1216,7 +1217,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
 #: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
@@ -1609,7 +1610,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr ""
@@ -1661,9 +1662,9 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:179
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:47
 msgid "Label"
 msgstr ""
 
@@ -1699,7 +1700,7 @@ msgstr ""
 #: ../html/src/manager/images/image-build.tsx:223
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
 msgid "scheduled"
 msgstr ""
 
@@ -1709,8 +1710,8 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "Action has been successfully added to the Action Chain "
 msgstr ""
 
@@ -1869,8 +1870,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.tsx:60
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:38
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
@@ -2425,8 +2426,8 @@ msgid "Choose the channel to be elected as the new base channel"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:109
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:472
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "Child Channels"
 msgstr ""
 
@@ -2435,6 +2436,7 @@ msgid "Clear Search"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:96
 msgid "no child channels"
 msgstr ""
 
@@ -2630,7 +2632,8 @@ msgstr ""
 #: ../html/src/manager/images/image-import.tsx:325
 #: ../html/src/manager/images/image-profile-edit.tsx:479
 #: ../html/src/manager/images/image-store-edit.tsx:211
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:202
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:193
 msgid "Clear fields"
 msgstr ""
 
@@ -2665,6 +2668,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:490
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
@@ -2720,7 +2724,7 @@ msgid "Build Type"
 msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:228
-#: ../html/src/manager/systems/delete-system-confirm.js:12
+#: ../html/src/manager/systems/delete-system-confirm.tsx:18
 msgid "Delete Profile"
 msgstr ""
 
@@ -2746,7 +2750,7 @@ msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr ""
@@ -3234,7 +3238,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:155
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:107
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
 
@@ -3880,8 +3884,8 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:191
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:64
 msgid "Organization"
 msgstr "Organisation"
 
@@ -4012,166 +4016,203 @@ msgstr ""
 msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr ""
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:27
 msgid "SUSE Manager Default"
 msgstr ""
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
+msgid "Loading child channels.."
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
+msgid "Loading.."
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
+msgid "Base Channel:"
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
+msgid ""
+"provided channel that corresponds to the installed SUSE Linux version. "
+"Instead of the default, "
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
 msgstr ""
 
-#: ../html/src/manager/systems/activation-key/child-channels.js:140
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:134
+msgid ""
+"Any system registered using this activation key will be subscribed to the "
+"selected child channels."
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
 msgid "mandatory"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:164
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
 msgid "systems"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:244
 msgid "shortly"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:192
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:262
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:196
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:266
 msgid "Loading SSH Private Key.."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:274
 msgid "Bootstrap"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:211
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:299
 msgid "e.g., ••••••••••••"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:217
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:276
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:423
 msgid "SSH Private Key"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:221
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:314
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:226
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:320
 msgid "SSH Private Key Passphrase"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:228
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:327
 msgid "Leave empty for no passphrase"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:337
 msgid "Bootstrap Minions"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:235
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:241
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:353
 msgid "e.g., host.domain.com"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:249
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
 msgid "Port range: 1 - 65535"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:286
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:299
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+msgid ""
+"The user will have an effect only during the bootstrap process. Further "
+"connections will be made by the user specified in rhn.conf. The default user "
+"for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
+"key is deployed during the bootstrap procedure."
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "None"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:296
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
 msgid "Proxy"
 msgstr ""
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:312
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.js:16
+#: ../html/src/manager/systems/delete-system.tsx:13
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.js:17
+#: ../html/src/manager/systems/delete-system.tsx:14
 msgid "No result found in state apply response."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.js:84
+#: ../html/src/manager/systems/delete-system.tsx:72
+#: ../html/src/manager/systems/delete-system.tsx:73
+msgid "Delete Profile Without Cleanup"
+msgstr ""
+
+#: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
 msgstr ""
 
-#: ../html/src/manager/systems/duplicate-systems-compare-delete.js:25
+#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:23
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:31
 msgid "Could not determine system default channel."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 msgid "Channel change is invalid."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "Selected base is not compatible with system."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:36
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:34
 msgid "No base channel change found."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:217
 msgid "No Change"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:453
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
 msgid "Subscribe"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:42
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:40
 msgid "Unsubsribe"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:141
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:141
 msgid "System Default Base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:569
 msgid "Base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:149
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:150
 msgid ""
 "As a Channel Administrator, you may change the base channels your systems "
 "are subscribed to. Valid channels are either channels created by your "
@@ -4180,257 +4221,257 @@ msgid ""
 "and subscribed to their new base channels. "
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:151
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:155
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:166
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
 msgid "Current base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:173
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
 msgid "Systems"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:181
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:198
 msgid "Desired base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:197
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:453
 msgid "SUSE Channels"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:203
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:481
 msgid "Custom Channels"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:215
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:235
 msgid "Systems subscribed to"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:389
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:566
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:579
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:423
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
 msgid "(Couldn't determine new base channel)"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:405
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:589
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
 msgid "system(s) to subscribe"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:413
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:596
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
 msgid "system(s) incompatible"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:446
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:507
 msgid "No change"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:460
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:529
 msgid "Unsubscribe"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:476
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
 msgid "Below is a list of channels in your organization. "
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:480
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:487
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:634
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:730
 msgid "Systems to subscribe to"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:574
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
 msgid "(None)"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:581
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
 msgid " (system default)"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:619
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
 msgid "Channel Changes Overview"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:662
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:759
 msgid "Channel Changes Actions"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:687
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:789
 msgid "Scheduled"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:689
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:795
 msgid "Unknown error. Could not schedule channel change"
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:819
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:916
 msgid "Some changes scheduled successfully."
 msgstr ""
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:946
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1053
 msgid "Channel changes scheduled."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:228
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:442
 msgid "(none, disable service)"
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:373
 msgid "Changing the channels has been "
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:574
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
 "the new base software channel."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:600
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
 "unsubscribed from."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:620
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:700
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:701
 msgid "No child channels available."
 msgstr ""
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
 msgid "Confirm Software Channel Change"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:59
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:74
 msgid "Properties"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 msgid "Nodes"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
 msgid "OS"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:101
 msgid "CPU Arch"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:107
 msgid "CPU Sockets"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
 msgid "RAM (Mb)"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
 msgid "Refresh Data"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:130
 msgid "Refresh data from this Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Delete Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:152
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:195
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:58
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:249
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:310
 msgid "Current Context"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:264
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:324
 msgid "Kubeconfig file"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:42
 msgid "No Virtual Host Managers."
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:15
 msgid "File-based"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:16
 msgid "VMWare-based"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:17
 msgid "Kubernetes Cluster"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
 msgid "Amazon EC2"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
 msgid "Google Compute Engine"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
 msgid "Azure"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
 msgid "Nutanix AHV"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
 msgid "Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
 msgid "Add a {0}"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:164
 msgid "Virtual Host Managers"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:175
 msgid "Add a virtual host manager"
 msgstr ""
 
