@@ -104,7 +104,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
     const content: PlaybookDetails[] = this.state.content;
     return content.map((p, i) =>
-      <div>
+      <div key={p.toString() + "_" + i.toString()}>
         { i === 0 ? <br/> : null }
         <dl className="row">
           <dt className="col-xs-2">{t('Playbook File Name')}:</dt>
