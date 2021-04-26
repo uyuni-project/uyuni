@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 08:49+0000\n"
+"POT-Creation-Date: 2021-04-26 09:08+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -56,7 +56,7 @@ msgstr "必須の項目に入力を行なってください: {0}"
 msgid "Invalid format of fields: {0}"
 msgstr "項目の書式が正しくありません: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:200
+#: ../html/src/components/FormulaForm.tsx:205
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -355,8 +355,8 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 msgid "Formulas"
 msgstr "Formula"
 
@@ -2585,7 +2585,7 @@ msgstr ""
 "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージ"
 "と共にご連絡ください。 "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.js:29
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
@@ -2593,30 +2593,38 @@ msgstr ""
 "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
 "た"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the "
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+#, fuzzy
+msgid "Formula saved. Edit configuration options "
 msgstr ""
 "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
 "を適用してください "
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr "Highstate"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#, fuzzy
+msgid " for the changes to take effect."
+msgstr "変更した設定を反映させるには、再起動が必要です。"
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
 msgstr "ターゲットタイプが正しくありません。"
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "formula を保存しました。下記を適用します "
@@ -3626,19 +3634,6 @@ msgstr ""
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
-
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid "Formula saved. Edit configuration options "
-msgstr ""
-"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
-"を適用してください "
-
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
-msgid " for the changes to take effect."
-msgstr "変更した設定を反映させるには、再起動が必要です。"
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
@@ -5556,6 +5551,13 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid ""
+#~ "Formula saved. Edit configuration options in the enabled formulas and "
+#~ "apply the "
+#~ msgstr ""
+#~ "formula を保存しました。有効化された formula 内で設定オプションを編集し、"
+#~ "下記を適用してください "
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "将来のメンテナンスウィンドウ"
