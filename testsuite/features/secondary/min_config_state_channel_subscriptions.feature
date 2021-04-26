@@ -69,8 +69,8 @@ Feature: State Configuration channels
     When I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
-    Then I should see a "Apply" button
-    When I click on "Apply"
+    Then I should see a "Execute States" button
+    When I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
     When I wait until event "Apply states [custom] scheduled by admin" is completed
     And I wait until file "/root/statechannel" exists on "sle_minion"
