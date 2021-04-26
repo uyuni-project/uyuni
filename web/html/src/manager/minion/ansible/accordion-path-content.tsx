@@ -3,6 +3,7 @@ import { AnsiblePath } from "./ansible-path-type";
 import Network from "utils/network";
 import { Messages, Utils } from "components/messages";
 import { Loading } from "components/utils/Loading";
+import { AceEditor } from "components/ace-editor";
 
 type PropsType = {
   path: AnsiblePath;
@@ -125,10 +126,23 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
   }
 
   digestInventoryPathContent(blob: any) {
-    //TODO
+    return blob
   }
+
   renderInventoryPathContent() {
-    //TODO
+    if (this.state.content === null || this.state.content.length === 0) {
+      return <div>{t("Inventory file not found or empty.")}</div>
+    }
+
+    return <AceEditor
+              className="form-control"
+              id="content-state"
+              minLines={20}
+              maxLines={40}
+              readOnly={true}
+              mode="yaml"
+              content={this.state.content}
+            ></AceEditor>;
   }
 
   render() {
