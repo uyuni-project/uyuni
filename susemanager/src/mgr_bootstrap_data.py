@@ -1073,6 +1073,10 @@ DATA = {
         'PDID' : -9, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
+    'OES2018-SP3-x86_64' : {
+        'PDID' : -21, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
+    },
     'SLE-15-aarch64' : {
         'PDID' : [1589, 2053, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
