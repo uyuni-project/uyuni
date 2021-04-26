@@ -1,3 +1,4 @@
+- add bootstrap repo data for OES2018-SP3-x86_64 (bsc#1183845)
 - Enable bootstrap repository creation for openSUSE Leap 15.3 for Uyuni
 - Add python3-distro to RES8, SLE15, Ubuntu20.04 and Debian 10 bootstrap
   repositories to fix bootstrapping issues (bsc#1184332)
