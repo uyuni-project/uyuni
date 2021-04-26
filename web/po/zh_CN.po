@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 08:42+0000\n"
+"POT-Creation-Date: 2021-04-26 08:49+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -142,7 +142,7 @@ msgid "An error occurred on save."
 msgstr "保存时出错。"
 
 #: ../html/src/components/config-channels.tsx:339
-#: ../html/src/manager/minion/packages/package-states.js:271
+#: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
 msgstr "无最新更改。"
 
@@ -194,16 +194,20 @@ msgstr "重新排序"
 
 #: ../html/src/components/config-channels.tsx:440
 #: ../html/src/components/config-channels.tsx:444
+#: ../html/src/manager/minion/packages/package-states.tsx:202
+#: ../html/src/manager/minion/packages/package-states.tsx:206
 msgid "Changes"
 msgstr "更改"
 
 #: ../html/src/components/config-channels.tsx:442
+#: ../html/src/manager/minion/packages/package-states.tsx:204
 msgid "1 Change"
 msgstr "1 项更改"
 
 #: ../html/src/components/config-channels.tsx:452
 #: ../html/src/components/config-channels.tsx:489
-#: ../html/src/manager/minion/packages/package-states.js:240
+#: ../html/src/manager/minion/packages/package-states.tsx:214
+#: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
 msgstr "搜索"
 
@@ -213,6 +217,7 @@ msgstr "搜索"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:199
+#: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -335,7 +340,7 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
-#: ../html/src/manager/minion/packages/package-states.js:199
+#: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
 msgstr "保存"
 
@@ -1733,8 +1738,8 @@ msgstr "操作 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:223
-#: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
-#: ../html/src/manager/minion/packages/use-package-states.api.js:61
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
 msgid "scheduled"
 msgstr "已安排"
@@ -2003,7 +2008,7 @@ msgstr "匹配器"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 #: ../html/src/manager/images/image-view-packages.tsx:48
-#: ../html/src/manager/minion/packages/package-states.js:335
+#: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "软件包名称"
 
@@ -2541,7 +2546,6 @@ msgid ""
 msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
@@ -2549,21 +2553,21 @@ msgstr "已保存公式。请在已启用的公式中编辑配置选项，并应
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
 msgstr "无效目标类型。"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "已保存公式。请应用 "
 
@@ -3058,7 +3062,7 @@ msgid "Reinspect Image"
 msgstr "重新检查映像"
 
 #: ../html/src/manager/images/image-view-packages.tsx:53
-#: ../html/src/manager/minion/packages/package-states.js:311
+#: ../html/src/manager/minion/packages/package-states.tsx:323
 msgid "Installed"
 msgstr "已安装"
 
@@ -3545,44 +3549,69 @@ msgid ""
 "systems in the set."
 msgstr "指派一个日程安排会替换集内所有系统中以前的任何指派。"
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.js:29
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
 msgstr "应用配置频道 "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
-#: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+#, fuzzy
+msgid "Formula saved. Edit configuration options "
+msgstr "已保存公式。请在已启用的公式中编辑配置选项，并应用 "
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#, fuzzy
+msgid " for the changes to take effect."
+msgstr "需要重启动才能使配置更改生效。"
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
 msgid "Configuration"
 msgstr "配置"
 
-#: ../html/src/manager/minion/packages/package-states.js:272
+#: ../html/src/manager/minion/packages/package-states.tsx:195
+msgid "Please save all your changes before applying!"
+msgstr ""
+
+#: ../html/src/manager/minion/packages/package-states.tsx:196
+#, fuzzy
+msgid "Apply changes"
+msgstr "应用 Highstate"
+
+#: ../html/src/manager/minion/packages/package-states.tsx:241
+#, fuzzy
+msgid "Search package"
+msgstr "搜索"
+
+#: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No package states."
 msgstr "无软件包状态。"
 
-#: ../html/src/manager/minion/packages/package-states.js:291
+#: ../html/src/manager/minion/packages/package-states.tsx:297
 msgid "Latest"
 msgstr "最新"
 
-#: ../html/src/manager/minion/packages/package-states.js:292
+#: ../html/src/manager/minion/packages/package-states.tsx:298
 msgid "Any"
 msgstr "任何"
 
-#: ../html/src/manager/minion/packages/package-states.js:299
+#: ../html/src/manager/minion/packages/package-states.tsx:307
 msgid "Undo"
 msgstr "撤销"
 
-#: ../html/src/manager/minion/packages/package-states.js:310
+#: ../html/src/manager/minion/packages/package-states.tsx:322
 msgid "Unmanaged"
 msgstr "不受管"
 
-#: ../html/src/manager/minion/packages/package-states.js:312
+#: ../html/src/manager/minion/packages/package-states.tsx:324
 msgid "Removed"
 msgstr "已去除"
 
-#: ../html/src/manager/minion/packages/package-states.js:328
+#: ../html/src/manager/minion/packages/package-states.tsx:336
 msgid "Package States"
 msgstr "软件包状态"
 
-#: ../html/src/manager/minion/packages/package-states.js:336
+#: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:58
@@ -3590,11 +3619,11 @@ msgstr "软件包状态"
 msgid "State"
 msgstr "州/省"
 
-#: ../html/src/manager/minion/packages/use-package-states.api.js:45
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:40
 msgid "Package states have been saved."
 msgstr "已保存软件包状态。"
 
-#: ../html/src/manager/minion/packages/use-package-states.api.js:60
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:56
 msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
