@@ -78,6 +78,7 @@ export class Messages extends React.Component<Props> {
 
     render() {
         const items: Array<MessageType> = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
+        if (items.length === 0) return null;
 
         var msgs = items.map((item, index) => (
             <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
