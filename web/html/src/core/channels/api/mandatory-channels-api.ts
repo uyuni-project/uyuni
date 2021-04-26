@@ -3,7 +3,7 @@ import * as React from "react";
 import useMandatoryChannelsApi, { UseMandatoryChannelsApiReturnType } from "./use-mandatory-channels-api";
 
 type Props = {
-  children: (context: UseMandatoryChannelsApiReturnType) => React.ReactNode;
+  children: (context: UseMandatoryChannelsApiReturnType) => JSX.Element;
 };
 
 // Just a wrapper to use the react-hook useMandatoryChannelsApi in old Code using classes as render-props.

@@ -1,39 +1,47 @@
-/* eslint-disable */
-// @flow
-import * as React from 'react';
-import Network from 'utils/network';
-
-type ActivationKeyChannelsProps = {
-  defaultBaseId: number,
-  activationKeyId: number,
-  currentSelectedBaseId: number,
-  onNewBaseChannel: Function,
-  children: Function,
-}
-
-export type ChannelDto = {
-  id: number,
-  name: string,
-  custom: boolean,
-  subscribable: boolean,
-  recommended: boolean
-}
-
-export type availableChannelsType = Array<{base: ?ChannelDto, children: Array<ChannelDto>}>;
-
-type ActivationKeyChannelsState = {
-  messages: Array<Object>,
-  loading: boolean,
-  loadingChildren: boolean,
-  availableBaseChannels: Array<ChannelDto>, //[base1, base2],
-  availableChannels: availableChannelsType, //[{base : null, children: []}]
-  fetchedData: Map<number, Array<number>>,
-}
+import * as React from "react";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network from "utils/network";
 
 const msgMap = {
-  "base_not_found_or_not_authorized": t("Base channel not found or not authorized."),
-  "child_not_found_or_not_authorized": t("Child channel not found or not authorized."),
-  "invalid_channel_id": t("Invalid channel id")
+  base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
+  child_not_found_or_not_authorized: t("Child channel not found or not authorized."),
+  invalid_channel_id: t("Invalid channel id"),
+};
+
+export type ChannelDto = {
+  id: number;
+  name: string;
+  custom: boolean;
+  subscribable: boolean;
+  recommended: boolean;
+};
+
+export type availableChannelsType = Array<{ base: ChannelDto | null | undefined; children: Array<ChannelDto> }>;
+
+type ChildrenArgsProps = {
+  messages: any[];
+  loading: boolean;
+  loadingChildren: boolean;
+  availableBaseChannels: ChannelDto[];
+  availableChannels: availableChannelsType;
+  fetchChildChannels: (baseId: number) => Promise<any>;
+};
+
+type ActivationKeyChannelsProps = {
+  defaultBaseId: number;
+  activationKeyId: number;
+  currentSelectedBaseId: number;
+  onNewBaseChannel: Function;
+  children: (arg0: ChildrenArgsProps) => JSX.Element;
+};
+
+type ActivationKeyChannelsState = {
+  messages: Array<any>;
+  loading: boolean;
+  loadingChildren: boolean;
+  availableBaseChannels: Array<ChannelDto>; //[base1, base2],
+  availableChannels: availableChannelsType; //[{base : null, children: []}]
+  fetchedData: Map<number, Array<number>>;
 };
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
@@ -47,7 +55,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       availableBaseChannels: [], //[base1, base2],
       availableChannels: [], //[{base : null, children: []}]
       fetchedData: new Map(),
-    }
+    };
   }
 
   UNSAFE_componentWillMount() {
@@ -58,78 +66,75 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
   fetchBaseChannels = () => {
     let future;
-    this.setState({loading: true});
+    this.setState({ loading: true });
 
     future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
       .promise.then(data => {
         this.setState({
-          availableBaseChannels: Array.from(data.data).map(g => g.base),
-          loading: false
+          availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
+          loading: false,
         });
       })
       .catch(this.handleResponseError);
     return future;
-  }
+  };
 
   fetchActivationKeyChannels = () => {
     let future: Promise<void>;
-    if (this.props.activationKeyId && this.props.activationKeyId != -1) {
-      this.setState({loading: true});
+    if (this.props.activationKeyId && !DEPRECATED_unsafeEquals(this.props.activationKeyId, -1)) {
+      this.setState({ loading: true });
 
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
         .promise.then(data => {
           const currentSelectedBaseId = data.data.base ? data.data.base.id : this.props.defaultBaseId;
           const currentChildSelectedIds = data.data.children ? data.data.children.map(c => c.id) : [];
-          this.props.onNewBaseChannel({currentSelectedBaseId, currentChildSelectedIds});
+          this.props.onNewBaseChannel({ currentSelectedBaseId, currentChildSelectedIds });
           this.setState({
-            loading: false
+            loading: false,
           });
         })
         .catch(this.handleResponseError);
     } else {
-      // $FlowFixMe  //  https://github.com/facebook/flow/issues/6760
-      future = new Promise(function(resolve, reject) { resolve() });
+      future = new Promise(function(resolve, reject) {
+        resolve();
+      });
     }
     return future;
-  }
+  };
 
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    const currentObject: Object = this;
+    const currentObject: any = this;
     if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      // $FlowFixMe  //  https://github.com/facebook/flow/issues/6760
       future = new Promise((resolve, reject) => {
         resolve(
           currentObject.setState({
             availableChannels: currentObject.state.fetchedData.get(baseId),
           })
-        )
+        );
       });
-    }
-    else {
-      this.setState({loadingChildren: true});
+    } else {
+      this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .promise.then(data => {
           this.setState({
             availableChannels: data.data,
             fetchedData: this.state.fetchedData.set(baseId, data.data),
-            loadingChildren: false
+            loadingChildren: false,
           });
         })
         .catch(this.handleResponseError);
     }
     return future;
-  }
+  };
 
-  handleResponseError = (jqXHR: Object, arg: string = '') => {
-    const msg = Network.responseErrorMessage(jqXHR,
-      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
-    this.setState((prevState) => ({
-        messages: prevState.messages.concat(msg)
-      })
-    );
-  }
+  handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    this.setState(prevState => ({
+      messages: prevState.messages.concat(msg),
+    }));
+  };
 
   render() {
     return this.props.children({
@@ -138,8 +143,8 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       loadingChildren: this.state.loadingChildren,
       availableBaseChannels: this.state.availableBaseChannels,
       availableChannels: this.state.availableChannels,
-      fetchChildChannels: this.fetchChildChannels
-    })
+      fetchChildChannels: this.fetchChildChannels,
+    });
   }
 }
 
