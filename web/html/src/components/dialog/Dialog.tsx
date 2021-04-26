@@ -5,11 +5,11 @@ import { PopUp } from "../popup";
 type Instance = JQuery & {
   modal(...args: any[]): any;
 };
-type Modal = ((...args: any[]) => Instance);
+type Modal = (...args: any[]) => Instance;
 
 declare global {
   interface JQuery {
-      modal: Modal;
+    modal: Modal;
   }
 }
 
@@ -30,15 +30,19 @@ export type DialogProps = {
   buttons?: React.ReactNode;
   item?: any;
   closableModal?: boolean;
+  autoFocus?: boolean;
   onClosePopUp?: (...args: any[]) => any;
   onConfirm?: (...args: any[]) => any;
   onConfirmAsync?: (...args: any[]) => Promise<any>;
-}
+};
 
 export function Dialog(props: DialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;
 
   React.useEffect(() => {
+    if (props.autoFocus === false) {
+      return;
+    }
     jQuery("#" + props.id).on("shown.bs.modal", function() {
       jQuery("#" + props.id + " :input:visible:enabled:first").focus();
     });

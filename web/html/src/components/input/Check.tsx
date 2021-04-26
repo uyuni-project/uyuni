@@ -2,7 +2,7 @@ import * as React from "react";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = Omit<InputBaseProps, 'label'> & {
+type Props = Omit<InputBaseProps, "label"> & {
   /** CSS class for the <input> element */
   inputClass?: string;
 

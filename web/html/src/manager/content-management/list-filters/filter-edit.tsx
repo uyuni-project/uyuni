@@ -138,6 +138,7 @@ const FilterEdit = (props: FilterEditProps) => {
         title={modalTitle}
         closableModal={false}
         className="modal-lg"
+        autoFocus={false}
         content={
           <FilterEditModalContent
             filter={item}

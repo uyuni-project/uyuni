@@ -36,7 +36,7 @@ type Props = {
   /** Function called when the model has been changed.
    * Takes a new model as single parameter.
    */
-  onChange: (model: any) => void;
+  onChange?: (model: any) => void;
 
   /** Function called after having validated the form.
    * Takes a single parameter indicating whether the form is valid or not.
@@ -74,10 +74,10 @@ export class Form extends React.Component<Props> {
     const { model, errors } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
-      this.props.onChange(model);
+      this.props.onChange?.(model);
     } else if (value != null) {
       model[name] = value;
-      this.props.onChange(model);
+      this.props.onChange?.(model);
     }
     if (errors) {
       delete errors[name];

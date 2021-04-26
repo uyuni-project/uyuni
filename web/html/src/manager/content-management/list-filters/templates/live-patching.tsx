@@ -20,6 +20,7 @@ type Product = {
 type Kernel = {
   id: number;
   version: string;
+  default?: boolean;
 };
 
 async function getClients(): Promise<Client[]> {
@@ -55,6 +56,11 @@ async function getKernels(...args: any[]): Promise<Kernel[]> {
       id: 345,
       version: "1.2.3",
     },
+    {
+      id: 456,
+      version: "1.2.4",
+      default: true,
+    },
   ];
 }
 
@@ -79,20 +85,21 @@ export default (props: FilterFormProps & { template: Template }) => {
 
   useEffect(() => {
     if (clientId) {
+      // TODO: Clarify whether this is different for clients and products or same
       getKernels(clientId).then(result => {
         setKernels(result);
 
-        const client = clients.find(item => item.id === clientId);
-        const kernelId = client?.kernelId ?? null;
+        const defaultKernel = result.find(item => Boolean(item.default));
+        const kernelId = defaultKernel?.id ?? result[0]?.id ?? null;
         setModelValue?.("kernelId", kernelId);
       });
     } else if (productId) {
       getKernels(productId).then(result => {
         setKernels(result);
 
-        const product = products.find(item => item.id === productId);
-        // TODO: Specify where and how this data realistically comes from
-        setModelValue?.("kernelId", null);
+        const defaultKernel = result.find(item => Boolean(item.default));
+        const kernelId = defaultKernel?.id ?? result[0]?.id ?? null;
+        setModelValue?.("kernelId", kernelId);
       });
     } else {
       setKernels([]);
@@ -100,16 +107,13 @@ export default (props: FilterFormProps & { template: Template }) => {
     }
   }, [
     template, // If the template changes, reset what we previously had
-    clients,
     clientId,
-    products,
     productId,
     setModelValue,
   ]);
 
   return (
     <>
-      <Text name={"labelPrefix"} label={t("Prefix")} labelClass="col-md-3" divClass="col-md-6" required />
       {template === Template.LivePatchingSystem && (
         <>
           <Select
@@ -149,7 +153,7 @@ export default (props: FilterFormProps & { template: Template }) => {
         disabled={!clientId && !productId}
         options={kernels}
         getOptionValue={kernel => kernel.id}
-        getOptionLabel={kernel => kernel.version}
+        getOptionLabel={kernel => `${kernel.version}${kernel.default ? " (default)" : ""}`}
       />
     </>
   );

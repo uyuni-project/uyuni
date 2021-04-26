@@ -69,8 +69,9 @@ const FilterForm = (props: Props) => {
             {t("Bear in mind that all the associated projects need to be rebuilt after a filter update")}
           </div>
         )}
-        <div className="row">
+        {filterBy === FilterBy.Type ? (
           <Text
+            key="filter_name"
             name="filter_name"
             label={t("Filter Name")}
             labelClass="col-md-3"
@@ -78,20 +79,31 @@ const FilterForm = (props: Props) => {
             required
             disabled={props.editing}
           />
-        </div>
+        ) : (
+          <Text
+            key="labelPrefix"
+            name="labelPrefix"
+            label={t("Prefix")}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            required
+            disabled={props.editing}
+          />
+        )}
 
-        <Radio
-          inline
-          defaultValue={filterBy}
-          items={[
-            { label: t("Type"), value: FilterBy.Type },
-            { label: t("Template"), value: FilterBy.Template },
-          ]}
-          label={t("Filter by")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          onChange={(_, value) => setFilterBy(value as FilterBy)}
-        />
+        <div className="row form-group">
+          <div className="col-md-6 col-md-offset-3">
+            {filterBy === FilterBy.Type ? (
+              <button className="btn-link" onClick={() => setFilterBy(FilterBy.Template)}>
+                {t("Use a template")}
+              </button>
+            ) : (
+              <button className="btn-link" onClick={() => setFilterBy(FilterBy.Type)}>
+                {t("Use a manual filter")}
+              </button>
+            )}
+          </div>
+        </div>
 
         {filterBy === FilterBy.Type ? (
           <React.Fragment>

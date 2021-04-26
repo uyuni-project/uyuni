@@ -23,11 +23,11 @@ const TemplateForm = (props: FilterFormProps) => {
 export default (props: FilterFormProps) => {
   const templates = [
     {
-      label: t("LivePatchingSystem"),
+      label: t("Live patching based on a specific system"),
       value: Template.LivePatchingSystem,
     },
     {
-      label: t("LivePatchingProduct"),
+      label: t("Live patching based on a SUSE product"),
       value: Template.LivePatchingProduct,
     },
   ];

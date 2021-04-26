@@ -17,7 +17,7 @@ export function mapFilterFormToRequest(
   requestForm.matcher = filterForm.matcher;
 
   // If we're using a prebuilt filter
-  if (Object.prototype.hasOwnProperty.call(filterForm, 'template')) {
+  if (Object.prototype.hasOwnProperty.call(filterForm, "template")) {
     // TODO: Implement
     const { labelPrefix, kernelId } = filterForm;
     console.log({ labelPrefix, kernelId });
