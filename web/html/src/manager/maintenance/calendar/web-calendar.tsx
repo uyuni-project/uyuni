@@ -9,11 +9,11 @@ import allLocales from "@fullcalendar/core/locales-all";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
-import {convertNumbers} from "components/input/form-utils";
 
 type WebCalendarProps = {
   id: number;
   type: string;
+  eventNames: Array<string>;
   messages: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
@@ -24,6 +24,31 @@ type Event = {
   end: string;
   title: string;
 }
+
+// To create new colors visit https://css.land/lch/ choose a color and adjust the hue in steps
+// to get different color variants. Make sure the are distinguishable from existing colors
+const colors = [
+  'rgb(9.8%, 12.6%, 44.7%)',
+  'rgb(100%, 48.6%, 24.7%)',
+  'rgb(14.1%, 32.5%, 100%)',
+  'rgb(66.59%, 39.64%, 17.21%)',
+  'rgb(4.7%, 19.6%, 17.3%)',
+  'rgb(18.8%, 72.9%, 47.1%)',
+  'rgb(75.62%, 30.45%, 47.57%)',
+  'rgb(71.43%, 36.17%, 23.73%)',
+  'rgb(74.72%, 33.09%, 31.11%)',
+  'rgb(51.15%, 46.39%, 26.93%)',
+  'rgb(60.46%, 43.05%, 11.86%)',
+  'rgb(36.04%, 50.88%, 14.42%)',
+  'rgb(6.87%, 53.65%, 28.73%)',
+  'rgb(0%, 52.88%, 46.13%)',
+  'rgb(0%, 51.98%, 57%)',
+  'rgb(0%, 50.81%, 67.85%)',
+  'rgb(0%, 49.83%, 75.17%)',
+  'rgb(21%, 47.8%, 80.22%)',
+  'rgb(50.9%, 41.35%, 75.88%)',
+  'rgb(67.87%, 34.28%, 63.82%)'
+];
 
 const WebCalendar = (props: WebCalendarProps) => {
 
@@ -208,9 +233,13 @@ const WebCalendar = (props: WebCalendarProps) => {
   }
 
   const colorEvents = (events) => {
-    events.map(event =>
-      Object.assign(event, {color: 'red'})
-    );
+    if (props.eventNames && props.eventNames.length > 0) {
+      props.eventNames.forEach((name, i) =>
+        events.filter(event => event.title === name).map(event =>
+          Object.assign(event, {color: colors[(i + colors.length) % colors.length]})
+        )
+      );
+    }
     return events;
   }
 
@@ -264,6 +293,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         initialEvents={events}
         dateClick={onDateClick}
         events={events}
+        eventColor={'#192072'}
         editable={false}
         eventsSet={() => setEvents(events)}
         eventDisplay={"block"}

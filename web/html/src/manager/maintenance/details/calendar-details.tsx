@@ -12,9 +12,9 @@ import { MessageType } from "components/messages";
 type CalendarDetailsProps = {
   id: number;
   name: string;
+  eventNames: Array<string>;
   scheduleNames: Array<Record<string, string>>;
   url: string;
-  data: string;
   onDelete: (...args: any[]) => any;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
@@ -54,9 +54,9 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
       <MaintenanceCalendarOverview
         id={props.id}
         name={props.name}
+        eventNames={props.eventNames}
         scheduleNames={props.scheduleNames}
         url={props.url}
-        data={props.data}
         onMessage={props.onMessage}
         clearMessages={props.clearMessages}
         responseError={props.responseError}
@@ -68,9 +68,9 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
 type OverviewProps = {
   id: number;
   name: string;
+  eventNames: Array<string>;
   scheduleNames: Array<Record<string, string>>;
   url: string;
-  data: string;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
@@ -99,6 +99,7 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
               <WebCalendar
                 id={props.id}
                 type={"calendar"}
+                eventNames={props.eventNames}
                 messages={props.onMessage}
                 clearMessages={props.clearMessages}
                 responseError={props.responseError}
