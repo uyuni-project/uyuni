@@ -257,7 +257,14 @@ public class AnsibleManager extends BaseManager {
                 empty(),
                 new TypeToken<>() { }
         );
-        return saltApi.callSync(call, path.getMinionServer().getMinionId());
+
+        Optional<JsonElement> rawResult = saltApi.rawJsonCall(call, path.getMinionServer().getMinionId());
+        return rawResult.map(r -> {
+            if (r.isJsonPrimitive() && r.getAsJsonPrimitive().isBoolean() && !r.getAsJsonPrimitive().getAsBoolean()) {
+                throw new IllegalStateException("no result");
+            }
+            return new Gson().fromJson(r, new TypeToken<String>() { }.getType());
+        });
     }
 
     /**
