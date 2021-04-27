@@ -23,9 +23,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCSystemCredentialsJson;
@@ -34,7 +33,6 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,21 +41,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 public class SCCSystemRegistrationManager {
 
     private final Logger LOG = Logger.getLogger(SCCSystemRegistrationManager.class);
-    private final URI sccURI;
-    private final String uuid;
+    private final SCCClient sccClient;
 
     /**
      * Constructor
      *
-     * @param sccURIIn SCC URL
-     * @param uuidIn the UUID of this server
+     * @param sccClientIn
      */
-    public SCCSystemRegistrationManager(URI sccURIIn, String uuidIn) {
-        this.sccURI = sccURIIn;
-        this.uuid = uuidIn;
+    public SCCSystemRegistrationManager(SCCClient sccClientIn) {
+        this.sccClient = sccClientIn;
     }
 
     /**
@@ -71,15 +68,9 @@ public class SCCSystemRegistrationManager {
             cacheItem.getOptSccId().ifPresentOrElse(
                     sccId -> {
                         Credentials itemCredentials = cacheItem.getOptCredentials().get();
-                        SCCWebClient sccClient = new SCCWebClient(new SCCConfig(
-                                sccURI,
-                                itemCredentials.getUsername(),
-                                itemCredentials.getPassword(),
-                                uuid
-                        ));
                         try {
                             LOG.debug("de-register system " + cacheItem);
-                            sccClient.deleteSystem(sccId);
+                            sccClient.deleteSystem(sccId, itemCredentials.getUsername(), itemCredentials.getPassword());
                             SCCCachingFactory.deleteRegCacheItem(cacheItem);
                         }
                         catch (SCCClientException e) {
@@ -107,14 +98,11 @@ public class SCCSystemRegistrationManager {
         items.forEach(cacheItem -> {
             try {
                 Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                SCCWebClient sccClient = new SCCWebClient(new SCCConfig(
-                        sccURI,
-                        itemCredentials.getUsername(),
-                        itemCredentials.getPassword(),
-                        uuid
-                ));
                 LOG.debug("Forward registration of " + cacheItem);
-                SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(getPayload(cacheItem));
+                SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
+                        getPayload(cacheItem),
+                        itemCredentials.getUsername(),
+                        itemCredentials.getPassword());
                 cacheItem.setSccId(systemCredentials.getId());
                 cacheItem.setSccLogin(systemCredentials.getLogin());
                 cacheItem.setSccPasswd(systemCredentials.getPassword());

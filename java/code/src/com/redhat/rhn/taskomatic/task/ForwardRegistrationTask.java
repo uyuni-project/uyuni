@@ -24,6 +24,9 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.SCCSystemRegistrationManager;
 
+import com.suse.scc.client.SCCClient;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCWebClient;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -63,7 +66,9 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                 List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
                 log.debug(deregister.size() + " RegCacheItems found to delete");
                 List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
-                SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(url, uuid);
+                SCCConfig sccConfig = new SCCConfig(url, "", "", uuid);
+                SCCClient sccClient = new SCCWebClient(sccConfig);
+                SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
                 sccRegManager.deregister(deregister, false);
                 credentials.stream()
                     .filter(c -> c.isPrimarySCCCredential())

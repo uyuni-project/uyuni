@@ -205,14 +205,14 @@ public class SCCWebClient implements SCCClient {
     }
 
     @Override
-    public void deleteSystem(long id) throws SCCClientException {
+    public void deleteSystem(long id, String username, String password) throws SCCClientException {
         HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
         addHeaders(request);
         BufferedReader streamReader = null;
         try {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request,
-                    config.getUsername(), config.getPassword());
+                    username, password);
 
             int responseCode = response.getStatusLine().getStatusCode();
 
@@ -222,7 +222,7 @@ public class SCCWebClient implements SCCClient {
             else {
                 // Request was not successful
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        config.getUsername(), config.getLoggingDir());
+                        username, config.getLoggingDir());
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         String.format("Got response code %s connecting to %s: %s", responseCode,
                                 request.getURI(), streamReader.lines().collect(Collectors.joining("\n"))));
@@ -243,7 +243,8 @@ public class SCCWebClient implements SCCClient {
     }
 
     @Override
-    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system) throws SCCClientException {
+    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
+            throws SCCClientException {
         HttpPost request = new HttpPost(config.getUrl() + "/connect/organizations/systems");
         // Additional request headers
         addHeaders(request);
@@ -253,14 +254,14 @@ public class SCCWebClient implements SCCClient {
         try {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request,
-                    config.getUsername(), config.getPassword());
+                    username, password);
 
             int responseCode = response.getStatusLine().getStatusCode();
 
             //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode == HttpStatus.SC_CREATED) {
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        config.getUsername(), config.getLoggingDir());
+                        username, config.getLoggingDir());
 
                 return gson.fromJson(streamReader, SCCSystemCredentialsJson.class);
             }
