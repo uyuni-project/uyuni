@@ -179,7 +179,7 @@ public class AnsibleController {
                     .map(AnsiblePathJson::new)
                     .collect(Collectors.toList());
         }
-        return json(res, paths);
+        return json(res, success(paths));
     }
 
     /**
