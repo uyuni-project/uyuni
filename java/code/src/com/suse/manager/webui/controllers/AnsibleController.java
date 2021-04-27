@@ -19,6 +19,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.gson.ResultJson.error;
+import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -38,7 +40,6 @@ import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationU
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 import java.util.Date;
 import java.util.HashMap;
@@ -129,7 +130,7 @@ public class AnsibleController {
         List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
                 .collect(Collectors.toList());
-        return json(res, paths);
+        return json(res, success(paths));
     }
 
     /**
@@ -158,12 +159,12 @@ public class AnsibleController {
             }
         }
         catch (ValidatorException e) {
-            return json(res, ResultJson.error(
+            return json(res, error(
                     ValidationUtils.convertValidationErrors(e),
                     ValidationUtils.convertFieldValidationErrors(e)));
         }
 
-        return json(res, Result.success(Map.of("newPathId", currentPath.getId())));
+        return json(res, success(Map.of("newPathId", currentPath.getId())));
     }
     /**
      * Delete an Ansible path
@@ -183,7 +184,7 @@ public class AnsibleController {
             Spark.halt(404);
         }
 
-        return json(res, ResultJson.success());
+        return json(res, success());
     }
 
     /**
@@ -198,13 +199,13 @@ public class AnsibleController {
         try {
             AnsiblePlaybookIdJson params = GSON.fromJson(req.body(), AnsiblePlaybookIdJson.class);
             return AnsibleManager.fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
-                    .map(contents -> json(res, contents))
+                    .map(contents -> json(res, success(contents)))
                     .orElseGet(() -> json(res,
-                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
         catch (IllegalStateException e) {
             return json(res,
-                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
             throw Spark.halt(404);
@@ -228,13 +229,13 @@ public class AnsibleController {
                     params.getControlNodeId(),
                     params.getEarliest().orElse(new Date()),
                     user);
-            return json(res, actionId);
+            return json(res, success(actionId));
         }
         catch (LookupException e) {
             throw Spark.halt(404);
         }
         catch (TaskomaticApiException e) {
-            return json(res, ResultJson.error(LOCAL.getMessage("taskscheduler.down")));
+            return json(res, error(LOCAL.getMessage("taskscheduler.down")));
         }
     }
 
@@ -251,13 +252,13 @@ public class AnsibleController {
 
         try {
             return AnsibleManager.introspectInventory(pathId, user)
-                    .map(inventory -> json(res, YAML.dump(inventory)))
+                    .map(inventory -> json(res, success(YAML.dump(inventory))))
                     .orElseGet(() -> json(res,
-                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
         catch (IllegalStateException e) {
             return json(res,
-                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
             throw Spark.halt(404);
@@ -277,13 +278,13 @@ public class AnsibleController {
 
         try {
             return AnsibleManager.discoverPlaybooks(pathId, user)
-                    .map(inventory -> json(res, inventory))
+                    .map(playbook -> json(res, success(playbook)))
                     .orElseGet(() -> json(res,
-                            ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
         catch (IllegalStateException e) {
             return json(res,
-                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
             throw Spark.halt(404);
