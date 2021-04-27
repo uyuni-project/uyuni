@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.LongStream;
 
 public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
@@ -114,6 +115,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create a system
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         // Create a local for that system
         ConfigChannel local = srv1.getLocalOverride();
@@ -159,6 +161,11 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             listSystemsForFileCopy(user,
                     cfnids[0], ConfigChannelType.local(), null);
         assertNotNull(dr);
+
+        // make sure we don't get any minion back in the list because this is not supported
+        assertFalse(dr.stream().flatMapToLong(id -> LongStream.of(((ConfigSystemDto) id).getId()))
+                .anyMatch(id->id==minion.getId()));
+
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("cfnid", cfnids[0]);
         elabParams.put("label", ConfigChannelType.local().getLabel());
