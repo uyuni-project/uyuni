@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.frontend.xmlrpc.MinionNotRespondingFaultException;
+import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
@@ -231,13 +231,16 @@ public class AnsibleHandler extends BaseHandler {
     public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
         try {
             return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
-                    .orElseThrow(() -> new MinionNotRespondingFaultException());
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(e);
         }
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException(e.getMessage());
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
         }
     }
 
@@ -259,8 +262,19 @@ public class AnsibleHandler extends BaseHandler {
      * #struct_end()
      */
     public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
-        return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
-                .orElseThrow(() -> new MinionNotRespondingFaultException());
+        try {
+            return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(pathId);
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
+        }
     }
 
     /**
@@ -277,8 +291,19 @@ public class AnsibleHandler extends BaseHandler {
      */
     // todo: more fitting structure?
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
-        return AnsibleManager.introspectInventory(pathId, loggedInUser)
-                .orElseThrow(() -> new MinionNotRespondingFaultException());
+        try {
+            return AnsibleManager.introspectInventory(pathId, loggedInUser)
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(pathId);
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
+        }
     }
 
     private static <T> T getFieldValue(Map<String, Object> props, String field) {
