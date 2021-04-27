@@ -52,8 +52,9 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
       if (this.state.content === null) {
         this.setState({ loading: true });
         Network.get(getURL(path))
-        .promise.then(data => {
-          if (!Object.keys(data).includes("success") || data.success) {
+        .promise.then(blob => {
+          if (blob.success) {
+            const data = blob.data;
             this.setState({
               content: this.props.path.type === "playbook" ?
                 this.digestPlaybookPathContent(data)
@@ -62,7 +63,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
             });
           }
           else {
-            this.setState({ errors: data.messages });
+            this.setState({ errors: blob.messages });
           }
           this.setState({ open: true, loading: false });
         });
