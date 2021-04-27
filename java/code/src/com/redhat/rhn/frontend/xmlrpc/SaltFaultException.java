@@ -16,29 +16,27 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.domain.server.MinionServer;
 
 /**
- * XMLRPC Fault thrown when minion does not respond
+ * XMLRPC Fault thrown on salt execution errors
  */
-public class MinionNotRespondingFaultException extends FaultException {
+public class SaltFaultException extends FaultException {
 
     private static final int CODE = 1071;
-    private static final String LABEL = "minionNotResponding";
+    private static final String LABEL = "saltFault";
 
     /**
      * Constructor
      */
-    public MinionNotRespondingFaultException() {
-        super(CODE, LABEL, "Minion not responding");
+    public SaltFaultException() {
+        super(CODE, LABEL, "Salt fault");
     }
 
     /**
      * Constructor
-     * @param minion the affected minion
+     * @param message the error message
      */
-    public MinionNotRespondingFaultException(MinionServer minion) {
-        super(CODE, LABEL,
-                String.format("Minion id '%d', minionId '%s' not responding", minion.getId(), minion.getMinionId()));
+    public SaltFaultException(String message) {
+        super(CODE, LABEL, String.format("Salt fault: %s", message));
     }
 }
