@@ -1056,7 +1056,17 @@ ORDER BY  S.name
   </query>
 
 <mode name="systems_for_copy" class="com.redhat.rhn.frontend.dto.ConfigSystemDto">
-        <query name="find_systems"></query>
+        <query params="user_id">
+            SELECT  DISTINCT S.name, S.id
+            FROM  rhnServer S
+                INNER JOIN rhnUserServerPerms USP on USP.server_id = S.id
+                INNER JOIN rhnServerFeaturesView SFV on SFV.server_id = s.id
+            WHERE  USP.user_id = :user_id
+                AND  S.id = USP.server_id
+                AND SFV.label = 'ftr_config'
+                AND NOT EXISTS (SELECT 1 FROM suseMinionInfo WHERE server_id = S.id)
+            ORDER BY  S.name
+        </query>
         <elaborator params="cfnid,label">
 SELECT  S.id,
                 CC.id AS config_channel_id,
