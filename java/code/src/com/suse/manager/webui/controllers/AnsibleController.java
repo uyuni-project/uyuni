@@ -207,6 +207,10 @@ public class AnsibleController {
                     .orElseGet(() -> json(res,
                             ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
+        catch (IllegalStateException e) {
+            return json(res,
+                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+        }
         catch (LookupException e) {
             throw Spark.halt(404);
         }
@@ -256,6 +260,10 @@ public class AnsibleController {
                     .orElseGet(() -> json(res,
                             ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
+        catch (IllegalStateException e) {
+            return json(res,
+                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+        }
         catch (LookupException e) {
             throw Spark.halt(404);
         }
@@ -277,6 +285,10 @@ public class AnsibleController {
                     .map(inventory -> json(res, inventory))
                     .orElseGet(() -> json(res,
                             ResultJson.error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (IllegalStateException e) {
+            return json(res,
+                    ResultJson.error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
             throw Spark.halt(404);
