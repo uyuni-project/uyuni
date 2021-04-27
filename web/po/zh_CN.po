@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 17:58+0000\n"
+"POT-Creation-Date: 2021-04-27 09:51+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -93,64 +93,35 @@ msgstr "添加到："
 msgid "Loading the scheduler..."
 msgstr "正在装载日程安排程序..."
 
-#: ../html/src/components/config-channels.tsx:29
+#: ../html/src/components/config-channels.tsx:20
+#: ../html/src/components/ranking-table.tsx:18
+#: ../html/src/components/salt-state-popup.tsx:10
 msgid "State Configuration Channel"
 msgstr "状态配置频道"
 
-#: ../html/src/components/config-channels.tsx:32
+#: ../html/src/components/config-channels.tsx:23
+#: ../html/src/components/ranking-table.tsx:21
+#: ../html/src/components/salt-state-popup.tsx:13
 msgid "Normal Configuration Channel"
 msgstr "常规配置频道"
 
-#: ../html/src/components/config-channels.tsx:68
-msgid "Configuration Channel: {0}"
-msgstr "配置频道：{0}"
-
-#: ../html/src/components/config-channels.tsx:78
-#: ../html/src/manager/images/image-profiles.tsx:206
-#: ../html/src/manager/images/image-stores.tsx:203
-#: ../html/src/manager/images/image-view-overview.tsx:322
-#: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:161
-#: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
-msgid "Edit"
-msgstr "编辑"
-
-#: ../html/src/components/config-channels.tsx:79
-msgid "Edit Configuration Channel"
-msgstr "编辑配置频道"
-
-#: ../html/src/components/config-channels.tsx:155
+#: ../html/src/components/config-channels.tsx:88
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "有更改未保存。您要继续吗？"
 
-#: ../html/src/components/config-channels.tsx:193
+#: ../html/src/components/config-channels.tsx:123
 msgid "State assignments have been saved."
 msgstr "已保存状态指派。"
 
-#: ../html/src/components/config-channels.tsx:202
+#: ../html/src/components/config-channels.tsx:130
 msgid "An error occurred on save."
 msgstr "保存时出错。"
 
-#: ../html/src/components/config-channels.tsx:339
-#: ../html/src/manager/minion/packages/package-states.tsx:278
-msgid "No current changes."
-msgstr "无最新更改。"
-
-#: ../html/src/components/config-channels.tsx:340
+#: ../html/src/components/config-channels.tsx:242
 msgid "No states assigned. Use search to find and assign states."
 msgstr "未指派状态。请使用搜索来查找并指派状态。"
 
-#: ../html/src/components/config-channels.tsx:399
+#: ../html/src/components/config-channels.tsx:295
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:93
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
@@ -170,7 +141,7 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 msgid "Back"
 msgstr "上一步"
 
-#: ../html/src/components/config-channels.tsx:401
+#: ../html/src/components/config-channels.tsx:297
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
@@ -178,84 +149,54 @@ msgstr "上一步"
 msgid "Confirm"
 msgstr "确认"
 
-#: ../html/src/components/config-channels.tsx:409
+#: ../html/src/components/config-channels.tsx:305
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:178
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: ../html/src/components/config-channels.tsx:422
-msgid "Apply"
-msgstr "应用"
+#: ../html/src/components/config-channels.tsx:318
+#, fuzzy
+msgid "Execute States"
+msgstr "重复性状态"
 
-#: ../html/src/components/config-channels.tsx:429
+#: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
 msgstr "重新排序"
 
-#: ../html/src/components/config-channels.tsx:440
-#: ../html/src/components/config-channels.tsx:444
-#: ../html/src/manager/minion/packages/package-states.tsx:202
-#: ../html/src/manager/minion/packages/package-states.tsx:206
-msgid "Changes"
-msgstr "更改"
+#: ../html/src/components/config-channels.tsx:337
+msgid "Configuration Channels"
+msgstr "配置频道"
 
-#: ../html/src/components/config-channels.tsx:442
-#: ../html/src/manager/minion/packages/package-states.tsx:204
-msgid "1 Change"
-msgstr "1 项更改"
+#: ../html/src/components/config-channels.tsx:346
+msgid "Search in configuration channels"
+msgstr "在配置频道中搜索"
 
-#: ../html/src/components/config-channels.tsx:452
-#: ../html/src/components/config-channels.tsx:489
+#: ../html/src/components/config-channels.tsx:351
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
 msgstr "搜索"
 
-#: ../html/src/components/config-channels.tsx:462
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
-msgid "System"
-msgstr "系统"
-
-#: ../html/src/components/config-channels.tsx:473
-msgid "Configuration Channels"
-msgstr "配置频道"
-
-#: ../html/src/components/config-channels.tsx:484
-msgid "Search in configuration channels"
-msgstr "在配置频道中搜索"
-
-#: ../html/src/components/config-channels.tsx:500
+#: ../html/src/components/config-channels.tsx:363
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "通过拖放操作编辑配置频道的排名。"
 
-#: ../html/src/components/config-channels.tsx:504
+#: ../html/src/components/config-channels.tsx:367
 msgid "There are no states assigned."
 msgstr "未指派任何状态。"
 
-#: ../html/src/components/config-channels.tsx:512
+#: ../html/src/components/config-channels.tsx:375
 msgid "Channel Name"
 msgstr "频道名称"
 
-#: ../html/src/components/config-channels.tsx:513
+#: ../html/src/components/config-channels.tsx:376
 msgid "Channel Label"
 msgstr "频道标签"
 
-#: ../html/src/components/config-channels.tsx:514
+#: ../html/src/components/config-channels.tsx:377
 msgid "Assign"
 msgstr "指派"
-
-#: ../html/src/components/config-channels.tsx:540
-#: ../html/src/components/table/TableDataHandler.tsx:323
-msgid "There are no entries to show."
-msgstr "没有可显示的项。"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
@@ -588,6 +529,39 @@ msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
+#: ../html/src/components/ranking-table.tsx:38
+#: ../html/src/components/table/TableDataHandler.tsx:323
+msgid "There are no entries to show."
+msgstr "没有可显示的项。"
+
+#: ../html/src/components/salt-state-popup.tsx:49
+msgid "Configuration Channel: {0}"
+msgstr "配置频道：{0}"
+
+#: ../html/src/components/salt-state-popup.tsx:59
+#: ../html/src/manager/images/image-profiles.tsx:206
+#: ../html/src/manager/images/image-stores.tsx:203
+#: ../html/src/manager/images/image-view-overview.tsx:322
+#: ../html/src/manager/images/image-view-overview.tsx:347
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
+msgid "Edit"
+msgstr "编辑"
+
+#: ../html/src/components/salt-state-popup.tsx:60
+msgid "Edit Configuration Channel"
+msgstr "编辑配置频道"
+
 #: ../html/src/components/systems.tsx:43
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
 msgid "Security Advisory"
@@ -742,6 +716,18 @@ msgstr "监视状态未更改。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:51
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr "发生了错误。监视状态未知。请刷新页面。"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
+#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
+msgid "System"
+msgstr "系统"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Tomcat (Java JMX)"
@@ -3575,10 +3561,23 @@ msgstr ""
 msgid "Apply changes"
 msgstr "应用 Highstate"
 
+#: ../html/src/manager/minion/packages/package-states.tsx:202
+#: ../html/src/manager/minion/packages/package-states.tsx:206
+msgid "Changes"
+msgstr "更改"
+
+#: ../html/src/manager/minion/packages/package-states.tsx:204
+msgid "1 Change"
+msgstr "1 项更改"
+
 #: ../html/src/manager/minion/packages/package-states.tsx:241
 #, fuzzy
 msgid "Search package"
 msgstr "搜索"
+
+#: ../html/src/manager/minion/packages/package-states.tsx:278
+msgid "No current changes."
+msgstr "无最新更改。"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No package states."
@@ -5467,6 +5466,9 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Apply"
+#~ msgstr "应用"
 
 #~ msgid ""
 #~ "Formula saved. Edit configuration options in the enabled formulas and "
