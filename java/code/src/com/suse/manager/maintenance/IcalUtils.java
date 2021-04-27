@@ -40,9 +40,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -312,5 +315,16 @@ public class IcalUtils {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(endDate), ZoneOffset.UTC);
         Long startDate = t.minusYears(1).minusMonths(1).toInstant().toEpochMilli();
         return getCalendarEvents(calendar, eventName, startDate, endDate).stream().reduce((first, last) -> last);
+    }
+
+    public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
+        Optional<Calendar> calendar = parseCalendar(calendarIn);
+        if (calendar.isEmpty()) {
+            log.error("Could not parse calendar: " + calendarIn.getLabel());
+            return new HashSet<>();
+        }
+        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+        return events.stream().map(event ->
+                event.getProperty("SUMMARY").getValue()).collect(Collectors.toSet());
     }
 }

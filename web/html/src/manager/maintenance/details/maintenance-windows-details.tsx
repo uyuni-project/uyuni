@@ -56,6 +56,7 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
         <MaintenanceScheduleDetails
           id={props.data.id}
           name={props.data.name}
+          eventNames={props.data.eventNames}
           calendarName={props.data.calendarName}
           type={props.data.type}
           onDelete={props.onDelete}
@@ -68,9 +69,9 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
           <MaintenanceCalendarDetails
             id={props.data.id}
             name={props.data.name}
+            eventNames={props.data.eventNames}
             scheduleNames={props.data.scheduleNames}
             url={props.data.url}
-            data={props.data.data}
             onDelete={props.onDelete}
             onMessage={props.onMessage}
             clearMessages={props.clearMessages}
