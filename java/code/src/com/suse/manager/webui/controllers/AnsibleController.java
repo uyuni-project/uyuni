@@ -229,7 +229,7 @@ public class AnsibleController {
                     ValidationUtils.convertFieldValidationErrors(e)));
         }
 
-        return json(res, success(Map.of("newPathId", currentPath.getId())));
+        return json(res, success(Map.of("pathId", currentPath.getId())));
     }
     /**
      * Delete an Ansible path
