@@ -170,7 +170,7 @@ export function GuestsList(props: Props) {
                     {state === 'running' && row.name !== 'Domain-0' && createModalButton('suspend', modalsData, row)}
                     {state !== 'stopped' && row.name !== 'Domain-0' && createModalButton('shutdown', modalsData, row)}
                     {(state === 'paused' || state === 'running') && createModalButton('restart', modalsData, row)}
-                    {props.saltEntitled && state === 'running' && (
+                    {props.saltEntitled && (
                       <LinkButton
                         title={t('Graphical Console')}
                         className="btn-default btn-sm"

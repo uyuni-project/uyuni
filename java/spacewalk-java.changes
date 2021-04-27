@@ -1,3 +1,4 @@
+- virtual console monitors VM state changes
 - Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
 - support Amazon Linux mirror list URLs and set signed Metadata flag correct
 - Bugfix: Remove the unneeded check that was stopping updating a virtual instance type (bsc#1180673)
