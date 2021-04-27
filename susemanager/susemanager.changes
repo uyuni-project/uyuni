@@ -1,3 +1,4 @@
+- add additional default config values for forwarding registrations to SCC
 - Require gio-branding-SLE for SLE15 but not for openSUSE Leap 15
 - add bootstrap repo data for OES2018-SP3-x86_64 (bsc#1183845)
 - change deprecated path /var/run into /run for systemd (bsc#1185059)

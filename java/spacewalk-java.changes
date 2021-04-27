@@ -1,3 +1,4 @@
+- forward registration data to SUSE Customer Center
 - Rename system migration to system transfer
 - Rename SP to product migration
 - Change onboarding behavior to easier recycle systems (bsc#1183437)
