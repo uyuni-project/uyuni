@@ -38,8 +38,14 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
-    .promise.then((data: AnsiblePath[]) => {
-      this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
+    .promise.then(blob => {
+      if (blob.success) {
+        const data: AnsiblePath[] = blob.data;
+        this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
+      }
+      else {
+        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")]});
+      }
     });
   }
 
@@ -57,17 +63,17 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       "/rhn/manager/api/systems/details/ansible/paths/delete",
       path.id?.toString(),
       "application/json"
-    ).promise.then(data => {
-      if (!Object.keys(data).includes("success") || data.success) {
+    ).promise.then(blob => {
+      if (blob.success) {
         if (path.type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== path.id), errors: [] });
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== path.id) });
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== path.id), errors: [] });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== path.id) });
         }
       }
       else {
-        this.setState({ errors: data.errors.path });
+        this.setState({ errors: blob.errors.path });
       }
     });
   }
@@ -93,18 +99,18 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         id: editPath?.id
       }),
       "application/json"
-    ).promise.then(data => {
-      if (!Object.keys(data).includes("success") || data.success) {
+    ).promise.then(blob => {
+      if (blob.success) {
         const newPath = createNewAnsiblePath({ id: editPath.id, minionServerId: editPath.minionServerId, type: editPath.type, path: editPath.path});
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newPath), editPlaybookPath: {}, errors: []});
+          this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== editPath?.id).concat(newPath), editPlaybookPath: {}});
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== editPath?.id).concat(newPath), editInventoryPath: {}, errors: [] });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter(p => p.id !== editPath?.id).concat(newPath), editInventoryPath: {} });
         }
       }
       else {
-        this.setState({ errors: data.errors.path });
+        this.setState({ errors: blob.errors.path });
       }
     });
   }
@@ -119,18 +125,18 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         path: newPath
       }),
       "application/json"
-    ).promise.then(data => {
-      if (!Object.keys(data).includes("success") || data.success) {
-        const newAnsiblePath = { id: data.newPathId, minionServerId: this.state.minionServerId, type: type, path: newPath};
+    ).promise.then(blob => {
+      if (blob.success) {
+        const newAnsiblePath = { id: blob.data.pathId, minionServerId: this.state.minionServerId, type: type, path: newPath};
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "", errors: [] });
+          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
         }
         else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "", errors: [] });
+          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "" });
         }
       }
       else {
-        this.setState({ errors: data.errors.path });
+        this.setState({ errors: blob.errors.path });
       }
     });
   }

@@ -30,8 +30,13 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.pathContentType + "/" + props.minionServerId)
-    .promise.then(data => {
-      this.setState({ pathList: data });
+    .promise.then(blob => {
+      if (blob.success) {
+        this.setState({ pathList: blob.data });
+      }
+      else {
+        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")]});
+      }
     });
   }
 
