@@ -5,6 +5,9 @@ include ./minion-header.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
+script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webBuildtimestamp}')
+
 script(type='text/javascript').
     spaImportReactPage('minion/ansible/path-content')
         .then(function (module) {
