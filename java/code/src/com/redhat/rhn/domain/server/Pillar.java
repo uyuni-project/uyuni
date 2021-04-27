@@ -16,11 +16,24 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
-import com.suse.utils.Json;
 
-import org.apache.log4j.Logger;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 
-import java.util.Optional;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -28,16 +41,45 @@ import java.util.Optional;
  *
  * https://github.com/uyuni-project/uyuni-rfc/pull/51
  */
+
+@TypeDefs({
+        @TypeDef(name = "json", typeClass = JsonType.class)
+})
+@Entity
+@Table(name = "suseSaltPillar")
 public class Pillar implements Identifiable {
 
-    private static final Logger LOG = Logger.getLogger(Pillar.class);
-
+    @Id
+    @GeneratedValue(generator = "pillar_seq")
+    @SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private Optional<MinionServer> minion;
-    private Optional<Org> org;
-    private Optional<ManagedServerGroup> group;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private MinionServer minion;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private ServerGroup group;
+
+    @Column(name = "category")
     private String category;
-    private Json pillar;
+
+    @Type(type = "json")
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> pillar = new TreeMap<>();
+
+    /**
+     * Default constructor. Mostly for hibernate use.
+     */
+    public Pillar() {
+        initPillar(null, null, null, null, null);
+    }
 
     /**
      * Constructor for global pillar
@@ -45,8 +87,8 @@ public class Pillar implements Identifiable {
      * @param categoryIn category of the pillar
      * @param pillarIn data in JSON format
      */
-    public Pillar(String categoryIn, Json pillarIn) {
-        initPillar(categoryIn, pillarIn, Optional.empty(), Optional.empty(), Optional.empty());
+    public Pillar(String categoryIn, Map<String, Object> pillarIn) {
+        initPillar(categoryIn, pillarIn, null, null, null);
     }
 
     /**
@@ -56,8 +98,8 @@ public class Pillar implements Identifiable {
      * @param pillarIn pillar data in JSON format
      * @param minionIn MinionServer owner of the pillar
      */
-    public Pillar(String categoryIn, Json pillarIn, MinionServer minionIn) {
-        initPillar(categoryIn, pillarIn, Optional.of(minionIn), Optional.empty(), Optional.empty());
+    public Pillar(String categoryIn, Map<String, Object> pillarIn, MinionServer minionIn) {
+        initPillar(categoryIn, pillarIn, minionIn, null, null);
     }
 
     /**
@@ -67,8 +109,8 @@ public class Pillar implements Identifiable {
      * @param pillarIn pillar data in JSON format
      * @param groupIn ServerGroup owning the pillar
      */
-    public Pillar(String categoryIn, Json pillarIn, ManagedServerGroup groupIn) {
-        initPillar(categoryIn, pillarIn, Optional.empty(), Optional.of(groupIn), Optional.empty());
+    public Pillar(String categoryIn, Map<String, Object> pillarIn, ServerGroup groupIn) {
+        initPillar(categoryIn, pillarIn, null, groupIn, null);
     }
 
     /**
@@ -78,13 +120,13 @@ public class Pillar implements Identifiable {
      * @param pillarIn pillar data in JSON format
      * @param orgIn organization owning the pillar
      */
-    public Pillar(String categoryIn, Json pillarIn, Org orgIn) {
-        initPillar(categoryIn, pillarIn, Optional.empty(), Optional.empty(), Optional.of(orgIn));
+    public Pillar(String categoryIn, Map<String, Object> pillarIn, Org orgIn) {
+        initPillar(categoryIn, pillarIn, null, null, orgIn);
     }
 
-    private void initPillar(String categoryIn, Json pillarIn,
-                            Optional<MinionServer> serverIn,
-                            Optional<ManagedServerGroup> groupIn, Optional<Org> orgIn) {
+    private void initPillar(String categoryIn, Map<String, Object> pillarIn,
+                            MinionServer serverIn,
+                            ServerGroup groupIn, Org orgIn) {
         this.category = categoryIn;
         this.pillar = pillarIn;
         this.minion = serverIn;
@@ -100,19 +142,19 @@ public class Pillar implements Identifiable {
     }
 
     public boolean isMinionPillar() {
-        return minion.isPresent();
+        return minion != null;
     }
 
     public boolean isGroupPillar() {
-        return group.isPresent();
+        return group != null;
     }
 
     public boolean isOrgPillar() {
-        return org.isPresent();
+        return org != null;
     }
 
     public boolean isGlobalPillar() {
-        return minion.isEmpty() && group.isEmpty() && org.isEmpty();
+        return minion == null && group == null && org == null;
     }
 
     /**
@@ -122,10 +164,10 @@ public class Pillar implements Identifiable {
      * @param groupIn SystemGroup owner of the pillar
      * @return itself
      */
-    public Pillar setGroup(Optional<ManagedServerGroup> groupIn) {
+    public Pillar setGroup(ServerGroup groupIn) {
         this.group = groupIn;
-        this.org = Optional.empty();
-        this.minion = Optional.empty();
+        this.org = null;
+        this.minion = null;
         return this;
     }
 
@@ -136,10 +178,10 @@ public class Pillar implements Identifiable {
      * @param orgIn Org owner of the pillar
      * @return itself
      */
-    public Pillar setOrg(Optional<Org> orgIn) {
+    public Pillar setOrg(Org orgIn) {
         this.org = orgIn;
-        this.group = Optional.empty();
-        this.minion = Optional.empty();
+        this.group = null;
+        this.minion = null;
         return this;
     }
 
@@ -150,10 +192,10 @@ public class Pillar implements Identifiable {
      * @param minionIn MinionServer owner of the pillar
      * @return itself
      */
-    public Pillar setMinion(Optional<MinionServer> minionIn) {
+    public Pillar setMinion(MinionServer minionIn) {
         this.minion = minionIn;
-        this.group = Optional.empty();
-        this.org = Optional.empty();
+        this.group = null;
+        this.org = null;
         return this;
     }
 
@@ -164,9 +206,9 @@ public class Pillar implements Identifiable {
      * @return itself
      */
     public Pillar setGlobal() {
-        this.minion = Optional.empty();
-        this.group = Optional.empty();
-        this.org = Optional.empty();
+        this.minion = null;
+        this.group = null;
+        this.org = null;
         return this;
     }
 
@@ -175,7 +217,7 @@ public class Pillar implements Identifiable {
      *
      * @return pillar value
      */
-    public Json getPillar() {
+    public Map<String, Object> getPillar() {
         return pillar;
     }
 
@@ -185,7 +227,7 @@ public class Pillar implements Identifiable {
      * @param pillarIn pillar value in JSON format
      * @return itself
      */
-    public Pillar setPillar(Json pillarIn) {
+    public Pillar setPillar(Map<String, Object> pillarIn) {
         this.pillar = pillarIn;
         return this;
     }
