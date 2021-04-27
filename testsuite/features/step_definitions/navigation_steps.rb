@@ -486,6 +486,7 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+  page.reset!
   visit Capybara.app_host
   next if all(:xpath, "//header//span[text()='#{user}']").any?
 

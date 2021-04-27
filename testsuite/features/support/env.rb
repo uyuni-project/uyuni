@@ -107,14 +107,6 @@ After do |scenario|
   page.instance_variable_set(:@touched, false)
 end
 
-# Reset the page if it's running the first scenario of a feature
-Before do
-  unless $page_reset
-    page.reset!
-    $page_reset = true
-  end
-end
-
 AfterStep do
   if all('.senna-loading').any?
     puts "WARN: Step ends with an ajax transition not finished, let's wait a bit!"
