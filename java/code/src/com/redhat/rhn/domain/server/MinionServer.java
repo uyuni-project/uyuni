@@ -38,6 +38,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private String osFamily;
     private String kernelLiveVersion;
     private Set<AccessToken> accessTokens = new HashSet<>();
+    private Set<Pillar> pillars = new HashSet<>();
 
     /**
      * Constructs a MinionServer instance.
@@ -237,6 +238,21 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isRocky8() {
         return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("8.");
+    }
+
+    /**
+     * @return value of pillars
+     */
+    public Set<Pillar> getPillars() {
+        return pillars;
+    }
+
+    /**
+     * @param pillarsIn value of pillars
+     */
+    public void setPillars(Set<Pillar> pillarsIn) {
+        pillars.clear();
+        pillars.addAll(pillarsIn);
     }
 
     /**
