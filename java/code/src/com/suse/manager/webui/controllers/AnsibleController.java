@@ -53,7 +53,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -181,7 +180,7 @@ public class AnsibleController {
             AnsibleManager.removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
-            Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
 
         return json(res, success());
@@ -208,7 +207,7 @@ public class AnsibleController {
                     error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
-            throw Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
     }
 
@@ -232,7 +231,7 @@ public class AnsibleController {
             return json(res, success(actionId));
         }
         catch (LookupException e) {
-            throw Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
         catch (TaskomaticApiException e) {
             return json(res, error(LOCAL.getMessage("taskscheduler.down")));
@@ -261,7 +260,7 @@ public class AnsibleController {
                     error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
-            throw Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
     }
 
@@ -287,7 +286,7 @@ public class AnsibleController {
                     error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
         }
         catch (LookupException e) {
-            throw Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
     }
 }

@@ -9046,6 +9046,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ansible.entity_not_found" xml:space="preserve">
+        <source>The requested entity not found or inaccessible</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
         <context-group name="ctx">
