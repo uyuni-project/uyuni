@@ -163,10 +163,7 @@ public class AnsibleController {
                     ValidationUtils.convertFieldValidationErrors(e)));
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("success", ResultJson.success());
-        data.put("newPathId", currentPath.getId());
-        return json(res, data);
+        return json(res, Result.success(Map.of("newPathId", currentPath.getId())));
     }
     /**
      * Delete an Ansible path
@@ -186,9 +183,7 @@ public class AnsibleController {
             Spark.halt(404);
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("success", ResultJson.success());
-        return json(res, data);
+        return json(res, ResultJson.success());
     }
 
     /**
