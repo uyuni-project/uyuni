@@ -2,6 +2,7 @@
 
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
+import Network from "utils/network";
 import { Button } from 'components/buttons';
 import { showDialog } from 'components/dialog/util';
 import { hideDialog } from 'components/dialog/util';
@@ -15,6 +16,7 @@ type Props = {
   hostId: string,
   guestUuid: string,
   guestName: string,
+  guestState: string,
   graphicsType: string,
   token: string,
 };
@@ -25,27 +27,31 @@ type State = {
   connected: boolean,
   popupState: string,
   password: ?string,
+  vmState: string,
+  currentToken: string,
+  hostId: string,
 };
 
 class GuestsConsole extends React.Component<Props, State> {
   client: ConsoleClientType;
   popupSubmit: Function;
+  websocket: WebSocket;
+  pageUnloading: boolean;
+
+  clients = {
+    vnc: VncClient,
+    spice: SpiceClient,
+  };
 
   constructor(props: Props) {
     super(props);
 
-    const clients = {
-      vnc: VncClient,
-      spice: SpiceClient,
-    };
-    const port = window.location.port ? `:${window.location.port}` : "";
-    const url = `wss://${window.location.hostname}${port}/rhn/websockify/?token=${this.props.token}`;
-    this.client = new clients[this.props.graphicsType]('canvas', url, this.onConnect, this.onDisconnect, this.askPassword);
-
-    const editUrl = `/rhn/manager/systems/details/virtualization/guests/${this.props.hostId}/edit/${this.props.guestUuid}`;
-    const error = this.client !== undefined
+    const error = this.clients[props.graphicsType] != null
       ? undefined
-      : t(`Can not show display. Ensure, the virtual machine is stopped, <a href='${editUrl}'>set the display</a> to VNC and start again`);
+      : t(`Can not show display. Ensure, the virtual machine is stopped, set the display to VNC and start again`);
+
+    this.pageUnloading = false;
+    this.openVirtSocket();
 
     this.state = {
       error,
@@ -53,6 +59,9 @@ class GuestsConsole extends React.Component<Props, State> {
       connected: false,
       popupState: 'wait',
       password: undefined,
+      vmState: props.guestState,
+      currentToken: props.token,
+      hostId: props.hostId,
     };
   }
 
@@ -60,20 +69,49 @@ class GuestsConsole extends React.Component<Props, State> {
     this.connect();
 
     window.onbeforeunload = () => {
-      this.client.removeErrorHandler();
+      this.pageUnloading = true;
+      this.client?.removeErrorHandler();
     };
   }
 
-  connect = () => {
-    if (this.client != null) {
-      this.client.connect();
-    }
-    this.popupSubmit = undefined;
+  openVirtSocket = () => {
+    const { port } = window.location;
+    const url = `wss://${window.location.hostname}${port ? `:${port}` : ''}/rhn/websocket/minion/virt-notifications`;
+    const ws = new WebSocket(url);
 
-    this.setState({
-      popupState: 'wait',
-      password: undefined,
-    }, this.showPopup);
+    ws.onopen = () => {
+      // Tell the websocket that we want to hear from all events about this virtual guest.
+      ws.send(`{guestUuid: ${this.props.guestUuid}}`);
+    };
+
+    ws.onclose = () => {
+      if (!this.pageUnloading) {
+        setTimeout(this.openVirtSocket, 1000);
+      }
+    };
+
+    ws.onmessage = (e) => {
+      if (typeof e.data === 'string') {
+        this.virtEventHandler(JSON.parse(e.data));
+      }
+    };
+
+    this.websocket = ws;
+  }
+
+  connect = () => {
+    if (this.state.vmState !== "stopped" && this.client == null) {
+      const port = window.location.port ? `:${window.location.port}` : "";
+      const url = `wss://${window.location.hostname}${port}/rhn/websockify/?token=${this.state.currentToken}`;
+      this.client = new this.clients[this.props.graphicsType]('canvas', url, this.onConnect, this.onDisconnect, this.askPassword);
+      this.client.connect();
+
+      this.popupSubmit = undefined;
+      this.setState({
+        popupState: 'wait',
+        password: undefined,
+      }, this.showPopup);
+    }
   }
 
   onConnect = () => {
@@ -85,17 +123,23 @@ class GuestsConsole extends React.Component<Props, State> {
   }
 
   onDisconnect = (error: ?string) => {
-    const message = error != null ? error : t('Disconnected');
-    const connectionError = t('Failed to connect');
+    // When disconnecting during migration, get a new token to reconnect
+    if (this.state.vmState === "migrating") {
+      this.refreshToken();
+      return;
+    }
+
+    // Something bad happened, notify the user
+    this.popupSubmit = this.connect.bind(this);
+    this.client = undefined;
     this.setState((oldState) => {
-      const errorMessage = (oldState.connected ? message : connectionError);
+      const connectionError = oldState.connected ? t('Disconnected') : t('Failed to connect');
       return {
-        error: errorMessage,
+        error: error || connectionError,
         connected: false,
+        popupState: 'errors',
       };
-    });
-    this.popupSubmit = this.connect;
-    this.setState({ popupState: 'errors' }, this.showPopup);
+    }, this.showPopup);
   }
 
   toggleScale = () => {
@@ -123,6 +167,74 @@ class GuestsConsole extends React.Component<Props, State> {
   onPasswordChange = (model: Object) => {
     this.setState({ password: model.password });
   }
+
+  refreshToken = () => {
+    Network.post(`/rhn/manager/api/systems/details/virtualization/guests/consoleToken/${this.props.guestUuid}`,
+                 this.state.currentToken, "application/json").promise.then(
+      response => {
+        this.popupSubmit = undefined;
+        this.setState({
+          connected: false,
+          currentToken: response,
+          popupState: 'wait',
+        }, this.connect);
+      },
+      xhr => {
+        if (xhr.status === 400) {
+          // We have hit a time where the VM is not yet in the DB, retry
+          this.refreshToken();
+        } else {
+          this.popupSubmit = () => {
+            window.location.reload();
+          }
+          this.setState({
+            error: Network.errorMessageByStatus(xhr.status),
+            popupState: 'errors',
+          }, this.showPopup)
+        }
+      }
+    );
+  };
+
+  virtEventHandler = (msg: Object) => {
+    // Ignore all other events that come from other hosts
+    // hostIds are parsed as numbers in the message while we get them as string from the properties
+    const hostId = msg.hostId.toString();
+    if (msg.event === 'resumed' && msg.detail === 'migrated') {
+      this.client = undefined;
+      setTimeout(() => {}, 500);
+      this.refreshToken();
+      this.setState({vmState: 'running', hostId}, this.showPopup);
+    }
+
+    if (this.state.hostId !== hostId) {
+      return;
+    }
+
+    if (msg.event === 'started') {
+      setTimeout(() => {}, 500);
+      this.refreshToken();
+      this.setState({vmState: 'running'}, this.showPopup);
+      return;
+    }
+
+    if (msg.event === 'suspended' && msg.detail === 'migrated') {
+      this.client.removeErrorHandler();
+      this.setState({vmState: 'migrating'});
+      return;
+    }
+
+    if (msg.event === 'shutdown') {
+      this.client.removeErrorHandler();
+      return;
+    }
+
+    if (msg.event === 'stopped') {
+      this.client = undefined;
+      this.setState({vmState: 'stopped'});
+      return;
+    }
+  };
 
   render() {
     const canResize = this.client != null && this.client.canResize;
@@ -159,7 +271,9 @@ class GuestsConsole extends React.Component<Props, State> {
           id="display-area"
           className={`${styles.display_area_console} ${styles[areaClassName]}`}
         >
-          <div id="canvas" className={styles.canvas}/>
+          <div id="canvas" className={styles.canvas}>
+            { this.state.vmState !== "running" && <div className="col-md-12">{t('Guest is not running')}</div> }
+          </div>
         </div>
       </>
     );

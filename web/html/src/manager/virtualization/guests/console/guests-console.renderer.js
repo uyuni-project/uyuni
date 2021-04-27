@@ -6,6 +6,7 @@ export const renderer = (id, {
   hostId,
   guestUuid,
   guestName,
+  guestState,
   graphicsType,
   token,
 }) => {
@@ -14,6 +15,7 @@ export const renderer = (id, {
       hostId={hostId}
       guestUuid={guestUuid}
       guestName={guestName}
+      guestState={guestState}
       graphicsType={graphicsType}
       token={token}
     />,
