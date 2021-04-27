@@ -634,9 +634,13 @@ rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
+# Prettifying symlinks, excluding openSUSE
+%if ! 0%{?opensuse}
+mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
+%endif
+
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
-mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
 mv $RPM_BUILD_ROOT%{jardir}/jafjakarta.activation.jar $RPM_BUILD_ROOT%{jardir}/jaf.jar
 mv $RPM_BUILD_ROOT%{jardir}/javamailjavax.mail.jar $RPM_BUILD_ROOT%{jardir}/javamail.jar
 mv $RPM_BUILD_ROOT%{jardir}/jta.jar $RPM_BUILD_ROOT%{jardir}/geronimo-jta-1.1-api.jar
