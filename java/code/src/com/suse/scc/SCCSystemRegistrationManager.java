@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
+import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -146,13 +147,14 @@ public class SCCSystemRegistrationManager {
                 .collect(Collectors.toList());
 
         Map<String, String> hwinfo = new HashMap<>();
-        Optional.ofNullable(srv.getCpu().getNrCPU()).ifPresent(c -> hwinfo.put("cpus", c.toString()));
-        Optional.ofNullable(srv.getCpu().getNrsocket()).ifPresent(c -> hwinfo.put("sockets", c.toString()));
+        Optional<CPU> cpu = ofNullable(srv.getCpu());
+        cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwinfo.put("cpus", c.toString()));
+        cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwinfo.put("sockets", c.toString()));
         hwinfo.put("arch", srv.getServerArch().getLabel().split("-")[0]);
         if (srv.isVirtualGuest()) {
             hwinfo.put("hypervisor", srv.getVirtualInstance().getType().getHypervisor().orElse(""));
             hwinfo.put("cloud_provider", srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-            Optional.ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(u -> {
+            ofNullable(srv.getVirtualInstance().getUuid()).ifPresent(u -> {
                 hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                         "$1-$2-$3-$4-$5"));
             });
