@@ -158,10 +158,8 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
     select(option, from: field)
   else
     # Custom React selector
-    within(:xpath, xpath_field) do
-      find(:xpath, '.').click
-      find(:xpath, xpath_option, match: :first).click
-    end
+    find(:xpath, xpath_field).click
+    find(:xpath, xpath_option, match: :first).click
   end
 end
 
