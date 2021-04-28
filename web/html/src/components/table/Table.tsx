@@ -110,7 +110,7 @@ export function Table(props: TableProps) {
                 className="btn-default btn-sm"
                 title={t("Delete")}
                 icon="fa-trash"
-                handler={e => {
+                handler={() => {
                   props.onDelete?.(datum);
                 }}
               />

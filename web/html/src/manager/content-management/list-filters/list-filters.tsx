@@ -15,6 +15,7 @@ import useRoles from "core/auth/use-roles";
 import { isOrgAdmin } from "core/auth/auth.utils";
 import { getValue } from "utils/data";
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
+import { Button } from "components/buttons";
 
 type Props = {
   filters: Array<FilterServerType>;
@@ -113,20 +114,15 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  const unusedFilter = (
-    <button className="btn-link" onClick={onSelectUnused}>
-      {t("Select unused")}
-    </button>
-  );
+  const unusedFilter = <Button className="btn-link" handler={onSelectUnused} text={t("Select unused")}></Button>;
 
   const deleteSelected = (
-    <button
-      className={`btn ${selectedIdentifiers.length ? "btn-danger" : "btn-disabled"}`}
+    <Button
+      className={`${selectedIdentifiers.length ? "btn-danger" : "btn-disabled"}`}
       disabled={!selectedIdentifiers.length}
-      onClick={deleteSelectedRows}
-    >
-      {t("Delete selected")}
-    </button>
+      handler={deleteSelectedRows}
+      text={t("Delete selected")}
+    />
   );
 
   return (
