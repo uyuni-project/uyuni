@@ -410,10 +410,13 @@ PKGLIST15SP0SP1_SALT = [
     "python3-tornado",
 ]
 
+ONLYSLE15 = [
+    "gio-branding-SLE",
+]
+
 PKGLIST15_TRAD = [
     "dbus-1-glib",
     "glib2-tools",
-    "gio-branding-SLE",
     "girepository-1_0",
     "libgudev-1_0-0",
     "libgirepository-1_0-1",
@@ -890,71 +893,71 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-15-aarch64' : {
-        'PDID' : [1589, 2053, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1589, 2053, 1709], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
-        'PDID' : [1588, 2054, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'PDID' : [1588, 2054, 1710], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
-        'PDID' : [1587, 2055, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
+        'PDID' : [1587, 2055, 1711], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
-        'PDID' : [1576, 2056, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 2056, 1712], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {
-        'PDID' : [1769, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1769, 1709], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-ppc64le' : {
-        'PDID' : [1770, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'PDID' : [1770, 1710], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-s390x' : {
-        'PDID' : [1771, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
+        'PDID' : [1771, 1711], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-x86_64' : {
-        'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SUMA-40-PROXY-x86_64' : {
-        'PDID' : [1772, 1908], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1908], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP2-aarch64' : {
-        'PDID' : [1943, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1943, 1709], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-ppc64le' : {
-        'PDID' : [1944, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [1944, 1710], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-s390x' : {
-        'PDID' : [1945, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [1945, 1711], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP2-x86_64' : {
-        'PDID' : [1946, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1946, 1712], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
     'SLE-15-SP3-aarch64' : {
-        'PDID' : [2142, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2142, 1709], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-ppc64le' : {
-        'PDID' : [2143, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_PPC,
+        'PDID' : [2143, 1710], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-s390x' : {
-        'PDID' : [2144, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_Z,
+        'PDID' : [2144, 1711], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP3-x86_64' : {
-        'PDID' : [2145, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [2145, 1712], 'PKGLIST' : PKGLIST15_TRAD + ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/3/bootstrap/'
     },
     'openSUSE-Leap-42.3-x86_64' : {

@@ -1,3 +1,4 @@
+- Require gio-branding-SLE for SLE15 but not for openSUSE Leap 15
 - Add python3-distro to RES8, SLE15 and Ubuntu20.04 bootstrap
   repositories to fix bootstrapping issues (bsc#1184332)
 
