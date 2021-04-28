@@ -33,10 +33,6 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
     When I query latest Salt changes on "sle_minion"
 
-  Scenario: Check the activation key
-    Given I am on the Systems overview page of this "sle_minion"
-    Then I should see a "1-SUSE-KEY-x86_64" text
-
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
