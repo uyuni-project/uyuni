@@ -374,6 +374,7 @@ RES8 = [
     "python3-psutil",
     "python3-pyyaml",
     "python3-requests",
+    "python3-certifi",
     "openpgm",
     "zeromq",
     "python3-urllib3",
