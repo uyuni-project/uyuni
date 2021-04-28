@@ -1292,6 +1292,9 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/hosts'
   return_code = file_inject(target, source, dest + "hosts")
   raise 'File injection failed' unless return_code.zero?
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook2_orion_dummy/example_file.txt'
+  return_code = file_inject(target, source, dest + "example_file.txt")
+  raise 'File injection failed' unless return_code.zero?
   dest = "/srv/playbooks/"
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/example_playbook1_ping.yml'
   return_code = file_inject(target, source, dest + "example_playbook1_ping.yml")
