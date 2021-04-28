@@ -1082,7 +1082,7 @@
       <form-property name="allowVendorChange" type="java.lang.Boolean" />
     </form-bean>
 
-    <form-bean name="servicePackMigrationForm"
+    <form-bean name="productMigrationForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="step" type="java.lang.String" />
       <form-property name="baseProduct" type="java.lang.Long" />
@@ -8084,10 +8084,10 @@
                  path="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"/>
     </action>
 
-    <!-- Service Pack Migration -->
+    <!-- Product Migration -->
     <action path="/systems/details/SPMigration"
             scope="request"
-            name="servicePackMigrationForm"
+            name="productMigrationForm"
             type="com.redhat.rhn.frontend.action.systems.SPMigrationAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping"
             parameter="dispatch">

@@ -471,7 +471,7 @@ public class CVEAuditManager {
 
     /**
      * Looks at installed products on the server and their previous and future
-     * SP migrations, adding channels to relevantChannels when they are found.
+     * product migrations, adding channels to relevantChannels when they are found.
      *
      * @param auditTarget the audit target object
      * @param maxRank starting rank for new channels found

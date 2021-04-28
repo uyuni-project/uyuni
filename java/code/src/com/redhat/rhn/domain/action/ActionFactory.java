@@ -332,7 +332,7 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Check if there is a pending service pack migration in the schedule. Return the
+     * Check if there is a pending product migration in the schedule. Return the
      * action ID if available or null otherwise.
      * @param serverId server
      * @return ID of a possibly scheduled migration or null.

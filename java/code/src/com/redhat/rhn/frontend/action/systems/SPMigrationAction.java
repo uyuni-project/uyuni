@@ -68,7 +68,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
- * Action class for scheduling distribution upgrades (Service Pack Migrations).
+ * Action class for scheduling distribution upgrades (Product Migrations).
  */
 public class SPMigrationAction extends RhnAction {
 
@@ -121,7 +121,7 @@ public class SPMigrationAction extends RhnAction {
         DynaActionForm form = (DynaActionForm) actionForm;
         String actionStep = TARGET;
 
-        // Called after redirect from event history after running a sp migration dry-run
+        // Called after redirect from event history after running a product migration dry-run
         if (ctx.hasParam("aid")) {
             DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
                     "date", DatePicker.YEAR_RANGE_POSITIVE);

@@ -7011,11 +7011,11 @@ public class SystemHandler extends BaseHandler {
                                 t.getMissingChannelsMessage())
                                 .collect(Collectors.joining(System.getProperty("line.separator")));
                 log.error("No target products found for migration: " + targetsInfo);
-                throw new FaultException(-1, "servicePackMigrationNoTarget",
-                        "No target found for SP migration. " + targetsInfo);
+                throw new FaultException(-1, "productMigrationNoTarget",
+                        "No target found for Product migration. " + targetsInfo);
             }
             if (!targetProducts.getIsEveryChannelSynced()) {
-                throw new FaultException(-1, "servicePackMigrationNoTarget",
+                throw new FaultException(-1, "productMigrationNoTarget",
                         "Target not available, the following channels are not synced: " +
                         targetProducts.getMissingChannelsMessage());
             }
@@ -7053,8 +7053,8 @@ public class SystemHandler extends BaseHandler {
         }
 
         // We didn't find target products if we are still here
-        throw new FaultException(-1, "servicePackMigrationNoTarget",
-                "No target found for SP migration");
+        throw new FaultException(-1, "productMigrationNoTarget",
+                "No target found for Product migration");
     }
 
     /**

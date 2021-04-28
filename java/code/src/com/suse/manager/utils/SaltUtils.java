@@ -1431,7 +1431,7 @@ public class SaltUtils {
                 RH systems require some parsing on the grains to get the correct release
                 See RegisterMinionEventMessageAction#getOsRelease
 
-                However, release can change only after SP migration and SUMA supports this only on SUSE systems.
+                However, release can change only after product migration and SUMA supports this only on SUSE systems.
                 Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
                 If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
              */
