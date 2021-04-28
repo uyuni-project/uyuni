@@ -7,7 +7,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:100
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 15:58+0000\n"
+"POT-Creation-Date: 2021-04-28 14:03+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -227,6 +227,7 @@ msgstr "取消"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
+#: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
@@ -530,7 +531,7 @@ msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:323
+#: ../html/src/components/table/TableDataHandler.tsx:339
 msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
@@ -571,24 +572,24 @@ msgstr "安全建议"
 msgid "System Locked"
 msgstr "系统已锁定"
 
-#: ../html/src/components/table/SearchPanel.tsx:45
+#: ../html/src/components/table/SearchPanel.tsx:52
 msgid "Items {0} - {1} of {2}"
 msgstr "第 {0} - {1} 项，共 {2} 项"
 
-#: ../html/src/components/table/SearchPanel.tsx:48
+#: ../html/src/components/table/SearchPanel.tsx:55
 msgid "({0} selected)"
 msgstr "（已选择 {0} 个）"
 
-#: ../html/src/components/table/SearchPanel.tsx:50
+#: ../html/src/components/table/SearchPanel.tsx:57
 #: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
 msgstr "清除"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:64
 msgid "Select All"
 msgstr "全选"
 
-#: ../html/src/components/table/TableDataHandler.tsx:324
+#: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
@@ -598,7 +599,7 @@ msgstr "全选"
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:354
+#: ../html/src/components/table/TableDataHandler.tsx:370
 msgid "items per page"
 msgstr "项每页"
 
@@ -1127,7 +1128,6 @@ msgstr " 秒刷新"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 #: ../html/src/manager/virtualization/ListTab.js:237
 msgid "Filter by name"
 msgstr "按名称过滤"
@@ -1205,7 +1205,7 @@ msgstr "审计映像"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:82
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
@@ -2059,12 +2059,12 @@ msgid "Advisory Keywords"
 msgstr "建议关键字"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "拒绝"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "允许"
 
@@ -2072,11 +2072,33 @@ msgstr "允许"
 msgid "Rule"
 msgstr "规则"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:67
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
+msgid ""
+"Some of the selected filters are used in projects and can not be deleted."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
+#, fuzzy
+msgid "Select unused"
+msgstr "选择"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
+#: ../html/src/manager/images/image-profiles.tsx:138
+#: ../html/src/manager/images/image-stores.tsx:141
+#: ../html/src/manager/images/image-view.tsx:354
+msgid "Delete selected"
+msgstr "删除选定项"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
 msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:87
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
+#, fuzzy
+msgid "Filter by name or project"
+msgstr "按名称过滤"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "使用中的项目"
 
@@ -2355,31 +2377,31 @@ msgstr "创建新过滤器"
 msgid "Edit Filter {0}"
 msgstr "编辑过滤器 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
 msgid "Filters"
 msgstr "过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Attach/Detach Filters"
 msgstr "挂接/分离过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
 msgid "Filter edited successfully"
 msgstr "已成功编辑过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "AppStreams"
 msgstr "AppStreams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
 msgid "enabled module streams"
 msgstr "已启用模块流"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "filter out"
 msgstr "过滤掉"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
@@ -2751,12 +2773,6 @@ msgstr "已删除映像配置文件。"
 #: ../html/src/manager/images/image-profiles.tsx:30
 msgid "Image profiles have been deleted."
 msgstr "已删除映像配置文件。"
-
-#: ../html/src/manager/images/image-profiles.tsx:138
-#: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:354
-msgid "Delete selected"
-msgstr "删除选定项"
 
 #: ../html/src/manager/images/image-profiles.tsx:159
 msgid "Image Profiles"
