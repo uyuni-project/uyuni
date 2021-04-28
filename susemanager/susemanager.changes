@@ -1,3 +1,5 @@
+- Add bootstrap repo data for SUSE Manager 4.1 Proxy
+- Require gio-branding-SLE for SLE15 but not for openSUSE Leap 15
 - add bootstrap repo data for OES2018-SP3-x86_64 (bsc#1183845)
 - Enable bootstrap repository creation for openSUSE Leap 15.3 for Uyuni
 - Add python3-distro to RES8, SLE15, Ubuntu20.04 and Debian 10 bootstrap
