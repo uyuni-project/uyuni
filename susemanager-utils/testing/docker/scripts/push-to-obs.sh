@@ -18,10 +18,13 @@ help() {
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
   echo "  -n  If used, update PROJECT instead of the projects specified with -d"
+  echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links" 
   echo ""
 }
 
-while getopts ":d:c:p:n:vth" opts; do
+OSC_EXPAND="FALSE"
+
+while getopts ":d:c:p:n:vthe" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
@@ -29,6 +32,7 @@ while getopts ":d:c:p:n:vth" opts; do
     v) export VERBOSE=1;;
     t) export TEST=1;;
     n) export OBS_TEST_PROJECT=${OPTARG};;
+    e) export OSC_EXPAND="TRUE"
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"

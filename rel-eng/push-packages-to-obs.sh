@@ -16,6 +16,11 @@ OSCRC=${OSCRC:+-c $OSCRC}
 OSCAPI=${OSCAPI:-https://api.suse.de}
 
 OSC="osc ${OSCRC} -A ${OSCAPI}"
+if [ "$OSC_EXPAND" == "TRUE" ];then
+    OSC_CHECKOUT="$OSC checkout"
+else
+    OSC_CHECKOUT="$OSC checkout -u"
+fi
 OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Manager:TEST}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
@@ -249,7 +254,7 @@ while read PKG_NAME; do
     echo "Try: $tries"
     OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
     rm -rf "$OBS_PKG_DIR"
-    $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
+    $OSC_CHECKOUT "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
       if grep 'does not exist in project' "$T_LOG" || grep '404: Not Found' "$T_LOG"; then
         test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
         ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
