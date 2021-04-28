@@ -24790,7 +24790,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
-        <source>Service Pack Migration - Target</source>
+        <source>Product Migration - Target</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -24805,7 +24805,7 @@ given channel.</source>
         <source>Target not available, the following channels are not synced: </source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
-        <source>Service Pack Migration - Channels</source>
+        <source>Product Migration - Channels</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -24829,13 +24829,13 @@ given channel.</source>
         <source>Schedule Migration</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
-        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+        <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
-        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+        <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
-        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -24844,16 +24844,16 @@ given channel.</source>
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
-        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
-        <source>Service Pack Migration - Confirm</source>
+        <source>Product Migration - Confirm</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -24862,7 +24862,7 @@ given channel.</source>
         <source>Channel subscriptions after the migration:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
-        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -25069,8 +25069,8 @@ given channel.</source>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
       </trans-unit>
-      <trans-unit id="SP Migration" xml:space="preserve">
-        <source>SP Migration</source>
+      <trans-unit id="Product Migration" xml:space="preserve">
+        <source>Product Migration</source>
       </trans-unit>
       <trans-unit id="Mirror Credentials" xml:space="preserve">
         <source>Organization Credentials</source>

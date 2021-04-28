@@ -70,7 +70,7 @@ insert into rhnActionType values (49, 'proxy.deactivate', 'Deactivate Proxy', 'N
 insert into rhnActionType values (50, 'scap.xccdf_eval', 'OpenSCAP xccdf scanning', 'N', 'Y', 'N');
 insert into rhnActionType values (51, 'clientcert.update_client_cert', 'Update Client Certificate', 'N', 'Y', 'Y');
 insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N', 'N');
-insert into rhnActionType values (501, 'distupgrade.upgrade', 'Service Pack Migration', 'N', 'N', 'Y');
+insert into rhnActionType values (501, 'distupgrade.upgrade', 'Product Migration', 'N', 'N', 'Y');
 insert into rhnActionType values (502, 'packages.setLocks', 'Lock packages', 'N', 'N', 'N');
 insert into rhnActionType values (503, 'states.apply', 'Apply states', 'N', 'N', 'Y');
 insert into rhnActionType values (504, 'image.build', 'Build an Image Profile', 'N', 'N', 'N');

@@ -8735,7 +8735,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
-        <source>Service Pack Migration</source>
+        <source>Product Migration</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>

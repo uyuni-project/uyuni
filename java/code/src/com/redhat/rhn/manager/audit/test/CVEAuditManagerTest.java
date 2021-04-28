@@ -333,7 +333,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEProductChannel(childChannel1, product, true);
         createTestSUSEProductChannel(childChannel2, product, true);
 
-        // Setup a next SP product for verifying SP migrations
+        // Setup a next SP product for verifying product migrations
         SUSEProduct productNextSP = createTestSUSEProduct(channelFamily);
         createTestSUSEUpgradePath(product, productNextSP);
         // Create channels
