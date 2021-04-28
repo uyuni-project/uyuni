@@ -1,3 +1,10 @@
+type Project = {
+  /** Project label */
+  left: string;
+  /** Project name */
+  right: string;
+};
+
 export type FilterServerType = {
   entityType: string;
   matcher: string;
@@ -6,7 +13,7 @@ export type FilterServerType = {
   criteriaKey: string;
   criteriaValue: string;
   rule: string;
-  projects?: Array<string>;
+  projects?: Array<Project>;
 };
 
 export type FilterFormType = {
@@ -15,7 +22,7 @@ export type FilterFormType = {
   rule: string;
   id?: number;
   filter_name: string;
-  projects?: Array<string>;
+  projects?: Array<Project>;
   packageName?: string;
   epoch?: string;
   version?: string;
