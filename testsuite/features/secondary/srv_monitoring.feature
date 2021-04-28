@@ -28,6 +28,7 @@ Feature: Enable and disable monitoring of the server
     When I restart the spacewalk service
 
   Scenario: Check that monitoring is disabled using the UI
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
     And I wait until I see "Server self monitoring" text
     Then I should see a "Enable" button
@@ -59,6 +60,7 @@ Feature: Enable and disable monitoring of the server
     When I restart the spacewalk service
 
   Scenario: Check that monitoring is enabled using the UI
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Manager Configuration > Monitoring"
     And I wait until I see "Server self monitoring" text
     Then I should see a "Enable" button
