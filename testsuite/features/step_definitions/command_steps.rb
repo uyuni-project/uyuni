@@ -842,7 +842,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     pkgs = 'openscap-utils openscap-content'
   elsif os_family =~ /^centos/
-    pkgs = 'openscap-utils scap-security-guide-redhat'
+    pkgs = 'openscap-utils scap-security-guide'
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 ssg-debderived'
   end
