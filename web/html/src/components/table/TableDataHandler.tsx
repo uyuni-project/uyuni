@@ -16,6 +16,7 @@ type ChildrenArgsProps = {
   handleSelect: Function;
   selectable: boolean;
   selectedItems: Array<any>;
+  deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
 };
 
@@ -62,6 +63,12 @@ type Props = {
   /** the identifiers for selected items */
   selectedItems?: Array<any>;
 
+  /** Allow items to be deleted */
+  deletable?: boolean | ((row: any) => boolean);
+
+  /** The handler to call when an item is deleted. */
+  onDelete?: (row: any) => void;
+
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
@@ -93,6 +100,7 @@ type State = {
 export class TableDataHandler extends React.Component<Props, State> {
   static defaultProps = {
     selectable: false,
+    deletable: false,
     columns: [],
   };
 
@@ -284,11 +292,19 @@ export class TableDataHandler extends React.Component<Props, State> {
 
       const allSelected = currIds.length > 0 && currIds.every(id => selectedItems.includes(id));
       const checkbox = (
-        <Header key="check">
+        <Header key="check" width="30px">
           <input type="checkbox" checked={allSelected} onChange={e => handleSelectAll(e.target.checked)} />
         </Header>
       );
       headers && headers.unshift(checkbox);
+    }
+
+    if (this.props.deletable) {
+      const deleteHeader = (
+        // Intentionally empty
+        <Header key="delete" width="30px" />
+      );
+      headers && headers.push(deleteHeader);
     }
 
     const handleSelect = (id, sel) => {
@@ -374,6 +390,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   handleSelect,
                   selectable: this.props.selectable,
                   selectedItems: selectedItems,
+                  deletable: this.props.deletable,
                   criteria: this.state.criteria,
                 })}
               </div>

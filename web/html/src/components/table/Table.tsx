@@ -1,3 +1,4 @@
+import { Button } from "components/buttons";
 import * as React from "react";
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
@@ -47,6 +48,12 @@ type TableProps = {
   /** the identifiers for selected items */
   selectedItems?: Array<any>;
 
+  /** Allow items to be deleted or allow rows to be deleted on a case-by-case basis */
+  deletable?: boolean | ((row: any) => boolean);
+
+  /** The handler to call when an item is deleted. */
+  onDelete?: (row: any) => void;
+
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
@@ -75,7 +82,7 @@ export function Table(props: TableProps) {
 
   return (
     <TableDataHandler columns={columns} {...allProps}>
-      {({ currItems, headers, handleSelect, selectable, selectedItems, criteria }) => {
+      {({ currItems, headers, handleSelect, selectable, selectedItems, deletable, criteria }) => {
         const rows = currItems.map((datum, index) => {
           const cells: React.ReactNode[] = React.Children.toArray(props.children)
             .filter(isColumn)
@@ -95,6 +102,33 @@ export function Table(props: TableProps) {
               />
             );
             cells.unshift(checkbox);
+          }
+
+          if (deletable) {
+            const deleteButton = (
+              <Button
+                className="btn-default btn-sm"
+                title={t("Delete")}
+                icon="fa-trash"
+                handler={() => {
+                  props.onDelete?.(datum);
+                }}
+              />
+            );
+            const column = (
+              <Column
+                key="delete"
+                cell={row => {
+                  if (typeof deletable === "function") {
+                    return deletable(row) ? deleteButton : null;
+                  }
+                  return deleteButton;
+                }}
+                data={datum}
+                criteria={criteria}
+              />
+            );
+            cells.push(column);
           }
 
           const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
