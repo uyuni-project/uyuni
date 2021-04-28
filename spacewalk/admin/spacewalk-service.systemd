@@ -91,7 +91,7 @@ start() {
 
 stop() {
     echo "Shutting down spacewalk services..."
-    if systemctl is-active osa-dispatcher > /dev/null 2>&1; then
+    if systemctl is-enabled osa-dispatcher > /dev/null 2>&1; then
         systemctl stop jabberd
     fi
     spacewalk_target_services | xargs systemctl stop
