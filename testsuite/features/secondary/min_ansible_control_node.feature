@@ -30,10 +30,9 @@ Feature: Operate an Ansible control node in a normal minion
      Given I am on the Systems overview page of this "sle_minion"
      When I follow "Ansible" in the content area
      Then I should see a "Ansible Control Node Configuration" text
-     #FIXME
-     And I enter "/srv/playbooks/" as XXXXXXXXX
-     And I click on "Save" in element "playbooks"
-     And I enter "/srv/playbooks/example_playbook2_orion_dummy/hosts" as XXXXXXXXX
+     And I enter "/srv/playbooks/" as "XXXXXXX"
+     And I click on "Save" in element "XXXXXXX"
+     And I enter "/srv/playbooks/example_playbook2_orion_dummy/hosts" as "XXXXXXXXX"
      And I click on "Save" in element "inventories"
 
   Scenario: Display inventories
@@ -50,7 +49,7 @@ Feature: Operate an Ansible control node in a normal minion
      And I follow "Playbooks" in the content area
      And I wait until I see "/srv/playbooks/" text
      And I click on "/srv/playbooks/"
-     Then I wait until I see "Fullpath: /srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
+     Then I wait until I see "/srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
 
   Scenario: Run a playbook using custom inventory
      Given I am on the Systems overview page of this "sle_minion"
@@ -58,13 +57,13 @@ Feature: Operate an Ansible control node in a normal minion
      And I follow "Playbooks" in the content area
      And I wait until I see "/srv/playbooks/" text
      And I click on "/srv/playbooks/"
-     And I wait until I see "Fullpath: /srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
+     And I wait until I see "/srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
      Then I follow "/srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" in the content area
      And I wait until I see "Playbook Content" text
      And I select "/srv/playbooks/example_playbook2_orion_dummy/hosts" from "inventory-path-select"
      And I click on "Schedule"
      And I should see a "Playbook execution triggered" text
-     And I wait until event "Run playbook scheduled by admin" is completed
+     And I wait until event "Execute playbook 'example_playbook2_orion_dummy.yml' scheduled by admin" is completed
      And file "/tmp/example_file.txt" should exist on "sle_minion"
 
   Scenario: Cleanup: Disable Ansible and remove test playbooks and inventory file
