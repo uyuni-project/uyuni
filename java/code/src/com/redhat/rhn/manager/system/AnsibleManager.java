@@ -54,6 +54,7 @@ import java.util.Optional;
 public class AnsibleManager extends BaseManager {
 
     private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private static final Gson GSON = new Gson();
 
     /**
      * Lookup ansible path by id
@@ -263,7 +264,7 @@ public class AnsibleManager extends BaseManager {
             if (r.isJsonPrimitive() && r.getAsJsonPrimitive().isBoolean() && !r.getAsJsonPrimitive().getAsBoolean()) {
                 throw new IllegalStateException("no result");
             }
-            return new Gson().fromJson(r, new TypeToken<String>() { }.getType());
+            return GSON.fromJson(r, new TypeToken<String>() { }.getType());
         });
     }
 
@@ -380,7 +381,7 @@ public class AnsibleManager extends BaseManager {
             if (j.isJsonObject()) {
                 j.getAsJsonObject().remove("retcode");
             }
-            return new Gson().fromJson(j, type);
+            return GSON.fromJson(j, type);
         }
     }
 

@@ -42,6 +42,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 
@@ -257,8 +259,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(Optional.of("playbook-content")));
+            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(new Gson().fromJson("playbook-content", JsonElement.class))));
         }});
         AnsibleManager.setSaltApi(saltApi);
         assertEquals(
