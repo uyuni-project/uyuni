@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestActi
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -46,6 +48,7 @@ import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -73,13 +76,17 @@ public class VirtualizationActionHelper {
      * @param actionCreator a function creation the action out of the parsed Json data
      * @param data the Json Data
      *
-     * @return the "Failed" or the scheduled action id
+     * @return the scheduled action id
      * @throws TaskomaticApiException if the action couldn't be scheduled
      */
     public static int scheduleAction(String key, User user, Server host,
                                      BiFunction<ScheduledRequestJson, String, Action> actionCreator,
                                      ScheduledRequestJson data) throws TaskomaticApiException {
         Action action = actionCreator.apply(data, key);
+        if (action == null) {
+            // Should never happen that we get no action created, but still report it
+            throw new TaskomaticApiException(new NullPointerException());
+        }
         action.setOrg(user.getOrg());
         action.setSchedulerUser(user);
         action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
@@ -132,8 +139,25 @@ public class VirtualizationActionHelper {
     ) {
         BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
+            if (name.isEmpty()) {
+                // Should never happen since this is for actions on an existing domain, but better log it!
+                LOG.error("This action should always be passed a name");
+                return null;
+            }
+            String uuid = guestNames.entrySet().stream()
+                    .filter(e -> e.getValue().equals(name.get()))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
+            List<VirtualInstance> instances = VirtualInstanceFactory.getInstance()
+                    .lookupVirtualInstanceByUuid(uuid);
             BaseVirtualizationGuestAction action = (BaseVirtualizationGuestAction)
                     ActionFactory.createAction(actionType);
+            if (instances.size() == 1 && actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_START) &&
+                    instances.get(0).getState().getLabel().equals("paused")) {
+                action = (BaseVirtualizationGuestAction) ActionFactory
+                        .createAction(ActionFactory.TYPE_VIRTUALIZATION_RESUME);
+            }
             action.setName(actionType.getName());
             return action;
         };
