@@ -373,7 +373,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Stop" in "Stop Network" modal
     Then I wait until table row for "test-net2" contains button "Start"
     When I click on "Edit" in row "test-net2"
-    And I wait until option "bridge" appears in list "type"
+    And I wait until option "isolated" appears in list "type"
     And I enter "192.168.130.0" as "ipv4def_address"
     And I click on "remove_ipv4def_dhcpranges0"
     And I click on "Update"
