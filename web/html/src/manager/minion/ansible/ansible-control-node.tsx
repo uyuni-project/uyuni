@@ -176,7 +176,7 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
             <NewAnsiblePath
               title={t("Add a Playbook directory")}
               pathType="playbook"
-              newInventoryPath={this.state.newPlaybookPath}
+              newPathValue={this.state.newPlaybookPath}
               placeholder={t("e.g., /srv/playbooks")}
               newPath={(path: string) => this.newPath("playbook", path)}
               savePath={() => this.savePath("playbook")}
