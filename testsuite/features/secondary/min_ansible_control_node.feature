@@ -52,7 +52,7 @@ Feature: Operate an Ansible control node in a normal minion
      And I click on "/srv/playbooks/"
      Then I wait until I see "Fullpath: /srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
 
-  Scenario: Run a playbook using default inventory
+  Scenario: Run a playbook using custom inventory
      Given I am on the Systems overview page of this "sle_minion"
      When I follow "Ansible" in the content area
      And I follow "Playbooks" in the content area
@@ -60,7 +60,9 @@ Feature: Operate an Ansible control node in a normal minion
      And I click on "/srv/playbooks/"
      And I wait until I see "Fullpath: /srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
      Then I follow "/srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" in the content area
-     And I click on "Run playbook"
+     And I wait until I see "Playbook Content" text
+     And I select "/srv/playbooks/example_playbook2_orion_dummy/hosts" from "inventory-path-select"
+     And I click on "Schedule"
      And I should see a "Playbook execution triggered" text
      And I wait until event "Run playbook scheduled by admin" is completed
      And file "/tmp/example_file.txt" should exist on "sle_minion"
