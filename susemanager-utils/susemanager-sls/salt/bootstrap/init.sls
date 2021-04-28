@@ -49,7 +49,9 @@ mgr_server_localhost_alias_absent:
 {# We try CentOS bootstrap repository first, if not available then fallback to RES #}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/centos/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
-{%- if bootstrap_repo_request['status'] == 901 %}
+{%- if 'status' not in bootstrap_repo_request %}
+{{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
+{%- elif bootstrap_repo_request['status'] == 901 %}
 {{ raise(bootstrap_repo_request['error']) }}
 {%- elif not (0 < bootstrap_repo_request['status'] < 300) %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
@@ -77,7 +79,9 @@ mgr_server_localhost_alias_absent:
 
 {%- set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
 {# 901 is a special status code for the TLS issue with RHEL6 and SLE11. #}
-{%- if bootstrap_repo_request['status'] == 901 %}
+{%- if 'status' not in bootstrap_repo_request %}
+{{ raise('Missing request status: {}'.format(bootstrap_repo_request)) }}
+{%- elif bootstrap_repo_request['status'] == 901 %}
 {{ raise(bootstrap_repo_request['error']) }}
 {%- endif %}
 {%- set bootstrap_repo_exists = (0 < bootstrap_repo_request['status'] < 300) %}
@@ -104,7 +108,7 @@ bootstrap_repo:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 
 {%- else %}
-{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'dists/bootstrap/Release', status=True, verify_ssl=False)['status'] < 300) %}
+{%- set bootstrap_repo_exists = (0 < salt['http.query'](bootstrap_repo_url + 'dists/bootstrap/Release', status=True, verify_ssl=False).get('status', 0) < 300) %}
 bootstrap_repo:
   file.managed:
     - name: /etc/apt/sources.list.d/susemanager_bootstrap.list

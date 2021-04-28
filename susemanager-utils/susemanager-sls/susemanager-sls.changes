@@ -1,3 +1,4 @@
+- provide details when bootstrap query is missing 'status'
 - add virtual network edit action
 
 -------------------------------------------------------------------
