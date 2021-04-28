@@ -635,7 +635,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
 # Prettifying symlinks, excluding openSUSE
-%if ! 0%{?opensuse}
+%if ! 0%{?is_opensuse}
 mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
 %endif
 

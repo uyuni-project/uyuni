@@ -1,4 +1,5 @@
 - Add client tools for SLES12SP5 and SLES4SAP 12SP4/12SP5/15SP2/15SP3
+- Fix the URLs for SLE15 Stable client tools
 - Add openSUSE Tumbleweed/microOS
 
 -------------------------------------------------------------------
