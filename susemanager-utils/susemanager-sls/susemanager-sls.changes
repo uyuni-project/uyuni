@@ -1,3 +1,5 @@
+- Do not assume AmazonLinux bootstrap repo for CentOS (bsc#1185421)
+
 -------------------------------------------------------------------
 Fri Apr 16 13:35:25 CEST 2021 - jgonzalez@suse.com
 
