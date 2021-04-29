@@ -32,7 +32,7 @@ while getopts ":d:c:p:n:vthe" opts; do
     v) export VERBOSE=1;;
     t) export TEST=1;;
     n) export OBS_TEST_PROJECT=${OPTARG};;
-    e) export OSC_EXPAND="TRUE"
+    e) export OSC_EXPAND="TRUE";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
