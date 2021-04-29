@@ -174,7 +174,7 @@ public class VirtualHostManagerProcessor {
         VirtualInstanceType type =
                 VirtualInstanceFactory.getInstance().getVirtualInstanceType(candidate);
         if (type == null) { // fallback
-            type = VirtualInstanceFactory.getInstance().getParaVirtType();
+            type = VirtualInstanceFactory.getInstance().getFullyVirtType();
             log.warn(String.format("Can't find virtual instance type for string '%s'. " +
                     "Defaulting to '%s'", candidate, type));
         }

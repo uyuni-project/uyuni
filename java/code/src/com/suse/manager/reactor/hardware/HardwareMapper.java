@@ -588,7 +588,7 @@ public class HardwareMapper {
                         .getVirtualInstanceType(virtTypeLabel);
 
                 if (type == null) { // fallback
-                    type = VirtualInstanceFactory.getInstance().getParaVirtType();
+                    type = VirtualInstanceFactory.getInstance().getFullyVirtType();
                     LOG.warn(String.format(
                             "Can't find virtual instance type for string '%s'. " +
                             "Defaulting to '%s' for minion '%s'",

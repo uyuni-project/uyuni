@@ -195,7 +195,7 @@ public class VirtualInstance extends BaseDomainHelper {
     private VirtualInstanceInfo initInfo() {
         if (info == null) {
             VirtualInstanceType pv =
-                VirtualInstanceFactory.getInstance().getParaVirtType();
+                VirtualInstanceFactory.getInstance().getFullyVirtType();
             info = new VirtualInstanceInfo();
             info.setParent(this);
             info.setType(pv);
