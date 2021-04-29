@@ -15,9 +15,6 @@ PACKAGE="$@"
 OSCRC=${OSCRC:+-c $OSCRC}
 OSCAPI=${OSCAPI:-https://api.suse.de}
 
-# FIXME HACK. This sets no concurrency for yarn but it will set this into ~/.yarnrc, overwriting any value you may have...
-
-yarn config set child-concurrency 1
 
 
 OSC="osc ${OSCRC} -A ${OSCAPI}"
