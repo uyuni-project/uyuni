@@ -17,7 +17,7 @@
     <rhn-tab name="Hardware">
       <rhn-tab-url>/rhn/systems/details/SystemHardware.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Migrate" acl="user_role(org_admin)" url="/rhn/systems/details/SystemMigrate.do" />
+    <rhn-tab name="Transfer" acl="user_role(org_admin)" url="/rhn/systems/details/SystemMigrate.do" />
     <rhn-tab name="Notes">
       <rhn-tab-url>/rhn/systems/details/Notes.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/EditNote.do</rhn-tab-url>
