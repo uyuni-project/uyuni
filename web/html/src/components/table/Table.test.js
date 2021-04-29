@@ -8,11 +8,13 @@ import {
   render,
   waitForElementToBeRemoved,
   screen,
-  server
+  server,
+  type,
 } from "utils/test-utils";
 
 import { Table } from "./Table";
 import { Column } from "./Column";
+import { SearchField } from "./SearchField";
 
 describe("Table component", () => {
   // IMPROVE: Would be nice to infer types here to ensure this stays in sync with the component
@@ -140,5 +142,36 @@ describe("Table component", () => {
     // Check if loading indicator disappears and data is displayed
     expect(screen.queryByText(baseProps.loadingText)).toBe(null);
     expect(screen.queryByText(data[0].value)).not.toBe(null);
+  });
+
+  test("is filtered by a basic SearchField", async () => {
+    const data = [
+      {
+        value: "Value 0"
+      },
+      {
+        value: "Value 1"
+      },
+      {
+        value: "Value 2"
+      }
+    ];
+    const filter = (datum, criteria) => {
+      if (criteria) {
+        return datum.value.indexOf(criteria) !== -1;
+      }
+      return true;
+    }
+    await renderAndLoad(
+      <Table {...baseProps} data={data} searchField={<SearchField filter={filter} />}>
+        <Column columnKey="value" cell={item => item.value} />
+      </Table>
+    );
+    const input = screen.getByRole("textbox");
+    await type(input, "Value 1");
+
+    expect(screen.queryByText("Value 0")).toBe(null);
+    expect(screen.queryByText("Value 1")).not.toBe(null);
+    expect(screen.queryByText("Value 2")).toBe(null);
   });
 });

@@ -26,4 +26,34 @@ describe("SearchField", () => {
     await type(input, "value");
     expect(consoleError).not.toBeCalled();
   });
+
+  test("is searchable when no criteria is specified", async done => {
+    render(
+      <SearchField
+        onSearch={value => {
+          expect(value).toBe("value");
+          done();
+        }}
+      />
+    );
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await type(input, "value");
+  });
+
+  test("is searchable when criteria is specified", async () => {
+    const TestWrapper = () => {
+      const [criteria, setCriteria] = useState("initialValue");
+      return (
+        <SearchField
+          criteria={criteria}
+          onSearch={value => setCriteria(value)}
+        />
+      );
+    };
+
+    render(<TestWrapper />);
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+    await type(input, "newValue");
+    expect(input.value).toBe("newValue");
+  });
 });
