@@ -30,9 +30,6 @@ which unrpm &> /dev/null || {
   exit 2
 }
 
-# create workspace
-test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
-
 # build the src rpms...
 SRPM_DIR="$WORKSPACE/SRPMS/$PKG_NAME"
 rm -rf "$SRPM_DIR"

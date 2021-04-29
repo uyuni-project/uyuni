@@ -8,8 +8,6 @@ set -e
 #
 WORKSPACE=${WORKSPACE:-/tmp/push-packages-to-obs}
 PACKAGE="$@"
-echo > $WORKSPACE/succeeded
-echo > $WORKSPACE/failed
 
 grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
   cat <<EOF
@@ -44,6 +42,11 @@ function git_package_defs() {
   done
 }
 
+# create workspace
+test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
+
+echo > $WORKSPACE/succeeded
+echo > $WORKSPACE/failed
 
 while read PKG_NAME PKG_VER PKG_DIR; do
     ./rel-eng/build-one-package-for-obs.sh $PKG_NAME $PKG_VER $PKG_DIR &
