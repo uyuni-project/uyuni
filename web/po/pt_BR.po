@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-28 14:03+0000\n"
+"POT-Creation-Date: 2021-04-29 09:46+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -957,55 +957,55 @@ msgstr ""
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:550
+#: ../html/src/manager/admin/setup/products/products.tsx:549
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:620
+#: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:626
-#: ../html/src/manager/admin/setup/products/products.tsx:1004
+#: ../html/src/manager/admin/setup/products/products.tsx:625
+#: ../html/src/manager/admin/setup/products/products.tsx:1003
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:628
+#: ../html/src/manager/admin/setup/products/products.tsx:627
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:634
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:806
+#: ../html/src/manager/admin/setup/products/products.tsx:805
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:814
+#: ../html/src/manager/admin/setup/products/products.tsx:813
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:822
+#: ../html/src/manager/admin/setup/products/products.tsx:821
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:846
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:848
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:859
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:889
+#: ../html/src/manager/admin/setup/products/products.tsx:888
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1013,7 +1013,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:907
+#: ../html/src/manager/admin/setup/products/products.tsx:906
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1021,51 +1021,51 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:949
+#: ../html/src/manager/admin/setup/products/products.tsx:948
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:952
+#: ../html/src/manager/admin/setup/products/products.tsx:951
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:955
+#: ../html/src/manager/admin/setup/products/products.tsx:954
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:957
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:1018
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1050
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1056
+#: ../html/src/manager/admin/setup/products/products.tsx:1055
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1063
+#: ../html/src/manager/admin/setup/products/products.tsx:1062
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1078
+#: ../html/src/manager/admin/setup/products/products.tsx:1077
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/admin/setup/products/products.tsx:1080
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1083
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1086
 msgid "sync failed"
 msgstr ""
 
@@ -1123,7 +1123,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:237
+#: ../html/src/manager/virtualization/ListTab.js:236
 msgid "Filter by name"
 msgstr ""
 
@@ -1228,7 +1228,7 @@ msgstr ""
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:261
+#: ../html/src/manager/virtualization/ListTab.js:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr ""
@@ -4553,7 +4553,7 @@ msgstr ""
 msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.js:244
+#: ../html/src/manager/virtualization/ListTab.js:243
 msgid "Action Status"
 msgstr ""
 
@@ -5161,7 +5161,7 @@ msgid ""
 "guests disks."
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
 msgid "Filter by pool or volume name"
 msgstr ""
 
