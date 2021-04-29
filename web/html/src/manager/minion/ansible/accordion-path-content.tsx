@@ -10,7 +10,7 @@ type PropsType = {
 };
 
 type StateType = {
-  open: boolean; 
+  isOpen: boolean;
   content: any;
   errors: string[];
   loading: boolean;
@@ -39,7 +39,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     super(props);
 
     this.state = {
-      open: false,
+      isOpen: false,
       content: null,
       errors: [],
       loading: false,
@@ -48,7 +48,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
   onToggle() {
     const path: AnsiblePath = this.props.path;
-    if (!this.state.open) {
+    if (!this.state.isOpen) {
       if (this.state.content === null) {
         this.setState({ loading: true });
         Network.get(getURL(path))
@@ -65,15 +65,15 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           else {
             this.setState({ errors: blob.messages });
           }
-          this.setState({ open: true, loading: false });
+          this.setState({ isOpen: true, loading: false });
         });
       }
       else {
-        this.setState({ open: true });
+        this.setState({ isOpen: true });
       }
     }
     else {
-      this.setState({ open: false, errors: [] });
+      this.setState({ isOpen: false, errors: [] });
     }
   }
 
@@ -148,7 +148,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     const header =
       <div className="panel-heading pointer" onClick={() => this.onToggle()}>
         <h6>
-          <i className={this.state.open || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
+          <i className={this.state.isOpen || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
           { this.props.path.path }
         </h6>
       </div>;
@@ -162,7 +162,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
             this.state.loading?
               <Loading text={t("Loading content..")} />
               :
-              this.state.open ?
+              this.state.isOpen ?
                 <>
                   {
                     this.state.errors.length > 0 ?
