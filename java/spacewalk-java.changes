@@ -1,3 +1,4 @@
+- support Amazon Linux mirror list URLs and set signed Metadata flag correct
 - Bugfix: Remove the unneeded check that was stopping updating a virtual instance type (bsc#1180673)
 - Exclude minions from the list of locally-managed/sandbox systems when copying config files (bsc#1184940)
 - Remove activation key display from system details page
