@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-29 09:46+0000\n"
-"PO-Revision-Date: 2021-04-27 15:57+0000\n"
+"PO-Revision-Date: 2021-04-29 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2114,11 +2114,11 @@ msgstr "Pravidlo"
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
+"Niektoré z vybraných filtrov sa používajú v projektoch a nemožno ich vymazať."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "Vybrať"
+msgstr "Vybrať nepoužité"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2132,9 +2132,8 @@ msgid "Content Lifecycle Filters"
 msgstr "Filtre životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "Filtrovať podľa názvu"
+msgstr "Filtrovať podľa názvu alebo projektu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
