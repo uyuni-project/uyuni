@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -28,7 +28,7 @@ public class AnsiblePlaybookExecutionJson {
     private String playbookPath;
     private Optional<String> inventoryPath = Optional.empty();
     private long controlNodeId;
-    private Optional<Date> earliest = Optional.empty();
+    private Optional<LocalDateTime> earliest = Optional.empty();
     private Optional<String> actionChainLabel = Optional.empty();
 
     /**
@@ -63,7 +63,7 @@ public class AnsiblePlaybookExecutionJson {
      *
      * @return earliest
      */
-    public Optional<Date> getEarliest() {
+    public Optional<LocalDateTime> getEarliest() {
         return earliest;
     }
 
