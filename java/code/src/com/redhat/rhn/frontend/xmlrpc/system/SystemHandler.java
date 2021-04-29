@@ -6797,9 +6797,8 @@ public class SystemHandler extends BaseHandler {
         return returnList;
     }
 
-
     /**
-     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * Schedule a Product migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack.
      *
      * This call automatically select the nearest possible migration target.
@@ -6815,12 +6814,17 @@ public class SystemHandler extends BaseHandler {
      * @param dryRun set to true to perform a dry run
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
+     * @deprecated being replaced by scheduleProductMigration(User loggedInUser, Integer sid,
+     * String baseChannelLabel, List(String) optionalChildChannels, boolean dryRun, Date earliest)
      *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
      * recommended and supported way of migrating a system to the next Service Pack. It will
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
      * subscribed by providing their labels.
+     *
+     * Note: This method is deprecated and will be removed in a future API version. Please use
+     * scheduleProductMigration instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "baseChannelLabel")
@@ -6829,91 +6833,268 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601", "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
+    @Deprecated
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
                                     List<String> optionalChildChannels, boolean dryRun, Date earliest) {
-        return scheduleSPMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun, false, earliest);
-    }
-
-    /**
-     * Schedule a Service Pack migration for a system. This call is the recommended and
-     * supported way of migrating a system to the next Service Pack.
-     *
-     * This call automatically select the nearest possible migration target.
-     *
-     * It will automatically find all mandatory product channels below a given
-     * target base channel and subscribe the system accordingly. Any additional
-     * optional channels can be subscribed by providing their labels.
-     *
-     * @param loggedInUser the currently logged in user
-     * @param sid ID of the server
-     * @param baseChannelLabel label of the target base channel
-     * @param optionalChildChannels labels of optional child channels to subscribe
-     * @param dryRun set to true to perform a dry run
-     * @param allowVendorChange set to true to allow vendor change
-     * @param earliest earliest occurrence of the migration
-     * @return action id, exception thrown otherwise
-     *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
-     * recommended and supported way of migrating a system to the next Service Pack. It will
-     * automatically find all mandatory product channels below a given target base channel
-     * and subscribe the system accordingly. Any additional optional channels can be
-     * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "baseChannelLabel")
-     * @xmlrpc.param #array_single("string", "optionalChildChannels")
-     * @xmlrpc.param #param("boolean", "dryRun")
-     * @xmlrpc.param #param("boolean", "allowVendorChange")
-     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
-     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
-     */
-    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
-        return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
-                optionalChildChannels, dryRun, allowVendorChange, earliest);
-    }
-
-
-    /**
-     * Schedule a Service Pack migration for a system. This call is the recommended and
-     * supported way of migrating a system to the next Service Pack. It will automatically
-     * find all mandatory product channels below a given target base channel and subscribe
-     * the system accordingly. Any additional optional channels can be subscribed by
-     * providing their labels.
-     *
-     * @param loggedInUser the currently logged in user
-     * @param sid ID of the server
-     * @param targetIdent identifier for the selected migration
-     *                    target ({@link #listMigrationTargets})
-     * @param baseChannelLabel label of the target base channel
-     * @param optionalChildChannels labels of optional child channels to subscribe
-     * @param dryRun set to true to perform a dry run
-     * @param earliest earliest occurrence of the migration
-     * @return action id, exception thrown otherwise
-     *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
-     * recommended and supported way of migrating a system to the next Service Pack. It will
-     * automatically find all mandatory product channels below a given target base channel
-     * and subscribe the system accordingly. Any additional optional channels can be
-     * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "targetIdent")
-     * @xmlrpc.param #param("string", "baseChannelLabel")
-     * @xmlrpc.param #array_single("string", "optionalChildChannels")
-     * @xmlrpc.param #param("boolean", "dryRun")
-     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
-     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
-     */
-    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-                                    Date earliest) {
-        return scheduleSPMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels, dryRun,
+        return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
                 false, earliest);
     }
 
     /**
-     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     * @deprecated being replaced by scheduleProductMigration(User loggedInUser, Integer sid,
+     * String baseChannelLabel, List(String) optionalChildChannels, boolean dryRun, boolean allowVendorChange,
+     * Date earliest)
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     *
+     * Note: This method is deprecated and will be removed in a future API version. Please use
+     * scheduleProductMigration instead.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    @Deprecated
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+            List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange, Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
+                optionalChildChannels, dryRun, allowVendorChange, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     * @deprecated being replaced by scheduleProductMigration(User loggedInUser, Integer sid,
+     * String targetIdent, String baseChannelLabel, List(String) optionalChildChannels, boolean dryRun,
+     * Date earliest)
+     *
+     * @xmlrpc.doc Schedule a Prodcut migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     *
+     * Note: This method is deprecated and will be removed in a future API version. Please use
+     * scheduleProductMigration instead.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    @Deprecated
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+                                    String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                    Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
+                dryRun, false, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     * @deprecated being replaced by scheduleProductMigration(User loggedInUser, Integer sid,
+     * String targetIdent, String baseChannelLabel, List(String) optionalChildChannels, boolean dryRun,
+     * boolean allowVendorChange, Date earliest)
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     *
+     * Note: This method is deprecated and will be removed in a future API version. Please use
+     * scheduleProductMigration instead.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    @Deprecated
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+            boolean allowVendorChange, Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
+                dryRun, allowVendorChange, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+                                         List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
+                false, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param allowVendorChange set to true to allow vendor change
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("boolean", "allowVendorChange")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+                                         List<String> optionalChildChannels, boolean dryRun, boolean allowVendorChange,
+                                         Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, null, baseChannelLabel,
+                optionalChildChannels, dryRun, allowVendorChange, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Prodcut migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         Date earliest) {
+        return scheduleProductMigration(loggedInUser, sid, targetIdent, baseChannelLabel, optionalChildChannels,
+                dryRun, false, earliest);
+    }
+
+    /**
+     * Schedule a Product migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack. It will automatically
      * find all mandatory product channels below a given target base channel and subscribe
      * the system accordingly. Any additional optional channels can be subscribed by
@@ -6930,7 +7111,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * @xmlrpc.doc Schedule a Product migration for a system. This call is the
      * recommended and supported way of migrating a system to the next Service Pack. It will
      * automatically find all mandatory product channels below a given target base channel
      * and subscribe the system accordingly. Any additional optional channels can be
@@ -6945,9 +7126,9 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
-    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
-            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
-            boolean allowVendorChange, Date earliest) {
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String targetIdent,
+                                         String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+                                         boolean allowVendorChange, Date earliest) {
         // Perform checks on the server
         Server server = null;
         try {
