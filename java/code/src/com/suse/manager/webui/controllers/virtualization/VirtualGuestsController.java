@@ -59,7 +59,6 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdat
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
-import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import com.google.gson.Gson;
@@ -396,7 +395,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         return setterAction(request, response, user,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
-                (data) -> ((VirtualGuestSetterActionJson)data).getValue().intValue(),
+                data -> data.getValue().intValue(),
                 (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
                 VirtualGuestSetterActionJson.class);
     }
@@ -417,7 +416,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         return setterAction(request, response, user,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
-                (data) -> ((VirtualGuestSetterActionJson)data).getValue().intValue(),
+                data -> data.getValue().intValue(),
                 (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
                 VirtualGuestSetterActionJson.class);
     }
@@ -517,7 +516,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         String memResult = setterAction(request, response, user,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
-                (data) -> ((VirtualGuestsUpdateActionJson)data).getMemory().intValue(),
+                data -> data.getMemory().intValue(),
                 (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
                 VirtualGuestsUpdateActionJson.class);
         Map<String, String> results = new HashMap<>(
@@ -526,7 +525,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         String vcpuResult = setterAction(request, response, user,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
-                (data) -> ((VirtualGuestsUpdateActionJson)data).getVcpu().intValue(),
+                data -> data.getVcpu().intValue(),
                 (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
                 VirtualGuestsUpdateActionJson.class);
         results.putAll(GSON.fromJson(vcpuResult, new TypeToken<Map<String, String>>() { }.getType()));
@@ -552,10 +551,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                         getGuestNames(user, host)), VirtualGuestsUpdateActionJson.class);
     }
 
-    private String setterAction(Request request, Response response, User user, ActionType actionType,
-                                Function<VirtualGuestsBaseActionJson, Integer> getter,
+    private <T extends VirtualGuestsBaseActionJson> String setterAction(Request request, Response response,
+                                                                        User user, ActionType actionType,
+                                Function<T, Integer> getter,
                                 BiConsumer<Action, Integer> setter,
-                                Class<? extends VirtualGuestsBaseActionJson> dataClass) {
+                                Class<T> dataClass) {
         Server host = getServer(request, user);
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
@@ -591,11 +591,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         return false;
     }
 
-    private String doGuestAction(Request request, Response response, User user,
-                                 BiFunction<ScheduledRequestJson, String, Action> actionCreator,
-                                 Class<? extends VirtualGuestsBaseActionJson> jsonClass) {
+    private <T extends VirtualGuestsBaseActionJson> String doGuestAction(Request request, Response response, User user,
+                                 BiFunction<T, String, Action> actionCreator,
+                                 Class<T> jsonClass) {
         return action(request, response, user, actionCreator,
-                (data) -> ((VirtualGuestsBaseActionJson)data).getUuids(),
+                data -> data.getUuids(),
                 jsonClass
         );
     }

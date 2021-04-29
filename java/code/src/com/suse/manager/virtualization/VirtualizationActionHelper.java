@@ -75,13 +75,14 @@ public class VirtualizationActionHelper {
      * @param host the host the VM is running on
      * @param actionCreator a function creation the action out of the parsed Json data
      * @param data the Json Data
+     * @param <T> Type of the json data
      *
      * @return the scheduled action id
      * @throws TaskomaticApiException if the action couldn't be scheduled
      */
-    public static int scheduleAction(String key, User user, Server host,
-                                     BiFunction<ScheduledRequestJson, String, Action> actionCreator,
-                                     ScheduledRequestJson data) throws TaskomaticApiException {
+    public static <T extends ScheduledRequestJson> int scheduleAction(String key, User user, Server host,
+                                     BiFunction<T, String, Action> actionCreator,
+                                     T data) throws TaskomaticApiException {
         Action action = actionCreator.apply(data, key);
         if (action == null) {
             // Should never happen that we get no action created, but still report it
@@ -105,15 +106,16 @@ public class VirtualizationActionHelper {
      * @param actionType the type of the action to create
      * @param setter function setting the force value
      * @param guestNames the guests names mapped to their UUID
+     * @param <T> Type of the json data
      *
      * @return the action creator
      */
-    public static BiFunction<ScheduledRequestJson, String, Action> getGuestForceActionCreator(
+    public static <T extends VirtualGuestsBaseActionJson> BiFunction<T, String, Action> getGuestForceActionCreator(
             ActionType actionType,
             BiConsumer<BaseVirtualizationGuestAction, Boolean> setter,
             Map<String, String> guestNames
     ) {
-        BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
+        BiFunction<T, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
             BaseVirtualizationGuestAction action = (BaseVirtualizationGuestAction)
                     ActionFactory.createAction(actionType);
@@ -130,14 +132,15 @@ public class VirtualizationActionHelper {
      *
      * @param actionType the type of the action to create
      * @param guestNames the guests names mapped to their UUID
+     * @param <T> Type of the json data
      *
      * @return the action creator
      */
-    public static BiFunction<ScheduledRequestJson, String, Action> getGuestActionCreator(
+    public static <T extends VirtualGuestsBaseActionJson> BiFunction<T, String, Action> getGuestActionCreator(
             ActionType actionType,
             Map<String, String> guestNames
     ) {
-        BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
+        BiFunction<T, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
             if (name.isEmpty()) {
                 // Should never happen since this is for actions on an existing domain, but better log it!
@@ -172,16 +175,17 @@ public class VirtualizationActionHelper {
      * @param getter how to get the value from the data
      * @param setter how to set the value in the action
      * @param guestNames the guests names mapped to their UUID
+     * @param <T> Type of the json data
      *
      * @return the action creator
      */
-    public static BiFunction<ScheduledRequestJson, String, Action> getGuestSetterActionCreator(
+    public static <T extends VirtualGuestsBaseActionJson> BiFunction<T, String, Action> getGuestSetterActionCreator(
             ActionType actionType,
-            Function<VirtualGuestsBaseActionJson, Integer> getter,
+            Function<T, Integer> getter,
             BiConsumer<Action, Integer> setter,
             Map<String, String> guestNames
     ) {
-        BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
+        BiFunction<T, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
             BaseVirtualizationGuestAction action =
                     (BaseVirtualizationGuestAction) ActionFactory.createAction(actionType);
@@ -203,46 +207,44 @@ public class VirtualizationActionHelper {
      *
      * @return the action creator
      */
-    public static BiFunction<ScheduledRequestJson, String, Action> getGuestActionCreateCreator(
+    public static BiFunction<VirtualGuestsUpdateActionJson, String, Action> getGuestActionCreateCreator(
             Server host,
             User user,
             HttpServletRequest request,
             Map<String, String> guestNames
     ) {
-        BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
+        BiFunction<VirtualGuestsUpdateActionJson, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
             VirtualizationCreateGuestAction action = (VirtualizationCreateGuestAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_CREATE);
 
-            VirtualGuestsUpdateActionJson createData = (VirtualGuestsUpdateActionJson) data;
-
             String actionName = ActionFactory.TYPE_VIRTUALIZATION_CREATE.getName().replaceAll("\\.$", "");
-            actionName += ": " + createData.getName();
+            actionName += ": " + data.getName();
             if (data.getUuids() != null && !data.getUuids().isEmpty()) {
                 actionName = LocalizationService.getInstance().getMessage("virt.update");
             }
             action.setName(actionName);
 
-            action.setType(createData.getType());
+            action.setType(data.getType());
             // So far the salt virt.update function doesn't allow renaming a guest,
             // and that is only possible for the KVM driver.
-            action.setGuestName(createData.getName());
-            action.setOsType(createData.getOsType());
-            action.setMemory(createData.getMemory());
-            action.setVcpus(createData.getVcpu());
-            action.setArch(createData.getArch());
-            action.setGraphicsType(createData.getGraphicsType());
-            action.setKernelOptions(createData.getKernelOptions());
+            action.setGuestName(data.getName());
+            action.setOsType(data.getOsType());
+            action.setMemory(data.getMemory());
+            action.setVcpus(data.getVcpu());
+            action.setArch(data.getArch());
+            action.setGraphicsType(data.getGraphicsType());
+            action.setKernelOptions(data.getKernelOptions());
 
-            if (name.isEmpty() && createData.getCobblerId() != null && !createData.getCobblerId().isEmpty()) {
+            if (name.isEmpty() && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
                 // Create cobbler profile
                 KickstartHelper helper = new KickstartHelper(request);
                 Profile cobblerProfile = Profile.lookupById(
-                        CobblerXMLRPCHelper.getConnection(user), createData.getCobblerId());
+                        CobblerXMLRPCHelper.getConnection(user), data.getCobblerId());
                 KickstartData ksData = KickstartFactory.
                         lookupKickstartDataByCobblerIdAndOrg(user.getOrg(), cobblerProfile.getId());
                 CobblerVirtualSystemCommand cobblerCmd = new CobblerVirtualSystemCommand(user, cobblerProfile.getName(),
-                        createData.getName(), ksData, host.getName(), host.getOrgId());
+                        data.getName(), ksData, host.getName(), host.getOrgId());
                 String ksHost = helper.getKickstartHost();
                 cobblerCmd.setKickstartHost(ksHost);
                 cobblerCmd.store();
@@ -251,8 +253,8 @@ public class VirtualizationActionHelper {
                 action.setKickstartHost(ksHost);
             }
 
-            if (createData.getDisks() != null) {
-                action.setDisks(createData.getDisks().stream().map(disk -> {
+            if (data.getDisks() != null) {
+                action.setDisks(data.getDisks().stream().map(disk -> {
                     VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
                     details.setDevice(disk.getDevice());
                     details.setTemplate(disk.getTemplate());
@@ -266,8 +268,8 @@ public class VirtualizationActionHelper {
                 }).collect(Collectors.toList()));
             }
 
-            if (createData.getInterfaces() != null) {
-                action.setInterfaces(createData.getInterfaces().stream().map(nic -> {
+            if (data.getInterfaces() != null) {
+                action.setInterfaces(data.getInterfaces().stream().map(nic -> {
                     VirtualizationCreateActionInterfaceDetails details =
                             new VirtualizationCreateActionInterfaceDetails();
                     details.setType(nic.getType());
@@ -277,24 +279,23 @@ public class VirtualizationActionHelper {
                     return details;
                 }).collect(Collectors.toList()));
             }
-            action.setRemoveDisks(createData.getDisks() != null && createData.getDisks().isEmpty());
+            action.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
 
-            action.setRemoveInterfaces(createData.getInterfaces() != null && createData.getInterfaces().isEmpty());
+            action.setRemoveInterfaces(data.getInterfaces() != null && data.getInterfaces().isEmpty());
             return action;
         };
 
         return getGuestBaseActionCreator(actionCreator, guestNames);
     }
 
-    private static BiFunction<ScheduledRequestJson, String, Action> getGuestBaseActionCreator(
-            BiFunction<VirtualGuestsBaseActionJson, Optional<String>,
+    private static <T extends VirtualGuestsBaseActionJson> BiFunction<T, String, Action> getGuestBaseActionCreator(
+            BiFunction<T, Optional<String>,
                     BaseVirtualizationGuestAction> actionCreator,
             Map<String, String> guestNames
     ) {
         return (data, key) -> {
-            VirtualGuestsBaseActionJson guestData = (VirtualGuestsBaseActionJson) data;
             Optional<String> name = Optional.ofNullable(guestNames.get(key));
-            BaseVirtualizationGuestAction action = actionCreator.apply(guestData, name);
+            BaseVirtualizationGuestAction action = actionCreator.apply(data, name);
             action.setUuid(key);
             if (name.isPresent()) {
                 String actionName = action.getName().replaceAll("\\.$", "");

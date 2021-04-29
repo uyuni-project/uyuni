@@ -285,13 +285,12 @@ public class VirtualNetsController extends AbstractVirtualizationController {
             String displayName = actionName != null ? actionName : action.getActionType().getName();
             action.setName(displayName + ": " + String.join(",", data.getNames()));
 
-            VirtualNetworkCreateActionJson createData = (VirtualNetworkCreateActionJson)data;
-            if (createData.getNames().isEmpty()) {
+            if (data.getNames().isEmpty()) {
                 throw new IllegalArgumentException("Network names needs to contain an element");
             }
 
-            action.setNetworkName(createData.getNames().get(0));
-            action.setDefinition(createData.getDefinition());
+            action.setNetworkName(data.getNames().get(0));
+            action.setDefinition(data.getDefinition());
 
             return action;
         }, VirtualNetworkCreateActionJson.class);
@@ -335,17 +334,16 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         return netAction(request, response, user, actionCreator, VirtualNetworkBaseActionJson.class);
     }
 
-    private String netAction(Request request, Response response, User user,
-                              Function<VirtualNetworkBaseActionJson, BaseVirtualizationNetworkAction> actionCreator,
-                              Class<? extends VirtualNetworkBaseActionJson> jsonClass) {
+    private <T extends VirtualNetworkBaseActionJson> String netAction(Request request, Response response, User user,
+                              Function<T, BaseVirtualizationNetworkAction> actionCreator,
+                              Class<T> jsonClass) {
         return action(request, response, user,
                 (data, key) -> {
-                    VirtualNetworkBaseActionJson netData = (VirtualNetworkBaseActionJson)data;
-                    BaseVirtualizationNetworkAction action = actionCreator.apply(netData);
+                    BaseVirtualizationNetworkAction action = actionCreator.apply(data);
                     action.setNetworkName(key);
                     return action;
                 },
-                (data) -> ((VirtualNetworkBaseActionJson)data).getNames(),
+                data -> data.getNames(),
                 jsonClass
         );
     }

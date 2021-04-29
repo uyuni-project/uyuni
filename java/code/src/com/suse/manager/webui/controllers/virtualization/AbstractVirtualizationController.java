@@ -145,13 +145,13 @@ public abstract class AbstractVirtualizationController {
         return new ModelAndView(data, String.format("%s/%s.jade", jadeTemplatesPath, template));
     }
 
-    protected String action(Request request, Response response, User user,
-                          BiFunction<ScheduledRequestJson, String, Action> actionCreator,
-                          Function<ScheduledRequestJson, List<String>> actionKeysGetter,
-                          Class<? extends ScheduledRequestJson> jsonClass) {
+    protected <T extends ScheduledRequestJson> String action(Request request, Response response, User user,
+                          BiFunction<T, String, Action> actionCreator,
+                          Function<T, List<String>> actionKeysGetter,
+                          Class<T> jsonClass) {
         Server host = getServer(request, user);
 
-        ScheduledRequestJson data;
+        T data;
         try {
             data = GSON.fromJson(request.body(), jsonClass);
 
@@ -172,9 +172,9 @@ public abstract class AbstractVirtualizationController {
         }
     }
 
-    private String scheduleAction(String key, User user, Server host,
-                                  BiFunction<ScheduledRequestJson, String, Action> actionCreator,
-                                  ScheduledRequestJson data) {
+    private <T extends ScheduledRequestJson> String scheduleAction(String key, User user, Server host,
+                                  BiFunction<T, String, Action> actionCreator,
+                                  T data) {
         String status = "Failed";
         try {
             status = String.valueOf(VirtualizationActionHelper.scheduleAction(key, user, host, actionCreator, data));
