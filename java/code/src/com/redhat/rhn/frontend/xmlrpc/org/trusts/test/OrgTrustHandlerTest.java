@@ -195,8 +195,8 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.containsKey("trusted_since"));
         assertTrue(result.containsKey("channels_provided"));
         assertTrue(result.containsKey("channels_consumed"));
-        assertTrue(result.containsKey("systems_migrated_to"));
-        assertTrue(result.containsKey("systems_migrated_from"));
+        assertTrue(result.containsKey("systems_transferred_to"));
+        assertTrue(result.containsKey("systems_transferred_from"));
     }
 
     private Org createOrg() throws Exception {
