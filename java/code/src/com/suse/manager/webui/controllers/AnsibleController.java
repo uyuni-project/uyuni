@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -41,6 +42,9 @@ import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
 import com.suse.utils.Json;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -226,7 +230,7 @@ public class AnsibleController {
                     params.getPlaybookPath(),
                     params.getInventoryPath().orElse(null),
                     params.getControlNodeId(),
-                    params.getEarliest().orElse(new Date()),
+                    params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);
             return json(res, success(actionId));
@@ -237,6 +241,11 @@ public class AnsibleController {
         catch (TaskomaticApiException e) {
             return json(res, error(LOCAL.getMessage("taskscheduler.down")));
         }
+    }
+
+    private static Date getScheduleDate(LocalDateTime dateTime) {
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 
     /**
