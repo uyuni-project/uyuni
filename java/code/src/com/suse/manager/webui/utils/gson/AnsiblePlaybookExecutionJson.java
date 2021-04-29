@@ -29,6 +29,7 @@ public class AnsiblePlaybookExecutionJson {
     private Optional<String> inventoryPath = Optional.empty();
     private long controlNodeId;
     private Optional<Date> earliest = Optional.empty();
+    private Optional<String> actionChainLabel = Optional.empty();
 
     /**
      * Gets the playbookPath.
@@ -66,6 +67,15 @@ public class AnsiblePlaybookExecutionJson {
         return earliest;
     }
 
+    /**
+     * Gets the actionChainLabel.
+     *
+     * @return actionChainLabel
+     */
+    public Optional<String> getActionChainLabel() {
+        return actionChainLabel;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -73,6 +83,7 @@ public class AnsiblePlaybookExecutionJson {
                 .append("inventoryPath", inventoryPath)
                 .append("controlNodeId", controlNodeId)
                 .append("earliest", earliest)
+                .append("actionChainLabel", actionChainLabel)
                 .toString();
     }
 }

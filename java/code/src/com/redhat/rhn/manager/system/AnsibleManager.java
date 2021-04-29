@@ -22,6 +22,8 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -275,21 +277,26 @@ public class AnsibleManager extends BaseManager {
      * @param inventoryPath inventory path
      * @param controlNodeId control node id
      * @param earliestOccurrence earliestOccurrence
+     * @param actionChainLabel the action chain label
      * @param user the user
      * @return the scheduled action id
      * @throws TaskomaticApiException if taskomatic is down
      * @throws IllegalArgumentException if playbook path is empty
      */
     public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId,
-            Date earliestOccurrence, User user) throws TaskomaticApiException {
+            Date earliestOccurrence, Optional<String> actionChainLabel, User user) throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
         }
 
         Server controlNode = lookupAnsibleControlNode(controlNodeId, user);
+        ActionChain actionChain = actionChainLabel
+                .filter(StringUtils::isNotEmpty)
+                .map(l -> ActionChainFactory.getOrCreateActionChain(l, user))
+                .orElse(null);
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
-                inventoryPath, null, earliestOccurrence).getId();
+                inventoryPath, actionChain, earliestOccurrence).getId();
     }
 
     /**
