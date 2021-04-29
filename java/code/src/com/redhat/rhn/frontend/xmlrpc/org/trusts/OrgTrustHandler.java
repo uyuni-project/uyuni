@@ -171,9 +171,13 @@ public class OrgTrustHandler extends BaseHandler {
      *          the organization.")
      *          #prop_desc("int", "channels_consumed", "Number of channels consumed by
      *          the organization.")
-     *          #prop_desc("int", "systems_migrated_to", "Number of systems migrated to
+     *          #prop_desc("int", "systems_migrated_to", "(Deprecated by systems_transferred_to) Number
+     *          of systems transferred to the organization.")
+     *          #prop_desc("int", "systems_migrated_from", "(Deprecated by systems_transferred_from) Number
+     *          of systems transferred from the organization.")
+     *          #prop_desc("int", "systems_transferred_to", "Number of systems transferred to
      *          the organization.")
-     *          #prop_desc("int", "systems_migrated_from", "Number of systems migrated
+     *          #prop_desc("int", "systems_transferred_from", "Number of systems transferred
      *          from the organization.")
      *     #struct_end()
      */
@@ -211,6 +215,13 @@ public class OrgTrustHandler extends BaseHandler {
                 OrgManager.getMigratedSystems(loggedInUser,
                         trustOrg, loggedInUser.getOrg()));
         details.put("systems_migrated_from",
+                OrgManager.getMigratedSystems(loggedInUser,
+                        loggedInUser.getOrg(), trustOrg));
+
+        details.put("systems_transferred_to",
+                OrgManager.getMigratedSystems(loggedInUser,
+                        trustOrg, loggedInUser.getOrg()));
+        details.put("systems_transferred_from",
                 OrgManager.getMigratedSystems(loggedInUser,
                         loggedInUser.getOrg(), trustOrg));
 

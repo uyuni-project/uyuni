@@ -313,18 +313,65 @@ public class OrgHandler extends BaseHandler {
     }
 
     /**
-     * Migrate systems from one organization to another.  If executed by
-     * a product administrator, the systems will be migrated from their current
+     * Transfer systems from one organization to another.  If executed by
+     * a product administrator, the systems will be transferred from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
-     * as that administrator and the systems will be migrated to the organization
+     * as that administrator and the systems will be transferred to the organization
      * specified by the toOrgId. In any scenario, the origination and destination
      * organizations must be defined in a trust.
      *
      * @param loggedInUser The current user
      * @param toOrgId destination organization ID.
      * @param sids System IDs.
-     * @return list of systems migrated.
+     * @return list of systems transferred.
+     * @throws FaultException A FaultException is thrown if:
+     *   - The user performing the request is not an organization administrator
+     *   - The user performing the request is not a product administrator, but the
+     *     from org id is different than the user's org id.
+     *   - The from and to org id provided are the same.
+     *   - One or more of the servers provides do not exist
+     *   - The origination or destination organization does not exist
+     *   - The user is not defined in the destination organization's trust
+     * @deprecated being replaced by org.transferSystems(User loggedInUser, Integer toOrgId,
+     * List(Integer) sids)
+     *
+     * @xmlrpc.doc Transfer systems from one organization to another.  If executed by
+     * a #product() administrator, the systems will be transferred from their current
+     * organization to the organization specified by the toOrgId.  If executed by
+     * an organization administrator, the systems must exist in the same organization
+     * as that administrator and the systems will be transferred to the organization
+     * specified by the toOrgId. In any scenario, the origination and destination
+     * organizations must be defined in a trust.
+     *
+     * Note: This method is deprecated and will be removed in a future API version. Please use
+     * scheduleProductMigration instead.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
+     * system(s) will be transferred to.")
+     * @xmlrpc.param #array_single("int", "systemId")
+     * @xmlrpc.returntype
+     * #array_single("int", "serverIdTransferred")
+     */
+    @Deprecated
+    public Object[] migrateSystems(User loggedInUser, Integer toOrgId,
+                                   List<Integer> sids) throws FaultException {
+        return transferSystems(loggedInUser, toOrgId, sids);
+    }
+
+    /**
+     * Transfer systems from one organization to another.  If executed by
+     * a product administrator, the systems will be transferred from their current
+     * organization to the organization specified by the toOrgId.  If executed by
+     * an organization administrator, the systems must exist in the same organization
+     * as that administrator and the systems will be transferred to the organization
+     * specified by the toOrgId. In any scenario, the origination and destination
+     * organizations must be defined in a trust.
+     *
+     * @param loggedInUser The current user
+     * @param toOrgId destination organization ID.
+     * @param sids System IDs.
+     * @return list of systems transferred.
      * @throws FaultException A FaultException is thrown if:
      *   - The user performing the request is not an organization administrator
      *   - The user performing the request is not a product administrator, but the
@@ -334,25 +381,25 @@ public class OrgHandler extends BaseHandler {
      *   - The origination or destination organization does not exist
      *   - The user is not defined in the destination organization's trust
      *
-     * @xmlrpc.doc Migrate systems from one organization to another.  If executed by
-     * a #product() administrator, the systems will be migrated from their current
+     * @xmlrpc.doc Transfer systems from one organization to another.  If executed by
+     * a #product() administrator, the systems will be transferred from their current
      * organization to the organization specified by the toOrgId.  If executed by
      * an organization administrator, the systems must exist in the same organization
-     * as that administrator and the systems will be migrated to the organization
+     * as that administrator and the systems will be transferred to the organization
      * specified by the toOrgId. In any scenario, the origination and destination
      * organizations must be defined in a trust.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
-     * system(s) will be migrated to.")
+     * system(s) will be transferred to.")
      * @xmlrpc.param #array_single("int", "systemId")
      * @xmlrpc.returntype
-     * #array_single("int", "serverIdMigrated")
+     * #array_single("int", "serverIdTransferred")
      */
-    public Object[] migrateSystems(User loggedInUser, Integer toOrgId,
+    public Object[] transferSystems(User loggedInUser, Integer toOrgId,
             List<Integer> sids) throws FaultException {
 
         // the user executing the request must at least be an org admin to perform
-        // a system migration
+        // a system transfer
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
         Org toOrg = verifyOrgExists(toOrgId);
@@ -375,26 +422,26 @@ public class OrgHandler extends BaseHandler {
             }
             servers.add(server);
 
-            // As a pre-requisite to performing the actual migration, verify that each
-            // server that is planned for migration passes the criteria that follows.
-            // If any of the servers fails that criteria, none will be migrated.
+            // As a pre-requisite to performing the actual transfer, verify that each
+            // server that is planned for transfer passes the criteria that follows.
+            // If any of the servers fails that criteria, none will be transferred.
 
-            // unless the user is a satellite admin, they are not permitted to migrate
+            // unless the user is a satellite admin, they are not permitted to transfer
             // systems from an org that they do not belong to
             if ((!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) &&
                     (!loggedInUser.getOrg().equals(server.getOrg()))) {
                 throw new PermissionCheckFailureException(server);
             }
 
-            // do not allow the user to migrate systems to/from the same org.  doing so
+            // do not allow the user to transfer systems to/from the same org.  doing so
             // would essentially remove entitlements, channels...etc from the systems
-            // being migrated.
+            // being transferred.
             if (toOrg.equals(server.getOrg())) {
                 throw new MigrationToSameOrgException(server);
             }
 
             // if the originating org is not defined within the destination org's trust
-            // the migration should not be permitted.
+            // the transfer should not be permitted.
             if (!toOrg.getTrustedOrgs().contains(server.getOrg())) {
                 throw new OrgNotInTrustException(server);
             }
