@@ -17,6 +17,10 @@
         <bean:message key="spmigration.jsp.target.title" />
     </rhn:toolbar>
 
+    <div class="page-summary">
+        <p><bean:message key="spmigration.jsp.target.description" /></p>
+    </div>
+
     <c:choose>
         <c:when test="${not empty migrationScheduled}">
             <div class="alert alert-info">
