@@ -1,5 +1,52 @@
 [
     {
+        "id" : -22,
+        "name" : "Amazon Linux 2",
+        "identifier" : "amazonlinux",
+        "former_identifier" : "",
+        "version" : "2",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Amazon Linux 2 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -285,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/core/latest/x86_64/mirror.list",
+                "name" : "amazonlinux2-core",
+                "distro_target" : "x86_64",
+                "description" : "Amazon Linux 2 Core",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -286,
+                "url" : "https://amazonlinux.default.amazonlinux.com/2/extras/docker/latest/x86_64/mirror.list",
+                "name" : "amazonlinux2-extras-docker",
+                "distro_target" : "x86_64",
+                "description" : "Amazon Extras 2 repo for Docker",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -21,
         "name" : "Open Enterprise Server 2018 SP3",
         "identifier" : "Open_Enterprise_Server",
