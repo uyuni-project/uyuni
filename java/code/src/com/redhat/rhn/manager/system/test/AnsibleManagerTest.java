@@ -83,7 +83,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         path = AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict( path);
+        HibernateFactory.getSession().evict(path);
         assertEquals(path, AnsibleManager.lookupAnsiblePathById(path.getId(), user).get());
     }
 
