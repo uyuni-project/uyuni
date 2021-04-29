@@ -330,6 +330,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         String guestUuid = request.params("guestuuid");
         VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
         Server host = guest.getHostSystem();
+        // The host may be null if the virtual machine has no assigned host yet
+        if (host == null) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
 
         try {
             ensureAccessToVirtualInstance(user, guest);
