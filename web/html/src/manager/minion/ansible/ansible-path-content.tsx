@@ -4,6 +4,7 @@ import { Messages, Utils } from "components/messages";
 import Network from "utils/network";
 import { AnsiblePath } from "./ansible-path-type";
 import AccordionPathContent from "./accordion-path-content";
+import { Loading } from "components/utils/Loading";
 
 type PropsType = {
   minionServerId: number;
@@ -15,6 +16,7 @@ type StateType = {
   pathContentType: string;
   pathList: AnsiblePath[];
   errors: string[];
+  loading: boolean;
 };
 
 class AnsiblePathContent extends React.Component<PropsType, StateType> {
@@ -27,15 +29,16 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       pathContentType: props.pathContentType,
       pathList: [],
       errors: [],
+      loading: true
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.pathContentType + "/" + props.minionServerId)
     .promise.then(blob => {
       if (blob.success) {
-        this.setState({ pathList: blob.data });
+        this.setState({ pathList: blob.data, loading: false});
       }
       else {
-        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")]});
+        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")], loading: false});
       }
     });
   }
@@ -45,7 +48,18 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     return (
       <div>
         {errors}
-        { this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} /> ) }
+          {
+            this.state.loading ?
+              <Loading text="Loading.." />
+              :
+              this.state.pathList?.length > 0 ?
+                this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} /> )
+                :
+                <div>
+                  {t("Nothing configured. Please add paths in the ")}
+                  <a href={"/rhn/manager/systems/details/ansible/control-node?sid=" + this.state.minionServerId}>Control Node Configuration</a>
+                </div>
+        }
       </div>
     );
   }
