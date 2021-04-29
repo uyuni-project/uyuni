@@ -44,7 +44,7 @@ export function SearchPanel(props: SearchPanelProps) {
                * The child might be either a component that accepts these props or a regular DOM node such as
                * span etc. For the latter case, it isn't valid to pass these props through.
                */
-              child.type === "function" ? { criteria: props.criteria, onSearch: props.onSearch } : undefined
+              typeof child.type === "string" ? undefined : { criteria: props.criteria, onSearch: props.onSearch }
             )
           : child;
       })}

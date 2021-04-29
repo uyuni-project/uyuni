@@ -140,7 +140,7 @@ class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
         identifier={row => row.id}
         initialSortColumnKey="systemName"
         initialItemsPerPage={window.userPrefPageSize}
-        searchField={<SearchField filter={this.searchData} criteria={""} placeholder={t("Filter by name")} />}
+        searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
       >
         <Column
           columnKey="systemName"

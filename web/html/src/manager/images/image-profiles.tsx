@@ -167,7 +167,7 @@ class ImageProfiles extends React.Component<Props, State> {
             identifier={profile => profile.profileId}
             initialSortColumnKey="profileId"
             initialItemsPerPage={window.userPrefPageSize}
-            searchField={<SearchField filter={this.searchData} criteria={""} />}
+            searchField={<SearchField filter={this.searchData} />}
             selectable
             selectedItems={this.state.selectedItems}
             onSelect={this.handleSelectItems}

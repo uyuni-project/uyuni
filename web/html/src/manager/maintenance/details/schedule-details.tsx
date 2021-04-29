@@ -187,7 +187,7 @@ const SystemPicker = (props: SystemPickerProps) => {
         <Table
           data="/rhn/manager/api/maintenance/schedule/systems"
           identifier={system => system.id}
-          searchField={<SearchField placeholder={t("Search systems")} criteria="" />}
+          searchField={<SearchField placeholder={t("Search systems")} />}
           selectable
           selectedItems={selectedSystems}
           onSelect={onSelect}
