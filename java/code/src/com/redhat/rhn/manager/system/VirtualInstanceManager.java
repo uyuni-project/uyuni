@@ -103,7 +103,7 @@ public class VirtualInstanceManager extends BaseManager {
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     info.getGuestProperties().getVirtType());
             if (type == null) { // fallback
-                type = vinst.getParaVirtType();
+                type = vinst.getFullyVirtType();
             }
             VirtualInstanceState state = vinst.getState(
                     info.getGuestProperties().getState())
