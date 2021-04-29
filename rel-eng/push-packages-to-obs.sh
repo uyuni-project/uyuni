@@ -17,7 +17,7 @@ OSCAPI=${OSCAPI:-https://api.suse.de}
 
 OSC="osc ${OSCRC} -A ${OSCAPI}"
 if [ "$OSC_EXPAND" == "TRUE" ];then
-    OSC_CHECKOUT="$OSC checkout"
+    OSC_CHECKOUT="$OSC checkout -e"
 else
     OSC_CHECKOUT="$OSC checkout -u"
 fi
