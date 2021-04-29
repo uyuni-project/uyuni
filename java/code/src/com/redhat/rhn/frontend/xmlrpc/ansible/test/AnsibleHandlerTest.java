@@ -29,16 +29,23 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -48,6 +55,7 @@ import org.jmock.lib.concurrent.Synchroniser;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
@@ -58,12 +66,21 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         setThreadingPolicy(new Synchroniser());
     }};
 
+    private SaltApi originalSaltApi;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionChainManager.setTaskomaticApi(getTaskomaticApi());
         handler = new AnsibleHandler();
+        originalSaltApi = AnsibleManager.getSaltApi();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        AnsibleManager.setSaltApi(originalSaltApi);
     }
 
     public void testSchedulePlaybook() throws Exception {
@@ -72,7 +89,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         Date scheduleDate = new Date();
 
         Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", "/path/to/hosts",
-                controlNode.getId().intValue(), scheduleDate);
+                controlNode.getId().intValue(), scheduleDate, null);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -198,6 +215,57 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         catch (EntityNotExistsFaultException e) {
             //expected
         }
+    }
+
+    public void testFetchPlaybookContentsInvalidPath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+        try {
+            handler.fetchPlaybookContents(admin, -123, "tmp/123");
+            fail("An exception shold have been thrown");
+        }
+        catch (EntityNotExistsFaultException e) {
+            // expected
+        }
+    }
+
+    public void testFetchPlaybookContentsInvalidRelPath() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+        AnsiblePath playbookPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "playbook",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/playbooks"
+                ));
+        try {
+            // try with absolute path
+            handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "/tmp/123");
+            fail("An exception shold have been thrown");
+        }
+        catch (InvalidArgsException e) {
+            // expected
+        }
+    }
+
+    public void testFetchPlaybookContents() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+        AnsiblePath playbookPath = handler.createAnsiblePath(
+                admin,
+                Map.of(
+                        "type", "playbook",
+                        "server_id", controlNode.getId().intValue(),
+                        "path", "/etc/playbooks"
+                ));
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(new Gson().fromJson("playbook-content", JsonElement.class))));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+        assertEquals(
+                "playbook-content",
+                handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "tmp/123"));
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {

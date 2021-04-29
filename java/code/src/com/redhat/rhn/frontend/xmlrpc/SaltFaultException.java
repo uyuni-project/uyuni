@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,28 +18,25 @@ package com.redhat.rhn.frontend.xmlrpc;
 import com.redhat.rhn.FaultException;
 
 /**
- * Fault that conveys an information about nonexistence of an Entity
+ * XMLRPC Fault thrown on salt execution errors
  */
-public class EntityNotExistsFaultException extends FaultException {
+public class SaltFaultException extends FaultException {
 
-    private static final int ERROR_CODE = 10101;
-    private static final String ERROR_LABEL = "entityNotExists";
+    private static final int CODE = 1071;
+    private static final String LABEL = "saltFault";
 
     /**
-     * Standard constructor
-     *
-     * @param cause the EntityNotExistsException cause
+     * Constructor
      */
-    public EntityNotExistsFaultException(Exception cause) {
-        super(ERROR_CODE, ERROR_LABEL, cause.getMessage(), cause);
+    public SaltFaultException() {
+        super(CODE, LABEL, "Salt fault");
     }
 
     /**
-     * Standard constructor
-     *
-     * @param identifier the entity identifier
+     * Constructor
+     * @param message the error message
      */
-    public EntityNotExistsFaultException(Object identifier) {
-        super(ERROR_CODE, ERROR_LABEL, identifier.toString());
+    public SaltFaultException(String message) {
+        super(CODE, LABEL, String.format("Salt fault: %s", message));
     }
 }

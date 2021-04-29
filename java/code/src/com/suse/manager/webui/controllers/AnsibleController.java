@@ -19,11 +19,12 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.gson.ResultJson.error;
+import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -32,19 +33,30 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.manager.system.AnsibleManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
+import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
+import com.suse.utils.Json;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -52,7 +64,9 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AnsibleController {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = Json.GSON;
+    private static final Yaml YAML = new Yaml(new SafeConstructor());
+
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
     private static Logger log = Logger.getLogger(AnsibleController.class);
@@ -70,12 +84,24 @@ public class AnsibleController {
 
         get("/manager/api/systems/details/ansible/paths/:minionServerId",
                 withUser(AnsibleController::listAnsiblePathsByMinion));
-        // todo no CSRF?
+
         post("/manager/api/systems/details/ansible/paths/save",
                 withUser(AnsibleController::saveAnsiblePath));
 
         post("/manager/api/systems/details/ansible/paths/delete",
                 withUser(AnsibleController::deleteAnsiblePath));
+
+        post("/manager/api/systems/details/ansible/paths/playbook-contents",
+                withUser(AnsibleController::fetchPlaybookContents));
+
+        post("/manager/api/systems/details/ansible/schedule-playbook",
+                withUser(AnsibleController::schedulePlaybook));
+
+        get("/manager/api/systems/details/ansible/paths/introspect-inventory/:pathId",
+                withUser(AnsibleController::introspectInventory));
+
+        get("/manager/api/systems/details/ansible/paths/discover-playbooks/:pathId",
+                withUser(AnsibleController::discoverPlaybooks));
     }
 
     /**
@@ -104,10 +130,10 @@ public class AnsibleController {
      */
     public static String listAnsiblePathsByMinion(Request req, Response res, User user) {
         long minionServerId = Long.parseLong(req.params("minionServerId"));
-        List<AnsiblePathJson> paths = SystemManager.listAnsiblePaths(minionServerId, user).stream()
+        List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
                 .collect(Collectors.toList());
-        return json(res, paths);
+        return json(res, success(paths));
     }
 
     /**
@@ -124,27 +150,24 @@ public class AnsibleController {
         AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                currentPath = SystemManager.createAnsiblePath(json.getType(),
+                currentPath = AnsibleManager.createAnsiblePath(json.getType(),
                         json.getMinionServerId(),
                         json.getPath(),
                         user);
             }
             else {
-                currentPath = SystemManager.updateAnsiblePath(json.getId(),
+                currentPath = AnsibleManager.updateAnsiblePath(json.getId(),
                         json.getPath(),
                         user);
             }
         }
         catch (ValidatorException e) {
-            return json(res, ResultJson.error(
+            return json(res, error(
                     ValidationUtils.convertValidationErrors(e),
                     ValidationUtils.convertFieldValidationErrors(e)));
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("success", ResultJson.success());
-        data.put("newPathId", currentPath.getId());
-        return json(res, data);
+        return json(res, success(Map.of("newPathId", currentPath.getId())));
     }
     /**
      * Delete an Ansible path
@@ -158,15 +181,122 @@ public class AnsibleController {
         Long ansiblePathId = GSON.fromJson(req.body(), Long.class);
 
         try {
-            SystemManager.removeAnsiblePath(ansiblePathId, user);
+            AnsibleManager.removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
-            Spark.halt(404);
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("success", ResultJson.success());
-        return json(res, data);
+        return json(res, success());
     }
 
+    /**
+     * Fetch playbook contents using a salt sync call
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the response with the playbook contents or with a localized error message when minion not responding
+     */
+    public static String fetchPlaybookContents(Request req, Response res, User user) {
+        try {
+            AnsiblePlaybookIdJson params = GSON.fromJson(req.body(), AnsiblePlaybookIdJson.class);
+            return AnsibleManager.fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
+                    .map(contents -> json(res, success(contents)))
+                    .orElseGet(() -> json(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (IllegalStateException e) {
+            return json(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+        }
+        catch (LookupException e) {
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+        }
+    }
+
+    /**
+     * Schedule playbook execution
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the json with the scheduled action id or with a localized error message when taskomatic is down
+     */
+    public static String schedulePlaybook(Request req, Response res, User user) {
+        try {
+            AnsiblePlaybookExecutionJson params = GSON.fromJson(req.body(), AnsiblePlaybookExecutionJson.class);
+            Long actionId = AnsibleManager.schedulePlaybook(
+                    params.getPlaybookPath(),
+                    params.getInventoryPath().orElse(null),
+                    params.getControlNodeId(),
+                    params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
+                    params.getActionChainLabel(),
+                    user);
+            return json(res, success(actionId));
+        }
+        catch (LookupException e) {
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+        }
+        catch (TaskomaticApiException e) {
+            return json(res, error(LOCAL.getMessage("taskscheduler.down")));
+        }
+    }
+
+    private static Date getScheduleDate(LocalDateTime dateTime) {
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(dateTime.atZone(zoneId).toInstant());
+    }
+
+    /**
+     * Introspect ansible inventory
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the string in YAML format representing the structure of the inventory
+     */
+    public static String introspectInventory(Request req, Response res, User user) {
+        long pathId = Long.parseLong(req.params("pathId"));
+
+        try {
+            return AnsibleManager.introspectInventory(pathId, user)
+                    .map(inventory -> json(res, success(YAML.dump(inventory))))
+                    .orElseGet(() -> json(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (IllegalStateException e) {
+            return json(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+        }
+        catch (LookupException e) {
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+        }
+    }
+
+    /**
+     * Discover ansible playbooks
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the authorized user
+     * @return the json with structure of the discovered playbooks (@see AnsibleManager.discoverPlaybooks doc}
+     */
+    public static String discoverPlaybooks(Request req, Response res, User user) {
+        long pathId = Long.parseLong(req.params("pathId"));
+
+        try {
+            return AnsibleManager.discoverPlaybooks(pathId, user)
+                    .map(playbook -> json(res, success(playbook)))
+                    .orElseGet(() -> json(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+        }
+        catch (IllegalStateException e) {
+            return json(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+        }
+        catch (LookupException e) {
+            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+        }
+    }
 }

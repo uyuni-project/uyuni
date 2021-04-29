@@ -16,25 +16,24 @@ package com.redhat.rhn.frontend.xmlrpc.ansible;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
-import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 
-import org.apache.commons.lang3.StringUtils;
+import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Ansible XMLRPC handler
@@ -51,6 +50,7 @@ public class AnsibleHandler extends BaseHandler {
      * @param inventoryPath the path to the inventory file
      * @param controlNodeId the system ID of the control node
      * @param earliestOccurrence earliest occurrence of the execution command
+     * @param actionChainLabel label af action chain to use
      * @return the execute playbook action id
      *
      * @xmlrpc.doc Schedule a playbook execution
@@ -59,22 +59,21 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
-     * "earliest the execution command can be sent to the control node.")
+     * "earliest the execution command can be sent to the control node. ignored")
+     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
-            Integer controlNodeId, Date earliestOccurrence) {
-        if (StringUtils.isEmpty(playbookPath)) {
-            throw new InvalidParameterException("Playbook path cannot be empty.");
-        }
-        Server controlNode = validateAnsibleControlNode(controlNodeId, loggedInUser.getOrg());
-
+            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel) {
         try {
-            return ActionChainManager.scheduleExecutePlaybook(loggedInUser, controlNode.getId(), playbookPath,
-                    inventoryPath, null, earliestOccurrence).getId();
+            return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
+                    Optional.ofNullable(actionChainLabel), loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
         }
     }
 
@@ -96,7 +95,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public List<AnsiblePath> listAnsiblePaths(User loggedInUser, Integer controlNodeId) {
         try {
-            return SystemManager.listAnsiblePaths(controlNodeId, loggedInUser);
+            return AnsibleManager.listAnsiblePaths(controlNodeId, loggedInUser);
         }
         catch (LookupException e) {
             throw new NoSuchSystemException(e);
@@ -118,7 +117,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public AnsiblePath lookupAnsiblePathById(User loggedInUser, Integer pathId) {
         try {
-            return SystemManager.lookupAnsiblePathById(pathId, loggedInUser)
+            return AnsibleManager.lookupAnsiblePathById(pathId, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException(pathId));
         }
         catch (LookupException e) {
@@ -151,7 +150,7 @@ public class AnsibleHandler extends BaseHandler {
         String path = getFieldValue(props, "path");
 
         try {
-            return SystemManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
+            return AnsibleManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(controlNodeId);
@@ -182,7 +181,7 @@ public class AnsibleHandler extends BaseHandler {
     public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
         try {
             String newPath = getFieldValue(props, "path");
-            return SystemManager.updateAnsiblePath(pathId, newPath, loggedInUser);
+            return AnsibleManager.updateAnsiblePath(pathId, newPath, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(pathId);
@@ -208,7 +207,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public int removeAnsiblePath(User loggedInUser, Integer pathId) {
         try {
-            SystemManager.removeAnsiblePath(pathId, loggedInUser);
+            AnsibleManager.removeAnsiblePath(pathId, loggedInUser);
             return 1;
         }
         catch (LookupException e) {
@@ -216,15 +215,98 @@ public class AnsibleHandler extends BaseHandler {
         }
     }
 
-    private Server validateAnsibleControlNode(long systemId, Org org) {
-        Server controlNode = ServerFactory.lookupByIdAndOrg(systemId, org);
-        if (controlNode == null) {
-            throw new NoSuchSystemException();
+    /**
+     * Fetch the playbook content from the control node using a synchronous salt call.
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the PlaybookPath id
+     * @param playbookRelPath the relative path to playbook (inside PlaybookPath)
+     * @return the playbook contents or empty optional if minion did not respond
+     * @throws LookupException when path not found or not accessible
+     *
+     * @xmlrpc.doc Fetch the playbook content from the control node using a synchronous salt call.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "playbook path id")
+     * @xmlrpc.param #param_desc("string", "playbookRelPath", "relative path of playbook (inside path specified by
+     * pathId)")
+     * @xmlrpc.returntype #param_desc("string", "contents", "Text contents of the playbook")
+     */
+    public String fetchPlaybookContents(User loggedInUser, Integer pathId, String playbookRelPath) {
+        try {
+            return AnsibleManager.fetchPlaybookContents(pathId, playbookRelPath, loggedInUser)
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
         }
-        if (!controlNode.hasAnsibleControlNodeEntitlement()) {
-            throw new NoSuchSystemException(controlNode.getHostname() + " is not an Ansible control node");
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(e);
         }
-        return controlNode;
+        catch (IllegalArgumentException e) {
+            throw new InvalidArgsException(e.getMessage());
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
+        }
+    }
+
+    /**
+     * Discover playbooks under given playbook path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the playbooks under given path
+     *
+     * @xmlrpc.doc Discover playbooks under given playbook path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype
+     * #struct_begin("playbooks")
+     *     #struct_begin("playbook")
+     *         $AnsiblePathSerializer
+     *     #struct_end()
+     * #struct_end()
+     */
+    public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
+        try {
+            return AnsibleManager.discoverPlaybooks(pathId, loggedInUser)
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(pathId);
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
+        }
+    }
+
+    /**
+     * Introspect inventory under given inventory path with given pathId
+     *
+     * @param loggedInUser the logged in user
+     * @param pathId the path id
+     * @return the inventory contents under given path
+     *
+     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "pathId", "path id")
+     * @xmlrpc.returntype todo update
+     */
+    // todo: more fitting structure?
+    public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
+        try {
+            return AnsibleManager.introspectInventory(pathId, loggedInUser)
+                    .orElseThrow(() -> new SaltFaultException("Minion not responding"));
+        }
+        catch (LookupException e) {
+            throw new EntityNotExistsFaultException(pathId);
+        }
+        catch (IllegalStateException e) {
+            throw new SaltFaultException(e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException("Invalid parameter", e);
+        }
     }
 
     private static <T> T getFieldValue(Map<String, Object> props, String field) {
