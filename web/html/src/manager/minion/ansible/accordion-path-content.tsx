@@ -30,7 +30,7 @@ function getURL(path: AnsiblePath) {
 interface PlaybookDetails {
   path: AnsiblePath,
   fullPath: string,
-  customInventory?: string
+  customInventory?: string,
   name: string,
 }
 
