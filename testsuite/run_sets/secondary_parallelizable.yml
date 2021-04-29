@@ -77,4 +77,7 @@
 - features/secondary/trad_sp_migration.feature
 - features/secondary/trad_check_registration.feature
 
+- features/secondary/buildhost_docker_build_image.feature
+- features/secondary/buildhost_docker_auth_registry.feature
+
 ## Parallelizable Secondary features END ##

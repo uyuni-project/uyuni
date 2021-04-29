@@ -112,10 +112,6 @@ Feature: Build container images
     And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via XML-RPC calls
 
 @no_auth_registry
-  Scenario: Cleanup: kill stale image build jobs
-    When I kill remaining Salt jobs on "build_host"
-
-@no_auth_registry
   Scenario: Cleanup: delete all profiles
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Profiles"
