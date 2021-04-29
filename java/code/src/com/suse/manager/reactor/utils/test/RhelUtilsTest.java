@@ -61,6 +61,10 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
             "Oracle Linux Server release 8.2";
     private static String ALIBABA_RELEASE =
             "Alibaba Cloud Linux (Aliyun Linux) release 2.1903 LTS (Hunting Beagle)";
+    private static String ALMALINUX_RELEASE =
+            "AlmaLinux release 8.3 (Purple Manul)";
+    private static String AMAZON_RELEASE =
+            "Amazon Linux release 2 (Karoo)";
 
     @FunctionalInterface
     private interface SetupMinionConsumer {
@@ -120,6 +124,23 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Hunting Beagle", os.get().getRelease());
     }
 
+    public void testParseReleaseFileAlma() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALMALINUX_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("AlmaLinux", os.get().getName());
+        assertEquals("8", os.get().getMajorVersion());
+        assertEquals("3", os.get().getMinorVersion());
+        assertEquals("Purple Manul", os.get().getRelease());
+    }
+
+    public void testParseReleaseFileAmazon() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(AMAZON_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("AmazonLinux", os.get().getName());
+        assertEquals("2", os.get().getMajorVersion());
+        assertEquals("Karoo", os.get().getRelease());
+    }
+
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -138,6 +159,12 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         String oracleReleaseContent = map.get("cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
+        String almaReleaseContent = map.get("cmd_|-almarelease_|-cat /etc/almalinux-release_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
+        String amazonReleaseContent = map.get("cmd_|-amazonrelease_|-cat /etc/system-release_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
         String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
@@ -153,7 +180,9 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 Optional.ofNullable(rhelReleaseContent),
                 Optional.ofNullable(centosReleaseContent),
                 Optional.ofNullable(oracleReleaseContent),
-                Optional.ofNullable(alibabaReleaseContent));
+                Optional.ofNullable(alibabaReleaseContent),
+                Optional.ofNullable(almaReleaseContent),
+                Optional.ofNullable(amazonReleaseContent));
         assertTrue(prod.isPresent());
         response.accept(prod);
 
@@ -231,6 +260,28 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertFalse(prod.get().getSuseProduct().isPresent());
                     assertEquals("AlibabaCloud(Aliyun)", prod.get().getName());
                     assertEquals("Hunting Beagle", prod.get().getRelease());
+                    assertEquals("2", prod.get().getVersion());
+                });
+    }
+
+    public void testDetectRhelProductAlma() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_almalinux.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("Alma", prod.get().getName());
+                    assertEquals("Purple Manul", prod.get().getRelease());
+                    assertEquals("8", prod.get().getVersion());
+                });
+    }
+
+    public void testDetectRhelProductAmazon() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_alibaba.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("Amazon", prod.get().getName());
+                    assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });
     }

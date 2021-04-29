@@ -837,7 +837,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "oel".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString("os"))) {
+                "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "almalinux".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "amazon".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = saltApi.runRemoteCommand(target,
                     "rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release")

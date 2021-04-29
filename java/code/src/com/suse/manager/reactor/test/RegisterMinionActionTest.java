@@ -999,6 +999,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
                             Optional.empty(),
                             Optional.empty(),
+                            Optional.empty(),
+                            Optional.empty(),
                             Optional.empty()
                     ))));
 
@@ -1046,6 +1048,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty(),
+                            Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty()
@@ -1107,6 +1111,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         will(returnValue(Optional.of(new RedhatProductInfo(
                                 Optional.empty(),
                                 Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                                Optional.empty(),
+                                Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty()
@@ -1179,6 +1185,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                     "# keep software compatibility."),
                             Optional.empty(),
                             Optional.empty(),
+                            Optional.empty(),
+                            Optional.empty(),
                             Optional.of("sles_es-release-server-7.2-9.el7.2.1.x86_64")
                     ))));
                 }},
@@ -1238,6 +1246,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(new RedhatProductInfo(
                             Optional.empty(),
                             Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty(),
+                            Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty()

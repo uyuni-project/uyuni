@@ -39,5 +39,9 @@ insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Uyuni' );
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Alibaba' );
+insert into rhnPackageProvider (id, name) values
+(sequence_nextval('rhn_package_provider_id_seq'), 'AlmaLinux' );
+insert into rhnPackageProvider (id, name) values
+(sequence_nextval('rhn_package_provider_id_seq'), 'Amazon' );
 
 commit;

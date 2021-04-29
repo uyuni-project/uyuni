@@ -42,6 +42,10 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run";
     public static final String PKG_PROFILE_ALIBABA_RELEASE =
             "cmd_|-alibabarelease_|-cat /etc/alinux-release_|-run";
+    public static final String PKG_PROFILE_ALMA_RELEASE =
+            "cmd_|-almarelease_|-cat /etc/almalinux-release_|-run";
+    public static final String PKG_PROFILE_AMAZON_RELEASE =
+            "cmd_|-amazonrelease_|-cat /etc/system-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
@@ -69,6 +73,12 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_ALIBABA_RELEASE)
     private StateApplyResult<CmdResult> alibabaReleaseFile;
+
+    @SerializedName(PKG_PROFILE_ALMA_RELEASE)
+    private StateApplyResult<CmdResult> almaReleaseFile;
+
+    @SerializedName(PKG_PROFILE_AMAZON_RELEASE)
+    private StateApplyResult<CmdResult> amazonReleaseFile;
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesResReleasePkg;
@@ -131,6 +141,20 @@ public class PkgProfileUpdateSlsResult {
      */
     public StateApplyResult<CmdResult> getAlibabaReleaseFile() {
         return alibabaReleaseFile;
+    }
+
+    /**
+     * @return the content of the file /etc/almalinux-release
+     */
+    public StateApplyResult<CmdResult> getAlmaReleaseFile() {
+        return almaReleaseFile;
+    }
+
+    /**
+     * @return the content of the file /etc/system-release
+     */
+    public StateApplyResult<CmdResult> getAmazonReleaseFile() {
+        return amazonReleaseFile;
     }
 
     /**
