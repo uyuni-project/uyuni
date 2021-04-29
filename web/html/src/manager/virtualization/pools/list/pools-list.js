@@ -371,7 +371,6 @@ export function PoolsList(props: Props) {
                     additionalFilters={[]}
                     searchField={
                         <SearchField filter={searchData}
-                            criteria={''}
                             placeholder={t('Filter by pool or volume name')}
                             name='pool-name-filter'
                         />

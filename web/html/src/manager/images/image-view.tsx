@@ -620,7 +620,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
           initialSortColumnKey="modified"
           initialSortDirection={-1}
           initialItemsPerPage={window.userPrefPageSize}
-          searchField={<SearchField filter={this.searchData} criteria={""} />}
+          searchField={<SearchField filter={this.searchData} />}
           selectable
           selectedItems={this.state.selectedItems}
           onSelect={this.handleSelectItems}

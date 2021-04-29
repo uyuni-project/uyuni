@@ -233,7 +233,6 @@ export function ListTab(props: Props) {
                         searchField={(
                           <SearchField
                             filter={searchData}
-                            criteria=""
                             placeholder={t('Filter by name')}
                           />
                         )}
