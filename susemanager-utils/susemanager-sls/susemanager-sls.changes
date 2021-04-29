@@ -2,6 +2,12 @@
 - add virtual network edit action
 
 -------------------------------------------------------------------
+Thu Apr 29 11:51:00 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
+- Do not assume AmazonLinux bootstrap repo for CentOS (bsc#1185421)
+
+-------------------------------------------------------------------
 Fri Apr 16 13:35:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.7-1
