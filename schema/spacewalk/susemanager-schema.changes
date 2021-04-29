@@ -1,3 +1,4 @@
+- Rename SP to product migration
 - Ansible integration: configure control node paths (playbooks and inventories)
 
 -------------------------------------------------------------------
