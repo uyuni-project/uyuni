@@ -34,7 +34,7 @@ while getopts ":d:c:p:n:vthe" opts; do
     v) VERBOSE="-v";;
     t) TEST="-t";;
     n) OBS_TEST_PROJECT="-n ${OPTARG}";;
-    e) $EXTRA_OPTS="-e";;
+    e) EXTRA_OPTS="-e";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
