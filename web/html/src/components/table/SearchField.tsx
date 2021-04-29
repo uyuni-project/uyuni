@@ -13,6 +13,7 @@ type SearchFieldProps = {
   onSearch?: (criteria: string) => void;
 
   /** filtering function */
+  // This is manually used in TableDataHandler as an argument to SimpleDataProvider
   filter?: (datum: any, criteria?: string) => boolean;
 
   /** input field name */
