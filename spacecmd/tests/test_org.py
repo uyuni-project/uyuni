@@ -463,8 +463,8 @@ class TestSCOrg:
         shell.get_org_id = MagicMock(return_value=1)
         shell.client.org.trusts.getDetails = MagicMock(return_value={
             "trusted_since": "Mi 29. Mai 15:02:26 CEST 2019",
-            "systems_migrated_from": 3,
-            "systems_migrated_to": 8
+            "systems_transferred_from": 3,
+            "systems_transferred_to": 8
         })
         shell.client.org.trusts.listChannelsConsumed = MagicMock(return_value=[
             {"name": "base_channel"},
@@ -493,7 +493,7 @@ class TestSCOrg:
         exp = [
            'Trusted Organization:   myorg',
            'Trusted Since:          Mi 29. Mai 15:02:26 CEST 2019',
-           'Systems Migrated From:  3', 'Systems Migrated To:    8', '',
+           'Systems Transferred From:  3', 'Systems Transferred To:    8', '',
            'Channels Consumed', '-----------------',
            'base_channel\nspecial_channel', '',
            'Channels Provided', '-----------------',

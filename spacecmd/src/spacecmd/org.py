@@ -320,8 +320,8 @@ def do_org_trustdetails(self, args):
 
         print(_('Trusted Organization:   %s') % trusted_org)
         print(_('Trusted Since:          %s') % details.get('trusted_since'))
-        print(_('Systems Migrated From:  %i') % details.get('systems_migrated_from'))
-        print(_('Systems Migrated To:    %i') % details.get('systems_migrated_to'))
+        print(_('Systems Transferred From:  %i') % details.get('systems_transferred_from'))
+        print(_('Systems Transferred To:    %i') % details.get('systems_transferred_to'))
         print('')
         print(_('Channels Consumed'))
         print('-----------------')
