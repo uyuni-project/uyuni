@@ -45,8 +45,8 @@ function git_package_defs() {
 # create workspace
 test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
 
-echo > $WORKSPACE/succeeded
-echo > $WORKSPACE/failed
+echo "# $(date)" > $WORKSPACE/succeeded
+echo "# $(date)" > $WORKSPACE/failed
 
 while read PKG_NAME PKG_VER PKG_DIR; do
     ./rel-eng/build-one-package-for-obs.sh $PKG_NAME $PKG_VER $PKG_DIR &
@@ -54,8 +54,8 @@ done < <(git_package_defs)
 
 wait
 
-SUCCEED_CNT=$(cat $WORKSPACE/succeeded | wc -l)
-FAILED_CNT=$(cat $WORKSPACE/failed | wc -l)
+SUCCEED_CNT=$(cat $WORKSPACE/succeeded | grep -v "#" | wc -l)
+FAILED_CNT=$(cat $WORKSPACE/failed | grep -v "#" | wc -l)
 FAILED_PKG=$(cat $WORKSPACE/failed)
 
 echo "======================================================================"
