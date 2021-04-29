@@ -4312,6 +4312,8 @@ def do_system_listmigrationtargets(self, args):
 
 
 def help_system_schedulespmigration(self):
+    print(_('This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead.'))
+    logging.warning(_("This method is deprecated and will be removed in a future API version"))
     print(_('system_schedulespmigration: Schedule a Service Pack migration for systems.'))
     print(_('usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
 \n    For MIGRATION_TARGET parameter see system_listmigrationtargets. \
@@ -4325,6 +4327,27 @@ def help_system_schedulespmigration(self):
 
 
 def do_system_schedulespmigration(self, args):
+    print(_('This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead.'))
+    logging.warning(_("This method is deprecated and will be removed in a future API version"))
+    self.do_system_scheduleproductmigration(self, args)
+
+####################
+
+
+def help_system_scheduleproductmigration(self):
+    print(_('system_scheduleproductmigration: Schedule a Product migration for systems.'))
+    print(_('usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
+\n    For MIGRATION_TARGET parameter see system_listmigrationtargets. \
+\n    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \
+\n    Options: \
+\n        -s START_TIME \
+\n        -d pass this flag, if you want to do a dry run \
+\n        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))'))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def do_system_scheduleproductmigration(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-s', '--start-time')
     arg_parser.add_argument('-d', '--dry-run', action='store_true', default=False)
@@ -4333,7 +4356,7 @@ def do_system_schedulespmigration(self, args):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
-        self.help_system_schedulespmigration()
+        self.help_system_scheduleproductmigration()
         return
 
     # POSITIONAL ARGS
@@ -4366,7 +4389,7 @@ def do_system_schedulespmigration(self, args):
             logging.warning(_N('Cannot find system ') + str(system) + _('. Skipping it.'))
             continue
 
-        print(_('Scheduling Service Pack migration for system ') + str(system))
+        print(_('Scheduling Product migration for system ') + str(system))
         try:
             result = self.client.system.scheduleSPMigration(self.session,
                     system_id, migration_target, base_channel_label,
