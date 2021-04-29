@@ -42,8 +42,6 @@
 - features/secondary/allcli_action_chain.feature
 - features/secondary/srv_delete_channel_from_ui.feature
 - features/secondary/srv_delete_channel_with_tool.feature
-- features/secondary/buildhost_docker_build_image.feature
-- features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_change_software_channel.feature
 
