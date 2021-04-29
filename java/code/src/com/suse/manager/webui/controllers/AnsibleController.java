@@ -227,6 +227,7 @@ public class AnsibleController {
                     params.getInventoryPath().orElse(null),
                     params.getControlNodeId(),
                     params.getEarliest().orElse(new Date()),
+                    params.getActionChainLabel(),
                     user);
             return json(res, success(actionId));
         }
