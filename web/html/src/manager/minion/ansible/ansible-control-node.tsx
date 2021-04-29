@@ -6,6 +6,7 @@ import Network from "utils/network";
 import NewAnsiblePath from "./new-ansible-path";
 import EditAnsiblePath from "./edit-ansible-path";
 import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
+import { Loading } from "components/utils/Loading";
 
 type PropsType = {
   minionServerId: number;
@@ -20,6 +21,7 @@ type StateType = {
   editPlaybookPath: Partial<AnsiblePath>;
   editInventoryPath: Partial<AnsiblePath>;
   errors: string[];
+  loading: boolean;
 };
 
 class AnsibleControlNode extends React.Component<PropsType, StateType> {
@@ -35,16 +37,17 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
       editPlaybookPath: {},
       editInventoryPath: {},
       errors: [],
+      loading: true,
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
     .promise.then(blob => {
       if (blob.success) {
         const data: AnsiblePath[] = blob.data;
-        this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory") });
+        this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory"), loading: false });
       }
       else {
-        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")]});
+        this.setState({ errors: [t("An error occurred while loading data. Please check server logs.")], loading: false});
       }
     });
   }
@@ -149,74 +152,81 @@ class AnsibleControlNode extends React.Component<PropsType, StateType> {
         <p>
           {t("Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection.")}
         </p>
-        <div className="col-md-6">
-          <Panel
-            headingLevel="h3"
-            title={t("Playbook Directories")}
-          >
-            {this.state.playbooksPaths.map(p =>
-                this.state.editPlaybookPath?.path === p.path ?
-                  <EditAnsiblePath
-                    key={p.id}
-                    ansiblePath={p}
-                    editPath={(newValue: string) => this.editPath(p, newValue)}
-                    saveEditPath={() => this.saveEditPath(p.type)}
-                    editPlaybookPath={this.state.editPlaybookPath}
-                    cancelHandler={() => this.setState({ editPlaybookPath: {} })}
-                    deletePath={() => this.deletePath(p)}
+        {
+          this.state.loading?
+            <Loading text="Loading.." />
+            :
+            <div>
+              <div className="col-md-6">
+                <Panel
+                  headingLevel="h3"
+                  title={t("Playbook Directories")}
+                >
+                  {this.state.playbooksPaths.map(p =>
+                      this.state.editPlaybookPath?.path === p.path ?
+                        <EditAnsiblePath
+                          key={p.id}
+                          ansiblePath={p}
+                          editPath={(newValue: string) => this.editPath(p, newValue)}
+                          saveEditPath={() => this.saveEditPath(p.type)}
+                          editPlaybookPath={this.state.editPlaybookPath}
+                          cancelHandler={() => this.setState({ editPlaybookPath: {} })}
+                          deletePath={() => this.deletePath(p)}
+                        />
+                        :
+                        <div className="d-block" key={p.id}>
+                          <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
+                            {p.path}<i className="fa fa-edit pull-right" />
+                          </pre>
+                        </div>
+                  )}
+                  <hr/>
+                  <NewAnsiblePath
+                    title={t("Add a Playbook directory")}
+                    pathType="playbook"
+                    newPathValue={this.state.newPlaybookPath}
+                    placeholder={t("e.g., /srv/playbooks")}
+                    newPath={(path: string) => this.newPath("playbook", path)}
+                    savePath={() => this.savePath("playbook")}
                   />
-                  :
-                  <div className="d-block" key={p.id}>
-                    <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
-                      {p.path}<i className="fa fa-edit pull-right" />
-                    </pre>
-                  </div>
-            )}
-            <hr/>
-            <NewAnsiblePath
-              title={t("Add a Playbook directory")}
-              pathType="playbook"
-              newPathValue={this.state.newPlaybookPath}
-              placeholder={t("e.g., /srv/playbooks")}
-              newPath={(path: string) => this.newPath("playbook", path)}
-              savePath={() => this.savePath("playbook")}
-            />
-          </Panel>
-        </div>
-        <div className="col-md-6">
-          <Panel
-            headingLevel="h3"
-            title={t("Inventory Files")}
-          >
-            {this.state.inventoriesPaths.map(p =>
-                this.state.editInventoryPath?.path === p.path ?
-                  <EditAnsiblePath
-                    key={p.id}
-                    ansiblePath={p}
-                    editPath={(newValue: string) => this.editPath(p, newValue)}
-                    saveEditPath={() => this.saveEditPath(p.type)}
-                    editEntity={this.state.editInventoryPath}
-                    cancelHandler={() => this.setState({ editInventoryPath: {} })}
-                    deletePath={() => this.deletePath(p)}
+                </Panel>
+              </div>
+              <div className="col-md-6">
+                <Panel
+                  headingLevel="h3"
+                  title={t("Inventory Files")}
+                >
+                  {this.state.inventoriesPaths.map(p =>
+                      this.state.editInventoryPath?.path === p.path ?
+                        <EditAnsiblePath
+                          key={p.id}
+                          ansiblePath={p}
+                          editPath={(newValue: string) => this.editPath(p, newValue)}
+                          saveEditPath={() => this.saveEditPath(p.type)}
+                          editEntity={this.state.editInventoryPath}
+                          cancelHandler={() => this.setState({ editInventoryPath: {} })}
+                          deletePath={() => this.deletePath(p)}
+                        />
+                        :
+                        <div className="d-block" key={p.id}>
+                          <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
+                            {p.path}<i className="fa fa-edit pull-right" />
+                          </pre>
+                        </div>
+                  )}
+                  <hr/>
+                  <NewAnsiblePath
+                    title={t("Add an Inventory file")}
+                    pathType="inventory"
+                    newInventoryPath={this.state.newInventoryPath}
+                    placeholder={t("e.g., /etc/ansible/testing/hosts")}
+                    newPath={(path: string) => this.newPath("inventory", path)}
+                    savePath={() => this.savePath("inventory")}
                   />
-                  :
-                  <div className="d-block" key={p.id}>
-                    <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
-                      {p.path}<i className="fa fa-edit pull-right" />
-                    </pre>
-                  </div>
-            )}
-            <hr/>
-            <NewAnsiblePath
-              title={t("Add an Inventory file")}
-              pathType="inventory"
-              newInventoryPath={this.state.newInventoryPath}
-              placeholder={t("e.g., /etc/ansible/testing/hosts")}
-              newPath={(path: string) => this.newPath("inventory", path)}
-              savePath={() => this.savePath("inventory")}
-            />
-          </Panel>
-        </div>
+                </Panel>
+              </div>
+            </div>
+        }
       </div>
     );
   }
