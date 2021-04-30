@@ -1588,5 +1588,4 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
-  $server.run("chmod 644 $(find #{source_dir} -type f)")
 end
