@@ -507,7 +507,6 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
-# WORKAROUND bsc#1181847
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
   gpg_keys = get_gpg_keys(node)

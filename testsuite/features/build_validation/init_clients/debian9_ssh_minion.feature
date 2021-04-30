@@ -25,10 +25,6 @@ Feature: Bootstrap a Debian 9 Salt SSH minion
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "debian9_ssh_minion"
 
-  # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for 9 Salt SSH minion
-    When I import the GPG keys for "debian9_ssh_minion"
-
   Scenario: Check events history for failures on SSH-managed Debian 9 minion
     Given I am on the Systems overview page of this "debian9_ssh_minion"
     Then I check for failed events on history event page
