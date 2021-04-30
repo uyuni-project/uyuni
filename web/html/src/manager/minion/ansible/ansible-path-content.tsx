@@ -23,7 +23,6 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
-    console.log(props);
     this.state = {
       minionServerId: props.minionServerId,
       pathContentType: props.pathContentType,
