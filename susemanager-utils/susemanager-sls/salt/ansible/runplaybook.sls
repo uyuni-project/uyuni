@@ -8,7 +8,7 @@
 # pillar = {
 #   "playbook_path": "/root/ansible-examples/lamp_simple/site.yml",
 #   "rundir": "/root/ansible-examples/lamp_simple"
-#   "inventory": "/root/ansible-examples/lamp_simple/hosts"
+#   "inventory_path": "/root/ansible-examples/lamp_simple/hosts"
 # }
 #
 
@@ -16,7 +16,7 @@ run_ansible_playbook:
   ansible.playbooks:
     - name: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
-{%- if "inventory" in pillar %}
+{%- if "inventory_path" in pillar %}
     - ansible_kwargs:
-        inventory: {{ pillar["inventory"] }}
+        inventory: {{ pillar["inventory_path"] }}
 {% endif %}

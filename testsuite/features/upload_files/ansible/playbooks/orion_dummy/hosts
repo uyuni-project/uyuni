@@ -43,4 +43,4 @@
 ## db-[99:101]-node.example.com
 
 [myself]
-suma-testnaica-min-sles15.mgr.suse.de ansible_ssh_private_key_file=/etc/ansible/ansible_ssh_key
+127.0.0.1 ansible_connection=local

@@ -5,4 +5,4 @@
   - name: Install Orion dummy package
     zypper: pkg=orion-dummy state=latest
   - name: Copying the demo file
-    template: src=example_file.txt dest=/tmp/
+    template: src=file.txt dest=/tmp/
