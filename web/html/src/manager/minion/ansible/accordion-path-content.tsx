@@ -152,12 +152,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
   render() {
     const header =
-      <div className="panel-heading pointer" onClick={() => this.onToggle()}>
-        <h6>
-          <i className={this.state.isOpen || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
-          { this.props.path.path }
-        </h6>
-      </div>;
+      <button className="div-button panel-heading" onClick={() => this.onToggle()}>
+        <i className={this.state.isOpen || this.state.loading ? "fa fa-chevron-down" : "fa fa-chevron-right"} />
+        { this.props.path.path }
+      </button>;
 
     const errors = this.state.errors.length > 0 ? <Messages items={Utils.error(this.state.errors)} /> : null;
     return (
