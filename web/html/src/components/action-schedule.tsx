@@ -25,7 +25,7 @@ type ActionScheduleProps = {
   localTime?: string;
   actionChains?: Array<ActionChain>;
   onDateTimeChanged: (date: Date) => void;
-  onActionChainChanged?: (actionChain: ActionChain | null | undefined) => void;
+  onActionChainChanged?: (actionChain: ActionChain) => void;
   systemIds?: Array<string | number>;
   actionType?: string;
 };

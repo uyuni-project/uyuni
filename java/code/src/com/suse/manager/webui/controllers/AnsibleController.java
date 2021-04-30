@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -48,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -140,6 +142,7 @@ public class AnsibleController {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         data.put("pathContentType", AnsiblePath.Type.PLAYBOOK.getLabel());
+        MinionController.addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
     }
 
@@ -299,7 +302,9 @@ public class AnsibleController {
                     params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);
-            return json(res, success(actionId));
+
+            return json(res, success(params.getActionChainLabel()
+                    .map(l -> ActionChainFactory.getActionChain(user, l).getId()).orElse(actionId)));
         }
         catch (LookupException e) {
             return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
