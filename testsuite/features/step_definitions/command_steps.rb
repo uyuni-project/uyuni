@@ -1577,10 +1577,10 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  target_dirs = "/tmp/autoinstall/Fedora_12_i386/images/pxeboot /tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /tmp/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/var/autoinstall/"
+  source_dir = "/tmp/autoinstall/"
   return_codes = []
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
@@ -1588,4 +1588,5 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
+  $server.run("chmod 644 $(find #{source_dir} -type f)")
 end
