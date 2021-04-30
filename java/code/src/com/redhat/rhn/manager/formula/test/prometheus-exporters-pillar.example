@@ -1,12 +1,13 @@
-node_exporter:
-  enabled: True
-  args: --web.listen-address=":9100"
+exporters:
+    node_exporter:
+      enabled: True
+      args: --web.listen-address=":9100"
 
-apache_exporter:
-  enabled: False
-  args: --telemetry.address=":9117"
+    apache_exporter:
+      enabled: False
+      args: --telemetry.address=":9117"
 
-postgres_exporter:
-  enabled: False
-  data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
-  args: --web.listen-address=":9187"
+    postgres_exporter:
+      enabled: False
+      data_source_name: postgresql://user:passwd@localhost:5432/database?sslmode=disable
+      args: --web.listen-address=":9187"

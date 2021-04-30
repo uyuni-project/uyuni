@@ -909,9 +909,11 @@ public class FormulaFactory {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> disableMonitoring(Map<String, Object> formData) {
-        ((Map<String, Object>) formData.get("node_exporter")).put("enabled", false);
-        ((Map<String, Object>) formData.get("apache_exporter")).put("enabled", false);
-        ((Map<String, Object>) formData.get("postgres_exporter")).put("enabled", false);
+        Map<String, Object> exporters = (Map<String, Object>) formData.get("exporters");
+        for (Object exporter : exporters.values()) {
+            Map<String, Object> exporterMap = (Map<String, Object>) exporter;
+            exporterMap.put("enabled", false);
+        }
         return formData;
     }
 
@@ -939,11 +941,10 @@ public class FormulaFactory {
 
     @SuppressWarnings("unchecked")
     private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
-        Map<String, Object> nodeExporter = (Map<String, Object>) formData.get("node_exporter");
-        Map<String, Object> apacheExporter = (Map<String, Object>) formData.get("apache_exporter");
-        Map<String, Object> postgresExporter = (Map<String, Object>) formData.get("postgres_exporter");
-        return (boolean) nodeExporter.get("enabled") || (boolean) apacheExporter.get("enabled") ||
-                (boolean) postgresExporter.get("enabled");
+        Map<String, Object> exporters = (Map<String, Object>) formData.get("exporters");
+        return exporters.values().stream()
+                .map(exporter -> (Map<String, Object>) exporter)
+                .anyMatch(exporter -> (boolean) exporter.get("enabled"));
     }
 
     /**
