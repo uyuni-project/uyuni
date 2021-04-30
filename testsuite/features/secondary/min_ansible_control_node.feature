@@ -31,9 +31,9 @@ Feature: Operate an Ansible control node in a normal minion
     When I follow "Ansible" in the content area
     Then I should see a "Ansible Control Node Configuration" text
     And I enter "/srv/playbooks/" as "new_playbook_path_input"
-    And I click on button with id "new_playbook_path_save"
+    And I click on "new_playbook_path_save"
     And I enter "/srv/playbooks/orion_dummy/hosts" as "new_inventory_path_input"
-    And I click on button with id "new_inventory_path_save"
+    And I click on "new_inventory_path_save"
 
   Scenario: Display inventories
     Given I am on the Systems overview page of this "sle_minion"
