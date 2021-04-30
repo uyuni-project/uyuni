@@ -7,6 +7,9 @@ Feature: Bootstrap a SLES 11 SP4 Salt SSH minion
   Scenario: Clean up sumaform leftovers on a SLES 11 SP4 Salt SSH minion
     When I perform a full salt minion cleanup on "sle11sp4_ssh_minion"
 
+  Scenario: Install prerequisite packages on SLES 11 SP4 Salt SSH minion
+    When I install package "python-xml" on this "sle11sp4_ssh_minion"
+
   Scenario: Bootstrap a SLES 11 SP4 system managed via salt-ssh
     Given I am authorized as "admin" with password "admin"
     When I go to the bootstrapping page
