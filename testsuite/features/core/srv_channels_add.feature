@@ -94,5 +94,6 @@ Feature: Adding channels
     And I select "AMD64 Debian" from "Architecture:"
     And I enter "Test-Channel-Deb-AMD64 for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
+    And I check "gpg_check"
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
