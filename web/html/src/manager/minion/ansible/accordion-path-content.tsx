@@ -18,13 +18,17 @@ type StateType = {
 
 function getURL(path: AnsiblePath) {
   let baseUrl: string;
-  if (path.type === "playbook") {
+  if (isPlaybook(path)) {
     baseUrl = "/rhn/manager/api/systems/details/ansible/discover-playbooks/";
   }
   else {
     baseUrl = "/rhn/manager/api/systems/details/ansible/introspect-inventory/";
   }
   return baseUrl + path.id;
+}
+
+function isPlaybook(path: AnsiblePath) {
+  return path.type === "playbook";
 }
 
 interface PlaybookDetails {
@@ -56,7 +60,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           if (blob.success) {
             const data = blob.data;
             this.setState({
-              content: this.props.path.type === "playbook" ?
+              content: isPlaybook(this.props.path) ?
                 this.digestPlaybookPathContent(data)
                 :
                 this.digestInventoryPathContent(data)
@@ -168,7 +172,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
                     this.state.errors.length > 0 ?
                       errors
                       :
-                      this.props.path.type === "playbook" ? this.renderPlaybookPathContent() : this.renderInventoryPathContent()
+                      isPlaybook(this.props.path) ? this.renderPlaybookPathContent() : this.renderInventoryPathContent()
                   }
                 </>
                 : null
