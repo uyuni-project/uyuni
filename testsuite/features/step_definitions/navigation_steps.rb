@@ -252,7 +252,7 @@ end
 # Click on a text which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" text in Ansible paths$/) do |text|
-  within(:xpath, "//div[@id=\"ansible-path-content\"]") do
+  within(:xpath, '//div[@id="ansible-path-content"]') do
     find('h6', text: text).click
   end
 end
