@@ -2277,7 +2277,7 @@ available for this kickstart profile to function properly.
 &lt;/li&gt;
 &lt;li&gt;
 @@PRODUCT_NAME@@ が、このキックスタートプロファイルのベースチャンネルに対応するクライアントツール
-チャンネルを利用できるようにしてください。利用できない場合は、  @@PRODUCT_NAME@@ 管理者に連絡し、
+チャンネルを利用できるようにしてください。利用できない場合は、 @@PRODUCT_NAME@@ 管理者に連絡し、
 クライアントツールチャンネルの mgr-inter-sync を要求してもう一度試してください。
 &lt;/li&gt;
 &lt;li&gt;
@@ -6446,7 +6446,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="needs-adaptation">追加のカーネルパラメーターは 128 文字以内にしてください。</target>
+        <target state="translated">追加のカーネルパラメーターは 2048 文字以内にしてください。</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -6565,7 +6565,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>パッケージプロファイル内に 'up2date' パッケージが含まれていないため、  &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; に対する自動インストールはスケジュールされませんでした。対象のシステムのパッケージプロファイルを更新する必要があります。</target>
+        <target>パッケージプロファイル内に 'up2date' パッケージが含まれていないため、 &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; に対する自動インストールはスケジュールされませんでした。対象のシステムのパッケージプロファイルを更新する必要があります。</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
@@ -7606,7 +7606,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url" xml:space="preserve">
           <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
-        <target>ファイルやディレクトリ、シンボリックリンクがありません。  &lt;a href="{0}"&gt; 追加&lt;/a&gt;</target>
+        <target>ファイルやディレクトリ、シンボリックリンクがありません。 &lt;a href="{0}"&gt; 追加&lt;/a&gt;</target>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
@@ -9960,11 +9960,11 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="images.message.error.nocreds" xml:space="preserve">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
-        <target>SUSE Studio と通信するための資格情報が正しくないものと思われます。  &lt;a href="/rhn/account/Credentials.do"&gt;こちら&lt;/a&gt; をご確認ください。</target>
+        <target>SUSE Studio と通信するための資格情報が正しくないものと思われます。 &lt;a href="/rhn/account/Credentials.do"&gt;こちら&lt;/a&gt; をご確認ください。</target>
       </trans-unit>
       <trans-unit id="images.message.error.connection" xml:space="preserve">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
-        <target>SUSE Studio との通信時に問題が発生しました。  &lt;a href="/rhn/account/Credentials.do"&gt;こちら&lt;/a&gt; で設定を再確認するか、再試行してください。</target>
+        <target>SUSE Studio との通信時に問題が発生しました。 &lt;a href="/rhn/account/Credentials.do"&gt;こちら&lt;/a&gt; で設定を再確認するか、再試行してください。</target>
       </trans-unit>
       <trans-unit id="images.message.success.scheduled" xml:space="preserve">
         <source>Image deployment scheduled: {0}</source>
@@ -10244,7 +10244,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-        <target state="translated">このシステムには &lt;strong&gt;{2}&lt;/strong&gt; への移行の予行演習が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。この処理が正常終了すると、  &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;こちら&lt;/a&gt; から本番移行をスケジュールできるようになります。</target>
+        <target state="translated">このシステムには &lt;strong&gt;{2}&lt;/strong&gt; への移行の予行演習が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。この処理が正常終了すると、 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;こちら&lt;/a&gt; から本番移行をスケジュールできるようになります。</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
@@ -10432,7 +10432,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system.entitle.added.virtualization_host" xml:space="preserve">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; for more info.</source>
-        <target>システムに対して仮想化システムの種類を追加したため、仮想化ゲストの管理を管理しやすくするための追加ステップを実行しました。詳しくは  &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; をお読みください。</target>
+        <target>システムに対して仮想化システムの種類を追加したため、仮想化ゲストの管理を管理しやすくするための追加ステップを実行しました。詳しくは &lt;a href="/docs/administration/virtualization.html"&gt;here&lt;/a&gt; をお読みください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10541,7 +10541,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="update.init.sls.with.updateinitsls.method" xml:space="preserve">
         <source>Please use 'updateInitSls' method for updating init.sls file.</source>
-        <target>init.sls ファイルの更新については 'updateInitSls'  メソッドをお使いください。</target>
+        <target>init.sls ファイルの更新については 'updateInitSls' メソッドをお使いください。</target>
       </trans-unit>
       <trans-unit id="editable.init.sls.only.for.state.channels" xml:space="preserve">
         <source>init.sls file can only be edited for state channels.</source>
@@ -10599,7 +10599,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices" xml:space="preserve">
         <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
-        <target state="translated">この文書では、  @@PRODUCT_NAME@@ に対する @@VENDOR_NAME@@ の推奨手順を説明しています</target>
+        <target state="translated">この文書では、 @@PRODUCT_NAME@@ に対する @@VENDOR_NAME@@ の推奨手順を説明しています</target>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics" xml:space="preserve">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -10974,84 +10974,84 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
         <target state="translated">ブートストラップステージを適用している際にエラーが発生しました。エラーメッセージ: {0}</target>
       </trans-unit>
-    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+      <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">撤回されたパッケージ: {0}</target>
+      </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">撤回されたパッチ: {0}</target>
+      </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
