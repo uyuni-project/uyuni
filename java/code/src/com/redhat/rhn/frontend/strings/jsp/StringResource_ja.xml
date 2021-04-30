@@ -1951,7 +1951,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">以下にある 'アカウントを停止する' ボタンを押すと直ちにログアウトすることになり、 &lt;b&gt;再びログインすることはできなくなります&lt;/b&gt; 。</target>
+        <target state="translated">以下にある 'アカウントを停止する' ボタンを押すと直ちにログアウトすることになり、
+&lt;b&gt;再びログインすることはできなくなります&lt;/b&gt; 。</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning_question" xml:space="preserve">
         <source>Are you sure you want to deactivate your account?</source>
@@ -4718,7 +4719,7 @@ navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target state="translated">&lt;strong&gt;*ヒント:&lt;/strong&gt; 組織管理者の権限は、このページでは変更できません。
-その代わりに、最上部のナビゲーションバーの  "ユーザ" タブに行き、
+その代わりに、最上部のナビゲーションバーの "ユーザ" タブに行き、
 組織内の各個人ユーザのプロファイルにアクセスして下さい。
 個人ユーザプロファイル内の "詳細" タブの "ロール" セクションで、
 組織管理者ロールを付与したり、削除したりすることができます。</target>
@@ -8317,11 +8318,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess" xml:space="preserve">
         <source>Packages has been requested for being locked.</source>
-        <target>ここではパッケージにロックを設定して、変更が行なわれないようにする
-                ことができます。ただし、ロックの設定にはしばらくの時間がかかることに
-                注意してください。ロック処理の前にパッケージが更新された場合で、
-                そのパッケージが新しいものであった場合は、ロックがキャンセルされる
-                ことになります。</target>
+        <target>パッケージのロックを要求しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -10314,7 +10311,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channelSummary" xml:space="preserve">
         <source>Below are channels with {0} repository attached to them.</source>
-        <target>{0}  リポジトリーが接続されているチャンネルです。</target>
+        <target>{0} リポジトリーが接続されているチャンネルです。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.noChannels" xml:space="preserve">
         <source>This repository is not linked to any channel.</source>
@@ -17343,7 +17340,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>ファイル名「{0}」はこのチャンネルにすでに存在しています。</target>
+        <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="addfiles.jsp.upload-link" xml:space="preserve">
         <source>Upload New Configuration File</source>
@@ -17503,7 +17500,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>現在のバージョン</target>
       </trans-unit>
@@ -17511,7 +17508,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>最終変更</target>
       </trans-unit>
@@ -17540,7 +17537,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>このチャンネルをサブスクライブしていて配備可能なシステムはありません</target>
       </trans-unit>
@@ -17548,7 +17545,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>動作</target>
       </trans-unit>
@@ -17556,7 +17553,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17564,7 +17561,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>すべてのファイルを配備</target>
       </trans-unit>
@@ -17572,7 +17569,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備</target>
       </trans-unit>
@@ -17580,7 +17577,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備</target>
       </trans-unit>
@@ -17588,7 +17585,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">以下の一覧から配備したいファイルを選択することができます。  選択すると、そのファイルを配備するシステムを選択するよう指示されます。</target>
       </trans-unit>
@@ -17596,7 +17593,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>ファイル名</target>
       </trans-unit>
@@ -17604,7 +17601,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>確認して選択したシステムに配備</target>
       </trans-unit>
@@ -17612,7 +17609,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>設定ファイルの配備: 配備するシステムを選択します</target>
       </trans-unit>
@@ -17620,7 +17617,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>選択したファイルを配備するシステムを選択してください。</target>
       </trans-unit>
@@ -17628,7 +17625,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;警告:&lt;/strong&gt; {0} 設定チャンネルから配備しようとしているファイルが、特定システムがサブスクライブしている上位チャンネルにある同じファイル名のファイルによって上書きされるか、またはこれらのファイルよりも順位が低くなる場合、この上書きや最上位のファイルバージョンがそのシステムに配備されることになり、{0} 設定チャンネルからのバージョンは配備されなくなりますので注意してください。</target>
       </trans-unit>
@@ -29647,56 +29644,56 @@ given channel.</source>
         </context-group>
         <target state="translated">設定状態チャンネルの作成</target>
       </trans-unit>
-    <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
+      <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">Content Lifecycle Management ビルドでのパッチ同期</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">状態</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
