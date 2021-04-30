@@ -1577,10 +1577,10 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
 end
 
 When(/^I copy autoinstall mocked files on server$/) do
-  target_dirs = "/tmp/autoinstall/Fedora_12_i386/images/pxeboot /tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /tmp/autoinstall/mock"
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
   $server.run("mkdir -p #{target_dirs}")
   base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
-  source_dir = "/tmp/autoinstall/"
+  source_dir = "/var/autoinstall/"
   return_codes = []
   return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
   return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')

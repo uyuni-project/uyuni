@@ -100,7 +100,7 @@ end
 
 # spacewalk errors steps
 Then(/^the up2date logs on client should contain no Traceback error$/) do
-  cmd = 'if grep "Traceback" /tmp/log/up2date ; then exit 1; else exit 0; fi'
+  cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
   _out, code = $client.run(cmd)
   raise 'error found, check the client up2date logs' if code.nonzero?
 end
@@ -190,7 +190,7 @@ Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
-  ct.distro_create(distro, '/tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  ct.distro_create(distro, '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I trigger cobbler system record$/) do
@@ -220,7 +220,7 @@ Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do 
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/tmp/autoinstall/mock/empty.xml')
+  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I remove kickstart profiles and distros$/) do
@@ -343,14 +343,14 @@ Given(/^I am on the manage software channels page$/) do
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  $server.run_until_ok("ls /tmp/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   $server.run(command, true, 500, 'root')
-  $server.run('ls -lR /tmp/spacewalk/packages', true, 500, 'root')
+  $server.run('ls -lR /var/spacewalk/packages', true, 500, 'root')
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
@@ -1259,8 +1259,8 @@ end
 
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   # authorized_keys paths on the client
-  auth_keys_path = '/tmp/.ssh/authorized_keys'
-  auth_keys_sav_path = '/tmp/.ssh/authorized_keys.sav'
+  auth_keys_path = '/var/.ssh/authorized_keys'
+  auth_keys_sav_path = '/var/.ssh/authorized_keys.sav'
   target = get_target(host)
   _, ret_code = target.run("cp #{auth_keys_path} #{auth_keys_sav_path}")
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
@@ -1274,14 +1274,14 @@ And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/
     File.dirname(__FILE__) + '/../upload_files/ssh_keypair/' + key_filename,
     '/tmp/' + key_filename
   )
-  target.run("cat /tmp/#{key_filename} >> /tmp/.ssh/authorized_keys", true, 500, 'root')
+  target.run("cat /tmp/#{key_filename} >> /var/.ssh/authorized_keys", true, 500, 'root')
   raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   # authorized_keys paths on the client
-  auth_keys_path = '/tmp/.ssh/authorized_keys'
-  auth_keys_sav_path = '/tmp/.ssh/authorized_keys.sav'
+  auth_keys_path = '/var/.ssh/authorized_keys'
+  auth_keys_sav_path = '/var/.ssh/authorized_keys.sav'
   target = get_target(host)
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
