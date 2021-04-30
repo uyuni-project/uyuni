@@ -94,11 +94,6 @@ Feature: Adding channels
     And I select "AMD64 Debian" from "Architecture:"
     And I enter "Test-Channel-Deb-AMD64 for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
-    # WORKAROUND
-    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo
-    # is signed by a GPG key that is not in the keyring. This workaround temporarily
-    # disables GPG check, before this is properly handled at sumaform/terraform level.
-    And I uncheck "gpg_check"
-    # End of WORKAROUND
+    And I check "gpg_check"
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-Deb-AMD64 created." text
