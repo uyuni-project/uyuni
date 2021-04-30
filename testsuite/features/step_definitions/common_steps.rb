@@ -190,7 +190,7 @@ Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
-  ct.distro_create(distro, '/tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/tmp/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  ct.distro_create(distro, '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I trigger cobbler system record$/) do
@@ -220,7 +220,7 @@ Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do 
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/tmp/autoinstall/mock/empty.xml')
+  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I remove kickstart profiles and distros$/) do
