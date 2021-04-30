@@ -17,11 +17,11 @@ Feature: Operate an Ansible control node in SSH minion
      Then I should see a "Ansible Control Node type has been applied." text
 
   Scenario: Apply highstate and check that Ansible is installed
-    Given I am on the Systems overview page of this "ssh_minion"
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    Then "ansible" should be installed on "ssh_minion"
+     Given I am on the Systems overview page of this "ssh_minion"
+     When I follow "States" in the content area
+     And I click on "Apply Highstate"
+     And I wait until event "Apply highstate scheduled by admin" is completed
+     Then "ansible" should be installed on "ssh_minion"
 
   Scenario: The Ansible tab appears in the system overview page
      Given I am on the Systems overview page of this "ssh_minion"
@@ -32,11 +32,10 @@ Feature: Operate an Ansible control node in SSH minion
      Given I am on the Systems overview page of this "ssh_minion"
      When I follow "Ansible" in the content area
      Then I should see a "Ansible Control Node Configuration" text
-     #FIXME
-     And I enter "/srv/playbooks/" as XXXXXXXXX
-     And I click on "Save" in element "playbooks"
-     And I enter "/srv/playbooks/example_playbook2_orion_dummy/hosts" as XXXXXXXXX
-     And I click on "Save" in element "inventories"
+     And I enter "/srv/playbooks/" as "new_playbook_path_input"
+     And I click on button with id "new_playbook_path_save"
+     And I enter "/srv/playbooks/example_playbook2_orion_dummy/hosts" as "new_inventory_path_input"
+     And I click on button with id "new_inventory_path_save"
 
   Scenario: Display inventories
      Given I am on the Systems overview page of this "ssh_minion"
@@ -54,7 +53,7 @@ Feature: Operate an Ansible control node in SSH minion
      And I click on "/srv/playbooks/"
      Then I wait until I see "Fullpath: /srv/playbooks/example_playbook2_orion_dummy/example_playbook2_orion_dummy.yml" text
 
-  Scenario: Run a playbook using default inventory
+  Scenario: Run a playbook using custom inventory
      Given I am on the Systems overview page of this "ssh_minion"
      When I follow "Ansible" in the content area
      And I follow "Playbooks" in the content area
