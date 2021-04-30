@@ -35,6 +35,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link SCCClient} methods.
@@ -66,15 +67,17 @@ public class SCCSystemRegistrationManagerTest extends TestCase {
 
         SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
         SCCCachingFactory.initNewSystemsToForward();
-        List<SCCRegCacheItem> systemsToForwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
-        assertEquals(1, systemsToForwardRegistration.size());
+        List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
+        List<SCCRegCacheItem> testSystems = allUnregistered.stream()
+                .filter(i -> i.getOptServer().get().equals(testSystem))
+                .collect(Collectors.toList());
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setUsername("username");
         credentials.setPassword("password");
         CredentialsFactory.storeCredentials(credentials);
-        sccSystemRegistrationManager.register(systemsToForwardRegistration, credentials);
+        sccSystemRegistrationManager.register(testSystems, credentials);
         List<SCCRegCacheItem> afterRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
-        assertEquals(0, afterRegistration.size());
+        assertEquals(allUnregistered.size() - 1, afterRegistration.size());
         List<SCCRegCacheItem> sccRegCacheItems = SCCCachingFactory.listRegItemsByCredentials(credentials);
         assertEquals(1, sccRegCacheItems.size());
 
