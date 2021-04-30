@@ -46,7 +46,7 @@ end
 When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   next if has_content?(text)
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
-    break if has_content?(text)
+    break if has_content?(text, wait: 3)
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -59,10 +59,10 @@ end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
-  next if has_content?("This action's status is: Completed.")
+  next if has_content?("This action's status is: Completed.", wait: 3)
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
-    break if has_content?("This action's status is: Completed.")
-    raise 'Event failed' if has_content?("This action's status is: Failed.")
+    break if has_content?("This action's status is: Completed.", wait: 3)
+    raise 'Event failed' if has_content?("This action's status is: Failed.", wait: 3)
     current = Time.now
     if current - last > 150
       STDOUT.puts "#{current} Still waiting for action to complete..."
@@ -84,9 +84,9 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host
 end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
-  next unless has_content?(text)
+  next unless has_content?(text, wait: 3)
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
-    break unless has_content?(text)
+    break unless has_content?(text, wait: 3)
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
