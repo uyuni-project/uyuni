@@ -862,14 +862,18 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
   if host.include? 'ceos'
     cmd = "yum -y install #{package}"
     successcodes = [0]
+    not_found_msg = 'No package'
   elsif host.include? 'ubuntu'
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
+    not_found_msg = 'Unable to locate package'
   else
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -877,14 +881,18 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   if host.include? 'ceos'
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
+    not_found_msg = 'No package'
   elsif host.include? 'ubuntu'
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
+    not_found_msg = 'Unable to locate package'
   else
     cmd = "zypper --non-interactive install --oldpackage -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -900,6 +908,15 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
     successcodes = [0, 100, 101, 102, 103, 104, 106]
   end
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+end
+
+When(/^I install package tftpboot-installation on the server$/) do
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  packages = output.split("\n")
+  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+  # Reverse sort the package name to get the latest version first and install it
+  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+  $server.run("rpm -i #{package}")
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|

@@ -708,31 +708,47 @@ end
 # Repository steps
 
 # Enable tools repositories (both stable and development)
-When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+When(/^I enable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  elsif os_family =~ /^centos/
+  when /^centos/
     repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
+  when /^ubuntu/
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}")
+    end
+  else
+    raise "This step has no implementation for #{os_family} system."
   end
 end
 
-When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+When(/^I disable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  elsif os_family =~ /^centos/
+  when /^centos/
     repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
     end
+  when /^ubuntu/
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}")
+    end
+  else
+    raise "This step has no implementation for #{os_family} system."
   end
 end
 
