@@ -31,7 +31,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const localTime = window.localTime;
 
   useEffect(() => {
-    const getInventoryPaths = async () => {
+    const getInventoryPaths = () => {
       return Network.get(`/rhn/manager/api/systems/details/ansible/paths/inventory/${playbook.path.minionServerId}`).promise
         .then((res: JsonResult<AnsiblePath[]>) => res.success ? res.data : Promise.reject(res))
         .then(inv => inv.map(i => i.path))
@@ -44,7 +44,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         );
     }
 
-    const getPlaybookContents = async () => {
+    const getPlaybookContents = () => {
       return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents",
         JSON.stringify({
           pathId: playbook.path.id,
@@ -66,7 +66,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
     setDatetime(Utils.dateWithTimezone(localTime || ""));
   }, [localTime]);
 
-  const schedule = async () => {
+  const schedule = () => {
     return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook",
       JSON.stringify({
         playbookPath: playbook.fullPath,
@@ -120,7 +120,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
               onDateTimeChanged={setDatetime}
               onActionChainChanged={setActionChain}
               systemIds={[playbook.path.minionServerId]}
-              actionType="states.apply"
+              actionType="ansible.playbook"
             />
             <div className="form-horizontal">
               <div className="form-group">

@@ -9052,6 +9052,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ansible.playbook" xml:space="preserve">
+        <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
         <context-group name="ctx">
