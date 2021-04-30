@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-29 18:58+0000\n"
+"POT-Creation-Date: 2021-04-30 14:05+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -139,6 +139,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
@@ -227,6 +228,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
@@ -251,6 +253,7 @@ msgstr "取り消し"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
 #: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
@@ -292,6 +295,8 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
+#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
 msgstr "保存"
@@ -1754,6 +1759,7 @@ msgstr "動作を "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:223
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -3504,6 +3510,7 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/nets/network-properties.js:471
@@ -3632,6 +3639,108 @@ msgid ""
 msgstr ""
 "スケジュールの割り当てを行なうと、このセット内の全てのシステムにある従来の割"
 "り当てを置き換えることになります。"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+msgid "No Playbook found."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+msgid "Inventory file empty."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#, fuzzy
+msgid "Loading content.."
+msgstr "読み込んでいます..."
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
+#, fuzzy
+msgid "An error occurred while loading data. Please check server logs."
+msgstr ""
+"Taskomatic でのジョブスケジュール時にエラーが発生しました。ログをご確認くださ"
+"い。"
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
+msgid ""
+"Ansible Control Node Configuration: add paths for Playbook discovery and "
+"Inventory files introspection."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
+msgid "Playbook Directories"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
+msgid "Add a Playbook directory"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
+msgid "e.g., /srv/playbooks"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
+msgid "Inventory Files"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
+msgid "Add an Inventory file"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
+msgid "e.g., /etc/ansible/testing/hosts"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
+#, fuzzy
+msgid "Loading.."
+msgstr "読み込んでいます..."
+
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
+msgid "Nothing configured. Please add paths in the "
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#, fuzzy
+msgid "Loading playbook contents.."
+msgstr "子チャンネル無し"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#, fuzzy
+msgid "Back to playbook list"
+msgstr "一覧に戻る"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#, fuzzy
+msgid "Schedule playbook execution"
+msgstr "検査のスケジュール"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+msgid "Playbook '{0}'"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
+msgid "Schedule Playbook Execution"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
+msgid "Inventory Path"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
+msgid "Playbook Content"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#, fuzzy
+msgid "Action has been successfully added to action chain"
+msgstr "動作を動作チェーンに追加しました "
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#, fuzzy
+msgid "Playbook execution has been"
+msgstr "動作を "
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -4205,11 +4314,6 @@ msgstr "SUSE Manager の既定値"
 #, fuzzy
 msgid "Loading child channels.."
 msgstr "子チャンネル無し"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
-msgid "Loading.."
-msgstr "読み込んでいます..."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
 #, fuzzy
