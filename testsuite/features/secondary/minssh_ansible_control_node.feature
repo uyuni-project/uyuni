@@ -74,7 +74,5 @@ Feature: Operate an Ansible control node in SSH minion
      And I uncheck "ansible_control_node"
      And I click on "Update Properties"
      Then I should see a "System properties changed" text
-     And I apply highstate on "ssh_minion"
-     And "ansible" should be installed on "ssh_minion"
-     And I remove testing playbooks and inventory files from "ssh_minion"
+     And I remove package "orion-dummy" from this "ssh_minion" without error control
      And I remove "/tmp/example_file.txt" from "ssh_minion"
