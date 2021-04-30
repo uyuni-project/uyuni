@@ -548,7 +548,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Ansible Control Node" xml:space="preserve">
-        <source>Ansible Control Node</source>
+        <source>Control Node</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
