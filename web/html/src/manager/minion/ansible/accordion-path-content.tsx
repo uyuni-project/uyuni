@@ -4,9 +4,11 @@ import Network from "utils/network";
 import { Messages, Utils } from "components/messages";
 import { Loading } from "components/utils/Loading";
 import { AceEditor } from "components/ace-editor";
+import { Button } from "components/buttons";
 
 type PropsType = {
   path: AnsiblePath;
+  onSelectPlaybook: (playbook: PlaybookDetails | null) => void
 };
 
 type StateType = {
@@ -31,7 +33,7 @@ function isPlaybook(path: AnsiblePath) {
   return path.type === "playbook";
 }
 
-interface PlaybookDetails {
+export interface PlaybookDetails {
   path: AnsiblePath,
   fullPath: string,
   customInventory?: string,
@@ -115,7 +117,13 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
         { i === 0 ? <br/> : null }
         <dl className="row">
           <dt className="col-xs-2">{t('Playbook File Name')}:</dt>
-          <dd className="col-xs-8">{p.name}</dd>
+          <dd className="col-xs-8">
+            <Button
+              icon="fa-file-text-o"
+              text={p.name}
+              handler={() => this.props.onSelectPlaybook(p)}
+              className="btn-link btn-sm" />
+          </dd>
         </dl>
         <dl className="row">
           <dt className="col-xs-2">{t('Full Path')}:</dt>

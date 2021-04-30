@@ -3,8 +3,9 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages";
 import Network from "utils/network";
 import { AnsiblePath } from "./ansible-path-type";
-import AccordionPathContent from "./accordion-path-content";
+import AccordionPathContent, { PlaybookDetails } from "./accordion-path-content";
 import { Loading } from "components/utils/Loading";
+import SchedulePlaybook from "./schedule-playbook";
 
 type PropsType = {
   minionServerId: number;
@@ -15,6 +16,7 @@ type StateType = {
   minionServerId: number;
   pathContentType: string;
   pathList: AnsiblePath[];
+  selectedPlaybook: PlaybookDetails | null;
   errors: string[];
   loading: boolean;
 };
@@ -27,6 +29,7 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       minionServerId: props.minionServerId,
       pathContentType: props.pathContentType,
       pathList: [],
+      selectedPlaybook: null,
       errors: [],
       loading: true
     };
@@ -43,6 +46,14 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
   }
 
   render () {
+    if (this.state.selectedPlaybook) {
+      return (
+        <SchedulePlaybook
+          playbook={this.state.selectedPlaybook}
+          onBack={() => this.setState({selectedPlaybook: null})} />
+      );
+    }
+
     const errors = this.state.errors.length > 0 ? <Messages items={Utils.error(this.state.errors)} /> : null;
     return (
       <div>
@@ -52,7 +63,7 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
               <Loading text={t("Loading..")} />
               :
               this.state.pathList?.length > 0 ?
-                this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} /> )
+                this.state.pathList.map(p => <AccordionPathContent key={p.id} path={p} onSelectPlaybook={(p) => this.setState({selectedPlaybook: p})} /> )
                 :
                 <div>
                   {t("Nothing configured. Please add paths in the ")}
