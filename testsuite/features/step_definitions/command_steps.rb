@@ -535,25 +535,25 @@ When(/^the server stops mocking an IPMI host$/) do
 end
 
 When(/^the server starts mocking a Redfish host$/) do
-  $server.run('mkdir -p /var/Redfish-Mockup-Server/')
+  $server.run('mkdir -p /root/Redfish-Mockup-Server/')
   ['redfishMockupServer.py', 'rfSsdpServer.py'].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = '/var/Redfish-Mockup-Server/' + file
+    dest = '/root/Redfish-Mockup-Server/' + file
     return_code = file_inject($server, source, dest)
     raise 'File injection failed' unless return_code.zero?
   end
   $server.run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
   $server.run('unzip DSP2043_2019.1.zip')
-  cmd = "/usr/bin/python3 /var/Redfish-Mockup-Server/redfishMockupServer.py " \
+  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{$server.full_hostname} -p 8443 " \
-        "-S -D /var/DSP2043_2019.1/public-catfish/ " \
+        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
         "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
         "< /dev/null > /dev/null 2>&1 &"
   $server.run(cmd)
 end
 
 When(/^the server stops mocking a Redfish host$/) do
-  $server.run('pkill -e -f /var/Redfish-Mockup-Server/redfishMockupServer.py')
+  $server.run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -980,10 +980,10 @@ end
 
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
-    return_code = file_extract($server, '/var/ssl-build/' + file, '/tmp/' + file)
+    return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
     raise 'File extraction failed' unless return_code.zero?
-    $proxy.run('mkdir -p /var/ssl-build')
-    return_code = file_inject($proxy, '/tmp/' + file, '/var/ssl-build/' + file)
+    $proxy.run('mkdir -p /root/ssl-build')
+    return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
     raise 'File injection failed' unless return_code.zero?
   end
 end

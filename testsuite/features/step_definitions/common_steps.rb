@@ -1259,8 +1259,8 @@ end
 
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   # authorized_keys paths on the client
-  auth_keys_path = '/var/.ssh/authorized_keys'
-  auth_keys_sav_path = '/var/.ssh/authorized_keys.sav'
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
   target = get_target(host)
   _, ret_code = target.run("cp #{auth_keys_path} #{auth_keys_sav_path}")
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
@@ -1274,14 +1274,14 @@ And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/
     File.dirname(__FILE__) + '/../upload_files/ssh_keypair/' + key_filename,
     '/tmp/' + key_filename
   )
-  target.run("cat /tmp/#{key_filename} >> /var/.ssh/authorized_keys", true, 500, 'root')
+  target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", true, 500, 'root')
   raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   # authorized_keys paths on the client
-  auth_keys_path = '/var/.ssh/authorized_keys'
-  auth_keys_sav_path = '/var/.ssh/authorized_keys.sav'
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
   target = get_target(host)
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
