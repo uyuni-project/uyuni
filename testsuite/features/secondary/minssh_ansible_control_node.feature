@@ -42,8 +42,8 @@ Feature: Operate an Ansible control node in SSH minion
      When I follow "Ansible" in the content area
      And I follow "Inventories" in the content area
      And I wait until I see "/srv/playbooks/example_playbook2_orion_dummy/hosts" text
-     Then I click on "/srv/playbooks/example_playbook2_orion_dummy/hosts"
-     And I should see "myself" text
+     Then I click on "/srv/playbooks/example_playbook2_orion_dummy/hosts" text in Ansible paths
+     And I should see a "myself" text
 
   Scenario: Discover playbooks and display them
      Given I am on the Systems overview page of this "ssh_minion"
