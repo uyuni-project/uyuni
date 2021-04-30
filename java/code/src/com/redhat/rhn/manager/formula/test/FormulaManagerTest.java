@@ -224,9 +224,11 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
 
         Map<String, Object> formulaData = new HashMap<>();
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        Map<String, Object> exportersData = new HashMap<>();
+        exportersData.put("node_exporter", Collections.singletonMap("enabled", true));
+        exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        formulaData.put("exporters", exportersData);
 
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
@@ -244,9 +246,11 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(combinedFormulaData.getSystemID(), minion.getId());
         assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
-        assertNotNull(combinedFormulaData.getFormulaValues().get("postgres_exporter"));
-        assertNotNull(combinedFormulaData.getFormulaValues().get("apache_exporter"));
-        assertNotNull(combinedFormulaData.getFormulaValues().get("node_exporter"));
+        assertNotNull(combinedFormulaData.getFormulaValues().get("exporters"));
+        exportersData = (Map<String, Object>) combinedFormulaData.getFormulaValues().get("exporters");
+        assertNotNull(exportersData.get("postgres_exporter"));
+        assertNotNull(exportersData.get("apache_exporter"));
+        assertNotNull(exportersData.get("node_exporter"));
 
         // minion with only system formulas with no group formula
         minion = MinionServerFactoryTest.createTestMinionServer(user);
