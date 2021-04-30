@@ -243,12 +243,6 @@ When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
 end
 
 #
-# Click on a button with a given "id"
-When(/^I click on button with id "([^"]*)"$/) do |button_id|
-  find(:xpath, ".//button[@id=\"#{button_id}\"]").click
-end
-
-#
 # Click on a text which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" text in Ansible paths$/) do |text|
