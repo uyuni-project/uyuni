@@ -9901,6 +9901,69 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.invalid_path" xml:space="preserve">
+        <source>Invalid path (must be a valid absolute path)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.duplicate_path" xml:space="preserve">
+        <source>Path already exists</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
+        <source>Control node is not responding</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
+        <source>Invalid path type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.salt_error" xml:space="preserve">
+        <source>Error when executing salt state: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.entity_not_found" xml:space="preserve">
+        <source>The requested entity not found or inaccessible</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.playbook" xml:space="preserve">
+        <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
       </body>
   </file>
 </xliff>
