@@ -20,10 +20,6 @@ Feature: Bootstrap a SLES 15 Salt SSH minion
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle15_ssh_minion"
 
-  # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for SLES 15 Salt SSH minion
-    When I import the GPG keys for "sle15_ssh_minion"
-
 @proxy
   Scenario: Check connection from SLES 15 SSH minion to proxy
     Given I am on the Systems overview page of this "sle15_ssh_minion"

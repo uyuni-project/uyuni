@@ -25,10 +25,6 @@ Feature: Bootstrap a Ubuntu 20.04 Salt SSH minion
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ubuntu2004_ssh_minion"
 
-  # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for Ubuntu 20.04 Salt SSH minion
-    When I import the GPG keys for "ubuntu2004_ssh_minion"
-
   Scenario: Check events history for failures on SSH-managed Ubuntu 20.04 minion
     Given I am on the Systems overview page of this "ubuntu2004_ssh_minion"
     Then I check for failed events on history event page

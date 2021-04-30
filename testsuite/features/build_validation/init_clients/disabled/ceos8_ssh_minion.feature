@@ -23,10 +23,6 @@ Feature: Bootstrap a CentOS 8 Salt SSH minion
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "ceos8_ssh_minion"
 
-  # WORKAROUND bsc#1181847
-  Scenario: Import the GPG keys for CentOS 8 Salt SSH minion
-    When I import the GPG keys for "ceos8_ssh_minion"
-
 @proxy
   Scenario: Check connection from CentOS 8 Salt SSH minion to proxy
     Given I am on the Systems overview page of this "ceos8_ssh_minion"
