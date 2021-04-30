@@ -11,6 +11,7 @@ import { AceEditor } from "components/ace-editor";
 import { PlaybookDetails } from "./accordion-path-content";
 import { Utils } from "utils/functions";
 import { ActionChainLink, ActionLink } from "components/links";
+import { Loading } from "components/utils/Loading";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails,
@@ -86,7 +87,8 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   };
 
   if (loading)
-    return (<p>{t("Loading playbook contents...")}</p>); //TODO: Make pretty
+    return <Loading text={t("Loading playbook contents..")} />;
+
 
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
