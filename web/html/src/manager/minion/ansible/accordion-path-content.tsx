@@ -11,7 +11,7 @@ type PropsType = {
 
 type StateType = {
   isOpen: boolean;
-  content: any;
+  content: PlaybookDetails[] | String | null;
   errors: string[];
   loading: boolean;
 };
@@ -58,13 +58,12 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
         Network.get(getURL(path))
         .promise.then(blob => {
           if (blob.success) {
-            const data = blob.data;
-            this.setState({
-              content: isPlaybook(this.props.path) ?
-                this.digestPlaybookPathContent(data)
+            this.setState({ content:
+              isPlaybook(path) ?
+                this.digestPlaybookPathContent(blob.data)
                 :
-                this.digestInventoryPathContent(data)
-            });
+                this.digestInventoryPathContent(blob.data)
+           });
           }
           else {
             this.setState({ errors: blob.messages });
@@ -79,6 +78,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     else {
       this.setState({ isOpen: false, errors: [] });
     }
+  }
+
+  isPlaybookContent(input: any): input is PlaybookDetails[] {
+    return isPlaybook(this.props.path);
   }
 
   digestPlaybookPathContent(blob: any) {
@@ -102,12 +105,11 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     return playbookDetailsList;
   }
 
-  renderPlaybookPathContent() {
-    if (!this.state.content?.length) {
+  renderPlaybookPathContent(content: PlaybookDetails[] | null) {
+    if (!content?.length) {
       return <div>{t("No Playbook found.")}</div>
     }
 
-    const content: PlaybookDetails[] = this.state.content;
     return content.map((p, i) =>
       <div key={p.toString() + "_" + i.toString()}>
         { i === 0 ? <br/> : null }
@@ -132,8 +134,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     return blob
   }
 
-  renderInventoryPathContent() {
-    if (!this.state.content?.length) {
+  renderInventoryPathContent(content: String | null) {
+    if (!content?.length) {
       return <div>{t("Inventory file empty.")}</div>
     }
 
@@ -144,7 +146,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
               maxLines={40}
               readOnly={true}
               mode="yaml"
-              content={this.state.content}
+              content={content}
             ></AceEditor>;
   }
 
@@ -172,7 +174,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
                     this.state.errors.length > 0 ?
                       errors
                       :
-                      isPlaybook(this.props.path) ? this.renderPlaybookPathContent() : this.renderInventoryPathContent()
+                      this.isPlaybookContent(this.state.content) ?
+                        this.renderPlaybookPathContent(this.state.content)
+                        :
+                        this.renderInventoryPathContent(this.state.content)
                   }
                 </>
                 : null
