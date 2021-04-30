@@ -287,12 +287,13 @@ public class AnsibleHandler extends BaseHandler {
      * @param pathId the path id
      * @return the inventory contents under given path
      *
-     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId
+     * @xmlrpc.doc Introspect inventory under given inventory path with given pathId and return it in a structured way
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "pathId", "path id")
-     * @xmlrpc.returntype todo update
+     * @xmlrpc.returntype
+     * #struct_begin("Inventory in a nested structure")
+     * #struct_end()
      */
-    // todo: more fitting structure?
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
         try {
             return AnsibleManager.introspectInventory(pathId, loggedInUser)
