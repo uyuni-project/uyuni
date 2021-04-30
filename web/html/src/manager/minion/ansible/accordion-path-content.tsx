@@ -99,7 +99,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
   }
 
   renderPlaybookPathContent() {
-    if (this.state.content?.length) {
+    if (!this.state.content?.length) {
       return <div>{t("No Playbook found.")}</div>
     }
 
@@ -129,8 +129,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
   }
 
   renderInventoryPathContent() {
-    if (this.state.content?.length) {
-      return <div>{t("Inventory file not found or empty.")}</div>
+    if (!this.state.content?.length) {
+      return <div>{t("Inventory file empty.")}</div>
     }
 
     return <AceEditor
