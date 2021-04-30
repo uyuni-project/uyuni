@@ -292,6 +292,7 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "pathId", "path id")
      * @xmlrpc.returntype
      * #struct_begin("Inventory in a nested structure")
+     *   #param_desc("object", "Inventory item", "Inventory item (can be nested)")
      * #struct_end()
      */
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
