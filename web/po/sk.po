@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-30 20:58+0000\n"
-"PO-Revision-Date: 2021-04-30 20:57+0000\n"
+"PO-Revision-Date: 2021-05-01 15:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3671,7 +3671,7 @@ msgstr "Načítava sa..."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "Nič nakonfigurované. Pridajte, prosím, cesty v "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
 msgid "Loading playbook contents.."
@@ -3687,11 +3687,11 @@ msgstr "Naplánovať vykonanie scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "Scenár '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "Naplánovať vykonanie scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
@@ -3699,7 +3699,7 @@ msgstr "Inventárna cesta"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "Obsah scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
 msgid "Action has been successfully added to action chain"
@@ -4809,11 +4809,11 @@ msgstr "Grafika"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "Odpojené"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "Nepodarilo sa pripojiť"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4821,7 +4821,7 @@ msgstr "Prepnúť plnú veľkosť"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "Hosť nie je spustený"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
