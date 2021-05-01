@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-26 17:57+0000\n"
+"PO-Revision-Date: 2021-05-01 15:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1627,27 +1627,27 @@ msgstr "použitie: custominfo_createkey [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/custominfo.py:74
 msgid "custominfo_deletekey: Delete a custom key"
-msgstr ""
+msgstr "custominfo_deletekey: Vymazať vlastný kľúč"
 
 #: ../src/spacecmd/custominfo.py:75
 msgid "usage: custominfo_deletekey KEY ..."
-msgstr ""
+msgstr "použitie: custominfo_deletekey KĽÚČ ..."
 
 #: ../src/spacecmd/custominfo.py:115
 msgid "custominfo_listkeys: List all custom keys"
-msgstr ""
+msgstr "custominfo_listkeys: Vypísať zoznam všetkých vlastných kľúčov"
 
 #: ../src/spacecmd/custominfo.py:116
 msgid "usage: custominfo_listkeys"
-msgstr ""
+msgstr "použitie: custominfo_listkeys"
 
 #: ../src/spacecmd/custominfo.py:133
 msgid "custominfo_details: Show the details of a custom key"
-msgstr ""
+msgstr "custominfo_details: Zobraziť podrobnosti vlastného kľúča"
 
 #: ../src/spacecmd/custominfo.py:134
 msgid "usage: custominfo_details KEY ..."
-msgstr ""
+msgstr "použitie: custominfo_details KĽÚČ ..."
 
 #: ../src/spacecmd/custominfo.py:156
 msgid "No keys matched argument '{}'."
@@ -1675,11 +1675,11 @@ msgstr ""
 
 #: ../src/spacecmd/custominfo.py:184
 msgid "custominfo_updatekey: Update a custom key"
-msgstr ""
+msgstr "custominfo_updatekey: Aktualizovať vlastný kľúč"
 
 #: ../src/spacecmd/custominfo.py:185
 msgid "usage: custominfo_updatekey [NAME] [DESCRIPTION]"
-msgstr ""
+msgstr "použitie: custominfo_updatekey [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/distribution.py:43
 msgid "distribution_create: Create a Kickstart tree"
@@ -2488,7 +2488,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:444
 msgid "Custom Options"
-msgstr ""
+msgstr "Vlastné možnosti"
 
 #: ../src/spacecmd/kickstart.py:451
 msgid "Partitioning"
