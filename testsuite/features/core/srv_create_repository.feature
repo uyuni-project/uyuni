@@ -82,7 +82,12 @@ Feature: Add a repository to a channel
     And I enter "Test-Repository-Deb" as "label"
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
-    And I check "metadataSigned"
+    # WORKAROUND
+    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo
+    # is signed by a GPG key that is not in the keyring. This workaround temporarily
+    # disables GPG check, before this is properly handled at sumaform/terraform level.
+    And I uncheck "metadataSigned"
+    # End of WORKAROUND
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
