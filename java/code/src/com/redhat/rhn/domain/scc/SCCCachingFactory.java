@@ -551,4 +551,36 @@ public class SCCCachingFactory extends HibernateFactory {
                 .setParameter("creds", cred)
                 .getResultList();
     }
+
+    /**
+     * Lookup SCCRegCacheItem for a Server
+     * @param srv the Server
+     * @return optional SCCRegCacheItem
+     */
+    public static Optional<SCCRegCacheItem> lookupCacheItemByServer(Server srv) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRegCacheItem> select = builder.createQuery(SCCRegCacheItem.class);
+        Root<SCCRegCacheItem> root = select.from(SCCRegCacheItem.class);
+        select.where(builder.equal(root.get("server"), srv));
+        return getSession().createQuery(select).uniqueResultOptional();
+
+    }
+
+    /**
+     * Set SCC Registration Required Flag for a given server
+     * @param srv the server
+     * @param rereg status
+     */
+    public static void setReregRequired(Server srv, boolean rereg) {
+        lookupCacheItemByServer(srv).ifPresentOrElse(
+                i -> {
+                    i.setSccRegistrationRequired(rereg);
+                    saveRegCacheItem(i);
+                    },
+                () -> {
+                    SCCRegCacheItem item = new SCCRegCacheItem(srv);
+                    item.setSccRegistrationRequired(rereg);
+                    saveRegCacheItem(item);
+                });
+    }
 }

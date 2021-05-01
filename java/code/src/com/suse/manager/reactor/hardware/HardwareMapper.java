@@ -16,6 +16,7 @@ package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Device;
@@ -703,6 +704,9 @@ public class HardwareMapper {
         if (virtType != virtualInstance.getType()) {
             LOG.info("Changing the type from -> " + virtualInstance.getType().getLabel() +
                     " to -> " + virtType.getLabel());
+            // Set rereg manual as DB trigger fire on update only, but we delete/insert.
+            Optional.ofNullable(virtualInstance.getGuestSystem()).ifPresent(
+                    gSrv -> SCCCachingFactory.setReregRequired(gSrv, true));
             virtualInstance.setType(virtType);
         }
         // Don't update memory with kernel-seen one
