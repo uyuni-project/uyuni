@@ -82,7 +82,6 @@ Feature: Add a repository to a channel
     And I enter "Test-Repository-Deb" as "label"
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
-    And I check "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
