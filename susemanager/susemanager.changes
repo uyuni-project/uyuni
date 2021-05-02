@@ -86,7 +86,7 @@ Fri Apr 16 13:27:26 CEST 2021 - jgonzalez@suse.com
 
 -------------------------------------------------------------------
 Fri Mar 05 15:43:37 CET 2021 - jgonzalez@suse.com
-
+ 
 - version 4.2.9-1
 - Feat: make mgr-create-bootstrap-repo log to another directory and logrotate it
 
