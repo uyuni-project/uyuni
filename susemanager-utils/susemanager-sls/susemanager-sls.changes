@@ -1,3 +1,5 @@
+- Do not install python2-salt on Salt 3002.2 Docker build hosts (bsc#1185506)
+
 -------------------------------------------------------------------
 Tue May 04 13:55:56 CEST 2021 - jgonzalez@suse.com
 
