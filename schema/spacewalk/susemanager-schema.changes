@@ -1,3 +1,4 @@
+- DB schema to support forwarding data to SCC
 - Rename SP to product migration
 - Ansible integration: configure control node paths (playbooks and inventories)
 

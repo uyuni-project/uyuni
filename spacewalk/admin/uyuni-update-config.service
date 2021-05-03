@@ -1,0 +1,9 @@
+[Unit]
+Description=Uyuni update config
+Before=uyuni-check-database.service tomcat.service apache2.service rhn-search.service taskomatic.service
+After=postgresql.service
+
+[Service]
+ExecStart=/usr/sbin/uyuni-update-config
+Type=oneshot
+RemainAfterExit=yes

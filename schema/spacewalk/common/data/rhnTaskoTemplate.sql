@@ -259,4 +259,11 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
                         1,
                         null);
 
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+            VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-forward-registration-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='mgr-forward-registration'),
+                        0,
+                        null);
+
 commit;
