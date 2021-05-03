@@ -6,6 +6,7 @@ Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
+    When I copy autoinstall mocked files on server
 
   Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
@@ -25,7 +26,7 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
-    And I enter "/install/Fedora_12_i386/" as "basepath"
+    And I enter "/var/autoinstall/Fedora_12_i386/" as "basepath"
     And I select "Fedora" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
