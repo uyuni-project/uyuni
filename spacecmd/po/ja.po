@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-03-14 11:56+0000\n"
+"PO-Revision-Date: 2021-05-04 01:28+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -741,14 +741,12 @@ msgid "This version of the API doesn't support this method"
 msgstr "このバージョンの API ではこのメソッドに対応していません"
 
 #: ../src/spacecmd/configchannel.py:104
-#, fuzzy
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "configchannel_listsystems: 指定した設定チャンネルをサブスクライブ"
+msgstr "configchannel_listgroups: 特定の設定チャンネルをサブスクライブしているグループの一覧表示"
 
 #: ../src/spacecmd/configchannel.py:106
-#, fuzzy
 msgid "usage: configchannel_listgroups CHANNEL"
-msgstr "使用方法: configchannel_listsystems チャンネル"
+msgstr "使用方法: configchannel_listgroups チャンネル"
 
 #: ../src/spacecmd/configchannel.py:139
 msgid "configchannel_listfiles: List the files in a config channel"
@@ -2310,36 +2308,30 @@ msgid "Members"
 msgstr "メンバー"
 
 #: ../src/spacecmd/group.py:488
-#, fuzzy
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
-msgstr "system_listconfigchannels: システムの設定チャンネルの一覧を表示"
+msgstr "group_listconfigchannels: システムグループに割り当てられている設定チャンネルの一覧表示"
 
 #: ../src/spacecmd/group.py:489
-#, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
-msgstr "使用方法: group_listsystems グループ"
+msgstr "使用方法: group_listconfigchannels グループ"
 
 #: ../src/spacecmd/group.py:531
-#, fuzzy
 msgid "group_addconfigchannels: Add config channels to a group"
-msgstr "system_addconfigchannels: システムに設定チャンネルを追加"
+msgstr "group_addconfigchannels: グループに設定チャンネルを追加"
 
 #: ../src/spacecmd/group.py:532
-#, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "使用方法: kickstart_addchildchannels プロファイル <チャンネル ...>"
+msgstr "使用方法: group_addconfigchannels <グループ> <チャンネル ...>"
 
 #: ../src/spacecmd/group.py:570
-#, fuzzy
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr "system_removeconfigchannels: システムから設定チャンネルを削除"
+msgstr "group_removeconfigchannels: グループから設定チャンネルを削除"
 
 #: ../src/spacecmd/group.py:571
-#, fuzzy
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "使用方法: system_removeconfigchannels <システム> <チャンネル ...>"
+msgstr "使用方法: group_removeconfigchannels <グループ> <チャンネル ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
