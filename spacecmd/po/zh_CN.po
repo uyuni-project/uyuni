@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"POT-Creation-Date: 2021-05-03 11:46+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -2088,7 +2088,7 @@ msgstr "去除这些系统 [y/N]："
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
-#: ../src/spacecmd/system.py:4347
+#: ../src/spacecmd/system.py:4370
 msgid "No systems found"
 msgstr "未找到系统"
 
@@ -3748,13 +3748,13 @@ msgid "Trusted Since:          %s"
 msgstr "信任起始日期：%s"
 
 #: ../src/spacecmd/org.py:323
-#, python-format
-msgid "Systems Migrated From:  %i"
+#, fuzzy, python-format
+msgid "Systems Transferred From:  %i"
 msgstr "系统迁移自：%i"
 
 #: ../src/spacecmd/org.py:324
-#, python-format
-msgid "Systems Migrated To:    %i"
+#, fuzzy, python-format
+msgid "Systems Transferred To:    %i"
 msgstr "系统已迁移至：%i"
 
 #: ../src/spacecmd/org.py:326
@@ -6407,7 +6407,7 @@ msgstr "脚本内容"
 
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
 #: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
-#: ../src/spacecmd/system.py:4376
+#: ../src/spacecmd/system.py:4399
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "无法安排 %s"
@@ -7667,12 +7667,24 @@ msgstr "    ID： "
 msgid "    Friendly names: "
 msgstr "    友好名称： "
 
-#: ../src/spacecmd/system.py:4315
+#: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
+#, fuzzy
+msgid ""
+"This method is deprecated and will be removed in a future API version. "
+"Please use system_scheduleproductmigration instead."
+msgstr "API 版本 %s 中已弃用并将去除此方法"
+
+#: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
+#, fuzzy
+msgid "This method is deprecated and will be removed in a future API version"
+msgstr "API 版本 %s 中已弃用并将去除此方法"
+
+#: ../src/spacecmd/system.py:4317
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr "system_schedulespmigration：为系统安排服务包迁移。"
 
-#: ../src/spacecmd/system.py:4316
+#: ../src/spacecmd/system.py:4318
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7694,19 +7706,49 @@ msgstr ""
 "        -d 如果您要执行试运行，请传递此标志\n"
 "        -c 子频道（逗号分隔的子频道标签（不带空格））"
 
-#: ../src/spacecmd/system.py:4366
+#: ../src/spacecmd/system.py:4338
+#, fuzzy
+msgid ""
+"system_scheduleproductmigration: Schedule a Product migration for systems."
+msgstr "system_schedulespmigration：为系统安排服务包迁移。"
+
+#: ../src/spacecmd/system.py:4339
+#, fuzzy
+msgid ""
+"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
+"<MIGRATION_TARGET> [options] \n"
+"    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    Options: \n"
+"        -s START_TIME \n"
+"        -d pass this flag, if you want to do a dry run \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
+"spaces))"
+msgstr ""
+"用法：system_schedulespmigration <系统> <基础频道标签> <迁移目标> [选项] \n"
+"    有关迁移目标 (MIGRATION_TARGET) 参数，请参见 "
+"system_listmigrationtargets。\n"
+"    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
+"    选项：\n"
+"        -s 开始时间\n"
+"        -d 如果您要执行试运行，请传递此标志\n"
+"        -c 子频道（逗号分隔的子频道标签（不带空格））"
+
+#: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
 msgstr "找不到系统 "
 
-#: ../src/spacecmd/system.py:4366
+#: ../src/spacecmd/system.py:4389
 msgid ". Skipping it."
 msgstr "。正在跳过。"
 
-#: ../src/spacecmd/system.py:4369
-msgid "Scheduling Service Pack migration for system "
+#: ../src/spacecmd/system.py:4392
+#, fuzzy
+msgid "Scheduling Product migration for system "
 msgstr "正在为系统安排服务包迁移 "
 
-#: ../src/spacecmd/system.py:4374
+#: ../src/spacecmd/system.py:4397
 msgid "Scheduled action ID: "
 msgstr "已安排操作 ID： "
 
