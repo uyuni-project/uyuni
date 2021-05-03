@@ -5,7 +5,13 @@
 Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
-    Given I deploy testing playbooks and inventory files to "sle_minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I deploy testing playbooks and inventory files to "sle_minion"
+
+  Scenario: Pre-requisite: Enable client tools repositories
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I enable SUSE Manager tools repositories on "sle_minion"
+    And I refresh the metadata for "sle_minion"
 
   Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "sle_minion"
@@ -74,3 +80,8 @@ Feature: Operate an Ansible control node in a normal minion
     Then I should see a "System properties changed" text
     And I remove package "orion-dummy" from this "sle_minion" without error control
     And I remove "/tmp/file.txt" from "sle_minion"
+
+  Scenario: Cleanup: Disable client tools channel
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I disable SUSE Manager tools repositories on "sle_minion"
+    And I refresh the metadata for "sle_minion"
