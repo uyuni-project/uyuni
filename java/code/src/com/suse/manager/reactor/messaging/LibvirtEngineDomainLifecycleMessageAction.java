@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,14 +95,15 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                         }
                     });
                 }
-                else {
+                else if (vms.size() == 1) {
+                    // There shouldn't be two VMs with the same UUID across the world
+                    VirtualInstance vm = vms.get(0);
                     List<String> stoppedEvents = Arrays.asList("defined", "stopped", "shutdown");
                     List<String> runningEvents = Arrays.asList("started", "resumed");
                     List<String> pausedEvents = Arrays.asList("suspended", "pmsuspended");
-                    List<String> crashedEvents = Arrays.asList("crashed");
+                    List<String> crashedEvents = Collections.singletonList("crashed");
 
-                    Map<List<String>, VirtualInstanceState> statesMap =
-                            new HashMap<List<String>, VirtualInstanceState>();
+                    Map<List<String>, VirtualInstanceState> statesMap = new HashMap<>();
                     statesMap.put(stoppedEvents, VirtualInstanceFactory.getInstance().getStoppedState());
                     statesMap.put(runningEvents, VirtualInstanceFactory.getInstance().getRunningState());
                     statesMap.put(pausedEvents, VirtualInstanceFactory.getInstance().getPausedState());
@@ -112,7 +114,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                             .map(Map.Entry::getValue)
                             .findFirst().orElse(vms.get(0).getState());
 
-                    LOG.debug("Changing VM " + vms.get(0) + " state to " + state.getLabel());
+                    LOG.debug("Changing VM " + vm + " state to " + state.getLabel());
 
                     // At the end of a migration we get a stopped/migrated event from the source host
                     // and a resumed/migrated event from the target host.
@@ -124,16 +126,19 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
                     // We need to check if the VM is still defined and delete it if needed
                     if (!migrated && Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
-                        !virtManager.getGuestDefinition(minionId, message.getDomainName()).isPresent()) {
-                        vms.forEach(vm -> VirtualInstanceManager.deleteGuestVirtualInstance(vm));
+                        virtManager.getGuestDefinition(minionId, message.getDomainName()).isEmpty()) {
+                        VirtualInstanceManager.deleteGuestVirtualInstance(vm);
                         unwatchVirtualMachine(minionId, message.getDomainName());
                     }
                     else {
-                        if (migrated && event.equals("resumed")) {
-                            vms.forEach(vm -> {
-                                VirtualInstanceManager.updateGuestVirtualInstance(vm, vm.getName(), state,
-                                        minion, vm.getGuestSystem(), vm.getNumberOfCPUs(), vm.getTotalMemory());
-                            });
+                        // Update the host when getting the event of the end of a live migration
+                        // or if the server doesn't our record. This could happen if the hypervisor has been fenced
+                        // and the VM moved to another hypervisor in the cluster.
+                        boolean changedHost = event.equals("started") && !message.getDetail().equals("migrated") &&
+                                (vm.getHostSystem() == null || !vm.getHostSystem().getId().equals(minion.getId()));
+                        if (migrated && event.equals("resumed") || changedHost) {
+                            VirtualInstanceManager.updateGuestVirtualInstance(vm, vm.getName(), state,
+                                    minion, vm.getGuestSystem(), vm.getNumberOfCPUs(), vm.getTotalMemory());
                             return;
                         }
                         final Optional<GuestDefinition> updatedDef = message.getDetail().equals("updated") ?
@@ -145,19 +150,18 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                             checkForRestart(minionId, message.getDomainName());
                         }
 
-                        vms.forEach(vm -> {
-                            String name = updatedDef.isPresent() ? updatedDef.get().getName() : vm.getName();
-                            Integer cpuCount = updatedDef.isPresent() ?
-                                    updatedDef.get().getVcpu().getMax() :
-                                    vm.getNumberOfCPUs();
-                            Long memory = updatedDef.isPresent() ?
-                                    updatedDef.get().getMaxMemory() / 1024 :
-                                    vm.getTotalMemory();
-                            VirtualInstanceManager.updateGuestVirtualInstanceProperties(
-                                    vm, name, "updated".equals(message.getDetail()) ? vm.getState() : state,
-                                    cpuCount, memory);
-                        });
+                        String name = updatedDef.isPresent() ? updatedDef.get().getName() : vm.getName();
+                        Integer cpuCount = updatedDef.map(guestDefinitionIn -> guestDefinitionIn.getVcpu().getMax())
+                                .orElseGet(vm::getNumberOfCPUs);
+                        Long memory = updatedDef.map(guestDefinitionIn -> guestDefinitionIn.getMaxMemory() / 1024)
+                                .orElseGet(vm::getTotalMemory);
+                        VirtualInstanceManager.updateGuestVirtualInstanceProperties(
+                                vm, name, "updated".equals(message.getDetail()) ? vm.getState() : state,
+                                cpuCount, memory);
                     }
+                }
+                else {
+                    LOG.error(String.format("More than one virtual machine with UUID %s: skipping data update", guid));
                 }
             });
         }
