@@ -1,3 +1,4 @@
+- Parse ansible inventory and show registered systems
 - virtual console monitors VM state changes
 - Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
 - Improved filtering, deleting etc in CLM filter list
