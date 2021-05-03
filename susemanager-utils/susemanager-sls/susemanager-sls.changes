@@ -1,3 +1,5 @@
+- Add support of salt bundle to pkgset notify beacon
+- Add automatic cookie file selection for pkgset beacon
 - Ansible integration: new SLS files files to operate Ansible control node
 - provide details when bootstrap query is missing 'status'
 - add virtual network edit action

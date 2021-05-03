@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 '''
-Watch libzypp/RPM database via cookies and fire
+Watch RPM or DPkg database via cookies and fire
 an event to the SUSE Manager if that has been changed.
 
 Author: Bo Maryniuk <bo@suse.de>
 '''
 
 from __future__ import absolute_import
+from salt.utils.odict import OrderedDict
 import os
 import logging
 log = logging.getLogger(__name__)
@@ -14,13 +15,21 @@ log = logging.getLogger(__name__)
 
 __virtualname__ = 'pkgset'
 
+PKG_PLUGINS = OrderedDict([
+        ("/usr/lib/zypp/plugins/commit/venv-zyppnotify", "/var/opt/venv-salt-minion/cache/rpmdb.cookie"),
+        ("/usr/share/yum-plugins/venv-yumnotify.py",     "/var/opt/venv-salt-minion/cache/rpmdb.cookie"),
+        ("/usr/bin/venv-dpkgnotify",                     "/var/opt/venv-salt-minion/cache/dpkg.cookie"),
+        ("/usr/lib/zypp/plugins/commit/zyppnotify",      "/var/cache/salt/minion/rpmdb.cookie"),
+        ("/usr/share/yum-plugins/yumnotify.py",          "/var/cache/salt/minion/rpmdb.cookie"),
+        ("/usr/bin/dpkgnotify",                          "/var/cache/salt/minion/dpkg.cookie")
+    ])
+COOKIE_PATH = None
+
 
 def __virtual__():
-    return (
-        os.path.exists("/usr/lib/zypp/plugins/commit/zyppnotify") or
-        os.path.exists("/usr/share/yum-plugins/yumnotify.py") or
-        os.path.exists("/usr/bin/dpkgnotify")
-    ) and __virtualname__ or False
+    return any(
+               os.path.exists(plug) for plug in PKG_PLUGINS
+           ) and __virtualname__ or False
 
 
 def validate(config):
@@ -28,10 +37,14 @@ def validate(config):
     Validate the beacon configuration. A "cookie" file path is mandatory.
     '''
 
-    if not config.get('cookie'):
-        return False, 'Cookie path has not been set.'
+    global COOKIE_PATH
 
-    return True, 'Configuration validated'
+    for plug in PKG_PLUGINS:
+        if os.path.exists(plug):
+            COOKIE_PATH = PKG_PLUGINS.get(plug)
+            return True, 'Configuration validated'
+
+    return False, 'Cookie path has not been set.'
 
 
 def beacon(config):
@@ -44,14 +57,15 @@ def beacon(config):
 
         beacons:
           pkgset:
-            cookie: /path/to/cookie/file
             interval: 5
 
     '''
 
+    global COOKIE_PATH
+
     ret = []
-    if os.path.exists(config.get('cookie', '')):
-        with open(config.get('cookie')) as ck_file:
+    if os.path.exists(COOKIE_PATH):
+        with open(COOKIE_PATH) as ck_file:
             ck_data = ck_file.read().strip()
             if __virtualname__ not in __context__:
                 __context__[__virtualname__] = ck_data
