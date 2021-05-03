@@ -32,9 +32,9 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.org.Org;
@@ -1942,6 +1942,45 @@ public class ChannelSoftwareHandler extends BaseHandler {
         cids.add(mergeTo.getId());
         ErrataCacheManager.insertCacheForChannelPackagesAsync(cids, pids);
         return differentPackages.toArray();
+    }
+
+    /**
+     * Align the metadata of a channel to another channel.
+     *
+     * @param loggedInUser the user
+     * @param channelFromLabel the label of the source channel
+     * @param channelToLabel the label of the target channel
+     * @param metadataType the metadata type
+     *
+     * @return 1 when the channel metadata has been aligned
+     * @throws PermissionCheckFailureException when user does not have access to the target channel
+     *
+     * @xmlrpc.doc Align the metadata of a channel to another channel.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelFromLabel", "the label of the source channel")
+     * @xmlrpc.param #param_desc("string", "channelToLabel", "the label of the target channel")
+     * @xmlrpc.param #param_desc("string", "metadataType", "the metadata type. Only 'modules' supported currently.")
+     * @xmlrpc.returntype #param_desc("int", "result code", "1 when metadata has been aligned, 0 otherwise")
+     */
+    public int alignMetadata(User loggedInUser, String channelFromLabel, String channelToLabel, String metadataType) {
+        Channel channelFrom = lookupChannelByLabel(loggedInUser, channelFromLabel);
+        Channel channelTo = lookupChannelByLabel(loggedInUser, channelToLabel);
+
+        if (!UserManager.verifyChannelAdmin(loggedInUser, channelTo)) {
+            throw new PermissionCheckFailureException();
+        }
+
+        if (!metadataType.equals("modules")) {
+            throw new InvalidParameterException("Only 'modules' metadata is currently supported.");
+        }
+
+        if (channelFrom.isModular()) {
+            log.info("Aligning modular metadata of " + channelTo + " to " + channelFrom);
+            channelTo.cloneModulesFrom(channelFrom);
+            return 1;
+        }
+
+        return 0;
     }
 
     /**

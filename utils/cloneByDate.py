@@ -757,6 +757,12 @@ class ChannelCloner:
             pb.addTo(self.bunch_size)
             pb.printIncrement()
 
+        # align modular metadata
+        md_aligned = self.remote_api.align_modular_metadata(
+                self.from_label, self.to_label);
+        if md_aligned == 1:
+            print("\nModular metadata aligned")
+
         self.reset_new_pkgs()
         pb.printComplete()
 
@@ -907,6 +913,10 @@ class RemoteApi:
     def sync_errata(self, to_label):
         self.auth_check()
         self.client.channel.software.syncErrata(self.auth_token, to_label)
+
+    def align_modular_metadata(self, from_label, to_label):
+        return self.client.channel.software.alignMetadata(
+                self.auth_token, from_label, to_label, 'modules')
 
     def get_details(self, label):
         self.auth_check()
