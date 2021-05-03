@@ -838,11 +838,11 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    pkgs = 'openscap-utils openscap-content'
+    pkgs = 'openscap-utils openscap-content scap-security-guide'
   elsif os_family =~ /^centos/
-    pkgs = 'openscap-utils scap-security-guide'
+    pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
-    pkgs = 'libopenscap8 ssg-debderived'
+    pkgs = 'libopenscap8 ssg-debderived scap-security-guide-ubuntu'
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
