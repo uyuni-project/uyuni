@@ -57,6 +57,14 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
         return styles;
       },
+      menu: (styles: {}) => ({
+        ...styles,
+        zIndex: 3,
+      }),
+      menuPortal: (styles: {}) => ({
+        ...styles,
+        zIndex: 9999
+      }),
     };
 
     // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
@@ -76,6 +84,8 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
         value={options.find(option => option.id === this.props.selectedId)}
         options={options}
         styles={colourStyles}
+        menuPortalTarget={document.body}
+        classNamePrefix={`class-${this.props.name}`}
       />
     );
   }
