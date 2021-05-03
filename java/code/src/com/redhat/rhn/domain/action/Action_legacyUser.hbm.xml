@@ -668,7 +668,9 @@ select {ra.*}
     (select NULL as network_name,
             NULL as state from dual) ra_22_,
     (select NULL as network_name,
-            NULL as definition from dual) ra_23_
+            NULL as definition from dual) ra_23_,
+    (select NULL as playbook_path,
+            NULL as inventory_path from dual) ra_24_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -812,7 +814,9 @@ select sa.server_id
                      (select NULL as network_name,
                              NULL as state from dual) ra_22_,
                      (select NULL as network_name,
-                             NULL as definition from dual) ra_23_
+                             NULL as definition from dual) ra_23_,
+                     (select NULL as playbook_path,
+                             NULL as inventory_path from dual) ra_24_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id
