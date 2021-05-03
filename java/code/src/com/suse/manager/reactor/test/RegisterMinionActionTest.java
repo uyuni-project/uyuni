@@ -14,7 +14,11 @@
  */
 package com.suse.manager.reactor.test;
 
-import com.google.gson.reflect.TypeToken;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.singletonMap;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -33,6 +37,7 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -64,6 +69,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
@@ -73,6 +79,7 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -81,6 +88,13 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.io.FileUtils;
+import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -97,14 +111,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import org.apache.commons.io.FileUtils;
-import org.jmock.Expectations;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
-
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static java.util.Collections.singletonMap;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
@@ -152,6 +158,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(getGrains(MINION_ID, null, key)));
                 allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
+                will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
             } };
 
     @SuppressWarnings("unchecked")
@@ -245,6 +253,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(user);
+
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
         FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
@@ -298,6 +309,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         if (expectations != null) {
             Expectations exp = expectations.apply(saltServiceMock, key);
             context().checking(exp);
+            SystemManager.mockSaltService(saltServiceMock);
 
             TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
             ActionManager.setTaskomaticApi(taskomaticMock);
@@ -349,14 +361,38 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, DEFAULT_CONTACT_METHOD);
     }
 
+    /*
+     * Test register a new system re-using existing minion id.
+     * Case 2.1 : As somebody accepted the key by deleting the former key and accept the new
+     * We migrate the existing system and change the machine id.
+     */
     public void testRegisterDuplicateMinionId() throws Exception {
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
-        executeTest(SLES_EXPECTATIONS, null, (minion, machineId, key) -> {
-            assertFalse(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
-        }, null, DEFAULT_CONTACT_METHOD);
+        server.setHostname(MINION_ID);
+        try {
+            executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
+                assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+                MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                        m -> {
+                            assertEquals(m.getCreated(), server.getCreated());
+                            assertEquals(m.getId(), server.getId());
+                        },
+                        () -> {
+                            assertTrue("Machine ID not found", false);
+                        });
+            }, null, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
+    /*
+     * Test register a system where minion id and machine id are both known.
+     * Case 2.2 - moved machine
+     */
     public void testAlreadyRegisteredMinionWithSameMachineId() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
@@ -364,15 +400,71 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest((saltServiceMock, key) -> new Expectations() {{
-            allowing(saltServiceMock).getMachineId(MINION_ID);
-            will(returnValue(Optional.of(MACHINE_ID)));
-
-        }}, null, (minion, machineId, key) -> {
-            assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
+        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
+            MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
+                    m -> {
+                        assertTrue(m.getCreated().equals(server.getCreated()));
+                        assertEquals(m.getId(), server.getId());
+                    },
+                    () -> {
+                        assertTrue("Machine ID not found", false);
+                    });
         }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 
+    /*
+     * Test register a system where minion id and machine id are both known.
+     * Case 2.2 - fail with RegisterMinionException
+     */
+    public void testAlreadyRegisteredMinionWithSameMachineId2() throws Exception {
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        server1.setMinionId(MINION_ID);
+        server1.setHostname(MINION_ID);
+        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        server2.setMachineId(MACHINE_ID);
+        server2.setHostname(server2.getName());
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(false)
+                .createMinionStartUpGrains();
+        try {
+            executeTest((saltServiceMock, key) -> new Expectations(){{
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                        .machineId(MACHINE_ID).saltbootInitrd(false)
+                        .createMinionStartUpGrains();
+                allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
+                will(returnValue(Optional.of(minionStartUpGrains)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
+                will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
+                allowing(saltServiceMock).deleteKey(server2.getMinionId());
+            }}, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
+                assertFalse(optMinion.isPresent());
+            }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
+        }
+        catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            assertContains(e.getMessage(), "Systems with conflicting minion_id and machine-id were found");
+            assertContains(e.getMessage(), "Please remove conflicting systems first (" +
+                    server1.getId() + ", " + server2.getId() + ")");
+            return;
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
+        fail("Expected Exception not thrown");
+    }
+
+    /*
+     * Test register a new system with a new minion id, where the machine id is
+     * already used by a different system (Case 1.2)
+     */
     public void testAlreadyRegisteredMinionWithNewMinionId() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMachineId(MACHINE_ID);
@@ -419,7 +511,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest((saltServiceMock, key) -> new Expectations() {{
             allowing(saltServiceMock).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
-
+            allowing(saltServiceMock).getGrains(MINION_ID);
+            will(returnValue(getGrains(MINION_ID, null, key)));
         }}, null, (minion, machineId, key) -> {
             assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent());
         }, null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
@@ -466,7 +559,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(MINION_ID, minion.getName());
         // assigned channels are preserved
-        Set<Channel> originalChannels = ((Server) HibernateFactory.reload(server)).getChannels();
+        Set<Channel> originalChannels = HibernateFactory.reload(server).getChannels();
         assertEquals(originalChannels, minion.getChannels());
 
         // Invalid Activation Key should be reported because
@@ -987,61 +1080,66 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
-                    will(returnValue(Optional.of(minionStartUpGrains)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
+                        will(returnValue(Optional.of(minionStartUpGrains)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
 
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, "rhel", key)));
 
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
+                        allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
+                        will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
 
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
+                        allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" redhat-release-server"));
+                        will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+                                "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
+                                "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
-                    will(returnValue(Optional.of(new RedhatProductInfo(
-                            Optional.empty(),
-                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()
-                    ))));
+                        allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                        will(returnValue(Optional.of(new RedhatProductInfo(
+                                Optional.empty(),
+                                Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                                Optional.empty(),
+                                Optional.empty(),
+                                Optional.empty()
+                                ))));
 
-                }},
-                (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                    key.setBaseChannel(resChannel_x86_64);
-                    key.setOrg(user.getOrg());
-                    ActivationKeyFactory.save(key);
-                    return key.getKey();
-                },
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
+                    }},
+                    (contactMethod) -> {
+                        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                        key.setBaseChannel(resChannel_x86_64);
+                        key.setOrg(user.getOrg());
+                        ActivationKeyFactory.save(key);
+                        return key.getKey();
+                    },
+                    (optMinion, machineId, key) -> {
+                        assertTrue(optMinion.isPresent());
+                        MinionServer minion = optMinion.get();
+                        assertEquals("7Server", minion.getRelease());
 
-                    assertNotNull(minion.getBaseChannel());
-                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                    assertEquals(resChannel_x86_64, minion.getBaseChannel());
+                        assertNotNull(minion.getBaseChannel());
+                        assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+                        assertEquals(resChannel_x86_64, minion.getBaseChannel());
 
-                    assertEquals(1, minion.getChannels().size());
+                        assertEquals(1, minion.getChannels().size());
 
-                    SUSEProductFactory.getSession().flush();
-                    // select from view should succeed
-                    SUSEProductFactory.getSession().createNativeQuery("select * from rhnServerOverview").list();
+                        SUSEProductFactory.getSession().flush();
+                        // select from view should succeed
+                        SUSEProductFactory.getSession().createNativeQuery("select * from rhnServerOverview").list();
 
-                }, DEFAULT_CONTACT_METHOD);
+                    }, DEFAULT_CONTACT_METHOD);
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
     public void testRegisterRESMinionWithoutActivationKey() throws Exception {
@@ -1185,15 +1283,19 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testRegisterSystemFromDifferentOrg() throws Exception {
         User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
-
-        executeTest(
-                SLES_NO_AK_EXPECTATIONS,
-                (cm) -> null,
-                (minion, machineId, key) -> {
-                    assertEquals(creator.getOrg(), minion.get().getOrg());
-                },
-                DEFAULT_CONTACT_METHOD
-        );
+        try {
+            executeTest(
+                    SLES_NO_AK_EXPECTATIONS,
+                    (cm) -> null,
+                    (minion, machineId, key) -> {
+                        assertEquals(creator.getOrg(), minion.get().getOrg());
+                    },
+                    DEFAULT_CONTACT_METHOD
+                    );
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
     /**
@@ -1206,15 +1308,19 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testRegisterSystemWithAKAndCreator() throws Exception {
         User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
-
-        executeTest(
-                SLES_EXPECTATIONS,
-                ACTIVATION_KEY_SUPPLIER,
-                (minion, machineId, key) -> {
-                    assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(), minion.get().getOrg());
-                },
-                DEFAULT_CONTACT_METHOD
-        );
+        try {
+            executeTest(
+                    SLES_EXPECTATIONS,
+                    ACTIVATION_KEY_SUPPLIER,
+                    (minion, machineId, key) -> {
+                        assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(), minion.get().getOrg());
+                    },
+                    DEFAULT_CONTACT_METHOD
+                    );
+        }
+        finally {
+            MinionPendingRegistrationService.removeMinion(MINION_ID);
+        }
     }
 
     /**
@@ -1632,7 +1738,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     public void testEmptyProfileRegistration() throws Exception {
         MinionServer emptyMinion = SystemManager.createSystemProfile(user, "empty profile",
-               singletonMap("hwAddress", "00:11:22:33:44:55"));
+                singletonMap("hwAddress", "00:11:22:33:44:55"));
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
                 .createMinionStartUpGrains();

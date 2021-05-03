@@ -153,11 +153,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
                 Optional<String> mkey = grains.getSuseManagerGrain().flatMap(sm -> sm.getManagementKey());
-                Optional<ActivationKey> activationKey =
+                Optional<ActivationKey> managementKey =
                         mkey.flatMap(mk -> ofNullable(ActivationKeyFactory.lookupByKey(mk)));
                 Optional<String> validReactivationKey =
-                        mkey.filter(mk -> isValidReactivationKey(activationKey, minionId));
-                updateKickStartSession(activationKey);
+                        mkey.filter(mk -> isValidReactivationKey(managementKey, minionId));
+                updateKickStartSession(managementKey);
                 Optional<String> machineIdOpt = grains.getMachineId();
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: " + minionId),
@@ -169,6 +169,24 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     /**
      * Performs minion registration or reactivation.
+     *
+     * When no re-activation key is provided, but existing machines were
+     * found it will be handled this way:
+     *
+     * No system in the Uyuni DB found with the requested minion_id:
+     *
+     * Case 1.1: new minion_id and new machine-id => new registration
+     * Case 1.2: new minion_id and existing machine-id => update the existing system with the new minion_id
+     *
+     * The requested minion_id already exists in the Uyuni DB:
+     * This can only happen when somebody removed the salt-key manually, but did not
+     * remove the system in the Uyuni Database. The new system is "wanted" so we try to cleanup the DB.
+     *
+     * Case 2.1: existing minion_id and new machine-id => migrate the existing minion
+     * Case 2.2: existing minion_id and existing machine-id
+     * Case 2.2a: minion_id and machine-id are the same as the new requested once => update the existing system
+     * Case 2.2b: minion_id and/or machine-id are different => throw exception
+     *
      * @param minionId minion id
      * @param isSaltSSH true if a salt-ssh system is bootstrapped
      * @param actKeyOverride label of activation key to be applied to the system.
@@ -181,21 +199,63 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 Optional<String> actKeyOverride, Optional<String> reActivationKey, String machineId,
                                 boolean saltbootInitrd) {
         Opt.consume(reActivationKey,
-            //Case-1 Registration
+            //Case A: Registration
             () -> {
-                Optional<MinionServer> registeredMinionOpt = MinionServerFactory.findByMachineId(machineId);
-                Opt.consume(registeredMinionOpt,
+                Opt.consume(ServerFactory.findByMachineId(machineId),
                     () -> {
-                        if (!duplicateMinionNamePresent(minionId)) {
-                            finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
-                        }
+                        Opt.consume(MinionServerFactory.findByMinionId(minionId),
+                            () -> {
+                                // Case 1.1 - new registration
+                                finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride,
+                                        isSaltSSH);
+                            },
+                            minionServer -> {
+                                // Case 2.1 - update found system with new values
+                                LOG.warn(String.format(
+                                        "A system with minion_id '%s' already exists, but with different " +
+                                        "machine-id ( %s vs. %s). Updating existing system with System ID: %s",
+                                        minionId, machineId, minionServer.getMachineId(), minionServer.getId()));
+                                updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                                applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                            });
                     },
-                    registeredMinion -> {
-                        updateAlreadyRegisteredInfo(minionId, registeredMinion);
-                        applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
+                    server -> {
+                        Opt.consume(MinionServerFactory.findByMinionId(minionId),
+                            () -> {
+                                // Case 1.2 - System got a new minion id
+                                Opt.consume(server.asMinionServer(),
+                                    () -> {
+                                        // traditional client wants migration to salt
+                                        finalizeMinionRegistration(minionId, machineId, saltSSHProxyId,
+                                                actKeyOverride, isSaltSSH);
+                                    },
+                                    registeredMinion -> {
+                                        updateAlreadyRegisteredInfo(minionId, machineId, registeredMinion);
+                                        applySaltBootStates(minionId, registeredMinion, saltbootInitrd);
+                                    });
+                            },
+                            minionServer -> {
+                                server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
+                                    serverAsMinion -> {
+                                        // Case 2.2a
+                                        updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                                        applySaltBootStates(minionId, minionServer, saltbootInitrd);
+                                    },
+                                    () -> {
+                                        // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
+                                        // Can only happen when salt key was deleted and same minion id
+                                        // was accepted again
+                                        String msg = String.format(
+                                            "Systems with conflicting minion_id and machine-id were found (%s, %s). " +
+                                            "Onboarding aborted. Please remove conflicting systems first (%s, %s)",
+                                            minionId, machineId, minionServer.getId(), server.getId());
+                                        LOG.error(msg);
+                                        throw new RegisterMinionException(minionId, null, msg);
+                                    });
+                            });
                     });
             },
-            //Case-2 : Reactivation
+            //Case B : Reactivation
             rk -> {
                 reactivateSystem(minionId, machineId, rk);
                 finalizeMinionRegistration(minionId, machineId, saltSSHProxyId, actKeyOverride, isSaltSSH);
@@ -260,12 +320,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
-     * Update information of already registered minion, in case minion_id is different.
-     * @param minionId the minion id
+     * Update information of already registered minion, in case minion_id is different
+     * or machine-id is different.
+     * @param minionId the new minion id
+     * @param machineId the new machine id
      * @param registeredMinion existing registered minion
      */
-    public void updateAlreadyRegisteredInfo(String minionId, MinionServer registeredMinion) {
+    public void updateAlreadyRegisteredInfo(String minionId, String machineId, MinionServer registeredMinion) {
         String oldMinionId = registeredMinion.getMinionId();
+        String oldMachineId = registeredMinion.getMachineId();
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                     "profile to '" + minionId + "' [" + registeredMinion.getMachineId() + "]");
@@ -281,6 +344,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             saltApi.deleteKey(oldMinionId);
             SystemManager.addHistoryEvent(registeredMinion, "Duplicate Minion ID", "Minion '" +
                     oldMinionId + "' has been updated to '" + minionId + "'");
+        }
+        else if (!machineId.equals(oldMachineId)) {
+            registeredMinion.setMachineId(machineId);
+            ServerFactory.save(registeredMinion);
+            SystemManager.addHistoryEvent(registeredMinion, "Minion migrated", "The machine-id of Minion '" +
+                    minionId + "' has been updated from '" + oldMachineId + "' to '" + machineId + "'");
         }
     }
 
@@ -645,28 +714,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 " with " + hostname.map(n -> "hostname: " + n + " and ").orElse("") + " HW addresseses: " + hwAddrs);
     }
 
-    /**
-     * Check if a MinionServer with the given name already exists and print
-     * an error message to the logs.
-     *
-     * @param minionId the minion id to check
-     * @return true if a MinionServer with the same id already exists
-     */
-    private boolean duplicateMinionNamePresent(String minionId) {
-        return MinionServerFactory
-                .findByMinionId(minionId)
-                .map(duplicateMinion -> {
-                    LOG.error("Can't register Salt minions with duplicate names." +
-                            " A Salt minion named " + minionId + " is already" +
-                            " registered with machine-id " + duplicateMinion.
-                            getMachineId() + ". Maybe the minion has the wrong " +
-                            "hostname or the /etc/machine-id of the minion has " +
-                            "changed.");
-                    return duplicateMinion;
-                })
-                .isPresent();
-    }
-
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
         Optional<Set<ServerPath>> proxyPaths =
@@ -915,6 +962,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         private String minionId;
         private Org org;
         RegisterMinionException(String minionIdIn, Org orgIn) {
+            super();
+            minionId = minionIdIn;
+            org = orgIn;
+        }
+        RegisterMinionException(String minionIdIn, Org orgIn, String msgIn) {
+            super(msgIn);
             minionId = minionIdIn;
             org = orgIn;
         }

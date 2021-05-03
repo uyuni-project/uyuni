@@ -1,3 +1,4 @@
+- Change onboarding behavior to easier recycle systems (bsc#1183437)
 - The 'cookie' property for pkgset beacon was removed as no longer required
 - virtual console monitors VM state changes
 - Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
