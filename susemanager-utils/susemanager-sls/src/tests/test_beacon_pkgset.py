@@ -22,12 +22,12 @@ def test_validate():
     '''
     Test validate() function
     '''
-    res, msg = pkgset.validate({'cookie': '/bogus/path'})
-    assert res is True
-    assert msg == 'Configuration validated'
-
-    for cfg in [{}, {'bogus': 'data'}]:
-        res, msg = pkgset.validate(cfg)
+    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=True)):
+        res, msg = pkgset.validate({})
+        assert res is True
+        assert msg == 'Configuration validated'
+    with patch.object(pkgset.os.path, "exists", MagicMock(return_value=False)):
+        res, msg = pkgset.validate({})
         assert res is False
         assert msg == 'Cookie path has not been set.'
 
