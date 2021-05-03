@@ -17868,7 +17868,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 system override (_Remove System Override_)</context>
         </context-group>
-        <target>{0} システムオーバーライド  (&lt;a href="{1}"&gt;システムオーバーライドの削除&lt;/a&gt;)</target>
+        <target>{0} システムオーバーライド (&lt;a href="{1}"&gt;システムオーバーライドの削除&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.outranked-numbers" xml:space="preserve">
         <source>{0} central overrides (&lt;a href="{1}"&gt;Modify rank&lt;/a&gt;)</source>
@@ -18386,7 +18386,7 @@ You can, however, download this file, edit it locally on your computer, and uplo
           </context>
         </context-group>
         <target state="translated">
-このファイルは大きすぎるため、ここでは編集できません (このフォーム内で編集できるサイズは &lt;strong&gt;{0}&lt;/strong&gt; 未満のファイルです -  @@PRODUCT_NAME@@ 管理者であれば /etc/rhn/rhn.conf のjava.config_file_edit_size オプションでこのサイズを設定できます)。
+このファイルは大きすぎるため、ここでは編集できません (このフォーム内で編集できるサイズは &lt;strong&gt;{0}&lt;/strong&gt; 未満のファイルです - @@PRODUCT_NAME@@ 管理者であれば /etc/rhn/rhn.conf のjava.config_file_edit_size オプションでこのサイズを設定できます)。
 ただし、このファイルをダウンロードしてユーザーのコンピューターでローカルに編集し、アップロードを行なうことは可能です。
 </target>
       </trans-unit>
@@ -22032,7 +22032,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>このゲストシステムが不要になった場合には、ゲストを削除できます。このシステムのホストで新しいゲストをプロビジョニングするには、&lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt;  ホストのシステム詳細ページにある '仮想化' タブに移動します。&lt;/a&gt;</target>
+        <target>このゲストシステムが不要になった場合には、ゲストを削除できます。このシステムのホストで新しいゲストをプロビジョニングするには、&lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt; ホストのシステム詳細ページにある '仮想化' タブに移動します。&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.jsp" xml:space="preserve">
         <source>Schedule Autoinstallation</source>
@@ -25267,7 +25267,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target>&lt;strong&gt;例:&lt;/strong&gt;  'sales-admin'、'admin_prodops@example.com'、'sales.admin'</target>
+        <target>&lt;strong&gt;例:&lt;/strong&gt; 'sales-admin'、'admin_prodops@example.com'、'sales.admin'</target>
       </trans-unit>
       <trans-unit id="tip" xml:space="preserve">
         <source>Tip:</source>
@@ -25309,7 +25309,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target>{0} と 64  文字の間</target>
+        <target>{0} と 64 文字の間</target>
       </trans-unit>
       <trans-unit id="org.name.length.tip" xml:space="preserve">
         <source>Between 3 and 128 characters</source>
@@ -29663,36 +29663,36 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">最終</target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">安定</target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">テスト中</target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">撤回済み</target>
       </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-        <target state="new"/>
+        <target state="translated">撤回されたパッチ</target>
       </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-        <target state="new"/>
+        <target state="translated">撤回されたパッチに属するパッケージ</target>
       </trans-unit>
     </body>
   </file>
