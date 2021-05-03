@@ -6,11 +6,11 @@ Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     Given I am on the Systems overview page of this "sle_minion"
-    Then I deploy testing playbooks and inventory files to "sle_minion"
+    When I deploy testing playbooks and inventory files to "sle_minion"
 
   Scenario: Pre-requisite: Enable client tools repositories
     Given I am on the Systems overview page of this "sle_minion"
-    Then I enable SUSE Manager tools repositories on "sle_minion"
+    When I enable SUSE Manager tools repositories on "sle_minion"
     And I enable repository "os_pool_repo os_update_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
@@ -84,6 +84,6 @@ Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Cleanup: Disable client tools channel
     Given I am on the Systems overview page of this "sle_minion"
-    Then I disable SUSE Manager tools repositories on "sle_minion"
+    When I disable SUSE Manager tools repositories on "sle_minion"
     And I disable repository "os_pool_repo os_update_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
