@@ -830,13 +830,6 @@
         </context-group>
         <target>Visão geral</target>
       </trans-unit>
-      <trans-unit id="Migrate" xml:space="preserve">
-        <source>Migrate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Migração</target>
-      </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
         <context-group name="ctx">
@@ -8660,18 +8653,18 @@ Follow this url to see the full list of inactive systems:
         <target state="needs-adaptation">NOTA: Para habilitar e usar as capacidades de virtualização dentro do @@PRODUCT_NAME@@ para este sistema, instale o pacote do rhn-virtualization-host a partir do canal filho associado às Ferramentas do RHN. Reveja a documentação da Red Hat para qualquer consideração ou requerimento que o Red Hat Enterprise Linux tenha quanto à habilitação da Ferramenta de Virtualização de um sistema Host. </target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
-        <source>This user lacks the required permissions to migrate this system.</source>
+        <source>This user lacks the required permissions to transfer this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>Este usuário falha com as permissões solicitadas para migração deste sistema.</target>
+        <target state="needs-adaptation">Este usuário falha com as permissões solicitadas para migração deste sistema.</target>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
-        <source>Systems can only be migrated between trusted organizations.</source>
+        <source>Systems can only be transferred between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>Os sistemas podem apenas serem migrados entre organizações confiáveis.</target>
+        <target state="needs-adaptation">Os sistemas podem apenas serem migrados entre organizações confiáveis.</target>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
@@ -9815,12 +9808,12 @@ Follow this url to see the full list of inactive systems:
         <target>Remover o Servidor</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
-        <source>Systems Migrated</source>
-        <target>Sistemas Migrados</target>
+        <source>Systems Transferred</source>
+        <target state="needs-adaptation">Sistemas Migrados</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
-        <source>Migrate Systems</source>
-        <target>Migrar Sistemas</target>
+        <source>Transfer Systems</source>
+        <target state="needs-adaptation">Migrar Sistemas</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
@@ -10173,8 +10166,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="needs-adaptation">Você não tem permissão para atualizar direitos na organização padrão. Essas autorizações são determinadas pelo seu arquivo de certificado @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
-        <source>Service Pack Migration</source>
-        <target>Migração do Service Pack</target>
+        <source>Product Migration</source>
+        <target state="needs-adaptation">Migração do Service Pack</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10987,6 +10980,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Transfer" xml:space="preserve">
+        <source>Transfer</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       <target state="new" />
   </trans-unit>
