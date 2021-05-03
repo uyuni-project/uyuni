@@ -24,7 +24,7 @@ Name:           susemanager-sls
 Version:        4.2.8
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
-License:        GPL-2.0-only
+License:        Apache-2.0 and LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
