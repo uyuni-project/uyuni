@@ -58,7 +58,6 @@ public class ForwardRegistrationTask extends RhnJavaJob {
                     log.debug("Sleep interrupted", e);
                 }
                 URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
-                //TODO: find a better place to put getUUID
                 String uuid = ContentSyncManager.getUUID();
                 SCCCachingFactory.initNewSystemsToForward();
                 List<SCCRegCacheItem> forwardRegistration = SCCCachingFactory.findSystemsToForwardRegistration();
