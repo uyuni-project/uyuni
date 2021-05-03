@@ -1,3 +1,4 @@
+- Align the modules.yaml of target channel after cloning errata (bsc#1182810)
 - adapt hostname rename check to allow also short hostname in various
   hostname files on the filesystem (bsc#1176512)
 - spacewalk-hostname-rename: change hostname in /root/.mgr-sync (bsc#1183994)
