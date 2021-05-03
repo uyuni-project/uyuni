@@ -345,7 +345,7 @@ public class OrgHandler extends BaseHandler {
      * organizations must be defined in a trust.
      *
      * Note: This method is deprecated and will be removed in a future API version. Please use
-     * scheduleProductMigration instead.
+     * transferSystems instead.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "toOrgId", "ID of the organization where the
      * system(s) will be transferred to.")
