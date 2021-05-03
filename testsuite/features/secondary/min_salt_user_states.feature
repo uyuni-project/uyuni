@@ -4,6 +4,9 @@
 @scope_salt
 Feature: Coexistence with user-defined states
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create a user-defined state
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
@@ -14,7 +17,6 @@ Feature: Coexistence with user-defined states
     Then I should see a "user_defined_state" or "running as PID" text in element "highstate"
 
   Scenario: Trigger highstate from XML-RPC
-    Given I am on the Systems overview page of this "sle_minion"
     And I am logged in via XML-RPC system as user "admin" and password "admin"
     When I schedule a highstate for "sle_minion" via XML-RPC
     And I wait until event "Apply highstate scheduled by admin" is completed
@@ -22,7 +24,6 @@ Feature: Coexistence with user-defined states
     And I logout from XML-RPC system namespace
 
   Scenario: Cleanup: remove user-defined state and the file it created
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "States" in the content area
     And I uninstall the user-defined state from the server
     And I uninstall the managed file from "sle_minion"

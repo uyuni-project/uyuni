@@ -4,6 +4,9 @@
 @scope_traditional_client
 Feature: Register a traditional system to be managed via SSH push
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete the traditional client for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Delete System"

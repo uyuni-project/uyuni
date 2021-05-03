@@ -13,25 +13,28 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should not see a "WebYaST 1.3" text
 
 @scc_credentials
-  Scenario: Use the products filter
-    Given I am on the Products page
-    When I enter "RHEL7" as the filtered product description
+  Scenario: Use the products and architecture filters
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I enter "RHEL7" as the filtered product description
+    Then I should see a "RHEL7 Base" text
+    When I select "x86_64" in the dropdown list of the architecture filter
     Then I should see a "RHEL7 Base x86_64" text
 
 @scc_credentials
   Scenario: View the channels list in the products page
-    Given I am on the Products page
+    When I follow the left menu "Admin > Setup Wizard > Products"
     When I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
     And I should see a "Optional Channels" text
+    When I close the modal dialog
 
 @scc_credentials
   Scenario: Add a product and one of its modules
-    Given I am on the Products page
+    When I follow the left menu "Admin > Setup Wizard > Products"
     When I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
-    And I select "x86_64" in the dropdown list of the architecture filter
+    Then I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" text
     And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP5 x86_64"
@@ -43,12 +46,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     Then the SLE12 SP5 product should be added
 
-
 @scc_credentials
   Scenario: Add the initial product for the service pack migration
-    Given I am on the Products page
+    When I follow the left menu "Admin > Setup Wizard > Products"
     When I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
-    And I select "x86_64" in the dropdown list of the architecture filter
+    Then I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" text
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
     Then I should see a "Basesystem Module 15 SP1 x86_64" text
     When I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
@@ -58,9 +60,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Add a product with recommended enabled
-    Given I am on the Products page
+    When I follow the left menu "Admin > Setup Wizard > Products"
     When I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
-    And I select "x86_64" in the dropdown list of the architecture filter
+    Then I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
     Then I should see a "Basesystem Module 15 SP2 x86_64" text
     And I should see that the "Basesystem Module 15 SP2 x86_64" product is "recommended"

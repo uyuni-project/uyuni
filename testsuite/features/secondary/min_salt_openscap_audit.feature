@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -6,6 +6,9 @@ Feature: OpenSCAP audit of Salt minion
   In order to audit a Salt minion
   As an authorized user
   I want to run an OpenSCAP scan on it
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Install the OpenSCAP packages on the SLE minion
     Given I am on the Systems overview page of this "sle_minion"
@@ -20,8 +23,7 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
-    When I am on the Systems overview page of this "sle_minion"
-    And I follow "Audit" in the content area
+    When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile Default" as "params"
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
@@ -30,7 +32,6 @@ Feature: OpenSCAP audit of Salt minion
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
   Scenario: Check results of the audit job on the minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text
@@ -42,8 +43,7 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Create a second, almost identical, audit job
     Given I enable IPv6 forwarding on all interfaces of the SLE minion
-    When I am on the Systems overview page of this "sle_minion"
-    And I follow "Audit" in the content area
+    When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile Default" as "params"
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
@@ -53,7 +53,6 @@ Feature: OpenSCAP audit of Salt minion
     And I disable IPv6 forwarding on all interfaces of the SLE minion
 
   Scenario: Compare audit results
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
@@ -62,7 +61,7 @@ Feature: OpenSCAP audit of Salt minion
     And I should see a "rule-sysctl-ipv6-all-forward" text
 
   Scenario: Cleanup: remove audit scans retention period
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
     And I enter "0" as "scap_retention_period"
@@ -79,7 +78,7 @@ Feature: OpenSCAP audit of Salt minion
     Then I should see a "2 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
   Scenario: Cleanup: restore audit scans retention period
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     When I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area
     And I enter "90" as "scap_retention_period"

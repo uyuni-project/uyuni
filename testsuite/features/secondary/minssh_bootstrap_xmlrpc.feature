@@ -3,9 +3,12 @@
 
 @scope_salt_ssh
 @scope_onboarding
+@ssh_minion
 Feature: Register a salt-ssh system via XML-RPC
 
-@ssh_minion
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Setup XML-RPC bootstrap: delete SSH minion system profile
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Delete System"
@@ -14,43 +17,35 @@ Feature: Register a salt-ssh system via XML-RPC
     And I wait until I see "has been deleted" text
     Then "ssh_minion" should not be registered
 
-@ssh_minion
   Scenario: Bootstrap a SLES SSH minion via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
     And I logout from XML-RPC system namespace
 
-@ssh_minion
   Scenario: Check new XML-RPC bootstrapped salt-ssh system in System Overview page
-     Given I am authorized
      And I am on the System Overview page
      And I wait until I see the name of "ssh_minion", refreshing the page
      And I wait until onboarding is completed for "ssh_minion"
 
-@ssh_minion
   Scenario: Check contact method of this Salt SSH system
     Given I am on the Systems overview page of this "ssh_minion"
     Then I should see a "Push via SSH" text
 
 @proxy
-@ssh_minion
   Scenario: Check registration on proxy of SSH minion bootstrapped via XML-RPC
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ssh_minion" hostname
 
-@ssh_minion
   Scenario: Check spacecmd system ID of SSH minion bootstrapped via XML-RPC
     Given I am on the Systems overview page of this "ssh_minion"
     Then I run spacecmd listevents for "ssh_minion"
 
-@ssh_minion
   Scenario: Check events history for failures on SSH minion after XML-RPC bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page
 
-@ssh_minion
   Scenario: Cleanup: subscribe SSH minion to base channel
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area

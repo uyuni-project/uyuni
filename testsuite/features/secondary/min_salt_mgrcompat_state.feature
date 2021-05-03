@@ -1,9 +1,12 @@
-# Copyright (c) 2015-2020 SUSE LLC.
+# Copyright (c) 2015-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @sle_minion
 @scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
     Given I remove "/var/cache/salt/minion/extmods/states/mgrcompat.py" from "sle_minion"
@@ -35,8 +38,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Enable new module.run syntax on the minion and perform registration
     Given I store "use_superseded: [module.run]" into file "/etc/salt/minion.d/custom_modulerun.conf" on "sle_minion"
-    And I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"
@@ -48,7 +50,6 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check if onboarding for the minion with the new module.run syntax was successful
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
@@ -77,8 +78,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion after mgrcompat tests
-    Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"

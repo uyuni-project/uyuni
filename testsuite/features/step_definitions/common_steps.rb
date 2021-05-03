@@ -175,7 +175,6 @@ end
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
-    When I am authorized as "admin" with password "admin"
     And I follow the left menu "Systems > Overview"
     And I wait until I see "System Overview" text
   )
@@ -202,6 +201,7 @@ When(/^I trigger cobbler system record$/) do
   unless out.include? 'ssh-push-tunnel'
     # normal traditional client
     steps %(
+      Given I am authorized as "testing" with password "testing"
       And I follow this "sle_client" link
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
@@ -338,7 +338,6 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^I am on the manage software channels page$/) do
-  step %(I am authorized as "testing" with password "testing")
   visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 

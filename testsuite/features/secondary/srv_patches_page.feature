@@ -7,6 +7,9 @@ Feature: Patches page
   As a authorized user
   I want to see all the texts and links
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Patches left menu
     Given I am on the patches page
     Then I should see a "Patches Relevant to Your Systems" text
@@ -21,7 +24,6 @@ Feature: Patches page
     And I should see a Sign Out link
 
   Scenario: Create new bugfix patch with bnc URL
-    Given I am on the patches page
     When I follow the left menu "Patches > Manage Patches"
     And I follow "Create Patch"
     When I enter "Test Patch" as "synopsis"
@@ -42,7 +44,6 @@ Feature: Patches page
     Then I should see a "Patch: Test Advisory-1" text
 
   Scenario: Create new enhancement patch with no bnc URL
-    Given I am on the patches page
     When I follow the left menu "Patches > Manage Patches"
     And I follow "Create Patch"
     When I enter "Enhancement Patch" as "synopsis"
@@ -62,7 +63,6 @@ Feature: Patches page
     Then I should see a "Patch: Enhancement Advisory-1" text
 
   Scenario: Delete enhancement patch
-    Given I am on the patches page
     When I follow the left menu "Patches > Manage Patches"
     And I check "Enhancement Advisory" patch
     And I click on "Delete Patches"
@@ -70,7 +70,6 @@ Feature: Patches page
     Then I should see a "Successfully deleted 1 patches." text
 
   Scenario: Verify patch presence in web UI
-    Given I am on the patches page
     When I follow the left menu "Patches > Patch List > All"
     And I follow "Bugfix Patches" in the content area
     And I enter "Test Patch" as the filtered synopsis
@@ -88,14 +87,12 @@ Feature: Patches page
     And I should see a "Test Note" text
 
   Scenario: Assert that patch is now in test base channel
-    Given I am on the patches page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Test Base Channel"
     And I follow "Patches" in the content area
     Then I should see a "Test Patch" text
 
   Scenario: Delete patch
-    Given I am on the patches page
     When I follow the left menu "Patches > Manage Patches"
     And I check "Test Advisory" patch
     And I click on "Delete Patches"

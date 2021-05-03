@@ -1,11 +1,11 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
 Feature: Web UI - Main landing page menu, texts and links
 
-  Background:
-    Given I am authorized as "admin" with password "admin"
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: The Home menu
     When I follow the left menu "Home"

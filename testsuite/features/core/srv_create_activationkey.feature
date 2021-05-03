@@ -6,8 +6,10 @@ Feature: Create activation keys
   As the testing user
   I want to use activation keys
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create an activation key with a channel
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key x86_64" as "description"
@@ -24,7 +26,6 @@ Feature: Create activation keys
 
 @ubuntu_minion
   Scenario: Create an activation key for Ubuntu
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "Ubuntu Test Key" as "description"
@@ -39,7 +40,6 @@ Feature: Create activation keys
     And I should see a "Activated Systems" link
 
   Scenario: Create an activation key with a channel for salt-ssh
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE SSH Test Key x86_64" as "description"
@@ -51,7 +51,6 @@ Feature: Create activation keys
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
 
   Scenario: Create an activation key with a channel for salt-ssh via tunnel
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE SSH Tunnel Test Key x86_64" as "description"

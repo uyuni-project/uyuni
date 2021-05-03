@@ -1,12 +1,14 @@
-# Copyright (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
 @scope_configuration_channels
 Feature: Configuration management of traditional clients
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Successfully create configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
@@ -25,7 +27,6 @@ Feature: Configuration management of traditional clients
     And I should see a "Delete Channel" link
 
   Scenario: Try to create same channel again; this should fail
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
@@ -36,7 +37,6 @@ Feature: Configuration management of traditional clients
     And I should see a "Update Channel" button
 
   Scenario: Try to create a channel with an invalid label
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Test Channel2" as "cofName"
@@ -47,7 +47,6 @@ Feature: Configuration management of traditional clients
     And I should see a "Update Channel" button
 
   Scenario: Successfully create a new configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "New Test Channel" as "cofName"
@@ -66,7 +65,6 @@ Feature: Configuration management of traditional clients
     And I should see a "Delete Channel" link
 
   Scenario: Add a configuration file to new configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Create Configuration File or Directory"
@@ -87,7 +85,6 @@ Feature: Configuration management of traditional clients
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Check centrally managed files
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Files > Centrally Managed"
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
@@ -99,7 +96,6 @@ Feature: Configuration management of traditional clients
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
   Scenario: Deploy centrally managed files
-    Given I am authorized as "admin" with password "admin"
     When I run "rhn-actions-control --enable-all" on "sle_client"
     And I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
@@ -182,7 +178,6 @@ Feature: Configuration management of traditional clients
     And I should see a table line with "/etc/sysconfig/language", "Revision 1"
 
   Scenario: Add another configure file to new test channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Create Configuration File or Directory"
@@ -216,7 +211,6 @@ Feature: Configuration management of traditional clients
     And I should see a "+MGR_PROXY=yes" text
 
   Scenario: Check configuration page content
-   Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Overview"
     Then I should see a "Configuration Overview" text
     And I should see a "Configuration Summary" text
@@ -236,34 +230,29 @@ Feature: Configuration management of traditional clients
     And I should see a "Enable Configuration Management on Systems" link
 
   Scenario: Show Systems with Managed Configuration Files page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Overview"
     And I follow "View Systems with Managed Configuration Files"
     Then I should see a "Managed" link in the left menu
     And I should see a "Target" link in the left menu
 
   Scenario: Show All Managed Configuration Files page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Overview"
     And I follow "View All Managed Configuration Files"
     Then I should see a "Centrally Managed" link in the left menu
     And I should see a "Locally Managed" link in the left menu
 
   Scenario: Show All Managed Configuration Channels page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Overview"
     And I follow "View All Managed Configuration Channels"
     Then I should see a "Create Config Channel" link
 
   Scenario: Show Enable Configuration Management on Systems page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Overview"
     And I follow "Enable Configuration Management on Systems"
     Then I should see a "Managed" link in the left menu
     And I should see a "Target" link in the left menu
 
   Scenario: Cleanup: remove system from new configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Systems" in the content area
@@ -272,14 +261,12 @@ Feature: Configuration management of traditional clients
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
   Scenario: Cleanup: remove test configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Test Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove new configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "New Test Channel"
     And I follow "Delete Channel"
@@ -289,5 +276,4 @@ Feature: Configuration management of traditional clients
     When I remove "/etc/mgr-test-file.cnf" from "sle_client"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on traditional client
-    When I am authorized as "admin" with password "admin"
     And I follow "Clear"

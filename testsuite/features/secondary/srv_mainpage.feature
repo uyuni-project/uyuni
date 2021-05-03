@@ -70,8 +70,10 @@ Feature: Main landing page options and preferences
     And I should see a "Help" link
     And I should see a "External Links" link
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Main menu as administrator
-    Given I am authorized as "admin" with password "admin"
     Then I should see a "Home" link
     And I should see a "Systems" link
     And I should see a "Salt" link

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -16,7 +16,7 @@
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_os_image" as "label"
@@ -31,13 +31,16 @@ Feature: Build OS images
     When I let Kiwi build from external repositories
 
   Scenario: Login as Kiwi image administrator and build an image
-    Given I am authorized as "kiwikiwi" with password "kiwikiwi"
+    Given I am authorized for the "Images" section
     When I follow the left menu "Images > Build"
     And I select "suse_os_image" from "profileId"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
 
-  Scenario: Check the OS image built as Kiwi image administrator
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: Check the OS image built
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
@@ -54,7 +57,7 @@ Feature: Build OS images
     Then the image should exist on "proxy"
 
   Scenario: Cleanup: remove the image from SUSE Manager server
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized for the "Images" section
     When I follow the left menu "Images > Image List"
     And I wait until I do not see "There are no entries to show." text
     And I check the first image
@@ -68,11 +71,9 @@ Feature: Build OS images
     When I disable repositories after installing branch server
 
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
-    When I am authorized as "admin" with password "admin"
     And I follow "Clear"
 
   Scenario: Cleanup: remove OS image profile
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Profiles"
     And I check "suse_os_image" in the list
     And I click on "Delete"

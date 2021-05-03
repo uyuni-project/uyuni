@@ -4,12 +4,14 @@
 #  1) bootstrap a new CentOS minion via salt
 #  2) subscribe it to a base channel for testing
 
+@centos_minion
 Feature: Bootstrap a CentOS minion and do some basic operations on it
 
-@centos_minion
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Bootstrap a CentOS minion
-    Given I am authorized
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "ceos_minion" as "hostname"
     And I enter "22" as "port"
@@ -24,7 +26,6 @@ Feature: Bootstrap a CentOS minion and do some basic operations on it
     And I wait until onboarding is completed for "ceos_minion"
 
 @proxy
-@centos_minion
   Scenario: Check connection from CentOS minion to proxy
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Details" in the content area
@@ -32,14 +33,12 @@ Feature: Bootstrap a CentOS minion and do some basic operations on it
     Then I should see "proxy" short hostname
 
 @proxy
-@centos_minion
   Scenario: Check registration on proxy of CentOS minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos_minion" hostname
 
-@centos_minion
   Scenario: Subscribe the CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
@@ -53,11 +52,9 @@ Feature: Bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
-@centos_minion
   Scenario: Detect latest Salt changes on the CentOS minion
     When I query latest Salt changes on "ceos_minion"
 
-@centos_minion
   Scenario: Check events history for failures on CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
     Then I check for failed events on history event page

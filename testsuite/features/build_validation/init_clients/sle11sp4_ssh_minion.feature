@@ -9,10 +9,12 @@ Feature: Bootstrap a SLES 11 SP4 Salt SSH minion
 
   Scenario: Install prerequisite packages on SLES 11 SP4 Salt SSH minion
     When I install package "python-xml" on this "sle11sp4_ssh_minion"
+    
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Bootstrap a SLES 11 SP4 system managed via salt-ssh
-    Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
     And I enter the hostname of "sle11sp4_ssh_minion" as "hostname"

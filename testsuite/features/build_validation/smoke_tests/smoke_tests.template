@@ -15,6 +15,9 @@ Feature: Smoke tests for <client>
   - Schedule Hardware refresh
   - Reboot the client via Web UI
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Client <client> grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "<client>"
     Then I can see all system information for "<client>"
@@ -23,7 +26,6 @@ Feature: Smoke tests for <client>
 @skip_for_sle15sp3
 @skip_for_ubuntu
   Scenario: Install a patch on the <client>
-    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I select "Non-Critical" from "type"
@@ -36,8 +38,7 @@ Feature: Smoke tests for <client>
     And I wait until event "Patch Update:" is completed
 
   Scenario: Install a package on the <client>
-    Given I am on the Systems overview page of this "<client>"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Install"
     And I enter the package for "<client>" as the filtered package name
     And I click on the filter button
@@ -49,8 +50,7 @@ Feature: Smoke tests for <client>
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Remove package from <client>
-    Given I am on the Systems overview page of this "<client>"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter the package for "<client>" as the filtered package name
     And I click on the filter button
@@ -63,7 +63,6 @@ Feature: Smoke tests for <client>
 
 @skip_for_traditional
   Scenario: Run a remote command on <client> minion
-    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "echo 'My remote command output'"
@@ -91,14 +90,13 @@ Feature: Smoke tests for <client>
     And I wait until file "/tmp/remote-command-on-<client>" exists on "<client>"
 
   Scenario: Check that Software package refresh works on a <client>
-    When I am on the Systems overview page of this "<client>"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I click on "Update Package List"
     And I force picking pending events on "<client>" if necessary
     And I wait until event "Package List Refresh scheduled by admin" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
-    Given I am on the Systems overview page of this "<client>"
+    When I follow "Details" in the content area
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
@@ -106,7 +104,7 @@ Feature: Smoke tests for <client>
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
-    When I am on the Systems overview page of this "<client>"
+    When I follow "Details" in the content area
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -116,7 +114,6 @@ Feature: Smoke tests for <client>
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Deploy the file to all subscribed systems
-    Given I am authorized as "admin" with password "admin"
     And I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Deploy all configuration files to selected subscribed systems"

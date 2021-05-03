@@ -26,14 +26,15 @@ Feature: Setup SUSE Manager proxy
     When I fetch "pub/bootstrap/bootstrap-proxy.sh" to "proxy"
     And I run "sh ./bootstrap-proxy.sh" on "proxy"
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Accept the key for the proxy
-    Given I am authorized as "testing" with password "testing"
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     And I wait until I see "pending" text, refreshing the page
     And I accept "proxy" key
 
   Scenario: Wait until the proxy appears
-    Given I am authorized
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Detect latest Salt changes on the proxy

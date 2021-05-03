@@ -1,12 +1,14 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
@@ -27,7 +29,6 @@ Feature: Action chains on Salt minions
     And I click on the filter button until page does contain "andromeda-dummy-1.0" text
 
   Scenario: Pre-requisite: ensure the errata cache is computed before testing on Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -63,7 +64,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a package installation to an action chain on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "virgo-dummy" in the list
@@ -73,7 +73,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Create a configuration channel for testing action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
@@ -83,7 +82,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action Chain Channel" text
 
   Scenario: Add a configuration file to configuration channel for testing action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
@@ -94,7 +92,6 @@ Feature: Action chains on Salt minions
     And I should see a "Update Configuration File" button
 
   Scenario: Download the configuration file from configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "List/Remove Files"
@@ -114,7 +111,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Add a configuration file deployment to the action chain on Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
@@ -139,8 +135,8 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add a remote command to the action chain on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Remote Command"
+    When I follow "Details" in the content area
+    And I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
       #!/bin/bash
@@ -151,7 +147,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Verify the action chain list on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -170,7 +165,8 @@ Feature: Action chains on Salt minions
     Then I should not see a "new action chain" link
 
   Scenario: Execute the action chain from the web UI on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am authorized for the "Admin" section
+    And I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -192,7 +188,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Delete the action chain for Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -211,7 +206,6 @@ Feature: Action chains on Salt minions
     Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sle_minion"
 
   Scenario: Ensure again the errata cache is computed before testing on Salt minion
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -249,7 +243,6 @@ Feature: Action chains on Salt minions
     And I wait until there are no more scheduled actions
 
   Scenario: Cleanup: remove Salt minion from configuration channel
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
@@ -258,7 +251,6 @@ Feature: Action chains on Salt minions
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
   Scenario: Cleanup: remove configuration channel for Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"

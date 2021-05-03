@@ -7,15 +7,17 @@ Feature: Use advanced features of Salt formulas
   As an authorized user
   I want to be able to install and use Salt formulas
 
+   Scenario: Log in as admin user
+      Given I am authorized for the "Admin" section
+
   Scenario: Install a test formula package on the server
-     Given I am authorized
      When I install "form.yml" to custom formula metadata directory "testform"
      And I install "metadata.yml" to custom formula metadata directory "testform"
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "testform" text
 
   Scenario: Assign test formula to minion via group formula
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      When I follow "Create Group"
      And I enter "test-formula-group" as "name"
      And I enter "Test group with testform formula added" as "description"
@@ -62,7 +64,7 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in group formula
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
@@ -92,7 +94,7 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:pw_opt" should be "pw3" on "sle_minion"
 
   Scenario: Clear values in group formula and verify the defaults again
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
@@ -125,7 +127,7 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing:recursive_dict_of_dicts:def_gr1:entries:def_entry1:entry_desc" should be "some text" on "sle_minion"
 
   Scenario: Fill in and verify mix of default and non-default values in group formula
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
@@ -166,7 +168,6 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in minion formula
-     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I enter "min_text1" as "testing#str"
@@ -196,7 +197,6 @@ Feature: Use advanced features of Salt formulas
 
 # https://github.com/SUSE/spacewalk/issues/4546
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
-     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
@@ -219,7 +219,7 @@ Feature: Use advanced features of Salt formulas
 # this should not be necessary, but it is currently required to run this test repeatedly
 # https://github.com/SUSE/spacewalk/issues/4513
   Scenario: Cleanup: remove "Testform" formula from "test-formula-group"
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      And I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
@@ -232,7 +232,7 @@ Feature: Use advanced features of Salt formulas
      Then the pillar data for "testing" should be empty on "sle_minion"
 
   Scenario: Cleanup: remove "test-formula-group" system group
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      And I follow "test-formula-group" in the content area
      And I follow "Delete Group" in the content area
      When I click on "Confirm Deletion"

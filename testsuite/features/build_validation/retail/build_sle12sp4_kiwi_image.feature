@@ -3,8 +3,10 @@
 
 Feature: Build OS image for SLES 12 SP4
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create an JeOS6 profile with activation key
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "jeos6" as "label"
@@ -17,7 +19,6 @@ Feature: Build OS image for SLES 12 SP4
     When I add proxy record into hosts file on "sle12sp4_buildhost" if avahi is used
 
   Scenario: Login as Kiwi image administrator and build an JeOS6 image
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Images > Build"
     And I select "jeos6" from "profileId"
     And I select the hostname of "sle12sp4_buildhost" from "buildHostId"

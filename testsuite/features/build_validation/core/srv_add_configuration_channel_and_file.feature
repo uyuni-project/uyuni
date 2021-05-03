@@ -3,8 +3,10 @@
 
 Feature: Create a configuration channel and file
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Server side, Create a configuration channel and add a configuration file
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Configuration > Channels"
     And I follow "Create Config Channel"
     And I enter "Mixed Channel" as "cofName"

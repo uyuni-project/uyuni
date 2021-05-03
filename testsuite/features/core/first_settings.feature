@@ -21,8 +21,10 @@ Feature: Very first settings
     And I click on "Create Organization"
     Then I am logged in
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create testing username
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
     And I follow "Create User"
     And I enter "testing" as "login"
@@ -37,7 +39,6 @@ Feature: Very first settings
     And I should see a "testing" link
 
   Scenario: Grant testing user administrative priviledges
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
     And I follow "testing"
     And I check "role_org_admin"
@@ -54,7 +55,6 @@ Feature: Very first settings
 
 @server_http_proxy
   Scenario: Setup HTTP proxy
-    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > HTTP Proxy"
     Then I should see a "HTTP Proxy Hostname" text
     And I should see a "HTTP Proxy Username" text

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_power_management
@@ -6,6 +6,9 @@ Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
     When the server starts mocking a Redfish host
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Save power management values for Redfish
     Given I am on the Systems overview page of this "sle_minion"
@@ -23,7 +26,6 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : redfish" for "sle_minion"
 
   Scenario: Test Redfish functions
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     And I click on "Power On"
@@ -44,7 +46,6 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    Given I am authorized
     And I am on the System Overview page
     When I follow "Clear"
     And I check the "sle_minion" client
@@ -68,7 +69,6 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : redfish" for "sle_minion"
 
   Scenario: Check power management SSM operation for Redfish
-    Given I am authorized
     And I am on System Set Manager Overview
     When I follow "power management operations" in the content area
     Then I should see "sle_minion" as link
@@ -92,5 +92,4 @@ Feature: Redfish Power management
     When the server stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"
