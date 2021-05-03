@@ -69,7 +69,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I wait until I see "Playbook Content" text
     And I select "/srv/playbooks/orion_dummy/hosts" from "inventory-path-select"
     And I click on "Schedule"
-    Then I should see a "Playbook execution scheduled successfully" text
+    Then I should see a "Playbook execution has been scheduled" text
     And I wait until event "Execute playbook 'playbook_orion_dummy.yml' scheduled by admin" is completed
     And file "/tmp/file.txt" should exist on "sle_minion"
 
