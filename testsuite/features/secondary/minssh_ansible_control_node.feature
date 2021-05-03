@@ -42,7 +42,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Inventories" in the content area
     And I wait until I see "/srv/playbooks/orion_dummy/hosts" text
-    And I click on "/srv/playbooks/orion_dummy/hosts" text in Ansible paths
+    And I click on "/srv/playbooks/orion_dummy/hosts"
     Then I should see a "myself" text
 
   Scenario: Discover playbooks and display them
@@ -50,7 +50,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
-    And I click on "/srv/playbooks" text in Ansible paths
+    And I click on "/srv/playbooks"
     Then I wait until I see "/srv/playbooks/orion_dummy/playbook_orion_dummy.yml" text
 
   Scenario: Run a playbook using custom inventory
@@ -58,7 +58,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
-    And I click on "/srv/playbooks" text in Ansible paths
+    And I click on "/srv/playbooks"
     And I wait until I see "/srv/playbooks/orion_dummy/playbook_orion_dummy.yml" text
     And I click on "orion_dummy/playbook_orion_dummy.yml"
     And I wait until I see "Playbook Content" text
