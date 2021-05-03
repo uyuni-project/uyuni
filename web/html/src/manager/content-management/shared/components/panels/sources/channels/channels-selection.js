@@ -95,6 +95,20 @@ const ChannelsSelection = (props: PropsType) => {
             options={orderedBaseChannels}
             getOptionLabel={option => option.name}
             getOptionValue={option => option.id}
+            menuPortalTarget={document.body}
+            classNamePrefix={`class-selectedBaseChannel`}
+            styles={
+              {
+                menu: (styles: {}) => ({
+                  ...styles,
+                  zIndex: 3,
+                }),
+                menuPortal: (styles: {}) => ({
+                  ...styles,
+                  zIndex: 9999
+                }),
+              }
+            }
           />
           <span className='help-block'>
             {t("Choose the channel to be elected as the new base channel")}

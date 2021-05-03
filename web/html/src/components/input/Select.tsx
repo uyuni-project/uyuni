@@ -117,6 +117,7 @@ export function Select(props: Props) {
             isMulti={props.isMulti}
             aria-label={props.title}
             menuPortalTarget={document.body}
+            classNamePrefix={`class-${props.name}`}
           />
         );
       }}
