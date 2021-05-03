@@ -5422,11 +5422,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve">
-          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Migrate&lt;/a&gt; systems to another organization</source>
+          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.overview.misc.lock" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
         <context-group name="ctx">
@@ -5466,17 +5467,19 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
-          <source>Migrate Systems</source>
+          <source>Transfer Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
-          <source>Migrate the selected systems to the selected organization.  If the operation is successful, the systems will no longer be visible in this organization.</source>
+          <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.migrate.systems.org" xml:space="preserve">
           <source>Target Organization</source>
         <context-group name="ctx">
@@ -5601,11 +5604,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve">
-          <source>Migrate</source>
+          <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.misc.index.tabs.lock" xml:space="preserve">
           <source>Lock</source>
         <context-group name="ctx">
@@ -5661,23 +5665,26 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve">
-          <source>Migrate Systems</source>
+          <source>Transfer Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
-          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action.  The migrated systems will no longer be visible in the original organization.</source>
+          <source>Transfer multiple systems from the current organization to another (trusted) organization in a single action.  The transferred systems will no longer be visible in the original organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve">
-          <source>Migrate Systems to another organization</source>
+          <source>Transfer Systems to another organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation" />
+      </trans-unit>
         <trans-unit id="ssm.misc.index.csi.header" xml:space="preserve">
           <source>Custom System Information</source>
         <context-group name="ctx">
@@ -8171,18 +8178,18 @@ organization management tools if you choose to remove this role from your login.
         <target>નીચે ચેનલોની યાદી છે કે જે સંસ્થા &lt;strong&gt;{0}&lt;/strong&gt; એ તમારી સંસ્થા સાથે વહેંચાયેલ છે. પણ દરેક ચેનલમાં કેટલા પેકેજો છે અને આ વહેંચાયેલ ચેનલોમાંથી તમારી સંસ્થામાં કેટલી સિસ્ટમોને વાપરી રહ્યા છે તે બતાવી રહ્યુ છે. </target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve">
-        <source>Systems Migrated to Your Organization</source>
+        <source>Systems Transferred to Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target>તમારી સંસ્થામાં સિસ્ટમોનું પરિવહન કરેલ છે</target>
+        <target state="needs-adaptation">તમારી સંસ્થામાં સિસ્ટમોનું પરિવહન કરેલ છે</target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve">
-        <source>Systems Migrated from Your Organization</source>
+        <source>Systems Transferred from Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target>તમારી સંસ્થામાંથી સિસ્ટમોને પરવહન કરેલ છે</target>
+        <target state="needs-adaptation">તમારી સંસ્થામાંથી સિસ્ટમોને પરવહન કરેલ છે</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmprofiledeletion" xml:space="preserve">
         <source>Confirm Profile Deletion</source>
@@ -23134,10 +23141,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>@@PRODUCT_NAME@@ વપરાશ માટે rhn-applet સક્રિય કરો."</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
-        <source>Migrate System Between Organizations</source>
+        <source>Transfer System Between Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.migrate.org" xml:space="preserve">
         <source>Organization Name</source>
@@ -23146,16 +23154,18 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.migrate" xml:space="preserve">
-        <source>Migrate System</source>
+        <source>Transfer System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.migrate.success" xml:space="preserve">
-        <source>System successfully migrated</source>
+        <source>System successfully transferred</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.customdata.header" xml:space="preserve">
         <source>Custom System Information</source>
@@ -27261,7 +27271,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
-        <source>Service Pack Migration - Target</source>
+        <source>Product Migration - Target</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -27273,7 +27284,8 @@ given channel.</source>
         <source>Target not available, the following channels are not synced: </source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
-        <source>Service Pack Migration - Channels</source>
+        <source>Product Migration - Channels</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -27297,13 +27309,16 @@ given channel.</source>
         <source>Schedule Migration</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
-        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+        <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
-        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+        <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
-        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -27312,16 +27327,19 @@ given channel.</source>
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
-        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
-        <source>Service Pack Migration - Confirm</source>
+        <source>Product Migration - Confirm</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -27330,7 +27348,8 @@ given channel.</source>
         <source>Channel subscriptions after the migration:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
-        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -27533,9 +27552,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
-      </trans-unit>
-      <trans-unit id="SP Migration" xml:space="preserve">
-        <source>SP Migration</source>
       </trans-unit>
       <trans-unit id="Mirror Credentials" xml:space="preserve">
         <source>Organization Credentials</source>
@@ -27787,6 +27803,14 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
+        <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Product Migration" xml:space="preserve">
+        <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
       </body>
