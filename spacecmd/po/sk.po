@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-05-01 15:57+0000\n"
+"PO-Revision-Date: 2021-05-03 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -268,7 +268,7 @@ msgstr "použitie: activationkey_delete KĽÚČ"
 #: ../src/spacecmd/cryptokey.py:198 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
-msgstr "Žiadny kľúč sa nezhoduje s argumentom %s"
+msgstr "Žiadne kľúče sa nezhodujú s argumentom %s"
 
 #: ../src/spacecmd/activationkey.py:820
 msgid "Delete activation key(s) [y/N]:"
@@ -1651,27 +1651,27 @@ msgstr "použitie: custominfo_details KĽÚČ ..."
 
 #: ../src/spacecmd/custominfo.py:156
 msgid "No keys matched argument '{}'."
-msgstr ""
+msgstr "Žiadne kľúče sa nezhodujú s argumentom '{}'."
 
 #: ../src/spacecmd/custominfo.py:173
 #, python-format
 msgid "Label:        %s"
-msgstr ""
+msgstr "Označenie:        %s"
 
 #: ../src/spacecmd/custominfo.py:174
 #, python-format
 msgid "Description:  %s"
-msgstr ""
+msgstr "Popis:  %s"
 
 #: ../src/spacecmd/custominfo.py:175
 #, python-format
 msgid "Modified:     %s"
-msgstr ""
+msgstr "Zmenený:     %s"
 
 #: ../src/spacecmd/custominfo.py:176
 #, python-format
 msgid "System Count: %i"
-msgstr ""
+msgstr "Počet systémov: %i"
 
 #: ../src/spacecmd/custominfo.py:184
 msgid "custominfo_updatekey: Update a custom key"
@@ -1683,7 +1683,7 @@ msgstr "použitie: custominfo_updatekey [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/distribution.py:43
 msgid "distribution_create: Create a Kickstart tree"
-msgstr ""
+msgstr "distribution_create: Vytvoriť strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:44
 msgid ""
@@ -1695,6 +1695,13 @@ msgid ""
 "  -b base channel to associate with\n"
 "  -t install type [fedora|rhel_4/5/6|generic_rpm]"
 msgstr ""
+"použitie: distribution_create [voľby]\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -p cesta k stromu\n"
+"  -b základný kanál, s ktorým sa má spojiť\n"
+"  -t inštalovaný typ [fedora|rhel_4/5/6|generic_rpm]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1714,15 +1721,15 @@ msgstr ""
 
 #: ../src/spacecmd/distribution.py:98
 msgid "Install Types"
-msgstr ""
+msgstr "Inštalované typy"
 
 #: ../src/spacecmd/distribution.py:103
 msgid "Install Type:"
-msgstr ""
+msgstr "Inštalovaný typ:"
 
 #: ../src/spacecmd/distribution.py:106
 msgid "Invalid install type"
-msgstr ""
+msgstr "Neplatný inštalovaný typ"
 
 #: ../src/spacecmd/distribution.py:114
 msgid "A path is required"
@@ -1734,7 +1741,7 @@ msgstr ""
 
 #: ../src/spacecmd/distribution.py:122
 msgid "An install type is required"
-msgstr ""
+msgstr "Vyžaduje sa inštalovaný typ"
 
 #: ../src/spacecmd/distribution.py:144
 msgid "distribution_list: List the available autoinstall trees"
@@ -1805,6 +1812,12 @@ msgid ""
 "  -b base channel to associate with\n"
 "  -t install type [fedora|rhel_4/5/6|generic_rpm]"
 msgstr ""
+"použitie: distribution_update NÁZOV [voľby]\n"
+"\n"
+"voľby:\n"
+"  -p cesta k stromu\n"
+"  -b základný kanál, s ktorým sa má spojiť\n"
+"  -t inštalovaný typ [fedora|rhel_4/5/6|generic_rpm]"
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
