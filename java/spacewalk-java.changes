@@ -1,3 +1,4 @@
+- Fix boot image url, change default to ftp (bsc#1185509)
 - XMLRPC: Endpoint for aligning channel metadata based on another channel (bsc#1182810)
 - forward registration data to SUSE Customer Center
 - Rename system migration to system transfer
