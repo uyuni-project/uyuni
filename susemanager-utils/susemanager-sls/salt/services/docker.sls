@@ -16,7 +16,7 @@ mgr_install_docker:
 {%- if grains['saltversioninfo'][0] >= 2018 %}
     {%- if grains['osmajorrelease'] == 12 %}
       - python3-salt
-    {%- else %}
+    {%- elif grains['saltversioninfo'][0] < 3002 and salt['pkg.info_available']('python-Jinja2', 'python2-Jinja2') and salt['pkg.info_available']('python', 'python2') and salt['pkg.info_available']('python2-salt') %}
       - python2-salt
     {%- endif %}
 {%- endif %}
