@@ -29687,6 +29687,27 @@ given channel.</source>
         <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
+        <source>Forward registrations to SUSE Customer Center</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
+        <source>Cleanup outdated action chain data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
+        <source>Cleanup outdated token data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
       </body>
   </file>
 </xliff>
