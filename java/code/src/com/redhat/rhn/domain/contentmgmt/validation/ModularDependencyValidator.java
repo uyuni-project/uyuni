@@ -81,7 +81,7 @@ public class ModularDependencyValidator implements ContentValidator {
 
             // Add a message with the list of resolved modules
             String selectedModules =
-                    result.getModules().stream().map(Module::getFullName).collect(Collectors.joining(", "));
+                    result.getModules().stream().map(Module::getFullName).distinct().collect(Collectors.joining(", "));
             messages.add(ContentValidationMessage.contentFiltersMessage(
                     loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
         }
