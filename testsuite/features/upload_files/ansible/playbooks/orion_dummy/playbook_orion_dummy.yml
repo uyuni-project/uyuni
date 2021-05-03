@@ -1,0 +1,8 @@
+---
+- hosts: myself
+
+  tasks:
+  - name: Install Orion dummy package
+    zypper: pkg=orion-dummy state=latest
+  - name: Copying the demo file
+    template: src=file.txt dest=/tmp/

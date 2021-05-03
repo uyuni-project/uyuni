@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-28 14:03+0000\n"
+"POT-Creation-Date: 2021-05-01 15:58+0000\n"
 "PO-Revision-Date: 2021-04-06 10:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -136,6 +136,7 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
@@ -222,10 +223,9 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:204
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
 msgstr "취소"
 
@@ -246,6 +246,7 @@ msgstr "취소"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:31
 #: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
@@ -287,6 +288,8 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
+#: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
+#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
 msgstr "저장"
@@ -386,7 +389,6 @@ msgstr "제거"
 #: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
 msgstr "비밀번호"
 
@@ -557,8 +559,8 @@ msgstr "구성 채널: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:183
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:106
 msgid "Edit"
 msgstr "편집"
 
@@ -739,7 +741,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:92
 msgid "System"
 msgstr "시스템"
 
@@ -974,55 +976,55 @@ msgstr ""
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:550
+#: ../html/src/manager/admin/setup/products/products.tsx:549
 msgid "Filter by product Description"
 msgstr "제품 설명을 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:620
+#: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Product Description"
 msgstr "제품 설명"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:626
-#: ../html/src/manager/admin/setup/products/products.tsx:1004
+#: ../html/src/manager/admin/setup/products/products.tsx:625
+#: ../html/src/manager/admin/setup/products/products.tsx:1003
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:628
+#: ../html/src/manager/admin/setup/products/products.tsx:627
 msgid "Arch"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:634
 msgid "Channels"
 msgstr "채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:806
+#: ../html/src/manager/admin/setup/products/products.tsx:805
 msgid " channels sync failed"
 msgstr " 채널을 동기화하지 못함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:814
+#: ../html/src/manager/admin/setup/products/products.tsx:813
 msgid " channels sync in progress"
 msgstr " 채널 동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:822
+#: ../html/src/manager/admin/setup/products/products.tsx:821
 msgid " channels synced"
 msgstr " 채널 동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:846
 msgid "To enable this product, the parent product should be selected first"
 msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:848
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "Select this product"
 msgstr "이 제품 선택"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:860
+#: ../html/src/manager/admin/setup/products/products.tsx:859
 msgid "This product is mirrored."
 msgstr "이 제품은 미러링되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:889
+#: ../html/src/manager/admin/setup/products/products.tsx:888
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1030,7 +1032,7 @@ msgstr "이 제품은 미러링되었습니다."
 msgid "recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:907
+#: ../html/src/manager/admin/setup/products/products.tsx:906
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1038,51 +1040,51 @@ msgstr "권장"
 msgid "include recommended"
 msgstr "권장에 포함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:949
+#: ../html/src/manager/admin/setup/products/products.tsx:948
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 제품 카탈로그 새로 고침 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:952
+#: ../html/src/manager/admin/setup/products/products.tsx:951
 msgid "Scheduling channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:955
+#: ../html/src/manager/admin/setup/products/products.tsx:954
 msgid "Channels product resync scheduled"
 msgstr "채널 제품 재동기화 예약됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:958
+#: ../html/src/manager/admin/setup/products/products.tsx:957
 msgid "Schedule channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:1018
 msgid "Show product's channels"
 msgstr "제품 채널 표시"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1050
 msgid "Product Channels - "
 msgstr "제품 채널 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1056
+#: ../html/src/manager/admin/setup/products/products.tsx:1055
 msgid "Mandatory Channels"
 msgstr "필수 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1063
+#: ../html/src/manager/admin/setup/products/products.tsx:1062
 msgid "Optional Channels"
 msgstr "선택 사항 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1078
+#: ../html/src/manager/admin/setup/products/products.tsx:1077
 msgid "not synced"
 msgstr "동기화되지 않음"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1081
+#: ../html/src/manager/admin/setup/products/products.tsx:1080
 msgid "sync in progress"
 msgstr "동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1083
 msgid "synced"
 msgstr "동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1087
+#: ../html/src/manager/admin/setup/products/products.tsx:1086
 msgid "sync failed"
 msgstr "동기화 실패"
 
@@ -1140,7 +1142,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:237
+#: ../html/src/manager/virtualization/ListTab.js:236
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1228,7 +1230,7 @@ msgstr "감사 이미지"
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:53
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
@@ -1246,7 +1248,7 @@ msgstr "이름"
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:261
+#: ../html/src/manager/virtualization/ListTab.js:260
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "동작"
@@ -1655,7 +1657,7 @@ msgstr "아니요"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:144
 msgid "(none)"
 msgstr "(없음)"
 
@@ -1742,6 +1744,7 @@ msgstr "작업이 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:223
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -3214,7 +3217,7 @@ msgid "Revision"
 msgstr "리비전"
 
 #: ../html/src/manager/images/image-view.tsx:637
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:108
 msgid "Updates"
 msgstr "업데이트"
 
@@ -3466,6 +3469,7 @@ msgstr "계속 진행할지 여부를 확인하십시오."
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
 #: ../html/src/manager/virtualization/nets/network-properties.js:471
@@ -3590,6 +3594,107 @@ msgid ""
 "systems in the set."
 msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할당이 대체됩니다."
 
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+msgid "No Playbook found."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+msgid "Inventory file empty."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#, fuzzy
+msgid "Loading content.."
+msgstr "로드하는 중..."
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
+#, fuzzy
+msgid "An error occurred while loading data. Please check server logs."
+msgstr ""
+"Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
+msgid ""
+"Ansible Control Node Configuration: add paths for Playbook discovery and "
+"Inventory files introspection."
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
+msgid "Playbook Directories"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
+msgid "Add a Playbook directory"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
+msgid "e.g., /srv/playbooks"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
+msgid "Inventory Files"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
+msgid "Add an Inventory file"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
+msgid "e.g., /etc/ansible/testing/hosts"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
+#, fuzzy
+msgid "Loading.."
+msgstr "로드하는 중..."
+
+#: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
+msgid "Nothing configured. Please add paths in the "
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#, fuzzy
+msgid "Loading playbook contents.."
+msgstr "하위 채널 없음"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#, fuzzy
+msgid "Back to playbook list"
+msgstr "목록으로 돌아가기"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#, fuzzy
+msgid "Schedule playbook execution"
+msgstr "검사 예약"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+msgid "Playbook '{0}'"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
+msgid "Schedule Playbook Execution"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
+msgid "Inventory Path"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
+msgid "Playbook Content"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#, fuzzy
+msgid "Action has been successfully added to action chain"
+msgstr "작업이 작업 체인에 추가되었습니다. "
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#, fuzzy
+msgid "Playbook execution has been"
+msgstr "작업이 "
+
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
@@ -3656,8 +3761,8 @@ msgstr "패키지 상태"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:115
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:58
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:119
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "시/도"
@@ -4163,11 +4268,6 @@ msgstr "SUSE Manager 기본값"
 msgid "Loading child channels.."
 msgstr "하위 채널 없음"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
-msgid "Loading.."
-msgstr "로드하는 중..."
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
 #, fuzzy
 msgid "Base Channel:"
@@ -4646,7 +4746,7 @@ msgstr "libvirt python 모듈을 설치하십시오."
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
-#: ../html/src/manager/virtualization/ListTab.js:244
+#: ../html/src/manager/virtualization/ListTab.js:243
 msgid "Action Status"
 msgstr "작업 상태"
 
@@ -4693,11 +4793,23 @@ msgstr "커널 옵션"
 msgid "Graphics"
 msgstr "그래픽"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
+msgid "Disconnected"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
+msgid "Failed to connect"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
 msgstr "전체 크기 전환"
 
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:275
+msgid "Guest is not running"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
 msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
 
@@ -4740,31 +4852,31 @@ msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:85
 msgid "Guest"
 msgstr "게스트"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:93
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:95
 msgid "Unregistered System"
 msgstr "미등록 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:122
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:127
 msgid "Current Memory"
 msgstr "현재 메모리"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:128
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:141
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:159
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:166
 msgid "paused"
 msgstr "일시 중지됨"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:168
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:175
 msgid "Graphical Console"
 msgstr "그래픽 콘솔"
 
@@ -4846,7 +4958,7 @@ msgid "Create Virtual Network"
 msgstr "가상 네트워크 만들기"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:97
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "시작"
@@ -4867,17 +4979,17 @@ msgid ""
 msgstr ""
 "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:64
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:67
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "자동 시작"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:72
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:76
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "영구"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:81
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:86
 #: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr "브리지"
@@ -5255,7 +5367,7 @@ msgid ""
 "guests disks."
 msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
 msgid "Filter by pool or volume name"
 msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 

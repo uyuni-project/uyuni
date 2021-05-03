@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.system;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
@@ -141,8 +142,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyMap;
 
 /**
  * SystemManager
@@ -3611,7 +3610,7 @@ public class SystemManager extends BaseManager {
             packageState.setName(pkgName);
             pkgStates.add(packageState);
         }
-        else if (pkgState == PackageStates.PURGED) { // using PERGED flag for unmanged here for now.
+        else if (pkgState == PackageStates.PURGED) { // using PURGED flag for unmanaged here for now.
             pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
         }
 

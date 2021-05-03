@@ -107,7 +107,7 @@ if [ -f /etc/sysconfig/apache2 ]; then
 fi
 sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
 if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
-    sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 ignore-no-cache reload-into-ims refresh-ims;' /etc/squid/squid.conf
+    sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
 fi
 if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
     sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf

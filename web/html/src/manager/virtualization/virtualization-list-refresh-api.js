@@ -14,9 +14,9 @@ export function VirtualizationListRefreshApi(props: Props) {
   const [data, setData] = React.useState(undefined);
   const [error, setError] = React.useState(undefined);
 
-  React.useEffect(() => refreshServerData(), [props.lastRefresh]);
+  React.useEffect(() => refreshServerData(), [props.lastRefresh, refreshServerData]);
 
-  const refreshServerData = () => {
+  const refreshServerData = React.useCallback(() => {
     Network.get(`/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`,
                 'application/json').promise
       .then((data) => {
@@ -26,7 +26,7 @@ export function VirtualizationListRefreshApi(props: Props) {
       .catch(jqXHR => {
         setError(Network.responseErrorMessage(jqXHR));
       });
-  }
+  }, [props.serverId, props.type]);
 
   return props.children({
     data,

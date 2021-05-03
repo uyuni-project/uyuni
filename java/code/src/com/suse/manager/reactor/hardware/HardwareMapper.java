@@ -590,7 +590,7 @@ public class HardwareMapper {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
 
-                String virtTypeLabel = null;
+                String virtTypeLabel = virtTypeLowerCase;
                 switch (virtTypeLowerCase) {
                     case "xen":
                         if ("Xen PV DomU".equals(virtSubtype)) {
@@ -604,30 +604,15 @@ public class HardwareMapper {
                     case "kvm":
                         virtTypeLabel = "qemu";
                         break;
-                    case "vmware":
-                        virtTypeLabel = "vmware";
-                        break;
-                    case "hyperv":
-                        virtTypeLabel = "hyperv";
-                        break;
-                    case "virtualbox":
-                        virtTypeLabel = "virtualbox";
-                        break;
-                    case "virtualpc":
-                        virtTypeLabel = "virtualpc";
-                        break;
                     default:
-                        LOG.warn(String.
-                                format("Unsupported virtual instance " +
-                                        "type '%s' for minion '%s'",
-                                virtTypeLowerCase, server.getMinionId()));
-                        // TODO what to do with other virt types ?
+                        LOG.info(String.format("Detected virtual instance type '%s' for minion '%s'",
+                                virtTypeLabel, server.getMinionId()));
                 }
                 type = VirtualInstanceFactory.getInstance()
                         .getVirtualInstanceType(virtTypeLabel);
 
                 if (type == null) { // fallback
-                    type = VirtualInstanceFactory.getInstance().getParaVirtType();
+                    type = VirtualInstanceFactory.getInstance().getFullyVirtType();
                     LOG.warn(String.format(
                             "Can't find virtual instance type for string '%s'. " +
                             "Defaulting to '%s' for minion '%s'",
@@ -688,39 +673,42 @@ public class HardwareMapper {
                             null, server, vCPUs, memory);
                 }
                 else {
-                    long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
-                    String name = virtualInstance.getName();
                     virtualInstance.setUuid(virtUuid);
-                    if (StringUtils.isBlank(name)) {
-                        // use minion name only when the hypervisor name is unknown
-                        name = server.getName();
-                    }
-                    // Don't update memory with kernel-seen one
-                    VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
-                            VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, vCPUs, newMemory);
+                    updateVirtualInstance(vCPUs, memory, virtType, virtualInstance);
                 }
             }
             else {
                 virtualInstances.forEach(virtualInstance -> {
-                    long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
-                    String name = virtualInstance.getName();
-                    if (StringUtils.isBlank(name)) {
-                        // use minion name only when the hypervisor name is unknown
-                        name = server.getName();
-                    }
-                    if (virtType != virtualInstance.getType()) {
-                        LOG.info("Changing the type from -> " + virtualInstance.getType().getLabel() +
-                                " to -> " + virtType.getLabel());
-                        virtualInstance.setType(virtType);
-                    }
-                    // Don't update memory with kernel-seen one
-                    VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
-                            VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server, vCPUs, newMemory);
+                    updateVirtualInstance(vCPUs, memory, virtType, virtualInstance);
                 });
             }
         }
+    }
+
+    /**
+     * Update the virtual instance information
+     * @param vCPUs virtual CPUs
+     * @param memory memory
+     * @param virtType virtual instance type
+     * @param virtualInstance virtunalInstance to be updated
+     */
+    private void updateVirtualInstance(int vCPUs, long memory, VirtualInstanceType virtType,
+                                       VirtualInstance virtualInstance) {
+        long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
+        String name = virtualInstance.getName();
+        if (StringUtils.isBlank(name)) {
+            // use minion name only when the hypervisor name is unknown
+            name = server.getName();
+        }
+        if (virtType != virtualInstance.getType()) {
+            LOG.info("Changing the type from -> " + virtualInstance.getType().getLabel() +
+                    " to -> " + virtType.getLabel());
+            virtualInstance.setType(virtType);
+        }
+        // Don't update memory with kernel-seen one
+        VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
+                VirtualInstanceFactory.getInstance().getRunningState(),
+                virtualInstance.getHostSystem(), server, vCPUs, newMemory);
     }
 
     /**

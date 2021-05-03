@@ -170,7 +170,7 @@ class ImageStores extends React.Component<Props, State> {
             identifier={imagestore => imagestore.id}
             initialSortColumnKey="id"
             initialItemsPerPage={window.userPrefPageSize}
-            searchField={<SearchField filter={this.searchData} criteria={""} />}
+            searchField={<SearchField filter={this.searchData} />}
             selectable
             selectedItems={this.state.selectedItems}
             onSelect={this.handleSelectItems}

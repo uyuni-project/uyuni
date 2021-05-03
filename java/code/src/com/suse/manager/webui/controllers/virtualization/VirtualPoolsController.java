@@ -295,9 +295,8 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
 
-            VirtualPoolDeleteActionJson deleteData = (VirtualPoolDeleteActionJson)data;
-            if (deleteData.getPurge() != null) {
-                action.setPurge(deleteData.getPurge());
+            if (data.getPurge() != null) {
+                action.setPurge(data.getPurge());
             }
             return action;
         }, VirtualPoolDeleteActionJson.class);
@@ -330,24 +329,22 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
             String displayName = actionName != null ? actionName : action.getActionType().getName();
             action.setName(displayName + ": " + String.join(",", data.getPoolNames()));
 
-            VirtualPoolCreateActionJson createData = (VirtualPoolCreateActionJson)data;
-
-            if (createData.getPoolNames().isEmpty()) {
+            if (data.getPoolNames().isEmpty()) {
                 throw new IllegalArgumentException("pool names needs to contain an element");
             }
 
-            action.setUuid(createData.getUuid());
-            action.setPoolName(createData.getPoolNames().get(0));
-            action.setType(createData.getType());
-            action.setAutostart(createData.isAutostart());
-            if (createData.getTarget() != null) {
-                action.setTarget(createData.getTarget().getPath());
-                action.setOwner(createData.getTarget().getOwner());
-                action.setGroup(createData.getTarget().getGroup());
-                action.setMode(createData.getTarget().getMode());
-                action.setSeclabel(createData.getTarget().getSeclabel());
+            action.setUuid(data.getUuid());
+            action.setPoolName(data.getPoolNames().get(0));
+            action.setType(data.getType());
+            action.setAutostart(data.isAutostart());
+            if (data.getTarget() != null) {
+                action.setTarget(data.getTarget().getPath());
+                action.setOwner(data.getTarget().getOwner());
+                action.setGroup(data.getTarget().getGroup());
+                action.setMode(data.getTarget().getMode());
+                action.setSeclabel(data.getTarget().getSeclabel());
             }
-            action.setSource(createData.getSource());
+            action.setSource(data.getSource());
 
             return action;
         }, VirtualPoolCreateActionJson.class);
@@ -377,7 +374,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      */
     public String volumeDelete(Request request, Response response, User user) {
         return volumeAction(request, response, user,
-                (data) -> (BaseVirtualizationVolumeAction)ActionFactory.createAction(
+                data -> (BaseVirtualizationVolumeAction)ActionFactory.createAction(
                         ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE),
                 VirtualVolumeBaseActionJson.class);
     }
@@ -413,26 +410,25 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
         return poolAction(request, response, user, actionCreator, VirtualPoolBaseActionJson.class);
     }
 
-    private String poolAction(Request request, Response response, User user,
-            Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
-            Class<? extends VirtualPoolBaseActionJson> jsonClass) {
+    private <T extends VirtualPoolBaseActionJson> String poolAction(Request request, Response response, User user,
+            Function<T, BaseVirtualizationPoolAction> actionCreator,
+            Class<T> jsonClass) {
         return action(request, response, user,
                (data, key) -> {
-                   VirtualPoolBaseActionJson poolData = (VirtualPoolBaseActionJson)data;
-                   BaseVirtualizationPoolAction action = actionCreator.apply(poolData);
+                   BaseVirtualizationPoolAction action = actionCreator.apply(data);
                    action.setPoolName(key);
                    return action;
                },
-               (data) -> ((VirtualPoolBaseActionJson)data).getPoolNames(),
+               data -> data.getPoolNames(),
                jsonClass);
     }
 
-    private String volumeAction(Request request, Response response, User user,
-            Function<VirtualVolumeBaseActionJson, BaseVirtualizationVolumeAction> actionCreator,
-            Class<? extends VirtualVolumeBaseActionJson> jsonClass) {
+    private <T extends VirtualVolumeBaseActionJson> String volumeAction(Request request, Response response, User user,
+            Function<T, BaseVirtualizationVolumeAction> actionCreator,
+            Class<T> jsonClass) {
         return action(request, response, user,
                 (data, key) -> {
-                    BaseVirtualizationVolumeAction action = actionCreator.apply((VirtualVolumeBaseActionJson)data);
+                    BaseVirtualizationVolumeAction action = actionCreator.apply(data);
                     action.setName(action.getActionType().getName() + ": " + key);
                     Matcher m = Pattern.compile("^([^/]+)/(.*)$").matcher(key);
                     if (m.matches()) {
@@ -441,7 +437,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
                     }
                     return action;
                 },
-                (data) -> ((VirtualVolumeBaseActionJson)data).getVolumesPath(),
+                data -> data.getVolumesPath(),
                 jsonClass
          );
     }

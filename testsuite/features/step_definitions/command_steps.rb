@@ -508,7 +508,6 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   $server.run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
-# WORKAROUND bsc#1181847
 When(/^I import the GPG keys for "([^"]*)"$/) do |host|
   node = get_target(host)
   gpg_keys = get_gpg_keys(node)
@@ -863,23 +862,18 @@ When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error con
   if host.include? 'ceos'
     cmd = "yum -y install #{package}"
     successcodes = [0]
+    not_found_msg = 'No package'
   elsif host.include? 'ubuntu'
     cmd = "apt-get --assume-yes install #{package}"
     successcodes = [0]
+    not_found_msg = 'Unable to locate package'
   else
     cmd = "zypper --non-interactive install -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
-end
-
-When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
-  packages = output.split("\n")
-  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-  # Reverse sort the package name to get the latest version first and install it
-  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  $server.run("rpm -i #{package}")
+  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
 When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -887,14 +881,18 @@ When(/^I install old package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error
   if host.include? 'ceos'
     cmd = "yum -y downgrade #{package}"
     successcodes = [0]
+    not_found_msg = 'No package'
   elsif host.include? 'ubuntu'
     cmd = "apt-get --assume-yes install #{package} --allow-downgrades"
     successcodes = [0]
+    not_found_msg = 'Unable to locate package'
   else
     cmd = "zypper --non-interactive install --oldpackage -y #{package}"
     successcodes = [0, 100, 101, 102, 103, 106]
+    not_found_msg = 'not found in package names'
   end
-  node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  output, _code = node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+  raise "A package was not found. Output:\n #{output}" if output.include? not_found_msg
 end
 
 When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -910,6 +908,15 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
     successcodes = [0, 100, 101, 102, 103, 104, 106]
   end
   node.run(cmd, error_control.empty?, DEFAULT_TIMEOUT, 'root', successcodes)
+end
+
+When(/^I install package tftpboot-installation on the server$/) do
+  output, _code = $server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP2-x86_64-*.noarch.rpm')
+  packages = output.split("\n")
+  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+  # Reverse sort the package name to get the latest version first and install it
+  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+  $server.run("rpm -i #{package}")
 end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
@@ -1566,4 +1573,18 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   return_code = file_inject(node, source, remote_file)
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply ' + state)
+end
+
+When(/^I copy autoinstall mocked files on server$/) do
+  target_dirs = "/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock"
+  $server.run("mkdir -p #{target_dirs}")
+  base_dir = File.dirname(__FILE__) + "/../upload_files/autoinstall/cobbler/"
+  source_dir = "/var/autoinstall/"
+  return_codes = []
+  return_codes << file_inject($server, base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
+  return_codes << file_inject($server, base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
+  return_codes << file_inject($server, base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
+  return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
+  raise 'File injection failed' unless return_codes.all?(&:zero?)
 end

@@ -68,6 +68,8 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                 final String guid = VirtualInstanceManager.fixUuidIfSwappedUuidExists(
                         message.getDomainUUID().replaceAll("-", ""));
 
+                VirtNotifications.spreadGuestEvent(minion.getId(), guid, event, message.getDetail());
+
                 List<VirtualInstance> vms = VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid(guid);
                 if (vms.isEmpty()) {
                     // We got a machine created from outside SUMA,

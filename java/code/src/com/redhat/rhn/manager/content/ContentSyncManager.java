@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014--2018 SUSE LLC
+ * Copyright (c) 2014--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -627,6 +627,9 @@ public class ContentSyncManager {
                 if (!cs.getSourceUrl().equals(overwriteUrl)) {
                     cs.setSourceUrl(overwriteUrl);
                 }
+                if (cs.getMetadataSigned() != a.getRepository().isSigned()) {
+                    cs.setMetadataSigned(a.getRepository().isSigned());
+                }
             });
     }
 
@@ -1035,7 +1038,8 @@ public class ContentSyncManager {
                     uri.getQuery(), null).toString());
         }
         // In case url is a mirrorlist test the plain URL as well
-        if (Optional.ofNullable(uri.getQuery()).filter(q -> q.contains("=")).isPresent()) {
+        if (Optional.ofNullable(uri.getQuery()).filter(q -> q.contains("=")).isPresent() ||
+                url.contains("mirror.list")) {
             urls.add(url);
         }
         return urls;
@@ -1634,6 +1638,7 @@ public class ContentSyncManager {
                             }
                             prodRepoLink.setChannelName(entry.getChannelName());
                             prodRepoLink.setMandatory(entry.isMandatory());
+                            prodRepoLink.getRepository().setSigned(entry.isSigned());
 
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
                                 channelsToCleanup.add(entry.getChannelLabel());

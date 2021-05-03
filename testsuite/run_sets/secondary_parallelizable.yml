@@ -47,6 +47,7 @@
 - features/secondary/min_centos_salt_install_package_and_patch.feature
 - features/secondary/min_centos_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
+- features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_ubuntu_salt_install_with_staging.feature
 - features/secondary/min_ubuntu_salt_install_package.feature
 - features/secondary/min_bootstrap_xmlrpc.feature
@@ -65,6 +66,7 @@
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
 - features/secondary/min_monitoring.feature
+- features/secondary/min_ansible_control_node.feature
 - features/secondary/srv_scc_user_credentials.feature
 
 - features/secondary/trad_metadata_check.feature
@@ -76,5 +78,8 @@
 - features/secondary/trad_check_patches_install.feature
 - features/secondary/trad_sp_migration.feature
 - features/secondary/trad_check_registration.feature
+
+- features/secondary/buildhost_docker_build_image.feature
+- features/secondary/buildhost_docker_auth_registry.feature
 
 ## Parallelizable Secondary features END ##

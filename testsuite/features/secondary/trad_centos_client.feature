@@ -24,8 +24,8 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 @centos_minion
   Scenario: Prepare the CentOS 7 traditional client
     Given I am authorized
-    When I enable SUSE Manager tools repositories on "ceos_client"
-    And I enable repository "CentOS-Base" on this "ceos_client"
+    When I enable repository "CentOS-Base" on this "ceos_client"
+    And I enable SUSE Manager tools repositories on "ceos_client"
     And I install the traditional stack utils on "ceos_client"
     And I install OpenSCAP dependencies on "ceos_client"
     And I fix CentOS 7 OpenSCAP files on "ceos_client"

@@ -9,6 +9,16 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   I want to run an OpenSCAP scan on it
 
 @ubuntu_minion
+@uyuni
+  Scenario: Install the client tools packages for Uyuni on the Ubuntu minion
+    When I enable Uyuni tools repositories on "ubuntu_minion"
+
+@ubuntu_minion
+@susemanager
+  Scenario: Install the client tools packages for SUSE Manager on the Ubuntu minion
+    When I enable SUSE Manager tools repositories on "ubuntu_minion"
+
+@ubuntu_minion
   Scenario: Install the OpenSCAP packages on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I enable universe repositories on "ubuntu_minion"
@@ -25,7 +35,7 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu1604-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu2004-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
@@ -75,3 +85,13 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
     When I disable universe repositories on "ubuntu_minion"
+
+@ubuntu_minion
+@uyuni
+  Scenario: Cleanup: remove the client tools packages for Uyuni on the Ubuntu minion
+    When I disable Uyuni tools repositories on "ubuntu_minion"
+
+@ubuntu_minion
+@susemanager
+  Scenario: Cleanup: remove the client tools packages for SUSE Manager on the Ubuntu minion
+    When I disable SUSE Manager tools repositories on "ubuntu_minion"

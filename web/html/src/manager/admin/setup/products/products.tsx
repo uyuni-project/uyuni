@@ -546,7 +546,6 @@ class Products extends React.Component<ProductsProps> {
           searchField={
             <SearchField
               filter={searchCriteriaInExtension}
-              criteria={""}
               placeholder={t("Filter by product Description")}
               name="product-description-filter"
             />

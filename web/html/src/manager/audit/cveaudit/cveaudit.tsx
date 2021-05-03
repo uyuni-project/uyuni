@@ -250,7 +250,7 @@ class CVEAudit extends React.Component<Props, State> {
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}
-            searchField={<SearchField filter={this.searchData} criteria={""} placeholder={t("Filter by name")} />}
+            searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
           >
             <Column
               columnKey="patchStatus"

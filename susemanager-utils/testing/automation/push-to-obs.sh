@@ -22,10 +22,11 @@ help() {
   echo "  -n  If used, update PROJECT instead of the projects specified with -d,"
   echo "      for example, if you want to package only the changes from a PR on"
   echo "      a separate project"
+  echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links" 
   echo ""
 }
 
-while getopts ":d:c:p:n:vth" opts; do
+while getopts ":d:c:p:n:vthe" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES=${OPTARG};;
@@ -33,6 +34,7 @@ while getopts ":d:c:p:n:vth" opts; do
     v) VERBOSE="-v";;
     t) TEST="-t";;
     n) OBS_TEST_PROJECT="-n ${OPTARG}";;
+    e) EXTRA_OPTS="-e";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -57,7 +59,7 @@ if [ ! -f ${CREDENTIALS} ]; then
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${PACKAGES}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT}"
+CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${PACKAGES}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER

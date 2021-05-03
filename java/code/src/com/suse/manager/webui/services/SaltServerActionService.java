@@ -58,6 +58,8 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.PlaybookAction;
+import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -224,6 +226,7 @@ public class SaltServerActionService {
     private static final String REMOTE_COMMANDS = "remotecommands";
     private static final String SYSTEM_REBOOT = "system.reboot";
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
+    private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -470,6 +473,9 @@ public class SaltServerActionService {
             ClusterUpgradeAction clusterAction =
                     (ClusterUpgradeAction)actionIn;
             return clusterUpgradeClusterAction(clusterAction);
+        }
+        else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
+            return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -2227,6 +2233,24 @@ public class SaltServerActionService {
                 Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class);
 
         return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
+    }
+
+    private LocalCall<?> executePlaybookActionCall(PlaybookAction action) {
+        PlaybookActionDetails details = action.getDetails();
+
+        String playbookPath = details.getPlaybookPath();
+        String rundir = new File(playbookPath).getAbsoluteFile().getParent();
+        String inventoryPath = details.getInventoryPath();
+
+        if (StringUtils.isEmpty(inventoryPath)) {
+            inventoryPath = "/etc/ansible/hosts";
+        }
+
+        Map<String, Object> pillarData = new HashMap<>();
+        pillarData.put("playbook_path", playbookPath);
+        pillarData.put("inventory_path", inventoryPath);
+        pillarData.put("rundir", rundir);
+        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData));
     }
 
     /**

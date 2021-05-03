@@ -79,12 +79,14 @@ export function GuestsList(props: Props) {
         (createModalButton, onAction) => {
             const columns = [
               <Column
+                key="name"
                 columnKey="name"
                 comparator={Utils.sortByText}
                 header={t('Guest')}
                 cell={row => row.name}
               />,
               <Column
+                key="server"
                 columnKey="serverName"
                 comparator={Utils.sortByText}
                 header={t('System')}
@@ -100,6 +102,7 @@ export function GuestsList(props: Props) {
                 }}
               />,
               <Column
+                key="status"
                 columnKey="statusType"
                 comparator={ListUtils.sortByUpdate}
                 header={t('Updates')}
@@ -111,24 +114,28 @@ export function GuestsList(props: Props) {
                 }}
               />,
               <Column
+                key="state"
                 columnKey="stateLabel"
                 header={t('State')}
                 comparator={ListUtils.sortByState}
                 cell={row => row.stateName}
               />,
               <Column
+                key="memory"
                 columnKey="memory"
                 comparator={Utils.sortByNumber}
                 header={t('Current Memory')}
                 cell={row => `${row.memory} MiB`}
               />,
               <Column
+                key="vcpus"
                 columnKey="vcpus"
                 comparator={Utils.sortByNumber}
                 header={t('vCPUs')}
                 cell={row => row.vcpus}
               />,
               <Column
+                key="channel"
                 columnKey="channelLabels"
                 comparator={Utils.sortByText}
                 header={t('Base Software Channel')}
@@ -163,12 +170,12 @@ export function GuestsList(props: Props) {
                     {state === 'running' && row.name !== 'Domain-0' && createModalButton('suspend', modalsData, row)}
                     {state !== 'stopped' && row.name !== 'Domain-0' && createModalButton('shutdown', modalsData, row)}
                     {(state === 'paused' || state === 'running') && createModalButton('restart', modalsData, row)}
-                    {props.saltEntitled && state === 'running' && (
+                    {props.saltEntitled && (
                       <LinkButton
                         title={t('Graphical Console')}
                         className="btn-default btn-sm"
                         icon="fa-desktop"
-                        href={`/rhn/manager/systems/details/virtualization/guests/${props.serverId}/console/${row.uuid}`}
+                        href={`/rhn/manager/systems/details/virtualization/guests/console/${row.uuid}`}
                         target="_blank"
                       />
                     )}

@@ -115,9 +115,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -1616,9 +1616,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
         Map<String, Object> formulaData = new HashMap<>();
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        Map<String, Object> exportersData = new HashMap<>();
+        exportersData.put("node_exporter", Collections.singletonMap("enabled", true));
+        exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        formulaData.put("exporters", exportersData);
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group

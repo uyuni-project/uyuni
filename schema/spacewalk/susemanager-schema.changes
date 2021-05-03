@@ -1,3 +1,5 @@
+- Ansible integration: configure control node paths (playbooks and inventories)
+
 -------------------------------------------------------------------
 Fri Apr 16 13:29:49 CEST 2021 - jgonzalez@suse.com
 

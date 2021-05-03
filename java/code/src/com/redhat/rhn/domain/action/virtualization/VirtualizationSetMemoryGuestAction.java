@@ -14,15 +14,11 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
-import java.util.Map;
-
 /**
  * Class representing TYPE_VIRTUALIZATION_SET_MEMORY.
  * Make sure the 'memory' field is in kilobytes.
  */
 public class VirtualizationSetMemoryGuestAction extends BaseVirtualizationGuestAction {
-
-    public static final String SET_MEMORY_STRING = "setMemory";
 
     private Integer memory;
 
@@ -41,15 +37,4 @@ public class VirtualizationSetMemoryGuestAction extends BaseVirtualizationGuestA
     public Integer getMemory() {
         return memory;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void extractParameters(Map context) {
-        if (context.containsKey(VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING)) {
-            setMemory(Integer.valueOf((String)context.get(
-                    VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING)));
-        }
-    }
-
 }

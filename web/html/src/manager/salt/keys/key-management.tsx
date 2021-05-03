@@ -150,7 +150,7 @@ class KeyManagement extends React.Component<Props, State> {
             initialSortColumnKey="id"
             initialItemsPerPage={window.userPrefPageSize}
             loading={this.state.loading}
-            searchField={<SearchField filter={this.searchData} criteria={""} />}
+            searchField={<SearchField filter={this.searchData} />}
           >
             <Column
               columnKey="id"

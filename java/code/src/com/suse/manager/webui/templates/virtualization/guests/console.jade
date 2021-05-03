@@ -1,14 +1,20 @@
 #virtualguests-console(style="height: 100%")
 
+input(type="hidden", name="csrf_token" value="#{csrf_token}")
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
 script(type='text/javascript').
     spaImportReactPage('virtualization/guests/console/guests-console')
         .then(function(module) {
              module.renderer(
               'virtualguests-console',
               {
-                  hostId: "#{server.id}",
+                  hostId: "#{serverId}",
                   guestUuid: "#{guestUuid}",
                   guestName: "#{guestName}",
+                  guestState: "#{guestState}",
                   graphicsType: "#{graphicsType}",
                   token: "#{token}",
               }

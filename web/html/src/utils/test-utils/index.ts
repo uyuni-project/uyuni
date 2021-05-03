@@ -35,9 +35,11 @@ export const {
  * Instead we use the `paste()` method which inserts the full text in one go and
  * pretend there is no difference.
  */
-export const type = async (elementOrPromiseOfElement, text) => {
+export const type = async <T extends HTMLElement>(elementOrPromiseOfElement: T | Promise<T>, text: string, append = false) => {
   const target = await elementOrPromiseOfElement;
-  // await userEvent.type(target, text, mergedOptions);
+  if (!append) {
+    userEvent.clear(target);
+  }
   userEvent.paste(target, text, undefined);
 
   /**

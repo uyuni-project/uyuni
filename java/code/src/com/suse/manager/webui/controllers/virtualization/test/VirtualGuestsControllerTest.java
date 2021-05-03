@@ -24,11 +24,11 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAc
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -38,6 +38,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.VirtualizationActionHelper;
 import com.suse.manager.virtualization.VmInfoJson;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
@@ -59,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import spark.HaltException;
 
@@ -85,10 +87,11 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-        VirtualizationActionCommand.setTaskomaticApi(taskomaticMock);
+        VirtualizationActionHelper.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() {{
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
 
         virtManager = new TestVirtManager() {
 
@@ -179,10 +182,10 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
 
-        String json = virtualGuestsController.guestAction(
-                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
+        String json = virtualGuestsController.shutdown(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/shutdown",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
-                                              sid, "shutdown"),
+                                              sid),
                 response, user);
 
         // Make sure the shutdown action was queued
@@ -210,7 +213,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer vcpus = 3;
-        String json = virtualGuestsController.guestAction(
+        String json = virtualGuestsController.setVcpu(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
@@ -240,7 +243,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         try {
-            virtualGuestsController.guestAction(
+            virtualGuestsController.setVcpu(
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
@@ -265,7 +268,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer mem = 2048;
-        String json = virtualGuestsController.guestAction(
+        String json = virtualGuestsController.setMemory(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guests[0].getUuid() + "\", " +
                                                        "\"" + guests[1].getUuid() + "\"], " +

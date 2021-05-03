@@ -47,4 +47,17 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         NumericDate expDate = tokenBuilder.getClaims().getExpirationTime();
         assertNotNull(expDate);
     }
+
+    public void testVerifyToken() throws Exception {
+        TokenBuilder tokenBuilder = new TokenBuilder();
+        tokenBuilder.useServerSecret();
+        String token = tokenBuilder.getToken();
+        assertTrue(TokenBuilder.verifyToken(token));
+    }
+
+    public void testWrongOriginToken() {
+        String wrongOriginToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpva" +
+                "G4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        assertFalse(TokenBuilder.verifyToken(wrongOriginToken));
+    }
 }

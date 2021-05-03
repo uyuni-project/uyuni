@@ -60,7 +60,3 @@ Feature: Build image with authenticated registry
   Scenario: Cleanup: delete portus image
     Given I am authorized as "admin" with password "admin"
     When I delete the image "portus_profile" with version "latest" via XML-RPC calls
-
-@auth_registry
-  Scenario: Cleanup: kill stale portus image build jobs
-    When I kill remaining Salt jobs on "build_host"

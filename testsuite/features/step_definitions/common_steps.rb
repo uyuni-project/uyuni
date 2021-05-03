@@ -190,7 +190,7 @@ Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
-  ct.distro_create(distro, '/install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', 'install/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
+  ct.distro_create(distro, '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I trigger cobbler system record$/) do
@@ -220,7 +220,7 @@ Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do 
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
-  ct.profile_create('testprofile', 'testdistro', '/install/empty.xml')
+  ct.profile_create('testprofile', 'testdistro', '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I remove kickstart profiles and distros$/) do
@@ -714,31 +714,47 @@ end
 # Repository steps
 
 # Enable tools repositories (both stable and development)
-When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+When(/^I enable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
-  elsif os_family =~ /^centos/
+  when /^centos/
     repos, _code = node.run('yum repolist disabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
+  when /^ubuntu/
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}")
+    end
+  else
+    raise "This step has no implementation for #{os_family} system."
   end
 end
 
-When(/^I disable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
+When(/^I disable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^(opensuse|sles)/
     repos, _code = node.run('zypper lr | grep "tools" | cut -d"|" -f2')
     node.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
-  elsif os_family =~ /^centos/
+  when /^centos/
     repos, _code = node.run('yum repolist enabled 2>/dev/null | grep "tools" | cut -d" " -f1')
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
     end
+  when /^ubuntu/
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos.gsub(/\s/, ' ').split.each do |repo|
+      node.run("sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}")
+    end
+  else
+    raise "This step has no implementation for #{os_family} system."
   end
 end
 
@@ -1280,4 +1296,30 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   url = "http://#{$server.full_hostname}/pub/" + file
   puts "URL: #{url}"
   step %(I enter "#{url}" as "calendar-data-text")
+end
+
+When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
+  target = get_target(host)
+  dest = "/srv/playbooks/orion_dummy/"
+  target.run("mkdir -p #{dest}")
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml'
+  return_code = file_inject(target, source, dest + "playbook_orion_dummy.yml")
+  raise 'File injection failed' unless return_code.zero?
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/hosts'
+  return_code = file_inject(target, source, dest + "hosts")
+  raise 'File injection failed' unless return_code.zero?
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/file.txt'
+  return_code = file_inject(target, source, dest + "file.txt")
+  raise 'File injection failed' unless return_code.zero?
+  dest = "/srv/playbooks/"
+  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/playbook_ping.yml'
+  return_code = file_inject(target, source, dest + "playbook_ping.yml")
+  raise 'File injection failed' unless return_code.zero?
+end
+
+When(/^I remove testing playbooks and inventory files from "([^"]*)"$/) do |host|
+  playbooks_dir = 'ansible/'
+  target = get_target(host)
+  dest = "/srv/playbooks/"
+  target.run("rm -rf #{dest}")
 end

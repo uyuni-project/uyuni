@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -87,6 +90,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.OperationDetailsDto;
@@ -141,10 +145,13 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.*;
-
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -170,12 +177,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
@@ -2310,6 +2315,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testScheduleGuestAction() throws Exception {
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
         Server host = ServerFactoryTest.createTestServer(admin, true);
         GuestBuilder build = new GuestBuilder(admin);
         VirtualInstance guest = build.createGuest().withVirtHost().build();
@@ -2333,6 +2339,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetGuestMemory() throws Exception {
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
         Server host = ServerFactoryTest.createTestServer(admin, true);
         GuestBuilder build = new GuestBuilder(admin);
         VirtualInstance guest = build.createGuest().withVirtHost().build();
@@ -2361,6 +2368,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
 
     public void testSetGuestCpus() throws Exception {
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
         Server host = ServerFactoryTest.createTestServer(admin, true);
         GuestBuilder build = new GuestBuilder(admin);
         VirtualInstance guest = build.createGuest().withVirtHost().build();

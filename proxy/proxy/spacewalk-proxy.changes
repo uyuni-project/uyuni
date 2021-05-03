@@ -1,3 +1,7 @@
+- set max date to max one year (bsc#1175369)
+- remove 'ignore-no-cache' which is obsolete (bsc#1175369)
+- remove 127.0.0.1 acl which is already built in (bsc#1175369)
+
 -------------------------------------------------------------------
 Thu Feb 25 12:07:16 CET 2021 - jgonzalez@suse.com
 

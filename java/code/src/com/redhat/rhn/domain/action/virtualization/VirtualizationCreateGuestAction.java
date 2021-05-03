@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.action.virtualization;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,18 +23,6 @@ import java.util.Objects;
 public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestAction {
 
     private static final long serialVersionUID = 5911199267745279497L;
-    public static final String TYPE = "type";
-    public static final String NAME = "name";
-    public static final String OS_TYPE = "ostype";
-    public static final String MEMORY = "memory";
-    public static final String VCPUS = "vcpus";
-    public static final String ARCH = "arch";
-    public static final String GRAPHICS = "graphics";
-    public static final String DISKS = "disks";
-    public static final String INTERFACES = "interfaces";
-    public static final String COBBLER_SYSTEM = "cobblerSystem";
-    public static final String KICKSTART_HOST = "kickstartHost";
-    public static final String KERNEL_OPTIONS = "kernelOptions";
 
     private Long id;
     private String type;
@@ -270,42 +257,6 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
      */
     public void setKernelOptions(String kernelOptionsIn) {
         kernelOptions = kernelOptionsIn;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public void extractParameters(Map context) {
-        setType((String)context.get(TYPE));
-        // So far the salt virt.update function doesn't allow renaming a guest,
-        // and that is only possible for the KVM driver.
-        setGuestName((String)context.get(NAME));
-        setOsType((String) context.get(OS_TYPE));
-        setMemory((Long) context.get(MEMORY));
-        setVcpus((Long) context.get(VCPUS));
-        setArch((String) context.get(ARCH));
-        setGraphicsType((String) context.get(GRAPHICS));
-        setCobblerSystem((String) context.get(COBBLER_SYSTEM));
-        setKickstartHost((String) context.get(KICKSTART_HOST));
-        setKernelOptions((String) context.get(KERNEL_OPTIONS));
-
-        List<VirtualizationCreateActionDiskDetails> disksParam =
-                (List<VirtualizationCreateActionDiskDetails>) context.get(DISKS);
-        if (disksParam != null) {
-            disksParam.stream().forEach(detail -> detail.setAction(this));
-            setDisks(disksParam);
-        }
-        setRemoveDisks(disksParam != null && disksParam.isEmpty());
-
-        List<VirtualizationCreateActionInterfaceDetails> interfacesParam =
-                (List<VirtualizationCreateActionInterfaceDetails>) context.get(INTERFACES);
-        if (interfacesParam != null) {
-            interfacesParam.stream().forEach(detail -> detail.setAction(this));
-            setInterfaces(interfacesParam);
-        }
-        setRemoveInterfaces(interfacesParam != null && interfacesParam.isEmpty());
     }
 
     @Override

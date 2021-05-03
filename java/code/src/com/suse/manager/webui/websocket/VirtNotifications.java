@@ -23,10 +23,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.websocket.json.VirtNotificationMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import org.apache.log4j.Logger;
 
@@ -66,11 +69,11 @@ public class VirtNotifications {
     private static final Logger LOG = Logger.getLogger(VirtNotifications.class);
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-            .serializeNulls()
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
 
     private static final Object LOCK = new Object();
-    private static Map<Session, Set<Long>> wsSessions = new HashMap<>();
+    private static Map<Session, Set<VirtNotificationMessage>> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
 
     /**
@@ -126,51 +129,53 @@ public class VirtNotifications {
     @SuppressWarnings("unchecked")
     public void onMessage(Session session, String messageBody) {
         // Each session sends messages to tell us what action ID they need to monitor
-        Set<Long> serverIds = wsSessions.get(session);
+        Set<VirtNotificationMessage> serverIds = wsSessions.get(session);
         if (serverIds != null) {
             Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get("webUserID"))
                     .map(webUserID -> UserFactory.lookupById((Long) webUserID));
             if (userOpt.isPresent()) {
-                Long newId = null;
                 try {
-                    newId = Long.parseLong(messageBody);
-                    serverIds.add(newId);
+                    VirtNotificationMessage request = GSON.fromJson(messageBody, VirtNotificationMessage.class);
+                    serverIds.add(request);
 
                     // Send out a list of the latest pending actions to display
-                    Server server = SystemManager.lookupByIdAndUser(newId, userOpt.get());
-                    List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
-                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP));
+                    if (request.getGuestUuid().isEmpty() && request.getSid().isPresent()) {
+                        Server server = SystemManager.lookupByIdAndUser(request.getSid().get(), userOpt.get());
+                        List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
+                                Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP));
 
-                    Map<String, List<ServerAction>> groupedActions = serverActions.stream()
-                            .filter(sa -> ActionFactory.isVirtualizationActionType(
+                        Map<String, List<ServerAction>> groupedActions = serverActions.stream()
+                                .filter(sa -> ActionFactory.isVirtualizationActionType(
                                         sa.getParentAction().getActionType()))
-                            .collect(Collectors.toMap(sa -> {
-                                        return sa.getParentAction().getWebSocketActionId();
-                                    },
-                                    sa -> Arrays.asList(sa),
-                                    (sa1, sa2) -> {
-                                        List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
-                                        merged.addAll(sa2);
-                                        return merged;
-                                    }));
+                                .collect(Collectors.toMap(sa -> {
+                                            return sa.getParentAction().getWebSocketActionId();
+                                        },
+                                        sa -> Arrays.asList(sa),
+                                        (sa1, sa2) -> {
+                                            List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
+                                            merged.addAll(sa2);
+                                            return merged;
+                                        }));
 
-                    Map<String, Map<String, Object>> latestActions = groupedActions.keySet().stream()
-                            .collect(Collectors.toMap(uuid -> uuid,
-                                    uuid -> groupedActions.get(uuid).stream()
-                                            .sorted(Comparator.comparing(ServerAction::getCreated).reversed())
-                                            .findFirst().map(sa -> {
-                                                Map<String, Object> data = new HashMap<>();
-                                                data.put("id", sa.getParentAction().getId());
-                                                data.put("status", sa.getStatus().getName());
-                                                data.put("type", sa.getParentAction().getActionType().getLabel());
-                                                data.put("name", sa.getParentAction().getName());
-                                                return data;
-                                            }).get()));
+                        Map<String, Map<String, Object>> latestActions = groupedActions.keySet().stream()
+                                .collect(Collectors.toMap(uuid -> uuid,
+                                        uuid -> groupedActions.get(uuid).stream()
+                                                .sorted(Comparator.comparing(ServerAction::getCreated).reversed())
+                                                .findFirst().map(sa -> {
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    data.put("id", sa.getParentAction().getId());
+                                                    data.put("status", sa.getStatus().getName());
+                                                    data.put("type", sa.getParentAction().getActionType().getLabel());
+                                                    data.put("name", sa.getParentAction().getName());
+                                                    return data;
+                                                }).get()));
 
-                    sendMessage(session, GSON.toJson(latestActions));
+                        sendMessage(session, GSON.toJson(latestActions));
+
+                    }
                 }
-                catch (NumberFormatException e) {
-                    LOG.error(String.format("Received invalid server Id: [message:%s]", messageBody));
+                catch (JsonSyntaxException e) {
+                    LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
                 }
             }
             else {
@@ -218,9 +223,14 @@ public class VirtNotifications {
     public static void spreadActionUpdate(Action action) {
         synchronized (LOCK) {
             // Notify sessions waiting for this action
-            wsSessions.forEach((session, servers) -> {
+            wsSessions.forEach((session, requests) -> {
+                List<Long> servers = requests.stream()
+                        .filter(req -> req.getGuestUuid().isEmpty() && req.getSid().isPresent())
+                        .map(req -> req.getSid().get())
+                        .collect(Collectors.toList());
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
-                        .filter(sa -> servers.contains(sa.getServerId())).findFirst();
+                        .filter(sa -> servers.contains(sa.getServerId()))
+                        .findFirst();
 
                 serverAction.ifPresent(sa -> {
                     Map<String, Object> actions = new HashMap<>();
@@ -248,10 +258,38 @@ public class VirtNotifications {
     public static void spreadRefresh(String kind) {
         synchronized (LOCK) {
             // Notify sessions waiting for this action
-            wsSessions.forEach((session, servers) -> {
-                Map<String, Object> data = new HashMap<>();
-                data.put("refresh", kind);
-                sendMessage(session, GSON.toJson(data));
+            wsSessions.forEach((session, requests) -> {
+                if (requests.stream().anyMatch(req -> req.getGuestUuid().isEmpty())) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("refresh", kind);
+                    sendMessage(session, GSON.toJson(data));
+                }
+            });
+        }
+    }
+
+    /**
+     * A static method to notify all {@link Session}s attached to WebSocket from the outside
+     * Must be synchronized. Sending messages concurrently from separate threads
+     * will result in IllegalStateException.
+     *
+     * @param sid the server ID of the virtual host where the VM is located
+     * @param uuid the UUID of the VM
+     * @param event the libvirt event
+     * @param detail the libvirt event detail
+     */
+    public static void spreadGuestEvent(Long sid, String uuid, String event, String detail) {
+        synchronized (LOCK) {
+            // Notify sessions waiting for this action
+            wsSessions.forEach((session, requests) -> {
+                if (requests.stream()
+                        .anyMatch(req -> req.getSid().isEmpty() && uuid.equals(req.getGuestUuid().orElse(null)))) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("hostId", sid);
+                    data.put("event", event);
+                    data.put("detail", detail);
+                    sendMessage(session, GSON.toJson(data));
+                }
             });
         }
     }

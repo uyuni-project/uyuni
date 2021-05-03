@@ -1,4 +1,8 @@
 - The 'cookie' property for pkgset beacon was removed as no longer required
+- virtual console monitors VM state changes
+- Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
+- support Amazon Linux mirror list URLs and set signed Metadata flag correct
+- Bugfix: Remove the unneeded check that was stopping updating a virtual instance type (bsc#1180673)
 - Exclude minions from the list of locally-managed/sandbox systems when copying config files (bsc#1184940)
 - Remove activation key display from system details page
 - change deprecated path /var/run into /run for systemd (bsc#1185059)

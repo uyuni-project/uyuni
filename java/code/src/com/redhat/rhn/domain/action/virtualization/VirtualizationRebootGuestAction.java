@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
-import java.util.Map;
-
 /**
  * Class representing TYPE_VIRTUALIZATION_REBOOT
  */
@@ -35,15 +33,5 @@ public class VirtualizationRebootGuestAction extends BaseVirtualizationGuestActi
      */
     public void setForce(boolean forceIn) {
         force = forceIn;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void extractParameters(Map context) {
-        if (context.containsKey(BaseVirtualizationGuestAction.FORCE_STRING)) {
-            setForce(Boolean.valueOf((String)context.get(
-                    BaseVirtualizationGuestAction.FORCE_STRING)));
-        }
     }
 }

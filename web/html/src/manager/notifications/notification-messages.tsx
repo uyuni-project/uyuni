@@ -474,7 +474,7 @@ class NotificationMessages extends React.Component<Props, State> {
             selectable
             selectedItems={this.state.selectedItems}
             onSelect={this.handleSelectItems}
-            searchField={<SearchField filter={this.searchData} criteria={""} placeholder={t("Filter by summary")} />}
+            searchField={<SearchField filter={this.searchData} placeholder={t("Filter by summary")} />}
             additionalFilters={[typeFilter]}
           >
             <Column
