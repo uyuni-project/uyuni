@@ -174,14 +174,14 @@ public enum SaltStateGeneratorService {
         bootImagePillarInitrd.put("hash", bootImage.getInitrd().getHash());
         bootImagePillarInitrd.put("size", bootImage.getInitrd().getSize());
         bootImagePillarInitrd.put("version", bootImage.getInitrd().getVersion());
-        bootImagePillarInitrd.put("url", "tftp://tftp/boot/" + bootImageName + '/' +
+        bootImagePillarInitrd.put("url", "ftp://ftp/boot/" + bootLocalPath + '/' +
                 bootImage.getInitrd().getFilename());
 
         bootImagePillarKernel.put("filename", bootImage.getKernel().getFilename());
         bootImagePillarKernel.put("hash", bootImage.getKernel().getHash());
         bootImagePillarKernel.put("size", bootImage.getKernel().getSize());
         bootImagePillarKernel.put("version", bootImage.getKernel().getVersion());
-        bootImagePillarKernel.put("url", "tftp://tftp/boot/" + bootImageName + '/' +
+        bootImagePillarKernel.put("url", "ftp://ftp/boot/" + bootLocalPath + '/' +
                 bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
