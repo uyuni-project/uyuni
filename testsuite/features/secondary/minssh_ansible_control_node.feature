@@ -7,7 +7,14 @@
 Feature: Operate an Ansible control node in SSH minion
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
-    Given I deploy testing playbooks and inventory files to "ssh_minion"
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I deploy testing playbooks and inventory files to "ssh_minion"
+
+  Scenario: Pre-requisite: Enable client tools repositories
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I enable SUSE Manager tools repositories on "ssh_minion"
+    And I enable repository "os_pool_repo os_update_repo" on this "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
 
   Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "ssh_minion"
@@ -42,7 +49,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Inventories" in the content area
     And I wait until I see "/srv/playbooks/orion_dummy/hosts" text
-    And I click on "/srv/playbooks/orion_dummy/hosts" text in Ansible paths
+    And I click on "/srv/playbooks/orion_dummy/hosts"
     Then I should see a "myself" text
 
   Scenario: Discover playbooks and display them
@@ -50,7 +57,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
-    And I click on "/srv/playbooks" text in Ansible paths
+    And I click on "/srv/playbooks"
     Then I wait until I see "/srv/playbooks/orion_dummy/playbook_orion_dummy.yml" text
 
   Scenario: Run a playbook using custom inventory
@@ -58,13 +65,13 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
-    And I click on "/srv/playbooks" text in Ansible paths
+    And I click on "/srv/playbooks"
     And I wait until I see "/srv/playbooks/orion_dummy/playbook_orion_dummy.yml" text
     And I click on "orion_dummy/playbook_orion_dummy.yml"
     And I wait until I see "Playbook Content" text
     And I select "/srv/playbooks/orion_dummy/hosts" from "inventory-path-select"
     And I click on "Schedule"
-    Then I should see a "Playbook execution scheduled successfully" text
+    Then I should see a "Playbook execution has been scheduled" text
     And I wait until event "Execute playbook 'playbook_orion_dummy.yml' scheduled by admin" is completed
     And file "/tmp/file.txt" should exist on "ssh_minion"
 
@@ -76,3 +83,9 @@ Feature: Operate an Ansible control node in SSH minion
     Then I should see a "System properties changed" text
     And I remove package "orion-dummy" from this "ssh_minion" without error control
     And I remove "/tmp/file.txt" from "ssh_minion"
+
+  Scenario: Cleanup: Disable client tools channel
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I disable SUSE Manager tools repositories on "ssh_minion"
+    And I disable repository "os_pool_repo os_update_repo" on this "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
