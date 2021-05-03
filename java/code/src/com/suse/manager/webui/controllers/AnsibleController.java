@@ -40,16 +40,18 @@ import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationU
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -332,7 +334,32 @@ public class AnsibleController {
 
         try {
             return AnsibleManager.introspectInventory(pathId, user)
-                    .map(inventory -> json(res, success(YAML.dump(inventory))))
+                    .map(inventory -> {
+                        Map<String, Object> data = new HashMap<>();
+
+                        Set<String> hostvars = parseInventoryAndGetHostnames(inventory);
+                        List<SimpleMinionJson> registeredServers = new LinkedList<>();
+                        List<String> unknownHostNames = new LinkedList<>();
+
+                        // fork content into registered or unknown hostnames
+                        hostvars.forEach(
+                                serverName -> {
+                                    if (ServerFactory.findByFqdn(serverName).isPresent()) {
+                                        Server server = ServerFactory.findByFqdn(serverName).get();
+                                        registeredServers.add(new SimpleMinionJson(server.getId(), server.getName()));
+                                    }
+                                    else {
+                                        unknownHostNames.add(serverName);
+                                    }
+                                }
+                        );
+
+                        data.put("dump", YAML.dump(inventory));
+                        data.put("knownSystems", registeredServers);
+                        data.put("unknownSystems", unknownHostNames);
+
+                        return json(res, success(data));
+                    })
                     .orElseGet(() -> json(res,
                             error(LOCAL.getMessage("ansible.control_node_not_responding"))));
         }
@@ -343,6 +370,20 @@ public class AnsibleController {
         catch (LookupException e) {
             return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
         }
+    }
+
+    /**
+     * Parse Ansible Inventory content to look for host names
+     *
+     * @param inventoryMap the Ansible Inventory content
+     * @return the Set of hostnames
+     */
+    public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
+        // Assumption: "_meta" and the nested "hostvars" keys always present in the map to contains all hostnames
+        if (inventoryMap.keySet().contains("_meta") && inventoryMap.get("_meta").keySet().contains("hostvars")) {
+            return ((Map<String, Object>) inventoryMap.get("_meta").get("hostvars")).keySet();
+        }
+        return new HashSet<>();
     }
 
     /**

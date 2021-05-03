@@ -13,7 +13,7 @@ type PropsType = {
 
 type StateType = {
   isOpen: boolean;
-  content: PlaybookDetails[] | String | null;
+  content: PlaybookDetails[] | InventoryDetails | null;
   errors: string[];
   loading: boolean;
 };
@@ -38,6 +38,17 @@ export interface PlaybookDetails {
   fullPath: string,
   customInventory?: string,
   name: string,
+}
+
+interface Server {
+  id: number;
+  name: string;
+}
+
+interface InventoryDetails {
+  dump: String;
+  knownSystems: Server[];
+  unknownSystems: String[];
 }
 
 class AccordionPathContent extends React.Component<PropsType, StateType> {
@@ -84,6 +95,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
 
   isPlaybookContent(input: any): input is PlaybookDetails[] {
     return isPlaybook(this.props.path);
+  }
+
+  isInventoryContent(input: any): input is InventoryDetails {
+    return true;
   }
 
   digestPlaybookPathContent(blob: any) {
@@ -142,20 +157,41 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     return blob
   }
 
-  renderInventoryPathContent(content: String | null) {
-    if (!content?.length) {
+  renderInventoryPathContent(content: InventoryDetails | null) {
+    if (!content?.dump) {
       return <div>{t("Inventory file empty.")}</div>
     }
 
-    return <AceEditor
+    return (
+      <div>
+        <br/>
+        <dl className="row">
+          <dt className="col-xs-2">{t("Registered Systems")}:</dt>
+          <dd className="col-xs-8">
+            <ul>
+              { content?.knownSystems.map(s => <li><a href={"/rhn/systems/details/Overview.do?sid=" + s.id}>{s.name}</a></li>) }
+            </ul>
+          </dd>
+        </dl>
+        <dl className="row">
+          <dt className="col-xs-2">{t("Unknown Hostnames")}:</dt>
+          <dd className="col-xs-8">
+            <ul>
+              { content?.unknownSystems.map(s => <li>{s}</li>)}
+            </ul>
+          </dd>
+        </dl>
+        <AceEditor
               className="form-control"
               id="content-state"
               minLines={20}
               maxLines={40}
               readOnly={true}
               mode="yaml"
-              content={content}
-            ></AceEditor>;
+              content={content?.dump}
+            ></AceEditor>
+      </div>
+    );
   }
 
   render() {
@@ -183,7 +219,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
                       this.isPlaybookContent(this.state.content) ?
                         this.renderPlaybookPathContent(this.state.content)
                         :
-                        this.renderInventoryPathContent(this.state.content)
+                        this.isInventoryContent(this.state.content) ?
+                          this.renderInventoryPathContent(this.state.content)
+                          :
+                          null
                   }
                 </>
                 : null
