@@ -1159,34 +1159,6 @@
         <source>Image List</source>
         <target>Seznam obrázků</target>
       </trans-unit>
-    <trans-unit id="Ansible" xml:space="preserve">
-        <source>Ansible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu (system details)</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Ansible Control Node" xml:space="preserve">
-        <source>Control Node</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu (system details)</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Playbooks" xml:space="preserve">
-        <source>Playbooks</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu (system details)</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Inventories" xml:space="preserve">
-        <source>Inventories</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu (system details)</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+    </body>
   </file>
 </xliff>
