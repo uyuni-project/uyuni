@@ -152,7 +152,7 @@ public class FilterApiController {
         PackageEvr kernelEvr = PackageEvrFactory.lookupPackageEvrById(createFilterRequest.getKernelEvrId());
 
         String prefix = createFilterRequest.getPrefix();
-        if (!StringUtils.endsWithAny(createFilterRequest.getPrefix(), "-", "_")) {
+        if (!StringUtils.endsWithAny(prefix, "-", "_")) {
             prefix += "-";
         }
 

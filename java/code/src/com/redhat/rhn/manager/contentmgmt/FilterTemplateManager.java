@@ -60,7 +60,7 @@ public class FilterTemplateManager {
         List<ContentFilter> createdFilters = new ArrayList<>(2);
 
         criteria.forEach((name, crit) -> createdFilters.add(
-                ContentProjectFactory.createFilter(prefix + "-" + name, ContentFilter.Rule.DENY,
+                ContentProjectFactory.createFilter(prefix + name, ContentFilter.Rule.DENY,
                         ContentFilter.EntityType.ERRATUM, crit, user)
         ));
 
