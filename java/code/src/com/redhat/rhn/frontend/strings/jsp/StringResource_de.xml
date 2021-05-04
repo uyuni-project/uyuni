@@ -29158,10 +29158,6 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Package belongs to a Retracted Patch</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="ansible_control_node" xml:space="preserve">
-        <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
