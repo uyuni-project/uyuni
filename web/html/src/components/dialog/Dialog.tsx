@@ -30,6 +30,7 @@ export type DialogProps = {
   buttons?: React.ReactNode;
   item?: any;
   closableModal?: boolean;
+  /** Whether to automatically focus the first input in the opened modal, true by default */
   autoFocus?: boolean;
   onClosePopUp?: (...args: any[]) => any;
   onConfirm?: (...args: any[]) => any;

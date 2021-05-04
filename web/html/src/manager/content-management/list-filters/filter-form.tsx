@@ -50,7 +50,7 @@ const FilterForm = (props: Props) => {
     }
   }, [editing, filter, onChange, localTime]);
 
-  const filterType = props.filter.type || "";
+  const filterType = filter.type || "";
   const selectedFilter = findClmFilterByKey(filterType);
   const selectedFilterMatchers = selectedFilter?.matchers;
 
@@ -86,24 +86,27 @@ const FilterForm = (props: Props) => {
             label={t("Prefix")}
             labelClass="col-md-3"
             divClass="col-md-6"
+            hint={t("The prefix will be prepended to the name of every individual filter created by the template")}
             required
             disabled={props.editing}
           />
         )}
 
-        <div className="row form-group">
-          <div className="col-md-6 col-md-offset-3">
-            {filterBy === FilterBy.Type ? (
-              <button className="btn-link" onClick={() => setFilterBy(FilterBy.Template)}>
-                {t("Use a template")}
-              </button>
-            ) : (
-              <button className="btn-link" onClick={() => setFilterBy(FilterBy.Type)}>
-                {t("Use a manual filter")}
-              </button>
-            )}
+        {!props.editing ? (
+          <div className="row form-group">
+            <div className="col-md-6 col-md-offset-3">
+              {filterBy === FilterBy.Type ? (
+                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Template)}>
+                  <i className="fa fa-file-text-o" role="presentation" /> {t("Use a template")}
+                </button>
+              ) : (
+                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Type)}>
+                  <i className="fa fa-filter" role="presentation" /> {t("Use a manual filter")}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
 
         {filterBy === FilterBy.Type ? (
           <React.Fragment>
