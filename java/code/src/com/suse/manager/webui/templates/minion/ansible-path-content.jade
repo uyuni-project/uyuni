@@ -7,6 +7,7 @@ script(type='text/javascript').
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
 
+//- Don't render actionChains in JS when they are not in the model (e.g. inventory path case)
 if actionChains
     script(type='text/javascript').
         window.actionChains = !{actionChains};
