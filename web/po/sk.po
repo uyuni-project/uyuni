@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 09:08+0000\n"
+"POT-Creation-Date: 2021-04-26 08:49+0000\n"
 "PO-Revision-Date: 2021-04-24 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -56,7 +56,7 @@ msgstr "Prosím, zadajte požadované polia: {0}"
 msgid "Invalid format of fields: {0}"
 msgstr "Neplatný formát polí: {0}"
 
-#: ../html/src/components/FormulaForm.tsx:205
+#: ../html/src/components/FormulaForm.tsx:200
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -353,8 +353,8 @@ msgid "Save"
 msgstr "Uložiť"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 msgid "Formulas"
 msgstr "Vzorce"
 
@@ -2588,7 +2588,7 @@ msgstr ""
 "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte "
 "nás s podrobnosťami o tom, ako ste dostali "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
+#: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
@@ -2596,38 +2596,30 @@ msgstr ""
 "Použitie konfiguračných kanálov bolo naplánované pre každý server minion v "
 "tejto skupine"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid "Formula saved. Edit configuration options "
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
 msgstr ""
 "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
 "použiť "
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr "Highstate"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
-msgid " for the changes to take effect."
-msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
 msgstr "Neplatný typ cieľa."
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "Vzorec bol uložený. Použiť "
@@ -3617,6 +3609,19 @@ msgstr ""
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
 msgstr "Použitie konfiguračných kanálov bolo "
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+#, fuzzy
+msgid "Formula saved. Edit configuration options "
+msgstr ""
+"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
+"použiť "
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#, fuzzy
+msgid " for the changes to take effect."
+msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
@@ -5522,13 +5527,6 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
-
-#~ msgid ""
-#~ "Formula saved. Edit configuration options in the enabled formulas and "
-#~ "apply the "
-#~ msgstr ""
-#~ "Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
-#~ "použiť "
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "Nadchádzajúce okná údržby"

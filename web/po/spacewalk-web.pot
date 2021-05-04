@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 09:08+0000\n"
+"POT-Creation-Date: 2021-04-26 08:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Invalid format of fields: {0}"
 msgstr ""
 
-#: ../html/src/components/FormulaForm.tsx:205
+#: ../html/src/components/FormulaForm.tsx:200
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
@@ -339,8 +339,8 @@ msgid "Save"
 msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:60
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:25
 msgid "Formulas"
 msgstr ""
 
@@ -2497,40 +2497,34 @@ msgid ""
 "details of how you received "
 msgstr ""
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
+#: ../html/src/manager/groups/config-channels/group-config-channels.js:29
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr ""
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:18
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/groups/formula/group-formula.renderer.js:17
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr ""
@@ -3502,6 +3496,15 @@ msgstr ""
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
+msgstr ""
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid "Formula saved. Edit configuration options "
+msgstr ""
+
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+msgid " for the changes to take effect."
 msgstr ""
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
