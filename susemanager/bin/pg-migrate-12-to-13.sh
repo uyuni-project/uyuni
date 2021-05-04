@@ -48,13 +48,6 @@ else
     fi
 fi
 
-grep "^archive_command.*smdba-pgarchive" /var/lib/pgsql/data/postgresql.conf > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    BACKUP_CONFIGURED=1
-else
-    BACKUP_CONFIGURED=0
-fi
-
 echo "`date +"%H:%M:%S"`   Shut down spacewalk services..."
 spacewalk-service stop
 systemctl stop postgresql
@@ -133,10 +126,4 @@ echo "`date +"%H:%M:%S"`   Starting spacewalk services..."
 systemctl start postgresql
 spacewalk-service start
 
-if [ $BACKUP_CONFIGURED -eq 1 ]; then
-    echo
-    echo "It seems database backups via smdba had been configured for postgresql $OLD_VERSION."
-    echo "Please re-configure backup for new database version!"
-    echo
-fi
 
