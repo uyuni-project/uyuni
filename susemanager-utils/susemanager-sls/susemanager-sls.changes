@@ -1,3 +1,4 @@
+- Always create systemid file to indicate minion is managed by Uyuni
 - Switch from GPLv2 to Apache 2.0.
 - Add support of salt bundle to pkgset notify beacon
 - Add automatic cookie file selection for pkgset beacon

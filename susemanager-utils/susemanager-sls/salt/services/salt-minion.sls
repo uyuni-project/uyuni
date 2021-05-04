@@ -41,3 +41,10 @@ mgr_salt_minion:
     - enable: True
     - order: last
 {% endif %}
+
+{# ensure /etc/sysconfig/rhn/systemid is created to indicate minion is managed by SUSE Manager #}
+/etc/sysconfig/rhn/systemid:
+  file.managed:
+    - mode: 0640
+    - makedirs: True
+    - replace: False
