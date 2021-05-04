@@ -76,7 +76,7 @@
 - features/secondary/trad_openscap_audit.feature
 - features/secondary/trad_inst_package_and_patch.feature
 - features/secondary/trad_check_patches_install.feature
-- features/secondary/trad_sp_migration.feature
+- features/secondary/trad_product_migration.feature
 - features/secondary/trad_check_registration.feature
 
 - features/secondary/buildhost_docker_build_image.feature
