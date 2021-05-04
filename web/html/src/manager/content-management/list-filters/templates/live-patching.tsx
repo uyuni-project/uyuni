@@ -1,67 +1,40 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Text, Select, FormContext } from "components/input";
+import { Select, FormContext } from "components/input";
+import Network, { JsonResult } from "utils/network";
+import { showErrorToastr } from "components/toastr/toastr";
 import { Props as FilterFormProps } from "../filter-form";
-import { Cancelable } from "utils/functions";
 
 import { Template } from "./index";
 
-type Client = {
-  id: number;
-  name: string;
-  kernelId?: string;
-};
-
 type Product = {
   id: number;
-  name: string;
+  label: string;
 };
 
 type Kernel = {
   id: number;
   version: string;
-  default?: boolean;
+  latest?: boolean;
 };
 
-async function getClients(): Promise<Client[]> {
-  return [
-    {
-      id: 1,
-      name: "Placeholder Client 1",
-    },
-    {
-      id: 2,
-      name: "Placeholder Client 2",
-    },
-    {
-      id: 3,
-      name: "Placeholder Client 3",
-    },
-  ];
+function handleResponseErrors(res) {
+  Network.responseErrorMessage(res)
+    .map(msg => showErrorToastr(msg.text));
 }
 
-async function getProducts(): Promise<Product[]> {
-  return [
-    {
-      id: 1,
-      name: "SLES product 1",
-    },
-  ];
+function getProducts(): Promise<Product[]> {
+  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products").promise
+    .then((res: JsonResult<Product[]>) => res.success ? res.data : Promise.reject(res));
 }
 
-// TODO: Specify where and how this data realistically comes from
-async function getKernels(...args: any[]): Promise<Kernel[]> {
-  return [
-    {
-      id: 345,
-      version: "1.2.3",
-    },
-    {
-      id: 456,
-      version: "1.2.4",
-      default: true,
-    },
-  ];
+function getProductKernels(productId: number): Promise<Kernel[]> {
+  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${productId}`).promise
+    .then((res: JsonResult<Kernel[]>) => res.success ? res.data : Promise.reject(res))
+    .then(res => {
+      res[0].latest = true;
+      return res;
+    });
 }
 
 export default (props: FilterFormProps & { template: Template }) => {
@@ -74,33 +47,28 @@ export default (props: FilterFormProps & { template: Template }) => {
   const setModelValue = formContext.setModelValue;
   const clientId = formContext.model.clientId;
   const productId = formContext.model.productId;
-  const [clients, setClients] = useState<Client[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [kernels, setKernels] = useState<Kernel[]>([]);
 
   useEffect(() => {
-    getClients().then(result => setClients(result));
-    getProducts().then(result => setProducts(result));
+    getProducts()
+      .then(setProducts)
+      .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
   }, []);
 
   useEffect(() => {
     if (clientId) {
-      // TODO: Clarify whether this is different for clients and products or same
-      getKernels(clientId).then(result => {
-        setKernels(result);
-
-        const defaultKernel = result.find(item => Boolean(item.default));
-        const kernelId = defaultKernel?.id ?? result[0]?.id ?? null;
-        setModelValue?.("kernelId", kernelId);
-      });
+      //TODO: To be implemented with "Live Patching for a system" template
+      throw new Error("Not implemented");
     } else if (productId) {
-      getKernels(productId).then(result => {
+      getProductKernels(productId).then(result => {
         setKernels(result);
 
-        const defaultKernel = result.find(item => Boolean(item.default));
-        const kernelId = defaultKernel?.id ?? result[0]?.id ?? null;
+        const latestKernel = result.find(item => Boolean(item.latest));
+        const kernelId = latestKernel?.id ?? result[0]?.id ?? null;
         setModelValue?.("kernelId", kernelId);
-      });
+      })
+        .catch(res => res.messages?.flatMap(showErrorToastr) || handleResponseErrors(res));
     } else {
       setKernels([]);
       setModelValue?.("kernelId", null);
@@ -114,21 +82,6 @@ export default (props: FilterFormProps & { template: Template }) => {
 
   return (
     <>
-      {template === Template.LivePatchingSystem && (
-        <>
-          <Select
-            name="clientId"
-            label={t("Client")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            required
-            disabled={props.editing}
-            options={clients}
-            getOptionValue={client => client.id}
-            getOptionLabel={client => client.name}
-          />
-        </>
-      )}
       {template === Template.LivePatchingProduct && (
         <>
           <Select
@@ -140,7 +93,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             disabled={props.editing}
             options={products}
             getOptionValue={product => product.id}
-            getOptionLabel={product => product.name}
+            getOptionLabel={product => product.label}
           />
         </>
       )}
@@ -153,7 +106,7 @@ export default (props: FilterFormProps & { template: Template }) => {
         disabled={!clientId && !productId}
         options={kernels}
         getOptionValue={kernel => kernel.id}
-        getOptionLabel={kernel => `${kernel.version}${kernel.default ? " (default)" : ""}`}
+        getOptionLabel={kernel => `${kernel.version}${kernel.latest ? ` (${t("latest")})` : ""}`}
       />
     </>
   );

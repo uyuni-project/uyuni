@@ -20,6 +20,7 @@ import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -663,6 +664,39 @@ public class SUSEProductFactory extends HibernateFactory {
     public static Optional<InstalledProduct> findInstalledProduct(SUSEProduct product) {
         return findInstalledProduct(product.getName(), product.getVersion(), product.getRelease(), product.getArch(),
                 product.isBase());
+    }
+
+    /**
+     * Get all root SUSE products that support live patching
+     * @return the stream of products
+     */
+    public static Stream<SUSEProduct> getLivePatchSupportedProducts() {
+        return HibernateFactory.getSession().createQuery(
+                "SELECT root FROM SUSEProduct root " +
+                "JOIN SUSEProductExtension x ON x.rootProduct = root " +
+                "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
+                "JOIN ChannelFamily cf ON ext.channelFamily = cf " +
+                "WHERE cf.label LIKE 'SLE-LP%' " +
+                "AND EXISTS (FROM SUSEProductChannel WHERE product = root)", SUSEProduct.class)
+                .getResultStream();
+    }
+
+    /**
+     * Get all 'kernel-default' versions contained in a product tree
+     * @param product the root product
+     * @return the stream of EVRs
+     */
+    public static Stream<PackageEvr> getKernelVersionsInProduct(SUSEProduct product) {
+        return HibernateFactory.getSession().createQuery(
+                "SELECT pkg.packageEvr " +
+                "FROM SUSEProductExtension x " +
+                "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
+                "JOIN SUSEProductChannel pc ON pc.product = ext " +
+                "JOIN pc.channel.packages pkg " +
+                "WHERE pkg.packageName.name = 'kernel-default' " +
+                "AND x.rootProduct = :product", PackageEvr.class)
+                .setParameter("product", product)
+                .getResultStream();
     }
 
     /**

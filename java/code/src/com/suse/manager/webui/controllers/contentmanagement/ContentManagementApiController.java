@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.contentmanagement;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.AppStreamsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.EnvironmentApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.FilterApiController;
+import com.suse.manager.webui.controllers.contentmanagement.handlers.LivePatchingApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectActionsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectApiController;
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ProjectSourcesApiController;
@@ -38,6 +39,7 @@ public class ContentManagementApiController {
         EnvironmentApiController.initRoutes();
         ProjectActionsApiController.initRoutes();
         AppStreamsApiController.initRoutes();
+        LivePatchingApiController.initRoutes();
     }
 
 }
