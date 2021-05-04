@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-04 01:28+0000\n"
+"PO-Revision-Date: 2021-05-05 00:57+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -164,9 +164,8 @@ msgid "Save Changes"
 msgstr "変更点の保存"
 
 #: ../html/src/components/config-channels.tsx:318
-#, fuzzy
 msgid "Execute States"
-msgstr "繰り返し状態"
+msgstr "状態の実行"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
@@ -2113,12 +2112,11 @@ msgstr "ルール"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
+msgstr "選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除できません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "選択"
+msgstr "使用されていないものを選択"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2132,9 +2130,8 @@ msgid "Content Lifecycle Filters"
 msgstr "コンテンツライフサイクルのフィルタ"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "名前でフィルタ"
+msgstr "名前またはプロジェクトでフィルタ"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
@@ -2608,11 +2605,8 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid "Formula saved. Edit configuration options "
-msgstr ""
-"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
-"を適用してください "
+msgstr "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記を適用してください "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -2626,9 +2620,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "変更した設定を反映させるには、再起動が必要です。"
+msgstr " 変更した設定を反映させるには、再起動が必要です。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -3635,105 +3628,95 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "playbook が見つかりませんでした。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr ""
+msgstr "インベントリファイルの内容がありません。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
-#, fuzzy
 msgid "Loading content.."
-msgstr "読み込んでいます..."
+msgstr "内容を読み込んでいます..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
-#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"Taskomatic でのジョブスケジュール時にエラーが発生しました。ログをご確認くださ"
-"い。"
+msgstr "データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr ""
+msgstr "Ansible 制御ノード設定: playbook 検出のためのパス追加と、インベントリファイルの内部調査を行ないます。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
-msgstr ""
+msgstr "playbook ディレクトリ"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
-msgstr ""
+msgstr "playbook ディレクトリの追加"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
-msgstr ""
+msgstr "例: /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
 msgid "Inventory Files"
-msgstr ""
+msgstr "インベントリファイル"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "Add an Inventory file"
-msgstr ""
+msgstr "インベントリファイルの追加"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
+msgstr "例: /etc/ansible/testing/hosts"
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
 msgid "Loading.."
-msgstr "読み込んでいます..."
+msgstr "読み込んでいます.."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "何も設定されていません。パスを追加してください "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
-#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "グローバルフィルタを読み込んでいます..."
+msgstr "playbook の内容を読み込んでいます.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
-#, fuzzy
 msgid "Back to playbook list"
-msgstr "一覧に戻る"
+msgstr "playbook の一覧に戻る"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "検査のスケジュール"
+msgstr "playbook の実行のスケジュール"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "playbook '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "playbook 実行のスケジュール"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr ""
+msgstr "インベントリパス"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "playbook の内容"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "動作を動作チェーンに追加しました "
+msgstr "動作を動作チェーンに追加しました"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "動作を "
+msgstr "動作を"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -3746,12 +3729,11 @@ msgstr "設定"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "適用する前に全ての変更点を保存してください！"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "highstate の適用"
+msgstr "変更点の適用"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3763,9 +3745,8 @@ msgid "1 Change"
 msgstr "1 個の変更"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
 msgid "Search package"
-msgstr "検索"
+msgstr "パッケージの検索"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
@@ -4297,14 +4278,12 @@ msgid "SUSE Manager Default"
 msgstr "SUSE Manager の既定値"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "子チャンネル無し"
+msgstr "子チャンネルを読み込んでいます.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "ベースチャンネル"
+msgstr "ベースチャンネル:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
@@ -4320,7 +4299,7 @@ msgstr "子チャンネル:"
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr ""
+msgstr "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネルをサブスクライブします。"
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4411,6 +4390,9 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 "
+"'ssh_push_sudo_user' の鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH "
+"鍵を配置したあと、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4441,9 +4423,8 @@ msgstr "状態の適用に対する応答結果が見つかりませんでした
 
 #: ../html/src/manager/systems/delete-system.tsx:72
 #: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
 msgid "Delete Profile Without Cleanup"
-msgstr "プロファイルの削除"
+msgstr "クリーンアップ無しでのプロファイル削除"
 
 #: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
@@ -4840,11 +4821,11 @@ msgstr "グラフィック"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "切断済み"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "接続に失敗しました"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4852,7 +4833,7 @@ msgstr "フルサイズの切り替え"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "ゲストは動作していません"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
