@@ -89,8 +89,14 @@ public class SCCFileClient implements SCCClient {
 
     @Override
     public List<ProductTreeEntry> productTree() throws SCCClientException {
-        return getList("product_tree.json",
-                ProductTreeEntry.class);
+        try {
+            return getList("suma/product_tree.json",
+                    ProductTreeEntry.class);
+        }
+        catch (SCCClientException ex) {
+            return getList("product_tree.json",
+                    ProductTreeEntry.class);
+        }
     }
 
     @Override
