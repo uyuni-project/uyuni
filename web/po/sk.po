@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-27 09:51+0000\n"
-"PO-Revision-Date: 2021-04-27 15:57+0000\n"
+"PO-Revision-Date: 2021-04-26 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,8 +163,9 @@ msgid "Save Changes"
 msgstr "Uložiť zmeny"
 
 #: ../html/src/components/config-channels.tsx:318
+#, fuzzy
 msgid "Execute States"
-msgstr "Stavy vykonania"
+msgstr "Opakujúce sa stavy"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
