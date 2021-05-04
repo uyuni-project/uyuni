@@ -1,3 +1,4 @@
+- fix problem reading product_tree.json from wrong location in offline setups (bsc#1184283)
 - Eliminate duplicate entries when displaying results from mgr-libmod
 - Fix boot image url, change default to ftp (bsc#1185509)
 - XMLRPC: Endpoint for aligning channel metadata based on another channel (bsc#1182810)
