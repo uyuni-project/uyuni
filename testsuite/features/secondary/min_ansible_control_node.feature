@@ -4,6 +4,9 @@
 @scope_ansible
 Feature: Operate an Ansible control node in a normal minion
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     Given I am on the Systems overview page of this "sle_minion"
     When I deploy testing playbooks and inventory files to "sle_minion"
