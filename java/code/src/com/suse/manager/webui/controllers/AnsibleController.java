@@ -343,15 +343,11 @@ public class AnsibleController {
 
                         // fork content into registered or unknown hostnames
                         hostvars.forEach(
-                                serverName -> {
-                                    if (ServerFactory.findByFqdn(serverName).isPresent()) {
-                                        Server server = ServerFactory.findByFqdn(serverName).get();
-                                        registeredServers.add(new SimpleMinionJson(server.getId(), server.getName()));
-                                    }
-                                    else {
-                                        unknownHostNames.add(serverName);
-                                    }
-                                }
+                                serverName ->
+                                    ServerFactory.findByFqdn(serverName).ifPresentOrElse(
+                                            s -> registeredServers.add(new SimpleMinionJson(s.getId(), s.getName())),
+                                            () -> unknownHostNames.add(serverName)
+                                    )
                         );
 
                         data.put("dump", YAML.dump(inventory));
@@ -380,7 +376,9 @@ public class AnsibleController {
      */
     public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
         // Assumption: "_meta" and the nested "hostvars" keys always present in the map to contains all hostnames
-        if (inventoryMap.keySet().contains("_meta") && inventoryMap.get("_meta").keySet().contains("hostvars")) {
+        if (inventoryMap.containsKey("_meta") &&
+                inventoryMap.get("_meta").containsKey("hostvars") &&
+                inventoryMap.get("_meta").get("hostvars") instanceof Map) {
             return ((Map<String, Object>) inventoryMap.get("_meta").get("hostvars")).keySet();
         }
         return new HashSet<>();
