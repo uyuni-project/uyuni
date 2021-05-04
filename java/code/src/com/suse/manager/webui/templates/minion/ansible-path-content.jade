@@ -6,7 +6,11 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
-    window.actionChains = !{actionChains};
+
+//- Don't render actionChains in JS when they are not in the model (e.g. inventory path case)
+if actionChains
+    script(type='text/javascript').
+        window.actionChains = !{actionChains};
 
 script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webBuildtimestamp}')

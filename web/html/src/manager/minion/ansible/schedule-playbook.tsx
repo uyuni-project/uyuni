@@ -9,7 +9,7 @@ import { AnsiblePath } from "./ansible-path-type";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { AceEditor } from "components/ace-editor";
 import { PlaybookDetails } from "./accordion-path-content";
-import { Utils } from "utils/functions";
+import { Formats, Utils } from "utils/functions";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Loading } from "components/utils/Loading";
 
@@ -74,7 +74,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         inventoryPath: inventoryPath?.text,
         controlNodeId: playbook.path.minionServerId,
         actionChainLabel: actionChain?.text || null,
-        earliest: datetime
+        earliest: Formats.LocalDateTime(datetime)
       }),
       "application/json"
     ).promise
