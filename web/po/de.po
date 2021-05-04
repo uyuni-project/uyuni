@@ -7,7 +7,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:100
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-28 14:03+0000\n"
+"POT-Creation-Date: 2021-04-27 15:58+0000\n"
 "PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -223,7 +223,6 @@ msgstr ""
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
@@ -523,7 +522,7 @@ msgid "Custom Quartz format:"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/components/table/TableDataHandler.tsx:323
 msgid "There are no entries to show."
 msgstr ""
 
@@ -564,24 +563,24 @@ msgstr ""
 msgid "System Locked"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:52
+#: ../html/src/components/table/SearchPanel.tsx:45
 msgid "Items {0} - {1} of {2}"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:55
+#: ../html/src/components/table/SearchPanel.tsx:48
 msgid "({0} selected)"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:50
 #: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:64
+#: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:340
+#: ../html/src/components/table/TableDataHandler.tsx:324
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
@@ -591,7 +590,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:354
 msgid "items per page"
 msgstr ""
 
@@ -1103,6 +1102,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 #: ../html/src/manager/virtualization/ListTab.js:237
 msgid "Filter by name"
 msgstr ""
@@ -1180,7 +1180,7 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:82
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
@@ -2020,12 +2020,12 @@ msgid "Advisory Keywords"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
 msgstr ""
 
@@ -2033,31 +2033,11 @@ msgstr ""
 msgid "Rule"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-msgid "Select unused"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
-#: ../html/src/manager/images/image-profiles.tsx:138
-#: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:354
-msgid "Delete selected"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:67
 msgid "Content Lifecycle Filters"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-msgid "Filter by name or project"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:87
 msgid "Projects in use"
 msgstr ""
 
@@ -2336,31 +2316,31 @@ msgstr ""
 msgid "Edit Filter {0}"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Filters"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
 msgid "Attach/Detach Filters"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
 msgid "Filter edited successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr ""
@@ -2722,6 +2702,12 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:30
 msgid "Image profiles have been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.tsx:138
+#: ../html/src/manager/images/image-stores.tsx:141
+#: ../html/src/manager/images/image-view.tsx:354
+msgid "Delete selected"
 msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:159

@@ -7,7 +7,7 @@
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:100
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-28 14:03+0000\n"
+"POT-Creation-Date: 2021-04-27 15:58+0000\n"
 "PO-Revision-Date: 2021-04-06 10:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -231,7 +231,6 @@ msgstr "취소"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
@@ -534,7 +533,7 @@ msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/components/table/TableDataHandler.tsx:323
 msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
@@ -575,24 +574,24 @@ msgstr "보안 자문"
 msgid "System Locked"
 msgstr "시스템 잠김"
 
-#: ../html/src/components/table/SearchPanel.tsx:52
+#: ../html/src/components/table/SearchPanel.tsx:45
 msgid "Items {0} - {1} of {2}"
 msgstr "항목 {0} - {1} / {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:55
+#: ../html/src/components/table/SearchPanel.tsx:48
 msgid "({0} selected)"
 msgstr "({0}개 선택됨)"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:50
 #: ../html/src/manager/admin/setup/products/products.tsx:320
 msgid "Clear"
 msgstr "지우기"
 
-#: ../html/src/components/table/SearchPanel.tsx:64
+#: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Select All"
 msgstr "모두 선택"
 
-#: ../html/src/components/table/TableDataHandler.tsx:340
+#: ../html/src/components/table/TableDataHandler.tsx:324
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
@@ -602,7 +601,7 @@ msgstr "모두 선택"
 msgid "Loading..."
 msgstr "로드하는 중..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:354
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
@@ -1140,6 +1139,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 #: ../html/src/manager/virtualization/ListTab.js:237
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
@@ -1218,7 +1218,7 @@ msgstr "감사 이미지"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:152
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:82
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
@@ -2079,12 +2079,12 @@ msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "Deny"
 msgstr "거부"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid "Allow"
 msgstr "허용"
 
@@ -2092,33 +2092,11 @@ msgstr "허용"
 msgid "Rule"
 msgstr "규칙"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
-msgid "Select unused"
-msgstr "선택"
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
-#: ../html/src/manager/images/image-profiles.tsx:138
-#: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:354
-msgid "Delete selected"
-msgstr "선택 항목 삭제"
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:130
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:67
 msgid "Content Lifecycle Filters"
 msgstr "컨텐트 라이프싸이클 필터"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
-msgid "Filter by name or project"
-msgstr "이름을 기준으로 필터링"
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:87
 msgid "Projects in use"
 msgstr "사용 중 프로젝트"
 
@@ -2399,31 +2377,31 @@ msgstr "새 필터 만들기"
 msgid "Edit Filter {0}"
 msgstr "{0} 필터 편집"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
 msgid "Filters"
 msgstr "필터"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:92
 msgid "Attach/Detach Filters"
 msgstr "필터 연결/분리"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:109
 msgid "Filter edited successfully"
 msgstr "필터 편집됨"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "AppStreams"
 msgstr "AppStreams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:139
 msgid "enabled module streams"
 msgstr "활성화된 모듈 스트림"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:157
 msgid "filter out"
 msgstr "필터링"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:172
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "거부를 사용하여 이전에 제외한 경우에도 전체 소스에서 선택"
@@ -2799,6 +2777,12 @@ msgstr "이미지 프로파일이 삭제되었습니다."
 #: ../html/src/manager/images/image-profiles.tsx:30
 msgid "Image profiles have been deleted."
 msgstr "이미지 프로파일이 삭제되었습니다."
+
+#: ../html/src/manager/images/image-profiles.tsx:138
+#: ../html/src/manager/images/image-stores.tsx:141
+#: ../html/src/manager/images/image-view.tsx:354
+msgid "Delete selected"
+msgstr "선택 항목 삭제"
 
 #: ../html/src/manager/images/image-profiles.tsx:159
 msgid "Image Profiles"
