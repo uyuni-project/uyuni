@@ -278,7 +278,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Asia/Jakarta" xml:space="preserve">
         <source>(GMT+0700) Thailand</source>
@@ -3123,21 +3123,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Asia/Singapore" xml:space="preserve">
         <source>(GMT+0800) Singapore</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
       <trans-unit id="Asia/Kuala_Lumpur" xml:space="preserve">
         <source>(GMT+0800) Malaysia</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="new" />
       </trans-unit>
     </body>
   </file>
