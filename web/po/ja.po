@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 02:58+0000\n"
+"POT-Creation-Date: 2021-05-03 14:54+0000\n"
 "PO-Revision-Date: 2021-05-04 02:57+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
-"test/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"web-master-test/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2113,9 +2113,7 @@ msgstr "ルール"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
-"選択されたフィルタの中にプロジェクト内で使用されているものがあるため、削除で"
-"きません。"
+msgstr "選択されたフィルタの中にプロジェクト内で使用されているものがあるため、削除できません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
@@ -2331,9 +2329,7 @@ msgstr "プロジェクトをビルドしています..."
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
-msgstr ""
-"このプロジェクトには同期されていないパッチを含むチャンネルがあります。これら"
-"の同期は、お使いの組織の設定に従って行なわれます。"
+msgstr "このプロジェクトには同期されていないパッチを含むチャンネルがあります。これらの同期は、お使いの組織の設定に従って行なわれます。"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2609,9 +2605,7 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 msgid "Formula saved. Edit configuration options "
-msgstr ""
-"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
-"を適用してください "
+msgstr "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記を適用してください "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -3646,16 +3640,13 @@ msgstr "内容を読み込んでいます..."
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"データの読み込み時にエラーが発生しました。サーバのログをご確認ください。"
+msgstr "データの読み込み時にエラーが発生しました。サーバのログをご確認ください。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr ""
-"ansible 制御ノードの設定: playbook 検出向けのパス追加 とインベントリファイル"
-"の内部調査を行ないます。"
+msgstr "ansible 制御ノードの設定: playbook 検出向けのパス追加 とインベントリファイルの内部調査を行ないます。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
@@ -4307,9 +4298,7 @@ msgstr "子チャンネル:"
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr ""
-"このアクティベーションキーを利用して登録されたシステムは、選択した子チャンネ"
-"ルをサブスクライブするようになります。"
+msgstr "このアクティベーションキーを利用して登録されたシステムは、選択した子チャンネルをサブスクライブするようになります。"
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4400,10 +4389,9 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザーはブートストラップ処理の間のみ有効化されます。そこから先の接続につい"
-"ては、 rhn.conf 内で指定したユーザで実施されます。また、'ssh_push_sudo_user' "
-"キーに対する既定のユーザは 'root' です。このユーザはブートストラップ処理の"
-"際、 {0} の SSH 鍵が配布された後に設定されます。"
+"ユーザーはブートストラップ処理の間のみ有効化されます。そこから先の接続については、 rhn.conf 内で指定したユーザで実施されます。また、"
+"'ssh_push_sudo_user' キーに対する既定のユーザは 'root' です。このユーザはブートストラップ処理の際、 {0} の SSH "
+"鍵が配布された後に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
