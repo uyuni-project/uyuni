@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-03 11:46+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-04-02 06:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
@@ -2087,7 +2087,7 @@ msgstr "이 시스템 제거 [y/N]:"
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
-#: ../src/spacecmd/system.py:4370
+#: ../src/spacecmd/system.py:4347
 msgid "No systems found"
 msgstr "시스템을 찾을 수 없음"
 
@@ -3759,13 +3759,13 @@ msgid "Trusted Since:          %s"
 msgstr "다음 이후 트러스트됨:          %s"
 
 #: ../src/spacecmd/org.py:323
-#, fuzzy, python-format
-msgid "Systems Transferred From:  %i"
+#, python-format
+msgid "Systems Migrated From:  %i"
 msgstr "시스템 마이그레이션 출처:  %i"
 
 #: ../src/spacecmd/org.py:324
-#, fuzzy, python-format
-msgid "Systems Transferred To:    %i"
+#, python-format
+msgid "Systems Migrated To:    %i"
 msgstr "시스템 마이그레이션 대상:    %i"
 
 #: ../src/spacecmd/org.py:326
@@ -6438,7 +6438,7 @@ msgstr "스크립트 컨텐트"
 
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
 #: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
-#: ../src/spacecmd/system.py:4399
+#: ../src/spacecmd/system.py:4376
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "%s을(를) 예약하지 못함"
@@ -7710,26 +7710,14 @@ msgstr "    ID: "
 msgid "    Friendly names: "
 msgstr "    식별 이름: "
 
-#: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
-#, fuzzy
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_scheduleproductmigration instead."
-msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 제거될 예정입니다."
-
-#: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
-#, fuzzy
-msgid "This method is deprecated and will be removed in a future API version"
-msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 제거될 예정입니다."
-
-#: ../src/spacecmd/system.py:4317
+#: ../src/spacecmd/system.py:4315
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 "system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니"
 "다."
 
-#: ../src/spacecmd/system.py:4318
+#: ../src/spacecmd/system.py:4316
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7753,53 +7741,19 @@ msgstr ""
 "        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
-#: ../src/spacecmd/system.py:4338
-#, fuzzy
-msgid ""
-"system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr ""
-"system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니"
-"다."
-
-#: ../src/spacecmd/system.py:4339
-#, fuzzy
-msgid ""
-"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
-"    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
-"    Options: \n"
-"        -s START_TIME \n"
-"        -d pass this flag, if you want to do a dry run \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
-msgstr ""
-"사용법: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [옵션] \n"
-"    MIGRATION_TARGET 파라미터의 경우 system_listmigrationtargets를 참조하십시"
-"오. \n"
-"    MIGRATION_TARGET 파라미터의 경우 다음 형식으로 전달되어야 함: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
-"    옵션: \n"
-"        -s START_TIME \n"
-"        -d 모의 연습을 실행하려면 이 플래그 전달 \n"
-"        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
-
-#: ../src/spacecmd/system.py:4389
+#: ../src/spacecmd/system.py:4366
 msgid "Cannot find system "
 msgstr "시스템을 찾을 수 없음 "
 
-#: ../src/spacecmd/system.py:4389
+#: ../src/spacecmd/system.py:4366
 msgid ". Skipping it."
 msgstr ". 건너뛰는 중입니다."
 
-#: ../src/spacecmd/system.py:4392
-#, fuzzy
-msgid "Scheduling Product migration for system "
+#: ../src/spacecmd/system.py:4369
+msgid "Scheduling Service Pack migration for system "
 msgstr "시스템에 대한 서비스 팩 마이그레이션 예약 중 "
 
-#: ../src/spacecmd/system.py:4397
+#: ../src/spacecmd/system.py:4374
 msgid "Scheduled action ID: "
 msgstr "예약된 작업 ID: "
 

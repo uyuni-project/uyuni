@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-03 11:46+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2021-03-25 12:57+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/"
@@ -1946,7 +1946,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
-#: ../src/spacecmd/system.py:4370
+#: ../src/spacecmd/system.py:4347
 msgid "No systems found"
 msgstr ""
 
@@ -3499,12 +3499,12 @@ msgstr ""
 
 #: ../src/spacecmd/org.py:323
 #, python-format
-msgid "Systems Transferred From:  %i"
+msgid "Systems Migrated From:  %i"
 msgstr ""
 
 #: ../src/spacecmd/org.py:324
 #, python-format
-msgid "Systems Transferred To:    %i"
+msgid "Systems Migrated To:    %i"
 msgstr ""
 
 #: ../src/spacecmd/org.py:326
@@ -6009,7 +6009,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
 #: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
-#: ../src/spacecmd/system.py:4399
+#: ../src/spacecmd/system.py:4376
 #, python-format
 msgid "Failed to schedule %s"
 msgstr ""
@@ -7168,22 +7168,12 @@ msgstr ""
 msgid "    Friendly names: "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_scheduleproductmigration instead."
-msgstr ""
-
-#: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
-msgid "This method is deprecated and will be removed in a future API version"
-msgstr ""
-
-#: ../src/spacecmd/system.py:4317
+#: ../src/spacecmd/system.py:4315
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4318
+#: ../src/spacecmd/system.py:4316
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7197,38 +7187,19 @@ msgid ""
 "spaces))"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4338
-msgid ""
-"system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr ""
-
-#: ../src/spacecmd/system.py:4339
-msgid ""
-"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
-"    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
-"    Options: \n"
-"        -s START_TIME \n"
-"        -d pass this flag, if you want to do a dry run \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
-msgstr ""
-
-#: ../src/spacecmd/system.py:4389
+#: ../src/spacecmd/system.py:4366
 msgid "Cannot find system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4389
+#: ../src/spacecmd/system.py:4366
 msgid ". Skipping it."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4392
-msgid "Scheduling Product migration for system "
+#: ../src/spacecmd/system.py:4369
+msgid "Scheduling Service Pack migration for system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4397
+#: ../src/spacecmd/system.py:4374
 msgid "Scheduled action ID: "
 msgstr ""
 
