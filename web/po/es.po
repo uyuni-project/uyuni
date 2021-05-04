@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 09:51+0000\n"
+"POT-Creation-Date: 2021-04-26 17:58+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -94,37 +94,66 @@ msgstr "Añadir a:"
 msgid "Loading the scheduler..."
 msgstr "Cargando el programador…"
 
-#: ../html/src/components/config-channels.tsx:20
-#: ../html/src/components/ranking-table.tsx:18
-#: ../html/src/components/salt-state-popup.tsx:10
+#: ../html/src/components/config-channels.tsx:29
 msgid "State Configuration Channel"
 msgstr "Canal de estados de configuración"
 
-#: ../html/src/components/config-channels.tsx:23
-#: ../html/src/components/ranking-table.tsx:21
-#: ../html/src/components/salt-state-popup.tsx:13
+#: ../html/src/components/config-channels.tsx:32
 msgid "Normal Configuration Channel"
 msgstr "Canal de configuración normal"
 
-#: ../html/src/components/config-channels.tsx:88
+#: ../html/src/components/config-channels.tsx:68
+msgid "Configuration Channel: {0}"
+msgstr "Canal de configuración: {0}"
+
+#: ../html/src/components/config-channels.tsx:78
+#: ../html/src/manager/images/image-profiles.tsx:206
+#: ../html/src/manager/images/image-stores.tsx:203
+#: ../html/src/manager/images/image-view-overview.tsx:322
+#: ../html/src/manager/images/image-view-overview.tsx:347
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
+msgid "Edit"
+msgstr "Editar"
+
+#: ../html/src/components/config-channels.tsx:79
+msgid "Edit Configuration Channel"
+msgstr "Editar canal de configuración"
+
+#: ../html/src/components/config-channels.tsx:155
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Hay cambios no guardados. ¿Quiere continuar?"
 
-#: ../html/src/components/config-channels.tsx:123
+#: ../html/src/components/config-channels.tsx:193
 msgid "State assignments have been saved."
 msgstr "Se han guardado las asignaciones de estado."
 
-#: ../html/src/components/config-channels.tsx:130
+#: ../html/src/components/config-channels.tsx:202
 msgid "An error occurred on save."
 msgstr "Se ha producido un error al guardar."
 
-#: ../html/src/components/config-channels.tsx:242
+#: ../html/src/components/config-channels.tsx:339
+#: ../html/src/manager/minion/packages/package-states.tsx:278
+msgid "No current changes."
+msgstr "No hay cambios actuales."
+
+#: ../html/src/components/config-channels.tsx:340
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "No se ha asignado ningún estado. Utilice la búsqueda para encontrar y "
 "asignar estados."
 
-#: ../html/src/components/config-channels.tsx:295
+#: ../html/src/components/config-channels.tsx:399
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:93
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
@@ -144,7 +173,7 @@ msgstr ""
 msgid "Back"
 msgstr "Atrás"
 
-#: ../html/src/components/config-channels.tsx:297
+#: ../html/src/components/config-channels.tsx:401
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
@@ -152,54 +181,84 @@ msgstr "Atrás"
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: ../html/src/components/config-channels.tsx:305
+#: ../html/src/components/config-channels.tsx:409
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:178
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: ../html/src/components/config-channels.tsx:318
-#, fuzzy
-msgid "Execute States"
-msgstr "Estado de acción"
+#: ../html/src/components/config-channels.tsx:422
+msgid "Apply"
+msgstr "Aplicar"
 
-#: ../html/src/components/config-channels.tsx:325
+#: ../html/src/components/config-channels.tsx:429
 msgid "Reorder"
 msgstr "Reordenar"
 
-#: ../html/src/components/config-channels.tsx:337
-msgid "Configuration Channels"
-msgstr "Canales de configuración"
+#: ../html/src/components/config-channels.tsx:440
+#: ../html/src/components/config-channels.tsx:444
+#: ../html/src/manager/minion/packages/package-states.tsx:202
+#: ../html/src/manager/minion/packages/package-states.tsx:206
+msgid "Changes"
+msgstr "Cambios"
 
-#: ../html/src/components/config-channels.tsx:346
-msgid "Search in configuration channels"
-msgstr "Buscar en canales de configuración"
+#: ../html/src/components/config-channels.tsx:442
+#: ../html/src/manager/minion/packages/package-states.tsx:204
+msgid "1 Change"
+msgstr "1 cambio"
 
-#: ../html/src/components/config-channels.tsx:351
+#: ../html/src/components/config-channels.tsx:452
+#: ../html/src/components/config-channels.tsx:489
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
 msgstr "Buscar"
 
-#: ../html/src/components/config-channels.tsx:363
+#: ../html/src/components/config-channels.tsx:462
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
+#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
+msgid "System"
+msgstr "Sistema"
+
+#: ../html/src/components/config-channels.tsx:473
+msgid "Configuration Channels"
+msgstr "Canales de configuración"
+
+#: ../html/src/components/config-channels.tsx:484
+msgid "Search in configuration channels"
+msgstr "Buscar en canales de configuración"
+
+#: ../html/src/components/config-channels.tsx:500
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Arrastre los canales de configuración para editar su jerarquía."
 
-#: ../html/src/components/config-channels.tsx:367
+#: ../html/src/components/config-channels.tsx:504
 msgid "There are no states assigned."
 msgstr "No hay ningún estado asignado."
 
-#: ../html/src/components/config-channels.tsx:375
+#: ../html/src/components/config-channels.tsx:512
 msgid "Channel Name"
 msgstr "Nombre del canal"
 
-#: ../html/src/components/config-channels.tsx:376
+#: ../html/src/components/config-channels.tsx:513
 msgid "Channel Label"
 msgstr "Etiqueta del canal"
 
-#: ../html/src/components/config-channels.tsx:377
+#: ../html/src/components/config-channels.tsx:514
 msgid "Assign"
 msgstr "Asignar"
+
+#: ../html/src/components/config-channels.tsx:540
+#: ../html/src/components/table/TableDataHandler.tsx:323
+msgid "There are no entries to show."
+msgstr "No hay ninguna entrada que mostrar."
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
@@ -530,39 +589,6 @@ msgstr ""
 msgid "Custom Quartz format:"
 msgstr ""
 
-#: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:323
-msgid "There are no entries to show."
-msgstr "No hay ninguna entrada que mostrar."
-
-#: ../html/src/components/salt-state-popup.tsx:49
-msgid "Configuration Channel: {0}"
-msgstr "Canal de configuración: {0}"
-
-#: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:206
-#: ../html/src/manager/images/image-stores.tsx:203
-#: ../html/src/manager/images/image-view-overview.tsx:322
-#: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:161
-#: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
-msgid "Edit"
-msgstr "Editar"
-
-#: ../html/src/components/salt-state-popup.tsx:60
-msgid "Edit Configuration Channel"
-msgstr "Editar canal de configuración"
-
 #: ../html/src/components/systems.tsx:43
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
 msgid "Security Advisory"
@@ -723,18 +749,6 @@ msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr ""
 "Se produjo un error. Se desconoce el estado de supervisión. Actualice la "
 "página."
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
-msgid "System"
-msgstr "Sistema"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Tomcat (Java JMX)"
@@ -3578,23 +3592,10 @@ msgstr ""
 msgid "Apply changes"
 msgstr "Cambios"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:202
-#: ../html/src/manager/minion/packages/package-states.tsx:206
-msgid "Changes"
-msgstr "Cambios"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:204
-msgid "1 Change"
-msgstr "1 cambio"
-
 #: ../html/src/manager/minion/packages/package-states.tsx:241
 #, fuzzy
 msgid "Search package"
 msgstr "Buscar"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:278
-msgid "No current changes."
-msgstr "No hay cambios actuales."
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No package states."
@@ -5490,9 +5491,6 @@ msgstr ""
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr ""
-
-#~ msgid "Apply"
-#~ msgstr "Aplicar"
 
 #, fuzzy
 #~ msgid "End"

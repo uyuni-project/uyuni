@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 09:51+0000\n"
+"POT-Creation-Date: 2021-04-26 17:58+0000\n"
 "PO-Revision-Date: 2021-04-26 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -98,37 +98,66 @@ msgstr "Pridať k:"
 msgid "Loading the scheduler..."
 msgstr "Načítava sa plánovač..."
 
-#: ../html/src/components/config-channels.tsx:20
-#: ../html/src/components/ranking-table.tsx:18
-#: ../html/src/components/salt-state-popup.tsx:10
+#: ../html/src/components/config-channels.tsx:29
 msgid "State Configuration Channel"
 msgstr "Kanál konfigurácie stavu"
 
-#: ../html/src/components/config-channels.tsx:23
-#: ../html/src/components/ranking-table.tsx:21
-#: ../html/src/components/salt-state-popup.tsx:13
+#: ../html/src/components/config-channels.tsx:32
 msgid "Normal Configuration Channel"
 msgstr "Normálny konfiguračný kanál"
 
-#: ../html/src/components/config-channels.tsx:88
+#: ../html/src/components/config-channels.tsx:68
+msgid "Configuration Channel: {0}"
+msgstr "Konfiguračný kanál: {0}"
+
+#: ../html/src/components/config-channels.tsx:78
+#: ../html/src/manager/images/image-profiles.tsx:206
+#: ../html/src/manager/images/image-stores.tsx:203
+#: ../html/src/manager/images/image-view-overview.tsx:322
+#: ../html/src/manager/images/image-view-overview.tsx:347
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/state/recurring-states-details.tsx:161
+#: ../html/src/manager/state/recurring-states-details.tsx:163
+#: ../html/src/manager/state/recurring-states-list.tsx:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
+msgid "Edit"
+msgstr "Upraviť"
+
+#: ../html/src/components/config-channels.tsx:79
+msgid "Edit Configuration Channel"
+msgstr "Upraviť konfiguračný kanál"
+
+#: ../html/src/components/config-channels.tsx:155
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Existujú neuložené zmeny. Chcete pokračovať?"
 
-#: ../html/src/components/config-channels.tsx:123
+#: ../html/src/components/config-channels.tsx:193
 msgid "State assignments have been saved."
 msgstr "Priradenia stavov boli uložené."
 
-#: ../html/src/components/config-channels.tsx:130
+#: ../html/src/components/config-channels.tsx:202
 msgid "An error occurred on save."
 msgstr "Pri ukladaní sa vyskytla chyba."
 
-#: ../html/src/components/config-channels.tsx:242
+#: ../html/src/components/config-channels.tsx:339
+#: ../html/src/manager/minion/packages/package-states.tsx:278
+msgid "No current changes."
+msgstr "Žiadne aktuálne zmeny."
+
+#: ../html/src/components/config-channels.tsx:340
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite "
 "vyhľadávanie."
 
-#: ../html/src/components/config-channels.tsx:295
+#: ../html/src/components/config-channels.tsx:399
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:93
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
@@ -148,7 +177,7 @@ msgstr ""
 msgid "Back"
 msgstr "Späť"
 
-#: ../html/src/components/config-channels.tsx:297
+#: ../html/src/components/config-channels.tsx:401
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
@@ -156,54 +185,84 @@ msgstr "Späť"
 msgid "Confirm"
 msgstr "Potvrdiť"
 
-#: ../html/src/components/config-channels.tsx:305
+#: ../html/src/components/config-channels.tsx:409
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:178
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:183
 msgid "Save Changes"
 msgstr "Uložiť zmeny"
 
-#: ../html/src/components/config-channels.tsx:318
-#, fuzzy
-msgid "Execute States"
-msgstr "Opakujúce sa stavy"
+#: ../html/src/components/config-channels.tsx:422
+msgid "Apply"
+msgstr "Použiť"
 
-#: ../html/src/components/config-channels.tsx:325
+#: ../html/src/components/config-channels.tsx:429
 msgid "Reorder"
 msgstr "Preusporiadať"
 
-#: ../html/src/components/config-channels.tsx:337
-msgid "Configuration Channels"
-msgstr "Konfiguračné kanály"
+#: ../html/src/components/config-channels.tsx:440
+#: ../html/src/components/config-channels.tsx:444
+#: ../html/src/manager/minion/packages/package-states.tsx:202
+#: ../html/src/manager/minion/packages/package-states.tsx:206
+msgid "Changes"
+msgstr "Zmeny"
 
-#: ../html/src/components/config-channels.tsx:346
-msgid "Search in configuration channels"
-msgstr "Hľadať v konfiguračných kanáloch"
+#: ../html/src/components/config-channels.tsx:442
+#: ../html/src/manager/minion/packages/package-states.tsx:204
+msgid "1 Change"
+msgstr "1 zmena"
 
-#: ../html/src/components/config-channels.tsx:351
+#: ../html/src/components/config-channels.tsx:452
+#: ../html/src/components/config-channels.tsx:489
 #: ../html/src/manager/minion/packages/package-states.tsx:214
 #: ../html/src/manager/minion/packages/package-states.tsx:247
 msgid "Search"
 msgstr "Hľadať"
 
-#: ../html/src/components/config-channels.tsx:363
+#: ../html/src/components/config-channels.tsx:462
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
+#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
+#: ../html/src/manager/minion/packages/package-states.tsx:224
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
+msgid "System"
+msgstr "Systém"
+
+#: ../html/src/components/config-channels.tsx:473
+msgid "Configuration Channels"
+msgstr "Konfiguračné kanály"
+
+#: ../html/src/components/config-channels.tsx:484
+msgid "Search in configuration channels"
+msgstr "Hľadať v konfiguračných kanáloch"
+
+#: ../html/src/components/config-channels.tsx:500
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Upravte poradie konfiguračných kanálov ich pretiahnutím."
 
-#: ../html/src/components/config-channels.tsx:367
+#: ../html/src/components/config-channels.tsx:504
 msgid "There are no states assigned."
 msgstr "Nie sú priradené žiadne stavy."
 
-#: ../html/src/components/config-channels.tsx:375
+#: ../html/src/components/config-channels.tsx:512
 msgid "Channel Name"
 msgstr "Názov kanála"
 
-#: ../html/src/components/config-channels.tsx:376
+#: ../html/src/components/config-channels.tsx:513
 msgid "Channel Label"
 msgstr "Označenie kanála"
 
-#: ../html/src/components/config-channels.tsx:377
+#: ../html/src/components/config-channels.tsx:514
 msgid "Assign"
 msgstr "Priradiť"
+
+#: ../html/src/components/config-channels.tsx:540
+#: ../html/src/components/table/TableDataHandler.tsx:323
+msgid "There are no entries to show."
+msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
@@ -539,39 +598,6 @@ msgstr ""
 msgid "Custom Quartz format:"
 msgstr "Vlastný formát Quartz:"
 
-#: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:323
-msgid "There are no entries to show."
-msgstr "Nie sú k dispozícii žiadne záznamy na zobrazenie."
-
-#: ../html/src/components/salt-state-popup.tsx:49
-msgid "Configuration Channel: {0}"
-msgstr "Konfiguračný kanál: {0}"
-
-#: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:206
-#: ../html/src/manager/images/image-stores.tsx:203
-#: ../html/src/manager/images/image-view-overview.tsx:322
-#: ../html/src/manager/images/image-view-overview.tsx:347
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:38
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/state/recurring-states-details.tsx:161
-#: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
-msgid "Edit"
-msgstr "Upraviť"
-
-#: ../html/src/components/salt-state-popup.tsx:60
-msgid "Edit Configuration Channel"
-msgstr "Upraviť konfiguračný kanál"
-
 #: ../html/src/components/systems.tsx:43
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
 msgid "Security Advisory"
@@ -733,18 +759,6 @@ msgstr "Stav monitorovania sa nezmenil."
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:51
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
-
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
-#: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
-msgid "System"
-msgstr "Systém"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Tomcat (Java JMX)"
@@ -3613,22 +3627,9 @@ msgstr "Pred použitím si uložte všetky svoje zmeny!"
 msgid "Apply changes"
 msgstr "Použiť zmeny"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:202
-#: ../html/src/manager/minion/packages/package-states.tsx:206
-msgid "Changes"
-msgstr "Zmeny"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:204
-msgid "1 Change"
-msgstr "1 zmena"
-
 #: ../html/src/manager/minion/packages/package-states.tsx:241
 msgid "Search package"
 msgstr "Hľadať balík"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:278
-msgid "No current changes."
-msgstr "Žiadne aktuálne zmeny."
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No package states."
@@ -5519,9 +5520,6 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
-
-#~ msgid "Apply"
-#~ msgstr "Použiť"
 
 #~ msgid ""
 #~ "Formula saved. Edit configuration options in the enabled formulas and "
