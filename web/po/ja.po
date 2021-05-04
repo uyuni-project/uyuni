@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-05-04 19:45+0000\n"
 "PO-Revision-Date: 2021-05-04 01:28+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -3633,15 +3633,25 @@ msgstr ""
 "スケジュールの割り当てを行なうと、このセット内の全てのシステムにある従来の割"
 "り当てを置き換えることになります。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
 msgid "No Playbook found."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
 msgid "Inventory file empty."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
+#, fuzzy
+msgid "Registered Systems"
+msgstr "未登録のシステム"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
+#, fuzzy
+msgid "Unknown Hostnames"
+msgstr "ノードのホスト名"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 #, fuzzy
 msgid "Loading content.."
 msgstr "読み込んでいます..."

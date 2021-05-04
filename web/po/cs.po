@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-05-04 19:45+0000\n"
 "PO-Revision-Date: 2021-04-23 11:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -3619,15 +3619,25 @@ msgid ""
 msgstr ""
 "Přiřazení plánu nahradí všechna předchozí přiřazení ve všech systémech sady."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
 msgid "No Playbook found."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
 msgid "Inventory file empty."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
+#, fuzzy
+msgid "Registered Systems"
+msgstr "Neregistrovaný systém"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
+#, fuzzy
+msgid "Unknown Hostnames"
+msgstr "Název hostitele uzlu"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 #, fuzzy
 msgid "Loading content.."
 msgstr "Načítání..."

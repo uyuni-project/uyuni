@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-05-04 19:45+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -3504,15 +3504,23 @@ msgid ""
 "systems in the set."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
 msgid "No Playbook found."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
 msgid "Inventory file empty."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
+msgid "Registered Systems"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
+msgid "Unknown Hostnames"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
 msgstr ""
 
