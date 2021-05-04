@@ -59,7 +59,7 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
-     * "earliest the execution command can be sent to the control node. ignored")
+     * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
