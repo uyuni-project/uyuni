@@ -10969,6 +10969,13 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Retracted patches: {0}</source>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="Transfer" xml:space="preserve">
+        <source>Transfer</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
@@ -11036,13 +11043,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Transfer" xml:space="preserve">
-        <source>Transfer</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       <target state="new" />
   </trans-unit>

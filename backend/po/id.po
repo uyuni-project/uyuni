@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-22 09:01+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -19,11 +19,26 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129
+#: ../server/apacheAuth.py:66
+#, fuzzy, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "token otentikasi proksi tidak lengkap: %s"
+
+#: ../server/apacheAuth.py:84
+#, fuzzy, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
+
+#: ../server/apacheAuth.py:119
+#, fuzzy
+msgid "declined proxy authentication"
+msgstr "otentikasi proxy yang ditolak"
+
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -33,6 +48,277 @@ msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
 "                   Silakan hubungi administrator Organisasi Anda untuk "
 "bantuan lebih lanjut."
+
+#: ../server/handlers/applet/applet.py:78
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Sistem Anda tidak ditemukan dalam rhn database"
+
+#: ../server/handlers/sat/auth.py:45
+#, fuzzy
+msgid "ISS is disabled on this server."
+msgstr "ISS dinonaktifkan di server ini."
+
+#: ../server/handlers/sat/auth.py:50
+#, fuzzy, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "Pasangan system_id/action_id tidak valid."
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+#, fuzzy
+msgid "Invalid session key"
+msgstr "Kunci sesi tidak valid"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+#, fuzzy
+msgid "This server ID no longer exists"
+msgstr "ID server ini tidak ada lagi"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+#, fuzzy
+msgid "Required data missing"
+msgstr "Data yang diperlukan hilang"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+#, fuzzy
+msgid "Required members missing"
+msgstr "Anggota yang diperlukan hilang"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+#, fuzzy
+msgid "Attempt to register a system to an invalid username"
+msgstr "Mencoba mendaftarkan sistem ke nama pengguna yang tidak valid"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+#, fuzzy
+msgid "Invalid system release version requested"
+msgstr "Versi rilis sistem tidak valid yang diminta"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
+#, fuzzy
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+"Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
+"tidak ditemukan."
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1127
+#, fuzzy
+msgid "Privacy Statement"
+msgstr "Red Hat Pernyataan Privasi Satelit"
+
+#: ../server/handlers/xmlrpc/registration.py:1148
+#, fuzzy
+msgid "Expected a dictionary as a product argument"
+msgstr "Mengharapkan kamus sebagai argumen produk"
+
+#: ../server/handlers/xmlrpc/registration.py:1376
+#, fuzzy, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "Nilai '%s' tidak valid untuk %s (%s)"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, fuzzy, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nilai %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, fuzzy, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Diduga sebuah nama paket, bukan: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, fuzzy, python-format
+msgid "Expected a package, not: %s"
+msgstr "Diduga sebuah paket, bukan: %s"
+
+#: ../server/handlers/xmlrpc/queue.py:434
+#, fuzzy, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Tipe nilai tindakan %s (%s) tidak valid"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, fuzzy, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Tindakan %s bukan milik server %s"
+
+#: ../server/importlib/userAuth.py:98
+#, fuzzy
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Anda tidak berwenang untuk mengelola paket di null org"
+
+#: ../server/importlib/userAuth.py:103
+#, fuzzy, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
+
+#: ../server/importlib/userAuth.py:121
+#, fuzzy
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
+
+#: ../server/importlib/userAuth.py:144
+#, fuzzy, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak "
+"ada"
+
+#: ../server/importlib/userAuth.py:204
+#, fuzzy, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"Akun %s telah dinonaktifkan pada server ini.\n"
+"               Silakan hubungi administrator Organisasi Anda untuk bantuan "
+"lebih lanjut."
+
+#: ../server/rhnHandler.py:62
+#, fuzzy
+msgid "Please run rhn_register as root on this client"
+msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
+
+#: ../server/rhnHandler.py:75
+#, fuzzy, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, fuzzy, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Arsitektur '%s' tidak didukung"
+
+#: ../server/rhnServer/server_token.py:78
+#, fuzzy, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
+
+#: ../server/rhnServer/server_token.py:80
+#, fuzzy
+msgid "Conflicting base channels"
+msgstr "Saluran dasar yang bertentangan"
+
+#: ../server/rhnServer/server_token.py:190
+#, fuzzy, python-format
+msgid "Failed to add server to group %s"
+msgstr "Gagal menambahkan server ke grup %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, fuzzy, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Jumlah penggunaan maksimum dari %s tercapai"
+
+#: ../server/rhnServer/server_token.py:744
+#, fuzzy
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
+"didukung"
+
+#: ../server/rhnServer/server_token.py:811
+#, fuzzy, python-format
+msgid "Could not find token '%s'"
+msgstr "Tidak dapat menemukan token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+#, fuzzy
+msgid "Tokens from mismatching orgs"
+msgstr "Token dari organisasi yang tidak cocok"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+#, fuzzy
+msgid "Kickstart session mismatch"
+msgstr "Ketidakcocokan sesi kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+#, fuzzy
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Penumpukan token pendaftaran ulang tidak didukung"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+#, fuzzy
+msgid "Invalid username/password combination"
+msgstr "Kombinasi nama pengguna/kata sandi tidak valid"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, fuzzy, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Nama pengguna '%s' belum dicadangkan"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+#, fuzzy
+msgid "E-mail address not specified"
+msgstr "Alamat e-mail tidak ditentukan"
+
+#: ../server/rhnUser.py:509
+#, fuzzy, python-format
+msgid "username should be at least %d characters"
+msgstr "nama pengguna harus setidaknya %d karakter"
+
+#: ../server/rhnUser.py:512
+#, fuzzy, python-format
+msgid "username should be less than %d characters"
+msgstr "nama pengguna harus kurang dari %d karakter"
+
+#: ../server/rhnUser.py:523
+#, fuzzy, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "username = '%s', karakter '%s' tidak valid"
+
+#: ../server/rhnUser.py:542
+#, fuzzy, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Batasi alamat e-mail Anda ke %s chars"
+
+#: ../server/rhnUser.py:623
+#, fuzzy, python-format
+msgid "password must be at least %d characters"
+msgstr "kata sandi harus setidaknya %d karakter"
+
+#: ../server/rhnUser.py:626
+#, fuzzy, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Kata sandi harus lebih pendek dari karakter %d"
+
+#: ../server/rhnUser.py:644
+#, fuzzy, python-format
+msgid "password contains character `%s'"
+msgstr "kata sandi berisi karakter '%s'"
+
+#: ../server/rhnUser.py:651
+#, fuzzy, python-format
+msgid "username should be at least %d characters long"
+msgstr "username harus setidaknya %d karakter panjang"
+
+#: ../server/rhnUser.py:662
+#, fuzzy, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
 
 #: ../server/rhnChannel.py:1999
 #, fuzzy, python-format
@@ -102,67 +388,16 @@ msgstr ""
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, fuzzy, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Paket RPM %s tidak valid diminta"
+
+#: ../server/rhnPackage.py:112
 #, fuzzy
-msgid "Invalid username/password combination"
-msgstr "Kombinasi nama pengguna/kata sandi tidak valid"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, fuzzy, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Nama pengguna '%s' belum dicadangkan"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-#, fuzzy
-msgid "E-mail address not specified"
-msgstr "Alamat e-mail tidak ditentukan"
-
-#: ../server/rhnUser.py:509
-#, fuzzy, python-format
-msgid "username should be at least %d characters"
-msgstr "nama pengguna harus setidaknya %d karakter"
-
-#: ../server/rhnUser.py:512
-#, fuzzy, python-format
-msgid "username should be less than %d characters"
-msgstr "nama pengguna harus kurang dari %d karakter"
-
-#: ../server/rhnUser.py:523
-#, fuzzy, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "username = '%s', karakter '%s' tidak valid"
-
-#: ../server/rhnUser.py:542
-#, fuzzy, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Batasi alamat e-mail Anda ke %s chars"
-
-#: ../server/rhnUser.py:623
-#, fuzzy, python-format
-msgid "password must be at least %d characters"
-msgstr "kata sandi harus setidaknya %d karakter"
-
-#: ../server/rhnUser.py:626
-#, fuzzy, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Kata sandi harus lebih pendek dari karakter %d"
-
-#: ../server/rhnUser.py:644
-#, fuzzy, python-format
-msgid "password contains character `%s'"
-msgstr "kata sandi berisi karakter '%s'"
-
-#: ../server/rhnUser.py:651
-#, fuzzy, python-format
-msgid "username should be at least %d characters long"
-msgstr "username harus setidaknya %d karakter panjang"
-
-#: ../server/rhnUser.py:662
-#, fuzzy, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
+msgid "Package not found"
+msgstr "Paket tidak ditemukan"
 
 #: ../server/apacheRequest.py:59
 #, fuzzy, python-format
@@ -191,251 +426,6 @@ msgstr ""
 #, fuzzy, python-format
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
-
-#: ../server/importlib/userAuth.py:98
-#, fuzzy
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Anda tidak berwenang untuk mengelola paket di null org"
-
-#: ../server/importlib/userAuth.py:103
-#, fuzzy, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
-
-#: ../server/importlib/userAuth.py:121
-#, fuzzy
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
-
-#: ../server/importlib/userAuth.py:144
-#, fuzzy, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak "
-"ada"
-
-#: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"Akun %s telah dinonaktifkan pada server ini.\n"
-"               Silakan hubungi administrator Organisasi Anda untuk bantuan "
-"lebih lanjut."
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, fuzzy, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Paket RPM %s tidak valid diminta"
-
-#: ../server/rhnPackage.py:112
-#, fuzzy
-msgid "Package not found"
-msgstr "Paket tidak ditemukan"
-
-#: ../server/apacheAuth.py:66
-#, fuzzy, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "token otentikasi proksi tidak lengkap: %s"
-
-#: ../server/apacheAuth.py:84
-#, fuzzy, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
-
-#: ../server/apacheAuth.py:119
-#, fuzzy
-msgid "declined proxy authentication"
-msgstr "otentikasi proxy yang ditolak"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-#, fuzzy
-msgid "Required data missing"
-msgstr "Data yang diperlukan hilang"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-#, fuzzy
-msgid "Required members missing"
-msgstr "Anggota yang diperlukan hilang"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-#, fuzzy
-msgid "Attempt to register a system to an invalid username"
-msgstr "Mencoba mendaftarkan sistem ke nama pengguna yang tidak valid"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-#, fuzzy
-msgid "Invalid system release version requested"
-msgstr "Versi rilis sistem tidak valid yang diminta"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-#, fuzzy
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
-"tidak ditemukan."
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-#, fuzzy
-msgid "Privacy Statement"
-msgstr "Red Hat Pernyataan Privasi Satelit"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-#, fuzzy
-msgid "Expected a dictionary as a product argument"
-msgstr "Mengharapkan kamus sebagai argumen produk"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, fuzzy, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Nilai '%s' tidak valid untuk %s (%s)"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-#, fuzzy
-msgid "Invalid session key"
-msgstr "Kunci sesi tidak valid"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-#, fuzzy
-msgid "This server ID no longer exists"
-msgstr "ID server ini tidak ada lagi"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "Pasangan system_id/action_id tidak valid."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, fuzzy, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Diduga sebuah nama paket, bukan: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, fuzzy, python-format
-msgid "Expected a package, not: %s"
-msgstr "Diduga sebuah paket, bukan: %s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, fuzzy, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Tipe nilai tindakan %s (%s) tidak valid"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, fuzzy, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Tindakan %s bukan milik server %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, fuzzy, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nilai %s (%s) tidak valid"
-
-#: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Sistem Anda tidak ditemukan dalam rhn database"
-
-#: ../server/handlers/sat/auth.py:45
-#, fuzzy
-msgid "ISS is disabled on this server."
-msgstr "ISS dinonaktifkan di server ini."
-
-#: ../server/handlers/sat/auth.py:50
-#, fuzzy, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
-
-#: ../server/rhnServer/server_token.py:78
-#, fuzzy, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token '%s' memiliki lebih dari satu saluran dasar yang ditugaskan"
-
-#: ../server/rhnServer/server_token.py:80
-#, fuzzy
-msgid "Conflicting base channels"
-msgstr "Saluran dasar yang bertentangan"
-
-#: ../server/rhnServer/server_token.py:190
-#, fuzzy, python-format
-msgid "Failed to add server to group %s"
-msgstr "Gagal menambahkan server ke grup %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, fuzzy, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Jumlah penggunaan maksimum dari %s tercapai"
-
-#: ../server/rhnServer/server_token.py:744
-#, fuzzy
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
-"didukung"
-
-#: ../server/rhnServer/server_token.py:811
-#, fuzzy, python-format
-msgid "Could not find token '%s'"
-msgstr "Tidak dapat menemukan token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-#, fuzzy
-msgid "Tokens from mismatching orgs"
-msgstr "Token dari organisasi yang tidak cocok"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-#, fuzzy
-msgid "Kickstart session mismatch"
-msgstr "Ketidakcocokan sesi kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-#, fuzzy
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Penumpukan token pendaftaran ulang tidak didukung"
-
-#: ../server/rhnServer/server_class.py:97
-#, fuzzy, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Arsitektur '%s' tidak didukung"
-
-#: ../server/rhnHandler.py:62
-#, fuzzy
-msgid "Please run rhn_register as root on this client"
-msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
-
-#: ../server/rhnHandler.py:75
-#, fuzzy, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Layanan tidak diaktifkan untuk profil sistem: \"%s\""
-
-#: ../common/rhnTB.py:205
-#, fuzzy, python-format
-msgid "ERROR: %s %s: %s"
-msgstr "GALAT: %s %s: %s"
-
-#: ../common/rhnTB.py:207
-#, fuzzy, python-format
-msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1156,240 +1146,21 @@ msgstr "Galat Info Kelas: %s"
 msgid "Explanation: %s"
 msgstr "Penjelasan: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-#, fuzzy
-msgid "+++ sending log as an email +++"
-msgstr "+++ mengirim log sebagai email +++"
-
-#: ../satellite_tools/reposync.py:121
+#: ../common/rhnTB.py:205
 #, fuzzy, python-format
-msgid "%s sync. report from %s"
-msgstr "Sinkronisasi %s. laporan dari %s"
+msgid "ERROR: %s %s: %s"
+msgstr "GALAT: %s %s: %s"
 
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-#, fuzzy
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
+#: ../common/rhnTB.py:207
+#, fuzzy, python-format
+msgid "TRACEBACK: %s"
+msgstr "TRACEBACK: %s (Dalam Bahasa Inggris)"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, fuzzy, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "format dari %s harus setidaknya YYYYMMDD."
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, fuzzy, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (ditentukan dalam baris perintah)\n"
-"tidak dapat dibuka dan dibaca:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, fuzzy, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" tidak dapat dibuka\n"
-"dan/atau tertulis kepada:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:26
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"GALAT: menjalankan langkah %s. Galat adalah:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:31
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"ERROR: ada masalah saat mengakses data channel dari\n"
-"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
-"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
-"saluran ISOs, pastikan\n"
-"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
-"mengisi kembali\n"
-"       repositori sementara (%s)."
-
-#: ../satellite_tools/messages.py:39
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: ada masalah sinkronisasi informasi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:44
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
-"konfigurasi Anda,\n"
-"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
-"       Pesan galat: %s"
-
-#: ../satellite_tools/messages.py:51
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
-"sebagai\n"
-"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
-"disinkronkan\n"
-"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
-"hilang untuk ini\n"
-"       Transaksi:\n"
-"       %s"
-
-#: ../satellite_tools/messages.py:59
-#, fuzzy, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
-"ini.\n"
-"Silakan hubungi kontak SUSE Manager Anda\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, fuzzy, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
-
-#: ../satellite_tools/messages.py:66
-#, fuzzy, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
-
-#: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
-msgid "    Extinct package:  %s"
-msgstr "Paket punah: %s"
-
-#: ../satellite_tools/messages.py:68
-#, fuzzy, python-format
-msgid "   Total size: %s"
-msgstr "Total ukuran: %s"
-
-#: ../satellite_tools/messages.py:69
-#, fuzzy, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
-
-#: ../satellite_tools/messages.py:70
-#, fuzzy, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "Fetch gagal: %s"
-
-#: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "Ringkasan pengambilan RPM: %s"
-
-#: ../satellite_tools/messages.py:72
-#, fuzzy, python-format
-msgid "       success: %d"
-msgstr "sukses: %d"
-
-#: ../satellite_tools/messages.py:73
-#, fuzzy, python-format
-msgid "       failed:  %d"
-msgstr "Impor yang gagal (%d)"
-
-#: ../satellite_tools/messages.py:74
-#, fuzzy, python-format
-msgid "       extinct: %d"
-msgstr "punah: %d"
-
-#: ../satellite_tools/messages.py:76
-#, fuzzy, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
-
-#: ../satellite_tools/messages.py:77
-#, fuzzy, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "Mengambil / mengurai data errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:78
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "Mengambil / mengurai data kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:79
-#, fuzzy, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:80
-#, fuzzy, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
-
-#: ../satellite_tools/messages.py:81
-#, fuzzy
-msgid "   * WARNING: this may be a slow process."
-msgstr "* PERINGATAN: ini mungkin proses yang lambat."
-
-#: ../satellite_tools/messages.py:82
-#, fuzzy
-msgid "Linking packages to channels"
-msgstr "Menautkan paket ke saluran"
-
-#: ../satellite_tools/messages.py:83
-#, fuzzy, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "Mengimpor *relevan* errata: %s (%s)"
-
-#: ../satellite_tools/messages.py:84
-#, fuzzy
-msgid "   No new kickstartable tree to import"
-msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
-
-#: ../satellite_tools/messages.py:85
-#, fuzzy, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Mengimpor pohon kickstartable (%d)"
-
-#: ../satellite_tools/messages.py:86
-#, fuzzy, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Pohon kickstartable impor (%d)"
 
 #: ../satellite_tools/satsync.py:258
 #, fuzzy, python-format
@@ -1463,10 +1234,20 @@ msgstr "Master Manajer SUSE tidak mendukung sinkronisasi data organisasi."
 msgid "Skipping..."
 msgstr "Melewatkan: %s\n"
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+#, fuzzy
+msgid "+++ sending log as an email +++"
+msgstr "+++ mengirim log sebagai email +++"
+
 #: ../satellite_tools/satsync.py:442
 #, fuzzy, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Sinkronisasi SUSE Manager Inter Server. laporan dari %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+#, fuzzy
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email yang diminta, tetapi tidak ada yang bisa dikirim +++"
 
 #: ../satellite_tools/satsync.py:520
 #, fuzzy
@@ -2280,6 +2061,225 @@ msgstr "28 - error: --master hanya berlaku dengan --mount-point"
 #, fuzzy, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
+
+#: ../satellite_tools/messages.py:26
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"GALAT: menjalankan langkah %s. Galat adalah:\n"
+"%s"
+
+#: ../satellite_tools/messages.py:31
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"ERROR: ada masalah saat mengakses data channel dari\n"
+"       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
+"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
+"saluran ISOs, pastikan\n"
+"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
+"mengisi kembali\n"
+"       repositori sementara (%s)."
+
+#: ../satellite_tools/messages.py:39
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: ada masalah sinkronisasi informasi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:44
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
+"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
+"konfigurasi Anda,\n"
+"       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
+"       Pesan galat: %s"
+
+#: ../satellite_tools/messages.py:51
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
+"sebagai\n"
+"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
+"disinkronkan\n"
+"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
+"hilang untuk ini\n"
+"       Transaksi:\n"
+"       %s"
+
+#: ../satellite_tools/messages.py:59
+#, fuzzy, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
+"ini.\n"
+"Silakan hubungi kontak SUSE Manager Anda\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, fuzzy, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "GALAT: tidak cukup ruang kosong (%s KB) pada perangkat."
+
+#: ../satellite_tools/messages.py:66
+#, fuzzy, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "%3d/%s Fetch berhasil: %s (%s bytes)"
+
+#: ../satellite_tools/messages.py:67
+#, fuzzy, python-format
+msgid "    Extinct package:  %s"
+msgstr "Paket punah: %s"
+
+#: ../satellite_tools/messages.py:68
+#, fuzzy, python-format
+msgid "   Total size: %s"
+msgstr "Total ukuran: %s"
+
+#: ../satellite_tools/messages.py:69
+#, fuzzy, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "Diunduh %s dari %s. Perkiraan sisa waktu: %s"
+
+#: ../satellite_tools/messages.py:70
+#, fuzzy, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "Fetch gagal: %s"
+
+#: ../satellite_tools/messages.py:71
+#, fuzzy, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "Ringkasan pengambilan RPM: %s"
+
+#: ../satellite_tools/messages.py:72
+#, fuzzy, python-format
+msgid "       success: %d"
+msgstr "sukses: %d"
+
+#: ../satellite_tools/messages.py:73
+#, fuzzy, python-format
+msgid "       failed:  %d"
+msgstr "Impor yang gagal (%d)"
+
+#: ../satellite_tools/messages.py:74
+#, fuzzy, python-format
+msgid "       extinct: %d"
+msgstr "punah: %d"
+
+#: ../satellite_tools/messages.py:76
+#, fuzzy, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "Mengambil / mem-parsing *relevan* metadata paket: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, fuzzy, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "Mengambil / mengurai data errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "Mengambil / mengurai data kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, fuzzy, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "Mengambil / mengurai berkas pohon kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, fuzzy, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "Mengimpor metadata paket *relevant*: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
+#, fuzzy
+msgid "   * WARNING: this may be a slow process."
+msgstr "* PERINGATAN: ini mungkin proses yang lambat."
+
+#: ../satellite_tools/messages.py:82
+#, fuzzy
+msgid "Linking packages to channels"
+msgstr "Menautkan paket ke saluran"
+
+#: ../satellite_tools/messages.py:83
+#, fuzzy, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "Mengimpor *relevan* errata: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+#, fuzzy
+msgid "   No new kickstartable tree to import"
+msgstr "Tidak ada pohon kickstartable baru untuk mengimpor"
+
+#: ../satellite_tools/messages.py:85
+#, fuzzy, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Mengimpor pohon kickstartable (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, fuzzy, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Pohon kickstartable impor (%d)"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, fuzzy, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (ditentukan dalam baris perintah)\n"
+"tidak dapat dibuka dan dibaca:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, fuzzy, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" tidak dapat dibuka\n"
+"dan/atau tertulis kepada:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:121
+#, fuzzy, python-format
+msgid "%s sync. report from %s"
+msgstr "Sinkronisasi %s. laporan dari %s"
 
 #, fuzzy
 #~ msgid "Crash information is invalid or incomplete"

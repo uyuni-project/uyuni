@@ -1951,7 +1951,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
-        <target state="translated">以下にある 'アカウントを停止する' ボタンを押すと直ちにログアウトすることになり、 &lt;b&gt;再びログインすることはできなくなります&lt;/b&gt; 。</target>
+        <target state="translated">以下にある 'アカウントを停止する' ボタンを押すと直ちにログアウトすることになり、
+&lt;b&gt;再びログインすることはできなくなります&lt;/b&gt; 。</target>
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning_question" xml:space="preserve">
         <source>Are you sure you want to deactivate your account?</source>
@@ -4718,7 +4719,7 @@ navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target state="translated">&lt;strong&gt;*ヒント:&lt;/strong&gt; 組織管理者の権限は、このページでは変更できません。
-その代わりに、最上部のナビゲーションバーの  "ユーザ" タブに行き、
+その代わりに、最上部のナビゲーションバーの "ユーザ" タブに行き、
 組織内の各個人ユーザのプロファイルにアクセスして下さい。
 個人ユーザプロファイル内の "詳細" タブの "ロール" セクションで、
 組織管理者ロールを付与したり、削除したりすることができます。</target>
@@ -8317,11 +8318,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess" xml:space="preserve">
         <source>Packages has been requested for being locked.</source>
-        <target>ここではパッケージにロックを設定して、変更が行なわれないようにする
-                ことができます。ただし、ロックの設定にはしばらくの時間がかかることに
-                注意してください。ロック処理の前にパッケージが更新された場合で、
-                そのパッケージが新しいものであった場合は、ロックがキャンセルされる
-                ことになります。</target>
+        <target>パッケージのロックを要求しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -10314,7 +10311,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channelSummary" xml:space="preserve">
         <source>Below are channels with {0} repository attached to them.</source>
-        <target>{0}  リポジトリーが接続されているチャンネルです。</target>
+        <target>{0} リポジトリーが接続されているチャンネルです。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.noChannels" xml:space="preserve">
         <source>This repository is not linked to any channel.</source>
@@ -17343,7 +17340,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>ファイル名「{0}」はこのチャンネルにすでに存在しています。</target>
+        <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="addfiles.jsp.upload-link" xml:space="preserve">
         <source>Upload New Configuration File</source>
@@ -17871,7 +17868,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 system override (_Remove System Override_)</context>
         </context-group>
-        <target>{0} システムオーバーライド  (&lt;a href="{1}"&gt;システムオーバーライドの削除&lt;/a&gt;)</target>
+        <target>{0} システムオーバーライド (&lt;a href="{1}"&gt;システムオーバーライドの削除&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.outranked-numbers" xml:space="preserve">
         <source>{0} central overrides (&lt;a href="{1}"&gt;Modify rank&lt;/a&gt;)</source>
@@ -18389,7 +18386,7 @@ You can, however, download this file, edit it locally on your computer, and uplo
           </context>
         </context-group>
         <target state="translated">
-このファイルは大きすぎるため、ここでは編集できません (このフォーム内で編集できるサイズは &lt;strong&gt;{0}&lt;/strong&gt; 未満のファイルです -  @@PRODUCT_NAME@@ 管理者であれば /etc/rhn/rhn.conf のjava.config_file_edit_size オプションでこのサイズを設定できます)。
+このファイルは大きすぎるため、ここでは編集できません (このフォーム内で編集できるサイズは &lt;strong&gt;{0}&lt;/strong&gt; 未満のファイルです - @@PRODUCT_NAME@@ 管理者であれば /etc/rhn/rhn.conf のjava.config_file_edit_size オプションでこのサイズを設定できます)。
 ただし、このファイルをダウンロードしてユーザーのコンピューターでローカルに編集し、アップロードを行なうことは可能です。
 </target>
       </trans-unit>
@@ -22035,7 +22032,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>このゲストシステムが不要になった場合には、ゲストを削除できます。このシステムのホストで新しいゲストをプロビジョニングするには、&lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt;  ホストのシステム詳細ページにある '仮想化' タブに移動します。&lt;/a&gt;</target>
+        <target>このゲストシステムが不要になった場合には、ゲストを削除できます。このシステムのホストで新しいゲストをプロビジョニングするには、&lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt; ホストのシステム詳細ページにある '仮想化' タブに移動します。&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.jsp" xml:space="preserve">
         <source>Schedule Autoinstallation</source>
@@ -25270,7 +25267,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target>&lt;strong&gt;例:&lt;/strong&gt;  'sales-admin'、'admin_prodops@example.com'、'sales.admin'</target>
+        <target>&lt;strong&gt;例:&lt;/strong&gt; 'sales-admin'、'admin_prodops@example.com'、'sales.admin'</target>
       </trans-unit>
       <trans-unit id="tip" xml:space="preserve">
         <source>Tip:</source>
@@ -25312,7 +25309,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
-        <target>{0} と 64  文字の間</target>
+        <target>{0} と 64 文字の間</target>
       </trans-unit>
       <trans-unit id="org.name.length.tip" xml:space="preserve">
         <source>Between 3 and 128 characters</source>
@@ -29643,69 +29640,57 @@ given channel.</source>
         </context-group>
         <target state="translated">設定状態チャンネルの作成</target>
       </trans-unit>
-    <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
+      <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">Content Lifecycle Management ビルドでのパッチ同期</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">状態</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">最終</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">安定</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">テスト中</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">撤回済み</target>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">撤回されたパッチ</target>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="ansible_control_node" xml:space="preserve">
-        <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
-        <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Product Migration" xml:space="preserve">
-        <source>Product Migration</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
+        <target state="translated">撤回されたパッチに属するパッケージ</target>
+      </trans-unit>
+    <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
         <source>Forward registrations to SUSE Customer Center</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
@@ -29724,6 +29709,18 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
+        <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible_control_node" xml:space="preserve">
+        <source>Ansible Control Node</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Product Migration" xml:space="preserve">
+        <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
       </body>

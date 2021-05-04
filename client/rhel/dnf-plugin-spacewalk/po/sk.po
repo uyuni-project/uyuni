@@ -8,45 +8,48 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 13:12+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-04-27 18:57+0000\n"
+"Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
+"dnf-plugin-spacewalk-master/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 4.6\n"
 
 #: ../spacewalk.py:41
 msgid "Spacewalk based repositories will be disabled."
-msgstr ""
+msgstr "Repozitáre založené na Spacewalk budú zakázané."
 
 #: ../spacewalk.py:42
 msgid "Spacewalk channel support will be disabled."
-msgstr ""
+msgstr "Podpora kanála Spacewalk bude zakázaná."
 
 #: ../spacewalk.py:43
 msgid "There was an error communicating with Spacewalk server."
-msgstr ""
+msgstr "Pri komunikácii so serverom Spacewalk sa vyskytla chyba."
 
 #: ../spacewalk.py:44
 msgid "This system is not registered with Spacewalk server."
-msgstr ""
+msgstr "Tento systém nie je zaregistrovaný na serveri Spacewalk."
 
 #: ../spacewalk.py:45
 msgid "This system is not subscribed to any channels."
-msgstr ""
+msgstr "Tento systém nie je prihlásený k žiadnym kanálom."
 
 #: ../spacewalk.py:46
 msgid "SystemId could not be acquired."
-msgstr ""
+msgstr "Nepodarilo sa získať SystemId."
 
 #: ../spacewalk.py:47
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Na registráciu môžete použiť rhn_register."
 
 #: ../spacewalk.py:48
 msgid "This system is receiving updates from Spacewalk server."
-msgstr ""
+msgstr "Tento systém prijíma aktualizácie zo servera Spacewalk."
 
 #: ../spacewalk.py:49
 #, python-format
@@ -55,16 +58,19 @@ msgid ""
 "verified only with locally installed gpg keys. GPG key '%s' has been "
 "rejected."
 msgstr ""
+"Z bezpečnostných dôvodov môžu byť balíky z repozitárov založených na "
+"Spacewalk overené iba s lokálne nainštalovanými kľúčmi gpg. Kľúč GPG '%s' "
+"bol odmietnutý."
 
 #: ../spacewalk.py:50
 msgid "Package profile information could not be sent."
-msgstr ""
+msgstr "Informácie profilov balíkov nebolo možné odoslať."
 
 #: ../spacewalk.py:51
 #, python-format
 msgid "Missing required login information for Spacewalk: %s"
-msgstr ""
+msgstr "Chýbajú požadované prihlasovacie údaje pre Spacewalk: %s"
 
 #: ../spacewalk.py:52
 msgid "Spacewalk plugin has to be run under with the root privileges."
-msgstr ""
+msgstr "Zásuvný modul Spacewalk musí byť spustený s právami správcu systému."
