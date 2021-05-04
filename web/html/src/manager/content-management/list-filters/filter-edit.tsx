@@ -11,8 +11,22 @@ import { showDialog } from "components/dialog/util";
 import { mapFilterFormToRequest } from "./filter.utils";
 import _isEmpty from "lodash/isEmpty";
 import useUserLocalization from "core/user-localization/use-user-localization";
+import { FilterFormType } from "../shared/type/filter.type";
 
-const FilterEditModalContent = ({ open, isLoading, filter, errors, onChange, onClientValidate, editing }) => {
+type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
+  open: boolean;
+  isLoading: boolean;
+};
+
+const FilterEditModalContent = ({
+  open,
+  isLoading,
+  filter,
+  errors,
+  onChange,
+  onClientValidate,
+  editing,
+}: FilterEditModalContentProps) => {
   if (!open) {
     return null;
   }
@@ -34,7 +48,7 @@ const FilterEditModalContent = ({ open, isLoading, filter, errors, onChange, onC
 
 type FilterEditProps = {
   id: string;
-  initialFilterForm: any;
+  initialFilterForm: Partial<FilterFormType>;
   icon: string;
   buttonText: string;
   onChange: Function;
@@ -53,7 +67,9 @@ const FilterEdit = (props: FilterEditProps) => {
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
   const { localTime } = useUserLocalization();
+  const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
 
+  const itemId = item.id?.toString() ?? undefined;
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
@@ -64,7 +80,43 @@ const FilterEdit = (props: FilterEditProps) => {
     }
   }, []);
 
-  const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
+  const onSave = () => {
+    if (!formValidInClient) {
+      showErrorToastr(t("Check the required fields below"), { autoHide: false });
+    } else {
+      if (props.editing) {
+        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", itemId)
+          .then(updatedListOfFilters => {
+            if (!_isEmpty(props.projectLabel)) {
+              redirectToProject(props.projectLabel);
+            } else {
+              closeDialog(modalNameId);
+              showSuccessToastr(t("Filter updated successfully"));
+              props.onChange(updatedListOfFilters);
+            }
+          })
+          .catch(error => {
+            setErrors(error.errors);
+            showErrorToastr(error.messages, { autoHide: false });
+          });
+      } else {
+        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "create")
+          .then(updatedListOfFilters => {
+            if (!_isEmpty(props.projectLabel)) {
+              redirectToProject(props.projectLabel);
+            } else {
+              closeDialog(modalNameId);
+              showSuccessToastr(t("Filter created successfully"));
+              props.onChange(updatedListOfFilters);
+            }
+          })
+          .catch(error => {
+            setErrors(error.errors);
+            showErrorToastr(error.messages, { autoHide: false });
+          });
+      }
+    }
+  };
 
   const modalTitle = props.editing ? t("Filter Details") : t("Create a new filter");
 
@@ -86,6 +138,7 @@ const FilterEdit = (props: FilterEditProps) => {
         title={modalTitle}
         closableModal={false}
         className="modal-lg"
+        autoFocus={false}
         content={
           <FilterEditModalContent
             filter={item}
@@ -108,7 +161,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   text={t("Delete")}
                   disabled={isLoading}
                   handler={() => {
-                    onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "delete", item.id)
+                    onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "delete", itemId)
                       .then(updatedListOfFilters => {
                         closeDialog(modalNameId);
                         showSuccessToastr(t("Filter deleted successfully"));
@@ -141,43 +194,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   className="btn-primary"
                   text={t("Save")}
                   disabled={isLoading}
-                  handler={() => {
-                    if (!formValidInClient) {
-                      showErrorToastr(t("Check the required fields below"), { autoHide: false });
-                    } else {
-                      if (props.editing) {
-                        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "update", item.id)
-                          .then(updatedListOfFilters => {
-                            if (!_isEmpty(props.projectLabel)) {
-                              redirectToProject(props.projectLabel);
-                            } else {
-                              closeDialog(modalNameId);
-                              showSuccessToastr(t("Filter updated successfully"));
-                              props.onChange(updatedListOfFilters);
-                            }
-                          })
-                          .catch(error => {
-                            setErrors(error.errors);
-                            showErrorToastr(error.messages, { autoHide: false });
-                          });
-                      } else {
-                        onAction(mapFilterFormToRequest(item, props.projectLabel, localTime || ""), "create")
-                          .then(updatedListOfFilters => {
-                            if (!_isEmpty(props.projectLabel)) {
-                              redirectToProject(props.projectLabel);
-                            } else {
-                              closeDialog(modalNameId);
-                              showSuccessToastr(t("Filter created successfully"));
-                              props.onChange(updatedListOfFilters);
-                            }
-                          })
-                          .catch(error => {
-                            setErrors(error.errors);
-                            showErrorToastr(error.messages, { autoHide: false });
-                          });
-                      }
-                    }
-                  }}
+                  handler={onSave}
                 />
               </div>
             </div>

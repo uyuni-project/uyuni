@@ -19,7 +19,7 @@ type Props = InputBaseProps & {
   inputClass?: string;
 
   /** name of the field to map in the form model */
-  name: string;
+  name?: string;
 };
 
 export function Radio(props: Props) {
@@ -35,7 +35,7 @@ export function Radio(props: Props) {
           setIsPristine(false);
         };
 
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
+        const fieldValue = (formContext.model || {})[props.name || ""] || props.defaultValue || "";
         const isOpenOption =
           props.openOption && !props.items.some(item => item.value === fieldValue) && (fieldValue || !isPristine);
 

@@ -1,3 +1,4 @@
+- Add template-based content filter creation
 - Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
 - Simplify state channels selection
 

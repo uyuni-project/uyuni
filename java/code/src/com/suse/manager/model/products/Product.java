@@ -47,6 +47,15 @@ public class Product {
     private final MgrSyncStatus status;
 
     /**
+     * Instantiates a new Product with a label and an ID
+     * @param idIn the ID
+     * @param labelIn the label
+     */
+    public Product(Long idIn, String labelIn) {
+        this(idIn, null, labelIn, null, false, null, null, null);
+    }
+
+    /**
      * Instantiates a new Product.
      * @param idIn the id in
      * @param identifierIn the unique identifier of the Product

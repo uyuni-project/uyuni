@@ -2,7 +2,7 @@ import * as React from "react";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = InputBaseProps &{
+type Props = InputBaseProps & {
   /** <input> type */
   type?: string;
 

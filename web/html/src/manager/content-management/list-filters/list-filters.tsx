@@ -36,7 +36,7 @@ const ListFilters = (props: Props) => {
     if (props.flashMessage) {
       showSuccessToastr(props.flashMessage);
     }
-  }, []);
+  }, [props.flashMessage]);
 
   const searchData = (row: FilterFormType, criteria?: string) => {
     const keysToSearch = ["filter_name", "projects.right"];
@@ -103,7 +103,7 @@ const ListFilters = (props: Props) => {
       {hasEditingPermissions && (
         <FilterEdit
           id="create-filter-button"
-          initialFilterForm={{ rule: "deny" }}
+          initialFilterForm={{ rule: "deny", labelPrefix: props.projectLabel }}
           icon="fa-plus"
           buttonText="Create Filter"
           openFilterId={props.openFilterId}

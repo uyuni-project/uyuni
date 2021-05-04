@@ -1,13 +1,14 @@
-export type Cancelable = {
-  promise: Promise<any>;
-  cancel: (reason?: any) => void;
-};
+// This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
+export class Cancelable<T = any> extends Promise<T> {
+  promise!: Promise<T>;
+  cancel!: (reason?: any) => void;
+}
 
-function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => void): Cancelable {
+function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void) => void): Cancelable<T> {
   let rejectFn: (reason: any) => void;
   let isCancelled = false;
 
-  const cancelPromise = new Promise((resolve, reject) => {
+  const cancelPromise = new Promise<T>((resolve, reject) => {
     rejectFn = reject;
   });
 
@@ -18,13 +19,18 @@ function cancelable(promise: Promise<any>, onCancel?: (arg0: Error | void) => vo
     throw error;
   });
 
-  return {
-    promise: race,
-    cancel: (reason: any) => {
-      isCancelled = true;
-      rejectFn(reason);
-    },
+  /**
+   * Instead of returning a plain object, we return a promise with additional fields
+   * This way we can be backwards compatible with old usage of the Cancelable interface
+   *  while also allowing using await directly on a Cancelable.
+   */
+  const castRace = race as Cancelable<T>;
+  castRace.promise = race;
+  castRace.cancel = (reason: any) => {
+    isCancelled = true;
+    rejectFn(reason);
   };
+  return castRace;
 }
 
 function dateWithTimezone(dateString: string): Date {

@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
+import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 import com.suse.manager.webui.controllers.UserLocalizationDateAdapter;
 import com.suse.manager.webui.controllers.contentmanagement.mappers.ResponseMappers;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -49,6 +50,7 @@ public class ControllerApiUtils {
             .create();
 
     public static final ContentManager CONTENT_MGR = new ContentManager();
+    public static final FilterTemplateManager TEMPLATE_MGR = new FilterTemplateManager();
 
 
     private ControllerApiUtils() { }

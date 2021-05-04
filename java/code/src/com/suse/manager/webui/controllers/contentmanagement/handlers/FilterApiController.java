@@ -27,11 +27,14 @@ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.google.gson.Gson;
+import com.redhat.rhn.manager.contentmgmt.FilterTemplateManager;
 import com.suse.manager.webui.controllers.contentmanagement.request.FilterRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectFiltersUpdateRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -57,6 +60,7 @@ public class FilterApiController {
 
     private static final Gson GSON = ControllerApiUtils.GSON;
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
+    private static final FilterTemplateManager TEMPLATE_MGR = ControllerApiUtils.TEMPLATE_MGR;
     private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private FilterApiController() {
@@ -141,6 +145,43 @@ public class FilterApiController {
         return ControllerApiUtils.listFiltersJsonResponse(res, user);
     }
 
+    private static String createFromTemplate(Request req, Response res, User user) {
+        FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
+
+        List<ContentFilter> createdFilters;
+        PackageEvr kernelEvr = PackageEvrFactory.lookupPackageEvrById(createFilterRequest.getKernelEvrId());
+
+        String prefix = createFilterRequest.getPrefix();
+        if (!StringUtils.endsWithAny(createFilterRequest.getPrefix(), "-", "_")) {
+            prefix += "-";
+        }
+
+        try {
+            createdFilters = TEMPLATE_MGR.createLivePatchFilters(prefix, kernelEvr, user);
+        }
+        catch (EntityExistsException error) {
+            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(
+                    new LinkedList<>(),
+                    Collections.singletonMap("filter_name",
+                            Arrays.asList(LOC.getMessage("contentmanagement.filter_exists")))
+            ));
+        }
+
+        if (!StringUtils.isEmpty(createFilterRequest.getProjectLabel())) {
+            for (ContentFilter createdFilter : createdFilters) {
+                CONTENT_MGR.attachFilter(
+                        createFilterRequest.getProjectLabel(),
+                        createdFilter.getId(),
+                        user
+                );
+            }
+            FlashScopeHelper.flash(req, LOC.getMessage("contentmanagement.filter_created_template",
+                    createdFilters.size()));
+        }
+
+        return ControllerApiUtils.listFiltersJsonResponse(res, user);
+    }
+
     /**
      * Return the JSON with the result of the creation of a filter.
      * @param req the http request
@@ -150,6 +191,10 @@ public class FilterApiController {
      */
     public static String createContentFilter(Request req, Response res, User user) {
         FilterRequest createFilterRequest = FilterHandler.getFilterRequest(req);
+
+        if (StringUtils.isNotEmpty(createFilterRequest.getPrefix())) {
+            return createFromTemplate(req, res, user);
+        }
 
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),

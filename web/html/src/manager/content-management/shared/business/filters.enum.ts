@@ -162,7 +162,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
   },
 };
 
-export function findClmFilterByKey(key: string | null | undefined): ClmFilterOptionType | null | undefined {
+export function findClmFilterByKey(key: string | undefined): ClmFilterOptionType | null | undefined {
   return _find(clmFilterOptions, entry => entry.key === key);
 }
 
@@ -170,7 +170,7 @@ export function getClmFiltersOptions(): Array<ClmFilterOptionType> {
   return Object.values(clmFilterOptions) as any;
 }
 
-function findFilterMatcherByKey(key: string | null | undefined): FilterMatcherType | Partial<FilterMatcherEnumType> {
+function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Partial<FilterMatcherEnumType> {
   return _find(filterMatchers, entry => entry.key === key) || {};
 }
 

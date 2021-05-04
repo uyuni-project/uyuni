@@ -35,7 +35,7 @@ type Props = InputBaseProps<string | string[]> & {
   inputClass?: string;
 
   /** name of the field to map in the form model */
-  name: string;
+  name?: string;
 };
 
 export function Select(props: Props) {
@@ -92,9 +92,10 @@ export function Select(props: Props) {
           const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
           setValue(props.name, value);
         };
-        const value = (formContext.model || {})[props.name];
+        const value = (formContext.model || {})[props.name || ""];
         const optionFinder = needle => convertedOptions.find(option => getOptionValue(option) === needle);
         const valueOption = Array.isArray(value) ? value.map(item => optionFinder(item)) : optionFinder(value);
+
         return (
           <ReactSelect
             className={inputClass ? ` ${inputClass}` : ""}
@@ -102,7 +103,7 @@ export function Select(props: Props) {
             inputId={props.name}
             isDisabled={props.disabled}
             defaultValue={defaultValue}
-            value={valueOption}
+            value={valueOption ?? defaultValue ?? null}
             onBlur={onBlur}
             onChange={onChange}
             options={convertedOptions}

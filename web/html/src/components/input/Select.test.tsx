@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  render,
-  screen,
-  openMenu,
-  select,
-  getFieldValuesByName,
-  clearFirst,
-  type,
-} from "utils/test-utils";
+import { render, screen, openMenu, select, getFieldValuesByName, clearFirst, type } from "utils/test-utils";
 
 import { Form } from "./Form";
 import { Select } from "./Select";
@@ -32,13 +24,7 @@ describe("Select", () => {
 
   test("renders with minimal props", () => {
     expect(() => {
-      renderWithForm(
-        <Select
-          name="level"
-          label="Level"
-          options={["beginner", "normal", "expert"]}
-        />
-      );
+      renderWithForm(<Select name="level" label="Level" options={["beginner", "normal", "expert"]} />);
     }).not.toThrow();
     openMenu(screen.getByLabelText(/^Level/));
     expect(screen.getByText("beginner")).toBeDefined();
@@ -52,7 +38,7 @@ describe("Select", () => {
         options={[
           { value: "beginner", label: "Beginner" },
           { value: "normal", label: "Normal" },
-          { value: "expert", label: "Expert"},
+          { value: "expert", label: "Expert" },
         ]}
       />
     );
@@ -63,7 +49,7 @@ describe("Select", () => {
   });
 
   test("fancy multiple select test", async () => {
-    model = {flavor: ['vanilla', 'strawberry']};
+    model = { flavor: ["vanilla", "strawberry"] };
     renderWithForm(
       <Select
         name="flavor"
@@ -71,12 +57,12 @@ describe("Select", () => {
         placeholder={t("Start typing...")}
         emptyText={t("No flavor")}
         options={[
-          { value: 'chocolate', label: 'Chocolate', color: "#7B3F00" },
-          { value: 'strawberry', label: 'Strawberry', color: "#DF0000" },
-          { value: 'vanilla', label: 'Vanilla', color: "#F3E5AB" }
+          { value: "chocolate", label: "Chocolate", color: "#7B3F00" },
+          { value: "strawberry", label: "Strawberry", color: "#DF0000" },
+          { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
         ]}
         isMulti
-        formatOptionLabel={object => <div style={{color: object.color}}>{object.label}</div>}
+        formatOptionLabel={object => <div style={{ color: object.color }}>{object.label}</div>}
       />
     );
     expect(getFieldValuesByName("test form", "flavor")).toStrictEqual(["vanilla", "strawberry"]);
@@ -92,5 +78,22 @@ describe("Select", () => {
     await type(screen.getByLabelText(/^Flavor/), "Mint");
     expect(screen.getByText("No flavor")).toBeDefined();
   });
-});
 
+  // Previously the value was set but it was not correctly reflected in the UI
+  test("default value is shown to the user", () => {
+    model = {};
+    renderWithForm(
+      <Select
+        name="foo"
+        options={[
+          { value: "value 1", label: "label 1" },
+          { value: "value 2", label: "label 2" },
+          { value: "value 3", label: "label 3" },
+        ]}
+        defaultValue="value 2"
+      />
+    );
+    expect(model).toStrictEqual({ foo: "value 2" });
+    expect(screen.getByText("label 2")).toBeDefined();
+  });
+});

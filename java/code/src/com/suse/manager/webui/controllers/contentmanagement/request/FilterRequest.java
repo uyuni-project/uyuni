@@ -27,6 +27,11 @@ public class FilterRequest {
     private String criteriaValue;
     private String rule;
 
+    // Live patching template params
+    private String template;
+    private String prefix;
+    private Long kernelEvrId;
+
     public String getProjectLabel() {
         return projectLabel;
     }
@@ -53,5 +58,17 @@ public class FilterRequest {
 
     public String getRule() {
         return rule;
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public Long getKernelEvrId() {
+        return kernelEvrId;
     }
 }

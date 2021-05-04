@@ -1,4 +1,7 @@
 import * as React from "react";
+import { InputBase } from "./InputBase";
+
+type InputBaseRef = React.ElementRef<typeof InputBase>;
 
 type Props = {
   /** Object storing the data of the form.
@@ -33,7 +36,7 @@ type Props = {
   /** Function called when the model has been changed.
    * Takes a new model as single parameter.
    */
-  onChange: (model: any) => void;
+  onChange?: (model: any) => void;
 
   /** Function called after having validated the form.
    * Takes a single parameter indicating whether the form is valid or not.
@@ -47,7 +50,7 @@ type Props = {
 type FormContextType = {
   model: any;
   errors: any;
-  setModelValue: Function;
+  setModelValue: (name: string, value: any) => any;
   registerInput: Function;
   unregisterInput: Function;
   validateForm: () => void;
@@ -65,34 +68,37 @@ export class Form extends React.Component<Props> {
     formDirection: "form-horizontal",
   };
 
-  inputs = {};
+  inputs: { [key: string]: InputBaseRef | undefined } = {};
 
-  setModelValue(name: string, value: any) {
+  setModelValue = (name: string, value: any) => {
     const { model, errors } = this.props;
     if (value == null && model[name] != null) {
       delete model[name];
-      this.props.onChange(model);
+      this.props.onChange?.(model);
     } else if (value != null) {
       model[name] = value;
-      this.props.onChange(model);
+      this.props.onChange?.(model);
     }
     if (errors) {
       delete errors[name];
     }
-  }
+
+    // Usually, fields validate themselves bottom up, in this case we pass values top down so we need to validate that way as well
+    this.inputs[name]?.validate(value);
+  };
 
   allValid(): boolean {
-    return Object.keys(this.inputs).every(name => this.inputs[name].isValid());
+    return Object.keys(this.inputs).every(name => this.inputs[name]?.isValid());
   }
 
-  validateForm(): void {
+  validateForm = () => {
     const valid = this.allValid();
     if (this.props.onValidate) {
       this.props.onValidate(valid);
     }
-  }
+  };
 
-  getComponentName(component: React.ReactElement<any>) {
+  getComponentName(component: InputBaseRef) {
     return Array.isArray(component.props.name) ? component.props.name.join() : component.props.name;
   }
 
@@ -100,39 +106,39 @@ export class Form extends React.Component<Props> {
     return name.split(",");
   }
 
-  unregisterInput(component: React.ReactElement<any>) {
+  unregisterInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
-      if (this.inputs[name] === component) {
+      if (typeof name !== "undefined" && this.inputs[name] === component) {
         delete this.inputs[name];
       }
     }
-  }
+  };
 
-  registerInput(component: React.ReactElement<any>) {
+  registerInput = (component: InputBaseRef) => {
     if (component.props && component.props.name) {
       const name = this.getComponentName(component);
-      this.inputs[name] = component;
-    } else {
-      throw new Error('Can not add input without "name" attribute');
+      if (typeof name !== "undefined") {
+        this.inputs[name] = component;
+      }
     }
-  }
+  };
 
-  submit(event: any) {
+  submit = (event: any) => {
     event.preventDefault();
     if (this.allValid() && this.props.onSubmit) {
       this.props.onSubmit(this.props.model, event);
     } else if (this.props.onSubmitInvalid) {
       this.props.onSubmitInvalid(this.props.model, event);
     }
-  }
+  };
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.model !== this.props.model || prevProps.errors !== this.props.errors) {
       Object.keys(this.inputs).forEach(name => {
         const names = this.splitComponentName(name);
         if (names.length === 1) {
-          this.inputs[name].validate(this.props.model[name], this.props.errors && this.props.errors[name]);
+          this.inputs[name]?.validate(this.props.model[name], this.props.errors && this.props.errors[name]);
         } else {
           const values = Object.keys(this.props.model).reduce((filtered, key) => {
             if (names.includes(key)) {
@@ -146,7 +152,7 @@ export class Form extends React.Component<Props> {
             }
             return filtered;
           }, []);
-          this.inputs[name].validate(values, errors);
+          this.inputs[name]?.validate(values, errors);
         }
       });
     }
@@ -158,13 +164,24 @@ export class Form extends React.Component<Props> {
         value={{
           model: this.props.model,
           errors: this.props.errors,
-          setModelValue: this.setModelValue.bind(this),
-          registerInput: this.registerInput.bind(this),
-          unregisterInput: this.unregisterInput.bind(this),
-          validateForm: this.validateForm.bind(this),
+          /**
+           * NB! Please don't use `.bind()` here, children may rely on these functions in `useEffect()` calls.
+           * Binding here will create a new reference on every render which will in turn retrigger dependency tracking.
+           * Instead of using `.bind()` here, implicitly bind any methods you need here in the class declaration:
+           *
+           *  class Foo {
+           *    method = () => {...}
+           *    // ----^
+           *  }
+           *
+           */
+          setModelValue: this.setModelValue,
+          registerInput: this.registerInput,
+          unregisterInput: this.unregisterInput,
+          validateForm: this.validateForm,
         }}
       >
-        <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className} title={this.props.title}>
+        <form ref={this.props.formRef} onSubmit={this.submit} className={this.props.className} title={this.props.title}>
           <div className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}>
             {this.props.children}
           </div>

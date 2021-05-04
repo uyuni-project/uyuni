@@ -1,4 +1,3 @@
-/* global moment */
 import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
@@ -7,7 +6,7 @@ import { Utils } from "utils/functions";
 declare var Loggerhead: any;
 
 export function mapFilterFormToRequest(
-  filterForm: FilterFormType,
+  filterForm: Partial<FilterFormType>,
   projectLabel?: string,
   localTime?: string
 ): FilterServerType {
@@ -16,6 +15,13 @@ export function mapFilterFormToRequest(
   requestForm.name = filterForm.filter_name;
   requestForm.rule = filterForm.rule;
   requestForm.matcher = filterForm.matcher;
+
+  // If we're using a prebuilt filter
+  if (Object.prototype.hasOwnProperty.call(filterForm, "template")) {
+    requestForm.prefix = filterForm.labelPrefix;
+    requestForm.kernelEvrId = filterForm.kernelId;
+    requestForm.template = filterForm['template'];
+  }
 
   const selectedFilterOption = findClmFilterByKey(filterForm.type);
   if (selectedFilterOption) {

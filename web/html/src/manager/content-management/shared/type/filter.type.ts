@@ -35,4 +35,6 @@ export type FilterFormType = {
   issueDate?: Date;
   moduleName?: string;
   moduleStream?: string;
+  labelPrefix?: string;
+  kernelId?: number;
 };
