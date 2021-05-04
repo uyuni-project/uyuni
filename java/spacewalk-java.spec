@@ -55,7 +55,7 @@
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
 %else
-%define supported_locales en_US,zh_CN
+%define supported_locales en_US,ko,ja,zh_CN
 %endif
 
 Name:           spacewalk-java
