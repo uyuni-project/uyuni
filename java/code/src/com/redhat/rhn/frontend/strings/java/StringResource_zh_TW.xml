@@ -825,6 +825,13 @@
         </context-group>
         <target>總覽</target>
       </trans-unit>
+      <trans-unit id="Migrate" xml:space="preserve">
+        <source>Migrate</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target>遷移</target>
+      </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
         <context-group name="ctx">
@@ -8553,18 +8560,18 @@ Follow this url to see the full list of inactive systems:
         <target state="needs-adaptation">請注意：若要啟用並使用此系統的 @@PRODUCT_NAME@@ 中的虛擬化功能，請由相聯的 RHN Tools 子頻道安裝 rhn-virtualization-host 套件。請參閱 Red Hat 文件，以取得有關於 RHEL 在主機系統上，啟用虛擬化功能的各種考量及需求上的相關資訊。</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
-        <source>This user lacks the required permissions to transfer this system.</source>
+        <source>This user lacks the required permissions to migrate this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">此使用者沒有遷移這部系統的權限。</target>
+        <target>此使用者沒有遷移這部系統的權限。</target>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
-        <source>Systems can only be transferred between trusted organizations.</source>
+        <source>Systems can only be migrated between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">系統只能在擁有信任關係的組織之間進行遷移。</target>
+        <target>系統只能在擁有信任關係的組織之間進行遷移。</target>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
@@ -9675,12 +9682,12 @@ Follow this url to see the full list of inactive systems:
         <target>伺服器刪除</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
-        <source>Systems Transferred</source>
-        <target state="needs-adaptation">系統已遷移</target>
+        <source>Systems Migrated</source>
+        <target>系統已遷移</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
-        <source>Transfer Systems</source>
-        <target state="needs-adaptation">遷移系統</target>
+        <source>Migrate Systems</source>
+        <target>遷移系統</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
@@ -9993,8 +10000,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
-        <source>Product Migration</source>
-      <target state="needs-adaptation" />
+        <source>Service Pack Migration</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10714,13 +10720,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Transfer" xml:space="preserve">
-        <source>Transfer</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       <target state="new" />
   </trans-unit>
