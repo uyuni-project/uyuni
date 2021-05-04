@@ -18,10 +18,9 @@ export function mapFilterFormToRequest(
 
   // If we're using a prebuilt filter
   if (Object.prototype.hasOwnProperty.call(filterForm, "template")) {
-    // TODO: Implement
-    const { labelPrefix, kernelId } = filterForm;
-    console.log({ labelPrefix, kernelId });
-    throw new TypeError("Not implemented");
+    requestForm.prefix = filterForm.labelPrefix;
+    requestForm.kernelEvrId = filterForm.kernelId;
+    requestForm.template = filterForm['template'];
   }
 
   const selectedFilterOption = findClmFilterByKey(filterForm.type);

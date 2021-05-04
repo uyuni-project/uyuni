@@ -8917,6 +8917,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
       </trans-unit>
+      <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
+        <source>{0} filter(s) from template created successfully</source>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
       </trans-unit>
