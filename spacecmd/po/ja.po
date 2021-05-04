@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-19 14:08+0200\n"
+"POT-Creation-Date: 2021-05-04 15:15+0200\n"
 "PO-Revision-Date: 2021-05-04 01:28+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -742,7 +742,9 @@ msgstr "このバージョンの API ではこのメソッドに対応してい�
 
 #: ../src/spacecmd/configchannel.py:104
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "configchannel_listgroups: 特定の設定チャンネルをサブスクライブしているグループの一覧表示"
+msgstr ""
+"configchannel_listgroups: 特定の設定チャンネルをサブスクライブしているグルー"
+"プの一覧表示"
 
 #: ../src/spacecmd/configchannel.py:106
 msgid "usage: configchannel_listgroups CHANNEL"
@@ -2126,7 +2128,7 @@ msgstr "これらのシステムを削除します [y/N]:"
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
-#: ../src/spacecmd/system.py:4347
+#: ../src/spacecmd/system.py:4370
 msgid "No systems found"
 msgstr "システムが見つかりませんでした"
 
@@ -2311,7 +2313,9 @@ msgstr "メンバー"
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
-msgstr "group_listconfigchannels: システムグループに割り当てられている設定チャンネルの一覧表示"
+msgstr ""
+"group_listconfigchannels: システムグループに割り当てられている設定チャンネル"
+"の一覧表示"
 
 #: ../src/spacecmd/group.py:489
 msgid "usage: group_listconfigchannels GROUP"
@@ -3842,13 +3846,13 @@ msgid "Trusted Since:          %s"
 msgstr "信頼開始日時:          %s"
 
 #: ../src/spacecmd/org.py:323
-#, python-format
-msgid "Systems Migrated From:  %i"
+#, fuzzy, python-format
+msgid "Systems Transferred From:  %i"
 msgstr "システムの移行元:  %i"
 
 #: ../src/spacecmd/org.py:324
-#, python-format
-msgid "Systems Migrated To:    %i"
+#, fuzzy, python-format
+msgid "Systems Transferred To:    %i"
 msgstr "システムの移行先:    %i"
 
 #: ../src/spacecmd/org.py:326
@@ -6578,7 +6582,7 @@ msgstr "スクリプトの内容"
 
 #: ../src/spacecmd/system.py:534 ../src/spacecmd/system.py:836
 #: ../src/spacecmd/system.py:963 ../src/spacecmd/system.py:1097
-#: ../src/spacecmd/system.py:4376
+#: ../src/spacecmd/system.py:4399
 #, python-format
 msgid "Failed to schedule %s"
 msgstr "%s をスケジュールする処理が失敗しました"
@@ -7876,14 +7880,26 @@ msgstr "    ID: "
 msgid "    Friendly names: "
 msgstr "    フレンドリ名: "
 
-#: ../src/spacecmd/system.py:4315
+#: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
+#, fuzzy
+msgid ""
+"This method is deprecated and will be removed in a future API version. "
+"Please use system_scheduleproductmigration instead."
+msgstr "このメソッドは廃止予定であり、 API バージョン %s で削除される予定です"
+
+#: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
+#, fuzzy
+msgid "This method is deprecated and will be removed in a future API version"
+msgstr "このメソッドは廃止予定であり、 API バージョン %s で削除される予定です"
+
+#: ../src/spacecmd/system.py:4317
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 "system_schedulespmigration: システムに対してサービスパック移行をスケジュール"
 "する。"
 
-#: ../src/spacecmd/system.py:4316
+#: ../src/spacecmd/system.py:4318
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7908,19 +7924,54 @@ msgstr ""
 "        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
 "は使用しないこと)"
 
-#: ../src/spacecmd/system.py:4366
+#: ../src/spacecmd/system.py:4338
+#, fuzzy
+msgid ""
+"system_scheduleproductmigration: Schedule a Product migration for systems."
+msgstr ""
+"system_schedulespmigration: システムに対してサービスパック移行をスケジュール"
+"する。"
+
+#: ../src/spacecmd/system.py:4339
+#, fuzzy
+msgid ""
+"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
+"<MIGRATION_TARGET> [options] \n"
+"    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    Options: \n"
+"        -s START_TIME \n"
+"        -d pass this flag, if you want to do a dry run \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
+"spaces))"
+msgstr ""
+"使用方法: system_schedulespmigration <システム> <ベースチャンネルのラベル> <"
+"移行先> [オプション] \n"
+"    <移行先> として指定可能なターゲットの一覧を表示するには "
+"system_listmigrationtargets を使用する。\n"
+"    <移行先> は下記のような書式で渡されなければならないことに注意: "
+"[3143,3146,3147,3145,3144,3148,3062]\n"
+"    オプション: \n"
+"        -s (開始時刻) \n"
+"        -d 予行演習モード (実際には処理を行なわない) \n"
+"        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
+"は使用しないこと)"
+
+#: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
 msgstr "システム "
 
-#: ../src/spacecmd/system.py:4366
+#: ../src/spacecmd/system.py:4389
 msgid ". Skipping it."
 msgstr "が見つかりません。読み飛ばしています。"
 
-#: ../src/spacecmd/system.py:4369
-msgid "Scheduling Service Pack migration for system "
+#: ../src/spacecmd/system.py:4392
+#, fuzzy
+msgid "Scheduling Product migration for system "
 msgstr "システムに対してサービスパック移行をスケジュールしています "
 
-#: ../src/spacecmd/system.py:4374
+#: ../src/spacecmd/system.py:4397
 msgid "Scheduled action ID: "
 msgstr "スケジュールアクション ID: "
 
