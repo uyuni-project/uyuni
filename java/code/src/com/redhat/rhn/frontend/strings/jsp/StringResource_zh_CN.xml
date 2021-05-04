@@ -5625,8 +5625,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve">
-          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Migrate&lt;/a&gt; systems to another organization</source>
-        <target state="translated">将系统&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;迁移&lt;/a&gt;到其他组织</target>
+          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
+        <target state="needs-adaptation">将系统&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;迁移&lt;/a&gt;到其他组织</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5676,15 +5676,15 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
-          <source>Migrate Systems</source>
-        <target state="translated">迁移系统</target>
+          <source>Transfer Systems</source>
+        <target state="needs-adaptation">迁移系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
-          <source>Migrate the selected systems to the selected organization.  If the operation is successful, the systems will no longer be visible in this organization.</source>
-        <target state="translated">将所选系统迁移到所选组织。如果操作成功，这些系统将不再出现于此组织中。</target>
+          <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
+        <target state="needs-adaptation">将所选系统迁移到所选组织。如果操作成功，这些系统将不再出现于此组织中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5833,8 +5833,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve">
-          <source>Migrate</source>
-        <target state="translated">迁移</target>
+          <source>Transfer</source>
+        <target state="needs-adaptation">迁移</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -5903,22 +5903,22 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve">
-          <source>Migrate Systems</source>
-        <target state="translated">迁移系统</target>
+          <source>Transfer Systems</source>
+        <target state="needs-adaptation">迁移系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
-          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action.  The migrated systems will no longer be visible in the original organization.</source>
-        <target state="translated">仅执行一项操作将多个系统从当前组织迁移到另一个（可信）组织。迁移的系统将不再出现在原始组织中。</target>
+          <source>Transfer multiple systems from the current organization to another (trusted) organization in a single action.  The transferred systems will no longer be visible in the original organization.</source>
+        <target state="needs-adaptation">仅执行一项操作将多个系统从当前组织迁移到另一个（可信）组织。迁移的系统将不再出现在原始组织中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve">
-          <source>Migrate Systems to another organization</source>
-        <target state="translated">将系统迁移到另一个组织中</target>
+          <source>Transfer Systems to another organization</source>
+        <target state="needs-adaptation">将系统迁移到另一个组织中</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -8619,18 +8619,18 @@ organization management tools if you choose to remove this role from your login.
         <target state="translated">下面是 &lt;strong&gt;{0}&lt;/strong&gt; 组织已与您的组织共享的频道列表。此列表还显示了每个频道中有多少软件包，以及您组织中有多少系统正在使用这些共享频道。 </target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve">
-        <source>Systems Migrated to Your Organization</source>
+        <source>Systems Transferred to Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="translated">迁移到您组织中的系统</target>
+        <target state="needs-adaptation">迁移到您组织中的系统</target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve">
-        <source>Systems Migrated from Your Organization</source>
+        <source>Systems Transferred from Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="translated">从您的组织中迁移的系统</target>
+        <target state="needs-adaptation">从您的组织中迁移的系统</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmprofiledeletion" xml:space="preserve">
         <source>Confirm Profile Deletion</source>
@@ -24345,11 +24345,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target state="translated">激活 rhn-applet 以使用 @@PRODUCT_NAME@@。</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
-        <source>Migrate System Between Organizations</source>
+        <source>Transfer System Between Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">在组织间迁移系统</target>
+        <target state="needs-adaptation">在组织间迁移系统</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.org" xml:space="preserve">
         <source>Organization Name</source>
@@ -24359,18 +24359,18 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target state="translated">组织名称</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.migrate" xml:space="preserve">
-        <source>Migrate System</source>
+        <source>Transfer System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">迁移系统</target>
+        <target state="needs-adaptation">迁移系统</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.success" xml:space="preserve">
-        <source>System successfully migrated</source>
+        <source>System successfully transferred</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">已成功迁移系统</target>
+        <target state="needs-adaptation">已成功迁移系统</target>
       </trans-unit>
       <trans-unit id="sdc.details.customdata.header" xml:space="preserve">
         <source>Custom System Information</source>
@@ -29034,8 +29034,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
-        <source>Service Pack Migration - Target</source>
-        <target>服务包迁移 - 目标</target>
+        <source>Product Migration - Target</source>
+        <target state="needs-adaptation">服务包迁移 - 目标</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -29050,8 +29050,8 @@ given channel.</source>
         <target>目标不可用，未同步以下频道： </target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
-        <source>Service Pack Migration - Channels</source>
-        <target>服务包迁移 - 频道</target>
+        <source>Product Migration - Channels</source>
+        <target state="needs-adaptation">服务包迁移 - 频道</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -29082,16 +29082,16 @@ given channel.</source>
         <target>安排迁移</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
-        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-        <target>只有 &lt;strong&gt;SUSE&lt;/strong&gt; 系统支持服务包迁移。</target>
+        <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+        <target state="needs-adaptation">只有 &lt;strong&gt;SUSE&lt;/strong&gt; 系统支持服务包迁移。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
-        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target>此系统目前不支持服务包迁移，请安装最新版本的 &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;。</target>
+        <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+        <target state="needs-adaptation">此系统目前不支持服务包迁移，请安装最新版本的 &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
-        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-        <target>已为此系统&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;服务包迁移。</target>
+        <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <target state="needs-adaptation">已为此系统&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;服务包迁移。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -29102,20 +29102,20 @@ given channel.</source>
         <target>此项迁移缺少一些软件频道，请使用&lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;安装向导&lt;/strong&gt;&lt;/a&gt;添加以下目标产品，以确保同步所有必需频道。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
-        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
-        <target>有可用于此系统的未处理软件包管理堆栈更新。在启动服务包迁移之前，请更新软件更新堆栈相关的所有软件包。</target>
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
+        <target state="needs-adaptation">有可用于此系统的未处理软件包管理堆栈更新。在启动服务包迁移之前，请更新软件更新堆栈相关的所有软件包。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
-        <target>在此系统上安装的 &lt;strong&gt;Salt&lt;/strong&gt; 软件包版本已过时。在启动服务包迁移之前，请将该软件包更新到最新版本。</target>
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+        <target state="needs-adaptation">在此系统上安装的 &lt;strong&gt;Salt&lt;/strong&gt; 软件包版本已过时。在启动服务包迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
         <target>没有任何迁移方法适用于此系统。找不到某些已安装的扩展的后继版本：</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
-        <source>Service Pack Migration - Confirm</source>
-        <target>服务包迁移 - 确认</target>
+        <source>Product Migration - Confirm</source>
+        <target state="needs-adaptation">服务包迁移 - 确认</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -29126,8 +29126,8 @@ given channel.</source>
         <target>迁移后进行频道订阅：</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
-        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
-        <target>要检测任何可能的问题，建议始终在安排实际的服务包迁移之前执行&lt;strong&gt;试运行&lt;/strong&gt;。</target>
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
+        <target state="needs-adaptation">要检测任何可能的问题，建议始终在安排实际的服务包迁移之前执行&lt;strong&gt;试运行&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -29399,10 +29399,6 @@ given channel.</source>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
         <target>&lt;strong&gt;注意：&lt;/strong&gt;部署到通过 Salt 管理的系统时，将忽略宏分隔符。</target>
-      </trans-unit>
-      <trans-unit id="SP Migration" xml:space="preserve">
-        <source>SP Migration</source>
-        <target>SP 迁移</target>
       </trans-unit>
       <trans-unit id="Mirror Credentials" xml:space="preserve">
         <source>Organization Credentials</source>
@@ -29687,6 +29683,39 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
+        <source>Forward registrations to SUSE Customer Center</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
+        <source>Cleanup outdated action chain data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
+        <source>Cleanup outdated token data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
+        <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible_control_node" xml:space="preserve">
+        <source>Ansible Control Node</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Product Migration" xml:space="preserve">
+        <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
       </body>
