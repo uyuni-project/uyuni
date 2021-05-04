@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-30 15:57+0000\n"
+"POT-Creation-Date: 2021-04-30 14:05+0000\n"
 "PO-Revision-Date: 2021-03-18 06:56+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -231,6 +231,8 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:204
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
 msgstr "取り消し"
 
@@ -395,6 +397,7 @@ msgstr "削除"
 #: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
 msgstr "パスワード"
 
@@ -565,8 +568,8 @@ msgstr "設定チャンネル: {0}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:183
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:106
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:176
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:101
 msgid "Edit"
 msgstr "編集"
 
@@ -746,7 +749,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:92
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
 msgstr "システム"
 
@@ -1238,7 +1241,7 @@ msgstr "監査イメージ"
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:53
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
@@ -1669,7 +1672,7 @@ msgstr "いいえ"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:144
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr "(なし)"
 
@@ -3248,7 +3251,7 @@ msgid "Revision"
 msgstr "リビジョン"
 
 #: ../html/src/manager/images/image-view.tsx:637
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:108
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:105
 msgid "Updates"
 msgstr "更新"
 
@@ -3805,8 +3808,8 @@ msgstr "パッケージの状態"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:119
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:115
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:58
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
 msgstr "都道府県"
@@ -4849,23 +4852,11 @@ msgstr "カーネルオプション"
 msgid "Graphics"
 msgstr "グラフィック"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
-msgid "Disconnected"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
-msgid "Failed to connect"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:253
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:175
 msgid "Toggle full size"
 msgstr "フルサイズの切り替え"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:275
-msgid "Guest is not running"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:29
 msgid "Something went wrong, connection is closed"
 msgstr "何らかの問題が発生しています。接続が閉じられました"
 
@@ -4908,31 +4899,31 @@ msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "これはこのホストで実行するよう設定されている仮想化ゲストの一覧です。"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:85
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:84
 msgid "Guest"
 msgstr "ゲスト"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:95
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:93
 msgid "Unregistered System"
 msgstr "未登録のシステム"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:127
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:122
 msgid "Current Memory"
 msgstr "現在のメモリ"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:128
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:141
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:166
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:159
 msgid "paused"
 msgstr "一時停止済み"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:175
+#: ../html/src/manager/virtualization/guests/list/guests-list.js:168
 msgid "Graphical Console"
 msgstr "グラフィカルコンソール"
 
@@ -5014,7 +5005,7 @@ msgid "Create Virtual Network"
 msgstr "仮想ネットワークの作成"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:97
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:92
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:256
 msgid "Start"
 msgstr "開始"
@@ -5036,17 +5027,17 @@ msgstr ""
 "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していま"
 "せん"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:67
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:64
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
 msgid "Autostart"
 msgstr "自動起動"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:76
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:72
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:344
 msgid "Persistent"
 msgstr "恒久"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:86
+#: ../html/src/manager/virtualization/nets/list/nets-list.js:81
 #: ../html/src/manager/virtualization/nets/network-properties.js:274
 msgid "Bridge"
 msgstr "ブリッジ"
