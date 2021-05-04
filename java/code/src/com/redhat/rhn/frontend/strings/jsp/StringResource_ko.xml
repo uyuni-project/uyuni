@@ -5626,8 +5626,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.overview.misc.migrate" xml:space="preserve">
-          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
-        <target state="needs-adaptation">시스템을 다른 조직으로 &lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;마이그레이션&lt;/a&gt;</target>
+          <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Migrate&lt;/a&gt; systems to another organization</source>
+        <target>시스템을 다른 조직으로 &lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;마이그레이션&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5677,15 +5677,15 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
-          <source>Transfer Systems</source>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+          <source>Migrate Systems</source>
+        <target>시스템 마이그레이션</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
-          <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
-        <target state="needs-adaptation">선택한 시스템을 선택한 조직으로 마이그레이션합니다. 작업이 성공적으로 수행되면 시스템은 더이상 조직에 표시되지 않습니다.</target>
+          <source>Migrate the selected systems to the selected organization.  If the operation is successful, the systems will no longer be visible in this organization.</source>
+        <target>선택한 시스템을 선택한 조직으로 마이그레이션합니다. 작업이 성공적으로 수행되면 시스템은 더이상 조직에 표시되지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5834,8 +5834,8 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve">
-          <source>Transfer</source>
-        <target state="needs-adaptation">마이그레이션</target>
+          <source>Migrate</source>
+        <target>마이그레이션</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -5904,22 +5904,22 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve">
-          <source>Transfer Systems</source>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+          <source>Migrate Systems</source>
+        <target>시스템 마이그레이션</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
-          <source>Transfer multiple systems from the current organization to another (trusted) organization in a single action.  The transferred systems will no longer be visible in the original organization.</source>
-        <target state="needs-adaptation">현재 조직에서 다른 (신뢰할 수 있는) 조직으로 단일 동작으로 여러 시스템을 마이그레이션합니다. 마이그레이션된 시스템은 기존 조직에 더 이상 나타나지 않습니다.</target>
+          <source>Migrate multiple systems from the current organization to another (trusted) organization in a single action.  The migrated systems will no longer be visible in the original organization.</source>
+        <target>현재 조직에서 다른 (신뢰할 수 있는) 조직으로 단일 동작으로 여러 시스템을 마이그레이션합니다. 마이그레이션된 시스템은 기존 조직에 더 이상 나타나지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve">
-          <source>Transfer Systems to another organization</source>
-        <target state="needs-adaptation">시스템을 다른 조직으로 마이그레이션</target>
+          <source>Migrate Systems to another organization</source>
+        <target>시스템을 다른 조직으로 마이그레이션</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -8619,18 +8619,18 @@ organization management tools if you choose to remove this role from your login.
         <target>&lt;strong&gt;{0}&lt;/strong&gt; 조직이 사용자의 조직과 공유하는 채널 목록은 다음과 같습니다. 이는 각 채널에 있는 패키지 수 및 공유 채널에서 사용하는 사용자 조직의 시스템 수를 나타냅니다. </target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve">
-        <source>Systems Transferred to Your Organization</source>
+        <source>Systems Migrated to Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">조직으로 이전된 시스템</target>
+        <target>조직으로 이전된 시스템</target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve">
-        <source>Systems Transferred from Your Organization</source>
+        <source>Systems Migrated from Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">조직에서 이전된 시스템</target>
+        <target>조직에서 이전된 시스템</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmprofiledeletion" xml:space="preserve">
         <source>Confirm Profile Deletion</source>
@@ -24344,11 +24344,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>@@PRODUCT_NAME@@ 사용을 위해 rhn-applet을 활성화."</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
-        <source>Transfer System Between Organizations</source>
+        <source>Migrate System Between Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">조직 간의 시스템 마이그레이션</target>
+        <target>조직 간의 시스템 마이그레이션</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.org" xml:space="preserve">
         <source>Organization Name</source>
@@ -24358,18 +24358,18 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>조직 이름</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.migrate" xml:space="preserve">
-        <source>Transfer System</source>
+        <source>Migrate System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+        <target>시스템 마이그레이션</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.success" xml:space="preserve">
-        <source>System successfully transferred</source>
+        <source>System successfully migrated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">시스템이 마이그레이션되었습니다</target>
+        <target>시스템이 마이그레이션되었습니다</target>
       </trans-unit>
       <trans-unit id="sdc.details.customdata.header" xml:space="preserve">
         <source>Custom System Information</source>
@@ -29028,8 +29028,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
-        <source>Product Migration - Target</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 대상</target>
+        <source>Service Pack Migration - Target</source>
+        <target>서비스 팩 마이그레이션 - 대상</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -29044,8 +29044,8 @@ given channel.</source>
         <target>대상을 사용할 수 없음, 동기화되지 않은 채널: </target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
-        <source>Product Migration - Channels</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 채널</target>
+        <source>Service Pack Migration - Channels</source>
+        <target>서비스 팩 마이그레이션 - 채널</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -29076,16 +29076,16 @@ given channel.</source>
         <target>마이그레이션 예약</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
-        <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션은 &lt;strong&gt;SUSE&lt;/strong&gt; 시스템에서만 지원됩니다.</target>
+        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+        <target>서비스 팩 마이그레이션은 &lt;strong&gt;SUSE&lt;/strong&gt; 시스템에서만 지원됩니다.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
-        <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션은 현재 이 시스템에서 지원되지 않습니다. &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;의 최신 버전을 설치하십시오.</target>
+        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+        <target>서비스 팩 마이그레이션은 현재 이 시스템에서 지원되지 않습니다. &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;의 최신 버전을 설치하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
-        <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-        <target state="needs-adaptation">이 시스템에 대한 서비스 팩 마이그레이션이 이미 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;예약&lt;/a&gt;되었습니다.</target>
+        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <target>이 시스템에 대한 서비스 팩 마이그레이션이 이미 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;예약&lt;/a&gt;되었습니다.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -29096,20 +29096,20 @@ given channel.</source>
         <target>이 마이그레이션에서 일부 소프트웨어 채널이 누락되었습니다. &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;설치 마법사&lt;/strong&gt;&lt;/a&gt;를 사용해 아래 대상 제품을 추가하여 모든 필수 채널이 동기화되었는지 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
-        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
-        <target state="needs-adaptation">이 시스템에 해결되지 않은 패키지 관리 스택 업데이트가 있습니다. 모든 소프트웨어 업데이트 스택 관련 패키지를 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
+        <target>이 시스템에 해결되지 않은 패키지 관리 스택 업데이트가 있습니다. 모든 소프트웨어 업데이트 스택 관련 패키지를 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
-        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="needs-adaptation">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+        <target>이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
         <target>이 시스템에서 사용할 수 있는 마이그레이션이 없습니다. 설치된 일부 확장에 대한 후속 작업을 찾을 수 없음:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
-        <source>Product Migration - Confirm</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 확인</target>
+        <source>Service Pack Migration - Confirm</source>
+        <target>서비스 팩 마이그레이션 - 확인</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -29120,8 +29120,8 @@ given channel.</source>
         <target>마이그레이션 후 채널 구독:</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
-        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
-        <target state="needs-adaptation">가능한 모든 문제를 감지하려면 항상 &lt;strong&gt;시험 실행&lt;/strong&gt;을 수행한 후 실제 서비스 팩 마이그레이션을 예약하십시오.</target>
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+        <target>가능한 모든 문제를 감지하려면 항상 &lt;strong&gt;시험 실행&lt;/strong&gt;을 수행한 후 실제 서비스 팩 마이그레이션을 예약하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -29392,6 +29392,10 @@ given channel.</source>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
         <target>&lt;strong&gt;참고:&lt;/strong&gt; Salt를 통해 시스템을 배포하는 경우 매크로 구분자가 무시됩니다.</target>
+      </trans-unit>
+      <trans-unit id="SP Migration" xml:space="preserve">
+        <source>SP Migration</source>
+        <target>SP 마이그레이션</target>
       </trans-unit>
       <trans-unit id="Mirror Credentials" xml:space="preserve">
         <source>Organization Credentials</source>
@@ -29677,14 +29681,6 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
-        <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Product Migration" xml:space="preserve">
-        <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
       </body>
