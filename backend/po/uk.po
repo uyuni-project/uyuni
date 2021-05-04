@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-21 14:10+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,82 +25,25 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr ""
-"У вас немає уповноважень на керування пакунками у організації із порожньою "
-"назвою"
-
-#: ../server/importlib/userAuth.py:103
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "У вас немає прав на керування пакунками у організації %s"
+msgid "incomplete proxy authentication token: %s"
+msgstr "неповний ключ розпізнавання на проксі: %s"
 
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Ви не маєте права виконувати завдання з адміністрування"
-
-#: ../server/importlib/userAuth.py:144
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "У вас немає права керувати каналом %s або цього каналу не існує"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
 
-#: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"                   На цьому сервері вимкнено обліковий запис %s.\n"
-"                   Щоб дізнатися більше, будь ласка, зверніться до "
-"адміністратора вашої організації."
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "у розпізнаванні на проксі-сервері відмовлено"
 
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Отримано неприпустимий запит (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Під час роботи «%s» отримано\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Некоректна адреса %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Пакунок не знайдено"
-
-#: ../server/configFilesHandler.py:129
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -112,10 +55,24 @@ msgstr ""
 "                   Щоб дізнатися більше, будь ласка, зверніться до "
 "адміністратора вашої організації."
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/applet/applet.py:78
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Вашої системи не знайдено у базі даних RHN"
+
+#: ../server/handlers/sat/auth.py:45
+#, fuzzy
+msgid "ISS is disabled on this server."
+msgstr "ISS вимкнено для цього satellite."
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Некоректне значення %s (%s)"
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Сервер «%s» не увімкнено для ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, fuzzy, python-format
@@ -170,19 +127,10 @@ msgstr "Мало бути вказано словник як аргумент п
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Некоректне значення «%s» для %s (%s)"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
-
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Неприпустиме значення дії типу %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Дія %s не належить до сервера %s"
+msgid "Invalid value %s (%s)"
+msgstr "Некоректне значення %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -194,20 +142,110 @@ msgstr "Мало бути вказано назву пакунка, а не: %s"
 msgid "Expected a package, not: %s"
 msgstr "Мало бути вказано пакунок, а не: %s"
 
-#: ../server/handlers/sat/auth.py:45
-#, fuzzy
-msgid "ISS is disabled on this server."
-msgstr "ISS вимкнено для цього satellite."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Сервер «%s» не увімкнено для ISS."
+msgid "Invalid action value type %s (%s)"
+msgstr "Неприпустиме значення дії типу %s (%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Вашої системи не знайдено у базі даних RHN"
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Дія %s не належить до сервера %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr ""
+"У вас немає уповноважень на керування пакунками у організації із порожньою "
+"назвою"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "У вас немає прав на керування пакунками у організації %s"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Ви не маєте права виконувати завдання з адміністрування"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "У вас немає права керувати каналом %s або цього каналу не існує"
+
+#: ../server/importlib/userAuth.py:204
+#, fuzzy, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"                   На цьому сервері вимкнено обліковий запис %s.\n"
+"                   Щоб дізнатися більше, будь ласка, зверніться до "
+"адміністратора вашої організації."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
+"адміністратора (root)"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Службу не увімкнено для профілю системи: «%s»"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Підтримки архітектури «%s» не передбачено"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Із ключем «%s» пов’язано декілька базових каналів"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Конфлікт основних каналів"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Не вдалося додати сервер до групи %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Перевищено максимальну кількість використано %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Підтримки стосування повторних реєстраційних ключів із різними базовими "
+"прив’язками не передбачено"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Не вдалося знайти ключ «%s»"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Ключі з невідповідних установ"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Невідповідність сеансів kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -270,82 +308,6 @@ msgstr "ім’я користувача має складатися прина�
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Не можна реєструвати ім’я користувача, що завершується на %s"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
-"адміністратора (root)"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Службу не увімкнено для профілю системи: «%s»"
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "неповний ключ розпізнавання на проксі: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "у розпізнаванні на проксі-сервері відмовлено"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Із ключем «%s» пов’язано декілька базових каналів"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Конфлікт основних каналів"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Не вдалося додати сервер до групи %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Перевищено максимальну кількість використано %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Підтримки стосування повторних реєстраційних ключів із різними базовими "
-"прив’язками не передбачено"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Не вдалося знайти ключ «%s»"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Ключі з невідповідних установ"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Невідповідність сеансів kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Підтримки архітектури «%s» не передбачено"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -418,6 +380,44 @@ msgstr ""
 "сайті:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Пакунок не знайдено"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Отримано неприпустимий запит (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Під час роботи «%s» отримано\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Некоректна адреса %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1104,201 +1104,10 @@ msgstr "ПОМИЛКА: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "ТРАСУВАННЯ: %s"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:67
-#, fuzzy, python-format
-msgid "    Extinct package:  %s"
-msgstr "Мало бути вказано пакунок, а не: %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr ""
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr ""
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr ""
-
-#: ../satellite_tools/messages.py:82
-#, fuzzy
-msgid "Linking packages to channels"
-msgstr "Конфлікт основних каналів"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr ""
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
@@ -1358,9 +1167,17 @@ msgstr ""
 msgid "Skipping..."
 msgstr ""
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:520
@@ -2037,6 +1854,189 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2523
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr ""
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:67
+#, fuzzy, python-format
+msgid "    Extinct package:  %s"
+msgstr "Мало бути вказано пакунок, а не: %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr ""
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr ""
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr ""
+
+#: ../satellite_tools/messages.py:82
+#, fuzzy
+msgid "Linking packages to channels"
+msgstr "Конфлікт основних каналів"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr ""
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
 msgstr ""
 
 #~ msgid "Crash information is invalid or incomplete"

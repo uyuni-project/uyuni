@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-21 14:10+0000\n"
+"POT-Creation-Date: 2021-04-19 14:08+0200\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -20,80 +20,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Nemáte oprávnenie spravovať balíky v null org"
-
-#: ../server/importlib/userAuth.py:103
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Nemáte oprávnenie spravovať balíky v %s org"
+msgid "incomplete proxy authentication token: %s"
+msgstr "neúplný token overenia proxy: %s"
 
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Nemáte oprávnenie vykonávať administratívne úlohy"
-
-#: ../server/importlib/userAuth.py:144
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "Nemáte oprávnenie spravovať kanál %s, alebo tento kanál neexistuje"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 
-#: ../server/importlib/userAuth.py:204
-#, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"               Na tomto serveri bol účet %s deaktivovaný.\n"
-"               Pre ďalšiu pomoc kontaktujte administrátora svojej "
-"organizácie."
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "zamietnuté overenie proxy"
 
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Prijatá neplatná požiadavka (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Počas behu '%s': zachytené\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Neplatné URI %s"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Požaduje sa neplatný balík RPM %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Balík nebol nájdený"
-
-#: ../server/configFilesHandler.py:129
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:217
 #: ../server/handlers/xmlrpc/registration.py:1170
 #: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -105,10 +50,23 @@ msgstr ""
 "                   Pre ďalšiu pomoc kontaktujte administrátora svojej "
 "organizácie."
 
-#: ../server/handlers/xmlrpc/up2date.py:233
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "Na tomto serveri je ISS zakázané."
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Neplatná hodnota %s (%s)"
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" nie je povolený pre ISS."
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
@@ -163,19 +121,10 @@ msgstr "Očakávaný slovník ako argument produktu"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pre %s (%s)"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Neplatný pár system_id/action_id."
-
-#: ../server/handlers/xmlrpc/queue.py:434
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Neplatný typ hodnoty akcie %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Akcia %s nepatrí k serveru %s"
+msgid "Invalid value %s (%s)"
+msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -187,19 +136,106 @@ msgstr "Očakávaný názov balíka, nie: %s"
 msgid "Expected a package, not: %s"
 msgstr "Očakávaný balík, nie: %s"
 
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "Na tomto serveri je ISS zakázané."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" nie je povolený pre ISS."
+msgid "Invalid action value type %s (%s)"
+msgstr "Neplatný typ hodnoty akcie %s (%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Váš systém sa nenašiel v databáze {PRODUCT_NAME}"
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Akcia %s nepatrí k serveru %s"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Nemáte oprávnenie spravovať balíky v null org"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Nemáte oprávnenie spravovať balíky v %s org"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Nemáte oprávnenie vykonávať administratívne úlohy"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "Nemáte oprávnenie spravovať kanál %s, alebo tento kanál neexistuje"
+
+#: ../server/importlib/userAuth.py:204
+#, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"               Na tomto serveri bol účet %s deaktivovaný.\n"
+"               Pre ďalšiu pomoc kontaktujte administrátora svojej "
+"organizácie."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Služba nie je povolená pre systémový profil: \"%s\""
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektúra `%s' nie je podporovaná"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token `%s' má priradený viac ako jeden základný kanál"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Konfliktné základné kanály"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Zlyhalo pridanie servera do skupiny %s"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Dosiahol sa maximálny počet použití %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami "
+"nie je podporované"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nepodarilo sa nájsť token '%s'"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Žetóny z nezhodujúcich sa organizácií"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Nesúlad sedenia kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -260,80 +296,6 @@ msgstr "používateľské meno by malo byť najmenej %d znakov dlhé"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nie je možné zaregistrovať používateľské mená končiace s %s"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Služba nie je povolená pre systémový profil: \"%s\""
-
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "neúplný token overenia proxy: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "zamietnuté overenie proxy"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token `%s' má priradený viac ako jeden základný kanál"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Konfliktné základné kanály"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Zlyhalo pridanie servera do skupiny %s"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Dosiahol sa maximálny počet použití %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami "
-"nie je podporované"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nepodarilo sa nájsť token '%s'"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Žetóny z nezhodujúcich sa organizácií"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Nesúlad sedenia kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Skladanie tokenov opätovnej registrácie nie je podporované"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektúra `%s' nie je podporovaná"
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -405,6 +367,44 @@ msgstr ""
 "stránke:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Požaduje sa neplatný balík RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Balík nebol nájdený"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Prijatá neplatná požiadavka (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Počas behu '%s': zachytené\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Neplatné URI %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1065,237 +1065,11 @@ msgstr "CHYBA: %s %s: %s"
 msgid "TRACEBACK: %s"
 msgstr "TRACEBACK: %s"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (uvedené v príkazovom riadku)\n"
-"sa nepodarilo otvoriť a čítať:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" sa nepodarilo otvoriť\n"
-"a/alebo zapísať do:\n"
-"%s"
-
-#: ../satellite_tools/messages.py:26
-#, python-format
-msgid ""
-"\n"
-"ERROR: executing step %s. Error is:\n"
-"%s\n"
-msgstr ""
-"\n"
-"CHYBA: vykonanie kroku %s. Chyba je:\n"
-"%s\n"
-
-#: ../satellite_tools/messages.py:31
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem accessing the channel data from your temporary\n"
-"       repository. Did you migrate all of the data from the channel ISOs\n"
-"       do this directory? If so, please recheck the channels ISOs, ensure\n"
-"       that you have them all, and then iteratively remount and repopulate\n"
-"       the temporary repository (%s).\n"
-msgstr ""
-"\n"
-"CHYBA: pri prístupe k údajom kanála z dočasného úložiska sa vyskytol\n"
-"       problém. Migrovali ste všetky dáta z kanálových ISO do tohto\n"
-"       adresára? Ak áno, znovu skontrolujte kanálové ISO, uistite sa,\n"
-"       že ich máte všetky a potom iteratívne znovu pripojte a znovu\n"
-"       naplňte dočasné úložisko (%s).\n"
-
-#: ../satellite_tools/messages.py:39
-#, python-format
-msgid ""
-"\n"
-"ERROR: there was a problem synchronizing the information.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"CHYBA: pri synchronizácii informácií sa vyskytol problém.\n"
-"       Chybová správa: %s\n"
-
-#: ../satellite_tools/messages.py:44
-#, python-format
-msgid ""
-"\n"
-"ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
-"       basic network connectivity, and/or name resolution, and try again.\n"
-"       Error message: %s\n"
-msgstr ""
-"\n"
-"CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
-"       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
-"konfiguráciu,\n"
-"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste "
-"znova.\n"
-"       Chybová správa: %s\n"
-
-#: ../satellite_tools/messages.py:51
-#, python-format
-msgid ""
-"\n"
-"ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
-"       in tandem with the desired child-channel. Missing parents for this\n"
-"       transaction:\n"
-"       %s\n"
-msgstr ""
-"\n"
-"CHYBA: kanál potomka nie je možné synchronizovať bez synchronizácie jeho\n"
-"       rodiča. Rodič musí byť buď (a) predtým synchronizovaný alebo (b) "
-"synchronizovaný\n"
-"       spolu s požadovaným kanálom potomka. Chýbajúci rodičia pre túto\n"
-"       transakciu:\n"
-"       %s\n"
-
-#: ../satellite_tools/messages.py:59
-#, python-format
-msgid ""
-"\n"
-"ERROR: you are not entitled to sync a channel in this set of channels.\n"
-"Please contact your SUSE Manager contact\n"
-"%s"
-msgstr ""
-"\n"
-"CHYBA: nemáte právo synchronizovať kanál v tejto skupine kanálov.\n"
-"Obráťte sa na svoj kontakt pre SUSE Manager\n"
-"%s"
-
-#: ../satellite_tools/messages.py:64
-#, python-format
-msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
-
-#: ../satellite_tools/messages.py:66
-#, python-format
-msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr "    %3d/%s Stiahnutie úspešné: %s (%s bajtov)"
-
-#: ../satellite_tools/messages.py:67
-#, python-format
-msgid "    Extinct package:  %s"
-msgstr "    Zaniknutý balík:  %s"
-
-#: ../satellite_tools/messages.py:68
-#, python-format
-msgid "   Total size: %s"
-msgstr "   Celková veľkosť: %s"
-
-#: ../satellite_tools/messages.py:69
-#, python-format
-msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr "      Stiahnutých %s z %s. Odhadovaný zostávajúci čas: %s"
-
-#: ../satellite_tools/messages.py:70
-#, python-format
-msgid "    Fetch unsuccessful: %s"
-msgstr "    Stiahnutie neúspešné: %s"
-
-#: ../satellite_tools/messages.py:71
-#, python-format
-msgid "   RPM fetch summary: %s"
-msgstr "   Zhrnutie stiahnutia RPM: %s"
-
-#: ../satellite_tools/messages.py:72
-#, python-format
-msgid "       success: %d"
-msgstr "       úspech: %d"
-
-#: ../satellite_tools/messages.py:73
-#, python-format
-msgid "       failed:  %d"
-msgstr "       neúspešné:  %d"
-
-#: ../satellite_tools/messages.py:74
-#, python-format
-msgid "       extinct: %d"
-msgstr "       zaniknuté: %d"
-
-#: ../satellite_tools/messages.py:76
-#, python-format
-msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   Získavanie / analyzovanie metadát *relevantných* balíkov: %s (%s)"
-
-#: ../satellite_tools/messages.py:77
-#, python-format
-msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   Získavanie / analyzovanie dát tlačových chýb: %s (%s)"
-
-#: ../satellite_tools/messages.py:78
-#, python-format
-msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   Získavanie / analyzovanie dát kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:79
-#, python-format
-msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   Získavanie / analyzovanie súborov stromov kickstart: %s (%s)"
-
-#: ../satellite_tools/messages.py:80
-#, python-format
-msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr "   Importovanie metadát *relevantných* balíkov: %s (%s)"
-
-#: ../satellite_tools/messages.py:81
-msgid "   * WARNING: this may be a slow process."
-msgstr "   * UPOZORNENIE: toto môže byť pomalý proces."
-
-#: ../satellite_tools/messages.py:82
-msgid "Linking packages to channels"
-msgstr "Prepojenie balíkov ku kanálom"
-
-#: ../satellite_tools/messages.py:83
-#, python-format
-msgid "   Importing *relevant* errata: %s (%s)"
-msgstr "   Importovanie *relevantných* tlačových chýb: %s (%s)"
-
-#: ../satellite_tools/messages.py:84
-msgid "   No new kickstartable tree to import"
-msgstr "   Žiadny nový strom schopný kickstart na import"
-
-#: ../satellite_tools/messages.py:85
-#, python-format
-msgid "Importing kickstartable trees (%d)"
-msgstr "Importovanie stromov schopných kickstart (%d)"
-
-#: ../satellite_tools/messages.py:86
-#, python-format
-msgid "Imported kickstartable trees (%d)"
-msgstr "Importované stromy schopné kickstart (%d)"
-
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formát %s by mal byť aspoň RRRRMMDD.\n"
-
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ odosielanie záznamu ako e-mail +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s sync. správa od %s"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -1361,10 +1135,18 @@ msgstr "SUSE Manager master nepodporuje synchronizáciu údajov organizácií."
 msgid "Skipping..."
 msgstr "Preskakovanie..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr "+++ odosielanie záznamu ako e-mail +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "Správa synchronizácie pre SUSE Manager Inter Server od %s"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2074,6 +1856,224 @@ msgstr "  28 - chyba: --master je platné iba s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
+
+#: ../satellite_tools/messages.py:26
+#, python-format
+msgid ""
+"\n"
+"ERROR: executing step %s. Error is:\n"
+"%s\n"
+msgstr ""
+"\n"
+"CHYBA: vykonanie kroku %s. Chyba je:\n"
+"%s\n"
+
+#: ../satellite_tools/messages.py:31
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem accessing the channel data from your temporary\n"
+"       repository. Did you migrate all of the data from the channel ISOs\n"
+"       do this directory? If so, please recheck the channels ISOs, ensure\n"
+"       that you have them all, and then iteratively remount and repopulate\n"
+"       the temporary repository (%s).\n"
+msgstr ""
+"\n"
+"CHYBA: pri prístupe k údajom kanála z dočasného úložiska sa vyskytol\n"
+"       problém. Migrovali ste všetky dáta z kanálových ISO do tohto\n"
+"       adresára? Ak áno, znovu skontrolujte kanálové ISO, uistite sa,\n"
+"       že ich máte všetky a potom iteratívne znovu pripojte a znovu\n"
+"       naplňte dočasné úložisko (%s).\n"
+
+#: ../satellite_tools/messages.py:39
+#, python-format
+msgid ""
+"\n"
+"ERROR: there was a problem synchronizing the information.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"CHYBA: pri synchronizácii informácií sa vyskytol problém.\n"
+"       Chybová správa: %s\n"
+
+#: ../satellite_tools/messages.py:44
+#, python-format
+msgid ""
+"\n"
+"ERROR: There was a problem communicating with the ISS Master.\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
+"       basic network connectivity, and/or name resolution, and try again.\n"
+"       Error message: %s\n"
+msgstr ""
+"\n"
+"CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
+"       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
+"konfiguráciu,\n"
+"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste "
+"znova.\n"
+"       Chybová správa: %s\n"
+
+#: ../satellite_tools/messages.py:51
+#, python-format
+msgid ""
+"\n"
+"ERROR: a child-channel cannot be synced without its parent being synced as\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
+"       in tandem with the desired child-channel. Missing parents for this\n"
+"       transaction:\n"
+"       %s\n"
+msgstr ""
+"\n"
+"CHYBA: kanál potomka nie je možné synchronizovať bez synchronizácie jeho\n"
+"       rodiča. Rodič musí byť buď (a) predtým synchronizovaný alebo (b) "
+"synchronizovaný\n"
+"       spolu s požadovaným kanálom potomka. Chýbajúci rodičia pre túto\n"
+"       transakciu:\n"
+"       %s\n"
+
+#: ../satellite_tools/messages.py:59
+#, python-format
+msgid ""
+"\n"
+"ERROR: you are not entitled to sync a channel in this set of channels.\n"
+"Please contact your SUSE Manager contact\n"
+"%s"
+msgstr ""
+"\n"
+"CHYBA: nemáte právo synchronizovať kanál v tejto skupine kanálov.\n"
+"Obráťte sa na svoj kontakt pre SUSE Manager\n"
+"%s"
+
+#: ../satellite_tools/messages.py:64
+#, python-format
+msgid "  ERROR: not enough free space (%s KB) on device."
+msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
+
+#: ../satellite_tools/messages.py:66
+#, python-format
+msgid "    %3d/%s Fetch successful: %s (%s bytes)"
+msgstr "    %3d/%s Stiahnutie úspešné: %s (%s bajtov)"
+
+#: ../satellite_tools/messages.py:67
+#, python-format
+msgid "    Extinct package:  %s"
+msgstr "    Zaniknutý balík:  %s"
+
+#: ../satellite_tools/messages.py:68
+#, python-format
+msgid "   Total size: %s"
+msgstr "   Celková veľkosť: %s"
+
+#: ../satellite_tools/messages.py:69
+#, python-format
+msgid "      Downloaded %s of %s. Estimated remaining time: %s"
+msgstr "      Stiahnutých %s z %s. Odhadovaný zostávajúci čas: %s"
+
+#: ../satellite_tools/messages.py:70
+#, python-format
+msgid "    Fetch unsuccessful: %s"
+msgstr "    Stiahnutie neúspešné: %s"
+
+#: ../satellite_tools/messages.py:71
+#, python-format
+msgid "   RPM fetch summary: %s"
+msgstr "   Zhrnutie stiahnutia RPM: %s"
+
+#: ../satellite_tools/messages.py:72
+#, python-format
+msgid "       success: %d"
+msgstr "       úspech: %d"
+
+#: ../satellite_tools/messages.py:73
+#, python-format
+msgid "       failed:  %d"
+msgstr "       neúspešné:  %d"
+
+#: ../satellite_tools/messages.py:74
+#, python-format
+msgid "       extinct: %d"
+msgstr "       zaniknuté: %d"
+
+#: ../satellite_tools/messages.py:76
+#, python-format
+msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
+msgstr "   Získavanie / analyzovanie metadát *relevantných* balíkov: %s (%s)"
+
+#: ../satellite_tools/messages.py:77
+#, python-format
+msgid "   Retrieving / parsing errata data: %s (%s)"
+msgstr "   Získavanie / analyzovanie dát tlačových chýb: %s (%s)"
+
+#: ../satellite_tools/messages.py:78
+#, python-format
+msgid "   Retrieving / parsing kickstart data: %s (%s)"
+msgstr "   Získavanie / analyzovanie dát kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:79
+#, python-format
+msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
+msgstr "   Získavanie / analyzovanie súborov stromov kickstart: %s (%s)"
+
+#: ../satellite_tools/messages.py:80
+#, python-format
+msgid "   Importing *relevant* package metadata: %s (%s)"
+msgstr "   Importovanie metadát *relevantných* balíkov: %s (%s)"
+
+#: ../satellite_tools/messages.py:81
+msgid "   * WARNING: this may be a slow process."
+msgstr "   * UPOZORNENIE: toto môže byť pomalý proces."
+
+#: ../satellite_tools/messages.py:82
+msgid "Linking packages to channels"
+msgstr "Prepojenie balíkov ku kanálom"
+
+#: ../satellite_tools/messages.py:83
+#, python-format
+msgid "   Importing *relevant* errata: %s (%s)"
+msgstr "   Importovanie *relevantných* tlačových chýb: %s (%s)"
+
+#: ../satellite_tools/messages.py:84
+msgid "   No new kickstartable tree to import"
+msgstr "   Žiadny nový strom schopný kickstart na import"
+
+#: ../satellite_tools/messages.py:85
+#, python-format
+msgid "Importing kickstartable trees (%d)"
+msgstr "Importovanie stromov schopných kickstart (%d)"
+
+#: ../satellite_tools/messages.py:86
+#, python-format
+msgid "Imported kickstartable trees (%d)"
+msgstr "Importované stromy schopné kickstart (%d)"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (uvedené v príkazovom riadku)\n"
+"sa nepodarilo otvoriť a čítať:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\" sa nepodarilo otvoriť\n"
+"a/alebo zapísať do:\n"
+"%s"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s sync. správa od %s"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "Informácie o zlyhaní sú neplatné alebo neúplné"
