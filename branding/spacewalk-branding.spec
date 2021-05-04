@@ -36,7 +36,7 @@
 %endif
 
 Name:           spacewalk-branding
-Version:        4.1.11
+Version:        4.1.12
 Release:        1%{?dist}
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only and OFL-1.1
