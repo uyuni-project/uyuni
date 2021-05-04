@@ -817,13 +817,6 @@
         </context-group>
         <target>Обзор</target>
       </trans-unit>
-      <trans-unit id="Migrate" xml:space="preserve">
-        <source>Migrate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Миграция</target>
-      </trans-unit>
       <trans-unit id="Packages" xml:space="preserve">
         <source>Packages</source>
         <context-group name="ctx">
@@ -8458,18 +8451,18 @@ Follow this url to see the full list of inactive systems:
         <target state="needs-adaptation">Примечание. Чтобы включить возможности виртуализации для этой системы, надо установить пакет rhn-virtualization-host из канала RHN Tools. Подробную информацию о настройке виртуализации можно найти в документации Red Hat.</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
-        <source>This user lacks the required permissions to migrate this system.</source>
+        <source>This user lacks the required permissions to transfer this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>У пользователя недостаточно разрешений для миграции системы.</target>
+        <target state="needs-adaptation">У пользователя недостаточно разрешений для миграции системы.</target>
       </trans-unit>
       <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve">
-        <source>Systems can only be migrated between trusted organizations.</source>
+        <source>Systems can only be transferred between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target>Миграция системы может осуществляться только между доверенными организациями.</target>
+        <target state="needs-adaptation">Миграция системы может осуществляться только между доверенными организациями.</target>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
@@ -9579,12 +9572,12 @@ Follow this url to see the full list of inactive systems:
         <target>Удаление на сервере</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
-        <source>Systems Migrated</source>
-        <target>Миграция систем завершена</target>
+        <source>Systems Transferred</source>
+        <target state="needs-adaptation">Миграция систем завершена</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
-        <source>Migrate Systems</source>
-        <target>Миграция систем</target>
+        <source>Transfer Systems</source>
+        <target state="needs-adaptation">Миграция систем</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
@@ -9907,7 +9900,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
-        <source>Service Pack Migration</source>
+        <source>Product Migration</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10558,6 +10552,83 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
   </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Transfer" xml:space="preserve">
+        <source>Transfer</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_update" xml:space="preserve">
+        <source>Virtual network update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
+        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.invalid_path" xml:space="preserve">
+        <source>Invalid path (must be a valid absolute path)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.duplicate_path" xml:space="preserve">
+        <source>Path already exists</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
+        <source>Control node is not responding</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
+        <source>Invalid path type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.salt_error" xml:space="preserve">
+        <source>Error when executing salt state: {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.entity_not_found" xml:space="preserve">
+        <source>The requested entity not found or inaccessible</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="ansible.playbook" xml:space="preserve">
+        <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
       <target state="new" />
   </trans-unit>
       </body>
