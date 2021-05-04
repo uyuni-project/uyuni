@@ -16,11 +16,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2021-04-19 17:57+0000\n"
+"POT-Creation-Date: 2021-04-21 14:10+0000\n"
+"PO-Revision-Date: 2021-04-04 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2313,8 +2312,6 @@ msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
 msgstr ""
-"Projekt obsahuje kanály s nesynchronizovanými opravami. Budú synchronizované "
-"v závislosti od vašich nastavení organizácie."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2524,7 +2521,7 @@ msgstr "Tento kanál je odporúčaný"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
-msgstr "má nesynchronizované opravy"
+msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
@@ -3299,32 +3296,38 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
+#, fuzzy
 msgid "Skip to the last maintenance window"
-msgstr "Preskočiť na posledné okno údržby"
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
+#, fuzzy
 msgid "Skip to the next maintenance window"
-msgstr "Preskočiť na ďalšie okno údržby"
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
+#, fuzzy
 msgid "There are no more past maintenance windows"
-msgstr "Už neexistujú okná minulej údržby"
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
+#, fuzzy
 msgid "There are no more future maintenance windows"
-msgstr "Už neexistujú okná budúcej údržby"
+msgstr "Žiadne nadchádzajúce okná údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
-msgstr "Dnes"
+msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
+#, fuzzy
 msgid "Month"
-msgstr "Mesiac"
+msgstr "Mesačne:"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
+#, fuzzy
 msgid "Day"
-msgstr "Deň"
+msgstr "Denne:"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
@@ -3945,46 +3948,53 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
+#, fuzzy
 msgid "State Summary for {0}"
-msgstr "Súhrn stavu pre {0}"
+msgstr "Highstate pre {0}"
 
 #: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "Neexistujú žiadne použiteľné systémy."
 
 #: ../html/src/manager/state/highstate-summary.tsx:20
+#, fuzzy
 msgid "State channel"
-msgstr "Stavový kanál"
+msgstr "Softvérové kanály"
 
 #: ../html/src/manager/state/highstate-summary.tsx:21
+#, fuzzy
 msgid "Config channel"
-msgstr "Konfiguračný kanál"
+msgstr "Klonovanie kanálov"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
+#, fuzzy
 msgid "internal"
-msgstr "interný"
+msgstr "Údržba"
 
 #: ../html/src/manager/state/highstate-summary.tsx:32
+#, fuzzy
 msgid "Internal states"
-msgstr "Interné stavy"
+msgstr "Rozhrania"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
-msgstr "Získavanie súhrnu highstate..."
+msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:58
+#, fuzzy
 msgid "State Source"
-msgstr "Stavový zdroj"
+msgstr "Zdroj"
 
 #: ../html/src/manager/state/highstate-summary.tsx:60
 msgid "Inherited From"
-msgstr "Zdedené z"
+msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:78
 msgid "Show full highstate output"
-msgstr "Zobraziť úplný výstup highstate"
+msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
+#, fuzzy
 msgid "System Group"
 msgstr "Systémová skupina"
 
