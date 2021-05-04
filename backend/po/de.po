@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-22 09:01+0000\n"
+"POT-Creation-Date: 2021-04-21 14:10+0000\n"
 "PO-Revision-Date: 2020-09-25 10:29+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
@@ -25,6 +25,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.6.1\n"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Sie haben keine Berechtigungen, Pakete in der Null-Org zu verwalten"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Sie dürfen keine Pakete in der %s-Org verwalten"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Sie dürfen keine administrativen Aufgaben durchführen"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr ""
+"Sie dürfen Channel %s nicht verwalten, oder dieser Channel existiert nicht"
+
+#: ../server/importlib/userAuth.py:204
+#, fuzzy, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"                   %s Benutzer wurde auf diesem Server deaktiviert.\n"
+"                   Bitte kontaktieren Sie Ihren Org-Administrator für Hilfe."
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Ungültige Anfrage erhalten (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"NACHFOLGEND EINE WICHTIGE NACHRICHT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Ungültige URI %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "ungültiges rpm Paket %s angefordert"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Paket nicht gefunden"
 
 #: ../server/configFilesHandler.py:129
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -41,61 +108,104 @@ msgstr ""
 "                   %s Benutzer wurde auf diesem Server deaktiviert.\n"
 "                   Bitte kontaktieren Sie Ihren Org-Administrator für Hilfe."
 
-#: ../server/rhnChannel.py:1999
+#: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Ungültiger Wert %s (%s)"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"SUSE Manager Proxy Dienst ist nicht für das Server-Profil \"%s\" aktiviert"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Ungültiger Sitzungsschlüssel"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Diese Server-ID existiert nicht mehr"
+
+#: ../server/handlers/xmlrpc/registration.py:196
+msgid "Required data missing"
+msgstr "Erforderliche Daten nicht vorhanden"
+
+#: ../server/handlers/xmlrpc/registration.py:200
+msgid "Required members missing"
+msgstr "Erforderliche Mitglieder fehlen"
+
+#: ../server/handlers/xmlrpc/registration.py:209
+msgid "Attempt to register a system to an invalid username"
+msgstr "Versuch, ein System mit einem ungültigen Benutzernamen zu registrieren"
+
+#: ../server/handlers/xmlrpc/registration.py:841
+msgid "Invalid system release version requested"
+msgstr "Ungültige System-Release-Version angefordert"
+
+#: ../server/handlers/xmlrpc/registration.py:1065
 msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+"Kein gültiges Netzwerk Interface gefunden. Sowohl ipaddr als auch ip6addr "
+"konnten nicht gefunden werden."
+
+#: ../server/handlers/xmlrpc/registration.py:1117
+#, python-brace-format
+msgid "{PRODUCT_NAME} Welcome Message"
 msgstr ""
 
-#: ../server/rhnChannel.py:2014
-#, python-format
-msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "Ungenügende Berechtigung für Release (%s, %s"
+#: ../server/handlers/xmlrpc/registration.py:1127
+#, fuzzy
+msgid "Privacy Statement"
+msgstr "SUSE Manager Datenschutzerklärung"
 
-#. Various messages that can be reused
-#.
-#. bretm 02/07/2007 -- when we have better old-client documentation, probably
-#. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
-msgid "System Registered but Inactive"
-msgstr "System registriert, aber inaktiv"
+#: ../server/handlers/xmlrpc/registration.py:1148
+msgid "Expected a dictionary as a product argument"
+msgstr "Es wurde ein Wörterbuch als Produktargument erwartet"
 
-#: ../server/rhnChannel.py:2279
+#: ../server/handlers/xmlrpc/registration.py:1376
 #, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it could not be subscribed to a base channel.\n"
-"Please contact your organization administrator for assistance.\n"
-msgstr ""
-"\n"
-"Ungültige Kombination aus Architektur und Betriebssystemversion (%s, %s).\n"
-"Ihr System wurde registriert, wird aber keine Updates erhalten da es keinen\n"
-"Basis-Channel abonnieren konnte.\n"
-"Bitte kontaktieren Sie zwecks Unterstützung den Org-Administrator.\n"
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "Ungültiger Wert '%s' für %s (%s)"
 
-#: ../server/rhnChannel.py:2286
-#, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but is not yet entitled\n"
-"  to service.  To entitle this system to service, login to the web site at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Ungültiges system_id/action_id Paar."
 
-#: ../server/rhnChannel.py:2294
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
+msgid "Invalid action value type %s (%s)"
+msgstr "Ungültiger Aktionswerttyp %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:462
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Aktion %s gehört nicht zu Server %s"
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Paketname erwartet, nicht: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Paket erwartet, nicht: %s"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "ISS ist auf diesem Server deaktiviert."
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Server \"%s\" nicht für ISS aktiviert."
+
+#: ../server/handlers/applet/applet.py:78
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Ihr System wurde in der RHN Datenbank nicht gefunden"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -157,72 +267,14 @@ msgstr "der Benutzername muss mindestens %d Zeichen lang sein"
 msgid "Cannot register usernames ending with %s"
 msgstr "Benutzernamen, die auf %s enden können nicht registriert werden"
 
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Ungültige Anfrage erhalten (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"NACHFOLGEND EINE WICHTIGE NACHRICHT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
 msgstr ""
 
-#: ../server/apacheRequest.py:606
+#: ../server/rhnHandler.py:75
 #, python-format
-msgid "Invalid URI %s"
-msgstr "Ungültige URI %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Sie haben keine Berechtigungen, Pakete in der Null-Org zu verwalten"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Sie dürfen keine Pakete in der %s-Org verwalten"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Sie dürfen keine administrativen Aufgaben durchführen"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"Sie dürfen Channel %s nicht verwalten, oder dieser Channel existiert nicht"
-
-#: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
-msgid ""
-"\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"                   %s Benutzer wurde auf diesem Server deaktiviert.\n"
-"                   Bitte kontaktieren Sie Ihren Org-Administrator für Hilfe."
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "ungültiges rpm Paket %s angefordert"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Paket nicht gefunden"
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Der Dienst ist für das Systemprofil: \"%s\" nicht aktiviert"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -237,105 +289,6 @@ msgstr "die gesendete Proxysignatur %s stimmt mit unserer (%s) nicht überein"
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
 msgstr "abgewiesene Proxyauthentisierung"
-
-#: ../server/handlers/xmlrpc/registration.py:196
-msgid "Required data missing"
-msgstr "Erforderliche Daten nicht vorhanden"
-
-#: ../server/handlers/xmlrpc/registration.py:200
-msgid "Required members missing"
-msgstr "Erforderliche Mitglieder fehlen"
-
-#: ../server/handlers/xmlrpc/registration.py:209
-msgid "Attempt to register a system to an invalid username"
-msgstr "Versuch, ein System mit einem ungültigen Benutzernamen zu registrieren"
-
-#: ../server/handlers/xmlrpc/registration.py:841
-msgid "Invalid system release version requested"
-msgstr "Ungültige System-Release-Version angefordert"
-
-#: ../server/handlers/xmlrpc/registration.py:1065
-msgid ""
-"Unable to find a valid network interface, both ipaddr and ip6addr not found."
-msgstr ""
-"Kein gültiges Netzwerk Interface gefunden. Sowohl ipaddr als auch ip6addr "
-"konnten nicht gefunden werden."
-
-#: ../server/handlers/xmlrpc/registration.py:1117
-#, python-brace-format
-msgid "{PRODUCT_NAME} Welcome Message"
-msgstr ""
-
-#: ../server/handlers/xmlrpc/registration.py:1127
-#, fuzzy
-msgid "Privacy Statement"
-msgstr "SUSE Manager Datenschutzerklärung"
-
-#: ../server/handlers/xmlrpc/registration.py:1148
-msgid "Expected a dictionary as a product argument"
-msgstr "Es wurde ein Wörterbuch als Produktargument erwartet"
-
-#: ../server/handlers/xmlrpc/registration.py:1376
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Ungültiger Wert '%s' für %s (%s)"
-
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"SUSE Manager Proxy Dienst ist nicht für das Server-Profil \"%s\" aktiviert"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Ungültiger Sitzungsschlüssel"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Diese Server-ID existiert nicht mehr"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Ungültiges system_id/action_id Paar."
-
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Paketname erwartet, nicht: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Paket erwartet, nicht: %s"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Ungültiger Aktionswerttyp %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Aktion %s gehört nicht zu Server %s"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Ungültiger Wert %s (%s)"
-
-#: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Ihr System wurde in der RHN Datenbank nicht gefunden"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "ISS ist auf diesem Server deaktiviert."
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Server \"%s\" nicht für ISS aktiviert."
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -386,23 +339,60 @@ msgstr ""
 msgid "Architecture `%s' is not supported"
 msgstr "die Architektur '%s' wird nicht unterstützt"
 
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
+#: ../server/rhnChannel.py:1999
+#, python-format
+msgid ""
+"Your account does not have access to any channels matching "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
-#: ../server/rhnHandler.py:75
+#: ../server/rhnChannel.py:2014
 #, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Der Dienst ist für das Systemprofil: \"%s\" nicht aktiviert"
+msgid "Insufficient subscription permissions for release (%s, %s"
+msgstr "Ungenügende Berechtigung für Release (%s, %s"
 
-#: ../common/rhnTB.py:205
+#. Various messages that can be reused
+#.
+#. bretm 02/07/2007 -- when we have better old-client documentation, probably
+#. will be safe to get rid of all this crap
+#: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
+msgid "System Registered but Inactive"
+msgstr "System registriert, aber inaktiv"
+
+#: ../server/rhnChannel.py:2279
 #, python-format
-msgid "ERROR: %s %s: %s"
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it could not be subscribed to a base channel.\n"
+"Please contact your organization administrator for assistance.\n"
+msgstr ""
+"\n"
+"Ungültige Kombination aus Architektur und Betriebssystemversion (%s, %s).\n"
+"Ihr System wurde registriert, wird aber keine Updates erhalten da es keinen\n"
+"Basis-Channel abonnieren konnte.\n"
+"Bitte kontaktieren Sie zwecks Unterstützung den Org-Administrator.\n"
+
+#: ../server/rhnChannel.py:2286
+#, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but is not yet entitled\n"
+"  to service.  To entitle this system to service, login to the web site at:\n"
+"\n"
+"  %(entitlement_url)s\n"
 msgstr ""
 
-#: ../common/rhnTB.py:207
+#: ../server/rhnChannel.py:2294
 #, python-format
-msgid "TRACEBACK: %s"
+msgid ""
+"\n"
+"  This system has been successfully registered, but no service entitlements\n"
+"  were available.  To entitle this system to service, login to the web site "
+"at:\n"
+"\n"
+"  %(entitlement_url)s\n"
 msgstr ""
 
 #. 0-999: Red Hat client/client-like interaction errors:
@@ -1009,23 +999,14 @@ msgstr "Fehlerklasse-Information: %s\n"
 msgid "Explanation: %s"
 msgstr "Erklärung: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:121
+#: ../common/rhnTB.py:205
 #, python-format
-msgid "%s sync. report from %s"
+msgid "ERROR: %s %s: %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
+#: ../common/rhnTB.py:207
 #, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
+msgid "TRACEBACK: %s"
 msgstr ""
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
@@ -1204,6 +1185,25 @@ msgstr ""
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "Imported kickstartable trees (%d)"
+msgstr ""
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
