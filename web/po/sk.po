@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-29 09:46+0000\n"
+"POT-Creation-Date: 2021-04-28 14:03+0000\n"
 "PO-Revision-Date: 2021-04-27 15:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -979,57 +979,57 @@ msgstr ""
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:549
+#: ../html/src/manager/admin/setup/products/products.tsx:550
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:619
+#: ../html/src/manager/admin/setup/products/products.tsx:620
 msgid "Product Description"
 msgstr "Popis produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:625
-#: ../html/src/manager/admin/setup/products/products.tsx:1003
+#: ../html/src/manager/admin/setup/products/products.tsx:626
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:627
+#: ../html/src/manager/admin/setup/products/products.tsx:628
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:634
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:805
+#: ../html/src/manager/admin/setup/products/products.tsx:806
 msgid " channels sync failed"
 msgstr " synchronizácia kanálov zlyhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:813
+#: ../html/src/manager/admin/setup/products/products.tsx:814
 msgid " channels sync in progress"
 msgstr " prebieha synchronizácia kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:821
+#: ../html/src/manager/admin/setup/products/products.tsx:822
 msgid " channels synced"
 msgstr " kanály synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:846
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
 "produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:848
 msgid "Select this product"
 msgstr "Vybrať tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:859
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrkadlený."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:888
+#: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1037,7 +1037,7 @@ msgstr "Tento produkt je zrkadlený."
 msgid "recommended"
 msgstr "odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:906
+#: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1045,51 +1045,51 @@ msgstr "odporúčané"
 msgid "include recommended"
 msgstr "zahrnúť odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:948
+#: ../html/src/manager/admin/setup/products/products.tsx:949
 msgid "SCC product catalog refresh in progress"
 msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:951
+#: ../html/src/manager/admin/setup/products/products.tsx:952
 msgid "Scheduling channels product resync"
 msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:954
+#: ../html/src/manager/admin/setup/products/products.tsx:955
 msgid "Channels product resync scheduled"
 msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:957
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "Schedule channels product resync"
 msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1018
+#: ../html/src/manager/admin/setup/products/products.tsx:1019
 msgid "Show product's channels"
 msgstr "Zobraziť kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1050
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Product Channels - "
 msgstr "Kanály produktov - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1055
+#: ../html/src/manager/admin/setup/products/products.tsx:1056
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1062
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Optional Channels"
 msgstr "Voliteľné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1077
+#: ../html/src/manager/admin/setup/products/products.tsx:1078
 msgid "not synced"
 msgstr "nesynchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1080
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 msgid "sync in progress"
 msgstr "prebieha synchronizácia"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1083
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "synced"
 msgstr "synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1086
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "sync failed"
 msgstr "synchronizácia zlyhala"
 
@@ -1149,7 +1149,7 @@ msgstr " sekúnd"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:236
+#: ../html/src/manager/virtualization/ListTab.js:237
 msgid "Filter by name"
 msgstr "Filtrovať podľa názvu"
 
@@ -1256,7 +1256,7 @@ msgstr "Názov"
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:260
+#: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "Akcie"
@@ -4666,7 +4666,7 @@ msgstr "Prosím, nainštalujte modul libvirt python."
 msgid "{0} selected"
 msgstr "Vybrané {0}"
 
-#: ../html/src/manager/virtualization/ListTab.js:243
+#: ../html/src/manager/virtualization/ListTab.js:244
 msgid "Action Status"
 msgstr "Stav akcie"
 
@@ -5284,7 +5284,7 @@ msgstr ""
 "Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré "
 "obsahujú disky virtuálnych hostí."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
 msgstr "Filtrovať podľa názvu zväzku alebo fondu"
 

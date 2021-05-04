@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-29 09:46+0000\n"
+"POT-Creation-Date: 2021-04-28 14:03+0000\n"
 "PO-Revision-Date: 2021-04-06 10:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -974,55 +974,55 @@ msgstr ""
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:549
+#: ../html/src/manager/admin/setup/products/products.tsx:550
 msgid "Filter by product Description"
 msgstr "제품 설명을 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:619
+#: ../html/src/manager/admin/setup/products/products.tsx:620
 msgid "Product Description"
 msgstr "제품 설명"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:625
-#: ../html/src/manager/admin/setup/products/products.tsx:1003
+#: ../html/src/manager/admin/setup/products/products.tsx:626
+#: ../html/src/manager/admin/setup/products/products.tsx:1004
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:627
+#: ../html/src/manager/admin/setup/products/products.tsx:628
 msgid "Arch"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:634
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Channels"
 msgstr "채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:805
+#: ../html/src/manager/admin/setup/products/products.tsx:806
 msgid " channels sync failed"
 msgstr " 채널을 동기화하지 못함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:813
+#: ../html/src/manager/admin/setup/products/products.tsx:814
 msgid " channels sync in progress"
 msgstr " 채널 동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:821
+#: ../html/src/manager/admin/setup/products/products.tsx:822
 msgid " channels synced"
 msgstr " 채널 동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:846
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid "To enable this product, the parent product should be selected first"
 msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:848
 msgid "Select this product"
 msgstr "이 제품 선택"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:859
+#: ../html/src/manager/admin/setup/products/products.tsx:860
 msgid "This product is mirrored."
 msgstr "이 제품은 미러링되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:888
+#: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1030,7 +1030,7 @@ msgstr "이 제품은 미러링되었습니다."
 msgid "recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:906
+#: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1038,51 +1038,51 @@ msgstr "권장"
 msgid "include recommended"
 msgstr "권장에 포함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:948
+#: ../html/src/manager/admin/setup/products/products.tsx:949
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 제품 카탈로그 새로 고침 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:951
+#: ../html/src/manager/admin/setup/products/products.tsx:952
 msgid "Scheduling channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:954
+#: ../html/src/manager/admin/setup/products/products.tsx:955
 msgid "Channels product resync scheduled"
 msgstr "채널 제품 재동기화 예약됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:957
+#: ../html/src/manager/admin/setup/products/products.tsx:958
 msgid "Schedule channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1018
+#: ../html/src/manager/admin/setup/products/products.tsx:1019
 msgid "Show product's channels"
 msgstr "제품 채널 표시"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1050
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Product Channels - "
 msgstr "제품 채널 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1055
+#: ../html/src/manager/admin/setup/products/products.tsx:1056
 msgid "Mandatory Channels"
 msgstr "필수 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1062
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Optional Channels"
 msgstr "선택 사항 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1077
+#: ../html/src/manager/admin/setup/products/products.tsx:1078
 msgid "not synced"
 msgstr "동기화되지 않음"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1080
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 msgid "sync in progress"
 msgstr "동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1083
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "synced"
 msgstr "동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1086
+#: ../html/src/manager/admin/setup/products/products.tsx:1087
 msgid "sync failed"
 msgstr "동기화 실패"
 
@@ -1140,7 +1140,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:236
+#: ../html/src/manager/virtualization/ListTab.js:237
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1246,7 +1246,7 @@ msgstr "이름"
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:260
+#: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
 msgstr "동작"
@@ -4646,7 +4646,7 @@ msgstr "libvirt python 모듈을 설치하십시오."
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
-#: ../html/src/manager/virtualization/ListTab.js:243
+#: ../html/src/manager/virtualization/ListTab.js:244
 msgid "Action Status"
 msgstr "작업 상태"
 
@@ -5255,7 +5255,7 @@ msgid ""
 "guests disks."
 msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:375
 msgid "Filter by pool or volume name"
 msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 
