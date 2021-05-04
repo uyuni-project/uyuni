@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 08:49+0000\n"
+"POT-Creation-Date: 2021-04-26 08:42+0000\n"
 "PO-Revision-Date: 2021-04-24 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
@@ -147,7 +147,7 @@ msgid "An error occurred on save."
 msgstr "Pri ukladaní sa vyskytla chyba."
 
 #: ../html/src/components/config-channels.tsx:339
-#: ../html/src/manager/minion/packages/package-states.tsx:278
+#: ../html/src/manager/minion/packages/package-states.js:271
 msgid "No current changes."
 msgstr "Žiadne aktuálne zmeny."
 
@@ -201,20 +201,16 @@ msgstr "Preusporiadať"
 
 #: ../html/src/components/config-channels.tsx:440
 #: ../html/src/components/config-channels.tsx:444
-#: ../html/src/manager/minion/packages/package-states.tsx:202
-#: ../html/src/manager/minion/packages/package-states.tsx:206
 msgid "Changes"
 msgstr "Zmeny"
 
 #: ../html/src/components/config-channels.tsx:442
-#: ../html/src/manager/minion/packages/package-states.tsx:204
 msgid "1 Change"
 msgstr "1 zmena"
 
 #: ../html/src/components/config-channels.tsx:452
 #: ../html/src/components/config-channels.tsx:489
-#: ../html/src/manager/minion/packages/package-states.tsx:214
-#: ../html/src/manager/minion/packages/package-states.tsx:247
+#: ../html/src/manager/minion/packages/package-states.js:240
 msgid "Search"
 msgstr "Hľadať"
 
@@ -224,7 +220,6 @@ msgstr "Hľadať"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
@@ -348,7 +343,7 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
-#: ../html/src/manager/minion/packages/package-states.tsx:194
+#: ../html/src/manager/minion/packages/package-states.js:199
 msgid "Save"
 msgstr "Uložiť"
 
@@ -1775,8 +1770,8 @@ msgstr "Akcia bola "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:223
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
+#: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
+#: ../html/src/manager/minion/packages/use-package-states.api.js:61
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
 msgid "scheduled"
 msgstr "naplánované"
@@ -2047,7 +2042,7 @@ msgstr "Párovač"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 #: ../html/src/manager/images/image-view-packages.tsx:48
-#: ../html/src/manager/minion/packages/package-states.tsx:343
+#: ../html/src/manager/minion/packages/package-states.js:335
 msgid "Package Name"
 msgstr "Názov balíka"
 
@@ -2597,6 +2592,7 @@ msgstr ""
 "tejto skupine"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:17
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the "
@@ -2606,21 +2602,21 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:19
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:20
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:19
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr "Highstate"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.js:21
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:18
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:22
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:21
 msgid "Invalid target type."
 msgstr "Neplatný typ cieľa."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.js:17
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:17
 msgid "Formula saved. Apply the "
 msgstr "Vzorec bol uložený. Použiť "
 
@@ -3115,7 +3111,7 @@ msgid "Reinspect Image"
 msgstr "Opätovne skontrolovať obraz"
 
 #: ../html/src/manager/images/image-view-packages.tsx:53
-#: ../html/src/manager/minion/packages/package-states.tsx:323
+#: ../html/src/manager/minion/packages/package-states.js:311
 msgid "Installed"
 msgstr "Nainštalované"
 
@@ -3606,71 +3602,44 @@ msgstr ""
 "Priradenie plánu nahradí všetky predchádzajúce priradenia vo všetkých "
 "systémoch v sade."
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/config-channels/minion-config-channels.js:29
 msgid "Applying the config channels has been "
 msgstr "Použitie konfiguračných kanálov bolo "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
-msgid "Formula saved. Edit configuration options "
-msgstr ""
-"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
-"použiť "
-
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
-msgid " for the changes to take effect."
-msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
-
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.js:61
+#: ../html/src/manager/minion/formula/minion-formula.renderer.js:28
 msgid "Configuration"
 msgstr "Konfigurácia"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:195
-msgid "Please save all your changes before applying!"
-msgstr ""
-
-#: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
-msgid "Apply changes"
-msgstr "Použiť Highstate"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
-msgid "Search package"
-msgstr "Hľadať"
-
-#: ../html/src/manager/minion/packages/package-states.tsx:278
+#: ../html/src/manager/minion/packages/package-states.js:272
 msgid "No package states."
 msgstr "Žiadne stavy balíkov."
 
-#: ../html/src/manager/minion/packages/package-states.tsx:297
+#: ../html/src/manager/minion/packages/package-states.js:291
 msgid "Latest"
 msgstr "Najnovší"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:298
+#: ../html/src/manager/minion/packages/package-states.js:292
 msgid "Any"
 msgstr "Akýkoľvek"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:307
+#: ../html/src/manager/minion/packages/package-states.js:299
 msgid "Undo"
 msgstr "Vrátiť"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:322
+#: ../html/src/manager/minion/packages/package-states.js:310
 msgid "Unmanaged"
 msgstr "Neriadený"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:324
+#: ../html/src/manager/minion/packages/package-states.js:312
 msgid "Removed"
 msgstr "Odstránený"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:336
+#: ../html/src/manager/minion/packages/package-states.js:328
 msgid "Package States"
 msgstr "Stavy balíkov"
 
-#: ../html/src/manager/minion/packages/package-states.tsx:344
+#: ../html/src/manager/minion/packages/package-states.js:336
 #: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:115
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:58
@@ -3678,11 +3647,11 @@ msgstr "Stavy balíkov"
 msgid "State"
 msgstr "Stav"
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:40
+#: ../html/src/manager/minion/packages/use-package-states.api.js:45
 msgid "Package states have been saved."
 msgstr "Stavy balíkov boli uložené."
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:56
+#: ../html/src/manager/minion/packages/use-package-states.api.js:60
 msgid "Applying the packages states has been "
 msgstr "Použitie stavov balíkov bolo "
 
