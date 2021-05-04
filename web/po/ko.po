@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-26 08:42+0000\n"
+"POT-Creation-Date: 2021-04-24 19:58+0000\n"
 "PO-Revision-Date: 2021-04-06 10:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -121,9 +121,9 @@ msgstr "구성 채널: {0}"
 #: ../html/src/manager/state/recurring-states-details.tsx:161
 #: ../html/src/manager/state/recurring-states-details.tsx:163
 #: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:73
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:176
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:101
 msgid "Edit"
@@ -167,18 +167,17 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:123
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:111
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:163
 msgid "Back"
 msgstr "뒤로"
 
 #: ../html/src/components/config-channels.tsx:401
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:669
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1011
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:586
 msgid "Confirm"
 msgstr "확인"
 
@@ -217,8 +216,8 @@ msgstr "검색"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:199
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:83
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:676
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:90
 msgid "System"
 msgstr "시스템"
@@ -276,8 +275,8 @@ msgstr "선택한 {1}을(를) {0}하시겠습니까?({2} {1} 선택됨)"
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
-#: ../html/src/manager/systems/delete-system.tsx:80
-#: ../html/src/manager/systems/delete-system.tsx:81
+#: ../html/src/manager/systems/delete-system.js:74
+#: ../html/src/manager/systems/delete-system.js:75
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:204
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:205
 msgid "Cancel"
@@ -303,9 +302,9 @@ msgstr "취소"
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
 #: ../html/src/manager/state/recurring-states-list.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:132
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:79
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:29
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:280
@@ -438,7 +437,7 @@ msgstr "제거"
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
 #: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:270
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
 msgstr "비밀번호"
@@ -508,9 +507,9 @@ msgstr "첫 번째"
 
 #: ../html/src/components/pagination.tsx:23
 #: ../html/src/manager/admin/setup/products/products.tsx:392
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:985
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:1007
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:579
 msgid "Prev"
 msgstr "이전"
 
@@ -521,9 +520,9 @@ msgstr "이전"
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:112
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:45
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1080
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:970
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:990
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:491
 msgid "Next"
 msgstr "다음"
 
@@ -537,7 +536,7 @@ msgstr "페이지"
 
 #: ../html/src/components/pagination.tsx:103
 #: ../html/src/manager/admin/setup/products/products.tsx:403
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:869
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:767
 msgid "of"
 msgstr "/"
 
@@ -613,8 +612,8 @@ msgid "Select All"
 msgstr "모두 선택"
 
 #: ../html/src/components/table/TableDataHandler.tsx:324
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:545
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:546
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
@@ -639,20 +638,20 @@ msgid "Help"
 msgstr "도움말"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:13
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:6
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:34
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:27
 msgid "Base channel not found or not authorized."
 msgstr "기본 채널을 찾을 수 없거나 인증되지 않았습니다."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:14
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:25
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:35
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:28
 msgid "Child channel not found or not authorized."
 msgstr "하위 채널을 찾을 수 없거나 인증되지 않았습니다."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:15
-#: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:26
+#: ../html/src/manager/systems/activation-key/activation-key-channels-api.js:36
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:29
 msgid "Invalid channel id"
 msgstr "유효하지 않은 채널 ID"
 
@@ -905,7 +904,7 @@ msgstr "작업 실패: 서버에서 빈 회신"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:126
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:67
 msgid "Details"
 msgstr "세부 사항"
 
@@ -1032,17 +1031,17 @@ msgstr "이 제품은 미러링되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:889
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:140
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
+#: ../html/src/manager/systems/activation-key/child-channels.js:135
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:435
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:472
 msgid "recommended"
 msgstr "권장"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:907
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:169
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
+#: ../html/src/manager/systems/activation-key/child-channels.js:166
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:395
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:514
 msgid "include recommended"
 msgstr "권장에 포함"
 
@@ -1178,7 +1177,7 @@ msgstr "경과 시간"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
 #: ../html/src/manager/images/image-view-runtime.tsx:129
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:683
 msgid "Status"
 msgstr "상태"
 
@@ -1235,7 +1234,7 @@ msgstr "감사 이미지"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
 #: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:79
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:53
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
@@ -1254,7 +1253,7 @@ msgstr "이름"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:61
 #: ../html/src/manager/virtualization/ListTab.js:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Actions"
@@ -1663,7 +1662,7 @@ msgstr "아니요"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:410
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:137
 msgid "(none)"
 msgstr "(없음)"
@@ -1715,9 +1714,9 @@ msgstr "속성 편집"
 #: ../html/src/manager/images/image-profiles.tsx:179
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:47
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:199
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:262
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:42
 msgid "Label"
 msgstr "레이블"
 
@@ -1753,7 +1752,7 @@ msgstr "작업이 "
 #: ../html/src/manager/images/image-build.tsx:223
 #: ../html/src/manager/minion/config-channels/minion-config-channels.js:30
 #: ../html/src/manager/minion/packages/use-package-states.api.js:61
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
 msgstr "예약됨"
 
@@ -1763,8 +1762,8 @@ msgstr " 성공"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:944
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:334
 msgid "Action has been successfully added to the Action Chain "
 msgstr "작업이 작업 체인에 추가되었습니다. "
 
@@ -1928,8 +1927,8 @@ msgstr "프로젝트 만들기"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.tsx:60
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:170
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:162
 #: ../html/src/manager/virtualization/guests/create/guests-create.js:90
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:38
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:35
@@ -2486,8 +2485,8 @@ msgid "Choose the channel to be elected as the new base channel"
 msgstr "새 기본 채널로 선택할 채널 선택"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:109
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:472
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:525
 msgid "Child Channels"
 msgstr "하위 채널"
 
@@ -2496,7 +2495,6 @@ msgid "Clear Search"
 msgstr "검색 지우기"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:96
 msgid "no child channels"
 msgstr "하위 채널 없음"
 
@@ -2703,8 +2701,7 @@ msgstr "가져오기"
 #: ../html/src/manager/images/image-import.tsx:325
 #: ../html/src/manager/images/image-profile-edit.tsx:479
 #: ../html/src/manager/images/image-store-edit.tsx:211
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:193
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:202
 msgid "Clear fields"
 msgstr "필드 지우기"
 
@@ -2739,7 +2736,6 @@ msgstr "추가 사용자 정의 정보 키 만들기"
 #: ../html/src/manager/images/image-profile-edit.tsx:490
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
@@ -2795,7 +2791,7 @@ msgid "Build Type"
 msgstr "빌드 유형"
 
 #: ../html/src/manager/images/image-profiles.tsx:228
-#: ../html/src/manager/systems/delete-system-confirm.tsx:18
+#: ../html/src/manager/systems/delete-system-confirm.js:12
 msgid "Delete Profile"
 msgstr "프로파일 삭제"
 
@@ -2821,7 +2817,7 @@ msgid "Use credentials"
 msgstr "자격 증명 사용"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:171
 #: ../html/src/manager/virtualization/pools/pool-properties.js:499
 msgid "Username"
 msgstr "사용자 이름"
@@ -3321,7 +3317,7 @@ msgstr "유지보수 달력 삭제"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
 #: ../html/src/manager/state/recurring-states-list.tsx:155
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:107
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:94
 msgid "Are you sure you want to delete the selected item?"
 msgstr "선택한 항목을 삭제하시겠습니까?"
 
@@ -3979,8 +3975,8 @@ msgstr "시스템 그룹"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:191
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:64
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:182
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:54
 msgid "Organization"
 msgstr "조직"
 
@@ -4113,47 +4109,20 @@ msgstr ""
 "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시"
 "오."
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:27
+#: ../html/src/manager/systems/activation-key/activation-key-channels.js:30
 msgid "SUSE Manager Default"
 msgstr "SUSE Manager 기본값"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
-msgid "Loading child channels.."
-msgstr "하위 채널 없음"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
-msgid "Loading.."
-msgstr "로드하는 중..."
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
-msgid "Base Channel:"
-msgstr "기본 채널"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
-msgid ""
-"provided channel that corresponds to the installed SUSE Linux version. "
-"Instead of the default, "
-msgstr ""
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
+#: ../html/src/manager/systems/activation-key/activation-key-channels.js:146
 msgid "Child Channels:"
 msgstr "하위 채널:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:134
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
-msgstr ""
-
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
+#: ../html/src/manager/systems/activation-key/child-channels.js:140
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:477
 msgid "mandatory"
 msgstr "필수"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:164
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4161,58 +4130,58 @@ msgstr ""
 "서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바"
 "르게 부트스트랩되었는지 확인하십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "호스트를 부트스트랩했습니다! 시스템이 표시되어야 하는 위치:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
 msgid "systems"
 msgstr "시스템"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:244
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:184
 msgid "shortly"
 msgstr "곧"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:262
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:192
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "시스템을 부트스트랩하는 중: 응답을 기다리는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:266
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:196
 msgid "Loading SSH Private Key.."
 msgstr "SSH 개인 키를 로드하는 중..."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:274
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:201
 msgid "Bootstrap"
 msgstr "부트스트랩"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:299
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:211
 msgid "e.g., ••••••••••••"
 msgstr "예: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:423
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:217
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:276
 msgid "SSH Private Key"
 msgstr "SSH 개인 키"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:314
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:221
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
 msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차 후에 삭제됩니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:320
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:226
 msgid "SSH Private Key Passphrase"
 msgstr "SSH 개인 키 비밀번호"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:327
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:228
 msgid "Leave empty for no passphrase"
 msgstr "비밀번호가 없는 경우 비워두십시오."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:337
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:234
 msgid "Bootstrap Minions"
 msgstr "부트스트랩 Minion"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:235
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4220,32 +4189,24 @@ msgstr ""
 "SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {0}은(는) 시스템"
 "을 원격으로 준비하며 등록을 수행합니다."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:353
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:241
 msgid "e.g., host.domain.com"
 msgstr "예: host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:249
 msgid "Port range: 1 - 65535"
 msgstr "포트 범위: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
-"key is deployed during the bootstrap procedure."
-msgstr ""
-
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:286
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:299
 msgid "None"
 msgstr "없음"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:296
 msgid "Proxy"
 msgstr "프록시"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:312
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4253,74 +4214,68 @@ msgstr ""
 "프록시의 호스트 이름이 완전하지 않습니다. 이로 인해 채널에 액세스할 때 문제"
 "가 발생할 수 있습니다."
 
-#: ../html/src/manager/systems/delete-system.tsx:13
+#: ../html/src/manager/systems/delete-system.js:16
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는지 확인하십시오."
 
-#: ../html/src/manager/systems/delete-system.tsx:14
+#: ../html/src/manager/systems/delete-system.js:17
 msgid "No result found in state apply response."
 msgstr "상태 적용 응답에서 결과를 찾을 수 없습니다."
 
-#: ../html/src/manager/systems/delete-system.tsx:72
-#: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
-msgid "Delete Profile Without Cleanup"
-msgstr "프로파일 삭제"
-
-#: ../html/src/manager/systems/delete-system.tsx:93
+#: ../html/src/manager/systems/delete-system.js:84
 msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
 
-#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
+#: ../html/src/manager/systems/duplicate-systems-compare-delete.js:25
 msgid "Confirm Deletion"
 msgstr "삭제 확인"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:23
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:32
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:26
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr ""
 "Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:31
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:33
 msgid "Could not determine system default channel."
 msgstr "시스템 기본 채널을 결정할 수 없습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:34
 msgid "Channel change is invalid."
 msgstr "채널 변경이 잘못되었습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:35
 msgid "Selected base is not compatible with system."
 msgstr "선택한 기본이 시스템과 호환되지 않습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:36
 msgid "No base channel change found."
 msgstr "기본 채널 변경 사항을 찾을 수 없습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:217
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:194
 msgid "No Change"
 msgstr "변경 사항 없음"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:453
 msgid "Subscribe"
 msgstr "가입"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:40
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:42
 msgid "Unsubsribe"
 msgstr "가입 취소"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:141
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:141
 msgid "System Default Base Channel"
 msgstr "시스템 기본값 기본 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:569
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:502
 msgid "Base Channel"
 msgstr "기본 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:150
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:149
 msgid ""
 "As a Channel Administrator, you may change the base channels your systems "
 "are subscribed to. Valid channels are either channels created by your "
@@ -4333,7 +4288,7 @@ msgstr ""
 "본 채널입니다. 시스템은 모든 채널에서 가입이 취소되며 새 기본 채널에 가입합니"
 "다. "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:155
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:151
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
@@ -4341,73 +4296,73 @@ msgstr ""
 "이 작업은 시스템에서 사용할 수 있는 패키지 및 패치에 커다란 영향을 주며 유의"
 "하여 사용해야 합니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:166
 msgid "Current base Channel"
 msgstr "현재 기본 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:173
 msgid "Systems"
 msgstr "시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:198
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:181
 msgid "Desired base Channel"
 msgstr "올바른 기본 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:453
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:197
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:409
 msgid "SUSE Channels"
 msgstr "SUSE 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:481
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:203
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:430
 msgid "Custom Channels"
 msgstr "사용자 정의 채널"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:235
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:215
 msgid "Systems subscribed to"
 msgstr "시스템 가입 대상"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:423
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:389
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:566
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:579
 msgid "(Couldn't determine new base channel)"
 msgstr "(새 기본 채널을 결정할 수 없음)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:405
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:589
 msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:413
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:596
 msgid "system(s) incompatible"
 msgstr "호환되지 않는 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:507
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:446
 msgid "No change"
 msgstr "변경 사항 없음"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:529
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:460
 msgid "Unsubscribe"
 msgstr "가입 취소"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:476
 msgid "Below is a list of channels in your organization. "
 msgstr "조직의 채널 목록은 아래와 같습니다. "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:478
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 "채널을 변경하려면 해당 채널에 대해 아무 작업도 하지 않음을 선택하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:479
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
 msgstr ""
 "선택한 시스템을 채널에 가입시키려면 해당 채널에 대하여 가입됨을 선택하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:480
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
@@ -4415,53 +4370,53 @@ msgstr ""
 "선택한 시스템의 채널 가입을 취소하려면 해당 채널에 대하여 가입 취소됨을 선택"
 "하십시오."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:730
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:487
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:634
 msgid "Systems to subscribe to"
 msgstr "가입할 시스템"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:574
 msgid "(None)"
 msgstr "(없음)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:581
 msgid " (system default)"
 msgstr " (시스템 기본값)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:619
 msgid "Channel Changes Overview"
 msgstr "채널 변경 사항 개요"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:759
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:662
 msgid "Channel Changes Actions"
 msgstr "채널 변경 사항 작업"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:789
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:687
 msgid "Scheduled"
 msgstr "예약됨"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:795
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:689
 msgid "Unknown error. Could not schedule channel change"
 msgstr "알 수 없는 오류가 발생했습니다. 채널 변경을 예약하지 못했습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:916
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:819
 msgid "Some changes scheduled successfully."
 msgstr "일부 변경이 예약되었습니다."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1053
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:946
 msgid "Channel changes scheduled."
 msgstr "채널 변경이 예약되었습니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:228
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:442
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:218
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:397
 msgid "(none, disable service)"
 msgstr "(없음, 서비스 비활성화)"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:373
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:336
 msgid "Changing the channels has been "
 msgstr "채널 변경이 "
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:574
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:506
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
@@ -4470,7 +4425,7 @@ msgstr ""
 "시스템이 가입한 기본 소프트웨어 채널 시스템을 변경할 수 있습니다. 모든 소프트"
 "웨어 채널에서 시스템의 가입이 취소되고 새 기본 소프트웨어 채널에 가입합니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:600
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:529
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
@@ -4479,121 +4434,121 @@ msgstr ""
 "이 시스템은 아래에 선택한 채널에 가입되었습니다(있는 경우). 비활성화된 확인란"
 "은 채널에 수동으로 가입 또는 가입 취소할 수 없음을 나타냅니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:620
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:700
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:701
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:543
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:544
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:608
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:609
 msgid "No child channels available."
 msgstr "사용할 수 있는 하위 채널이 없습니다."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:571
 msgid "Confirm Software Channel Change"
 msgstr "소프트웨어 채널 변경 확인"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:59
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:49
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr "이 가상 호스트 관리자에 대한 데이터 새로 고침이 트리거되었습니다."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:74
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:65
 msgid "Properties"
 msgstr "속성"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:69
 msgid "Nodes"
 msgstr "노드"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:85
 msgid "OS"
 msgstr "OS"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:101
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:91
 msgid "CPU Arch"
 msgstr "CPU 아키텍처"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:107
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:97
 msgid "CPU Sockets"
 msgstr "CPU 소켓"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:103
 msgid "RAM (Mb)"
 msgstr "RAM(Mb)"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:118
 msgid "Refresh Data"
 msgstr "데이터 새로 고침"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:130
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:120
 msgid "Refresh data from this Virtual Host Manager"
 msgstr "이 가상 호스트 관리자에서 제공되는 데이터 새로 고침"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:140
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:91
 msgid "Delete Virtual Host Manager"
 msgstr "가상 호스트 관리자 삭제"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:143
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "이 가상 호스트 관리자를 삭제하시겠습니까?"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:195
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:58
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.js:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:203
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:48
 msgid "Gatherer module"
 msgstr "Gatherer 모듈"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:310
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:249
 msgid "Current Context"
 msgstr "현재 컨텍스트"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:324
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.js:264
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 파일"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:42
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.js:37
 msgid "No Virtual Host Managers."
 msgstr "가상 호스트 관리자가 없습니다."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:15
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:19
 msgid "File-based"
 msgstr "파일 기반"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:16
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:20
 msgid "VMWare-based"
 msgstr "VMWare 기반"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:17
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:21
 msgid "Kubernetes Cluster"
 msgstr "Kubernetes 클러스터"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:22
 msgid "Amazon EC2"
 msgstr "Amazon EC2"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:23
 msgid "Google Compute Engine"
 msgstr "Google Compute Engine"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:24
 msgid "Azure"
 msgstr "Azure"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:25
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Virtual Host Manager"
 msgstr "가상 호스트 관리자"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:152
 msgid "Add a {0}"
 msgstr "{0}에 추가"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:164
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:154
 msgid "Virtual Host Managers"
 msgstr "가상 호스트 관리자"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:175
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.js:164
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
