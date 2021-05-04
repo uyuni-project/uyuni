@@ -10976,13 +10976,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <source>Retracted patches: {0}</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="virt.network_update" xml:space="preserve">
-        <source>Virtual network update</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
