@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-30 15:57+0000\n"
-"PO-Revision-Date: 2021-04-30 20:57+0000\n"
+"PO-Revision-Date: 2021-04-29 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/sk/>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3616,53 +3616,52 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr "Nenašiel sa žiadny scenár."
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr "Inventárny súbor je prázdny."
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#, fuzzy
 msgid "Loading content.."
-msgstr "Načítava sa obsah.."
+msgstr "Načítava sa..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
+#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
+msgstr "Chyba pri plánovaní úlohy v Taskomatic. Prosím, skontrolujte záznamy."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
 msgstr ""
-"Konfigurácia riadiaceho uzla Ansible: pridať cesty pre zisťovanie scenárov a "
-"sebapozorovanie inventárnych súborov."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
-msgstr "Adresáre scenárov"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
-msgstr "Pridať adresár scenára"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
-msgstr "napr. /srv/playbooks"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
 msgid "Inventory Files"
-msgstr "Inventárne súbory"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "Add an Inventory file"
-msgstr "Pridať inventárny súbor"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr "napr. /etc/ansible/testing/hosts"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
@@ -3674,16 +3673,19 @@ msgid "Nothing configured. Please add paths in the "
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "Načítavajú obsahy scenárov.."
+msgstr "Načítavajú sa kanály potomkov.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#, fuzzy
 msgid "Back to playbook list"
-msgstr "Späť na zoznam scenárov"
+msgstr "Späť na zoznam"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "Naplánovať vykonanie scenára"
+msgstr "Naplánovať kontrolu"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
@@ -3695,19 +3697,21 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr "Inventárna cesta"
+msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "Akcia bola úspešne pridaná do reťazca akcií"
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#, fuzzy
 msgid "Playbook execution has been"
-msgstr "Vykonanie scenára bolo"
+msgstr "Akcia bola "
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
