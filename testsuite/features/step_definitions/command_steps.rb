@@ -1294,7 +1294,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   node = get_system_name(client)
   $server.run("spacecmd -u admin -p admin clear_caches")
   # Gather all the ids of package refreshes existing at SUMA
-  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh scheduled by' | cut -f1 -d' '", false)
+  refreshes, = $server.run("spacecmd -u admin -p admin schedule_list | grep 'Package List Refresh' | cut -f1 -d' '", false)
   node_refreshes = ""
   refreshes.split(' ').each do |refresh_id|
     next unless refresh_id.match('/[0-9]{1,4}/')
