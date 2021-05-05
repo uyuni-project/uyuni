@@ -20,7 +20,7 @@ Feature: Client display after registration
     And I should see a "Remote Command" link in the content area
     And I should see a "Reactivation" link in the content area
     And I should see a "Hardware" link in the content area
-    And I should see a "Migrate" link in the content area
+    And I should see a "Transfer" link in the content area
     And I should see a "Notes" link in the content area
     And I should see a "Custom Info" link in the content area
 
@@ -160,11 +160,11 @@ Feature: Client display after registration
     Then I should see a "Refresh Hardware List" text
     And I should see a "Schedule Hardware Refresh" button
 
-  Scenario: Show Details => Migrate page
+  Scenario: Show Details => Transfer page
     Given I am on the Systems overview page of this "sle_client"
-    When I follow "Migrate" in the content area
-    Then I should see a "Migrate System Between Organizations" text
-    And I should see a "Migrate System" button
+    When I follow "Transfer" in the content area
+    Then I should see a "Transfer System Between Organizations" text
+    And I should see a "Transfer System" button
 
   Scenario: Show Details => Notes page
     Given I am on the Systems overview page of this "sle_client"

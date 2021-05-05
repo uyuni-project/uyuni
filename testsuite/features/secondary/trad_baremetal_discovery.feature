@@ -64,7 +64,7 @@ Feature: Bare metal discovery
     And I should not see a "Remote Command" link in the content area
     And I should not see a "Reactivation" link in the content area
     And I should see a "Hardware" link in the content area
-    And I should see a "Migrate" link in the content area
+    And I should see a "Transfer" link in the content area
     And I should see a "Notes" link in the content area
     And I should not see a "Custom Info" link in the content area
 
@@ -90,7 +90,7 @@ Feature: Bare metal discovery
     And I should see a "Configure power management" link in the content area
     And I should see a "power management operations" link in the content area
     And I should see a "Delete" link in the content area
-    And I should see a "Migrate" link in the content area
+    And I should see a "Transfer" link in the content area
     And I should not see a "Patches" link in the content area
     And I should not see a "Packages" link in the content area
     And I should see a "Groups" link in the content area
