@@ -14,7 +14,7 @@ def add(args):
     pr_project = args.prproject
     pull_number = args.pullnumber
     maintainer=args.setmaintainer
-    disablepublish = args.disablepublish
+    disable_publish = args.disablepublish
     pr_project = pr_project + ":" + pull_number
     target_repo = args.repo
     config_file = args.configfile
@@ -70,7 +70,7 @@ def add(args):
         new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
         root.append(new_person)
 
-    if (disablepublish):
+    if (disable_publish):
         print("DEBUG: disabling publishing")
         root.remove(root.find("publish"))
         node = ET.fromstring("<publish><disable/></publish>")
