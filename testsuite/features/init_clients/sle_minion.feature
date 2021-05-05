@@ -55,7 +55,8 @@ Feature: Bootstrap a Salt minion via the GUI
     Given I am on the Systems overview page of this "sle_spack_migrated_minion"
     When I follow "Events"
     And I follow "History"
-    And I wait at most 600 seconds until event "Service Pack Migration scheduled by admin" is completed
+    And I wait at most 600 seconds until event "Service Pack Migration" is completed
+    And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
     And vendor change should be enabled for SP migration on "sle_spack_migrated_minion"
