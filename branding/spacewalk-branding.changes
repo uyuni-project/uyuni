@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 05 16:33:37 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.9-1
 - Add template-based content filter creation
 - Ansible integration: configure paths, inspect inventories, discover and schedule playbooks
 - Simplify state channels selection
