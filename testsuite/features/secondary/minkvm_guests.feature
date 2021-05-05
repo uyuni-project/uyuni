@@ -199,7 +199,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I see "test-vm2_system" text
 
   Scenario: delete a running KVM virtual machine
-    When I click on "Delete" in row "test-vm2"
+    When I follow "Virtualization" in the content area
+    And I click on "Delete" in row "test-vm2"
     And I click on "Delete" in "Delete Guest" modal
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
