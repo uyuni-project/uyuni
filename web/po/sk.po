@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-04-24 19:57+0000\n"
+"PO-Revision-Date: 2021-05-05 16:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2626,9 +2626,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
+msgstr " aby sa prejavili zmeny."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
