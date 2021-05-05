@@ -443,9 +443,10 @@ public class DownloadController {
      * @param filename the filename
      */
     private static void validateToken(String token, String channel, String filename) {
+
         AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
             if (!obj.getValid()) {
-                log.info(String.format("Forbidden: invalid token to access %s", filename));
+                log.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         });
@@ -481,8 +482,8 @@ public class DownloadController {
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            log.info(String.format("Forbidden: Token is not valid to access %s in %s: %s",
-                    filename, channel, e.getMessage()));
+            log.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
+                    token, filename, channel, e.getMessage()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
