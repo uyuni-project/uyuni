@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 05 16:42:14 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
 - remove useless message about backup configuration (bsc#1183080)
 - add additional default config values for forwarding registrations to SCC
 - Require gio-branding-SLE for SLE15 but not for openSUSE Leap 15
