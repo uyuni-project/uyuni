@@ -45,7 +45,7 @@ Name:           spacewalk-certs-tools
 Summary:        Spacewalk SSL Key/Cert Tool
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.6
+Version:        4.2.7
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
