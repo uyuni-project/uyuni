@@ -18,6 +18,7 @@ Feature: Install a package on the SSH minion via Salt through the UI
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Install a package on the SSH minion
+    When I am on the Systems overview page of this "ssh_minion"
     And I follow "Software" in the content area
     And I follow "Install"
     And I check row with "hoag-dummy-1.1-1.1" and arch of "ssh_minion"
