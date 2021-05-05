@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2020 SUSE LLC.
+# Copyright (c) 2017-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -9,6 +9,9 @@
 
 @scope_onboarding
 Feature: Reboot systems managed by SUSE Manager
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
 @ssh_minion
   Scenario: Reboot the SSH-managed SLES minion

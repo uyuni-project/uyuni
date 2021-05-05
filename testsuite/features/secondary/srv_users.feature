@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) check users page
@@ -8,8 +8,11 @@
 @scope_visualization
 Feature: Manage users
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Display active users page
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     Then I should see a "Active Users" text
     And I should see a "Create User" link
     And I should see a "User List" link in the left menu
@@ -20,8 +23,8 @@ Feature: Manage users
     And I should see a "Download CSV" link
 
   Scenario: Create a new user
-    Given I am on the active Users page
-    When I follow "Create User"
+    When I follow the left menu "Users > User List > Active"
+    And I follow "Create User"
     And I enter "user1" as "login"
     And I enter "user1" as "desiredpassword"
     And I enter "user1" as "desiredpasswordConfirm"
@@ -39,7 +42,8 @@ Feature: Manage users
     Then I should see a "user1" link
 
   Scenario: Access user details
-    Given I am on the active Users page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     Then I should see a "User Details" text
     And I should see a "Delete User" link
@@ -61,7 +65,7 @@ Feature: Manage users
     And I should see a "Last Sign In:" text
 
   Scenario: Add roles
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     When the "role_satellite_admin" checkbox should be disabled
     And I check "role_org_admin"
@@ -85,7 +89,7 @@ Feature: Manage users
     And I should see a "Above roles are granted via the Organization Administrator role." text
 
   Scenario: Verify user list
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     Then table row for "user1" should contain "Organization Administrator"
     And table row for "user1" should contain "Channel Administrator"
     And table row for "user1" should contain "Configuration Administrator"
@@ -93,7 +97,7 @@ Feature: Manage users
     And table row for "user1" should contain "Activation Key Administrator"
 
   Scenario: Fail to deactivate organization administrator
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
@@ -103,7 +107,7 @@ Feature: Manage users
     Then I should see a "No deactivated users." text
 
   Scenario: Remove role
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     When I uncheck "role_org_admin"
     And I click on "Update"
@@ -114,7 +118,7 @@ Feature: Manage users
     And I should see "role_config_admin" as checked
 
   Scenario: Deactivate ordinary user
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     Then I should see "role_org_admin" as unchecked
     When I follow "Deactivate User"
@@ -129,8 +133,8 @@ Feature: Manage users
     Then I should see a "user1" link
 
   Scenario: Reactivate user
-    Given I am on the active Users page
-    When I follow "Deactivated"
+    When I follow the left menu "Users > User List > Active"
+    And I follow "Deactivated"
     And I follow "user1"
     Then I should see a "Reactivate User" link
     When I follow "Reactivate User"
@@ -142,7 +146,7 @@ Feature: Manage users
     Then I should not see a "user1" link
 
   Scenario: Delete user
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     When I follow "Delete User"
     Then I should see a "Confirm User Deletion" text

@@ -1,8 +1,11 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
 Feature: Client display after registration
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Show links in Details tab
     When I am on the Systems overview page of this "sle_client"

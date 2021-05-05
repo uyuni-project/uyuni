@@ -5,8 +5,10 @@
 @scope_content_lifecycle_management
 Feature: Content lifecycle
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create a content lifecycle project
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "Content Lifecycle Projects" text
     And I should see a "There are no entries to show." text
@@ -20,7 +22,6 @@ Feature: Content lifecycle
     Then I wait until I see "Content Lifecycle Project - clp_name" text
 
   Scenario: Verify the content lifecycle project page
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
@@ -32,7 +33,6 @@ Feature: Content lifecycle
     And I should see a "Environment Lifecycle" text
 
   Scenario: Add a source to the project
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I follow "Attach/Detach Sources"
@@ -42,7 +42,6 @@ Feature: Content lifecycle
     And I should see a "Version 1: (draft - not built) - Check the changes below" text
 
   Scenario: Verify added sources
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I should see a "SLE-Manager-Tools12-Updates for x86_64 SP5" text
@@ -51,7 +50,6 @@ Feature: Content lifecycle
     And I should see a "Build (4)" text
 
   Scenario: Add environments to the project
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "No environments created" text
@@ -76,7 +74,6 @@ Feature: Content lifecycle
     And I should see a "qa_desc" text
 
   Scenario: Build the sources in the project
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
@@ -88,7 +85,6 @@ Feature: Content lifecycle
     And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
 
   Scenario: Promote the sources in the project
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     Then I should see a "clp_name" text
     And I should see a "clp_desc" text
@@ -106,7 +102,6 @@ Feature: Content lifecycle
     Then I wait until I see "Built" text in the environment "prod_name"
 
   Scenario: Add new sources and promote again
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "Build (0)" text
@@ -132,7 +127,6 @@ Feature: Content lifecycle
     Then I wait until I see "Built" text in the environment "prod_name"
 
   Scenario: Clean up the Content Lifecycle Management feature
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     When I click on "Delete"

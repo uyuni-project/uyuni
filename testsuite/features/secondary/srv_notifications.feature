@@ -4,15 +4,16 @@
 @scope_visualization
 Feature: Test the notification/notification-messages feature
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Check the unread notification counter is correct
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > Notification Messages"
     And I wait until I see "The server has collected the following notification messages." text
     Then I follow "Unread Messages"
     And the notification badge and the table should count the same amount of messages
 
   Scenario: Delete notification-messages
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > Notification Messages"
     And I wait until I see "The server has collected the following notification messages." text
     Then I follow "All Messages"
@@ -20,7 +21,6 @@ Feature: Test the notification/notification-messages feature
     And I delete it via the "Delete selected messages" button
 
   Scenario: Flag a notification-message as read
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > Notification Messages"
     And I wait until I see "The server has collected the following notification messages." text
     Then I follow "All Messages"

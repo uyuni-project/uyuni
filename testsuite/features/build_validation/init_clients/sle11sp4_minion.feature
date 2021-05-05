@@ -9,10 +9,12 @@ Feature: Bootstrap a SLES 11 SP4 Salt minion
 
   Scenario: Install prerequisite packages on SLES 11 SP4 Salt minion
     When I install package "python-xml" on this "sle11sp4_minion"
+    
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Bootstrap a SLES 11 SP4 minion
-    Given I am authorized as "admin" with password "admin"
-    When I go to the bootstrapping page
+    When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle11sp4_minion" as "hostname"
     And I enter "22" as "port"
@@ -25,8 +27,7 @@ Feature: Bootstrap a SLES 11 SP4 Salt minion
     And I wait until onboarding is completed for "sle11sp4_minion"
 
   Scenario: Check the new bootstrapped SLES 11 SP4 minion in System Overview page
-    Given I am authorized as "admin" with password "admin"
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "sle11sp4_minion"
 

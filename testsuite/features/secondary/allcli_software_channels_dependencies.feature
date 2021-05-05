@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # TODO
@@ -7,6 +7,9 @@
 
 @scope_changing_software_channels
 Feature: Chanel subscription with recommended/required dependencies
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle_minion"
@@ -28,7 +31,6 @@ Feature: Chanel subscription with recommended/required dependencies
     Then I should see the child channel "SLE-Module-Server-Applications15-Pool for x86_64" "selected"
 
   Scenario: Play with recommended and required child channels selection in SSM
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I check the "sle_minion" client
     And I check the "sle_client" client
@@ -48,5 +50,4 @@ Feature: Chanel subscription with recommended/required dependencies
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-Pool for x86_64" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -6,6 +6,9 @@ Feature: Lock packages on traditional client
 
   Background:
     Given I am on the Systems overview page of this "sle_client"
+
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: install packages needed for locking test
     When I install package "orion-dummy" on this "sle_client"

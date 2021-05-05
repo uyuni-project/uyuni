@@ -3,10 +3,11 @@
 
 Feature: Bootstrap a Salt host managed via salt-ssh
 
-@ssh_minion
-  Scenario: Bootstrap a SLES system managed via salt-ssh
-    Given I am authorized
-    And I go to the bootstrapping page
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+  Scenario: Register this SSH minion for service pack migration
+    And I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
     And I enter the hostname of "ssh_minion" as "hostname"

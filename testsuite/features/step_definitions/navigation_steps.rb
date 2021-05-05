@@ -341,6 +341,16 @@ Given(/^I access the host the first time$/) do
   raise unless has_content?('Create SUSE Manager Administrator')
 end
 
+# Menu permission check
+Given(/^I am authorized for the "([^"]*)" section$/) do |section|
+  case section
+  when 'Admin'
+    step %(I am authorized as "admin" with password "admin")
+  when 'Images'
+    step %(I am authorized as "kiwikiwi" with password "kiwikiwi")
+  end
+end
+
 # Admin Page steps
 Given(/^I am on the Admin page$/) do
   steps %(
@@ -424,20 +434,6 @@ When(/^I uncheck the "([^"]*)" client$/) do |host|
   step %(I uncheck "#{system_name}" in the list)
 end
 
-Given(/^I am on the groups page$/) do
-  steps %(
-    Given I am on the Systems page
-    When I follow the left menu "Systems > System Groups"
-  )
-end
-
-Given(/^I am on the active Users page$/) do
-  steps %(
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Users > User List > Active"
-  )
-end
-
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
@@ -466,6 +462,7 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+  page.reset!
   visit Capybara.app_host
   next if all(:xpath, "//header//span[text()='#{user}']").any?
 
@@ -501,7 +498,6 @@ Then(/^I am logged in$/) do
 end
 
 Given(/^I am on the patches page$/) do
-  step %(I am authorized)
   visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
 end
 
@@ -992,4 +988,8 @@ end
 
 When(/^I clear browser cookies$/) do
   page.driver.browser.manage.delete_all_cookies
+end
+
+When(/^I close the modal dialog$/) do
+  find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
 end

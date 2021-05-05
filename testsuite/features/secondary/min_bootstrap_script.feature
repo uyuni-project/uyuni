@@ -10,6 +10,9 @@
 @scope_onboarding
 Feature: Register a Salt minion via Bootstrap-script
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
@@ -25,7 +28,6 @@ Feature: Register a Salt minion via Bootstrap-script
     Then I should see "sle_minion" via spacecmd
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
@@ -62,7 +64,6 @@ Feature: Register a Salt minion via Bootstrap-script
    Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
   Scenario: Run a remote command on normal SLES minion
-    Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "file /tmp"
