@@ -40,6 +40,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
 import com.redhat.rhn.common.client.InvalidCertificateException;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -187,8 +188,18 @@ public class RepoDetailsAction extends RhnAction {
         setupCryptoKeys(context);
         if (!createMode) {
             request.setAttribute("id", context.getParamAsLong("id"));
-            setupRepo(request, form, ChannelFactory.lookupContentSource(
-                    context.getParamAsLong("id"), context.getCurrentUser().getOrg()));
+            ContentSource repo = ChannelFactory.lookupContentSource(context.getParamAsLong("id"),
+                    context.getCurrentUser().getOrg());
+            if (repo == null) {
+                LocalizationService ls = LocalizationService.getInstance();
+                LookupException e = new LookupException("Repo with id " + context.getParamAsLong("id") +
+                        " does not exist");
+                e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.repo"));
+                e.setLocalizedReason1(ls.getMessage("lookup.jsp.reason1.repo"));
+                e.setLocalizedReason2(ls.getMessage("lookup.jsp.reason2.repo"));
+                throw e;
+            }
+            setupRepo(request, form, repo);
         }
     }
 
