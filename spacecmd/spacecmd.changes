@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 05 16:31:43 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.8-1
 - Rename system migration to system transfer
 - Rename SP to product migration
 
