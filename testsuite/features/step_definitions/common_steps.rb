@@ -73,6 +73,23 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   )
 end
 
+When(/^I wait until at least (\d+) events "([^"]*)" are completed, refreshing the page$/) do |amount, event|
+  repeat_until_timeout(message: "Couldn't find the event #{event}") do
+    xpath = "//tr/td[3]/a[contains(text(),'#{event}')]"
+    matches = all(:xpath, xpath, wait: 1)
+
+    break if matches.length >= amount.to_i
+
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
+  end
+end
+
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
   repeat_until_timeout(message: "Couldn't find the event #{event}") do
     now = Time.now
