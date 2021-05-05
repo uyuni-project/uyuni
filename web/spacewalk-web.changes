@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 05 16:41:44 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.15-1
 - Add template-based content filter creation
 - Parse ansible inventory and show registered systems
 - virtual console monitors VM state changes
