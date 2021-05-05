@@ -1,3 +1,5 @@
+- catch not found repository and create a standard error page (bsc#1183992)
+
 -------------------------------------------------------------------
 Mon May 10 17:43:42 CEST 2021 - jgonzalez@suse.com
 
