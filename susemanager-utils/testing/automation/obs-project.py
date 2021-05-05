@@ -14,6 +14,7 @@ def add(args):
     pr_project = args.prproject
     pull_number = args.pullnumber
     maintainer=args.setmaintainer
+    disablepublish = args.disablepublish
     pr_project = pr_project + ":" + pull_number
     target_repo = args.repo
     config_file = args.configfile
@@ -68,6 +69,12 @@ def add(args):
         print("DEBUG: Adding user {} as maintainer".format(auth_user))
         new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
         root.append(new_person)
+
+    if (disablepublish):
+        print("DEBUG: disabling publishing")
+        root.remove(root.find("publish"))
+        node = ET.fromstring("<publish><disable/></publish>")
+        root.append(node)
 
     root.find("description").text=str(datetime.datetime.now())
 
@@ -174,6 +181,7 @@ parser_add.add_argument('--project', help="Project from which to \"branch\" from
 parser_add.add_argument('--repo', help="Repo to build for, defaults to openSUSE.*|SLE.*", default="openSUSE.*|SLE.*")
 parser_add.add_argument('pullnumber', help="Pull Request number, for example 1")
 parser_add.add_argument('--setmaintainer', help="Set maintainer", default="")
+parser_add.add_argument('--disablepublish', help="Disable the publish", action="store_true", default=False)
 parser_add.set_defaults(func=add)
 
 parser_remove = subparser.add_parser("remove", help="remove project")
