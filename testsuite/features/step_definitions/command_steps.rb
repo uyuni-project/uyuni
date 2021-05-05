@@ -792,7 +792,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   elsif os_family =~ /^centos/
     pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
-    pkgs = 'libopenscap8 ssg-debderived scap-security-guide-ubuntu'
+    pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
