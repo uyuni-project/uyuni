@@ -16,11 +16,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 21:27+0000\n"
+"POT-Creation-Date: 2021-05-05 01:58+0000\n"
 "PO-Revision-Date: 2021-05-05 01:57+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"web-master-test/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-master-"
+"test/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2137,7 +2137,9 @@ msgstr "ルール"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr "選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除できません。"
+msgstr ""
+"選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除で"
+"きません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
@@ -2654,7 +2656,9 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 msgid "Formula saved. Edit configuration options "
-msgstr "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記を適用してください "
+msgstr ""
+"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
+"を適用してください "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -3699,13 +3703,16 @@ msgstr "内容を読み込んでいます..."
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
+msgstr ""
+"データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr "Ansible 制御ノード設定: playbook 検出のためのパス追加と、インベントリファイルの内部調査を行ないます。"
+msgstr ""
+"Ansible 制御ノード設定: playbook 検出のためのパス追加と、インベントリファイル"
+"の内部調査を行ないます。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
@@ -4357,7 +4364,9 @@ msgstr "子チャンネル:"
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネルをサブスクライブします。"
+msgstr ""
+"このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
+"をサブスクライブします。"
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4448,9 +4457,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 "
-"'ssh_push_sudo_user' の鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH "
-"鍵を配置したあと、ブートストラップ処理の際に設定されます。"
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対して"
+"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user' の"
+"鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH 鍵を配置したあ"
+"と、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
