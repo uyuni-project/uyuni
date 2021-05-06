@@ -4,6 +4,8 @@ export class Cancelable<T = any> extends Promise<T> {
   cancel!: (reason?: any) => void;
 }
 
+//TEST
+
 function cancelable<T = any>(promise: Promise<T>, onCancel?: (arg0: Error | void) => void): Cancelable<T> {
   let rejectFn: (reason: any) => void;
   let isCancelled = false;
