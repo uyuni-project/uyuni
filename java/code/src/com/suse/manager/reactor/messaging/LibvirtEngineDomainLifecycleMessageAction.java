@@ -127,6 +127,11 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                     // We need to check if the VM is still defined and delete it if needed
                     if (!migrated && Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
                         virtManager.getGuestDefinition(minionId, message.getDomainUUID()).isEmpty()) {
+                        // Ensure the state is updated since this could be shown for stopped cluster VMs
+                        if (vm.isRegisteredGuest()) {
+                            VirtualInstanceManager.updateGuestVirtualInstance(vm, vm.getName(), state, null,
+                                    vm.getGuestSystem(), vm.getNumberOfCPUs(), vm.getTotalMemory());
+                        }
                         VirtualInstanceManager.deleteGuestVirtualInstance(vm);
                         unwatchVirtualMachine(minionId, message.getDomainName());
                     }
