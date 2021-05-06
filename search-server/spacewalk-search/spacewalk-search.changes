@@ -1,3 +1,6 @@
+- prevent writing error messages when just skipping the indexer run
+ (bsc#1185628)
+
 -------------------------------------------------------------------
 Mon Nov 23 15:14:38 CET 2020 - jgonzalez@suse.com
 
