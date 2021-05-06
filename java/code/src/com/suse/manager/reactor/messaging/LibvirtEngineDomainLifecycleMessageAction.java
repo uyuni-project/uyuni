@@ -76,7 +76,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                     // We got a machine created from outside SUMA,
                     // ask Salt for details on it to create it
                     Optional<GuestDefinition> result = virtManager.getGuestDefinition(
-                            minionId, message.getDomainName());
+                            minionId, message.getDomainUUID());
 
                     result.ifPresent(def -> {
                         VirtualInstanceState state = VirtualInstanceFactory.getInstance().getStoppedState();
@@ -126,7 +126,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
                     // We need to check if the VM is still defined and delete it if needed
                     if (!migrated && Arrays.asList("undefined", "stopped", "shutdown", "crashed").contains(event) &&
-                        virtManager.getGuestDefinition(minionId, message.getDomainName()).isEmpty()) {
+                        virtManager.getGuestDefinition(minionId, message.getDomainUUID()).isEmpty()) {
                         VirtualInstanceManager.deleteGuestVirtualInstance(vm);
                         unwatchVirtualMachine(minionId, message.getDomainName());
                     }
@@ -142,7 +142,7 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                             return;
                         }
                         final Optional<GuestDefinition> updatedDef = message.getDetail().equals("updated") ?
-                                virtManager.getGuestDefinition(minionId, message.getDomainName()) :
+                                virtManager.getGuestDefinition(minionId, message.getDomainUUID()) :
                                 Optional.empty();
 
                         // Check if we need to restart the VM now

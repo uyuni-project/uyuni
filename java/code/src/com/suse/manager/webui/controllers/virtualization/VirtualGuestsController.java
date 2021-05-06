@@ -228,12 +228,9 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     public String getGuest(Request request, Response response, User user, Server host) {
         String uuid = request.params("uuid");
         MinionServer minion = host.asMinionServer().orElseThrow(NotFoundException::new);
-        DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
-        VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
-                .findFirst().orElseThrow(NotFoundException::new);
 
-        GuestDefinition definition = virtManager.getGuestDefinition(minion.getMinionId(),
-                guest.getName()).orElseThrow(NotFoundException::new);
+        GuestDefinition definition = virtManager.getGuestDefinition(minion.getMinionId(), uuid)
+                .orElseThrow(NotFoundException::new);
 
         return json(response, definition);
     }
@@ -366,8 +363,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         }
 
         String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
-        GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
-                orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
+        GuestDefinition def = virtManager.getGuestDefinition(minionId, guestUuid)
+                .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
         int port = def.getGraphics().getPort();
 
@@ -407,8 +404,8 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         }
 
         String minionId = host.asMinionServer().orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST)).getMinionId();
-        GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
-                orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
+        GuestDefinition def = virtManager.getGuestDefinition(minionId, guestUuid)
+                .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
 
         return json(response, getConsoleToken(hostname, def));
