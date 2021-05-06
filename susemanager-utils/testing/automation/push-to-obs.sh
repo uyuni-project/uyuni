@@ -23,9 +23,11 @@ help() {
   echo "      for example, if you want to package only the changes from a PR on"
   echo "      a separate project"
   echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links"
+  echo "  -x  Enable parallel builds"
   echo ""
 }
 
+PARALLEL_BUILD="FALSE"
 
 while getopts ":d:c:p:n:vthe" opts; do
   case "${opts}" in
@@ -36,6 +38,7 @@ while getopts ":d:c:p:n:vthe" opts; do
     t) TEST="-t";;
     n) OBS_TEST_PROJECT="-n ${OPTARG}";;
     e) EXTRA_OPTS="-e";;
+    x) PARALLEL_BUILD="TRUE";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -71,7 +74,12 @@ date
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
-    docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${CMD}; RET=\${?}; exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+    DOCKER_CMD="docker run --rm=true -v \"$GITROOT:/manager\" -v \"/srv/mirror:/srv/mirror\" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c \"${CMD}; RET=\${?}; exit \${RET}\" | tee ${GITROOT}/logs/${p}.log"
+    if [ "$PARALLEL_BUILD" == "TRUE" ];then
+        $DOCKER_CMD &
+    else
+        $DOCKER_CMD
+    fi
 done
 echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
 wait
