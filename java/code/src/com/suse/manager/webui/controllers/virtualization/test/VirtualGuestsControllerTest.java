@@ -108,15 +108,23 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             }
 
             @Override
-            public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
-                Optional<Map<String, VmInfoJson>> vmInfo = SaltTestUtils.<Map<String, VmInfoJson>>getSaltResponse(
-                        "/com/suse/manager/webui/controllers/virtualization/test/virt.vm.info.json",
+            public Optional<GuestDefinition> getGuestDefinition(String minionId, String uuidIn) {
+                Optional<Map<String, JsonElement>> vm = SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm_definition.json",
                         Collections.emptyMap(),
-                        new TypeToken<Map<String, VmInfoJson>>() { });
-                return SaltTestUtils.<String>getSaltResponse(
-                        "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
-                        .map(xml -> GuestDefinition.parse(xml,
-                                vmInfo.map(data -> data.get(domainName))));
+                        new TypeToken<Map<String, JsonElement>>() { });
+                return vm.map(data -> {
+                    Optional<VmInfoJson> info = Optional.empty();
+                    if (data.containsKey("info")) {
+                        info = Optional.ofNullable(new GsonBuilder().create()
+                                .fromJson(data.get("info"), new TypeToken<VmInfoJson>() { }.getType()));
+                    }
+                    if (data.containsKey("definition")) {
+                        String xml = data.get("definition").getAsString();
+                        return GuestDefinition.parse(xml, info);
+                    }
+                    return null;
+                });
             }
 
             @Override

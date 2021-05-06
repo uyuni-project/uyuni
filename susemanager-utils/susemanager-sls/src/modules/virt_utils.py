@@ -7,6 +7,12 @@ from pathlib import Path
 import os.path
 import subprocess
 from xml.etree import ElementTree
+try:
+    import libvirt
+except ImportError:
+    pass
+
+from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
 
@@ -124,3 +130,43 @@ def host_info():
         "hypervisor": __salt__["virt.get_hypervisor"](),
         "cluster_other_nodes": cluster_nodes,
     }
+
+
+def vm_definition(uuid):
+    """
+    Get the result of virt.vm_info and the XML definition in one shot from the UUID.
+    Assumes the regular form of UUID with the dashes, not the one from the DB
+    """
+    cnx = None
+    try:
+        cnx = libvirt.open()
+        domain = cnx.lookupByUUIDString(uuid)
+        name = domain.name()
+        return {"definition": __salt__["virt.get_xml"](name), "info": __salt__["virt.vm_info"](name)[name]}
+    except libvirt.libvirtError:
+        # The VM is not defined in libvirt, may be it is defined in the cluster
+        try:
+            crm_conf = ElementTree.fromstring(
+                subprocess.Popen(
+                    ["crm", "configure", "show", "xml", "type:primitive"],
+                    stdout=subprocess.PIPE,
+                ).communicate()[0]
+            )
+            for primitive in crm_conf.findall(".//primitive[@type='VirtualDomain']"):
+                config_node = primitive.find(".//nvpair[@name='config']")
+                if config_node is not None:
+                    config_path = config_node.get("value")
+                    if config_path is not None:
+                        with open(config_path, 'r') as desc_fd:
+                            desc_content = desc_fd.read()
+                        desc = ElementTree.fromstring(desc_content)
+                        uuid_node = desc.find("./uuid")
+                        if uuid_node is not None and uuid_node.text == uuid:
+                            return {"definition": desc_content}
+        except FileNotFoundError:
+            # May be this is not a cluster node
+            pass
+        finally:
+            if cnx:
+                cnx.close()
+        return {}
