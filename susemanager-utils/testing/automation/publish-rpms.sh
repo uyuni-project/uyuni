@@ -15,10 +15,10 @@ usage()
 
 while getopts ":p:r:a:d:" opts;do
     case "${opts}" in
-        p) echo "PPPP";obs_project=${OPTARG};;
-        r) echo "RRRR";obs_repo=${OPTARG};;
-        a) echo "AAA";obs_arch=${OPTARG};;
-        d) echo "DDDD";repo_dir=${OPTARG};;
+        p) obs_project=${OPTARG};;
+        r) obs_repo=${OPTARG};;
+        a) obs_arch=${OPTARG};;
+        d) repo_dir=${OPTARG};;
         \?) usage;exit -1;;
     esac
 done
