@@ -1,3 +1,4 @@
+- fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
 - Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
 - fix disapearing Autoinstallation Menu for minions (bsc#1184813)
 - catch not found repository and create a standard error page (bsc#1183992)
