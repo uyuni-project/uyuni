@@ -22,6 +22,10 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FI
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileUtils;
@@ -54,6 +58,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -117,6 +122,8 @@ public enum SaltStateGeneratorService {
 
             SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
+            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -515,6 +522,8 @@ public enum SaltStateGeneratorService {
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
+            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
         }
         catch (IOException e) {
             LOG.error("Failed to generate pillar data into " + filePath, e);

@@ -1,3 +1,5 @@
+- fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
+
 -------------------------------------------------------------------
 Tue May 04 13:29:03 CEST 2021 - jgonzalez@suse.com
 
