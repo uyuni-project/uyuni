@@ -375,14 +375,6 @@ Given(/^I am on the Products page$/) do
   )
 end
 
-# Menu permission check
-Given(/^I am authorized for the "([^"]*)" section$/) do |section|
-  case section
-  when 'Admin'
-    step %(I am authorized as "admin" with password "admin")
-  end
-end
-
 # access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
