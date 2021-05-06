@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-04-23 11:57+0000\n"
+"PO-Revision-Date: 2021-05-06 21:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -161,9 +161,8 @@ msgid "Save Changes"
 msgstr "Uložit změny"
 
 #: ../html/src/components/config-channels.tsx:318
-#, fuzzy
 msgid "Execute States"
-msgstr "Opakující se stavy"
+msgstr "Výkonné stavy"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
@@ -450,7 +449,6 @@ msgid "No flavors"
 msgstr "Bez variant"
 
 #: ../html/src/components/input/Select.test.tsx:72
-#, fuzzy
 msgid "No flavor"
 msgstr "Bez variant"
 
@@ -480,9 +478,8 @@ msgid "Next"
 msgstr "Další"
 
 #: ../html/src/components/pagination.tsx:33
-#, fuzzy
 msgid "Last"
-msgstr "Poslední jméno (příjmení)"
+msgstr "Poslední"
 
 #: ../html/src/components/pagination.tsx:88
 msgid "Page"
@@ -703,31 +700,28 @@ msgstr "Monitorování bylo úspěšně deaktivováno."
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
+"Exportér Tomcat Prometheus je připraven, ale konfigurace JMX je zakázána. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
+"Exportér Tomcat Prometheus není připraven, ale konfigurace JMX je povolena. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
 msgstr ""
 "Exportér Taskomatic Prometheus je aktivní, ale konfigurace JMX je "
-"deaktivována. Stisknutím tlačítka Povolit povolíte konfiguraci JMX nebo "
-"stisknutím Zakázat zastavíte exportér Prometheus."
+"deaktivována. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
 msgstr ""
 "Exportér Taskomatic Prometheus neběží, ale konfigurace JMX je povolena. "
-"Stisknutím tlačítka Zakázat zakážete konfiguraci JMX nebo stisknutím Povolit "
-"spustíte exportér Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -776,9 +770,8 @@ msgid "Disabled"
 msgstr "Zakázáno"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:147
-#, fuzzy
 msgid "Server Monitoring"
-msgstr "Server monitoruje sám sebe"
+msgstr "Monitorování serveru"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
 msgid "The server uses "
@@ -790,7 +783,7 @@ msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
-msgstr ""
+msgstr " exportéry pro zobrazení metriky o vašem prostředí."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Refer to the "
@@ -802,7 +795,7 @@ msgstr "dokumentace"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
-msgstr ""
+msgstr " naučit se, jak tyto metriky využívat."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:242
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:262
@@ -862,7 +855,6 @@ msgid "Monitoring"
 msgstr "Monitorování"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:393
-#, fuzzy
 msgid "Restarting"
 msgstr "Restart"
 
@@ -955,23 +947,20 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "Proč se v seznamu nezobrazují všechny produkty?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:362
-#, fuzzy
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
-"Produkty zobrazené v tomto seznamu jsou přímo propojeny                   s "
-"přihlašovacími údaji Vaší organizace (zrcadlená pověření) a Vašimi "
-"předplatnými SUSE."
+"Produkty zobrazené v tomto seznamu jsou přímo propojeny s přihlašovacími "
+"údaji Vaší organizace (zrcadlená pověření) a Vašimi předplatnými SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
-#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "Domníváte-li se, že nějaké produkty chybí, ujistěte se, že jste v předchozím "
-"kroku                   průvodce přidali správná pověření organizace."
+"kroku průvodce přidali správná pověření organizace."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -1378,9 +1367,8 @@ msgid "Messages"
 msgstr "Zprávy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
-#, fuzzy
 msgid "Pins"
-msgstr "Piny "
+msgstr "Piny"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
@@ -1420,7 +1408,6 @@ msgid "Part number"
 msgstr "Číslo části"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
-#, fuzzy
 msgid "Subscription"
 msgstr "Předplatné"
 
