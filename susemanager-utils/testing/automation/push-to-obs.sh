@@ -29,7 +29,7 @@ help() {
 
 PARALLEL_BUILD="FALSE"
 
-while getopts ":d:c:p:n:vthe" opts; do
+while getopts ":d:c:p:n:vthex" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES=${OPTARG};;
