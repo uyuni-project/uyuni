@@ -30,8 +30,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.Set;
+
 
 
 /**
@@ -74,6 +82,26 @@ public class FileUtils {
             log.error("Error trying to write file to disk: [" + path + "]", e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * convenient method to set user/group and permissions of a file in one go.
+     *
+     * @param path path to file
+     * @param user username
+     * @param group groupname
+     * @param permissions set of permissions
+     * @throws IOException when any of the file operations fail
+     */
+    public static void setAttributes(Path path, String user, String group, Set<PosixFilePermission> permissions)
+            throws IOException {
+        FileSystem fileSystem = FileSystems.getDefault();
+        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+        PosixFileAttributeView view  = Files.getFileAttributeView(
+                path, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        view.setOwner(service.lookupPrincipalByName(user));
+        view.setGroup(service.lookupPrincipalByGroupName(group));
+        view.setPermissions(permissions);
     }
 
 
