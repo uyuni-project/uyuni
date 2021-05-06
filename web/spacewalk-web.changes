@@ -1,3 +1,5 @@
+- Fix rerender loop in CLM filter modal
+
 -------------------------------------------------------------------
 Wed May 05 16:41:44 CEST 2021 - jgonzalez@suse.com
 
