@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -68,6 +69,7 @@ import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
@@ -75,7 +77,6 @@ import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -207,10 +208,56 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         server.asMinionServer().ifPresent(minionServer -> {
             Optional<Map<String, Map<String, JsonElement>>> extraData =
                     virtManager.getVmInfos(minionServer.getMinionId());
-            extraData.ifPresent(extra -> extra.forEach((key, value) -> mergeData.stream()
-                            .filter(element -> element.get("name").getAsString().equals(key))
-                            .findFirst()
-                            .ifPresent(item -> item.putAll(value))));
+
+            DataResult<VirtualSystemOverview> noHostData =
+                    SystemManager.virtualGuestsForHostList(user, null, null);
+            noHostData.elaborate();
+
+            extraData.ifPresent(extra -> {
+                // Add all the extra data to the existing ones
+                extra.forEach((key, value) -> mergeData.stream()
+                        .filter(element -> element.get("name").getAsString().equals(key))
+                        .findFirst()
+                        .ifPresent(item -> {
+                            if (value.get("uuid") != null) {
+                                value.remove("uuid");
+                            }
+                            item.putAll(value);
+                        }));
+                // Find the VMs that aren't listed on the host
+                List<Map<String, JsonElement>> missing = extra.entrySet().stream()
+                        .filter(entry -> entry.getValue().get("uuid") != null)
+                        .peek(entry -> {
+                            final String guid = VirtualInstanceManager.fixUuidIfSwappedUuidExists(
+                                    entry.getValue().get("uuid").getAsString().replaceAll("-", ""));
+                            entry.getValue().put("uuid", new JsonPrimitive(guid));
+                        })
+                        .filter(entry -> entry.getValue().get("uuid") != null && data.stream()
+                                .noneMatch(item -> item.getUuid().equals(entry.getValue().get("uuid").getAsString())))
+                        .map(entry -> {
+                            VirtualSystemOverview vso = noHostData.stream()
+                                    .filter(vm -> vm.getUuid().equals(entry.getValue().get("uuid").getAsString()))
+                                    .findFirst()
+                                    .orElseGet(() -> {
+                                        VirtualSystemOverview fakeVso = new VirtualSystemOverview();
+                                        fakeVso.setUuid(entry.getValue().get("uuid").getAsString());
+                                        fakeVso.setMemory(entry.getValue().get("memory").getAsLong());
+                                        fakeVso.setVcpus(entry.getValue().get("vcpus").getAsLong());
+                                        fakeVso.setName(entry.getKey());
+                                        VirtualInstanceState state = VirtualInstanceFactory.getInstance()
+                                                .getStoppedState();
+                                        fakeVso.setStateLabel(state.getLabel());
+                                        fakeVso.setStateName(state.getName());
+                                        return fakeVso;
+                                    });
+                            Map<String, JsonElement> vmData = GSON.fromJson(GSON.toJson(vso),
+                                    new TypeToken<Map<String, JsonElement>>() { }.getType());
+                            vmData.putAll(extra.get(entry.getKey()));
+                            return vmData;
+                        })
+                        .collect(Collectors.toList());
+                mergeData.addAll(missing);
+            });
         });
 
         return GSON.toJson(mergeData);
@@ -288,7 +335,26 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 filter(item -> item.getUuid().equals(guestUuid)).findFirst();
 
         if (guest.isEmpty()) {
-            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            host.asMinionServer().ifPresentOrElse(minionServer -> {
+                    Optional<Map<String, Map<String, JsonElement>>> vmInfos =
+                            virtManager.getVmInfos(minionServer.getMinionId());
+                    boolean inCluster = vmInfos.map(info ->  info.values().stream()
+                        .anyMatch(entry -> {
+                            if (entry.containsKey("uuid")) {
+                                String uuid = entry.get("uuid").getAsString().replaceAll("-", "");
+                                return uuid.equals(guestUuid);
+                            }
+                            return false;
+                        })
+                    ).orElse(false);
+                    if (!inCluster) {
+                        throw Spark.halt(HttpStatus.SC_BAD_REQUEST, "No such virtual machine");
+                    }
+                },
+                () -> {
+                    throw Spark.halt(HttpStatus.SC_BAD_REQUEST, "No such virtual machine");
+                }
+            );
         }
 
         /* For the rest of the template */
@@ -348,12 +414,21 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
+        data.put("guestUuid", guestUuid);
         VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
-        Server host = guest.getHostSystem();
-        // The host may be null if the virtual machine has no assigned host yet
-        if (host == null) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+
+        if (guest == null || guest.getHostSystem() == null) {
+            // Not having the VM in the database doesn't mean it doesn't exist somewhere.
+            // Stopped clustered VMs are transient and thus not in the database.
+            // Showing the page and then waiting for an event to come should help when the VM starts.
+            data.put("serverId", "undefined");
+            data.put("guestName", guest != null ? String.format("'%s'", guest.getName()) : "undefined");
+            data.put("guestState", guest != null ? String.format("'%s'", guest.getState().getLabel()) : "undefined");
+            data.put("graphicsType", "undefined");
+            data.put("token", String.format("'%s'", getConsoleToken(null, -1)));
+            return new ModelAndView(data, jadeTemplatesPath + "/console.jade");
         }
+        Server host = guest.getHostSystem();
 
         try {
             ensureAccessToVirtualInstance(user, guest);
@@ -366,15 +441,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         GuestDefinition def = virtManager.getGuestDefinition(minionId, guestUuid)
                 .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
-        int port = def.getGraphics().getPort();
 
-        /* For the rest of the template */
-        data.put("serverId", guest.getHostSystem().getId());
-        data.put("guestUuid", guestUuid);
-        data.put("guestName", guest.getName());
-        data.put("guestState", guest.getState().getLabel());
-        data.put("graphicsType", def.getGraphics().getType());
-        data.put("token", getConsoleToken(hostname, def));
+        data.put("serverId", String.format("'%d'", guest.getHostSystem().getId()));
+        data.put("guestName", String.format("'%s'", guest.getName()));
+        data.put("guestState", String.format("'%s'", guest.getState().getLabel()));
+        data.put("graphicsType", String.format("'%s'", def.getGraphics().getType()));
+        data.put("token", String.format("'%s'", getConsoleToken(hostname, def.getGraphics().getPort())));
 
         return new ModelAndView(data, jadeTemplatesPath + "/console.jade");
     }
@@ -395,6 +467,9 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         String guestUuid = request.params("guestuuid");
         VirtualInstance guest = getVirtualInstanceFromUuid(guestUuid);
+        if (guest == null) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
+        }
         Server host = guest.getHostSystem();
         try {
             ensureAccessToVirtualInstance(user, guest);
@@ -408,7 +483,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
 
-        return json(response, getConsoleToken(hostname, def));
+        return json(response, getConsoleToken(hostname, def.getGraphics().getPort()));
     }
 
     private void ensureAccessToVirtualInstance(User user, VirtualInstance guest) throws LookupException {
@@ -423,7 +498,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     private VirtualInstance getVirtualInstanceFromUuid(String uuid) {
         List<VirtualInstance> guests = VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid(uuid);
         if (guests.isEmpty()) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND, "Virtual machine not found");
+            return null;
         }
         if (guests.size() > 1) {
             Spark.halt(HttpStatus.SC_NOT_FOUND, "More than one virtual machine machine this UUID");
@@ -431,20 +506,16 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         return guests.get(0);
     }
 
-    private String getConsoleToken(String hostname, GuestDefinition guest) {
-        int port = guest.getGraphics().getPort();
-
+    private String getConsoleToken(String hostname, int port) {
         String token = null;
-        if (Arrays.asList("spice", "vnc").contains(guest.getGraphics().getType())) {
-            try {
-                WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
-                tokenBuilder.useServerSecret();
-                token = tokenBuilder.getToken();
-            }
-            catch (JoseException e) {
-                LOG.error(e);
-                Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
-            }
+        try {
+            WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
+            tokenBuilder.useServerSecret();
+            token = tokenBuilder.getToken();
+        }
+        catch (JoseException e) {
+            LOG.error(e);
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
         }
         return token;
     }
@@ -679,10 +750,23 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     private Map<String, String> getGuestNames(User user, Server host) {
         DataResult<VirtualSystemOverview> guests =
                 SystemManager.virtualGuestsForHostList(user, host.getId(), null);
-        return guests.stream().collect(Collectors.toMap(
+        Map<String, String> names = guests.stream().collect(Collectors.toMap(
                 VirtualSystemOverview::getUuid,
                 SystemOverview::getName
         ));
+
+        // Get the names of the VMs defined on the cluster if any
+        host.asMinionServer()
+                .flatMap(minionServer -> virtManager.getVmInfos(minionServer.getMinionId()))
+                .ifPresent(data -> {
+                        names.putAll(data.entrySet().stream()
+                                .filter(entry -> entry.getValue().containsKey("uuid"))
+                                .collect(Collectors.toMap(
+                                        entry -> entry.getValue().get("uuid").getAsString().replaceAll("-", ""),
+                                        Map.Entry::getKey)));
+        });
+
+        return names;
     }
 
     private boolean noHostSupportAction(Server host, boolean saltOnly) {

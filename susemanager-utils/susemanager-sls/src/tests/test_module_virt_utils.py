@@ -50,6 +50,21 @@ CRM_CONFIG_XML = b"""<?xml version="1.0" ?>
 </cib>
 """
 
+CRM_MON_XML = b"""
+<pacemaker-result api-version="2.2" request="crm_mon -1 --output-as xml">
+  <resources>
+    <resource id="vm03" resource_agent="ocf::heartbeat:VirtualDomain" role="Stopped" target_role="Stopped"
+        active="false" orphaned="false" blocked="false" managed="true" failed="false" failure_ignored="false"
+        nodes_running_on="0"/>
+    <resource id="vm01" resource_agent="ocf::heartbeat:VirtualDomain" role="Started" target_role="Started"
+        active="true" orphaned="false" blocked="false" managed="true" failed="false" failure_ignored="false"
+        nodes_running_on="1">
+      <node name="demo-kvm1" id="1084783225" cached="true"/>
+    </resource>
+  </resources>
+</pacemaker-result>
+"""
+
 
 @pytest.mark.parametrize(
     "path,expected",
@@ -124,7 +139,7 @@ def test_vminfo_cluster():
     vminfo_mock = MagicMock(return_value={"vm01": {"graphics": {"type": "vnc"}}})
 
     popen_mock = MagicMock()
-    popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
+    popen_mock.return_value.communicate.side_effect = [(CRM_MON_XML, None), (CRM_CONFIG_XML, None)]
 
     with patch.dict(virt_utils.__salt__, {"virt.vm_info": vminfo_mock}):
         with patch.object(virt_utils.subprocess, "Popen", popen_mock):
@@ -133,6 +148,13 @@ def test_vminfo_cluster():
                 assert info["vm01"].get("cluster_primitive") == "vm01"
                 assert info["vm01"].get("graphics_type") =="vnc"
                 assert info["vm01"].get("definition_path") == "/srv/clusterfs/vm01.xml"
+                assert info["vm01"].get("vcpus") == 1
+                assert info["vm01"]["uuid"] == "15c09f1f-6ac7-43b5-83e9-96a63c40fb14"
+                assert info["vm03"].get("cluster_primitive") == "vm03"
+                assert info["vm03"]["uuid"] == "c4596ec0-4e0e-4a1d-aa43-88ba442d5085"
+                assert info["vm03"].get("definition_path") == "/srv/clusterfs/vm03.xml"
+                assert info["vm03"].get("memory") == 512
+                assert info["vm03"].get("graphics_type") =="vnc"
 
 
 def test_host_info():

@@ -1,3 +1,13 @@
+{%- set vm_info = salt.virt_utils.vm_info(pillar['name']) %}
+{%- set cluster_id = vm_info[pillar['name']].get('cluster_primitive') %}
+
+{%- if cluster_id %}
+temporary_define:
+    mgrcompat.module_run:
+        - name: virt.define_xml_path
+        - path: {{ vm_info[pillar['name']]['definition_path'] }}
+{%- endif %}
+
 domain_update:
     mgrcompat.module_run:
         - name: virt.update
@@ -45,3 +55,20 @@ domain_update:
 {% endif %}
         - graphics:
             type: {{ pillar['graphics']['type'] }}
+{%- if cluster_id %}
+        - require:
+            - mgrcompat: temporary_define
+
+{{ vm_info[pillar['name']]['definition_path'] }}:
+    mgrutils.cmd_dump:
+        - cmd: 'virsh dumpxml --inactive {{ pillar['name'] }}'
+        - require:
+            - mgrcompat: domain_update
+
+temporary_undefine:
+    mgrcompat.module_run:
+        - name: virt.undefine
+        - vm_: {{ pillar['name'] }}
+        - require:
+            - mgrutils: {{ vm_info[pillar['name']]['definition_path'] }}
+{%- endif %}

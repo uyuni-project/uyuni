@@ -53,6 +53,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -144,27 +145,24 @@ public class VirtualizationActionHelper {
     ) {
         BiFunction<T, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
-            if (name.isEmpty()) {
-                // Should never happen since this is for actions on an existing domain, but better log it!
-                LOG.error("This action should always be passed a name");
-                return null;
-            }
-            String uuid = guestNames.entrySet().stream()
-                    .filter(e -> e.getValue().equals(name.get()))
-                    .map(Map.Entry::getKey)
-                    .findFirst()
-                    .orElse(null);
-            List<VirtualInstance> instances = VirtualInstanceFactory.getInstance()
-                    .lookupVirtualInstanceByUuid(uuid);
-            BaseVirtualizationGuestAction action = (BaseVirtualizationGuestAction)
-                    ActionFactory.createAction(actionType);
-            if (instances.size() == 1 && actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_START) &&
-                    instances.get(0).getState().getLabel().equals("paused")) {
-                action = (BaseVirtualizationGuestAction) ActionFactory
-                        .createAction(ActionFactory.TYPE_VIRTUALIZATION_RESUME);
-            }
-            action.setName(actionType.getName());
-            return action;
+            AtomicReference<BaseVirtualizationGuestAction> action =
+                    new AtomicReference<>((BaseVirtualizationGuestAction) ActionFactory.createAction(actionType));
+            name.ifPresent(vmName -> {
+                String uuid = guestNames.entrySet().stream()
+                        .filter(e -> e.getValue().equals(name.get()))
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElse(null);
+                List<VirtualInstance> instances = VirtualInstanceFactory.getInstance()
+                        .lookupVirtualInstanceByUuid(uuid);
+                if (instances.size() == 1 && actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_START) &&
+                        instances.get(0).getState().getLabel().equals("paused")) {
+                    action.set((BaseVirtualizationGuestAction) ActionFactory
+                            .createAction(ActionFactory.TYPE_VIRTUALIZATION_RESUME));
+                }
+            });
+            action.get().setName(actionType.getName());
+            return action.get();
         };
 
         return getGuestBaseActionCreator(actionCreator, guestNames);
