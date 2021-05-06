@@ -134,8 +134,10 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.DnsHostDef;
 import com.suse.manager.virtualization.DnsTxtDef;
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.virtualization.VirtStatesHelper;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -1614,6 +1616,23 @@ public class SaltServerActionService {
                 .lookupVirtualInstanceByHostIdAndUuid(minionSummary.getServerId(), uuid);
         if (domain != null) {
             domainName = domain.getName();
+        }
+        else {
+            // We may have a stopped VM from a cluster that is not defined anywhere in our DB
+            // Check if the VM is listed in the cluster VMs
+            VirtManager virtManager = new VirtManagerSalt(saltApi);
+            domainName = virtManager.getVmInfos(minionSummary.getMinionId())
+                    .flatMap(infos -> infos.entrySet().stream()
+                            .filter(entry -> {
+                            JsonElement vmUuid = entry.getValue().get("uuid");
+                            if (vmUuid == null) {
+                                return false;
+                            }
+                            return vmUuid.getAsString().replaceAll("-", "").equals(uuid);
+                        })
+                        .map(Map.Entry::getKey)
+                        .findFirst())
+                    .orElse(null);
         }
         return domainName;
     }
