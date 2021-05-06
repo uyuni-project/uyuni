@@ -1,7 +1,7 @@
 """
 Unit tests for the virt_utils module
 """
-from mock import MagicMock, patch
+from mock import MagicMock, patch, mock_open
 from xml.etree import ElementTree
 import pytest
 
@@ -159,3 +159,58 @@ def test_host_info():
             info = virt_utils.host_info()
             assert info["hypervisor"] == "kvm"
             assert info["cluster_other_nodes"] == ["demo-kvm2", "demo-kvm3"]
+
+
+def test_vm_definition():
+    """
+    test the vm_definition() function with a regular VM
+    """
+    with patch.object(virt_utils.libvirt, "open", MagicMock()) as mock_conn:
+        mock_conn.return_value.lookupByUUIDString.return_value.name.return_value = "vm01"
+        vm_xml = """<domain type='kvm'>
+  <name>vm01</name>
+  <uuid>15c09f1f-6ac7-43b5-83e9-96a63c40fb14</uuid>
+  <memory unit='KiB'>524288</memory>
+  <currentMemory unit='KiB'>524288</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+</domain>"""
+        vm_info = {
+            "uuid": "15c09f1f-6ac7-43b5-83e9-96a63c40fb14",
+            "cpu": 1,
+        }
+
+        with patch.dict(virt_utils.__salt__, {
+            "virt.get_xml": MagicMock(return_value=vm_xml),
+            "virt.vm_info": MagicMock(return_value={"vm01": vm_info})
+        }):
+            actual = virt_utils.vm_definition("15c09f1f-6ac7-43b5-83e9-96a63c40fb14")
+            assert actual["definition"] == vm_xml
+            assert actual["info"] == vm_info
+
+
+def test_vm_definition_cluster():
+    """
+    test the vm_definition() function with a stopped VM defined on a cluster
+    """
+    vm_xml = """<domain type='kvm'>
+  <name>vm01</name>
+  <uuid>15c09f1f-6ac7-43b5-83e9-96a63c40fb14</uuid>
+  <memory unit='KiB'>524288</memory>
+  <currentMemory unit='KiB'>524288</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+  <devices>
+    <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'>
+      <listen type='address' address='0.0.0.0'/>
+    </graphics>
+  </devices>
+</domain>"""
+
+    with patch.object(virt_utils.libvirt, "open", MagicMock()) as mock_conn:
+        with patch.object(virt_utils.libvirt, "libvirtError", Exception) as mock_error:
+            mock_conn.return_value.lookupByUUIDString.side_effect = mock_error
+            with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
+                popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
+                with patch("builtins.open", mock_open(read_data=vm_xml)):
+                    actual = virt_utils.vm_definition("15c09f1f-6ac7-43b5-83e9-96a63c40fb14")
+                    assert actual["definition"] == vm_xml
+                    assert actual.get("info") is None
