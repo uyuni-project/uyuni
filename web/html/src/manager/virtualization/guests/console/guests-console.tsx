@@ -11,23 +11,26 @@ import { MessagePopUp, PopupState } from "./MessagePopUp";
 import styles from "./guests-console.css";
 
 type Props = {
-  hostId: string;
+  hostId?: string;
   guestUuid: string;
-  guestName: string;
-  guestState: string;
-  graphicsType: string;
-  token: string;
+  guestName?: string;
+  guestState?: string;
+  graphicsType?: string;
+  token?: string;
 };
 
 type State = {
-  error: string | string[] | null | undefined;
+  error?: string | string[];
   expanded: boolean;
   connected: boolean;
   popupState: PopupState;
-  password: string | null | undefined;
-  vmState: string;
-  currentToken: string;
-  hostId: string;
+  password?: string;
+  vmState?: string;
+  currentToken?: string;
+  hostId?: string;
+  stateName?: string;
+  graphicsType?: string;
+  guestName?: string;
 };
 
 function getTokenLifetime(token: String): number {
@@ -42,6 +45,7 @@ class GuestsConsole extends React.Component<Props, State> {
   websocket?: WebSocket;
   pageUnloading: boolean;
   intervalId?: number;
+  updateGuestTimeoutId?: number;
   // This is intentionally not in state since we don't want this alone to trigger a rerender
   isRefreshing = false;
 
@@ -54,7 +58,7 @@ class GuestsConsole extends React.Component<Props, State> {
     super(props);
 
     const error =
-      this.clients[props.graphicsType] != null
+      props.graphicsType != null && this.clients[props.graphicsType] != null
         ? undefined
         : t(`Can not show display. Ensure, the virtual machine is stopped, set the display to VNC and start again`);
 
@@ -70,13 +74,17 @@ class GuestsConsole extends React.Component<Props, State> {
       vmState: props.guestState,
       currentToken: props.token,
       hostId: props.hostId,
+      graphicsType: props.graphicsType,
+      guestName: props.guestName,
     };
   }
 
   componentDidMount() {
-    // Schedule token refresh two minutes before its expiration
-    const tokenTime = getTokenLifetime(this.state.currentToken);
-    this.intervalId = window.setInterval(this.refreshToken, tokenTime - 120000);
+    if (this.state.currentToken != null) {
+      // Schedule token refresh two minutes before its expiration
+      const tokenTime = getTokenLifetime(this.state.currentToken);
+      this.intervalId = window.setInterval(this.refreshToken, tokenTime - 120000);
+    }
 
     this.connect();
   }
@@ -86,6 +94,9 @@ class GuestsConsole extends React.Component<Props, State> {
     this.client?.removeErrorHandler();
     if (this.intervalId) {
       window.clearInterval(this.intervalId);
+    }
+    if (this.updateGuestTimeoutId) {
+      clearTimeout(this.updateGuestTimeoutId);
     }
   }
 
@@ -115,10 +126,12 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   connect = () => {
-    if (this.state.vmState !== "stopped" && this.client == null) {
+    if (this.state.graphicsType != null && this.state.vmState !== "stopped"
+        && Object.keys(this.clients).includes(this.state.graphicsType)
+        && this.state.currentToken != null && this.client == null) {
       const port = window.location.port ? `:${window.location.port}` : "";
       const url = `wss://${window.location.hostname}${port}/rhn/websockify/?token=${this.state.currentToken}`;
-      this.client = new this.clients[this.props.graphicsType](
+      this.client = new this.clients[this.state.graphicsType](
         "canvas",
         url,
         this.onConnect,
@@ -236,6 +249,25 @@ class GuestsConsole extends React.Component<Props, State> {
     );
   };
 
+  updateGuestData = () => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.state.hostId}/guest/${this.props.guestUuid}`,
+      'application/json').promise
+      .then((response) => {
+        this.setState({
+          graphicsType: response.graphics?.type,
+          guestName: response.name,
+        }, this.refreshToken);
+      }, (xhr) => {
+        if (xhr.status === 404) {
+          if (this.updateGuestTimeoutId) {
+            clearTimeout(this.updateGuestTimeoutId);
+          }
+          // We may have hit the time where the machine is not yet in the DB, try again
+          this.updateGuestTimeoutId = window.setTimeout(() => this.updateGuestData(), 500);
+        }
+      });
+  };
+
   virtEventHandler = (msg: any) => {
     // Ignore all other events that come from other hosts
     // hostIds are parsed as numbers in the message while we get them as string from the properties
@@ -248,6 +280,9 @@ class GuestsConsole extends React.Component<Props, State> {
     }
 
     if (this.state.hostId !== hostId) {
+      if (this.state.hostId == null) {
+        this.setState({hostId}, this.updateGuestData);
+      }
       return;
     }
 
@@ -278,17 +313,17 @@ class GuestsConsole extends React.Component<Props, State> {
 
   render() {
     const canResize = this.client != null && this.client.canResize;
-    const areaClassName = `display_area_${this.props.graphicsType}`;
+    const areaClassName = `display_area_${this.state.graphicsType}`;
     return (
       <>
         <header className={`navbar-pf ${styles.navbar_pf_console}`}>
           <div className={`navbar-header ${styles.navbar_header_console}`}>
             <i className="fa spacewalk-icon-virtual-guest" />
-            {this.props.guestName}
+            {this.state.guestName}
           </div>
           <ul className="nav navbar-nav navbar-utility">
             <li>
-              {this.props.graphicsType === "vnc" && (
+              {this.state.graphicsType === 'vnc' && (
                 <Button
                   title={t("Toggle full size")}
                   icon={this.state.expanded ? "fa-compress" : "fa-expand"}
@@ -309,7 +344,8 @@ class GuestsConsole extends React.Component<Props, State> {
         />
         <div id="display-area" className={`${styles.display_area_console} ${styles[areaClassName]}`}>
           <div id="canvas" className={styles.canvas}>
-            {this.state.vmState !== "running" && <div className="col-md-12">{t("Guest is not running")}</div>}
+            { this.state.vmState != null && this.state.vmState !== "running" && this.state.vmState !== "running" && <div className="col-md-12">{t('Guest is not running')}</div> }
+            { this.state.vmState == null && <div className="col-md-12">{t('Unknown guest')}</div> }
           </div>
         </div>
       </>

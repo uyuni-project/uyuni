@@ -192,7 +192,7 @@ public class VirtualInstanceManager extends BaseManager {
      * @param virtualInstance guest to remove
      */
     public static void deleteGuestVirtualInstance(VirtualInstance virtualInstance) {
-        if (virtualInstance.isRegisteredGuest()) {
+        if (virtualInstance.isRegisteredGuest() && virtualInstance.getHostSystem() != null) {
             virtualInstance.getHostSystem().removeGuest(virtualInstance);
             virtualInstance.setHostSystem(null);
         }

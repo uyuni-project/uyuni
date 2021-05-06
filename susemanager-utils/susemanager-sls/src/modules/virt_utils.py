@@ -5,6 +5,7 @@ virt utility functions
 import logging
 from pathlib import Path
 import os.path
+import re
 import subprocess
 from xml.etree import ElementTree
 try:
@@ -66,16 +67,30 @@ def vm_info(name=None):
     """
     Provide additional virtual machine infos
     """
-    infos = __salt__["virt.vm_info"](name)
-    all_vms = {
-        vm_name: {
-            "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
+    try:
+        infos = __salt__["virt.vm_info"](name)
+        all_vms = {
+            vm_name: {
+                "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
+            }
+            for vm_name in infos.keys()
         }
-        for vm_name in infos.keys()
-    }
+    except CommandExecutionError as err:
+        all_vms = {}
 
     # Find out which VM is managed by a cluster
     try:
+        crm_status = ElementTree.fromstring(
+            subprocess.Popen(
+                ["crm_mon", "-1", "--output-as", "xml"],
+                stdout=subprocess.PIPE,
+            ).communicate()[0]
+        )
+        resource_states = {
+            resource.get('id'): resource.get('active') == "true"
+            for resource
+            in crm_status.findall(".//resources/resource[@resource_agent='ocf::heartbeat:VirtualDomain']")
+        }
         crm_conf = ElementTree.fromstring(
             subprocess.Popen(
                 ["crm", "configure", "show", "xml", "type:primitive"],
@@ -91,10 +106,28 @@ def vm_info(name=None):
                 continue
             desc = ElementTree.parse(path)
             name_node = desc.find("./name")
-            # Don't provide infos on VMs managed by the cluster that aren't running on this node
-            if name_node is not None and name_node.text in all_vms:
+            # Provide infos on VMs managed by the cluster running on this node or not running at all
+            if name_node is not None and name_node.text in all_vms or not resource_states[primitive.get("id")]:
+                if name_node.text not in all_vms:
+                    all_vms[name_node.text] = {}
                 all_vms[name_node.text]["cluster_primitive"] = primitive.get("id")
                 all_vms[name_node.text]["definition_path"] = path
+                # Provide the UUID if possible since this will allow matching the VM with the DB record
+                uuid_node = desc.find("uuid")
+                if uuid_node is not None:
+                    all_vms[name_node.text]["uuid"] = uuid_node.text
+
+                # Report CPU and Memory since we may not have them in the database
+                vcpu_node = desc.find("vcpu")
+                if vcpu_node is not None and vcpu_node.text is not None:
+                    all_vms[name_node.text]["vcpus"] = int(vcpu_node.text)
+                mem_node = desc.find("./memory")
+                if mem_node is not None and mem_node.text is not None:
+                    all_vms[name_node.text]["memory"] = _convert_unit(int(mem_node.text), mem_node.get('unit', 'KiB'))
+
+                graphics_node = desc.find(".//devices/graphics")
+                if graphics_node is not None:
+                    all_vms[name_node.text]["graphics_type"] = graphics_node.get("type")
 
             # No need to parse more XML files if we already had the ones we're looking for
             if name is not None and name_node == name:
@@ -130,6 +163,19 @@ def host_info():
         "hypervisor": __salt__["virt.get_hypervisor"](),
         "cluster_other_nodes": cluster_nodes,
     }
+
+
+def _convert_unit(value, unit):
+    '''
+    Convert a size with unit into MiB
+    '''
+    dec = False
+    if re.match(r"[kmgtpezy]b$", unit.lower()):
+        dec = True
+    elif not re.match(r"(b|[kmgtpezy](ib)?)$", unit.lower()):
+        return None
+    power = "bkmgtpezy".index(unit.lower()[0])
+    return int(value * (10 ** (power * 3) if dec else 2 ** (power * 10)) / (1024 ** 2))
 
 
 def vm_definition(uuid):
