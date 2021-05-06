@@ -542,6 +542,13 @@ When(/^I check the child channel "([^"]*)"$/) do |channel|
   checkbox.set(true)
 end
 
+And(/^I check all the child channels to be migrated$/) do
+  child_channels_checkboxes = all(:xpath, "//input[@type='checkbox' and @name='child_channel']")
+  child_channels_checkboxes.each do |child_channel_checkbox|
+    child_channel_checkbox.set(true)
+  end
+end
+
 When(/^I check the custom channels for "([^"]*)"$/) do |client|
   node = get_target(client)
   _os_version, os_family = get_os_version(node)
