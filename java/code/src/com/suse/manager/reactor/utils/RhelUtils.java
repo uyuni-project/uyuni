@@ -188,7 +188,7 @@ public class RhelUtils {
                     String minorVersion = StringUtils.substringAfter(omatcher.group(2), ".");
                     return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, ""));
                 }
-                else {
+                else { /* This code is probably not used. Alma is being matched by the RHEL matcher. */
                     Matcher almamatcher = ALMA_RELEASE_MATCHER.matcher(releaseFile);
                     if (almamatcher.matches()) {
                         String name = almamatcher.group(1);
@@ -197,7 +197,7 @@ public class RhelUtils {
                         String release = almamatcher.group(3);
                         return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
                     }
-                    else {
+                    else { /* This code is probably not used. Amazon is being matched by the RHEL matcher. */
                         Matcher amzmatcher = AMAZON_RELEASE_MATCHER.matcher(releaseFile);
                         if (amzmatcher.matches()) {
                             String name = amzmatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");

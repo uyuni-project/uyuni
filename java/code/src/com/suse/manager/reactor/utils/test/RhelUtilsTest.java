@@ -127,7 +127,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAlma() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALMALINUX_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("AlmaLinux", os.get().getName());
+        assertEquals("Alma", os.get().getName()); // It's "Alma" instead of "AlmaLinux" because /etc/almalinux-release is being matched by the RHEL matcher, which removes the "Linux" suffix
         assertEquals("8", os.get().getMajorVersion());
         assertEquals("3", os.get().getMinorVersion());
         assertEquals("Purple Manul", os.get().getRelease());
@@ -136,7 +136,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAmazon() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(AMAZON_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("Amazon", os.get().getName());
+        assertEquals("Amazon", os.get().getName()); // It's "Amazon" instead of "AmazonLinux" because /etc/system-release is being matched by the RHEL matcher, which removes the "Linux" suffix
         assertEquals("2", os.get().getMajorVersion());
         assertEquals("Karoo", os.get().getRelease());
     }
@@ -276,7 +276,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testDetectRhelProductAmazon() throws Exception {
-        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_alibaba.json",
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_amazon.json",
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
