@@ -1337,10 +1337,7 @@ public class ChannelFactory extends HibernateFactory {
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
-        if (repoUrl.contains("mirrorlist.centos.org") ||
-                repoUrl.contains("mirrors.aliyun.com") ||
-                repoUrl.contains("mirrors.cloud.aliyuncs.com") ||
-                repoUrl.contains("amazonaws.com")) {
+        if (repoUrl.contains("mirrorlist.centos.org")) {
             criteria.add(Restrictions.eq("sourceUrl", repoUrl));
         }
         else {
