@@ -169,7 +169,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           <dt className="col-xs-2">{t("Registered Systems")}:</dt>
           <dd className="col-xs-8">
             <ul>
-              { content?.knownSystems.map(s => <li><a href={"/rhn/systems/details/Overview.do?sid=" + s.id}>{s.name}</a></li>) }
+              { content?.knownSystems.map(s => <li key={s.id + "_" + s.name}><a href={"/rhn/systems/details/Overview.do?sid=" + s.id}>{s.name}</a></li>) }
             </ul>
           </dd>
         </dl>
@@ -177,7 +177,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           <dt className="col-xs-2">{t("Unknown Hostnames")}:</dt>
           <dd className="col-xs-8">
             <ul>
-              { content?.unknownSystems.map(s => <li>{s}</li>)}
+              { content?.unknownSystems.map(s => <li key={s + "_hostname"}>{s}</li>)}
             </ul>
           </dd>
         </dl>
