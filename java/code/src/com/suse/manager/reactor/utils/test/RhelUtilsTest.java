@@ -136,7 +136,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAmazon() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(AMAZON_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("AmazonLinux", os.get().getName());
+        assertEquals("Amazon", os.get().getName());
         assertEquals("2", os.get().getMajorVersion());
         assertEquals("Karoo", os.get().getRelease());
     }

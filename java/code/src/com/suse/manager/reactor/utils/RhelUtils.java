@@ -200,7 +200,7 @@ public class RhelUtils {
                     else {
                         Matcher amzmatcher = AMAZON_RELEASE_MATCHER.matcher(releaseFile);
                         if (amzmatcher.matches()) {
-                            String name = amzmatcher.group(1).replaceAll(" ", "");
+                            String name = amzmatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
                             String majorVersion = StringUtils.substringBefore(amzmatcher.group(2), ".");
                             String minorVersion = StringUtils.substringAfter(amzmatcher.group(2), ".");
                             String release = amzmatcher.group(3);
@@ -287,7 +287,7 @@ public class RhelUtils {
 
         // next check if AlmaLinux
         if (almaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return almaReleaseFile.map(v -> detectPlainRHEL(v, arch, "Alma"));
+            return almaReleaseFile.map(v -> detectPlainRHEL(v, arch, "AlmaLinux"));
         }
 
         // next check if Amazon Linux
