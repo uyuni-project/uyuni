@@ -39,10 +39,6 @@ public class RhelUtils {
             Pattern.compile("(.+)\\srelease\\s([\\d.]+).*", Pattern.DOTALL);
     private static final Pattern ALIBABA_RELEASE_MATCHER =
             Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*LTS\\s*\\((.+)\\).*", Pattern.DOTALL);
-    private static final Pattern ALMA_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*\\((.+)\\).*", Pattern.DOTALL);
-    private static final Pattern AMAZON_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*\\((.+)\\).*", Pattern.DOTALL);
 
     /**
      * Information about RHEL based OSes.
@@ -160,7 +156,7 @@ public class RhelUtils {
      * @return the parsed content of the release file
      */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
-        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
+        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile); // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
         if (matcher.matches()) {
             String name =
                     matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
@@ -187,26 +183,6 @@ public class RhelUtils {
                     String majorVersion = StringUtils.substringBefore(omatcher.group(2), ".");
                     String minorVersion = StringUtils.substringAfter(omatcher.group(2), ".");
                     return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, ""));
-                }
-                else { /* This code is probably not used. Alma is being matched by the RHEL matcher. */
-                    Matcher almamatcher = ALMA_RELEASE_MATCHER.matcher(releaseFile);
-                    if (almamatcher.matches()) {
-                        String name = almamatcher.group(1);
-                        String majorVersion = StringUtils.substringBefore(almamatcher.group(2), ".");
-                        String minorVersion = StringUtils.substringAfter(almamatcher.group(2), ".");
-                        String release = almamatcher.group(3);
-                        return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
-                    }
-                    else { /* This code is probably not used. Amazon is being matched by the RHEL matcher. */
-                        Matcher amzmatcher = AMAZON_RELEASE_MATCHER.matcher(releaseFile);
-                        if (amzmatcher.matches()) {
-                            String name = amzmatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
-                            String majorVersion = StringUtils.substringBefore(amzmatcher.group(2), ".");
-                            String minorVersion = StringUtils.substringAfter(amzmatcher.group(2), ".");
-                            String release = amzmatcher.group(3);
-                            return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
-                        }
-                    }
                 }
             }
         }
