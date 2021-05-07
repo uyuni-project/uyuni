@@ -156,7 +156,8 @@ public class RhelUtils {
      * @return the parsed content of the release file
      */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
-        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile); // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
+        // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
+        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
         if (matcher.matches()) {
             String name =
                     matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
