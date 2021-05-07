@@ -6,9 +6,11 @@ on:
       - master
     paths:
       - 'web/html/src/**'
+      - 'susemanager-frontend/**'
   pull_request:
     paths:
       - 'web/html/src/**'
+      - 'susemanager-frontend/**'
 
 jobs:
   javascript_build:
