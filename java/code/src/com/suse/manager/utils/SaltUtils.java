@@ -1389,14 +1389,14 @@ public class SaltUtils {
                 .map(CmdResult::getStdout);
         Optional<String> almaReleaseFile =
                 Optional.ofNullable(result.getAlmaReleaseFile())
-                        .map(StateApplyResult::getChanges)
-                        .filter(ret -> ret.getStdout() != null)
-                        .map(CmdResult::getStdout);
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
         Optional<String> amazonReleaseFile =
                 Optional.ofNullable(result.getAmazonReleaseFile())
-                        .map(StateApplyResult::getChanges)
-                        .filter(ret -> ret.getStdout() != null)
-                        .map(CmdResult::getStdout);
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(StateApplyResult::getChanges)
