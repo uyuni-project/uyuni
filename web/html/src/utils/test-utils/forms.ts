@@ -24,7 +24,7 @@ const asyncAnimationFrame = () => new Promise(resolve => window.requestAnimation
 
 /**
  * This is a usable alternative for @testing-library/user-event's `type()`.
- * The library;s `type()` is non-deterministic without a delay and prohibitively
+ * The library's `type()` is non-deterministic without a delay and prohibitively
  * slow even if you use Number.MIN_VALUE as the delay value.
  * Instead we use the `paste()` method which inserts the full text in one go and
  * pretend there is no difference.
