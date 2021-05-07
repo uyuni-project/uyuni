@@ -70,7 +70,6 @@ test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
 }
 echo "Starting building and submission at $(date)"
-date
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
     CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
