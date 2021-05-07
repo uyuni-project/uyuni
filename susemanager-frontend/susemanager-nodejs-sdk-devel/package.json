@@ -81,7 +81,7 @@
     "html-react-parser": "^0.10.0",
     "immer": "^8.0.1",
     "jexl": "2.2.2",
-    "lodash": "^4.17.21",
+    "lodash": "4.17.21",
     "node-gettext": "^3.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
@@ -94,7 +94,7 @@
     "validator": "^13.5.2"
   },
   "resolutions": {
-    "lodash": "4.17.19"
+    "lodash": "4.17.21"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
