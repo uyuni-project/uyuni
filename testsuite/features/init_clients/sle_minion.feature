@@ -43,10 +43,15 @@ Feature: Bootstrap a Salt minion via the GUI
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I click on "Select Channels"
-    And I check all the child channels to be migrated
-    And I check "allowVendorChange"
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
+    And I click on "Select Channels"
+    And I add "SLE-Module-Basesystem15-SP2-Pool for x86_64" to the child channels to migrate
+    And I add "SLE-Module-Basesystem15-SP2-Updates for x86_64" to the child channels to migrate
+    And I add "SLE-Module-Server-Applications15-SP2-Pool for x86_64" to the child channels to migrate
+    And I add "SLE-Module-Server-Applications15-SP2-Updates for x86_64" to the child channels to migrate
+    And I add "SLE-Manager-Tools15-Pool for x86_64 SP2" to the child channels to migrate
+    And I add "SLE-Manager-Tools15-Updates for x86_64 SP2" to the child channels to migrate
+    And I check "allowVendorChange"
     And I click on "Schedule Migration"
     And I should see a "Service Pack Migration - Confirm" text
     And I click on "Confirm"

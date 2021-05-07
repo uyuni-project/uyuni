@@ -558,34 +558,10 @@ When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
 
-When(/^I check the child channel "([^"]*)"$/) do |channel|
-  find(:xpath, "//i[@class='fa fa-angle-right']").click unless has_xpath?("//i[@class='fa fa-angle-down']", wait: 60)
-  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
-  checkbox.set(true)
-end
-
-And(/^I check all the child channels to be migrated$/) do
-  child_channels_checkboxes = all(:xpath, "//input[@type='checkbox' and @name='child_channel']")
-  child_channels_checkboxes.each do |child_channel_checkbox|
-    child_channel_checkbox.set(true)
+When(/^I add "([^"]*)" to the child channels to migrate$/) do |channel|
+  within(:xpath, "//ul[@class='list-channel']/li[strong/text()='Optional Child Channels:']") do
+    find(:xpath, "./ul/li[a/text()='#{channel}']/input").set(true)
   end
-end
-
-When(/^I check the custom channels for "([^"]*)"$/) do |client|
-  node = get_target(client)
-  _os_version, os_family = get_os_version(node)
-  if os_family =~ /^ubuntu/
-    steps %(
-      When I check the child channel "main"
-      And I check the child channel "main-updates"
-    )
-  elsif os_family =~ /^centos/
-    step %(I check the child channel "DVD")
-  end
-  # Both minion and ssh_minion uses the same repositories, so the custom channels
-  client.sub! 'ssh_minion', 'minion'
-  channel = "Custom Channel for #{client}"
-  step %(I check the child channel "#{channel}")
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
