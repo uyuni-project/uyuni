@@ -1,3 +1,5 @@
+- Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
+
 -------------------------------------------------------------------
 Wed May 05 16:35:15 CEST 2021 - jgonzalez@suse.com
 
