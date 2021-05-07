@@ -191,8 +191,7 @@ public class RhelUtils {
                 else {
                     Matcher almamatcher = ALMA_RELEASE_MATCHER.matcher(releaseFile);
                     if (almamatcher.matches()) {
-                        String name =
-                                almamatcher.group(1).replaceAll("(?i)linux", "");
+                        String name = almamatcher.group(1);
                         String majorVersion = StringUtils.substringBefore(almamatcher.group(2), ".");
                         String minorVersion = StringUtils.substringAfter(almamatcher.group(2), ".");
                         String release = almamatcher.group(3);
@@ -201,8 +200,7 @@ public class RhelUtils {
                     else {
                         Matcher amzmatcher = AMAZON_RELEASE_MATCHER.matcher(releaseFile);
                         if (amzmatcher.matches()) {
-                            String name =
-                                    amzmatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
+                            String name = amzmatcher.group(1).replaceAll(" ", "");
                             String majorVersion = StringUtils.substringBefore(amzmatcher.group(2), ".");
                             String minorVersion = StringUtils.substringAfter(amzmatcher.group(2), ".");
                             String release = amzmatcher.group(3);
