@@ -1,3 +1,4 @@
+- Fix binary blob corruptions in tradidional config file deployment (bsc#1183864)
 - Fix for GPG checking on synchonizing mirrored dpkg repo (bsc#1184351)
 
 -------------------------------------------------------------------
