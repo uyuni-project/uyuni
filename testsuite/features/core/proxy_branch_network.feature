@@ -35,8 +35,7 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Enable the branch network formulas on the branch server
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
+    Given I am on the "Formulas" page of this "proxy"
     Then I should see a "Choose formulas" text
     And I should see a "Suse Manager For Retail" text
     And I should see a "General System Configuration" text
@@ -51,8 +50,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize the branch network
-    When I follow "Formulas" in the content area
-    And I follow first "Branch Network" in the content area
+    Given I am on the "Formulas" page of this "proxy"
+    When I follow first "Branch Network" in the content area
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
     # bsc#1132908 - Branch network formula closes IPv6 default route, potentially making further networking fail
@@ -64,8 +63,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize DHCP on the branch server
-    When I follow "Formulas" in the content area
-    And I follow first "Dhcpd" in the content area
+    Given I am on the "Formulas" page of this "proxy"
+    When I follow first "Dhcpd" in the content area
     And I enter "example.org" in domain name field
     And I enter the local IP address of "proxy" in domain name server field
     And I enter "eth1" in listen interfaces field
@@ -89,8 +88,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize DNS on the branch server
-    When I follow "Formulas" in the content area
-    And I follow first "Bind" in the content area
+    Given I am on the "Formulas" page of this "proxy"
+    When I follow first "Bind" in the content area
     # general information:
     And I check include forwarders box
     And I press "Add Item" in config options section
@@ -140,8 +139,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @pxeboot_minion
   Scenario: Parametrize DHCP and DNS for the PXE boot minion
     # dhcpd:
-    When I follow "Formulas" in the content area
-    And I follow first "Dhcpd" in the content area
+    Given I am on the "Formulas" page of this "proxy"
+    When I follow first "Dhcpd" in the content area
     And I press "Add Item" in host reservations section
     And I enter "pxeboot" in third reserved hostname field
     And I enter the local IP address of "pxeboot" in third reserved IP field
@@ -164,8 +163,8 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Apply the branch network formulas via the highstate
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
+    Given I am on the "States" page of this "proxy"
+    When I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
     And I disable repositories after installing branch server
     Then service "dhcpd" is enabled on "proxy"
