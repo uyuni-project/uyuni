@@ -1,3 +1,5 @@
+- spacewalk-hostname-rename: change hostname in /root/.mgr-sync (bsc#1183994)
+
 -------------------------------------------------------------------
 Tue May 04 13:36:23 CEST 2021 - jgonzalez@suse.com
 
