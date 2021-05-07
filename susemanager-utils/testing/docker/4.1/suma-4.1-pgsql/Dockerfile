@@ -5,6 +5,9 @@
 FROM registry.mgr.suse.de/suma-4.1-base:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
+RUN groupadd susemanager
+RUN gpasswd -a tomcat susemanager
+
 # Install the required packages
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh
