@@ -68,7 +68,7 @@
     "__run_num__": 3,
     "changes": {}
   },
-  "cmd_|-amazonelease_|-cat /etc/system-release_|-run": {
+  "cmd_|-amazonrelease_|-cat /etc/system-release_|-run": {
     "comment": "Command \"cat /etc/system-release\" run",
     "name": "cat /etc/system-release",
     "start_time": "14:04:57.667941",
