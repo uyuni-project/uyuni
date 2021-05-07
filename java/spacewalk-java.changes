@@ -1,3 +1,4 @@
+- Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
 - fixing ISE when searching in docs for logged-in users (bsc#1186319)
 - Allow virtualization host entitlement on Xen Dom0 (bsc#1185522)
 - Fix start/end timestamps for xccdf scan details (bsc#1186016)
