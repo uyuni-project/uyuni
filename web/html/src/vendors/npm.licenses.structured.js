@@ -12,7 +12,7 @@ const npmDependencies = [
   { name: "@emotion/react", license: "MIT",  version: "11.4.0" }, 
   { name: "@emotion/serialize", license: "MIT",  version: "1.0.2" }, 
   { name: "@emotion/sheet", license: "MIT",  version: "1.0.1" }, 
-  { name: "@emotion/unitless", license: "MIT",  version: "0.7.5" }, 
+  { name: "@emotion/unitless", license: "MIT",  version: "0.7.4" }, 
   { name: "@emotion/utils", license: "MIT",  version: "1.0.0" }, 
   { name: "@emotion/weak-memoize", license: "MIT",  version: "0.2.5" }, 
   { name: "@hot-loader/react-dom", license: "MIT",  version: "17.0.1+4.13.0" }, 
