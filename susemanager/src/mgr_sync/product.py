@@ -15,10 +15,11 @@
 from __future__ import print_function
 
 from enum import Enum
+from functools import total_ordering
 
 from spacewalk.susemanager.mgr_sync.channel import Channel
 
-
+@total_ordering
 class Product(object):
 
     class Status(str, Enum):  # pylint: disable=too-few-public-methods
@@ -38,6 +39,21 @@ class Product(object):
 
     def __repr__(self):
         return self.to_ascii_row()
+
+    def __eq__(self, other):
+        return (self.friendly_name == other.friendly_name)
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __lt__(self, other):
+        selfIsSUSE = self.friendly_name.startswith("SUSE")
+        otherIsSUSE = other.friendly_name.startswith("SUSE")
+        if selfIsSUSE and not otherIsSUSE:
+            return False
+        if not selfIsSUSE and otherIsSUSE:
+            return True
+        return (self.friendly_name.lower() < other.friendly_name.lower())
 
     @property
     def short_status(self):
@@ -82,6 +98,7 @@ class Product(object):
     def _parse_extensions(self, data):
         for extension in data:
             self.extensions.append(Product(extension))
+        self.extensions.sort()
 
     def matches_filter(self, filter):  # pylint: disable=redefined-builtin
         if not self.extensions:
@@ -109,4 +126,5 @@ def parse_products(data, log):
         log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))
         products.append(prd)
 
+    products.sort()
     return products
