@@ -1,3 +1,6 @@
+- Add support for 'disable_local_repos' salt minion config parameter
+  (bsc#1185568)
+
 -------------------------------------------------------------------
 Mon May 10 17:46:51 CEST 2021 - jgonzalez@suse.com
 
