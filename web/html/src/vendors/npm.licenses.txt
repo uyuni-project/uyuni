@@ -61,8 +61,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/cache v10.0.27
-https://github.com/emotion-js/emotion/tree/master/packages/cache
+@emotion/cache v11.4.0
+https://github.com/emotion-js/emotion/tree/main/packages/cache
 --------------------------------------------------------------------------------
 
 MIT License
@@ -89,63 +89,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/core v10.0.27 - mitchellhamilton <mitchell@mitchellhamilton.me>
-https://github.com/emotion-js/emotion/tree/master/packages/core
---------------------------------------------------------------------------------
-
-MIT License
-
-Copyright (c) Emotion team and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
---------------------------------------------------------------------------------
-@emotion/css v10.0.27
-https://github.com/emotion-js/emotion/tree/master/packages/css
---------------------------------------------------------------------------------
-
-MIT License
-
-Copyright (c) Emotion team and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
---------------------------------------------------------------------------------
-@emotion/hash v0.7.4
+@emotion/hash v0.8.0
 https://github.com/emotion-js/emotion/tree/master/packages/hash
 --------------------------------------------------------------------------------
 
@@ -173,7 +117,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/memoize v0.7.4
+@emotion/memoize v0.7.5
 https://github.com/emotion-js/emotion/tree/master/packages/memoize
 --------------------------------------------------------------------------------
 
@@ -201,8 +145,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/serialize v0.11.15
-https://github.com/emotion-js/emotion/tree/master/packages/serialize
+@emotion/react v11.4.0 - mitchellhamilton <mitchell@mitchellhamilton.me>
+https://github.com/emotion-js/emotion/tree/main/packages/react
 --------------------------------------------------------------------------------
 
 MIT License
@@ -229,36 +173,36 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/sheet v0.9.4
+@emotion/serialize v1.0.2
+https://github.com/emotion-js/emotion/tree/main/packages/serialize
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) Emotion team and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+@emotion/sheet v1.0.1
 https://github.com/emotion-js/emotion/tree/master/packages/sheet
---------------------------------------------------------------------------------
-
-MIT License
-
-Copyright (c) Emotion team and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
---------------------------------------------------------------------------------
-@emotion/stylis v0.8.5
-https://github.com/emotion-js/emotion/tree/master/packages/stylis
 --------------------------------------------------------------------------------
 
 MIT License
@@ -313,8 +257,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/utils v0.11.3
-https://github.com/emotion-js/emotion/tree/master/packages/serialize
+@emotion/utils v1.0.0
+https://github.com/emotion-js/emotion/tree/master/packages/utils
 --------------------------------------------------------------------------------
 
 MIT License
@@ -587,6 +531,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
+hoist-non-react-statics v3.3.2 - Michael Ridgway <mcridgway@gmail.com>
+git://github.com/mridgway/hoist-non-react-statics.git
+--------------------------------------------------------------------------------
+
+Software License Agreement (BSD License)
+========================================
+
+Copyright (c) 2015, Yahoo! Inc. All rights reserved.
+----------------------------------------------------
+
+Redistribution and use of this software in source and binary forms, with or
+without modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+* Neither the name of Yahoo! Inc. nor the names of YUI's contributors may be
+used to endorse or promote products derived from this software without
+specific prior written permission of Yahoo! Inc.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--------------------------------------------------------------------------------
 html-dom-parser v0.2.3 - Mark <mark@remarkablemark.org>
 https://github.com/remarkablemark/html-dom-parser
 --------------------------------------------------------------------------------
@@ -706,7 +686,7 @@ THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-lodash v4.17.20 - John-David Dalton <john.david.dalton@gmail.com>
+lodash v4.17.21 - John-David Dalton <john.david.dalton@gmail.com>
 lodash/lodash
 --------------------------------------------------------------------------------
 
@@ -1408,13 +1388,41 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-react-input-autosize v2.2.2 - Jed Watson
+react-input-autosize v3.0.0 - Jed Watson
 https://github.com/JedWatson/react-input-autosize.git
 --------------------------------------------------------------------------------
 
 The MIT License (MIT)
 
 Copyright (c) 2018 Jed Watson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+react-is v16.12.0
+https://github.com/facebook/react.git
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) Facebook, Inc. and its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1443,8 +1451,8 @@ https://github.com/remarkablemark/react-dom-core
 MIT
 
 --------------------------------------------------------------------------------
-react-select v3.0.8 - Jed Watson
-https://github.com/JedWatson/react-select.git
+react-select v4.3.0 - Jed Watson
+https://github.com/JedWatson/react-select/tree/master/packages/react-select
 --------------------------------------------------------------------------------
 
 MIT
@@ -1674,6 +1682,34 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+stylis v4.0.10 - Sultan Tarimo <sultantarimo@me.com>
+https://github.com/thysultan/stylis.js
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2016-present Sultan Tarimo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
 --------------------------------------------------------------------------------

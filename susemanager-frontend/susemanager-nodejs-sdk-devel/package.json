@@ -55,19 +55,19 @@
     "html-react-parser": "^0.10.0",
     "immer": "^8.0.1",
     "jexl": "2.2.2",
-    "lodash": "^4.17.19",
+    "lodash": "4.17.21",
     "node-gettext": "^3.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.13.0",
-    "react-select": "^3.0.8",
+    "react-select": "^4.3.0",
     "react-toastify": "^6.0.5",
     "senna": "^2.7.8",
     "use-immer": "^0.3.0"
   },
   "resolutions": {
-    "lodash": "4.17.19"
+    "lodash": "4.17.21"
   },
   "scripts": {
     "clean": "rm -rf node_modules",

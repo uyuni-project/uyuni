@@ -9,6 +9,7 @@ on:
     paths:
       - 'web/html/src/**/*jsx?'
       - 'web/html/src/**/*tsx?'
+      - 'susemanager-frontend/**'
 
 jobs:
   javascript_lint:
