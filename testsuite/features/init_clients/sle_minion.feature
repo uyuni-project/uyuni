@@ -53,8 +53,8 @@ Feature: Bootstrap a Salt minion via the GUI
     And I add "SLE-Manager-Tools15-Updates for x86_64 SP2" to the child channels to migrate
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
-    And I should see a "Service Pack Migration - Confirm" text
-    And I click on "Confirm"
+    Then I should see a "Service Pack Migration - Confirm" text
+    When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
   Scenario: Check the migration is successful for this minion

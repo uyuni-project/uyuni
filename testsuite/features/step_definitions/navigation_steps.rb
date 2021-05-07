@@ -560,7 +560,10 @@ end
 
 When(/^I add "([^"]*)" to the child channels to migrate$/) do |channel|
   within(:xpath, "//ul[@class='list-channel']/li[strong/text()='Optional Child Channels:']") do
-    find(:xpath, "./ul/li[a/text()='#{channel}']/input").set(true)
+    path = "./ul/li[a/text()='#{channel}']/input"
+    if has_xpath?(path)
+      find(:xpath, path).set(true)
+    end
   end
 end
 
