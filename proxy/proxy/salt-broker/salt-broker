@@ -145,7 +145,11 @@ class PubChannelProxy(AbstractChannelProxy):
                                              self.opts['publish_port'])
 
             self.debug_log('setting up a XPUB sock on {0}'.format(pub_uri))
+
             frontend = context.socket(zmq.XPUB)
+            # Prevent stopping publishing messages on XPUB socket. (bsc#1182954)
+            frontend.setsockopt(zmq.XPUB_VERBOSE, 1)
+            frontend.setsockopt(zmq.XPUB_VERBOSER, 1)
             frontend.bind(pub_uri)
 
             # Forward all messages
@@ -332,7 +336,7 @@ if __name__ == "__main__":
     }
 
     try:
-        config = yaml.load(open(SALT_BROKER_CONF_FILE))
+        config = yaml.load(open(SALT_BROKER_CONF_FILE), Loader=yaml.SafeLoader)
         if not config:
             config = {}
         if not isinstance(config, dict):
