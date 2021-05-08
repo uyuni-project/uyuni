@@ -151,7 +151,7 @@ public class RhelUtils {
     }
 
     /**
-     * Parse the /etc//etc/redhat|centos|oracle|almalinux|alinux|system-release
+     * Parse the /etc/redhat|centos|oracle|almalinux|alinux|system-release
      * @param releaseFile the content of the release file
      * @return the parsed content of the release file
      */
