@@ -1,3 +1,12 @@
+---
+name: Uyuni - Bugreport
+about: Use this issue template for createing bug reports.
+title: Uyuni Bugreport - Uyuni YYYY.MM
+labels: bug
+assignees:
+
+---
+
 # Additional Information
 
 _The following information is very important in order to help us to help you. Omission of the following details cause delays or could receive no attention at all._
