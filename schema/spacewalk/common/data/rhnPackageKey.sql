@@ -164,6 +164,11 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 -- Uyuni
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '972e5d6c0d20833e', lookup_package_key_type('gpg'), lookup_package_provider('Uyuni') from dual where not exists (select 1 from rhnPackageKey where key_id = '972e5d6c0d20833e'));
 
+-- Alma Linux 8
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '488fcf7c3abb34f8', lookup_package_key_type('gpg'), lookup_package_provider('AlmaLinux') from dual where not exists (select 1 from rhnPackageKey where key_id = '488fcf7c3abb34f8'));
+
+-- Amazon Linux 2
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '11cf1f95c87f5b1a', lookup_package_key_type('gpg'), lookup_package_provider('Amazon') from dual where not exists (select 1 from rhnPackageKey where key_id = '11cf1f95c87f5b1a'));
 
 commit;
 

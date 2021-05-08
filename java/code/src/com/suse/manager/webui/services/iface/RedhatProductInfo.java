@@ -21,6 +21,8 @@ import java.util.Optional;
  */
 public class RedhatProductInfo {
 
+    private final Optional<String> amazonReleaseContent;
+    private final Optional<String> almaReleaseContent;
     private final Optional<String> alibabaReleaseContent;
     private final Optional<String> oracleReleaseContent;
     private final Optional<String> centosReleaseContent;
@@ -32,16 +34,35 @@ public class RedhatProductInfo {
      * @param rhelReleaseContentIn rhel release content
      * @param oracleReleaseContentIn oracle release content
      * @param alibabaReleaseContentIn alibaba release content
+     * @param almaReleaseContentIn alma release content
+     * @param amazonReleaseContentIn amazon release content
      * @param whatProvidesResIn what provides res result
      */
     public RedhatProductInfo(Optional<String> centosReleaseContentIn, Optional<String> rhelReleaseContentIn,
             Optional<String> oracleReleaseContentIn, Optional<String> alibabaReleaseContentIn,
+            Optional<String> almaReleaseContentIn, Optional<String> amazonReleaseContentIn,
             Optional<String> whatProvidesResIn) {
+        this.amazonReleaseContent = amazonReleaseContentIn;
+        this.almaReleaseContent = almaReleaseContentIn;
         this.alibabaReleaseContent = alibabaReleaseContentIn;
         this.oracleReleaseContent = oracleReleaseContentIn;
         this.centosReleaseContent = centosReleaseContentIn;
         this.rhelReleaseContent = rhelReleaseContentIn;
         this.whatProvidesRes = whatProvidesResIn;
+    }
+
+    /**
+     * @return almalinux release content
+     */
+    public Optional<String> getAlmaReleaseContent() {
+        return almaReleaseContent;
+    }
+
+    /**
+     * @return amazon release content
+     */
+    public Optional<String> getAmazonReleaseContent() {
+        return amazonReleaseContent;
     }
 
     /**

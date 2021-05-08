@@ -1291,6 +1291,16 @@ public class SaltUtils {
                                 .map(StateApplyResult::getChanges)
                                 .filter(res -> res.getStdout() != null)
                                 .map(CmdResult::getStdout);
+                Optional<String> almaReleaseFile =
+                        Optional.ofNullable(ret.getAlmaReleaseFile())
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdResult::getStdout);
+                Optional<String> amazonReleaseFile =
+                        Optional.ofNullable(ret.getAmazonReleaseFile())
+                                .map(StateApplyResult::getChanges)
+                                .filter(res -> res.getStdout() != null)
+                                .map(CmdResult::getStdout);
                 Optional<String> resReleasePkg =
                         Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
                                 .map(StateApplyResult::getChanges)
@@ -1298,10 +1308,12 @@ public class SaltUtils {
                                 .map(CmdResult::getStdout);
                 if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                         oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
+                        almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                         resReleasePkg.isPresent()) {
                     Set<InstalledProduct> products = getInstalledProductsForRhel(
                             imageInfo, resReleasePkg,
-                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile);
+                            rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
+                            almaReleaseFile, amazonReleaseFile);
                     imageInfo.setInstalledProducts(products);
                 }
             }
@@ -1375,6 +1387,16 @@ public class SaltUtils {
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
                 .map(CmdResult::getStdout);
+        Optional<String> almaReleaseFile =
+                Optional.ofNullable(result.getAlmaReleaseFile())
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
+        Optional<String> amazonReleaseFile =
+                Optional.ofNullable(result.getAmazonReleaseFile())
+                .map(StateApplyResult::getChanges)
+                .filter(ret -> ret.getStdout() != null)
+                .map(CmdResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(StateApplyResult::getChanges)
@@ -1385,10 +1407,12 @@ public class SaltUtils {
 
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 oracleReleaseFile.isPresent() || alibabaReleaseFile.isPresent() ||
+                almaReleaseFile.isPresent() || amazonReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(
                     server, resReleasePkg,
-                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile);
+                    rhelReleaseFile, centosReleaseFile, oracleReleaseFile, alibabaReleaseFile,
+                    almaReleaseFile, amazonReleaseFile);
             server.setInstalledProducts(products);
         }
         else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString("os"))) {
@@ -1793,12 +1817,14 @@ public class SaltUtils {
            Optional<String> rhelReleaseFile,
            Optional<String> centosRelaseFile,
            Optional<String> oracleReleaseFile,
-           Optional<String> alibabaReleaseFile) {
+           Optional<String> alibabaReleaseFile,
+           Optional<String> almaReleaseFile,
+           Optional<String> amazonReleaseFile) {
 
         Optional<RhelUtils.RhelProduct> rhelProductInfo =
                 RhelUtils.detectRhelProduct(server, resPackage,
                         rhelReleaseFile, centosRelaseFile, oracleReleaseFile,
-                        alibabaReleaseFile);
+                        alibabaReleaseFile, almaReleaseFile, amazonReleaseFile);
 
         if (!rhelProductInfo.isPresent()) {
             LOG.warn("Could not determine RHEL product type for minion: " +
@@ -1832,12 +1858,14 @@ public class SaltUtils {
             Optional<String> rhelReleaseFile,
             Optional<String> centosReleaseFile,
             Optional<String> oracleReleaseFile,
-            Optional<String> alibabaReleaseFile) {
+            Optional<String> alibabaReleaseFile,
+            Optional<String> almaReleaseFile,
+            Optional<String> amazonReleaseFile) {
 
          Optional<RhelUtils.RhelProduct> rhelProductInfo =
                  RhelUtils.detectRhelProduct(image, resPackage,
                          rhelReleaseFile, centosReleaseFile, oracleReleaseFile,
-                         alibabaReleaseFile);
+                         alibabaReleaseFile, almaReleaseFile, amazonReleaseFile);
 
          if (!rhelProductInfo.isPresent()) {
              LOG.warn("Could not determine RHEL product type for image: " +
