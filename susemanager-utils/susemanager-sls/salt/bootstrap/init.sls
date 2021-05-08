@@ -37,7 +37,7 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/alibaba/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
 {%- elif salt['file.file_exists']('/etc/rocky-release') %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/rocky/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/rockylinux/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
 {%- elif salt['file.file_exists']('/usr/share/doc/sles_es-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
