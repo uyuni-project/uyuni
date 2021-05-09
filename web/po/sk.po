@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-05 16:57+0000\n"
+"PO-Revision-Date: 2021-05-09 15:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -3620,7 +3620,7 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "Nenašiel sa žiadny scenár."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
@@ -3711,12 +3711,11 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
 #, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "Akcia bola "
+msgstr "Vykonanie scenára bolo"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -4277,14 +4276,12 @@ msgid "SUSE Manager Default"
 msgstr "Predvolené nastavenie SUSE Manager"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "žiadne kanály potomkov"
+msgstr "Načítavajú sa kanály potomkov.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "Základný kanál"
+msgstr "Základný kanál:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
