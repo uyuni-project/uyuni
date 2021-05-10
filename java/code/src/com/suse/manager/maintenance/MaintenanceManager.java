@@ -534,7 +534,7 @@ public class MaintenanceManager {
         if (calendar.isEmpty()) {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
-        return getCalendarEvents(user, operation, calendar.get(), Optional.empty(), date, startOfWeek);
+        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startOfWeek);
     }
 
     /**
@@ -558,15 +558,15 @@ public class MaintenanceManager {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
         if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
-            return getCalendarEvents(user, operation, calendar.get(), ofNullable(schedule.get().getName()),
+            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()),
                     date, startOfWeek);
         }
         else {
-            return getCalendarEvents(user, operation, calendar.get(), Optional.empty(), date, startOfWeek);
+            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startOfWeek);
         }
     }
 
-    private List<MaintenanceWindowData> getCalendarEvents(User user, String operation, MaintenanceCalendar calendar,
+    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
                                                           Optional<String> eventName, Long date, Long startOfWeek) {
         if (operation.equals("skipBack")) {
             Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
@@ -583,14 +583,14 @@ public class MaintenanceManager {
             date = nextWindow.get().getFromMilliseconds();
         }
 
-        Map<String, Long> activeRange = getActiveRange(user, date, startOfWeek);
+        Map<String, Long> activeRange = getActiveRange(date, startOfWeek);
         Long start = activeRange.get("start");
         Long end = activeRange.get("end");
 
         return icalUtils.getCalendarEvents(calendar, eventName, start, end);
     }
 
-    private Map<String, Long> getActiveRange(User user, Long date, Long startOfWeek) {
+    private Map<String, Long> getActiveRange(Long date, Long startOfWeek) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
         if (startOfWeek == 0) {
