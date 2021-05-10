@@ -6,6 +6,9 @@ type Props = DialogProps & {
   submitText: string;
   submitIcon: string;
   btnClass?: string;
+  item?: any;
+  onConfirm?: (...args: any[]) => any;
+  onConfirmAsync?: (...args: any[]) => Promise<any>;
 };
 
 /**
