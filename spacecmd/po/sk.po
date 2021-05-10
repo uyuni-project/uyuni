@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 15:15+0200\n"
-"PO-Revision-Date: 2021-05-09 15:57+0000\n"
+"PO-Revision-Date: 2021-05-10 16:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1717,7 +1717,7 @@ msgstr "Základný kanál:"
 
 #: ../src/spacecmd/distribution.py:87
 msgid "Invalid channel label"
-msgstr ""
+msgstr "Neplatné označenie kanála"
 
 #: ../src/spacecmd/distribution.py:98
 msgid "Install Types"
@@ -1733,11 +1733,11 @@ msgstr "Neplatný inštalovaný typ"
 
 #: ../src/spacecmd/distribution.py:114
 msgid "A path is required"
-msgstr ""
+msgstr "Vyžaduje sa cesta"
 
 #: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2557
 msgid "A base channel is required"
-msgstr ""
+msgstr "Vyžaduje sa základný kanál"
 
 #: ../src/spacecmd/distribution.py:122
 msgid "An install type is required"
@@ -1746,31 +1746,32 @@ msgstr "Vyžaduje sa inštalovaný typ"
 #: ../src/spacecmd/distribution.py:144
 msgid "distribution_list: List the available autoinstall trees"
 msgstr ""
+"distribution_list: Vypísať zoznam dostupných stromov automatickej inštalácie"
 
 #: ../src/spacecmd/distribution.py:145
 msgid "usage: distribution_list"
-msgstr ""
+msgstr "použitie: distribution_list"
 
 #: ../src/spacecmd/distribution.py:169
 msgid "distribution_delete: Delete a Kickstart tree"
-msgstr ""
+msgstr "distribution_delete: Vymazať strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:170
 msgid "usage: distribution_delete LABEL"
-msgstr ""
+msgstr "strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
 #, python-format
 msgid "No distributions matched argument %s"
-msgstr ""
+msgstr "Žiadne distribúcie sa nezhodujú s argumentom %s"
 
 #: ../src/spacecmd/distribution.py:200
 msgid "Delete distribution tree(s) [y/N]:"
-msgstr ""
+msgstr "Vymazať distribučný strom(y) [a/N]:"
 
 #: ../src/spacecmd/distribution.py:210
 msgid "distribution_details: Show the details of a Kickstart tree"
-msgstr ""
+msgstr "distribution_details: Zobraziť podrobnosti stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:211
 msgid "usage: distribution_details LABEL"
