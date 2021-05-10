@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-06 21:57+0000\n"
+"PO-Revision-Date: 2021-05-10 16:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -842,7 +842,7 @@ msgstr "Restart"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:356
 msgid "Cobbler"
-msgstr "Cobbler Linux server"
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:361
 msgid "Bare-metal systems"
@@ -1429,7 +1429,7 @@ msgstr "Odstranit pin"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
+msgstr "Nejsou definovány žádné PINy. Můžete jeden vytvořit tlačítkem níže."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
@@ -1442,9 +1442,8 @@ msgid "pending next run"
 msgstr "čeká na další běh"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
-#, fuzzy
 msgid "satisfied"
-msgstr "nespokojený"
+msgstr "spokojený"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
 msgid "not satisfied"
@@ -1558,26 +1557,23 @@ msgstr "Nespárované systémy"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
-msgstr ""
+msgstr "Stáhnout CSV"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
-msgstr ""
+msgstr "Jen fyzické nasazení"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
-#, fuzzy
 msgid "Unlimited Virtual Machines"
-msgstr "Vytvořit virtuální stroj"
+msgstr "Neomezené virtuální stroje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
-#, fuzzy
 msgid "1-2 Sockets or 1-2 Virtual Machines"
-msgstr "Vytvořit virtuální stroj"
+msgstr "1-2 sokety nebo 1-2 virtuální stroje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
-#, fuzzy
 msgid "Per-instance"
-msgstr "Instance"
+msgstr "Na každou instanci"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
@@ -1759,9 +1755,8 @@ msgid "scheduled"
 msgstr "naplánována"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:27
-#, fuzzy
 msgid " successfully."
-msgstr "úspěšně"
+msgstr " úspěšně."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
@@ -1776,9 +1771,8 @@ msgid "Cluster "
 msgstr "Klastr "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:40
-#, fuzzy
 msgid " has been added successfully."
-msgstr "Úspěšně odstraněno."
+msgstr " bylo úspěšně přidáno."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:90
 #: ../html/src/manager/clusters/cluster/cluster.tsx:102
@@ -1851,9 +1845,8 @@ msgid "Join"
 msgstr "Připojit"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
-#, fuzzy
 msgid " has been deleted successfully."
-msgstr "Úspěšně odstraněno."
+msgstr " bylo úspěšně odstraněno."
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:46
 msgid "Add an existing cluster"
@@ -2108,11 +2101,11 @@ msgstr "Pravidlo"
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
+"Některé zvolené filtry se používají v projektech, takže je nelze smazat."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "Vybrat"
+msgstr "Vybrat nepoužité"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2126,9 +2119,8 @@ msgid "Content Lifecycle Filters"
 msgstr "Filtry životního cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "Filtrovat podle názvu"
+msgstr "Filtrovat podle názvu projektu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
@@ -2321,6 +2313,8 @@ msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
 msgstr ""
+"Projekt obsahuje kanály s nesynchronizovanými záplatami. Budou "
+"synchronizovány způsobem dle nastavení Vaší organizace."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2530,7 +2524,7 @@ msgstr "Tento kanál je doporučen"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
-msgstr ""
+msgstr "má nesynchronizované opravy"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
@@ -2551,34 +2545,37 @@ msgstr "Stránka nenalezena"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "The page you requested, {0}, was not found."
-msgstr ""
+msgstr "Požadovaná stránka {0} se nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:11
-#, fuzzy
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
 msgstr ""
-"Pokud jste tuto adresu zadali do svého prohlížeče, zkontrolujte pravopis a "
-"velká písmena. Adresa, kterou kopírujete, může být také zastaralá."
+"Pokud jste tuto adresu zadali do svého prohlížeče, důkladně zkontrolujte "
+"zápis a velká písmena."
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
 msgstr ""
+"Pokud jste následovali odkaz, mohl být nesprávný nebo zastaralý. Stiskněte "
+"tlačítko ZPĚT ve Vašem "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
+msgstr "Pokud jste použili záložku, stránka se mohla mezitím přesunout jinam z "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
 msgstr ""
+"Myslíte-li si, že jste na této stránce omylem, kontaktujte nás laskavě s "
+"podrobnostmi, jak jste se sem dostali "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
 msgid ""
@@ -2590,10 +2587,8 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid "Formula saved. Edit configuration options "
-msgstr ""
-"Vzorec uložen. Upravte možnosti konfigurace v povolených vzorcích a použijte "
+msgstr "Vzorec uložen. Upravte možnosti konfigurace "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -2607,9 +2602,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "Změny konfigurace se projeví po restartu počítače."
+msgstr " aby se změny uplatnily."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -2644,9 +2638,8 @@ msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
 
 #: ../html/src/manager/images/image-build.tsx:253
-#, fuzzy
 msgid "Profile Summary"
-msgstr "Souhrn"
+msgstr "Souhrn profilu"
 
 #: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
@@ -2674,14 +2667,12 @@ msgid "Activation Key"
 msgstr "Aktivační klíč"
 
 #: ../html/src/manager/images/image-build.tsx:355
-#, fuzzy
 msgid "Build Image"
-msgstr "Přebudovat obraz"
+msgstr "Sestavit obraz"
 
 #: ../html/src/manager/images/image-build.tsx:371
-#, fuzzy
 msgid "Image Profile"
-msgstr "Profily obrazů"
+msgstr "Profil obrazu"
 
 #: ../html/src/manager/images/image-build.tsx:392
 #: ../html/src/manager/images/image-import.tsx:302
@@ -2743,9 +2734,8 @@ msgid "Target Image Store"
 msgstr "Cílové úložiště obrazu"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:317
-#, fuzzy
 msgid "Dockerfile URL"
-msgstr "Soubor příkazů pro Docker"
+msgstr "URL souboru Dockerfile"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
@@ -2845,7 +2835,7 @@ msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
-msgstr ""
+msgstr "Použít pověření"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
@@ -3164,9 +3154,8 @@ msgid "Updated"
 msgstr "Aktualizováno"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:31
-#, fuzzy
 msgid "Loading runtime information..."
-msgstr "Další informace"
+msgstr "Načítají se informace pro běh..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:65
 msgid "Instance is consistent with SUSE Manager"
@@ -3279,7 +3268,7 @@ msgstr ""
 
 #: ../html/src/manager/login/login.tsx:109
 msgid "Learn more about"
-msgstr ""
+msgstr "Poznat více o"
 
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
@@ -3305,38 +3294,32 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Opravdu chcete tuto stránku zavřít, když probíhá přihlašování?"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
-#, fuzzy
 msgid "Skip to the last maintenance window"
-msgstr "Žádná nadcházející okna údržby"
+msgstr "Přeskočit na poslední okno údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
-#, fuzzy
 msgid "Skip to the next maintenance window"
-msgstr "Žádná nadcházející okna údržby"
+msgstr "Přeskočit na další okno údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
-#, fuzzy
 msgid "There are no more past maintenance windows"
-msgstr "Žádná nadcházející okna údržby"
+msgstr "Žádná okna předchozí údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
-#, fuzzy
 msgid "There are no more future maintenance windows"
-msgstr "Žádná nadcházející okna údržby"
+msgstr "Žádná okna budoucí údržby"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
-msgstr ""
+msgstr "Dnes"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
-#, fuzzy
 msgid "Month"
-msgstr "Měsíčně:"
+msgstr "Měsíc"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
-#, fuzzy
 msgid "Day"
-msgstr "Denně:"
+msgstr "Den"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
@@ -3565,9 +3548,8 @@ msgid "Maintenance schedule has been cleared"
 msgstr "Plán údržby byl vymazán"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
-#, fuzzy
 msgid "Maintenance schedule has been assigned"
-msgstr "Plán údržby byl vymazán"
+msgstr "Plán údržby byl přiřazen"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
@@ -3608,22 +3590,20 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "Scénář nenalezen."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr ""
+msgstr "Soubor soupisu je prázdný."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
-#, fuzzy
 msgid "Loading content.."
-msgstr "Načítání..."
+msgstr "Načítání obsahu..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
-#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "Chyba plánování úlohy v Taskomatic. Zkontrolujte záznamy."
+msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
@@ -3696,14 +3676,12 @@ msgid "Playbook Content"
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+msgstr "Akce byla úspěšně přidána do řetězce akcí"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "Akce byla "
+msgstr "Provedení scénáře bylo"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -4228,14 +4206,12 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "Opravdu chcete tento plán smazat?"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Update "
-msgstr "Aktualizace"
+msgstr "Aktualizace "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Create "
-msgstr "Vytvořit"
+msgstr "Vytvořit "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
@@ -4275,14 +4251,12 @@ msgid "SUSE Manager Default"
 msgstr "Výchozí nastavení Správce SUSE"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "žádné podřízené kanály"
+msgstr "Zavádím podřízené kanály.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "Základní kanál"
+msgstr "Základní kanál:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
@@ -4713,7 +4687,7 @@ msgstr "Žádní Správci virtuálních hostitelů."
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:15
 msgid "File-based"
-msgstr "Založen na  souborech"
+msgstr "Založeno na souborech"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:16
 msgid "VMWare-based"
@@ -4775,7 +4749,7 @@ msgstr "Nesmí obsahovat tyto znaky: /\\"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:149
 msgid "Hypervisor"
-msgstr "Hypervisor"
+msgstr "Hypervizor"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:161
 msgid "Virtual Machine Type"
@@ -5664,9 +5638,8 @@ msgstr ""
 "přihlásit."
 
 #: ../html/src/utils/network.ts:77
-#, fuzzy
 msgid "Resource not found."
-msgstr "Úložiště obrazů nebylo nalezeno"
+msgstr "Zdroj nebyl nalezen."
 
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
