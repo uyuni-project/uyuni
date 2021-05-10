@@ -2516,6 +2516,9 @@ SELECT SP.server_id ID, S.name
   </query>
   <elaborator name="system_overview"/>
   <elaborator name="entitlements"/>
+  <elaborator name="system_config_files_with_diffs" />
+  <elaborator name="is_virtual_guest" />
+  <elaborator name="is_virtual_host" />
 </mode>
 
 <write-mode name="add_to_client_capabilities">
