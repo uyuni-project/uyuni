@@ -101,7 +101,7 @@ After do |scenario|
       puts "Error taking a screenshot: #{e.message}"
     ensure
       debug_server_on_realtime_failure
-      page.reset!
+      step %(I am authorized for the "Admin" section)
     end
   end
   page.instance_variable_set(:@touched, false)
