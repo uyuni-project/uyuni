@@ -28,4 +28,4 @@ cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar $TARGET
 
 # Postgres shutdown (avoid stale memory by shmget())
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql13/bin/pg_ctl stop" ||:
