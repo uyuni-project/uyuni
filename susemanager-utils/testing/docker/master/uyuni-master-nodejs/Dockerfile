@@ -1,6 +1,6 @@
-# Container used to test the JavaScript code of SUSE Manager
+# Container used to test the JavaScript code of Uyuni
 #
-# VERSION               1.0.0
+# VERSION               4.2
 
 FROM registry.mgr.suse.de/uyuni-master-base:latest
 MAINTAINER Matei Albu "malbu@suse.de"
