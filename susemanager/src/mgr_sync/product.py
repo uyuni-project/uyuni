@@ -47,11 +47,11 @@ class Product(object):
         return not (self == other)
 
     def __lt__(self, other):
-        selfIsSUSE = self.friendly_name.startswith("SUSE")
-        otherIsSUSE = other.friendly_name.startswith("SUSE")
-        if selfIsSUSE and not otherIsSUSE:
+        self_is_SUSE = self.friendly_name.startswith("SUSE")
+        other_is_SUSE = other.friendly_name.startswith("SUSE")
+        if self_is_SUSE and not other_is_SUSE:
             return False
-        if not selfIsSUSE and otherIsSUSE:
+        if not self_is_SUSE and other_is_SUSE:
             return True
         return (self.friendly_name.lower() < other.friendly_name.lower())
 
