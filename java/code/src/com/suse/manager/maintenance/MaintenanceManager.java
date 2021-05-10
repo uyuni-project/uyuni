@@ -566,7 +566,7 @@ public class MaintenanceManager {
         }
     }
 
-    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
+    public List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
                                                           Optional<String> eventName, Long date, Long startOfWeek) {
         if (operation.equals("skipBack")) {
             Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
@@ -590,7 +590,7 @@ public class MaintenanceManager {
         return icalUtils.getCalendarEvents(calendar, eventName, start, end);
     }
 
-    private Map<String, Long> getActiveRange(Long date, Long startOfWeek) {
+    public Map<String, Long> getActiveRange(Long date, Long startOfWeek) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
         if (startOfWeek == 0) {
@@ -598,8 +598,8 @@ public class MaintenanceManager {
                     rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
         }
         else {
-            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.MONDAY) ? rangeStart :
-                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart.minusDays(6) :
+                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue() - 1);
         }
 
         ZonedDateTime rangeEnd = rangeStart.plusDays(42);

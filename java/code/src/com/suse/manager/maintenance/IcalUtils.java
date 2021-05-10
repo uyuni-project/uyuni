@@ -153,7 +153,7 @@ public class IcalUtils {
         return sortedLimited;
     }
 
-    private PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
+    public PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
         PeriodList periodList = new PeriodList();
         events.forEach(event -> {
                     try {
