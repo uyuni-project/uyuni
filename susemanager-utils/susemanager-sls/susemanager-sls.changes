@@ -1,3 +1,5 @@
+- fix product detection while bootstrapping RedHat like products (bsc#1185846)
+
 -------------------------------------------------------------------
 Wed May 05 16:44:00 CEST 2021 - jgonzalez@suse.com
 
