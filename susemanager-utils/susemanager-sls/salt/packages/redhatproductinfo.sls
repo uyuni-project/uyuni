@@ -19,7 +19,7 @@ amazonrelease:
   cmd.run:
     - name: cat /etc/system-release
     - onlyif: test -f /etc/system-release
-almalinux:
+almarelease:
   cmd.run:
     - name: cat /etc/almalinux-release
     - onlyif: test -f /etc/almalinux-release
