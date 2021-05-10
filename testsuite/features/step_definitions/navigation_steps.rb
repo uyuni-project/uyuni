@@ -1016,7 +1016,7 @@ end
 
 # Check a Prometheus exporter
 When(/^I check "([^"]*)" exporter$/) do |exporter_type|
-  step %(I check "#{exporter_type}_exporter#enabled")
+  step %(I check "exporters##{exporter_type}_exporter#enabled" if not checked)
 end
 
 # Navigate to a service endpoint
