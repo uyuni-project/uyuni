@@ -1,3 +1,5 @@
+- Fix the problem with wrong icons for virtual systems (bsc#1185507)
+
 -------------------------------------------------------------------
 Mon May 10 17:43:42 CEST 2021 - jgonzalez@suse.com
 
