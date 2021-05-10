@@ -6,7 +6,7 @@ import { Utils as MessagesUtils } from 'components/messages';
 import { Table } from 'components/table/Table';
 import { Column } from 'components/table/Column';
 import { SearchField } from 'components/table/SearchField';
-import { ModalButton } from 'components/dialog/ModalButton';
+import { Button } from 'components/buttons';
 import { LinkButton } from 'components/buttons';
 import { VirtualizationListRefreshApi } from './virtualization-list-refresh-api';
 import { useVirtNotification } from './useVirtNotification';
@@ -53,6 +53,7 @@ export function ListTab(props: Props) {
   const [selected, setSelected] = React.useState(undefined);
   const [errors, setErrors] = React.useState<Array<string>>([]);
   const [lastRefresh, setLastRefresh] = React.useState(Date.now());
+  const [openedModals, setOpenedModals] = React.useState({});
 
   const refresh = (type: string) => {
     if (type === props.type) {
@@ -85,13 +86,15 @@ export function ListTab(props: Props) {
     const action = actionData.find(item => item.type === actionType);
     if (action) {
       return (
-        <ModalButton
+        <Button
           className="btn-default btn-sm"
           title={action.name}
           icon={action.icon}
-          target={`${actionType}-modal`}
-          item={row}
-          onClick={setSelected}
+          handler={() => {
+            setSelected(row);
+            // Mark the corresponding row modal as shown
+            setOpenedModals(Object.assign({}, openedModals, {[`${actionType}-modal`]: true}));
+          }}
         />
       );
     }
@@ -114,7 +117,12 @@ export function ListTab(props: Props) {
           onConfirm={(type, items, params) => onConfirm(type, items.map(item => item[props.idName]), params)}
           canForce={action.canForce}
           forceName={action.forceName}
-          onClose={() => setSelected({})}
+          onClose={() => {
+            // Mark the corresponding modal `${action.type}-modal` hidden
+            setOpenedModals(Object.assign({}, openedModals, {[`${action.type}-modal`]: false}))
+            setSelected({})
+          }}
+          isOpen={openedModals[`${action.type}-modal`] || false}
         />
       ), (
         <ActionConfirm
@@ -128,6 +136,11 @@ export function ListTab(props: Props) {
           onConfirm={(type, items, params) => onConfirm(type, items.map(item => item[props.idName]), params)}
           canForce={action.canForce}
           forceName={action.forceName}
+          onClose={() => {
+            // Mark the corresponding modal `${action.type}-selected-modal` hidden
+            setOpenedModals(Object.assign({}, openedModals, {[`${action.type}-selected-modal`]: false}))
+          }}
+          isOpen={openedModals[`${action.type}-selected-modal`] || false}
         />
       ),
     ]);
@@ -135,15 +148,18 @@ export function ListTab(props: Props) {
 
   const createSelectedModalButton = (action: Object): React.Node => {
     return (
-      <ModalButton
+      <Button
         key={`${action.type}-selected-button`}
         id={`${action.type}-selected`}
         icon={action.icon}
         className="btn-default"
         text={action.name}
         title={t('{0} selected', action.name)}
-        target={`${action.type}-selected-modal`}
         disabled={selectedItems.length === 0}
+        handler={() => {
+          // Mark the corresponding bulk modal as shown
+          setOpenedModals(Object.assign({}, openedModals, {[`${action.type}-selected-modal`]: true}));
+        }}
       />
     );
   }

@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { DeleteDialog } from "./DeleteDialog";
 import { ActionConfirm } from "./ActionConfirm";
 import { ModalLink } from "./ModalLink";
+import { Button } from "../buttons";
 
 
 storiesOf('Dialogs', module)
@@ -29,6 +30,7 @@ storiesOf('Dialogs', module)
     </div>
   ))
   .add('Action confirmation dialog', () => {
+    const [open, setOpen] = React.useState(false);
     const items = [
       {name: "Item 1"},
       {name: "Item 2"},
@@ -41,10 +43,10 @@ storiesOf('Dialogs', module)
     return (
       <div>
         <div style={{height: "100px", display: "flex", alignItems: "center",  justifyContent:"center"}}>
-          <ModalLink
+          <Button
             id={`confirm-modal-link`}
             text="delete (Click me for Testing the modal!!)"
-            target="confirm-modal"
+            handler={() => setOpen(true)}
           />
         </div>
         <ActionConfirm
@@ -57,6 +59,8 @@ storiesOf('Dialogs', module)
           onConfirm={doAction}
           canForce={true}
           forceName="Purge"
+          isOpen={open}
+          onClose={() => setOpen(false)}
         />
       </div>
     );
