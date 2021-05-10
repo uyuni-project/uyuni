@@ -378,6 +378,9 @@ fi
 %else
 %service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
 %endif
+if test -f /var/log/rhn/rhn_server_satellite.log; then 
+    chown -f %{apache_user}:%{apache_group} /var/log/rhn/rhn_server_satellite.log
+fi
 
 %preun tools
 %if 0%{?rhel}
