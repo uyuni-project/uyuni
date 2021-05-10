@@ -43,9 +43,6 @@ class Product(object):
     def __eq__(self, other):
         return (self.friendly_name == other.friendly_name)
 
-    def __ne__(self, other):
-        return not (self == other)
-
     def __lt__(self, other):
         self_is_SUSE = self.friendly_name.startswith("SUSE")
         other_is_SUSE = other.friendly_name.startswith("SUSE")
