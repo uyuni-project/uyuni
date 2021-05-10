@@ -4,16 +4,16 @@
 Feature: Bootstrap a Salt minion via the GUI
 
   Scenario: Bootstrap a SLES minion
-     Given I am authorized
-     When I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle_minion" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I select the hostname of "proxy" from "proxies"
-     And I click on "Bootstrap"
-     And I wait until I see "Successfully bootstrapped host!" text
+    Given I am authorized
+    When I go to the bootstrapping page
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select the hostname of "proxy" from "proxies"
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped minion in System Overview page
     Given I am authorized
@@ -38,19 +38,13 @@ Feature: Bootstrap a Salt minion via the GUI
     And I follow "Proxy" in the content area
     Then I should see "sle_minion" hostname
 
-  Scenario: Migrate this normal minion to SLE 15 SP2
+  Scenario: Migrate this minion to SLE 15 SP2
     Given I am on the Systems overview page of this "sle_spack_migrated_minion"
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I click on "Select Channels"
-    And I add "SLE-Module-Basesystem15-SP2-Pool for x86_64" to the child channels to migrate
-    And I add "SLE-Module-Basesystem15-SP2-Updates for x86_64" to the child channels to migrate
-    And I add "SLE-Module-Server-Applications15-SP2-Pool for x86_64" to the child channels to migrate
-    And I add "SLE-Module-Server-Applications15-SP2-Updates for x86_64" to the child channels to migrate
-    And I add "SLE-Manager-Tools15-Pool for x86_64 SP2" to the child channels to migrate
-    And I add "SLE-Manager-Tools15-Updates for x86_64 SP2" to the child channels to migrate
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Service Pack Migration - Confirm" text
@@ -68,7 +62,8 @@ Feature: Bootstrap a Salt minion via the GUI
     And vendor change should be enabled for SP migration on "sle_spack_migrated_minion"
 
   Scenario: Install the latest Salt on this minion
-    When I enable repositories before installing Salt on this "sle_spack_migrated_minion"
+    When I migrate the non-SUMA repositories on "sle_spack_migrated_minion"
+    And I enable repositories before installing Salt on this "sle_spack_migrated_minion"
     And I install Salt packages from "sle_spack_migrated_minion"
     And I disable repositories after installing Salt on this "sle_spack_migrated_minion"
 

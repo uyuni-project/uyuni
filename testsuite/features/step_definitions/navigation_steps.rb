@@ -558,15 +558,6 @@ When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
 
-When(/^I add "([^"]*)" to the child channels to migrate$/) do |channel|
-  within(:xpath, "//ul[@class='list-channel']/li[strong/text()='Optional Child Channels:']") do
-    path = "./ul/li[a/text()='#{channel}']/input"
-    if has_xpath?(path)
-      find(:xpath, path).set(true)
-    end
-  end
-end
-
 When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
