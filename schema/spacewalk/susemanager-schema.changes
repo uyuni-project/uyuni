@@ -1,3 +1,4 @@
+- Handle virtual machines running on pacemaker cluster
 - Bump version to 4.3.0
 
 -------------------------------------------------------------------
