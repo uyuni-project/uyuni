@@ -31,6 +31,11 @@ docker run --privileged --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $
 if [ $? -ne 0 ]; then
     EXIT=3
 fi
+CMD="/manager/backend/test/docker-backend-server-tests.sh"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=4
+fi
 
 rm -f $GITROOT/backend/common/usix.py*
 
