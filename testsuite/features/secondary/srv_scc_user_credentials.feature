@@ -11,7 +11,8 @@ Feature: SCC user credentials in the Setup Wizard
     Given I am authorized for the "Admin" section
 
   Scenario: Enter some invalid organization credentials
-    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "Organization Credentials"
     And I ask to add new credentials
     And I enter "SCC user" as "edit-user"
     And I enter "SCC password" as "edit-password"
@@ -20,12 +21,14 @@ Feature: SCC user credentials in the Setup Wizard
     And the credentials for "SCC user" should be invalid
 
   Scenario: Make the credentials primary
-    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "Organization Credentials"
     And I make the credentials for "SCC user" primary
     Then the credentials for "SCC user" should be primary
 
   Scenario: Check the associated subscription list
-    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "Organization Credentials"
     And I view the subscription list for "SCC user"
     And I wait until I see "No subscriptions available" text
     And I click on "Close"
@@ -34,7 +37,8 @@ Feature: SCC user credentials in the Setup Wizard
 # A test to edit the credentials is missing
 
   Scenario: Cleanup: delete the new organization credentials
-    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "Organization Credentials"
     And I wait for the trash icon to appear for "SCC user"
     And I ask to delete the credentials for "SCC user"
     And I click on "Delete"

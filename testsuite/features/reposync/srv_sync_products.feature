@@ -6,7 +6,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Let the products page appear
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
     And I wait until I see "Product Description" text
     Then I should see a "Arch" text
     And I should see a "Channels" text
@@ -14,7 +15,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Use the products and architecture filters
-    When I follow the left menu "Admin > Setup Wizard > Products"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
     And I enter "RHEL7" as the filtered product description
     Then I should see a "RHEL7 Base" text
     When I select "x86_64" in the dropdown list of the architecture filter
@@ -22,8 +24,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: View the channels list in the products page
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
@@ -32,8 +35,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Add a product and one of its modules
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
     Then I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" text
     And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
@@ -48,8 +52,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Add a product with recommended enabled
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
     Then I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
     Then I should see a "Basesystem Module 15 SP2 x86_64" text

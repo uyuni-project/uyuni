@@ -10,32 +10,36 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
 
   Scenario: Add Ubuntu 16.04
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "Ubuntu 16.04" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "Ubuntu 16.04" as the filtered product description
     And I select "Ubuntu 16.04" as a product
     Then I should see the "Ubuntu 16.04" selected
     When I click the Add Product button
     And I wait until I see "Ubuntu 16.04" product has been added
 
   Scenario: Add Ubuntu 18.04
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "Ubuntu 18.04" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "Ubuntu 18.04" as the filtered product description
     And I select "Ubuntu 18.04" as a product
     Then I should see the "Ubuntu 18.04" selected
     When I click the Add Product button
     And I wait until I see "Ubuntu 18.04" product has been added
 
   Scenario: Add Ubuntu 20.04
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "Ubuntu 20.04" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "Ubuntu 20.04" as the filtered product description
     And I select "Ubuntu 20.04" as a product
     Then I should see the "Ubuntu 20.04" selected
     When I click the Add Product button
     And I wait until I see "Ubuntu 20.04" product has been added
 
   Scenario: SUSE Linux Enterprise Server 11 SP3
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
     And I select "SUSE Linux Enterprise Server 11 SP3 i586" as a product
     Then I should see the "SUSE Linux Enterprise Server 11 SP3 i586" selected
     When I click the Add Product button
@@ -43,8 +47,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I add "sles11-sp3-ltss-updates-i586" channel
 
   Scenario: SUSE Linux Enterprise Server 11 SP4
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 11 SP4" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 11 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 11 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 11 SP4 x86_64" selected
     And I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP4 x86_64"
@@ -55,8 +60,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I add "sles11-sp4-ltss-updates-x86_64" channel
 
   Scenario: SUSE Linux Enterprise Server 12 SP4
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
@@ -66,8 +72,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
 
   Scenario: SUSE Linux Enterprise Server 15
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 15" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 15" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
@@ -78,16 +85,18 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
 
   Scenario: SUSE Linux Enterprise Server 15 SP1
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
 
   Scenario: SUSE Linux Enterprise Server 15 SP2
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
@@ -101,8 +110,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
   Scenario: SUSE Linux Enterprise Server 15 SP3
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)"
@@ -116,24 +126,27 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" product has been added
 
   Scenario: SUSE Linux Enterprise Server with Expanded Support 6
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server with Expanded Support 6" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server with Expanded Support 6" as the filtered product description
     And I select "SUSE Linux Enterprise Server with Expanded Support 6" as a product
     Then I should see the "SUSE Linux Enterprise Server with Expanded Support 6" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 6" product has been added
 
   Scenario: SUSE Linux Enterprise Server with Expanded Support 7
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
     And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
     Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
 
   Scenario: SUSE Linux Enterprise Server with Expanded Support 8
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
+    And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
     And I select "RHEL or SLES ES or CentOS 8 Base" as a product
     Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
     When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
@@ -143,7 +156,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
 
   Scenario: SUSE Manager Proxy 4.0 x86_64
-    When I follow the left menu "Admin > Setup Wizard > Products"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
     And I enter "SUSE Manager Proxy 4.0 x86_64" as the filtered product description
     And I select "SUSE Manager Proxy 4.0 x86_64" as a product
     Then I should see the "SUSE Manager Proxy 4.0 x86_64" selected
@@ -151,7 +165,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Manager Proxy 4.0 x86_64" product has been added
 
   Scenario: SUSE Manager Retail Branch Server 4.0 x86_64
-    When I follow the left menu "Admin > Setup Wizard > Products"
+    When I follow the left menu "Admin > Setup Wizard"
+    And I follow "SUSE Products"
     And I enter "SUSE Manager Retail Branch Server 4.0 x86_64" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.0 x86_64" as a product
     Then I should see the "SUSE Manager Retail Branch Server 4.0 x86_64" selected
