@@ -2527,6 +2527,223 @@
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.4.0.tgz#14f854c0f93d326e39da6e3b6f34f7d37513d108"
   integrity sha512-y7mImlc/rNkvCRmg8gC3/lj87S7pTUIJ6QGjwHR9WQJcFs+ZMTOaoPrkdFA/YdbuqVEmEbb5RdhVxMkAcgOnpg==
 
+"@types/d3-array@*":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-2.9.0.tgz#fb6c3d7d7640259e68771cd90cc5db5ac1a1a012"
+  integrity sha512-sdBMGfNvLUkBypPMEhOcKcblTQfgHbqbYrUqRE31jOwdDHBJBxz4co2MDAq93S4Cp++phk4UiwoEg/1hK3xXAQ==
+
+"@types/d3-axis@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-axis/-/d3-axis-2.0.0.tgz#a3e7534d3c399c20ba42ec3093dd2a385659366e"
+  integrity sha512-gUdlEwGBLl3tXGiBnBNmNzph9W3bCfa4tBgWZD60Z1eDQKTY4zyCAcZ3LksignGfKawYatmDYcBdjJ5h/54sqA==
+  dependencies:
+    "@types/d3-selection" "*"
+
+"@types/d3-brush@*":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-brush/-/d3-brush-2.1.0.tgz#c51ad1ab93887b23be7637d2100540f1df0dac00"
+  integrity sha512-rLQqxQeXWF4ArXi81GlV8HBNwJw9EDpz0jcWvvzv548EDE4tXrayBTOHYi/8Q4FZ/Df8PGXFzxpAVQmJMjOtvQ==
+  dependencies:
+    "@types/d3-selection" "*"
+
+"@types/d3-chord@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-chord/-/d3-chord-2.0.1.tgz#45c72b28c9686eb4b02c8a1bb0fe174723053890"
+  integrity sha512-mqGww8qDtGZRnDsFizzobAVizd85hgaYNEri095ZI7/aYtW7hxa9a20enwuoVTWm0YqdCtLPoyV9ZPYgfyaTZw==
+
+"@types/d3-collection@*":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@types/d3-collection/-/d3-collection-1.0.10.tgz#bca161e336156968f267c077f7f2bfa8ff224e58"
+  integrity sha512-54Fdv8u5JbuXymtmXm2SYzi1x/Svt+jfWBU5junkhrCewL92VjqtCBDn97coBRVwVFmYNnVTNDyV8gQyPYfm+A==
+
+"@types/d3-color@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-2.0.1.tgz#570ea7f8b853461301804efa52bd790a640a26db"
+  integrity sha512-u7LTCL7RnaavFSmob2rIAJLNwu50i6gFwY9cHFr80BrQURYQBRkJ+Yv47nA3Fm7FeRhdWTiVTeqvSeOuMAOzBQ==
+
+"@types/d3-dispatch@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-dispatch/-/d3-dispatch-2.0.0.tgz#1f8803041b73b81f2c751e026b7bb63dd5f24ce0"
+  integrity sha512-Sh0KW6z/d7uxssD7K4s4uCSzlEG/+SP+U47q098NVdOfFvUKNTvKAIV4XqjxsUuhE/854ARAREHOxkr9gQOCyg==
+
+"@types/d3-drag@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-drag/-/d3-drag-2.0.0.tgz#ef66acc422576fbe10b8bd66af45a9fb8525199a"
+  integrity sha512-VaUJPjbMnDn02tcRqsHLRAX5VjcRIzCjBfeXTLGe6QjMn5JccB5Cz4ztMRXMJfkbC45ovgJFWuj6DHvWMX1thA==
+  dependencies:
+    "@types/d3-selection" "*"
+
+"@types/d3-dsv@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-dsv/-/d3-dsv-2.0.1.tgz#44ce09b025cf365d27cbe11fc13cd10954369627"
+  integrity sha512-wovgiG9Mgkr/SZ/m/c0m+RwrIT4ozsuCWeLxJyoObDWsie2DeQT4wzMdHZPR9Ya5oZLQT3w3uSl0NehG0+0dCA==
+
+"@types/d3-dsv@^1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-dsv/-/d3-dsv-1.2.1.tgz#1524fee9f19d689c2f76aa0e24e230762bf96994"
+  integrity sha512-LLmJmjiqp/fTNEdij5bIwUJ6P6TVNk5hKM9/uk5RPO2YNgEu9XvKO0dJ7Iqd3psEdmZN1m7gB1bOsjr4HmO2BA==
+
+"@types/d3-ease@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-ease/-/d3-ease-2.0.0.tgz#798cbd9908d26cfe9f1a295a3a75164da9a3666e"
+  integrity sha512-6aZrTyX5LG+ptofVHf+gTsThLRY1nhLotJjgY4drYqk1OkJMu2UvuoZRlPw2fffjRHeYepue3/fxTufqKKmvsA==
+
+"@types/d3-force@*":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-force/-/d3-force-2.1.1.tgz#a18b6f029d056eb0f8f84a09471e6228e4469b14"
+  integrity sha512-3r+CQv2K/uDTAVg0DGxsbBjV02vgOxb8RhPIv3gd6cp3pdPAZ7wEXpDjUZSoqycAQLSDOxG/AZ54Vx6YXZSbmQ==
+
+"@types/d3-format@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-format/-/d3-format-2.0.0.tgz#607d261cb268f0a027f100575491031539a40ee6"
+  integrity sha512-uagdkftxnGkO4pZw5jEYOM5ZnZOEsh7z8j11Qxk85UkB2RzfUUxRl7R9VvvJZHwKn8l+x+rpS77Nusq7FkFmIg==
+
+"@types/d3-geo@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-geo/-/d3-geo-2.0.0.tgz#6f179512343c2d30e06acde190abfacf44b2d264"
+  integrity sha512-DHHgYXW36lnAEQMYU2udKVOxxljHrn2EdOINeSC9jWCAXwOnGn7A19B8sNsHqgpu4F7O2bSD7//cqBXD3W0Deg==
+  dependencies:
+    "@types/geojson" "*"
+
+"@types/d3-hierarchy@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-hierarchy/-/d3-hierarchy-2.0.0.tgz#92079d9dbcec1dfe2736fb050a8bf916e5850a1c"
+  integrity sha512-YxdskUvwzqggpnSnDQj4KVkicgjpkgXn/g/9M9iGsiToLS3nG6Ytjo1FoYhYVAAElV/fJBGVL3cQ9Hb7tcv+lw==
+
+"@types/d3-interpolate@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-interpolate/-/d3-interpolate-2.0.0.tgz#325029216dc722c1c68c33ccda759f1209d35823"
+  integrity sha512-Wt1v2zTlEN8dSx8hhx6MoOhWQgTkz0Ukj7owAEIOF2QtI0e219paFX9rf/SLOr/UExWb1TcUzatU8zWwFby6gg==
+  dependencies:
+    "@types/d3-color" "*"
+
+"@types/d3-path@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-2.0.0.tgz#dcc7f5ecadf52b0c0c39f6c1def3733195e4b199"
+  integrity sha512-tXcR/9OtDdeCIsyl6eTNHC3XOAOdyc6ceF3QGBXOd9jTcK+ex/ecr00p9L9362e/op3UEPpxrToi1FHrtTSj7Q==
+
+"@types/d3-path@^1":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-1.0.9.tgz#73526b150d14cd96e701597cbf346cfd1fd4a58c"
+  integrity sha512-NaIeSIBiFgSC6IGUBjZWcscUJEq7vpVu7KthHN8eieTV9d9MqkSOZLH4chq1PmcKy06PNe3axLeKmRIyxJ+PZQ==
+
+"@types/d3-polygon@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-polygon/-/d3-polygon-2.0.0.tgz#8b1df0a1358016e62c4961b01e8dc8e5ab4c64e5"
+  integrity sha512-fISnMd8ePED1G4aa4V974Jmt+ajHSgPoxMa2D0ULxMybpx0Vw4WEzhQEaMIrL3hM8HVRcKTx669I+dTy/4PhAw==
+
+"@types/d3-quadtree@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-quadtree/-/d3-quadtree-2.0.0.tgz#b17e953dc061e083966075bba0d3a9a259812150"
+  integrity sha512-YZuJuGBnijD0H+98xMJD4oZXgv/umPXy5deu3IimYTPGH3Kr8Th6iQUff0/6S80oNBD7KtOuIHwHUCymUiRoeQ==
+
+"@types/d3-queue@*":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@types/d3-queue/-/d3-queue-3.0.8.tgz#fad6212f14f34a549fc67144e354f032fb25a447"
+  integrity sha512-1FWOiI/MYwS5Z1Sa9EvS1Xet3isiVIIX5ozD6iGnwHonGcqL+RcC1eThXN5VfDmAiYt9Me9EWNEv/9J9k9RIKQ==
+
+"@types/d3-random@*":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-random/-/d3-random-2.2.0.tgz#fc44cabb966917459490b758f31f5359adeabe5b"
+  integrity sha512-Hjfj9m68NmYZzushzEG7etPvKH/nj9b9s9+qtkNG3/dbRBjQZQg1XS6nRuHJcCASTjxXlyXZnKu2gDxyQIIu9A==
+
+"@types/d3-request@*":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/d3-request/-/d3-request-1.0.6.tgz#7f7e3b7138040756e73a023ef31020b2324c42c8"
+  integrity sha512-4nRKDUBg3EBx8VowpMvM3NAVMiMMI1qFUOYv3OJsclGjHX6xjtu09nsWhRQ0fvSUla3MEjb5Ch4IeaYarMEi1w==
+  dependencies:
+    "@types/d3-dsv" "^1"
+
+"@types/d3-scale@*":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@types/d3-scale/-/d3-scale-3.2.2.tgz#5e28d0b1c599328aaec6094219f10a2570be6d74"
+  integrity sha512-qpQe8G02tzUwt9sdWX1h8A/W0Q1+N48wMnYXVOkrzeLUkCfvzJYV9Ee3aORCS4dN4ONRLFmMvaXdziQ29XGLjQ==
+  dependencies:
+    "@types/d3-time" "*"
+
+"@types/d3-selection@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-selection/-/d3-selection-2.0.0.tgz#59df94a8e47ed1050a337d4ffb4d4d213aa590a8"
+  integrity sha512-EF0lWZ4tg7oDFg4YQFlbOU3936e3a9UmoQ2IXlBy1+cv2c2Pv7knhKUzGlH5Hq2sF/KeDTH1amiRPey2rrLMQA==
+
+"@types/d3-shape@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-shape/-/d3-shape-2.0.0.tgz#61aa065726f3c2641aedc59c3603475ab11aeb2f"
+  integrity sha512-NLzD02m5PiD1KLEDjLN+MtqEcFYn4ZL9+Rqc9ZwARK1cpKZXd91zBETbe6wpBB6Ia0D0VZbpmbW3+BsGPGnCpA==
+  dependencies:
+    "@types/d3-path" "^1"
+
+"@types/d3-time-format@*":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-time-format/-/d3-time-format-3.0.0.tgz#913e984362a59792dc8d8b122dd17625991eade2"
+  integrity sha512-UpLg1mn/8PLyjr+J/JwdQJM/GzysMvv2CS8y+WYAL5K0+wbvXv/pPSLEfdNaprCZsGcXTxPsFMy8QtkYv9ueew==
+
+"@types/d3-time@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-time/-/d3-time-2.0.0.tgz#831dd093db91f16b83ba980e194bb8e4bcef44d6"
+  integrity sha512-Abz8bTzy8UWDeYs9pCa3D37i29EWDjNTjemdk0ei1ApYVNqulYlGUKip/jLOpogkPSsPz/GvZCYiC7MFlEk0iQ==
+
+"@types/d3-timer@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-timer/-/d3-timer-2.0.0.tgz#9901bb02af38798764674df17d66b07329705632"
+  integrity sha512-l6stHr1VD1BWlW6u3pxrjLtJfpPZq9I3XmKIQtq7zHM/s6fwEtI1Yn6Sr5/jQTrUDCC5jkS6gWqlFGCDArDqNg==
+
+"@types/d3-transition@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-transition/-/d3-transition-2.0.0.tgz#6f073f0b567c13b7a3dcd1d54214c89f48c5a873"
+  integrity sha512-UJDzI98utcZQUJt3uIit/Ho0/eBIANzrWJrTmi4+TaKIyWL2iCu7ShP0o4QajCskhyjOA7C8+4CE3b1YirTzEQ==
+  dependencies:
+    "@types/d3-selection" "*"
+
+"@types/d3-voronoi@*":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@types/d3-voronoi/-/d3-voronoi-1.1.9.tgz#7bbc210818a3a5c5e0bafb051420df206617c9e5"
+  integrity sha512-DExNQkaHd1F3dFPvGA/Aw2NGyjMln6E9QzsiqOcBgnE+VInYnFBHBBySbZQts6z6xD+5jTfKCP7M4OqMyVjdwQ==
+
+"@types/d3-zoom@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-zoom/-/d3-zoom-2.0.0.tgz#ef8b87464e8ebc7c66b70f6383d1ae841e78e7fc"
+  integrity sha512-daL0PJm4yT0ISTGa7p2lHX0kvv9FO/IR1ooWbHR/7H4jpbaKiLux5FslyS/OvISPiJ5SXb4sOqYhO6fMB6hKRw==
+  dependencies:
+    "@types/d3-interpolate" "*"
+    "@types/d3-selection" "*"
+
+"@types/d3@4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-4.5.0.tgz#397feea693ef213601dc559e4c94cbe772fb1d69"
+  integrity sha1-OX/uppPvITYB3FWeTJTL53L7HWk=
+  dependencies:
+    "@types/d3-array" "*"
+    "@types/d3-axis" "*"
+    "@types/d3-brush" "*"
+    "@types/d3-chord" "*"
+    "@types/d3-collection" "*"
+    "@types/d3-color" "*"
+    "@types/d3-dispatch" "*"
+    "@types/d3-drag" "*"
+    "@types/d3-dsv" "*"
+    "@types/d3-ease" "*"
+    "@types/d3-force" "*"
+    "@types/d3-format" "*"
+    "@types/d3-geo" "*"
+    "@types/d3-hierarchy" "*"
+    "@types/d3-interpolate" "*"
+    "@types/d3-path" "*"
+    "@types/d3-polygon" "*"
+    "@types/d3-quadtree" "*"
+    "@types/d3-queue" "*"
+    "@types/d3-random" "*"
+    "@types/d3-request" "*"
+    "@types/d3-scale" "*"
+    "@types/d3-selection" "*"
+    "@types/d3-shape" "*"
+    "@types/d3-time" "*"
+    "@types/d3-time-format" "*"
+    "@types/d3-timer" "*"
+    "@types/d3-transition" "*"
+    "@types/d3-voronoi" "*"
+    "@types/d3-zoom" "*"
+
 "@types/domhandler@2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/domhandler/-/domhandler-2.4.1.tgz#7b3b347f7762180fbcb1ece1ce3dd0ebbb8c64cf"
@@ -2536,6 +2753,11 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
+
+"@types/geojson@*":
+  version "7946.0.7"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.7.tgz#c8fa532b60a0042219cdf173ca21a975ef0666ad"
+  integrity sha512-wE2v81i4C4Ol09RtsWFAqg3BUitWbHSpSlIo+bNdsCJijO9sjme+zm+73ZMCa/qMC8UEERxzGbvmr1cffo2SiQ==
 
 "@types/glob@^7.1.1":
   version "7.1.1"
@@ -8851,12 +9073,7 @@ lodash.uniq@4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
-
-lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
