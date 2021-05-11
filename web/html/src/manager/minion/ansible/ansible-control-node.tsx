@@ -24,7 +24,7 @@ type StateType = {
   loading: boolean;
 };
 
-class AnsibleControlNode extends React.Component<PropsType, StateType> {
+export class AnsibleControlNode extends React.Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
