@@ -12,9 +12,10 @@
 alter table rhnActionType drop CONSTRAINT if exists rhn_action_type_mtmode_ck;
 alter table rhnActionType add column if not exists
     maintenance_mode_only CHAR(1)
-                          DEFAULT ('N') NOT NULL
-                          CONSTRAINT rhn_action_type_mtmode_ck
-                              CHECK (maintenance_mode_only in ('Y','N'));
+                          DEFAULT ('N') NOT NULL;
+alter table rhnActionType add
+    CONSTRAINT rhn_action_type_mtmode_ck
+    CHECK (maintenance_mode_only in ('Y','N'));
 
 update rhnActionType set maintenance_mode_only = 'Y'
 where label in ('packages.update', 'packages.remove', 'errata.update',

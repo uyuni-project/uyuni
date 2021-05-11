@@ -9,7 +9,6 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-alter table rhnServer drop CONSTRAINT if exists rhn_server_mtsched_id_fk;
 alter table rhnServer add column if not exists
     maintenance_schedule_id NUMERIC
                             CONSTRAINT rhn_server_mtsched_id_fk
