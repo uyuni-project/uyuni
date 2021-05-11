@@ -1,24 +1,23 @@
-import * as React from 'react';
-import ListFilters from './list-filters';
+import * as React from "react";
+import ListFilters from "./list-filters";
 import "./list-filters.css";
-import {RolesProvider} from "core/auth/roles-context";
-import {UserLocalizationProvider} from "core/user-localization/user-localization-context";
+import { RolesProvider } from "core/auth/roles-context";
+import { UserLocalizationProvider } from "core/user-localization/user-localization-context";
 import SpaRenderer from "core/spa/spa-renderer";
-import {MessagesContainer} from 'components/toastr/toastr';
+import { MessagesContainer } from "components/toastr/toastr";
 
-export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}) => {
-
+export const renderer = (id, { filters, projectLabel, openFilterId, flashMessage }) => {
   let filtersJson = [];
-  try{
+  try {
     filtersJson = JSON.parse(filters);
-  }  catch(error) {
+  } catch (error) {
     console.log(error);
   }
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <UserLocalizationProvider>
-        <MessagesContainer/>
+        <MessagesContainer />
         <ListFilters
           filters={filtersJson}
           openFilterId={openFilterId}
@@ -27,6 +26,6 @@ export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}
         />
       </UserLocalizationProvider>
     </RolesProvider>,
-    document.getElementById(id),
+    document.getElementById(id)
   );
 };
