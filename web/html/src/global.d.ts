@@ -46,9 +46,12 @@ declare global {
   var ace: any;
   // TODO: This should be obsolete after https://github.com/SUSE/spacewalk/issues/13145
   var moment: any;
+  var d3: d3;
 
-  // Used by section-toolbar, defined in spacewalk-essentials.js
+  // Defined in spacewalk-essentials.js
   var handleSst: Function;
+  var spacewalkContentObserver: MutationObserver;
+  var registerSpacewalkContentObservers: Function | undefined;
 
   // Used by cveaudit and spacewalk-checkall.js
   var DWRItemSelector: any;
@@ -56,6 +59,7 @@ declare global {
 
   // Defined in spacewalk-checkall.js
   var numericValidate: (event: any) => any;
+  var update_server_set: (variable: any, set_label: any, checked: any, values: any) => void;
 
   /** DEPRECATED: Do **NOT** use this global for new code, prefer `useUserLocalization()` instead */
   var localTime: string | undefined;
