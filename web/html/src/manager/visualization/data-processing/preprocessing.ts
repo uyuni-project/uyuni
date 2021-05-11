@@ -1,4 +1,3 @@
-/* eslint-disable */
 /*
 Preprocessors for the data retrieved from server
 
@@ -6,24 +5,22 @@ The task of the preprocessor is to convert flat data (list of objects with id an
 parentId property) into a structure that can be further processed by d3 tree component.
 */
 
-
 // Simple preprocessor
 //
 // uses d3.stratify to prepare the data
 //
 // input: array of objects containing id and parentId attributes,
 // ids are unique and single object (root) has parentId == null
-function stratifyPreprocessor(data) {
-
-  data = data || [{id: 'root', name: 'Root', parentId: null}];
+function stratifyPreprocessor(data?: any) {
+  data = data || [{ id: "root", name: "Root", parentId: null }];
 
   function instance() {
     return d3.stratify()(data);
   }
 
   instance.data = function(d) {
-    return arguments.length ? (data = d, instance) : data;
-  }
+    return arguments.length ? ((data = d), instance) : data;
+  };
 
   return instance;
 }
@@ -67,9 +64,8 @@ function stratifyPreprocessor(data) {
 //   groups devel,   groups devel,
 //   sles and nbg]   rhel and prg]
 //
-function groupingPreprocessor(data, groupingConfiguration) {
-
-  data = data || [{id: 'root', name: 'Root', parentId: null}];
+function groupingPreprocessor(data?: any, groupingConfiguration?: any) {
+  data = data || [{ id: "root", name: "Root", parentId: null }];
   groupingConfiguration = groupingConfiguration || [];
 
   // function representing instance,
@@ -78,22 +74,31 @@ function groupingPreprocessor(data, groupingConfiguration) {
     const root = data.filter(d => d.parentId == null)[0];
     const leaves = data.filter(d => d.parentId != null);
 
-    const groupElems = makeGroups(root, groupingConfiguration.filter(criterion => criterion.length > 0));
+    const groupElems = makeGroups(
+      root,
+      groupingConfiguration.filter(criterion => criterion.length > 0)
+    );
     const allElems = [root] // root
       .concat(groupElems) // inner nodes (represantation of groups)
-      .concat(groupData(leaves, groupElems.filter(e => e.isLeafGroup), root)); // systems partitioned by groups
+      .concat(
+        groupData(
+          leaves,
+          groupElems.filter(e => e.isLeafGroup),
+          root
+        )
+      ); // systems partitioned by groups
     return d3.stratify()(allElems);
   }
 
   // getter/setter for data
   instance.data = function(d) {
-    return arguments.length ? (data = d, instance) : data;
-  }
+    return arguments.length ? ((data = d), instance) : data;
+  };
 
   // getter/setter for groupingConfiguration
   instance.groupingConfiguration = function(gs) {
-    return arguments.length ? (groupingConfiguration = gs, instance) : groupingConfiguration;
-  }
+    return arguments.length ? ((groupingConfiguration = gs), instance) : groupingConfiguration;
+  };
 
   // Recursively turn the multi-level group configuration into group elements so
   // that they can be consumed and displayed by d3 hierarchy (i.e. list of
@@ -122,7 +127,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
   //  }
   //
   function makeGroups(par, grpCfg) {
-    if (grpCfg.length == 0) {
+    if (grpCfg.length === 0) {
       return [];
     }
 
@@ -131,22 +136,23 @@ function groupingPreprocessor(data, groupingConfiguration) {
 
     return fstCfg
       .map(g => {
-        const newId = par.id + '-' + g.toString();
+        const newId = par.id + "-" + g.toString();
         const groups = (par.groups || []).concat(g);
-        const elem = {id: newId,
+        const elem = {
+          id: newId,
           parentId: par.id,
           name: groups[groups.length - 1] || "no group",
-          type: 'group',
+          type: "group",
           groups: groups,
-          isLeafGroup: rstCfg.length == 0
+          isLeafGroup: rstCfg.length === 0,
         };
 
-        return [elem].concat(makeGroups(elem, rstCfg))
+        return [elem].concat(makeGroups(elem, rstCfg));
       })
-      .reduce((v1,v2) => v1.concat(v2), []);
+      .reduce((v1, v2) => v1.concat(v2), []);
   }
 
-  const NO_GROUP_LABEL = '** NO GROUP **';
+  const NO_GROUP_LABEL = "** NO GROUP **";
 
   // Creates groups of the given data (systems) according to the the
   // groupCriterion parameter.
@@ -161,13 +167,11 @@ function groupingPreprocessor(data, groupingConfiguration) {
   function groupData(data, groupCriterion, root) {
     // Helper function: does the superset contain all elements from sub?
     let containsAll = function(superset, sub) {
-      return sub
-        .map(e => superset.includes(e))
-        .reduce((v1,v2) => v1 && v2, true);
-    }
+      return sub.map(e => superset.includes(e)).reduce((v1, v2) => v1 && v2, true);
+    };
 
     // corner case - no groups -> attach all elements to the root
-    if ((groupCriterion || []).length == 0) {
+    if ((groupCriterion || []).length === 0) {
       groupCriterion = [root];
     }
 
@@ -175,22 +179,12 @@ function groupingPreprocessor(data, groupingConfiguration) {
       .map(gc =>
         data
           .filter(d => containsAll(d.managed_groups || [NO_GROUP_LABEL], gc.groups || []))
-          .map(d =>
-            Object.assign(
-              {},
-              d,
-              {id: d.id + '-' + gc.id,
-               parentId: gc.id}
-            )
-          )
+          .map(d => Object.assign({}, d, { id: d.id + "-" + gc.id, parentId: gc.id }))
       )
-      .reduce((v1,v2) => v1.concat(v2), []);
+      .reduce((v1, v2) => v1.concat(v2), []);
   }
 
   return instance;
 }
 
-export {
-    groupingPreprocessor as grouping,
-    stratifyPreprocessor as stratify,
-};
+export { groupingPreprocessor as grouping, stratifyPreprocessor as stratify };
