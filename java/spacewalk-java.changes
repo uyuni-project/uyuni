@@ -1,3 +1,4 @@
+- Handle virtual machines running on pacemaker cluster
 - Refresh virtual host pillar to clear the virtpoller beacon (bsc#1188393)
 - Add Beijing timezone to selectable timezones (bsc#1188193)
 - Fix updating primary net interface on hardware refresh (bsc#1188400)

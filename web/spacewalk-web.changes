@@ -1,3 +1,5 @@
+- Handle virtual machines running on pacemaker cluster
+
 -------------------------------------------------------------------
 Fri Jul 16 14:33:16 CEST 2021 - jgonzalez@suse.com
 
