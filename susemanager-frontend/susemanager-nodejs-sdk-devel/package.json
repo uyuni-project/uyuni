@@ -19,6 +19,7 @@
     "@khanacademy/flow-to-ts": "0.1.7",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.6.0",
+    "@types/d3": "4.5.0",
     "@types/jest": "^26.0.19",
     "@types/jquery": "3.2.0",
     "@types/lodash": "^4.14.168",
