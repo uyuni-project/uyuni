@@ -10,7 +10,7 @@ type Props = {
   icon?: string;
   disabled?: boolean;
   item?: any;
-  onClick: (...args: any[]) => any;
+  onClick?: (...args: any[]) => any;
 };
 
 /**
