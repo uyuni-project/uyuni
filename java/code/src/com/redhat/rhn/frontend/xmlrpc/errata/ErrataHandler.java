@@ -1212,7 +1212,7 @@ public class ErrataHandler extends BaseHandler {
             throw new InvalidAdvisoryReleaseException(advisoryRelease.longValue());
         }
         String advisoryType = (String) getRequiredAttribute(errataInfo, "advisory_type");
-        String advisoryStatusString = (String) getRequiredAttribute(errataInfo, "advisory_status");
+        String advisoryStatusString = (String) errataInfo.getOrDefault("advisory_status", "final");
         AdvisoryStatus advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusString)
                 .filter(a -> a != AdvisoryStatus.RETRACTED)
                 .orElseThrow(() -> new InvalidAdvisoryTypeException(advisoryStatusString));
