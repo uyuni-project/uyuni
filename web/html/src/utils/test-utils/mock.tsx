@@ -10,7 +10,7 @@ jest.mock("components/datetimepicker", () => {
   };
 });
 
-// Mock the datetime picker to avoid it causing issues due to missing jQuery/Bootstrap parts
+// Mock the ACE Editor to avoid it causing issues due to the missing proper library import
 jest.mock("components/ace-editor", () => {
   return {
     __esModule: true,
