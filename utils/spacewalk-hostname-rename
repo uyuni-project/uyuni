@@ -137,6 +137,7 @@ function initial_system_hostname_check {
 
     # set HOSTNAME to long hostname
     HOSTNAME=`hostname -f`
+    SHORT_HN=`hostname -s`
 
     # check for uppercase chars in hostname
     if [ "$HOSTNAME" != "$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')" ]
@@ -160,7 +161,8 @@ function initial_system_hostname_check {
         HN_ETC=`awk -F= '/HOSTNAME/ {print $2}' $HN_ETC_FILE`
     fi
 
-    if [ "$HOSTNAME" != "$HN_ETC" ]
+    # either short or long hostname would be ok
+    if [ "$SHORT_HN" != "$HN_ETC" -a "$HOSTNAME" != "$HN_ETC" ]
     then
         echo_err "Wrong hostname in $HN_ETC_FILE: \"$HN_ETC\""
         return 1
