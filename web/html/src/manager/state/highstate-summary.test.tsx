@@ -1,12 +1,5 @@
-import * as React from "react";
-import { render, server, within, click, waitForElementToBeRemoved } from "utils/test-utils";
+import { render, server, within, click, waitForElementToBeRemoved, screen } from "utils/test-utils";
 import HighstateSummary from "manager/state/highstate-summary";
-
-async function renderAndLoad(component) {
-  const result = render(component);
-  await result.findByRole("table");
-  return result;
-}
 
 const API_SUMMARY = "/rhn/manager/api/states/summary?sid=1000";
 const API_HIGHSTATE = "/rhn/manager/api/states/highstate?sid=1000";
@@ -20,9 +13,10 @@ describe("Highstate summary", () => {
     ];
     server.mockGetJson(API_SUMMARY, data);
 
-    const { getAllByRole } = await renderAndLoad(<HighstateSummary minionId={1000} />);
+    render(<HighstateSummary minionId={1000} />);
+    await screen.findByRole("table");
 
-    const rows = getAllByRole("row");
+    const rows = screen.getAllByRole("row");
 
     // Table headers
     within(rows[0]).getByRole("columnheader", { name: "State Source" });
@@ -61,8 +55,10 @@ describe("Highstate summary", () => {
     ];
     server.mockGetJson(API_SUMMARY, data);
 
-    const { getAllByRole } = await renderAndLoad(<HighstateSummary minionId={1000} />);
-    const rows = getAllByRole("row");
+    render(<HighstateSummary minionId={1000} />);
+    await screen.findByRole("table");
+
+    const rows = screen.getAllByRole("row");
     expect(rows.length).toBe(4);
 
     // 1: Directly assigned state channel
@@ -87,15 +83,15 @@ describe("Highstate output", () => {
     server.mockGetJson(API_SUMMARY, []);
     server.mockGetJson(API_HIGHSTATE, "my-example-highstate-string");
 
-    const { findByText, getByRole, getByText } = render(<HighstateSummary minionId={1000} />);
-    await findByText("There are no entries to show.");
+    render(<HighstateSummary minionId={1000} />);
+    await screen.findByText("There are no entries to show.");
 
-    const highstateLink = getByRole("button", { name: "Show full highstate output" }) as HTMLButtonElement;
+    const highstateLink = screen.getByRole("button", { name: "Show full highstate output" }) as HTMLButtonElement;
     expect(highstateLink.disabled).toBeFalsy();
     click(highstateLink);
     expect(highstateLink.disabled).toBeTruthy();
     await waitForElementToBeRemoved(highstateLink);
 
-    getByText("my-example-highstate-string");
+    screen.getByText("my-example-highstate-string");
   });
 });
