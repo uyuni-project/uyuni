@@ -1,3 +1,4 @@
+- Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
 - fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
 - fix disapearing Autoinstallation Menu for minions (bsc#1184813)
 - catch not found repository and create a standard error page (bsc#1183992)
