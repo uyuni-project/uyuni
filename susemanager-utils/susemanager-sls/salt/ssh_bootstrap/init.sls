@@ -61,18 +61,5 @@ authorize_own_key:
       - file: ownership_own_ssh_key
       - ssh_auth: no_own_key_authorized
 
-{%- if grains['os_family'] == 'RedHat' %}
-trust_res_gpg_key:
-  cmd.run:
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
-    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
-    - runas: root
-{%- elif grains['os_family'] == 'Debian' %}
-install_gnupg_debian:
-  pkg.latest:
-    - pkgs:
-      - gnupg
-{%- endif %}
-
 {% include 'channels/gpg-keys.sls' %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
