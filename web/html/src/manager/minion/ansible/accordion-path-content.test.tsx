@@ -28,7 +28,7 @@ describe("AccordionPathContent summary", () => {
             name: "minion.tf.local"
           }
         ],
-        dump: "_meta:\n  hostvars:\n    minion.tf.local: {ansible_ssh_private_key_file: /etc/ansible/my_ansible_private_key}\n    my-ansible-managed-client-1.tf.local: {ansible_ssh_private_key_file: /etc/ansible/my_ansible_private_key}\n    my-ansible-managed-client-2.tf.local: {ansible_ssh_private_key_file: /etc/ansible/my_ansible_private_key}\n    my-ansible-managed-client-3.tf.local: {ansible_ssh_private_key_file: /etc/ansible/my_ansible_private_key}\n    my-ansible-managed-client-4.tf.local: {ansible_ssh_private_key_file: /etc/ansible/some_ssh_key}\nall:\n  children: [mygroup1, mygroup2, ungrouped]\nmygroup1:\n  hosts: [my-ansible-managed-client-1.tf.local, my-ansible-managed-client-2.tf.local]\nmygroup2:\n  hosts: [my-ansible-managed-client-3.tf.local]\nungrouped:\n  hosts: [minion.tf.local, my-ansible-managed-client-4.tf.local]\n"
+        dump: "The Inventory dump content for ACE Editor"
       }
     };
     // server loading inventory details on click
