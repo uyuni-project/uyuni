@@ -191,8 +191,12 @@ public class SystemHardwareAction extends RhnAction {
         Collections.sort(nicList);
 
         List nicList2 = new ArrayList();
+        List nicList3 = new ArrayList();
+        List nicList4 = new ArrayList();
         for (String nicName : nicList) {
             NetworkInterface n = server.getNetworkInterface(nicName);
+            boolean hasIPv4 = false;
+            boolean hasIPv6 = false;
             for (ServerNetAddress4 na4 : n.getIPv4Addresses()) {
                 Map nic = new HashMap();
                 nic.put("name", n.getName());
@@ -202,13 +206,8 @@ public class SystemHardwareAction extends RhnAction {
                 nic.put("hwaddr", n.getHwaddr());
                 nic.put("module", n.getModule());
                 nicList2.add(nic);
+                hasIPv4 = true;
             }
-        }
-        request.setAttribute("network_interfaces", nicList2);
-
-        List nicList3 = new ArrayList();
-        for (String nicName : nicList) {
-            NetworkInterface n = server.getNetworkInterface(nicName);
             for (ServerNetAddress6 na6 : n.getIPv6Addresses()) {
                 Map nic = new HashMap();
                 nic.put("name", n.getName());
@@ -218,9 +217,19 @@ public class SystemHardwareAction extends RhnAction {
                 nic.put("netmask", na6.getNetmask());
                 nic.put("scope", na6.getScope());
                 nicList3.add(nic);
+                hasIPv6 = true;
+            }
+            if (!(hasIPv4 || hasIPv6)) {
+                Map nic = new HashMap();
+                nic.put("name", n.getName());
+                nic.put("hwaddr", n.getHwaddr());
+                nic.put("module", n.getModule());
+                nicList4.add(nic);
             }
         }
+        request.setAttribute("network_interfaces", nicList2);
         request.setAttribute("ipv6_network_interfaces", nicList3);
+        request.setAttribute("noip_network_interfaces", nicList4);
 
         List miscDevices = new ArrayList();
         List videoDevices = new ArrayList();

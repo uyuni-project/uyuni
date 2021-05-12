@@ -324,6 +324,43 @@
                 </div>
             </div>
         </c:if>
+        <c:if test="${not empty noip_network_interfaces}">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Interface</th>
+                                <th>Hardware Address</th>
+                                <th>Driver Module</th>
+                            </tr>
+                        </thead>
+                        <c:forEach items="${noip_network_interfaces}" var="current" varStatus="loop">
+                            <c:choose>
+                                <c:when test="${loop.count % 2 == 0}">
+                                    <c:set var="style_class" value="list-row-even" />
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="style_class" value="list-row-odd" />
+                                </c:otherwise>
+                            </c:choose>
+                            <tr class="${style_class}">
+                                <td>${current.name}</td>
+                                <c:choose>
+                                    <c:when test="${empty current.hwaddr}">
+                                        <td><span class="no-details">(unknown)</span></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>${current.hwaddr}</td>
+                                    </c:otherwise>
+                                </c:choose>
+                                <td>${current.module}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+        </c:if>
         <c:if test="${not empty storageDevices}">
             <div class="panel panel-default">
                 <div class="panel-heading">
