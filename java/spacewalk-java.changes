@@ -1,3 +1,4 @@
+- Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
 - Drop stale libs for old not supported browsers
 - fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
 - Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
