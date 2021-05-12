@@ -15,6 +15,12 @@ mgr_trust_customer_gpg_key:
 {%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
+trust_res_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
+    - runas: root
+
 trust_suse_manager_tools_rhel_gpg_key:
   cmd.run:
 {%- if grains['osmajorrelease']|int == 6 %}
@@ -32,6 +38,11 @@ trust_suse_manager_tools_rhel_gpg_key:
     - runas: root
 
 {%- elif grains['os_family'] == 'Debian' %}
+install_gnupg_debian:
+  pkg.latest:
+    - pkgs:
+      - gnupg
+
 trust_suse_manager_tools_deb_gpg_key:
   mgrcompat.module_run:
     - name: pkg.add_repo_key
