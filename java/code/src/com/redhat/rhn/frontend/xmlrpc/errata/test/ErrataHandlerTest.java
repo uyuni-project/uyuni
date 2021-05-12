@@ -919,4 +919,40 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
        assertEquals(array[0], earlyErrata);
        assertEquals(array[1], laterErrata);
     }
+
+    public void testCreateErrataAdvisoryStatus() throws Exception {
+        Channel channel = ChannelFactoryTest.createBaseChannel(admin);
+        channel.setOrg(admin.getOrg());
+        Map errataInfo = new HashMap();
+
+        String advisoryName = TestUtils.randomString();
+        errataInfo.put("advisory_name", advisoryName);
+        errataInfo.put("advisory_release", 9999);
+        errataInfo.put("synopsis", TestUtils.randomString());
+        errataInfo.put("advisory_release", 2);
+        errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("product", TestUtils.randomString());
+        errataInfo.put("topic", TestUtils.randomString());
+        errataInfo.put("description", TestUtils.randomString());
+        errataInfo.put("solution", TestUtils.randomString());
+        errataInfo.put("references", TestUtils.randomString());
+        errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "important");
+
+        ArrayList packages = new ArrayList();
+        ArrayList bugs = new ArrayList();
+        ArrayList keywords = new ArrayList();
+        ArrayList channels = new ArrayList();
+        channels.add(channel.getLabel());
+
+        // default path
+        Errata errata = handler.create(admin, errataInfo, bugs, keywords, packages, channels);
+        assertEquals(AdvisoryStatus.FINAL, errata.getAdvisoryStatus());
+
+        // explicit status
+        errataInfo.put("advisory_name", advisoryName + "-2");
+        errataInfo.put("advisory_status", "testing");
+        Errata testing = handler.create(admin, errataInfo, bugs, keywords, packages, channels);
+        assertEquals(AdvisoryStatus.TESTING, testing.getAdvisoryStatus());
+    }
 }
