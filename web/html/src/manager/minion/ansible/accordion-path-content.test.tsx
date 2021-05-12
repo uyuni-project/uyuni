@@ -1,4 +1,4 @@
-import { render, server, click, waitFor } from "utils/test-utils";
+import { render, server, click, waitFor, screen } from "utils/test-utils";
 import AccordionPathContent from "./accordion-path-content";
 import { createNewAnsiblePath } from "./ansible-path-type";
 
@@ -7,8 +7,8 @@ const API_INVENTORY_DETAILS = "/rhn/manager/api/systems/details/ansible/introspe
 describe("AccordionPathContent summary", () => {
   test("Render accordion collapsed element", async () => {
     const path = createNewAnsiblePath({id: 1, minionServerId: 1000, path: "/srv/ansible/playbooks", type: "playbook"});
-    const { getByText } = render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />);
-    getByText("/srv/ansible/playbooks");
+    render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />);
+    screen.getByText("/srv/ansible/playbooks");
   });
 
   test("Open accordion and load element details", async () => {
@@ -35,19 +35,19 @@ describe("AccordionPathContent summary", () => {
     server.mockGetJson(API_INVENTORY_DETAILS, data);
     
     const path = createNewAnsiblePath({id: 2, minionServerId: 1000, path: "/etc/ansible/hosts", type: "inventory"}); // component props
-    const { getByText, getByRole } = render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />); // load the component at initial state
+    render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />); // load the component at initial state
     
-    const pathAccordionButtonToOpen = getByRole("button", { name: path.path }) as HTMLButtonElement; // get the clickable element
+    const pathAccordionButtonToOpen = screen.getByRole("button", { name: path.path }) as HTMLButtonElement; // get the clickable element
     click(pathAccordionButtonToOpen);
     
-    getByText("Loading content..");
+    screen.getByText("Loading content..");
 
     // wait until the render loads and changes, then check for content
     await waitFor(() => {
-      getByText("Registered Systems:");
-      getByText("Unknown Hostnames:");
-      getByText("my-ansible-managed-client-1.tf.local");
-      getByText("minion.tf.local");
+      screen.getByText("Registered Systems:");
+      screen.getByText("Unknown Hostnames:");
+      screen.getByText("my-ansible-managed-client-1.tf.local");
+      screen.getByText("minion.tf.local");
     });
   });
 });

@@ -1,4 +1,4 @@
-import { render, server, waitFor } from "utils/test-utils";
+import { render, server, waitFor, screen } from "utils/test-utils";
 import { AnsibleControlNode } from "./ansible-control-node";
 
 const API_PATH_LIST = "/rhn/manager/api/systems/details/ansible/paths/1000";
@@ -26,18 +26,18 @@ describe("Ansible control node path configuration", () => {
     // server loading path list on loading
     server.mockGetJson(API_PATH_LIST, data);
     
-    const { getByText } = render(<AnsibleControlNode minionServerId={1000} />); // load the component at initial state
+    render(<AnsibleControlNode minionServerId={1000} />); // load the component at initial state
         
-    getByText("Loading..");
+    screen.getByText("Loading..");
 
     // wait until the render loads and changes, then check for content
     await waitFor(() => {
-      getByText("Playbook Directories");
-      getByText("Inventory Files");
-      getByText("Add a Playbook directory");
-      getByText("Add an Inventory file");
-      getByText("/srv/playbooks");
-      getByText("/srv/playbooks/orion_dummy/hosts");
+      screen.getByText("Playbook Directories");
+      screen.getByText("Inventory Files");
+      screen.getByText("Add a Playbook directory");
+      screen.getByText("Add an Inventory file");
+      screen.getByText("/srv/playbooks");
+      screen.getByText("/srv/playbooks/orion_dummy/hosts");
     });
   });
 });
