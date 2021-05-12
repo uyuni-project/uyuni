@@ -228,7 +228,7 @@ public abstract class CobblerCommand {
         List macs = new LinkedList();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             // Skip localhost and non real interfaces
-            if (!n.isValid()) {
+            if (!n.isMacValid()) {
                 log.debug("Skipping.  not a real interface");
             }
             else {
