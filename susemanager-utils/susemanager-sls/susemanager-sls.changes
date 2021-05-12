@@ -1,3 +1,4 @@
+- fix installation of gnupg on Debian 10
 - Fix deleting stopped virtual network (bsc#1186281)
 - Do not install python2-salt on Salt 3002.2 Docker build hosts (bsc#1185506)
 - Add support for 'disable_local_repos' salt minion config parameter
