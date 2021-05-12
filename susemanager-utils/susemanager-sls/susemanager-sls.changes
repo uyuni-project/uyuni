@@ -1,3 +1,5 @@
+- fix installation of gnupg on Debian 10
+
 -------------------------------------------------------------------
 Wed May 19 16:34:19 CEST 2021 - jgonzalez@suse.com
 
