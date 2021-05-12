@@ -389,32 +389,44 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
                 // don't create a physical network device for a bond
-                if (n.isPublic() && !n.isVirtBridge() && !n.isBond() &&
-                        !n.getIPv4Addresses().isEmpty()) {
-                    Network net = new Network(getCobblerConnection(),
-                            n.getName());
-                    net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
-                    net.setMacAddress(n.getHwaddr());
-                    net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
-                    if (!StringUtils.isBlank(networkInterface) &&
-                            n.getName().equals(networkInterface)) {
-                        net.setStaticNetwork(!isDhcp);
-                    }
+                if (!n.isVirtBridge() && !n.isBond()) {
+                    if (n.isPublic()) {
+                        Network net = new Network(getCobblerConnection(),
+                                n.getName());
+                        net.setIpAddress(n.getIPv4Addresses().get(0).getAddress());
+                        net.setMacAddress(n.getHwaddr());
+                        net.setNetmask(n.getIPv4Addresses().get(0).getNetmask());
+                        if (!StringUtils.isBlank(networkInterface) &&
+                                n.getName().equals(networkInterface)) {
+                            net.setStaticNetwork(!isDhcp);
+                        }
 
-                    ArrayList<String> ipv6Addresses = n.getGlobalIpv6Addresses();
-                    if (ipv6Addresses.size() > 0) {
-                        net.setIpv6Address(ipv6Addresses.get(0));
-                        ipv6Addresses.remove(0);
-                    }
-                    if (ipv6Addresses.size() > 0) {
-                        net.setIpv6Secondaries(ipv6Addresses);
-                    }
-                    if (setupBridge && bridgeSlaves.contains(n.getName())) {
-                        net.makeBondingSlave();
-                        net.setBondingMaster(bridgeName);
-                    }
+                        ArrayList<String> ipv6Addresses = n.getGlobalIpv6Addresses();
+                        if (ipv6Addresses.size() > 0) {
+                            net.setIpv6Address(ipv6Addresses.get(0));
+                            ipv6Addresses.remove(0);
+                        }
+                        if (ipv6Addresses.size() > 0) {
+                            net.setIpv6Secondaries(ipv6Addresses);
+                        }
+                        if (setupBridge && bridgeSlaves.contains(n.getName())) {
+                            net.makeBondingSlave();
+                            net.setBondingMaster(bridgeName);
+                        }
 
-                    nics.add(net);
+                        nics.add(net);
+                    }
+                    else if (n.isMacValid() && n.getIPv4Addresses().isEmpty()) {
+                        Network net = new Network(getCobblerConnection(),
+                                n.getName());
+                        net.setMacAddress(n.getHwaddr());
+                        if (setupBridge && bridgeSlaves.contains(n.getName())) {
+                            net.makeBondingSlave();
+                            net.setBondingMaster(bridgeName);
+                        }
+
+                        nics.add(net);
+                    }
                 }
                 else if (setupBridge && bridgeSlaves.contains(n.getName())) {
                     Network net = new Network(getCobblerConnection(),
