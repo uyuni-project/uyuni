@@ -7,15 +7,15 @@ Feature: Bootstrap a Salt minion via the GUI
     Given I am authorized for the "Admin" section
 
   Scenario: Bootstrap a SLES minion
-     When I follow the left menu "Systems > Bootstrapping"
-     Then I should see a "Bootstrap Minions" text
-     When I enter the hostname of "sle_minion" as "hostname"
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I select the hostname of "proxy" from "proxies"
-     And I click on "Bootstrap"
-     And I wait until I see "Successfully bootstrapped host!" text
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select the hostname of "proxy" from "proxies"
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -44,12 +44,12 @@ Feature: Bootstrap a Salt minion via the GUI
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
     And I click on "Schedule Migration"
-    And I should see a "Product Migration - Confirm" text
-    And I click on "Confirm"
+    Then I should see a "Product Migration - Confirm" text
+    When I click on "Confirm"
     Then I should see a "This system is scheduled to be migrated to" text
 
   Scenario: Check the migration is successful for this minion
@@ -63,7 +63,8 @@ Feature: Bootstrap a Salt minion via the GUI
     And vendor change should be enabled for product migration on "sle_spack_migrated_minion"
 
   Scenario: Install the latest Salt on this minion
-    When I enable repositories before installing Salt on this "sle_spack_migrated_minion"
+    When I migrate the non-SUMA repositories on "sle_spack_migrated_minion"
+    And I enable repositories before installing Salt on this "sle_spack_migrated_minion"
     And I install Salt packages from "sle_spack_migrated_minion"
     And I disable repositories after installing Salt on this "sle_spack_migrated_minion"
 
