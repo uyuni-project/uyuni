@@ -170,15 +170,6 @@
     </rhn-tab>
   </rhn-tab>
 
-<!--
-  FIX: Temporary decouple "ftr_power_management" from "ftr_kickstart" for Salt minions.
-  This should be removed as soon as "ftr_kickstart" is implemented for minions.
--->
-  <rhn-tab name="Provisioning" acl="system_feature(ftr_power_management); system_has_salt_entitlement(); not system_feature(ftr_kickstart)" url="/rhn/systems/details/kickstart/PowerManagement.do">
-    <rhn-tab name="Power Management" url="/rhn/systems/details/kickstart/PowerManagement.do" acl="system_feature(ftr_power_management)" node-id="power_management" />
-  </rhn-tab>
-<!-- ENDFIX -->
-
   <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);system_has_management_entitlement() or system_has_salt_entitlement() or system_is_bootstrap_minion_server()" url="/rhn/systems/details/groups/ListRemove.do">
 
     <rhn-tab name="List / Leave" url="/rhn/systems/details/groups/ListRemove.do"/>

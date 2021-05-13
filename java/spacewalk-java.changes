@@ -1,3 +1,4 @@
+- fix disapearing Autoinstallation Menu for minions (bsc#1184813)
 - catch not found repository and create a standard error page (bsc#1183992)
 
 -------------------------------------------------------------------
