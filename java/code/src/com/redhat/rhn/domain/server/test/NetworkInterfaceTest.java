@@ -80,6 +80,19 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
     /**
      * Creates a test NetworkInterface object
      * @param server The server to associate with this network interface
+     * @param ipAddress th IP address to assign to the interface
+     * @return Returns a new NetworkInterface object all filled out for testing purposes.
+     * @throws Exception something bad happened
+     */
+    public static NetworkInterface createTestNetworkInterface(Server server, String ipAddress)
+            throws Exception {
+        return createTestNetworkInterface(server, TestUtils.randomString(),
+               ipAddress, TEST_MAC);
+    }
+
+    /**
+     * Creates a test NetworkInterface object
+     * @param server The server to associate with this network interface
      * @param networkName the network name
      * @param ipAddress the ip address
      * @param macAddress the MAC address
@@ -94,15 +107,19 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         netint.setHwaddr(macAddress);
         netint.setModule("test");
         netint.setName(networkName);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress(ipAddress);
-        ArrayList<ServerNetAddress4> salist = new ArrayList<>();
-        salist.add(netAddr);
-        netint.setSa4(salist);
         server.addNetworkInterface(netint);
         netint = (NetworkInterface) TestUtils.saveAndReload(netint);
-        netAddr.setInterfaceId(netint.getInterfaceId());
-        TestUtils.saveAndFlush(netAddr);
+        if (!ipAddress.isEmpty()) {
+            ServerNetAddress4 netAddr = new ServerNetAddress4();
+            netAddr.setAddress(ipAddress);
+            ArrayList<ServerNetAddress4> salist = new ArrayList<>();
+            salist.add(netAddr);
+            netint.setSa4(salist);
+            netAddr.setInterfaceId(netint.getInterfaceId());
+            TestUtils.saveAndFlush(netint);
+            TestUtils.saveAndFlush(netAddr);
+        }
+
         return netint;
     }
 }

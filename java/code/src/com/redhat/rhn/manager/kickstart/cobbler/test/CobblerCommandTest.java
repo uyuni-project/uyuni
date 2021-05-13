@@ -34,8 +34,11 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
+import org.cobbler.Network;
+import org.cobbler.SystemRecord;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,6 +69,26 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
                 "http://localhost/test/path", TestUtils.randomString());
         cmd.store();
         assertNotNull(s.getCobblerId());
+    }
+
+    public void testSystemCreateNoIPNIC() throws Exception {
+
+        Server s = ServerTestUtils.createTestSystem(user);
+        NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s, "");
+        s.addNetworkInterface(device);
+
+        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(user, s, ksdata,
+                "http://localhost/test/path", TestUtils.randomString());
+        cmd.store();
+        assertNotNull(s.getCobblerId());
+
+        // Ensure mac address was passed to the cobbler system entry
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
+        SystemRecord systemRecord = SystemRecord.lookupById(connection, s.getCobblerId());
+        assertNotNull(systemRecord);
+        List<Network> nics = systemRecord.getNetworkInterfaces();
+        assertTrue(nics.size() > 0);
+        assertTrue(nics.stream().filter(nic -> nic.getMacAddress().equals(NetworkInterfaceTest.TEST_MAC)).count() > 0);
     }
 
     public void testProfileCreate() throws Exception {
