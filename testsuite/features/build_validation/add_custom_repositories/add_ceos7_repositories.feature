@@ -7,8 +7,10 @@ Feature: Adding the CentOS 7 distribution custom repositories
   Scenario: Download the iso of CentOS 7 DVD and mount it on the server
     When I mount as "centos-7-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" in the server
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Add a child channel for CentOS 7 DVD repositories
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     When I enter "Custom Channel for CentOS 7 DVD" as "Channel Name"
@@ -19,7 +21,6 @@ Feature: Adding the CentOS 7 distribution custom repositories
     Then I should see a "Channel Custom Channel for CentOS 7 DVD created" text
 
   Scenario: Add the CentOS 7 DVD repositories
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-7-iso" as "label"
@@ -29,7 +30,6 @@ Feature: Adding the CentOS 7 distribution custom repositories
     Then I should see a "Repository created successfully" text
 
   Scenario: Add the repository to the custom channel for CentOS 7 DVD
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 7 DVD"
     And I follow "Repositories" in the content area
@@ -38,7 +38,6 @@ Feature: Adding the CentOS 7 distribution custom repositories
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the custom channel for CentOS 7 DVD
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 7 DVD"
     And I follow "Repositories" in the content area

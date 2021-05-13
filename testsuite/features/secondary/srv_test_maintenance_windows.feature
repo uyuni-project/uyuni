@@ -1,11 +1,13 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_maintenance_windows
 Feature: Maintenance Windows
 
+    Scenario: Log in as admin user
+        Given I am authorized for the "Admin" section
+
     Scenario: Create Calendar single
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Calendars"
         And I click on "Create"
         Then I should see a "Maintenance Calendar" text
@@ -15,7 +17,6 @@ Feature: Maintenance Windows
         Then I should see a "Calendar successfully created" text
 
     Scenario: Create Calendar multi
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Calendars"
         And I click on "Create"
         Then I should see a "Maintenance Calendar" text
@@ -25,7 +26,6 @@ Feature: Maintenance Windows
         Then I should see a "Calendar successfully created" text
 
     Scenario: Create a single Schedule
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Schedules"
         And I click on "Create"
         Then I should see a "Maintenance Schedule" text
@@ -37,7 +37,6 @@ Feature: Maintenance Windows
         Then I should see a "Schedule successfully created" text
 
     Scenario: Create multi Schedules
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Schedules"
         And I click on "Create"
         Then I should see a "Maintenance Schedule" text
@@ -63,7 +62,6 @@ Feature: Maintenance Windows
         Then I should see a "System properties changed" text
 
     Scenario: Assign systems to a multi Schedule using SSM
-        Given I am authorized as "admin" with password "admin"
         When I am on the System Overview page
         And I follow "Clear"
         And I check the "sle_client" client
@@ -102,7 +100,6 @@ Feature: Maintenance Windows
         Then I should see a "1 package install has been scheduled for" text
 
     Scenario: Detach systems from Schedules
-        Given I am authorized as "admin" with password "admin"
         When I am on the System Overview page
         And I follow "Clear"
         And I check the "sle_client" client
@@ -118,7 +115,6 @@ Feature: Maintenance Windows
         Then I cancel all scheduled actions
 
     Scenario: Delete Maintenance Schedules
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Schedules"
         When I click the "Core Server Window" item delete button
         Then I should see a "Delete maintenance schedule" text
@@ -134,7 +130,6 @@ Feature: Maintenance Windows
         Then I wait until I see "singleschedule' has been deleted." text
 
     Scenario: Delete Calendars
-        Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Calendars"
         When I click the "singlecalendar" item delete button
         Then I should see a "Delete maintenance calendar" text
@@ -144,4 +139,3 @@ Feature: Maintenance Windows
         Then I should see a "Delete maintenance calendar" text
         When I click on the red confirmation button
         Then I wait until I see "Calendar 'multicalendar' has been deleted." text
-

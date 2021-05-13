@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_formulas
@@ -7,13 +7,14 @@ Feature: Use salt formulas
   As an authorized user
   I want to be able to install and use salt formulas
 
-  Scenario: Install the locale formula package on the server
-     Given I am authorized
+   Scenario: Log in as admin user
+      Given I am authorized for the "Admin" section
+
+   Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
      And I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: The new formula appears on the server
-     Given I am authorized
      When I follow the left menu "Salt > Formula Catalog"
      Then I should see a "locale" text in the content area
 
@@ -28,7 +29,6 @@ Feature: Use salt formulas
      Then the "locale" formula should be checked
 
   Scenario: Parametrize the formula on the minion
-     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
      And I select "Etc/GMT-5" in timezone name field
@@ -60,7 +60,6 @@ Feature: Use salt formulas
      And I wait until event "Apply highstate in test-mode scheduled by admin" is completed
 
   Scenario: Apply the parametrized formula via the highstate
-     Given I am on the Systems overview page of this "sle_minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
@@ -70,7 +69,6 @@ Feature: Use salt formulas
      And the language on "sle_minion" should be "fr_FR.UTF-8"
 
   Scenario: Reset the formula on the minion
-     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      And I follow first "Locale" in the content area
      And I click on "Clear values" and confirm
@@ -85,7 +83,6 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle_minion"
 
   Scenario: Apply the reset formula via the highstate
-     Given I am on the Systems overview page of this "sle_minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
@@ -95,7 +92,6 @@ Feature: Use salt formulas
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Disable the formula on the minion
-     Given I am on the Systems overview page of this "sle_minion"
      When I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
      And I should see a "General System Configuration" text
@@ -111,7 +107,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language" should be empty on "sle_minion"
 
   Scenario: Assign locale formula to minion via group formula
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      When I follow "Create Group"
      And I enter "locale-formula-group" as "name"
      And I enter "Test group with locale formula added" as "description"
@@ -142,7 +138,7 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language" should be empty on "ssh_minion"
 
   Scenario: Cleanup: remove "locale-formula-group" system group
-     Given I am on the groups page
+     When I follow the left menu "Systems > System Groups"
      And I follow "locale-formula-group" in the content area
      And I follow "Delete Group" in the content area
      When I click on "Confirm Deletion"
@@ -161,9 +157,7 @@ Feature: Use salt formulas
      And the language on "sle_minion" should be "en_US.UTF-8"
 
   Scenario: Cleanup: uninstall formula package from the server
-     Given I am authorized
      And I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I am authorized as "admin" with password "admin"
-     And I follow "Clear"
+     When I follow "Clear"

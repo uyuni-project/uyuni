@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -6,8 +6,10 @@
 @scope_action_chains
 Feature: Action chains on several systems at once
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Pre-requisite: downgrade packages before action chain test on several systems
-    Given I am authorized as "admin" with password "admin"
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I enable repository "test_repo_rpm_pool" on this "sle_client"
     And I remove package "andromeda-dummy" from this "sle_client" without error control
@@ -31,7 +33,6 @@ Feature: Action chains on several systems at once
     And I click on the filter button until page does contain "andromeda-dummy-1.0" text
 
   Scenario: Pre-requisite: ensure the errata cache is computed before action chain test on several systems
-    Given I am on the Systems overview page of this "sle_minion"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -52,7 +53,6 @@ Feature: Action chains on several systems at once
     And I cancel all scheduled actions
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
-    Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I check the "sle_minion" client
     And I check the "sle_client" client
@@ -109,5 +109,4 @@ Feature: Action chains on several systems at once
     And I run "rm /tmp/action_chain_done" on "sle_client" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"

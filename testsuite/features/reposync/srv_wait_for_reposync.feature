@@ -3,8 +3,10 @@
 
 Feature: Wait for reposync activity to finish in CI context
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Delete scheduled reposyncs
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Admin > Task Schedules"
     And I follow "mgr-sync-refresh-default"
     And I choose "disabled"

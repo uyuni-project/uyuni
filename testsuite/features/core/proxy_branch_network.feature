@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -29,6 +29,11 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
+@proxy
+@private_net
   Scenario: Enable the branch network formulas on the branch server
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
@@ -46,7 +51,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize the branch network
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Branch Network" in the content area
     And I enter "eth1" in NIC field
@@ -60,7 +64,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize DHCP on the branch server
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I enter "example.org" in domain name field
@@ -86,7 +89,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Parametrize DNS on the branch server
-    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
     # general information:
@@ -137,7 +139,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @private_net
 @pxeboot_minion
   Scenario: Parametrize DHCP and DNS for the PXE boot minion
-    Given I am on the Systems overview page of this "proxy"
     # dhcpd:
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
@@ -163,7 +164,6 @@ Feature: Setup SUSE Manager for Retail branch network
 @proxy
 @private_net
   Scenario: Apply the branch network formulas via the highstate
-    Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed

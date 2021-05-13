@@ -13,8 +13,10 @@ Feature: Bootstrap a SLES 15 traditional client
     And I run "mgr-actions-control --enable-all" on "sle15_client"
     Then I should see "sle15_client" via spacecmd
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: The onboarding of SLES 15 traditional client is completed
-    Given I am authorized as "admin" with password "admin"
     When I wait until onboarding is completed for "sle15_client"
 
   Scenario: Check registration values of SLES 15 traditional client

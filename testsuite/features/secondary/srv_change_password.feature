@@ -7,8 +7,10 @@ Feature: Change the user's password
   As an authorized user
   I want enter a new password
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Change the password to a new password
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > User Account > My Account"
     And I enter "GoodPass" as "desiredpassword"
     And I enter "GoodPass" as "desiredpasswordConfirm"
@@ -21,7 +23,6 @@ Feature: Change the user's password
     Then I should be logged in
 
   Scenario: Revert the new password to a valid standard password
-    Given I am authorized as "admin" with password "GoodPass"
     When I follow the left menu "Home > User Account > My Account"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
@@ -34,7 +35,6 @@ Feature: Change the user's password
     Then I should be logged in
 
   Scenario: Try an invalid password
-    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > User Account > My Account"
     And I enter "A" as "desiredpassword"
     And I enter "A" as "desiredpasswordConfirm"

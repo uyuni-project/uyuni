@@ -4,8 +4,10 @@
 Feature: Add common channels and schedule their synchronization
   # needed for external repositories that are not in SCC
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Add common channel for Ubuntu 16.04 main
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1604-amd64-main"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 16.04 LTS AMD64 Main"
@@ -18,7 +20,6 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 16.04 LTS AMD64 Main." text
 
   Scenario: Add common channel for Ubuntu 16.04 updates
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1604-amd64-updates"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 16.04 LTS AMD64 Main Updates"
@@ -31,7 +32,6 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 16.04 LTS AMD64 Main Updates." text
 
   Scenario: Add common channel for Ubuntu 16.04 security
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1604-amd64-security"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 16.04 LTS AMD64 Security"
@@ -44,7 +44,6 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 16.04 LTS AMD64 Security." text
 
   Scenario: Add common channels for Ubuntu 18.04 main
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 18.04 LTS AMD64 Main"
@@ -57,7 +56,6 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main." text
 
   Scenario: Add common channels for Ubuntu 18.04 updates
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main-updates"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 18.04 LTS AMD64 Main Updates"
@@ -70,7 +68,6 @@ Feature: Add common channels and schedule their synchronization
     Then I should see a "Repository sync scheduled for Ubuntu 18.04 LTS AMD64 Main Updates." text
 
   Scenario: Add common channels for Ubuntu 18.04 security
-    Given I am authorized as "admin" with password "admin"
     When I use spacewalk-common-channel to add Debian channel "ubuntu-1804-amd64-main-security"
     And I follow the left menu "Software > Manage > Channels"
     And I follow "Ubuntu 18.04 LTS AMD64 Main Security"

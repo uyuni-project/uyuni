@@ -15,8 +15,10 @@ Feature: Bootstrap a CentOS 6 traditional client
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
     Then I should see "ceos6_client" via spacecmd
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: The onboarding of CentOS 6 traditional client is completed
-    Given I am authorized as "admin" with password "admin"
     When I wait until onboarding is completed for "ceos6_client"
 
 @proxy

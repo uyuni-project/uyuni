@@ -1,4 +1,4 @@
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -24,7 +24,8 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     Then I should see a "my_org" text in the content area
 
   Scenario: Group was correctly created
-    Given I am on the groups page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Systems > System Groups"
     When I follow "minions_group"
     Then I should see a "minions_group" text
     And I should see a "System Group Status" text
@@ -43,7 +44,8 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I follow "Managers"
 
   Scenario: User Roles were assigned
-    Given I am on the active Users page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Users > User List > Active"
     And I follow "user2"
     Then I should see a "User Details" text
     And I should see "role_activation_key_admin" as checked
@@ -54,7 +56,6 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I should see "role_system_group_admin" as unchecked
 
   Scenario: Activation Key was correctly created
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "My Activation Key created via Salt"
     Then I should see "10" in field "usageLimit"
@@ -67,15 +68,14 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: Cleanup: all organizations were successfully removed
-    Given I am on the Organizations page
+    When I follow the left menu "Admin > Organizations"
     Then I should not see a "my_org" text
     And I should not see a "my_org2" text
 
   Scenario: Cleanup: user was successfully removed
-    Given I am on the active Users page
+    When I follow the left menu "Users > User List > Active"
     Then I should not see a "user2" text
 
   Scenario: Cleanup: activation key was successfully removed
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     Then I should not see a "My Activation Key created via Salt" text

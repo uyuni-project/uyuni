@@ -1,12 +1,12 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
 @scope_onboarding
 Feature: Custom system info key-value pairs
 
-  Background:
-    Given I am authorized
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
 
   Scenario: Create a new key
     When I follow the left menu "Systems > Custom System Info"

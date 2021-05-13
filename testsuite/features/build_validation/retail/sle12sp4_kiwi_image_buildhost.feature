@@ -3,13 +3,14 @@
 
 Feature: Bootstrap a SLES 12 SP4 Salt build host via the GUI
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create the bootstrap repository for a SLES 12 SP4 build host
-     Given I am authorized as "admin" with password "admin"
      When I create the bootstrap repository for "sle12sp4_buildhost" on the server
 
   Scenario: Bootstrap a SLES build host
-     Given I am authorized as "admin" with password "admin"
-     When I go to the bootstrapping page
+     When I follow the left menu "Systems > Bootstrapping"
      Then I should see a "Bootstrap Minions" text
      When I enter the hostname of "sle12sp4_buildhost" as "hostname"
      And I enter "22" as "port"
@@ -20,8 +21,7 @@ Feature: Bootstrap a SLES 12 SP4 Salt build host via the GUI
      And I wait until I see "Successfully bootstrapped host!" text
 
   Scenario: Check the new bootstrapped SLES 12 SP4 build host in System Overview page
-    Given I am authorized as "admin" with password "admin"
-    When I go to the minion onboarding page
+    When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     When I am on the System Overview page
     And I wait until I see the name of "sle12sp4_buildhost", refreshing the page

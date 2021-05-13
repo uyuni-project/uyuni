@@ -6,8 +6,10 @@ Feature: Manipulate activation keys
   As the testing user
   I want to create and edit activation keys
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create an activation key for i586
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test Key i586" as "description"
@@ -17,7 +19,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test Key i586 has been created." text
 
   Scenario: Change limit of the i586 activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I enter "20" as "usageLimit"
@@ -26,7 +27,6 @@ Feature: Manipulate activation keys
     And I should see "20" in field "usageLimit"
 
   Scenario: Change the base channel of the i586 activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586"
     And I select "Test-Channel-i586" from "selectedBaseChannel"
@@ -34,7 +34,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
   Scenario: Delete the i586 activation key
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key i586" in the content area
     And I follow "Delete Key"
@@ -42,7 +41,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test Key i586 has been deleted." text
 
   Scenario: Create an activation key with a channel and a package list for i586
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key i586" as "description"
@@ -56,7 +54,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
 
   Scenario: Delete the i586 activation key with packages
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key i586" in the content area
     And I follow "Delete Key"
@@ -64,7 +61,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test PKG Key i586 has been deleted." text
 
   Scenario: Create an activation key with a channel and a package list for x86_64
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I enter "SUSE Test PKG Key x86_64" as "description"
@@ -78,7 +74,6 @@ Feature: Manipulate activation keys
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
 
   Scenario: Delete the x86_64 activation key with packages
-    Given I am on the Systems page
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area
     And I follow "Delete Key"

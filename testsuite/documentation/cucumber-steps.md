@@ -130,7 +130,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to Salt => Keys
 
 ```cucumber
-  When I go to the minion onboarding page
+  When I follow the left menu "Salt > Keys"
 ```
 
 * Go to Systems => Overview
@@ -154,7 +154,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to Systems => Bootstrapping
 
 ```cucumber
-  When I go to the bootstrapping page
+  When I follow the left menu "Systems > Bootstrapping"
 ```
 
 * Go to Systems => Systems
@@ -184,7 +184,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to Users => Users list => Active
 
 ```cucumber
-  When I am on the Active Users page
+  When I follow the left menu "Users > User List > Active"
 ```
 
 * Go to details of a given client

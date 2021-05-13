@@ -4,6 +4,9 @@
 @scope_configuration_channels
 Feature: Clone a channel
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Clone a channel without patches
     Given I am on the manage software channels page
     When I follow "Clone Channel"
@@ -125,5 +128,4 @@ Feature: Clone a channel
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove remaining systems from SSM after channel cloning tests
-    When I am authorized as "admin" with password "admin"
-    And I follow "Clear"
+    When I follow "Clear"
