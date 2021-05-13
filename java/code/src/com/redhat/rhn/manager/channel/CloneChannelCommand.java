@@ -36,6 +36,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
     private CloneBehavior cloneBehavior;
     private Channel original;
     private String DEFAULT_PREFIX = "clone-of-";
+    private boolean stripModularMetadata = false;
 
     /**
      * Clone Behavior type
@@ -114,9 +115,14 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
         // need to save before calling stored procs below
         ChannelFactory.save(c);
-        c = (ClonedChannel) ChannelFactory.reload(c);
+        c = ChannelFactory.reload(c);
 
-        c.cloneModulesFrom(original);
+        if (stripModularMetadata) {
+            c.setModules(null);
+        }
+        else {
+            c.cloneModulesFrom(original);
+        }
 
         // This ends up being a mode query call so need to save first to get channel id
         c.setGloballySubscribable(globallySubscribable, user.getOrg());
@@ -136,5 +142,14 @@ public class CloneChannelCommand extends CreateChannelCommand {
                 original.getLabel());
 
         return c;
+    }
+
+    /**
+     * Controls of behavior of cloning the modular metadata to the channel
+     *
+     * @param stripModularMetadataIn true if the metadata should be stripped
+     */
+    public void setStripModularMetadata(boolean stripModularMetadataIn) {
+        this.stripModularMetadata = stripModularMetadataIn;
     }
 }

@@ -791,15 +791,15 @@ public class ContentManager {
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
                 .map(tgt -> fixTargetProperties(tgt, leader, null, moduleFiltersPresent))
-                .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
+                .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user, moduleFiltersPresent));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
                 .map(src -> lookupTarget(src, env, user)
                         .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel(), moduleFiltersPresent))
                         .map(tgt -> Pair.of(src, tgt))
-                        .orElseGet(() ->
-                                Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
+                        .orElseGet(() -> Pair.of(src, createSoftwareTarget(
+                                src, of(leaderTarget.getChannel()), env, user, moduleFiltersPresent))));
 
         List<Pair<Channel, SoftwareEnvironmentTarget>> srcTgtPairs = Stream.concat(
                 Stream.of(Pair.of(leader, leaderTarget)),
@@ -856,7 +856,7 @@ public class ContentManager {
     }
 
     private SoftwareEnvironmentTarget createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader,
-            ContentEnvironment env, User user) {
+            ContentEnvironment env, User user, boolean stripModularMetadata) {
         List<ClonedChannel> oldSuccessors = lookupClonesInProject(sourceChannel, env.getContentProject());
         String targetLabel = channelLabelInEnvironment(sourceChannel.getLabel(), env);
 
@@ -867,6 +867,7 @@ public class ContentManager {
                     cloneCmd.setName(channelLabelInEnvironment(sourceChannel.getName(), env));
                     cloneCmd.setLabel(targetLabel);
                     cloneCmd.setSummary(channelLabelInEnvironment(sourceChannel.getSummary(), env));
+                    cloneCmd.setStripModularMetadata(stripModularMetadata);
                     leader.ifPresent(l -> cloneCmd.setParentLabel(l.getLabel()));
                     return cloneCmd.create();
                 });

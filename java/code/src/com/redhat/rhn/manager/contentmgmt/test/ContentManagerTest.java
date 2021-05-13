@@ -1113,9 +1113,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Test building a project with AppStream filters
+     * Test building a project with AppStream filters not matching any module
      */
-    public void testBuildProjectWithModuleFilters() throws Exception {
+    public void testBuildProjectWithUnmatchingModuleFilters() throws Exception {
         Channel channel = MockModulemdApi.createModularTestChannel(user);
 
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
@@ -1134,12 +1134,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         catch (RuntimeException e) {
             assertTrue(e.getCause() instanceof DependencyResolutionException);
         }
+    }
 
-        contentManager.detachFilter("cplabel", filter.getId(), user);
+    public void testBuildProjectWithModuleFilters() throws Exception {
+        Channel channel = MockModulemdApi.createModularTestChannel(user);
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         // build with matching filters
-        criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
-        filter = contentManager.createFilter("my-filter-2", Rule.ALLOW, EntityType.MODULE, criteria, user);
+        FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
+        ContentFilter filter = contentManager.createFilter("my-filter-2", Rule.ALLOW, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
