@@ -2,6 +2,7 @@
 
 import sys
 import os
+import glob
 import shutil
 import subprocess
 import time
@@ -489,6 +490,18 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     log("The bootstrap repo should contain the following packages: {0}".format(packagelist), 2)
 
     debs_dir = os.path.join(destdirtmp, 'debs')
+    if repotype == 'deb' and not options.dryrun:
+        # reprepro is picky with packages having the same name, but different checksums.
+        # To avoid aborting, we copy the old packages to debs and add or overwrite them
+        # with new found packages and run reprepro again (bsc#1184330)
+        if not os.path.exists(debs_dir):
+            os.makedirs(debs_dir)
+        for file_path in glob.glob(os.path.join(destdirtmp, 'pool/**/*.deb'), recursive=True):
+            shutil.copy2(file_path, debs_dir)
+        cleanup_dir(os.path.join(destdirtmp, 'pool'))
+        cleanup_dir(os.path.join(destdirtmp, 'db'))
+        cleanup_dir(os.path.join(destdirtmp, 'dists'))
+
     for pkgaltstr in packagelist:
         alt = pkgaltstr.split("|")
         altpretty =  ', '.join("'%s'" %(e) for e in alt)

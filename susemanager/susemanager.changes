@@ -1,3 +1,6 @@
+- fix creating deb bootstrap repos with packages having new checksums
+  (bsc#1184330)
+
 -------------------------------------------------------------------
 Tue May 04 13:37:14 CEST 2021 - jgonzalez@suse.com
 
