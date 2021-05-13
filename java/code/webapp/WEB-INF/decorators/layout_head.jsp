@@ -7,11 +7,6 @@
 
 <!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script type='text/javascript' src="/javascript/html5.js"></script>
-      <script type='text/javascript' src="/javascript/respond.js"></script>
-    <![endif]-->
     <c:if test="${pageContext.request.requestURI == '/rhn/Load.do'}">
       <meta http-equiv="refresh" content="0; url=<c:out value="${param.return_url}" />" />
     </c:if>
