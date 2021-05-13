@@ -1,3 +1,4 @@
+- Do not require advisory_status to be set in ErrataHandler.create (bsc#1185965)
 - Fix the problem with wrong icons for virtual systems (bsc#1185507)
 
 -------------------------------------------------------------------
