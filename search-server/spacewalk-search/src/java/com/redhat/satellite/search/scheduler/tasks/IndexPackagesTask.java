@@ -80,6 +80,11 @@ public class IndexPackagesTask implements Job {
             throw new JobExecutionException(e);
         }
         catch (IndexingException e) {
+            log.debug(e);
+            if (e.getMessage().contains("LockObtainFailedException: Lock obtain timed out")) {
+                log.info("Indexer already running. Skipping");
+                return;
+            }
             throw new JobExecutionException(e);
         }
     }

@@ -71,6 +71,7 @@ Feature: Build OS images
     When I disable repositories after installing branch server
 
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
+    When I go to the home page
     And I follow "Clear"
 
   Scenario: Cleanup: remove OS image profile

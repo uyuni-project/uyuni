@@ -3,6 +3,9 @@
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
+#
+# This feature is a dependency for:
+# - features/secondary/srv_docker_cve_audit.feature : Due to the images listed in the CVE Audit images
 
 @buildhost
 @scope_building_container_images

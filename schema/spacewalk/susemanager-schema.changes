@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 10 17:46:22 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
+- AlmaLinux and Amazon Linux 2 Java enablement
+
+-------------------------------------------------------------------
 Wed May 05 16:43:35 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.11-1

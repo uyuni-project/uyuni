@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 10 17:47:37 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
+- Upgrade react-select to 4.3.0 and lodash to 4.17.21
+
+-------------------------------------------------------------------
 Wed May 05 16:54:54 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.11-1

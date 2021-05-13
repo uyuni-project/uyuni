@@ -1,3 +1,7 @@
+- sort products in mgr-sync output
+- fix creating deb bootstrap repos with packages having new checksums
+  (bsc#1184330)
+
 -------------------------------------------------------------------
 Wed May 05 16:42:14 CEST 2021 - jgonzalez@suse.com
 

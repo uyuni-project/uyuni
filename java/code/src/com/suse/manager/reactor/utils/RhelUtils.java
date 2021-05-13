@@ -97,7 +97,7 @@ public class RhelUtils {
     }
 
     /**
-     * The content of the /etc/redhat|centos|oracle|alinux-release file.
+     * The content of the /etc/redhat|centos|oracle|almalinux|alinux|system-release file.
      */
     public static class ReleaseFile {
 
@@ -151,11 +151,12 @@ public class RhelUtils {
     }
 
     /**
-     * Parse the /etc/redhat|centos|oracle|alinux-release
+     * Parse the /etc//etc/redhat|centos|oracle|almalinux|alinux|system-release
      * @param releaseFile the content of the release file
      * @return the parsed content of the release file
      */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
+        // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
         Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
         if (matcher.matches()) {
             String name =
@@ -207,12 +208,15 @@ public class RhelUtils {
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
      * @param alibabaReleaseFile the content of /etc/alinux-release
+     * @param almaReleaseFile the content of /etc/almalinux-release
+     * @param amazonReleaseFile the content of /etc/system-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
             Set<Channel> channels, String arch, Optional<String> resReleasePackage,
             Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
+            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
+            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile) {
 
         // check first if it has RES channels assigned or the RES release package installed
         boolean hasRESChannels = channels.stream()
@@ -258,6 +262,16 @@ public class RhelUtils {
             return alibabaReleaseFile.map(v -> detectPlainRHEL(v, arch, "Alibaba"));
         }
 
+        // next check if AlmaLinux
+        if (almaReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            return almaReleaseFile.map(v -> detectPlainRHEL(v, arch, "AlmaLinux"));
+        }
+
+        // next check if Amazon Linux
+        if (amazonReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            return amazonReleaseFile.map(v -> detectPlainRHEL(v, arch, "Amazon"));
+        }
+
         // next check if Centos
         if (centosReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
             return centosReleaseFile.map(v -> detectPlainRHEL(v, arch, "CentOS"));
@@ -288,12 +302,15 @@ public class RhelUtils {
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
      * @param alibabaReleaseFile the content of /etc/alinux-release
+     * @param almaReleaseFile the content of /etc/almalinux-release
+     * @param amazonReleaseFile the content of /etc/system-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
             Server server, Optional<String> resReleasePackage,
             Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
+            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
+            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile) {
         return detectRhelProduct(
                 server.getChannels(),
                 server.getServerArch().getLabel().replace("-redhat-linux", ""),
@@ -301,7 +318,9 @@ public class RhelUtils {
                 rhelReleaseFile,
                 centosReleaseFile,
                 oracleReleaseFile,
-                alibabaReleaseFile
+                alibabaReleaseFile,
+                almaReleaseFile,
+                amazonReleaseFile
         );
     }
 
@@ -323,12 +342,15 @@ public class RhelUtils {
      * @param centosReleaseFile the content of /etc/centos-release
      * @param oracleReleaseFile the content of /etc/oracle-release
      * @param alibabaReleaseFile the content of /etc/alinux-release
+     * @param almaReleaseFile the content of /etc/almalinux-release
+     * @param amazonReleaseFile the content of /etc/system-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
             ImageInfo image, Optional<String> resReleasePackage,
             Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
-            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile) {
+            Optional<String> oracleReleaseFile, Optional<String> alibabaReleaseFile,
+            Optional<String> almaReleaseFile, Optional<String> amazonReleaseFile) {
         return detectRhelProduct(
                 image.getChannels(),
                 image.getImageArch().getLabel().replace("-redhat-linux", ""),
@@ -336,7 +358,9 @@ public class RhelUtils {
                 rhelReleaseFile,
                 centosReleaseFile,
                 oracleReleaseFile,
-                alibabaReleaseFile
+                alibabaReleaseFile,
+                almaReleaseFile,
+                amazonReleaseFile
         );
     }
 

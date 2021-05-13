@@ -536,29 +536,6 @@ When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
 
-When(/^I check the child channel "([^"]*)"$/) do |channel|
-  find(:xpath, "//i[@class='fa fa-angle-right']").click unless has_xpath?("//i[@class='fa fa-angle-down']", wait: 60)
-  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
-  checkbox.set(true)
-end
-
-When(/^I check the custom channels for "([^"]*)"$/) do |client|
-  node = get_target(client)
-  _os_version, os_family = get_os_version(node)
-  if os_family =~ /^ubuntu/
-    steps %(
-      When I check the child channel "main"
-      And I check the child channel "main-updates"
-    )
-  elsif os_family =~ /^centos/
-    step %(I check the child channel "DVD")
-  end
-  # Both minion and ssh_minion uses the same repositories, so the custom channels
-  client.sub! 'ssh_minion', 'minion'
-  channel = "Custom Channel for #{client}"
-  step %(I check the child channel "#{channel}")
-end
-
 When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
@@ -1025,7 +1002,7 @@ end
 
 # Check a Prometheus exporter
 When(/^I check "([^"]*)" exporter$/) do |exporter_type|
-  step %(I check "#{exporter_type}_exporter#enabled")
+  step %(I check "exporters##{exporter_type}_exporter#enabled" if not checked)
 end
 
 # Navigate to a service endpoint
