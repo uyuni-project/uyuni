@@ -1,3 +1,8 @@
+- catch not found repository and create a standard error page (bsc#1183992)
+- Remove duplicate entries on AppStream filter channel browser
+- Do not require advisory_status to be set in ErrataHandler.create (bsc#1185965)
+- Fix the problem with wrong icons for virtual systems (bsc#1185507)
+
 -------------------------------------------------------------------
 Mon May 10 17:43:42 CEST 2021 - jgonzalez@suse.com
 

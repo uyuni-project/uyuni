@@ -25,7 +25,7 @@ type ActionScheduleProps = {
   localTime?: string;
   actionChains?: Array<ActionChain>;
   onDateTimeChanged: (date: Date) => void;
-  onActionChainChanged?: (actionChain: ActionChain) => void;
+  onActionChainChanged?: (actionChain: ActionChain | null) => void;
   systemIds?: Array<string | number>;
   actionType?: string;
 };
@@ -124,6 +124,10 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       earliest: date,
     });
     this.props.onDateTimeChanged(date);
+
+    if (this.props.onActionChainChanged) {
+      this.props.onActionChainChanged(null);
+    }
   };
 
   onSelectEarliest = () => {
