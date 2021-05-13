@@ -25,8 +25,7 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
 @ubuntu_minion
   Scenario: Install the OpenSCAP packages on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
-    When I enable universe repositories on "ubuntu_minion"
-    And I refresh the metadata for "ubuntu_minion"
+    When I refresh the metadata for "ubuntu_minion"
     And I install OpenSCAP dependencies on "ubuntu_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
@@ -82,7 +81,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
 
   Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
-    When I disable universe repositories on "ubuntu_minion"
 
 @ubuntu_minion
 @uyuni

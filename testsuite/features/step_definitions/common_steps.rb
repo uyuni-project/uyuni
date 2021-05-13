@@ -709,18 +709,6 @@ When(/^I disable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |bas
   end
 end
 
-When(/^I enable universe repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  node.run("sed -i '/^#\\s*deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^#\\s*deb /deb /' /etc/apt/sources.list")
-  node.run("apt-get update")
-end
-
-When(/^I disable universe repositories on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  node.run("sed -i '/^deb http:\\/\\/archive.ubuntu.com\\/ubuntu .* universe/ s/^deb /# deb /' /etc/apt/sources.list")
-  node.run("apt-get update")
-end
-
 When(/^I enable repositories before installing Docker$/) do
   os_version, os_family = get_os_version($build_host)
 
