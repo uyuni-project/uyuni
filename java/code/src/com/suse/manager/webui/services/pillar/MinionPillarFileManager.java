@@ -15,7 +15,12 @@
 package com.suse.manager.webui.services.pillar;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.utils.SaltPillar;
@@ -23,10 +28,12 @@ import com.suse.manager.webui.utils.SaltStateGenerator;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 
 /**
  * Abstract manager class for generating or removing minion pillar files
@@ -62,7 +69,10 @@ public class MinionPillarFileManager {
     private void saveFileToDisk(SaltPillar pillar, String filename) {
         try {
             Files.createDirectories(this.pillarDataPath);
-            new SaltStateGenerator(this.pillarDataPath.resolve(filename).toFile()).generate(pillar);
+            File file = this.pillarDataPath.resolve(filename).toFile();
+            new SaltStateGenerator(file).generate(pillar);
+            FileUtils.setAttributes(file.toPath(), "tomcat", "susemanager",
+                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
