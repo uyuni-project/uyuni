@@ -51,6 +51,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Given I am on the Systems overview page of this "ssh_spack_migrated_minion"
     When I follow "Events"
     And I follow "History"
+    And I wait until event "Apply states" is completed
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
