@@ -346,6 +346,12 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="lookup.jsp.title.repo">
+          <source>We're sorry, but the repository could not be found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="lookup.jsp.title.action">
           <source>We're sorry, but the action could not be found.</source>
         <context-group name="ctx">
@@ -472,6 +478,12 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.repo">
+          <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="lookup.jsp.reason1.errata">
           <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
@@ -540,6 +552,12 @@
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.channel">
           <source>You do not have permission to view this channel.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="lookup.jsp.reason2.repo">
+          <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
