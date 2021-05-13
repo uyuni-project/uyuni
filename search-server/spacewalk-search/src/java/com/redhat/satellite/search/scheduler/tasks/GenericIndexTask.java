@@ -91,6 +91,11 @@ public abstract class GenericIndexTask implements StatefulJob {
             throw new JobExecutionException(e);
         }
         catch (IndexingException e) {
+            log.debug(e);
+            if (e.getMessage().contains("LockObtainFailedException: Lock obtain timed out")) {
+                log.info("Indexer already running. Skipping");
+                return;
+            }
             throw new JobExecutionException(e);
         }
     }
