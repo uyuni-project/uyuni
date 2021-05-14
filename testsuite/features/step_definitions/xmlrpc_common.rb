@@ -273,8 +273,14 @@ When(/^I create an activation key including custom channels for "([^"]*)" via XM
 
   # Select all the child channels for this client
   client.sub! 'ssh_minion', 'minion'
-  custom_channel = "custom_channel_#{client}"
-  selected_child_channels = [custom_channel]
+  if client.include? 'buildhost'
+    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
+  elsif client.include? 'terminal'
+    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
+  else
+    custom_channel = "custom_channel_#{client}"
+    selected_child_channels = [custom_channel]
+  end
   child_channels.each do |child_channel|
     selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
   end

@@ -71,8 +71,8 @@ if $build_validation
   $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
   $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
-  $sle12sp4_buildhost = twopence_init("ssh:#{ENV['SLE12SP4_BUILDHOST']}") if ENV['SLE12SP4_BUILDHOST']
-  $sle12sp4_terminal = twopence_init("ssh:#{ENV['SLE12SP4_TERMINAL']}") if ENV['SLE12SP4_TERMINAL']
+  $sle12sp5_buildhost = twopence_init("ssh:#{ENV['SLE12SP5_BUILDHOST']}") if ENV['SLE12SP5_BUILDHOST']
+  $sle12sp5_terminal = twopence_init("ssh:#{ENV['SLE12SP5_TERMINAL']}") if ENV['SLE12SP5_TERMINAL']
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   # As we share core features for all the environments, we share also those vm twopence objects
@@ -95,7 +95,7 @@ if $build_validation
              $debian9_minion, $debian9_ssh_minion,
              $debian10_minion, $debian10_ssh_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
-             $sle12sp4_buildhost, $sle12sp4_terminal,
+             $sle12sp5_buildhost, $sle12sp5_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
              $client, $minion, $ssh_minion, $ceos_minion, $ubuntu_minion]
 else
