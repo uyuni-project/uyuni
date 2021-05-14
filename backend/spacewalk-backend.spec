@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -49,7 +49,7 @@ License:        GPL-2.0-only
 Group:          System/Management
 Version:        4.2.11
 Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
@@ -71,18 +71,17 @@ Requires:       python3-debian
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif
+BuildRequires:  %{m2crypto}
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
 BuildRequires:  python3
+BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-rhnlib >= 2.5.74
 BuildRequires:  python3-rpm
 BuildRequires:  python3-uyuni-common-libs
-BuildRequires:  python3-debian
-BuildRequires:  %{m2crypto}
-
 
 %description
 Generic program files needed by the Spacewalk server machines.
@@ -114,13 +113,12 @@ Summary:        Basic code that provides Spacewalk Server functionality
 Group:          System/Management
 Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
-Requires:       (python3-pam or python3-python-pam)
-Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
 Requires:       spacewalk-config
+Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
+Requires:       (python3-pam or python3-python-pam)
 
 # cobbler-web is known to break our configuration
 Conflicts:      cobbler-web
-
 
 %description server
 This package contains the basic code that provides server/backend
@@ -226,29 +224,29 @@ Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
 %if 0%{?rhel}
-BuildRequires:	systemd-rpm-macros
+BuildRequires:  systemd-rpm-macros
 %else
 %{?systemd_requires}
 %endif
 
-Requires:       (python3-dateutil or python3-python-dateutil)
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber < 4
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
+Requires:       (python3-dateutil or python3-python-dateutil)
 %if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
-Requires:       zypp-plugin-python
 Requires:       apache2-prefork
+Requires:       zypp-plugin-python
 %endif
 %if 0%{?fedora} || 0%{?rhel}
 Requires:       mod_ssl
 %endif
+Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
 Requires:       cobbler >= 3.0.0
-Requires:       %{m2crypto}
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 
@@ -357,7 +355,6 @@ spacewalk-python3 $RPM_BUILD_ROOT%{python3rhnroot}/common \
 
 %endif
 
-
 %post server
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
@@ -397,7 +394,8 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{python3rhnroot}
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin
@@ -425,7 +423,8 @@ fi
 
 %files sql
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 # Need __init__ = share it with rhns-server
 %dir %{python3rhnroot}/server
@@ -444,13 +443,15 @@ fi
 
 %files sql-postgresql
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{python3rhnroot}/server/rhnSQL/driver_postgresql.py*
 %{python3rhnroot}/server/rhnSQL/__pycache__/driver_postgresql.*
 
 %files server -f %{name}-server.lang
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 # modules
 %{python3rhnroot}/server/apacheAuth.py*
@@ -546,7 +547,8 @@ fi
 
 %files xmlrpc
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
 %dir %{python3rhnroot}/server/action
@@ -561,7 +563,8 @@ fi
 
 %files applet
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/applet
 %{rhnroot}/server/handlers/applet/*
@@ -571,7 +574,8 @@ fi
 
 %files app
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/app
 %{rhnroot}/server/handlers/app/*
@@ -581,7 +585,8 @@ fi
 
 %files iss
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/sat
 %{rhnroot}/server/handlers/sat/*
@@ -589,7 +594,8 @@ fi
 
 %files iss-export
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{python3rhnroot}/satellite_exporter
 %{python3rhnroot}/satellite_exporter/__init__.py*
 %{python3rhnroot}/satellite_exporter/satexport.py*
@@ -606,7 +612,8 @@ fi
 
 %files config-files-common
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{python3rhnroot}/server/configFilesHandler.py*
 %{python3rhnroot}/server/__pycache__/configFilesHandler.*
 %dir %{python3rhnroot}/server/config_common
@@ -614,7 +621,8 @@ fi
 
 %files config-files
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
@@ -623,7 +631,8 @@ fi
 
 %files config-files-tool
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers/config_mgmt
 %{rhnroot}/server/handlers/config_mgmt/*
@@ -632,7 +641,8 @@ fi
 
 %files package-push-server
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{rhnroot}/upload_server
 %{rhnroot}/upload_server/__init__.py*
 %dir %{rhnroot}/upload_server/handlers
@@ -644,7 +654,8 @@ fi
 
 %files tools
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %doc README.ULN
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
@@ -744,7 +755,8 @@ fi
 
 %files xml-export-libs
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{python3rhnroot}/satellite_tools
 %{python3rhnroot}/satellite_tools/__init__.py*
 %{python3rhnroot}/satellite_tools/geniso.py*

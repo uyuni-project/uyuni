@@ -1,7 +1,7 @@
 #
 # spec file for package spacecmd
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 # Copyright (c) 2011 Aron Parsons <aronparsons@gmail.com>
 #
@@ -47,14 +47,14 @@ Name:           spacecmd
 Version:        4.2.8
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
+License:        GPL-3.0-or-later
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <uyuni-devel@lists.opensuse.org>
 Group:          admin
 %else
 Group:          Applications/System
 %endif
-License:        GPL-3.0-or-later
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || "%{_vendor}" == "debbuild"
@@ -80,9 +80,9 @@ BuildRequires:  python3-dev
 %else
 BuildRequires:  python3-devel
 %endif
+Requires:       python3
 Requires:       python3-rpm
 Requires:       python3-simplejson
-Requires:       python3
 %else
 BuildRequires:  %{python2prefix}
 %if "%{_vendor}" == "debbuild"

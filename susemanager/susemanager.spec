@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -50,7 +50,7 @@ Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!

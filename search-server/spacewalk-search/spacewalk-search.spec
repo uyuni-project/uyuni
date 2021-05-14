@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %if 0%{?suse_version}
 %define java_version   11
@@ -35,7 +36,7 @@ Release:        1%{?dist}
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server
 # make test-srpm
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -52,7 +53,6 @@ BuildRequires:  doc-indexes
 BuildRequires:  hadoop
 BuildRequires:  jakarta-commons-httpclient
 BuildRequires:  jakarta-oro
-BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
@@ -64,6 +64,7 @@ BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
+BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
 %if 0%{?rhel}
 BuildRequires:  systemd-rpm-macros
 %endif

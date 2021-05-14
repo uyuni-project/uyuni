@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -39,15 +39,15 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Version:        4.2.16
 Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common
+BuildRequires:  nodejs-packaging
+BuildRequires:  susemanager-nodejs-sdk-devel
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
-BuildRequires:  susemanager-nodejs-sdk-devel
-BuildRequires:  nodejs-packaging
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
@@ -63,7 +63,7 @@ but it does generate a number of sub-packages.
 
 %package -n susemanager-web-libs
 Summary:        Vendor bundles for spacewalk-web
-License:        0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+License:        0BSD AND BSD-3-Clause AND LGPL-3.0-or-later AND MIT AND MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -76,7 +76,7 @@ This package contains Vendor bundles needed for spacewalk-web
 
 %package -n susemanager-web-libs-debug
 Summary:        Vendor bundles for spacewalk-web debug files
-License:        0BSD and BSD-3-Clause and LGPL-3.0-or-later and MIT and MPL-2.0
+License:        0BSD AND BSD-3-Clause AND LGPL-3.0-or-later AND MIT AND MPL-2.0
 Group:          Applications/Internet
 
 BuildArch:      noarch
@@ -121,13 +121,13 @@ Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       susemanager-frontend-libs
 %if 0%{?suse_version} >= 1500
-Requires:       python3-websockify
 Requires:       python3-PyJWT
 Requires:       python3-numpy
+Requires:       python3-websockify
 %else
-Requires:       python-websockify
 Requires:       python-PyJWT
 Requires:       python-numpy
+Requires:       python-websockify
 %endif
 %endif
 Requires:       httpd
@@ -252,7 +252,7 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vend
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/RHN/DBI.pm
 %{perl_vendorlib}/PXT/Config.pm
-%doc LICENSE
+%license LICENSE
 
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
@@ -277,7 +277,7 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/%{www_path}/vend
 %{www_path}/pub
 %{www_path}/javascript/manager/*.js
 %{www_path}/javascript/*.js
-%doc LICENSE
+%license LICENSE
 
 %files -n spacewalk-html-debug
 %defattr(644,root,root,755)
