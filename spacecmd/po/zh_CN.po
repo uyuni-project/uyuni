@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 15:15+0200\n"
-"PO-Revision-Date: 2021-02-08 09:56+0000\n"
-"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
+"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -713,14 +713,12 @@ msgid "This version of the API doesn't support this method"
 msgstr "此 API 版本不支持此方法"
 
 #: ../src/spacecmd/configchannel.py:104
-#, fuzzy
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "configchannel_listsystems：列出已订阅某个"
+msgstr "configchannel_listgroups：列出已订阅某个频道的组"
 
 #: ../src/spacecmd/configchannel.py:106
-#, fuzzy
 msgid "usage: configchannel_listgroups CHANNEL"
-msgstr "用法：configchannel_listsystems CHANNEL"
+msgstr "用法：configchannel_listgroups 频道"
 
 #: ../src/spacecmd/configchannel.py:139
 msgid "configchannel_listfiles: List the files in a config channel"
@@ -1251,10 +1249,8 @@ msgstr ""
 "用法：configchannel_export <频道>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个频道，则默认文件名\n"
-"                      为 <CHANNEL>.json；如果导出多个频道，则默认文件名为 "
-"ccs.json；\n"
-"                      如果未指定频道（例如全部导出），则默认文件名为 cc_all."
-"json\n"
+"                      为 <CHANNEL>.json；如果导出多个频道，则默认文件名为 ccs.json；\n"
+"                      如果未指定频道（例如全部导出），则默认文件名为 cc_all.json\n"
 "\n"
 "注意：频道列表是可选的，默认为全部导出"
 
@@ -2268,36 +2264,30 @@ msgid "Members"
 msgstr "成员"
 
 #: ../src/spacecmd/group.py:488
-#, fuzzy
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
-msgstr "system_listconfigchannels：列出系统的配置频道"
+msgstr "group_listconfigchannels：列出指派给某个系统组的配置频道"
 
 #: ../src/spacecmd/group.py:489
-#, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
-msgstr "用法：group_listsystems GROUP"
+msgstr "用法：group_listconfigchannels 组"
 
 #: ../src/spacecmd/group.py:531
-#, fuzzy
 msgid "group_addconfigchannels: Add config channels to a group"
-msgstr "system_addconfigchannels：将配置频道添加到系统"
+msgstr "group_addconfigchannels：将配置频道添加到某个组"
 
 #: ../src/spacecmd/group.py:532
-#, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "用法：kickstart_addchildchannels PROFILE <频道 ...>"
+msgstr "用法：group_addconfigchannels <组> <频道 ...>"
 
 #: ../src/spacecmd/group.py:570
-#, fuzzy
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr "system_removeconfigchannels：从系统中去除配置频道"
+msgstr "group_removeconfigchannels：从某个组中去除配置频道"
 
 #: ../src/spacecmd/group.py:571
-#, fuzzy
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "用法：system_removeconfigchannels <系统> <频道 ...>"
+msgstr "用法：group_removeconfigchannels <组> <频道 ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
@@ -3025,10 +3015,9 @@ msgstr ""
 "用法：kickstart_export <KSPROFILE>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个 kickstart，则默认文件名\n"
-"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件"
-"名为 profiles.json；\n"
-"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 "
-"ks_all.json\n"
+"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件名为 profiles."
+"json；\n"
+"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 ks_all.json\n"
 "\n"
 "注意：KSPROFILE 列表是可选的，默认为全部导出"
 
@@ -3748,14 +3737,14 @@ msgid "Trusted Since:          %s"
 msgstr "信任起始日期：%s"
 
 #: ../src/spacecmd/org.py:323
-#, fuzzy, python-format
+#, python-format
 msgid "Systems Transferred From:  %i"
-msgstr "系统迁移自：%i"
+msgstr "系统转移自：%i"
 
 #: ../src/spacecmd/org.py:324
-#, fuzzy, python-format
+#, python-format
 msgid "Systems Transferred To:    %i"
-msgstr "系统已迁移至：%i"
+msgstr "系统已转移至：%i"
 
 #: ../src/spacecmd/org.py:326
 msgid "Channels Consumed"
@@ -7668,16 +7657,14 @@ msgid "    Friendly names: "
 msgstr "    友好名称： "
 
 #: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
-#, fuzzy
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
-msgstr "API 版本 %s 中已弃用并将去除此方法"
+msgstr "此方法已弃用并会从将来的 API 版本中去除。请改为使用 system_scheduleproductmigration。"
 
 #: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
-#, fuzzy
 msgid "This method is deprecated and will be removed in a future API version"
-msgstr "API 版本 %s 中已弃用并将去除此方法"
+msgstr "此方法已弃用并会从将来的 API 版本中去除"
 
 #: ../src/spacecmd/system.py:4317
 msgid ""
@@ -7707,13 +7694,11 @@ msgstr ""
 "        -c 子频道（逗号分隔的子频道标签（不带空格））"
 
 #: ../src/spacecmd/system.py:4338
-#, fuzzy
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr "system_schedulespmigration：为系统安排服务包迁移。"
+msgstr "system_scheduleproductmigration：为系统安排服务产品迁移。"
 
 #: ../src/spacecmd/system.py:4339
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7726,14 +7711,13 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"用法：system_schedulespmigration <系统> <基础频道标签> <迁移目标> [选项] \n"
-"    有关迁移目标 (MIGRATION_TARGET) 参数，请参见 "
-"system_listmigrationtargets。\n"
+"用法：system_scheduleproductmigration <系统> <基础频道标签> <迁移目标> [选项] \n"
+"    有关迁移目标参数，请参见 system_listmigrationtargets。\n"
 "    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
 "    选项：\n"
 "        -s 开始时间\n"
 "        -d 如果您要执行试运行，请传递此标志\n"
-"        -c 子频道（逗号分隔的子频道标签（不带空格））"
+"        -c 子频道（逗号分隔的子频道标签（不含空格））"
 
 #: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
@@ -7744,9 +7728,8 @@ msgid ". Skipping it."
 msgstr "。正在跳过。"
 
 #: ../src/spacecmd/system.py:4392
-#, fuzzy
 msgid "Scheduling Product migration for system "
-msgstr "正在为系统安排服务包迁移 "
+msgstr "正在为以下系统安排产品迁移 "
 
 #: ../src/spacecmd/system.py:4397
 msgid "Scheduled action ID: "
