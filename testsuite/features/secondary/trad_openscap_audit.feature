@@ -10,7 +10,7 @@ Feature: OpenSCAP audit of traditional client
 
   Scenario: Install the OpenSCAP packages on the traditional client
     When I enable repository "os_pool_repo os_update_repo" on this "sle_client"
-    And I enable SUSE Manager tools repositories on "sle_client"
+    And I enable client tools repositories on "sle_client"
     And I refresh the metadata for "sle_client"
     And I install OpenSCAP dependencies on "sle_client"
 
@@ -64,5 +64,5 @@ Feature: OpenSCAP audit of traditional client
 
   Scenario: Cleanup: remove the OpenSCAP packages from the traditional client
     When I remove OpenSCAP dependencies from "sle_client"
-    And I disable SUSE Manager tools repositories on "sle_client"
+    And I disable client tools repositories on "sle_client"
     And I disable repository "os_pool_repo os_update_repo" on this "sle_client"

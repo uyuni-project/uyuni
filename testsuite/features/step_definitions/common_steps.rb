@@ -713,7 +713,7 @@ end
 # Repository steps
 
 # Enable tools repositories (both stable and development)
-When(/^I enable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
+When(/^I enable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   case os_family
@@ -726,7 +726,7 @@ When(/^I enable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base
       node.run("sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo")
     end
   when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}")
     end
@@ -735,7 +735,7 @@ When(/^I enable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base
   end
 end
 
-When(/^I disable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |base_product, host|
+When(/^I disable client tools repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
   case os_family
@@ -748,7 +748,7 @@ When(/^I disable (SUSE Manager|Uyuni) tools repositories on "([^"]*)"$/) do |bas
       node.run("sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo")
     end
   when /^ubuntu/
-    repos, _code = node.run("ls /etc/apt/sources.list.d | grep #{base_product == 'Uyuni' ? 'tools' : 'Tools'}")
+    repos, _code = node.run("ls /etc/apt/sources.list.d | grep tools")
     repos.gsub(/\s/, ' ').split.each do |repo|
       node.run("sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}")
     end

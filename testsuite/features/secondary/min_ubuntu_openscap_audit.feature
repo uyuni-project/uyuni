@@ -13,14 +13,8 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     Given I am authorized for the "Admin" section
 
 @ubuntu_minion
-@uyuni
-  Scenario: Install the client tools packages for Uyuni on the Ubuntu minion
-    When I enable Uyuni tools repositories on "ubuntu_minion"
-
-@ubuntu_minion
-@susemanager
-  Scenario: Install the client tools packages for SUSE Manager on the Ubuntu minion
-    When I enable SUSE Manager tools repositories on "ubuntu_minion"
+  Scenario: Install the client tools packages on the Ubuntu minion
+    When I enable client tools repositories on "ubuntu_minion"
 
 @ubuntu_minion
   Scenario: Install the OpenSCAP packages on the Ubuntu minion
@@ -83,11 +77,5 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
 
 @ubuntu_minion
-@uyuni
-  Scenario: Cleanup: remove the client tools packages for Uyuni on the Ubuntu minion
-    When I disable Uyuni tools repositories on "ubuntu_minion"
-
-@ubuntu_minion
-@susemanager
-  Scenario: Cleanup: remove the client tools packages for SUSE Manager on the Ubuntu minion
-    When I disable SUSE Manager tools repositories on "ubuntu_minion"
+  Scenario: Cleanup: remove the client tools packages on the Ubuntu minion
+    When I disable client tools repositories on "ubuntu_minion"
