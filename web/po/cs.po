@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-13 22:59+0000\n"
+"PO-Revision-Date: 2021-05-14 13:58+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -3644,37 +3644,35 @@ msgstr "Zavádění..."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "Nic není konfigurováno. Přidejte cesty do "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
-#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "Načítání globálních filtrů..."
+msgstr "Načítání obsahu scénářů..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 msgid "Back to playbook list"
-msgstr ""
+msgstr "Zpět do seznamu scénářů"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "Plán kontroly"
+msgstr "Naplánovat provedení scénáře"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "Scénář '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "Naplánovat provedení scénáře"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr ""
+msgstr "Cesta inventáře"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "Obsah scénáře"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
 msgid "Action has been successfully added to action chain"
@@ -3695,12 +3693,11 @@ msgstr "Konfigurace"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "Uložte všechny změny, než se uplatní!"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "Použít Highstate"
+msgstr "Uplatnit změny"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3712,9 +3709,8 @@ msgid "1 Change"
 msgstr "1 změna"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
 msgid "Search package"
-msgstr "Vyhledávání"
+msgstr "Hledání balíčku"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
@@ -4007,9 +4003,8 @@ msgid "Accept"
 msgstr "Přijmout"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:42
-#, fuzzy
 msgid "Reject"
-msgstr "zamítnuto"
+msgstr "Zamítnout"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:67
 msgid "accepted"
@@ -4025,7 +4020,7 @@ msgstr "zamítnuto"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:146
 msgid "Keys"
-msgstr ""
+msgstr "Klíče"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
@@ -4062,32 +4057,28 @@ msgid "Manager"
 msgstr "Manažer"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {0}"
-msgstr "Highstate pro {0}"
+msgstr "Souhrn stavu pro {0}"
 
 #: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "Nejsou žádné použitelné systémy."
 
 #: ../html/src/manager/state/highstate-summary.tsx:20
-#, fuzzy
 msgid "State channel"
-msgstr "Softwarové kanály"
+msgstr "Stavový kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:21
-#, fuzzy
 msgid "Config channel"
-msgstr "Klonování kanálů"
+msgstr "Konfigurační kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
-#, fuzzy
 msgid "internal"
-msgstr "Údržba"
+msgstr "interní"
 
 #: ../html/src/manager/state/highstate-summary.tsx:32
 msgid "Internal states"
-msgstr ""
+msgstr "Interní stavy"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
