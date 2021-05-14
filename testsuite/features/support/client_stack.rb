@@ -61,13 +61,15 @@ def get_os_version(node)
     os_version.delete! '"'
     # on SLES, we need to replace the dot with '-SP'
     os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
-    [os_version, os_family]
   else
     # The only node that we handle which doesn't support 'os-release' file is Centos 6
     _os_family_raw, code = node.run('test -f /etc/centos-release', false)
     return nil, nil unless code.zero?
-    ['6', 'centos']
+    os_version = '6'
+    os_family = 'centos'
   end
+  puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  [os_version, os_family]
 end
 # rubocop:enable Metrics/AbcSize
 
