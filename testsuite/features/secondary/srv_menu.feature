@@ -1,5 +1,9 @@
 # Copyright (c) 2017-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+# This feature depends on:
+# This features expect empty content in all the UI pages, so depends in almost all our features
+# TODO: Ideally we should refactor this Cucumber feature to only verify UI static content,
+#       only then we can move this feature to our parallel tests
 
 @scope_visualization
 Feature: Web UI - Main landing page menu, texts and links

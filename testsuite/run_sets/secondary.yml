@@ -9,6 +9,7 @@
 # IDEMPOTENT
 
 - features/secondary/srv_users.feature
+- features/secondary/srv_menu.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
