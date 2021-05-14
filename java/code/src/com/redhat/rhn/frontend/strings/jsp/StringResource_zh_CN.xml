@@ -942,9 +942,9 @@
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="permission.jsp.summary.general" xml:space="preserve">
+      <trans-unit id="permission.jsp.summary.general" xml:space="preserve" approved="yes">
           <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
-        <target state="translated">您必须是  @@PRODUCT_NAME@@ 管理员才能查看此页面。请联系您的  @@PRODUCT_NAME@@ 管理员获得此系统中该组织的信息。</target>
+        <target state="final">您必须是 @@PRODUCT_NAME@@ 管理员才能查看此页面。请联系您的 @@PRODUCT_NAME@@ 管理员获得此系统中该组织的信息。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -1015,9 +1015,9 @@
         </context-group>
         <target state="translated">如果您在您的浏览器中输入此地址，请仔细检查拼写和大小写。您正在复制的地址也可能是过时的。</target>
       </trans-unit>
-      <trans-unit id="404.jsp.reason2" xml:space="preserve">
+      <trans-unit id="404.jsp.reason2" xml:space="preserve" approved="yes">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
-        <target state="needs-adaptation">如果您使用的是链接，该链接可能不正确或已过时。请在浏览器中单击后退按钮以尝试不同的链接，或使用顶部（或左侧）导航栏找到所需的页面。</target>
+        <target state="final">如果您使用的是链接，该链接可能不正确或已过时。请在浏览器中单击后退按钮以尝试不同的链接，或使用顶部导航图标导航到主页。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1026,9 +1026,9 @@
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="404.jsp.reason3" xml:space="preserve">
+      <trans-unit id="404.jsp.reason3" xml:space="preserve" approved="yes">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
-        <target state="needs-adaptation">如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。</target>
+        <target state="final">如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部导航图标导航到主页；如果您要查找文档，请务必更新书签。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -3709,13 +3709,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target state="translated">没有找到审计记录！</target>
       </trans-unit>
       <!-- == ERRATA == -->
-      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
+      <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve" approved="yes">
         <source>No Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="needs-adaptation">没有补丁</target>
+        <target state="final">没有补丁</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -4496,16 +4496,16 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">组织配置</target>
       </trans-unit>
-      <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
+      <trans-unit id="orgconfig.jsp.description" xml:space="preserve" approved="yes">
         <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
-        <target state="needs-adaptation">在下面对您的组织进行配置，以使用暂存内容、勘误电子邮件通知、软件崩溃报告（崩溃文件上载限制为非负数，零表示无限制）和 SCAP 设置。</target>
+        <target state="final">在下面对您的组织进行配置，以使用暂存内容、勘误电子邮件通知和 SCAP 设置。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
+      <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve" approved="yes">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
-        <target state="needs-adaptation">下面列出了您的组织配置。从中可以看出暂存内容、勘误电子邮件通知、软件崩溃报告和 SCAP 设置的配置方式。</target>
+        <target state="final">下面列出了您的组织配置。请查看暂存内容、勘误电子邮件通知和 SCAP 设置的配置方式。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -4713,13 +4713,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">系统</target>
       </trans-unit>
-      <trans-unit id="satusers.tip" xml:space="preserve">
+      <trans-unit id="satusers.tip" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
 not be modified on this page. Instead, please visit the "Users" top-level
 navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
-        <target state="translated">&lt;strong&gt;*提示：&lt;/strong&gt;在此页面中无法修改
+        <target state="final">&lt;strong&gt;*提示：&lt;/strong&gt;在此页面中无法修改
 组织管理员特权。不过，您可以通过上面的最上层导航选项卡 "用户"
 来访问您组织中各个用户的配置文件。您可以在每个用户配置文件的 "细节" 选项卡
 的 "角色" 部分授予或去除组织管理员角色。</target>
@@ -5624,9 +5624,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve" approved="yes">
           <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
-        <target state="needs-adaptation">将系统&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;迁移&lt;/a&gt;到其他组织</target>
+        <target state="final">将系统<a href="/rhn/systems/ssm/MigrateSystems.do">转移</a>到其他组织</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5675,16 +5675,16 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <!-- SSM System Migration -->
-      <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
+      <trans-unit id="ssm.migrate.systems.header" xml:space="preserve" approved="yes">
           <source>Transfer Systems</source>
-        <target state="needs-adaptation">迁移系统</target>
+        <target state="final">转移系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
+      <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve" approved="yes">
           <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
-        <target state="needs-adaptation">将所选系统迁移到所选组织。如果操作成功，这些系统将不再出现于此组织中。</target>
+        <target state="final">将所选系统转移到所选组织。如果该操作成功，这些系统将不再出现在此组织中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5832,9 +5832,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve">
+      <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve" approved="yes">
           <source>Transfer</source>
-        <target state="needs-adaptation">迁移</target>
+        <target state="final">转移</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -5902,23 +5902,23 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve">
+      <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve" approved="yes">
           <source>Transfer Systems</source>
-        <target state="needs-adaptation">迁移系统</target>
+        <target state="final">转移系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
+      <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve" approved="yes">
           <source>Transfer multiple systems from the current organization to another (trusted) organization in a single action.  The transferred systems will no longer be visible in the original organization.</source>
-        <target state="needs-adaptation">仅执行一项操作将多个系统从当前组织迁移到另一个（可信）组织。迁移的系统将不再出现在原始组织中。</target>
+        <target state="final">通过一项操作将多个系统从当前组织转移到另一个（可信）组织。转移的系统将不再出现在原始组织中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve">
+      <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve" approved="yes">
           <source>Transfer Systems to another organization</source>
-        <target state="needs-adaptation">将系统迁移到另一个组织中</target>
+        <target state="final">将系统转移到另一个组织</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -8297,7 +8297,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="pkg.lock.summary" xml:space="preserve">
+      <trans-unit id="pkg.lock.summary" xml:space="preserve" approved="yes">
         <source>
                 You can lock packages so they will remain unmodified.
                 However, it is important to keep in mind that requesting a 
@@ -8305,7 +8305,7 @@ organization. You may grant or remove the organization administrator role in the
                 before the lock took action and the package is newer, the
                 lock will be canceled.
         </source>
-        <target state="needs-adaptation">
+        <target state="final">
                 您可以锁定软件包，使其保持未修改状态。
                 但必须注意，对锁定请求的
                 处理可能会延迟。如果某个软件包
@@ -8618,19 +8618,19 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target state="translated">下面是 &lt;strong&gt;{0}&lt;/strong&gt; 组织已与您的组织共享的频道列表。此列表还显示了每个频道中有多少软件包，以及您组织中有多少系统正在使用这些共享频道。 </target>
       </trans-unit>
-      <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve">
+      <trans-unit id="orgtrustdetails.jsp.sysmigratedto" xml:space="preserve" approved="yes">
         <source>Systems Transferred to Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">迁移到您组织中的系统</target>
+        <target state="final">转移到您组织中的系统</target>
       </trans-unit>
-      <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve">
+      <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve" approved="yes">
         <source>Systems Transferred from Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">从您的组织中迁移的系统</target>
+        <target state="final">从您的组织中转移的系统</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmprofiledeletion" xml:space="preserve">
         <source>Confirm Profile Deletion</source>
@@ -9610,15 +9610,16 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target state="translated">@@PRODUCT_NAME@@ 组织</target>
       </trans-unit>
-      <trans-unit id="general.jsp.org.summary1" xml:space="preserve">
+      <trans-unit id="general.jsp.org.summary1" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ allows for the creation of multiple 'organizations'
 on a @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 允许在一个 @@PRODUCT_NAME@@ 中创建多个组织。</target>
+        <target state="final">@@PRODUCT_NAME@@ 允许在一个 @@PRODUCT_NAME@@ 中
+创建多个组织。</target>
       </trans-unit>
-      <trans-unit id="general.jsp.org.summary2" xml:space="preserve">
+      <trans-unit id="general.jsp.org.summary2" xml:space="preserve" approved="yes">
         <source>Organizations are a way to place boundaries between sets of systems, system
 groups, software channels, autoinstallation profiles,
 activation keys, configuration channels and files, users - everything
@@ -9631,7 +9632,7 @@ organization.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">组织是一种在系统集、系统组、软件频道、自动安装配置文件、
+        <target state="final">组织是一种在系统集、系统组、软件频道、自动安装配置文件、
 激活密钥、配置频道和文件、用户 - 您用 @@PRODUCT_NAME@@ 进行管理的一切之间放置边界的方式。
 每个组织都由至少一个组织管理员进行管理，且整个 @@PRODUCT_NAME@@ 由一个 @@PRODUCT_NAME@@
 管理员来管理。对应多个组织的一个 @@PRODUCT_NAME@@ 中的组织
@@ -12485,12 +12486,12 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">&lt;span class="small-text"&gt;&lt;strong&gt;提示：&lt;/strong&gt;此选项指定脚本运行的时间（在无人值守安装之前或之后）。&lt;/span&gt;</target>
       </trans-unit>
-      <trans-unit id="post.jsp.summary" xml:space="preserve">
+      <trans-unit id="post.jsp.summary" xml:space="preserve" approved="yes">
         <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPostEdit.do</context>
         </context-group>
-        <target state="translated">您可以在下面编辑此无人值守安装的后脚本。首先，会自动执行与 @@PRODUCT_NAME@@ 相关的命令（例如，将系统注册到 @@PRODUCT_NAME@@）。
+        <target state="final">您可以在下面编辑此无人值守安装的后脚本。首先，会自动执行与 @@PRODUCT_NAME@@ 相关的命令（例如，将系统注册到 @@PRODUCT_NAME@@）。
 接下来会执行非 chroot 后脚本，最后执行后脚本。有关 kickstart 后脚本的更多细节，请参见&lt;strong&gt;《Red Hat Enterprise Linux 系统管理指南》&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main1" xml:space="preserve">
@@ -17500,7 +17501,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">当前版本</target>
       </trans-unit>
@@ -17508,7 +17509,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">上次修改时间</target>
       </trans-unit>
@@ -17537,7 +17538,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">此频道中没有可部署的订阅系统</target>
       </trans-unit>
@@ -17545,7 +17546,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">操作</target>
       </trans-unit>
@@ -17553,7 +17554,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17561,7 +17562,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所有文件</target>
       </trans-unit>
@@ -17569,7 +17570,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署所选文件</target>
       </trans-unit>
@@ -17577,7 +17578,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件</target>
       </trans-unit>
@@ -17585,7 +17586,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">您可以从下面的列表中选择要部署的文件。之后系统会要求您选择要将它们部署到哪些系统。</target>
       </trans-unit>
@@ -17593,7 +17594,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">文件名</target>
       </trans-unit>
@@ -17601,7 +17602,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">确认并部署到所选系统</target>
       </trans-unit>
@@ -17609,7 +17610,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">部署配置文件：选择部署到的系统</target>
       </trans-unit>
@@ -17617,7 +17618,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">请选择您要将所选文件部署到的系统。</target>
       </trans-unit>
@@ -17625,7 +17626,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">&lt;strong&gt;警告：&lt;/strong&gt;请注意，如果您尝试从 {0} 配置频道部署的任何文件被排名更高的频道中的同名文件覆盖或级别比其低，该文件的覆盖/高级别版本（而不是 {0} 配置频道中的版本）将部署到该系统。</target>
       </trans-unit>
@@ -21961,7 +21962,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target state="translated">没有 Kickstart 配置文件。</target>
       </trans-unit>
-      <trans-unit id="kickstart.packageprofiles.jsp.summary" xml:space="preserve">
+      <trans-unit id="kickstart.packageprofiles.jsp.summary" xml:space="preserve" approved="yes">
         <source>You may sync kickstarting systems to the package profile
 of a system registered to @@PRODUCT_NAME@@ by choosing a package profile
 below.  &lt;strong&gt;Note&lt;/strong&gt;: This list will
@@ -21971,7 +21972,7 @@ Base Channel chosen on the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
-        <target state="translated">您可以通过选择下面某个软件包配置文件将正在以无人值守方式安装的系统与
+        <target state="final">您可以通过选择下面某个软件包配置文件将正在以无人值守方式安装的系统与
 一个在 @@PRODUCT_NAME@@ 中注册的系
 统的软件包配置文件同步。&lt;strong&gt;请注意&lt;/strong&gt;：此列表将只显示
 针对&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;操作系统&lt;/a&gt;页面中所选基础频道创建的软件包配置文件。</target>
@@ -24344,12 +24345,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">激活 rhn-applet 以使用 @@PRODUCT_NAME@@。</target>
       </trans-unit>
-      <trans-unit id="sdc.details.migrate.header" xml:space="preserve">
+      <trans-unit id="sdc.details.migrate.header" xml:space="preserve" approved="yes">
         <source>Transfer System Between Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">在组织间迁移系统</target>
+        <target state="final">在组织间转移系统</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.org" xml:space="preserve">
         <source>Organization Name</source>
@@ -24358,19 +24359,19 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">组织名称</target>
       </trans-unit>
-      <trans-unit id="sdc.details.migrate.migrate" xml:space="preserve">
+      <trans-unit id="sdc.details.migrate.migrate" xml:space="preserve" approved="yes">
         <source>Transfer System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">迁移系统</target>
+        <target state="final">转移系统</target>
       </trans-unit>
-      <trans-unit id="sdc.details.migrate.success" xml:space="preserve">
+      <trans-unit id="sdc.details.migrate.success" xml:space="preserve" approved="yes">
         <source>System successfully transferred</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">已成功迁移系统</target>
+        <target state="final">已成功转移系统</target>
       </trans-unit>
       <trans-unit id="sdc.details.customdata.header" xml:space="preserve">
         <source>Custom System Information</source>
@@ -24870,9 +24871,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">IPv6 地址：</target>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
+      <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve" approved="yes">
         <source>Primary FQDN:</source>
-        <target state="needs-adaptation">FQDN：</target>
+        <target state="final">主 FQDN：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -25368,7 +25369,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           并单击 "修改信任关系" 按钮来添加信任关系。
         </target>
       </trans-unit>
-      <trans-unit id="org.trust.confirm.summary" xml:space="preserve">
+      <trans-unit id="org.trust.confirm.summary" xml:space="preserve" approved="yes">
         <source>
             Are you sure you want to remove the trust(s) listed below?  There are systems in the
             {0} organization that subscribe to content provided by the organization(s) whose trust(s)
@@ -25380,7 +25381,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target state="translated">
+        <target state="final">
             您确定要去除下面列出的信任关系吗？
             {0} 组织中的一些系统订阅了您要去除其信任关系的组织所提供的内容。
             这可能会对这些系统产生负面影响。例如，这些系统无法再收到通过信任关系提供的内容的安全更新。
@@ -25388,7 +25389,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
             请在确认去除信任关系前查看您要进行的更改。
         </target>
       </trans-unit>
-      <trans-unit id="org.trust.affectedsystems.summary" xml:space="preserve">
+      <trans-unit id="org.trust.affectedsystems.summary" xml:space="preserve" approved="yes">
         <source>
             The systems listed below will be affected by removing the trust relationship between
             the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization.
@@ -25398,7 +25399,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target state="translated">
+        <target state="final">
             去除 &lt;b&gt;{0}&lt;/b&gt; 组织与 &lt;b&gt;{1}&lt;/b&gt; 组织间的信任关系将影响到下面列出的系统。
             去除此信任关系可能会影响到这些系统。例如，这些系统无法再收到通过此信任关系提供的内容的安全更新。
         </target>
@@ -26104,7 +26105,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.about.overviewsummary" xml:space="preserve">
+      <trans-unit id="help.jsp.about.overviewsummary" xml:space="preserve" approved="yes">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -27807,7 +27808,7 @@ given channel.</source>
         </context-group>
         <target state="translated">结束时间</target>
       </trans-unit>
-      <trans-unit id="confirmprivate.jsp.confirmmsg" xml:space="preserve">
+      <trans-unit id="confirmprivate.jsp.confirmmsg" xml:space="preserve" approved="yes">
         <source>Are you sure you want to set this channel to
         &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your
         organization? There are system(s) in other organization(s) listed below
@@ -27818,7 +27819,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="translated">您确定要将此频道设置为
+        <target state="final">您确定要将此频道设置为
         &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的系统访问吗？
         下面列出的是其他组织中订阅了由此频道提供的内容的系统。
         去除对此频道的访问权限可能会对这些系统产生负面影响。例如：那些
@@ -29033,9 +29034,9 @@ given channel.</source>
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.target.title" xml:space="preserve" approved="yes">
         <source>Product Migration - Target</source>
-        <target state="needs-adaptation">服务包迁移 - 目标</target>
+        <target state="final">产品迁移 - 目标</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -29049,9 +29050,9 @@ given channel.</source>
         <source>Target not available, the following channels are not synced: </source>
         <target>目标不可用，未同步以下频道： </target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve" approved="yes">
         <source>Product Migration - Channels</source>
-        <target state="needs-adaptation">服务包迁移 - 频道</target>
+        <target state="final">产品迁移 - 频道</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -29081,17 +29082,17 @@ given channel.</source>
         <source>Schedule Migration</source>
         <target>安排迁移</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve" approved="yes">
         <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-        <target state="needs-adaptation">只有 &lt;strong&gt;SUSE&lt;/strong&gt; 系统支持服务包迁移。</target>
+        <target state="final">只有 <strong>SUSE</strong> 系统支持产品迁移。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve" approved="yes">
         <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target state="needs-adaptation">此系统目前不支持服务包迁移，请安装最新版本的 &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;。</target>
+        <target state="final">此系统目前不支持产品迁移，请安装最新版本的 <strong>zypp-plugin-spacewalk</strong>。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve" approved="yes">
         <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-        <target state="needs-adaptation">已为此系统&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;服务包迁移。</target>
+        <target state="final">已为此系统&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;安排&lt;/a&gt;产品迁移。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -29101,21 +29102,21 @@ given channel.</source>
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
         <target>此项迁移缺少一些软件频道，请使用&lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;安装向导&lt;/strong&gt;&lt;/a&gt;添加以下目标产品，以确保同步所有必需频道。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve" approved="yes">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
-        <target state="needs-adaptation">有可用于此系统的未处理软件包管理堆栈更新。在启动服务包迁移之前，请更新软件更新堆栈相关的所有软件包。</target>
+        <target state="final">有可用于此系统的未处理软件包管理堆栈更新。在启动产品迁移之前，请更新软件更新堆栈相关的所有软件包。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve" approved="yes">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="needs-adaptation">在此系统上安装的 &lt;strong&gt;Salt&lt;/strong&gt; 软件包版本已过时。在启动服务包迁移之前，请将该软件包更新到最新版本。</target>
+        <target state="final">在此系统上安装的 <strong>Salt</strong> 软件包版本已过时。在启动产品迁移之前，请将该软件包更新到最新版本。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
         <target>没有任何迁移方法适用于此系统。找不到某些已安装的扩展的后继版本：</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve" approved="yes">
         <source>Product Migration - Confirm</source>
-        <target state="needs-adaptation">服务包迁移 - 确认</target>
+        <target state="final">产品迁移 - 确认</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -29125,9 +29126,9 @@ given channel.</source>
         <source>Channel subscriptions after the migration:</source>
         <target>迁移后进行频道订阅：</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
+      <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve" approved="yes">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
-        <target state="needs-adaptation">要检测任何可能的问题，建议始终在安排实际的服务包迁移之前执行&lt;strong&gt;试运行&lt;/strong&gt;。</target>
+        <target state="final">为了检测出任何可能的问题，建议始终在安排实际的产品迁移之前执行<strong>试运行</strong>。</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -29635,89 +29636,89 @@ given channel.</source>
         </context-group>
         <target state="translated">创建配置状态频道</target>
       </trans-unit>
-    <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
+      <trans-unit id="org-config.clm-sync-patches" xml:space="preserve" approved="yes">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
+        <target state="final">进行内容生命周期管理构建时同步软件包</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus" xml:space="preserve" approved="yes">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
+        <target state="final">状态</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve" approved="yes">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
+        <target state="final">最终</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve" approved="yes">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
+        <target state="final">稳定</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve" approved="yes">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
+        <target state="final">测试中</target>
+      </trans-unit>
+      <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve" approved="yes">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
+        <target state="final">已收回</target>
+      </trans-unit>
+      <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve" approved="yes">
         <source>Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
+        <target state="final">已收回补丁</target>
+      </trans-unit>
+      <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve" approved="yes">
         <source>Package belongs to a Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
+        <target state="final">软件包属于某个已收回补丁</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve" approved="yes">
         <source>Forward registrations to SUSE Customer Center</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
+        <target state="final">将注册转到 SUSE Customer Center</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve" approved="yes">
         <source>Cleanup outdated action chain data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
+        <target state="final">清理过时的操作链数据</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve" approved="yes">
         <source>Cleanup outdated token data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
+        <target state="final">清理过时的令牌数据</target>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.target.description" xml:space="preserve" approved="yes">
         <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="ansible_control_node" xml:space="preserve">
+        <target state="final">只显示 SUSE 正式支持的联机迁移。要进行脱机迁移，应使用升级模式下的自动安装功能。</target>
+      </trans-unit>
+      <trans-unit id="ansible_control_node" xml:space="preserve" approved="yes">
         <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Product Migration" xml:space="preserve">
+        <target state="final">Ansible 控制节点</target>
+      </trans-unit>
+      <trans-unit id="Product Migration" xml:space="preserve" approved="yes">
         <source>Product Migration</source>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="final">产品迁移</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
