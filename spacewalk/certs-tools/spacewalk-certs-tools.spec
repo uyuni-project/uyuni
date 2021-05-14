@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-certs-tools
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -38,7 +38,6 @@
 %global default_py3 1
 %endif
 
-
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-certs-tools
@@ -47,15 +46,15 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Version:        4.2.7
 Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  %{pythonX}-%{name} = %{version}-%{release}
+Requires:       %{rhn_client_tools}
 Requires:       openssl
 Requires:       rpm-build
 Requires:       spacewalk-base-minimal-config
-Requires:       %{rhn_client_tools}
 Requires:       sudo
 Requires:       tar
 BuildRequires:  docbook-utils
@@ -95,7 +94,6 @@ BuildRequires:  python2
 BuildRequires:  python
 %endif
 
-
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
 
@@ -105,8 +103,8 @@ Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
 Requires:       python3-rhn-client-tools
-Requires:       spacewalk-backend
 Requires:       python3-uyuni-common-libs
+Requires:       spacewalk-backend
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 
@@ -187,8 +185,8 @@ esac
 %attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage
 %doc %{_mandir}/man1/rhn-*.1*
 %doc %{_mandir}/man1/mgr-*.1*
-%doc LICENSE
 %doc ssl-howto-simple.txt ssl-howto.txt
+%license LICENSE
 %{pub_bootstrap_dir}/client_config_update.py*
 %if 0%{?suse_version}
 %dir %{rhnroot}

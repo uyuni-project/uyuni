@@ -1,7 +1,7 @@
 #
 # spec file for package dnf-plugin-spacewalk
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -36,7 +36,7 @@ Name:           dnf-plugin-spacewalk
 Version:        4.2.8
 Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
@@ -45,11 +45,11 @@ Requires:       dnf-plugins-core
 Requires:       librepo >= 1.7.15
 %if 0%{?fedora}
 Obsoletes:      yum-rhn-plugin < 2.7
-Requires: dnf >= 4.0.9
+Requires:       dnf >= 4.0.9
 %endif
 %if 0%{?rhel} >= 8
 Provides:       yum-rhn-plugin = %{version}
-Requires: dnf >= 4.0.9
+Requires:       dnf >= 4.0.9
 %endif
 
 %description
@@ -75,8 +75,8 @@ Summary:        DNF plugin for Spacewalk
 Group:          System Environment/Base
 BuildRequires:  python3-devel
 Requires:       %{name} = %{version}-%{release}
-Requires:       python3-rhn-client-tools >= 2.8.4
 Requires:       python3-librepo
+Requires:       python3-rhn-client-tools >= 2.8.4
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.

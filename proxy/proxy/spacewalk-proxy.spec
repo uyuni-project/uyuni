@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,13 +27,13 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Version:        4.2.4
 Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  python3
 BuildArch:      noarch
-Requires:       python3-uyuni-common-libs
 Requires:       httpd
+Requires:       python3-uyuni-common-libs
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-python3-pylint
 %endif
@@ -140,9 +140,9 @@ BuildRequires:  apache2
 %else
 Requires:       mod_ssl
 %endif
-Requires:       curl
-Requires:       apache2-mod_wsgi-python3
 Requires:       %{name}-broker >= %{version}
+Requires:       apache2-mod_wsgi-python3
+Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
 
@@ -158,9 +158,9 @@ Spacewalk Proxy components.
 %package package-manager
 Summary:        Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:          Applications/Internet
+Requires:       mgr-push >= 4.0.0
 Requires:       python3
 Requires:       python3-rhnlib >= 4.2.2
-Requires:       mgr-push >= 4.0.0
 Requires:       spacewalk-backend >= 1.7.24
 # proxy isn't Python 3 yet
 Requires:       python3-mgr-push
@@ -186,7 +186,6 @@ Requires(pre):  %{name}-common
 BuildRequires:  systemd-rpm-macros
 %endif
 %{?systemd_requires}
-
 
 %description salt
 A ZeroMQ Proxy for Salt Minions

@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -72,14 +72,14 @@ Name:           spacewalk-client-tools
 Summary:        Support programs and libraries for Spacewalk
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
-Group:      admin
-Packager:   Uyuni Project <uyuni-devel@opensuse.org>
+Group:          admin
+Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          System Environment/Base
 %endif
 Source0:        spacewalk-client-tools-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Version:        4.2.10
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -112,15 +112,15 @@ Requires:       yum
 %endif # {_vendor} != "debbuild"
 
 %if "%{_vendor}" == "debbuild"
-Requires: apt
+Requires:       apt
 %if 0%{?ubuntu} >= 1804
-Requires: gpg
+Requires:       gpg
 %else
-Requires: gnupg
+Requires:       gnupg
 %endif
-Requires: coreutils
+Requires:       coreutils
 %endif
-BuildRequires: rpm
+BuildRequires:  rpm
 
 Conflicts:      up2date < 5.0.0
 Conflicts:      yum-rhn-plugin < 1.6.4-1
@@ -139,7 +139,7 @@ BuildRequires:  fedora-logos
 %endif
 
 %if 0%{?mageia} >= 6
-BuildRequires: dnf
+BuildRequires:  dnf
 %endif
 
 %if 0%{?rhel}
@@ -153,8 +153,8 @@ BuildRequires:  yum
 
 # For the systemd presets
 %if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
-BuildRequires: systemd
-Requires:      systemd
+BuildRequires:  systemd
+Requires:       systemd
 %endif
 
 %description
@@ -165,7 +165,7 @@ system to receive software updates from Spacewalk.
 %package -n python2-%{name}
 Summary:        Support programs and libraries for Spacewalk
 %if "%{_vendor}" == "debbuild"
-Group: python
+Group:          python
 %else
 Group:          System Environment/Base
 %endif
@@ -177,8 +177,8 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       rhnlib >= 4.2.2
 
 %if "%{_vendor}" != "debbuild"
-Requires:       rpm-python
 Requires:       python2-uyuni-common-libs
+Requires:       rpm-python
 %ifnarch s390 s390x
 Requires:       python-dmidecode
 %endif
@@ -227,18 +227,18 @@ BuildRequires:  rpm-python
 %endif # if {_vendor} != "debbuild"
 
 %if "%{_vendor}" == "debbuild"
-Requires: python-rpm
-Requires: python-dmidecode
-Requires: python-ethtool >= 0.4
-BuildRequires: python-dev
-Requires: python2-hwdata
-BuildRequires: python-rpm
-BuildRequires: python-coverage
-Requires: gir1.2-gudev-1.0
-Requires: python-gi
-Requires: python-pyudev
-Requires: python-dbus
-Requires: python-newt
+Requires:       python-dmidecode
+Requires:       python-ethtool >= 0.4
+Requires:       python-rpm
+BuildRequires:  python-dev
+Requires:       python2-hwdata
+BuildRequires:  python-coverage
+BuildRequires:  python-rpm
+Requires:       gir1.2-gudev-1.0
+Requires:       python-dbus
+Requires:       python-gi
+Requires:       python-newt
+Requires:       python-pyudev
 Requires(preun): python-minimal
 Requires(post): python-minimal
 %endif
@@ -251,7 +251,7 @@ Python 2 specific files of %{name}.
 %package -n python3-%{name}
 Summary:        Support programs and libraries for Spacewalk
 %if "%{_vendor}" == "debbuild"
-Group: python
+Group:          python
 %else
 Group:          System Environment/Base
 %endif
@@ -287,12 +287,12 @@ Requires:       python3-rpm
 Requires:       python3-uyuni-common-libs
 
 %if "%{_vendor}" == "debbuild"
-BuildRequires: python3-dev
-Requires: python3-dbus
-Requires: python3-newt
-Requires: gir1.2-gudev-1.0
-Requires: python3-pyudev
-Requires: python3-gi
+BuildRequires:  python3-dev
+Requires:       gir1.2-gudev-1.0
+Requires:       python3-dbus
+Requires:       python3-gi
+Requires:       python3-newt
+Requires:       python3-pyudev
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
 %endif
@@ -327,7 +327,7 @@ Requires:       yum-rhn-plugin >= 2.8.2
 %endif
 
 %if "%{_vendor}" == "debbuild"
-Requires: apt-transport-spacewalk
+Requires:       apt-transport-spacewalk
 %endif
 
 %description -n spacewalk-check
@@ -380,7 +380,7 @@ Requires:       %{pythonX}-spacewalk-client-setup
 Requires:       usermode >= 1.36
 %endif
 %if 0%{?mageia}
-Requires: usermode-consoleonly >= 1.36
+Requires:       usermode-consoleonly >= 1.36
 %endif
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{rhnsd}
@@ -413,7 +413,6 @@ Requires:       python-newt
 Requires(preun): python-minimal
 Requires(post): python-minimal
 %endif
-
 
 %description -n python2-spacewalk-client-setup
 Python 2 specific files for spacewalk-client-setup.
@@ -450,10 +449,10 @@ Requires:       %{pythonX}-spacewalk-client-setup
 Requires:       spacewalk-client-setup = %{version}-%{release}
 
 %if "%{_vendor}" == "debbuild"
-Requires: libpam0g
-Requires: libpam-modules
-Requires: libpam-runtime
-Requires: libpam-gnome-keyring
+Requires:       libpam-gnome-keyring
+Requires:       libpam-modules
+Requires:       libpam-runtime
+Requires:       libpam0g
 %else
 Requires:       pam >= 0.72
 %endif
@@ -485,11 +484,11 @@ Requires:       liberation-sans-fonts
 %endif
 
 %if "%{_vendor}" == "debbuild"
-Requires: python-gnome2
-Requires: python-gtk2
-Requires: python-glade2
-Requires: usermode
-Requires: fonts-liberation
+Requires:       fonts-liberation
+Requires:       python-glade2
+Requires:       python-gnome2
+Requires:       python-gtk2
+Requires:       usermode
 Requires(preun): python-minimal
 Requires(post): python-minimal
 %endif
@@ -518,12 +517,12 @@ Requires:       liberation-sans-fonts
 %endif
 
 %if "%{_vendor}" == "debbuild"
-BuildRequires: libgtk2.0-dev
-Requires: libgtk-3-bin
-Requires: gir1.2-gtk-3.0
+BuildRequires:  libgtk2.0-dev
+Requires:       gir1.2-gtk-3.0
+Requires:       libgtk-3-bin
 
-Requires: python3-gi
-Requires: fonts-liberation
+Requires:       fonts-liberation
+Requires:       python3-gi
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
 %endif
@@ -731,7 +730,8 @@ make -f Makefile.rhn-client-tools test
 # some info about mirrors
 %doc doc/mirrors.txt
 %doc doc/AUTHORS
-%doc doc/LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{_mandir}/man8/rhn-profile-sync.8*
 %{_mandir}/man5/up2date.5*
 
@@ -1103,6 +1103,5 @@ py3compile -p python3-rhn-setup-gnome -V -4.0
 py3clean -p python3-rhn-setup-gnome
 %endif
 %endif
-
 
 %changelog

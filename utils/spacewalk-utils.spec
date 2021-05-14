@@ -1,8 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2020 SUSE LLC
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -17,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
@@ -27,18 +27,18 @@ Release:        1%{?dist}
 Summary:        Utilities that may be run against a SUSE Manager/Uyuni server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-BuildRequires:  fdupes
 BuildRequires:  docbook-utils
+BuildRequires:  fdupes
 BuildRequires:  python3
 %if 0%{?pylint_check}
-BuildRequires:  (python3-PyYAML or python3-pyyaml)
 BuildRequires:  python3-solv
 BuildRequires:  python3-uyuni-common-libs
 BuildRequires:  spacewalk-python3-pylint
+BuildRequires:  (python3-PyYAML or python3-pyyaml)
 %endif
 BuildRequires:  uyuni-base-common
 
@@ -87,13 +87,13 @@ Requires:       susemanager-schema
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
 
-
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
 
 %package extras
 Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
 # Required by spacewalk-watch-channel-sync.sh
+Group:          Productivity/Other
 Requires:       bash
 # Required by taskotop
 Requires:       python3-curses

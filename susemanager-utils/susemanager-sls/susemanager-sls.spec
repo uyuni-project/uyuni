@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
@@ -22,22 +23,22 @@
 
 Name:           susemanager-sls
 Version:        4.2.10
-Release:        1
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
-License:        Apache-2.0 and LGPL-2.1-only
+License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
 Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
-BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
+BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
 # Different package names for SUSE and RHEL:
 Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
 %else
-BuildRequires:  python-pytest
 BuildRequires:  python-mock
+BuildRequires:  python-pytest
 BuildRequires:  python-salt
 Requires:       python-PyYAML >= 5.1
 %endif
