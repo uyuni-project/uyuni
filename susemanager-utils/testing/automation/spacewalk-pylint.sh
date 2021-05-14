@@ -159,7 +159,7 @@ PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E061
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PYLINT_CONTAINER
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "${INITIAL_CMD}; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log || :; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "${INITIAL_CMD}; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
 
 if [ $? -ne 0 ]; then
    EXIT=1
