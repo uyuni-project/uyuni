@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-14 13:58+0000\n"
+"PO-Revision-Date: 2021-05-15 22:00+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -4082,23 +4082,21 @@ msgstr "Interní stavy"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
-msgstr ""
+msgstr "Získávání souhrnu highstate..."
 
 #: ../html/src/manager/state/highstate-summary.tsx:58
-#, fuzzy
 msgid "State Source"
-msgstr "Zdroj"
+msgstr "Zdroj stavu"
 
 #: ../html/src/manager/state/highstate-summary.tsx:60
 msgid "Inherited From"
-msgstr ""
+msgstr "Zděděno z"
 
 #: ../html/src/manager/state/highstate-summary.tsx:78
 msgid "Show full highstate output"
-msgstr ""
+msgstr "Zobrazit úplný výstup highstate"
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
-#, fuzzy
 msgid "System Group"
 msgstr "Systémová skupina"
 
@@ -4136,12 +4134,11 @@ msgstr "Vytvořit opakování"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:14
 msgid "Minion"
-msgstr ""
+msgstr "Následovník"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
-#, fuzzy
 msgid "Group"
-msgstr "ID skupiny"
+msgstr "Skupina"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
@@ -4207,12 +4204,11 @@ msgstr "Vytvořit "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
-msgstr ""
+msgstr "Zpět na seznam"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
-#, fuzzy
 msgid "Schedule Recurring Highstate"
-msgstr "Opakující se stavy"
+msgstr "Naplánovat opakující se Highstate"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
@@ -4255,6 +4251,8 @@ msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
 msgstr ""
+"poskytnutý kanál, který odpovídá instalované verzi SUSE Linuxu. Místo "
+"výchozího nastavení "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
@@ -4265,6 +4263,8 @@ msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
 msgstr ""
+"Každý systém registrovaný tímto aktivačním klíčem bude předplacen vybraným "
+"podřízeným kanálům."
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4355,6 +4355,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
+"Uživatel bude mít účinek pouze během procesu bootstrap. Další připojení "
+"budou provedena uživatelem uvedeným v rhn.conf. Výchozí uživatel pro klíč "
+"'ssh_push_sudo_user' je 'root'. Tento uživatel je nastaven, až je během "
+"bootstrapu umístěn SSH klíč {0}."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4383,9 +4387,8 @@ msgstr "Ve stavu odpovědi na použití nenalezen žádný výsledek."
 
 #: ../html/src/manager/systems/delete-system.tsx:72
 #: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
 msgid "Delete Profile Without Cleanup"
-msgstr "Odstranit profil"
+msgstr "Odstranit profil, bez výmazu"
 
 #: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
@@ -4778,11 +4781,11 @@ msgstr "Grafika"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "Odpojeno"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "Spojení selhalo"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4790,7 +4793,7 @@ msgstr "Přepnout plnou velikost"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "Hostitel není spuštěn"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
@@ -4939,9 +4942,8 @@ msgid "Clear Fields"
 msgstr "Vyprázdnit pole"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
-#, fuzzy
 msgid "Create Virtual Network"
-msgstr "Virtuální sítě"
+msgstr "Vytvořit virtuální síť"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:97
@@ -4965,6 +4967,7 @@ msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
+"Verze Salt v tomto systému nepodporuje vytváření a úpravy virtuálních sítí"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:67
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -4982,14 +4985,12 @@ msgid "Bridge"
 msgstr "Most"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:221
-#, fuzzy
 msgid "network properties"
-msgstr "Upravit vlastnosti"
+msgstr "vlastnosti sítě"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:239
-#, fuzzy
 msgid "Network type"
-msgstr "Síť"
+msgstr "Typ sítě"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
