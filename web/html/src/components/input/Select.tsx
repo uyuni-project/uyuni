@@ -19,7 +19,7 @@ type MultiMode = InputBaseProps<string | string[]> & {
   getOptionValue: (option: any) => string | string[];
 };
 
-type Props = {
+type Props = (SingleMode | MultiMode) & {
   /** Select options */
   options: Array<Object | string>;
 
@@ -48,7 +48,7 @@ type Props = {
   name?: string;
 };
 
-export function Select<T extends (SingleMode | MultiMode)>(props: Props & T) {
+export function Select(props: Props) {
   const {
     inputClass,
     options,
