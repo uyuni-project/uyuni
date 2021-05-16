@@ -1,13 +1,11 @@
-// @flow
+import { Utils } from "utils/functions";
 
-import { Utils } from 'utils/functions';
-
-function sortByUpdate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number) {
+function sortByUpdate(aRaw: any, bRaw: any, columnKey: string, sortDirection: number) {
   const statusValues = {
     critical: 0,
     updates: 1,
-    'actions scheduled': 2,
-    'updates scheduled': 3,
+    "actions scheduled": 2,
+    "updates scheduled": 3,
     up2date: 4,
     kickstarting: 5,
     awol: 6,
@@ -18,7 +16,7 @@ function sortByUpdate(aRaw: Object, bRaw: Object, columnKey: string, sortDirecti
   return (Math.sign(a - b) || Utils.sortById(aRaw, bRaw)) * sortDirection;
 }
 
-function sortByState(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number) {
+function sortByState(aRaw: any, bRaw: any, columnKey: string, sortDirection: number) {
   const stateValues = {
     running: 0,
     stopped: 1,
@@ -36,6 +34,4 @@ const ListUtils = {
   sortByState,
 };
 
-export {
-  ListUtils as Utils,
-};
+export { ListUtils as Utils };
