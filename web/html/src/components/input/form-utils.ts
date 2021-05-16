@@ -46,7 +46,7 @@ export function flattenModel<T = any>(treeModel: TreeLikeModel<T>): Record<strin
 /**
  * Remove the empty string and null values from the model.
  */
-export function stripBlankValues<T>(flatModel: Record<string, T>): Record<string, T> {
+export function stripBlankValues<T = any>(flatModel: Record<string, T>): Record<string, T> {
   return Object.fromEntries(Object.entries(flatModel).filter(entry => {
     if (typeof entry[1] === "string") {
       return entry[1] !== "";
