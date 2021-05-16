@@ -502,6 +502,35 @@ public class SUSEProductTestUtils extends HibernateFactory {
             }
         });
     }
+
+    /**
+     * Add channels to given product
+     * @param product the product
+     * @param root the root product
+     * @param mandatory add mandatory channels
+     * @param optionalChannelIds list of optional channels ids to add
+     */
+    public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
+            boolean mandatory, List<Long> optionalChannelIds) {
+        ContentSyncManager csm = new ContentSyncManager();
+        product.getRepositories()
+        .stream()
+        .filter(pr -> pr.getRootProduct().equals(root))
+        .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
+        .forEach(pr -> {
+            try {
+                if (pr.getParentChannelLabel() != null && ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
+                    csm.addChannel(pr.getParentChannelLabel(), null);
+                }
+                csm.addChannel(pr.getChannelLabel(), null);
+            }
+            catch (ContentSyncException e) {
+                log.error("unable to add channel", e);
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     /**
      * Create standard SUSE Vendor Entitlement products.
      */
