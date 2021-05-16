@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-15 22:00+0000\n"
+"PO-Revision-Date: 2021-05-16 21:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -4994,7 +4994,7 @@ msgstr "Typ sítě"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
-msgstr ""
+msgstr "Režim Macvtap"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:260
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
@@ -5003,106 +5003,97 @@ msgstr "Spustit během spouštění virtuálního hostitele"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
-msgstr ""
+msgstr "Připojení"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
-msgstr ""
+msgstr "Maximální přenosová jednotka (MTU)"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:287
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
-#, fuzzy
 msgid "The value has to be a positive integer"
-msgstr "Obě hodnoty musí být celá kladná čísla"
+msgstr "Hodnota musí být celé kladné číslo"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:295
-#, fuzzy
 msgid "Virtual Port Type"
-msgstr "Typ virtuálního stroje"
+msgstr "Typ virtuálního portu"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
-msgstr ""
+msgstr "Vybraná rozhraní"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
-msgstr ""
+msgstr "Podle fyzické funkce"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
-msgstr ""
+msgstr "Podle virtuálních funkcí"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
-msgstr ""
+msgstr "Podle rozhraní"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
-msgstr ""
+msgstr "Rozhraní"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
-msgstr ""
+msgstr "Fyzická funkce"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:369
-#, fuzzy
 msgid "Virtual Functions"
-msgstr "Virtuální sítě"
+msgstr "Virtuální funkce"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
-msgstr ""
+msgstr "Značka VLAN"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:397
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
-msgstr ""
+msgstr "Celé číslo mezi 0 a 4095"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
-msgstr ""
+msgstr "Uspořádání značek VLAN"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:414
 #: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
-msgstr ""
+msgstr "Rozsah IPv4 NAT"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:424
-#, fuzzy
 msgid "Both values has to be IPv4 addresses"
-msgstr "Obě hodnoty musí být celá kladná čísla"
+msgstr "Obě hodnoty musí být adresy IPv4"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:428
 #: ../html/src/manager/virtualization/nets/network-properties.js:429
-#, fuzzy
 msgid "NAT port range"
-msgstr "Rozsah portů"
+msgstr "Rozsah portů NAT"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:439
-#, fuzzy
 msgid "Both values has to be positive integers"
 msgstr "Obě hodnoty musí být celá kladná čísla"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:449
-#, fuzzy
 msgid "Addressing"
-msgstr "MAC adresa"
+msgstr "Adresace"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:455
-#, fuzzy
 msgid "Enable IPv6"
-msgstr "Povolit"
+msgstr "Povolit IPv6"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:461
-#, fuzzy
 msgid "Domain name"
-msgstr "Název obrazu"
+msgstr "Název domény"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
