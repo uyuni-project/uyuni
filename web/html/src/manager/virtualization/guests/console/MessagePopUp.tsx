@@ -6,10 +6,12 @@ import { Password } from 'components/input/Password';
 import { Button } from 'components/buttons';
 import { hideDialog } from 'components/dialog/util';
 
+export type PopupState = "wait" | "askPassword" | "errors"; 
+
 type Props = {
   id: string,
   onSubmit?: () => void,
-  popupState: "wait" | "askPassword" | "errors",
+  popupState: PopupState,
   model: any,
   setModel: (model: any) => void,
   error: React.ReactNode,
