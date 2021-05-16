@@ -858,6 +858,79 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test changes of the repo URL (result in change of the repository)
+     * @throws Exception if anything goes wrong
+     */
+
+    public void testUpdateChannelsWithPtfRepos() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/data2", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES12 GA
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
+        sles.getRepositories().stream()
+            .filter(pr -> pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+        ContentSyncManager csm = new ContentSyncManager();
+        sles.getRepositories()
+        .stream()
+        .filter(pr -> pr.getRepository().getSccId().equals(9999L))
+        .forEach(pr -> {
+            try {
+                csm.addChannel(pr.getChannelLabel(), null);
+            }
+            catch (ContentSyncException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        SCCRepository slesUpRepo = SCCCachingFactory.lookupRepositoryBySccId(1632L).get();
+        assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update/",
+                slesUpRepo.getUrl());
+        assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/x86_64/update/?my-fake-token",
+                slesUpRepo.getBestAuth().get().getUrl());
+
+        SUSEProduct slesChanged = SUSEProductFactory.lookupByProductId(1117);
+        slesChanged.getRepositories().stream()
+            .filter(pr -> pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                ContentSource cs = bestAuth.getContentSource();
+                assertNotNull(cs);
+                assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+            });
+
+        SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(9999L).orElse(null);
+        assertNotNull("PTF repo not found", ptfRepo);
+
+        slesChanged.getRepositories().stream()
+            .filter(pr -> !pr.isMandatory())
+            .forEach(pr -> {
+                assertNotNull(pr.getRepository());
+
+                if (pr.getRepository().getSccId() == 9999) {
+                    // The PTF repo
+                    assertEquals("a123456-sles-12-ptfs-x86_64", pr.getChannelLabel());
+                    SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                    ContentSource cs = bestAuth.getContentSource();
+                    assertNotNull(cs);
+                    assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
+                }
+            });
+    }
+
+    /**
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      * @throws Exception if anything goes wrong
      */
