@@ -3,15 +3,28 @@ import ReactSelect from "react-select";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
 
-type Props = InputBaseProps<string | string[]> & {
+type SingleMode = InputBaseProps<string> & {
+  /** Set to true to allow multiple selected values */
+  isMulti?: false;
+
+  /** Resolves option data to a string to compare options and specify value attributes */
+  getOptionValue: (option: any) => string;
+};
+
+type MultiMode = InputBaseProps<string | string[]> & {
+  /** Set to true to allow multiple selected values */
+  isMulti: true;
+
+  /** Resolves option data to a string to compare options and specify value attributes */
+  getOptionValue: (option: any) => string | string[];
+};
+
+type Props = {
   /** Select options */
   options: Array<Object | string>;
 
   /** Resolves option data to a string to be displayed as the label by components */
   getOptionLabel: (option: any) => string;
-
-  /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string;
 
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
@@ -28,9 +41,6 @@ type Props = InputBaseProps<string | string[]> & {
   /** Set to true to allow removing the selected value */
   isClearable: boolean;
 
-  /** Set to true to allow multiple selected values */
-  isMulti: boolean;
-
   /** Value placeholder to display when no value is entered */
   inputClass?: string;
 
@@ -38,7 +48,7 @@ type Props = InputBaseProps<string | string[]> & {
   name?: string;
 };
 
-export function Select(props: Props) {
+export function Select<T extends (SingleMode | MultiMode)>(props: Props & T) {
   const {
     inputClass,
     options,
@@ -81,12 +91,13 @@ export function Select(props: Props) {
     }),
     menuPortal: (styles: {}) => ({
       ...styles,
-      zIndex: 9999
+      zIndex: 9999,
     }),
   };
 
+  // TODO: This `any` should be inferred based on the props instead, currently the props expose the right interfaces but we don't have strict checks here
   return (
-    <InputBase<string | string[]> {...propsToPass}>
+    <InputBase<any> {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = newValue => {
           const value = Array.isArray(newValue) ? newValue.map(item => getOptionValue(item)) : getOptionValue(newValue);
