@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-17 18:00+0000\n"
+"PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -5250,74 +5250,75 @@ msgstr "ID instance VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
-msgstr ""
+msgstr "Hodnotou musí být platný UUID"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
 msgstr "Sítě VLAN"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
-#, fuzzy
 msgid "Tag"
-msgstr "Cíl"
+msgstr "Značka"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
-#, fuzzy
 msgid "Native mode"
-msgstr "Modul sběrače"
+msgstr "Nativní režim"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
-msgstr ""
+msgstr "Označeno"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr ""
+msgstr "Neoznačeno"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
+"Použijte existující, konfigurovaný most (bridge). Není aktivní žádné "
+"pravidlo iptables, IP adresa ani služba DHCP/DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
+msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů a NAT"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
+msgstr "Virtuální síť používající směrovací zásobník IP adres hostitelů bez NAT"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
 msgstr ""
+"Virtuální síť používající směrovací zásobník IP adres hostitelů bez pravidel "
+"firewallu, bez NAT"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
-msgstr ""
+msgstr "Virtuální síť bez připojení k jiným sítím"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
 msgstr ""
+"Síť založená na ovladači macvtap k použití fondu fyzických rozhraní. Není "
+"možná komunikace mezi hostem a hostitelem"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
-msgstr ""
+msgstr "fond SR-IOV"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
+msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
-#, fuzzy
 msgid "Could not get network devices from the server. Please try again."
-msgstr ""
-"Nelze zjistit, jaké schopnosti má fond úložiště ze serveru. Prosím zkuste to "
-"znovu."
+msgstr "Nelze získat síťová zařízení serveru. Prosím zkuste to znovu."
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"
@@ -5593,11 +5594,8 @@ msgid "Split into groups"
 msgstr "Rozdělit do skupin"
 
 #: ../html/src/utils/network.ts:73
-#, fuzzy
 msgid "Session expired, please reload the page."
-msgstr ""
-"Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
-"znovu."
+msgstr "Doba relace vypršela. Načtěte stránku znovu."
 
 #: ../html/src/utils/network.ts:75
 msgid ""
@@ -5612,7 +5610,7 @@ msgstr "Zdroj nebyl nalezen."
 
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
-msgstr ""
+msgstr "Kód chyby HTTP "
 
 #~ msgid "Apply"
 #~ msgstr "Použít"
