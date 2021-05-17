@@ -28,8 +28,8 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl start"
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
@@ -53,34 +53,15 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-################################################
-####### START COMMENT OUT
-####### IF A FIXED DESTINATION IS WANTED
-################################################
-
-# guessing the link to next major version
-# THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
-for v in `seq 30 -1 1`; do
-    minusone=$(($v-1))
-    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$minusone-to-susemanager-schema-4.0.$v ]; then
-        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.1.0 ]; then
-            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.1.0
-            # set hard this destination
-            #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
-        fi
-        break
-    fi
-done
-###############################################
-####### END
-###############################################
+# set hard destination schema migration version with this VAR
+#export SUMA_TEST_SCHEMA_VERSION="4.3.0"
 
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop"
+    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop"
     exit 1
 fi
 
 # Postgres shutdown (avoid stale memory by shmget())
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop"
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop"

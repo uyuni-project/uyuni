@@ -1,7 +1,7 @@
-VERSION = 4.1.2
+VERSION = 4.3.0
 REGISTRY = registry.mgr.suse.de
 SHELL := /bin/bash
-BUILDOPTS=
+BUILDOPTS=-m 8g
 #--no-cache=true
 PUSH_IT=false
 

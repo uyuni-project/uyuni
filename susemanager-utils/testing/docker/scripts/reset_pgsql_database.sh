@@ -14,8 +14,8 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl start"
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 touch /etc/rhn/rhn.conf
