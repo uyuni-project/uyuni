@@ -32,7 +32,6 @@
 - features/secondary/srv_content_lifecycle.feature
 - features/secondary/srv_change_task_schedule.feature
 - features/secondary/srv_notifications.feature
-- features/secondary/srv_monitoring.feature
 - features/secondary/srv_push_package.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature

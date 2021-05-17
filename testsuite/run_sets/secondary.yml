@@ -10,6 +10,15 @@
 
 - features/secondary/srv_users.feature
 - features/secondary/srv_menu.feature
+- features/secondary/srv_monitoring.feature
+- features/secondary/srv_virtual_host_manager.feature
+- features/secondary/srv_power_management.feature
+- features/secondary/srv_xmlrpc_power_management.feature
+- features/secondary/srv_power_management_redfish.feature
+- features/secondary/srv_delete_channel_from_ui.feature
+- features/secondary/srv_delete_channel_with_tool.feature
+- features/secondary/srv_test_maintenance_windows.feature
+- features/secondary/srv_user_configuration_salt_states.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
@@ -29,30 +38,22 @@
 - features/secondary/trad_migrate_to_minion.feature
 - features/secondary/trad_migrate_to_sshminion.feature
 - features/secondary/trad_ssh_tunnel.feature
-- features/secondary/srv_virtual_host_manager.feature
 - features/secondary/trad_baremetal_discovery.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature
 - features/secondary/minkvm_guests.feature
 - features/secondary/minxen_guests.feature
 - features/secondary/min_empty_system_profiles.feature
-- features/secondary/srv_power_management.feature
-- features/secondary/srv_xmlrpc_power_management.feature
-- features/secondary/srv_power_management_redfish.feature
 - features/secondary/trad_need_reboot.feature
 - features/secondary/trad_action_chain.feature
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
-- features/secondary/srv_delete_channel_from_ui.feature
-- features/secondary/srv_delete_channel_with_tool.feature
 - features/secondary/buildhost_docker_build_image.feature
 - features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
-- features/secondary/srv_test_maintenance_windows.feature
-- features/secondary/srv_user_configuration_salt_states.feature
 - features/secondary/min_retracted_patches.feature
 
 ## Secondary features END ##
