@@ -1,3 +1,4 @@
+- XMLRPC: Endpoint for aligning channel metadata based on another channel (bsc#1182810)
 - Fix the problem with wrong icons for virtual systems (bsc#1185507)
 - Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
 - fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
