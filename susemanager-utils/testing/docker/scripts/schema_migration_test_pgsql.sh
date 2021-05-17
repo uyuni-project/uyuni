@@ -53,27 +53,8 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-################################################
-####### START COMMENT OUT
-####### IF A FIXED DESTINATION IS WANTED
-################################################
-
-# guessing the link to next major version
-# THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
-#for v in `seq 30 -1 1`; do
-#    minusone=$(($v-1))
-#    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.1.$minusone-to-susemanager-schema-4.1.$v ]; then
-#        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.2.0 ]; then
-#            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.2.0
-#            # set hard this destination
-#            #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
-#        fi
-#        break
-#    fi
-#done
-###############################################
-####### END
-###############################################
+# set hard destination schema migration version with this VAR
+#export SUMA_TEST_SCHEMA_VERSION="4.3.0"
 
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
