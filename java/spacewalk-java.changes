@@ -1,4 +1,4 @@
-- Fix the documentarion for the parseReleaseFile method
+- Fix the documentation for the parseReleaseFile method
 - Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
 - Drop stale libs for old not supported browsers
 - fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
