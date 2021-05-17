@@ -50,8 +50,8 @@ end
 # We get these data decoding the values in '/etc/os-release'
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
+  os_family_raw = node.run('grep "^ID=" /etc/os-release')
   if code.zero?
-    os_family_raw = node.run('grep "^ID=" /etc/os-release')
     os_family = os_family_raw.strip.split('=')[1]
     return nil, nil if os_family.nil?
     os_family.delete! '"'
