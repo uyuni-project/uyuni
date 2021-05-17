@@ -160,18 +160,6 @@ Before('@virthost_xen') do
   skip_this_scenario unless $xen_server
 end
 
-Before('@ceos6_minion') do
-  skip_this_scenario unless $ceos6_minion
-end
-
-Before('@ceos6_ssh_minion') do
-  skip_this_scenario unless $ceos6_ssh_minion
-end
-
-Before('@ceos6_client') do
-  skip_this_scenario unless $ceos6_client
-end
-
 Before('@ceos7_minion') do
   skip_this_scenario unless $ceos7_minion
 end
@@ -190,14 +178,6 @@ end
 
 Before('@ceos8_ssh_minion') do
   skip_this_scenario unless $ceos8_ssh_minion
-end
-
-Before('@ubuntu1604_minion') do
-  skip_this_scenario unless $ubuntu1604_minion
-end
-
-Before('@ubuntu1604_ssh_minion') do
-  skip_this_scenario unless $ubuntu1604_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do

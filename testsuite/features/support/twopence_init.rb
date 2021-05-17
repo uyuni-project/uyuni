@@ -56,16 +56,11 @@ if $build_validation
   $sle15sp3_client = twopence_init("ssh:#{ENV['SLE15SP3_CLIENT']}") if ENV['SLE15SP3_CLIENT']
   $sle15sp3_minion = twopence_init("ssh:#{ENV['SLE15SP3_MINION']}") if ENV['SLE15SP3_MINION']
   $sle15sp3_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP3_SSHMINION']}") if ENV['SLE15SP3_SSHMINION']
-  $ceos6_client = twopence_init("ssh:#{ENV['CENTOS6_CLIENT']}") if ENV['CENTOS6_CLIENT']
-  $ceos6_minion = twopence_init("ssh:#{ENV['CENTOS6_MINION']}") if ENV['CENTOS6_MINION']
-  $ceos6_ssh_minion = twopence_init("ssh:#{ENV['CENTOS6_SSHMINION']}") if ENV['CENTOS6_SSHMINION']
   $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
   $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
   $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
   $ceos8_minion = twopence_init("ssh:#{ENV['CENTOS8_MINION']}") if ENV['CENTOS8_MINION']
   $ceos8_ssh_minion = twopence_init("ssh:#{ENV['CENTOS8_SSHMINION']}") if ENV['CENTOS8_SSHMINION']
-  $ubuntu1604_minion = twopence_init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
-  $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
   $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
@@ -80,7 +75,7 @@ if $build_validation
   $client = $sle12sp4_client
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
-  $ceos_minion = $ceos6_ssh_minion
+  $ceos_minion = $ceos7_ssh_minion
   $ubuntu_minion = $ubuntu1804_minion
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
@@ -89,10 +84,8 @@ if $build_validation
              $sle15sp1_client, $sle15sp1_minion, $sle15sp1_ssh_minion,
              $sle15sp2_client, $sle15sp2_minion, $sle15sp2_ssh_minion,
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
-             $ceos6_client, $ceos6_minion, $ceos6_ssh_minion,
              $ceos7_client, $ceos7_minion, $ceos7_ssh_minion,
              $ceos8_minion, $ceos8_ssh_minion,
-             $ubuntu1604_ssh_minion, $ubuntu1604_minion,
              $ubuntu1804_ssh_minion, $ubuntu1804_minion,
              $ubuntu2004_ssh_minion, $ubuntu2004_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
@@ -267,16 +260,11 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_client'           => $sle15sp3_client,
                   'sle15sp3_minion'           => $sle15sp3_minion,
                   'sle15sp3_ssh_minion'       => $sle15sp3_ssh_minion,
-                  'ceos6_client'              => $ceos6_client,
-                  'ceos6_minion'              => $ceos6_minion,
-                  'ceos6_ssh_minion'          => $ceos6_ssh_minion,
                   'ceos7_client'              => $ceos7_client,
                   'ceos7_minion'              => $ceos7_minion,
                   'ceos7_ssh_minion'          => $ceos7_ssh_minion,
                   'ceos8_minion'              => $ceos8_minion,
                   'ceos8_ssh_minion'          => $ceos8_ssh_minion,
-                  'ubuntu1604_minion'         => $ubuntu1604_minion,
-                  'ubuntu1604_ssh_minion'     => $ubuntu1604_ssh_minion,
                   'ubuntu1804_minion'         => $ubuntu1804_minion,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,

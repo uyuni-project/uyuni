@@ -9,14 +9,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Add Ubuntu 16.04
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "Ubuntu 16.04" as the filtered product description
-    And I select "Ubuntu 16.04" as a product
-    Then I should see the "Ubuntu 16.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 16.04" product has been added
-
   Scenario: Add Ubuntu 18.04
     When I follow the left menu "Admin > Setup Wizard > Products"
     When I enter "Ubuntu 18.04" as the filtered product description
@@ -114,14 +106,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Development Tools Module 15 SP3 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" product has been added
-
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 6
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    When I enter "SUSE Linux Enterprise Server with Expanded Support 6" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 6" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 6" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 6" product has been added
 
   Scenario: SUSE Linux Enterprise Server with Expanded Support 7
     When I follow the left menu "Admin > Setup Wizard > Products"
