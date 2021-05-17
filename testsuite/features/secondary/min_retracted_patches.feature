@@ -9,7 +9,8 @@ Feature: Retracted patches
 
   Scenario: Installed retracted package should show icon in the system packages list
     When I install package "rute-dummy=2.1-1.1" on this "sle_minion"
-    And I wait until package "rute-dummy-2.1-1.1.x86_64" is installed on "sle_minion" via spacecmd
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "List / Remove"
@@ -28,7 +29,8 @@ Feature: Retracted patches
 
   Scenario: Retracted package should not be available for upgrade
     When I install old package "rute-dummy=2.0-1.2" on this "sle_minion"
-    And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
     And I am on the "Software" page of this "sle_minion"
     And I follow "Packages"
     And I follow "Upgrade"
@@ -38,7 +40,8 @@ Feature: Retracted patches
 
   Scenario: Retracted patch should not affect any system
     When I install package "rute-dummy=2.0-1.2" on this "sle_minion"
-    And I wait until package "rute-dummy-2.0-1.2.x86_64" is installed on "sle_minion" via spacecmd
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
     And I follow the left menu "Software > Channel List > All"
     And I follow "Test-Channel-x86_64"
     And I follow "Patches" in the content area
