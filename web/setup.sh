@@ -7,8 +7,8 @@ set -euxo pipefail
         yarn install --force --ignore-optional --frozen-lockfile;
         yarn autoclean --force;
     else
-        # Wait for the lock to be released and then continue, timeout on 600s
-        flock -x -w 600 200;
+        # Wait for the lock to be released and then continue
+        flock -x 200;
     fi
 ) 200>/tmp/setup_yarn.lock
 (cd web/html/src; yarn build:novalidate)
