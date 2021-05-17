@@ -1,11 +1,10 @@
-import { configure, addDecorator, addParameters } from '@storybook/react';
-import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
-import '../../../../branding/css/uyuni.less';
-
+import { configure, addParameters } from "@storybook/react";
+import { DocsPage, DocsContainer } from "@storybook/addon-docs/blocks";
+import "../../../../branding/css/uyuni.less";
 
 addParameters({
   options: {
-    showPanel: true
+    showPanel: true,
   },
   docs: {
     container: DocsContainer,
@@ -13,8 +12,10 @@ addParameters({
   },
 });
 
-configure(require.context('../components', true, /\.stories\.js$/), module);
+const req = require.context("../components", true, /\.stories\.js$/);
+
+function loadStories() {
+  req.keys().forEach(req);
+}
 
 configure(loadStories, module);
-
-
