@@ -423,20 +423,7 @@ Style/IfUnlessModifier:
 
 # Offense count: 254
 Style/ImplicitRuntimeError:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/docker_steps.rb'
-    - 'features/step_definitions/lock_packages_on_client.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/commonlib.rb'
-    - 'features/support/env.rb'
-    - 'features/support/lavanda.rb'
-    - 'features/support/ssh.rb'
-    - 'features/support/twopence_init.rb'
-    - 'unit-tests/feature_names.rb'
+ Enabled: false
 
 # Offense count: 11
 Style/InlineComment:
