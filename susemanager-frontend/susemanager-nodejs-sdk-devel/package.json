@@ -103,8 +103,6 @@
   },
   "scripts": {
     "clean": "rm -rf node_modules",
-    "remove-packages-before-obs-zip": "yarn remove @storybook/addon-centered @storybook/addon-docs @storybook/addon-actions @storybook/react flow-bin webpack-dev-server --no-lockfile",
-    "restore-packages-after-obs-zip": "git checkout package.json",
     "zip": "rm -f susemanager-nodejs-modules.tar.gz && (tar czf susemanager-nodejs-modules.tar.gz node_modules/)"
   }
 }
