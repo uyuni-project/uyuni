@@ -1,3 +1,5 @@
+- require sysvinit-tools to have pidof available (bsc#1186129)
+
 -------------------------------------------------------------------
 Wed May 05 16:32:08 CEST 2021 - jgonzalez@suse.com
 
