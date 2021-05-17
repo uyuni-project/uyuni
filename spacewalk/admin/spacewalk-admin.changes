@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 17 17:21:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- require sysvinit-tools to have pidof available (bsc#1186129)
+
+-------------------------------------------------------------------
 Wed May 05 16:32:08 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.6-1
