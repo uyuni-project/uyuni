@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-17 06:39+0000\n"
+"PO-Revision-Date: 2021-05-17 08:57+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -5145,17 +5145,15 @@ msgstr "Název služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
-msgstr ""
+msgstr "Protokol"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
-#, fuzzy
 msgid "Service domain name"
-msgstr "Název zdroje"
+msgstr "Název domény služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
-#, fuzzy
 msgid "Target hostname"
-msgstr "Typ cíle"
+msgstr "Název hostitele cíle"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
@@ -5163,27 +5161,24 @@ msgid "Port"
 msgstr "Port"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
-#, fuzzy
 msgid "Target priority"
-msgstr "Typ cíle"
+msgstr "Priorita cíle"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
-#, fuzzy
 msgid "Target weight"
-msgstr "Typ cíle"
+msgstr "Váha cíle"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
-msgstr ""
+msgstr "Záznamy TXT"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
-#, fuzzy
 msgid "Network address"
-msgstr "Sítě"
+msgstr "Síťová adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
@@ -5191,64 +5186,59 @@ msgstr "Sítě"
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
-msgstr ""
+msgstr "v6"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
-#, fuzzy
 msgid "IP address"
-msgstr "MAC adresa"
+msgstr "IP adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
-msgstr ""
+msgstr "Jedinečný identifikátor DHCP (DUID)"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
-#, fuzzy
 msgid "Needs to be a MAC address"
-msgstr "Ponechte prázdné pro vygenerování MAC adresy"
+msgstr "Zde musí být adresa MAC"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
-#, fuzzy
 msgid "BOOTP image file"
-msgstr "Profily obrazů"
+msgstr "Soubor obrazu BOOTP"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
-msgstr ""
+msgstr "Server BOOTP"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
-msgstr ""
+msgstr "Cesta ke kořeni TFTP"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
 msgstr "Parametry"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
-#, fuzzy
 msgid "By profile id"
-msgstr "Upravit profil"
+msgstr "Podle id profilu"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
-msgstr ""
+msgstr "Parametry rozhraní virtuální stanice (VSI)"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
-msgstr ""
+msgstr "id profilu"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
-msgstr ""
+msgstr "id rozhraní"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
-#, fuzzy
 msgid "VSI manager id"
-msgstr "Neřízený"
+msgstr "id správce VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
-msgstr ""
+msgstr "id typu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
 #, fuzzy
