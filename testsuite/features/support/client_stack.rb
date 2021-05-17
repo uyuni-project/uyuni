@@ -51,12 +51,12 @@ end
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
   os_family_raw, code = node.run('grep "^ID=" /etc/os-release', false)
-  return nil,nil unless code.zero?
+  return nil, nil unless code.zero?
   os_family = os_family_raw.strip.split('=')[1]
   return nil, nil if os_family.nil?
   os_family.delete! '"'
   os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', false)
-  return nil,nil unless code.zero?
+  return nil, nil unless code.zero?
   os_version = os_version_raw.strip.split('=')[1]
   return nil, nil if os_version.nil?
   os_version.delete! '"'
