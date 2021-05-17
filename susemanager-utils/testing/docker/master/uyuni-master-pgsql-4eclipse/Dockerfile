@@ -17,7 +17,7 @@ RUN smdba system-check autotuning --max_connections=50
 
 RUN echo "host all  all    0.0.0.0/0  md5" >> /var/lib/pgsql/data/pg_hba.conf
 
-RUN su - postgres -c "/usr/lib/postgresql13/bin/pg_ctl start" && su - postgres -c 'psql -d susemanager -v ON_ERROR_STOP=ON -f /etc/sysconfig/rhn/postgres/deploy.sql'
+RUN su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" && su - postgres -c 'psql -d susemanager -v ON_ERROR_STOP=ON -f /etc/sysconfig/rhn/postgres/deploy.sql'
 
 CMD /bin/sh /manager/susemanager-utils/testing/docker/scripts/init-pgsql-db4eclipse.sh
 

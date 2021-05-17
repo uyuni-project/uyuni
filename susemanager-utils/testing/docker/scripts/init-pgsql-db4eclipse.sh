@@ -20,7 +20,7 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 #sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql13/bin/pg_ctl start" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
@@ -35,24 +35,10 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-# guessing the link to next major version
-# THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
-for v in `seq 30 -1 1`; do
-    minusone=$(($v-1))
-    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$minusone-to-susemanager-schema-3.2.$v ]; then
-        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0 ]; then
-            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0
-            # set hard this destination
-            #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
-        fi
-        break
-    fi
-done
-
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql13/bin/pg_ctl stop" ||:
+    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
     exit 1
 fi
 
@@ -62,6 +48,6 @@ echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id)
             'private-channel-family-1', 1);" | spacewalk-sql --select-mode -
 echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (1000, 1);" | spacewalk-sql --select-mode -
 
-su - postgres -c "/usr/lib/postgresql13/bin/pg_ctl stop" ||:
-su - postgres -c '/usr/lib/postgresql13/bin/postgres -D /var/lib/pgsql/data'
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+su - postgres -c '/usr/lib/postgresql/bin/postgres -D /var/lib/pgsql/data'
 
