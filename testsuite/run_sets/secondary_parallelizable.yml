@@ -8,7 +8,6 @@
 
 # IDEMPOTENT
 
-- features/secondary/srv_menu.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
@@ -76,10 +75,6 @@
 - features/secondary/trad_openscap_audit.feature
 - features/secondary/trad_inst_package_and_patch.feature
 - features/secondary/trad_check_patches_install.feature
-- features/secondary/trad_product_migration.feature
 - features/secondary/trad_check_registration.feature
-
-- features/secondary/buildhost_docker_build_image.feature
-- features/secondary/buildhost_docker_auth_registry.feature
 
 ## Parallelizable Secondary features END ##

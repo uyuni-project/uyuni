@@ -1,11 +1,16 @@
 -------------------------------------------------------------------
+Mon May 10 17:46:22 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.12-1
+- AlmaLinux and Amazon Linux 2 Java enablement
+
+-------------------------------------------------------------------
 Wed May 05 16:43:35 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.11-1
 - DB schema to support forwarding data to SCC
 - Rename SP to product migration
 - Ansible integration: configure control node paths (playbooks and inventories)
-- Add AlmaLinux 8 and Amazon Linux 2 keys and vendors
 
 -------------------------------------------------------------------
 Fri Apr 16 13:29:49 CEST 2021 - jgonzalez@suse.com

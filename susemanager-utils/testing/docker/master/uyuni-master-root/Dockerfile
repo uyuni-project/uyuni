@@ -1,8 +1,8 @@
-# Container used to test SUSE Manager Head
+# Container used to test Uyuni
 #
-# VERSION                4.1.2
+# VERSION                4.2
 
-FROM opensuse/leap:15.2
+FROM opensuse/leap:15.3
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # When using SLES images better remove container-suseconnect

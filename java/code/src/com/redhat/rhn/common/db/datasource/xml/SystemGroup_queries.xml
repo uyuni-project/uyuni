@@ -57,6 +57,7 @@ ORDER BY UPPER(NAME)
               INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
               LEFT JOIN rhnErrata e ON e.id = snpc.errata_id
           WHERE sfv.label = 'ftr_system_grouping'
+          GROUP BY sgm.server_group_id, e.advisory_type
     )
     SELECT rhnServerGroup.id,
         CASE (

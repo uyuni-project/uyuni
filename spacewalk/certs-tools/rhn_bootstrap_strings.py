@@ -1052,6 +1052,14 @@ enable_legacy_startup_events: False
 enable_fqdns_grains: False
 start_event_grains: [machine_id, saltboot_initrd, susemanager]
 mine_enabled: False
+EOF
+    if [ "$DISABLE_LOCAL_REPOS" -eq 0 ]; then
+        echo "Do not disable local repos"
+        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
+disable_local_repos: False
+EOF
+    fi
+    cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
 
 grains:
     susemanager:
@@ -1068,6 +1076,14 @@ EOF
         management_key: "$(echo $REACTIVATION_KEY)"
 EOF
     fi
+    cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
+
+system-environment:
+  modules:
+    pkg:
+      _:
+        SALT_RUNNING: 1
+EOF
 fi
 
 echo "* removing TLS certificate used for bootstrap"

@@ -4,11 +4,6 @@ HERE=`dirname $0`
 . $HERE/VERSION
 GITROOT=`readlink -f $HERE/../../../`
 
-# fake usix.py
-if [ ! -e $GITROOT/backend/common/usix.py ]; then
-    ln -sf ../../usix/common/usix.py $GITROOT/backend/common/usix.py
-fi
-
 DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 
 SPACEWALK_FILES="
@@ -158,8 +153,8 @@ INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
-docker pull $REGISTRY/$PYLINT_CONTAINER
-docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "${INITIAL_CMD}; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log || :; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+docker pull $REGISTRY/$PGSQL_CONTAINER
+docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/sh -c "${INITIAL_CMD}; $PYLINT_CMD `echo $SPACEWALK_FILES` > reports/pylint.log; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
 
 if [ $? -ne 0 ]; then
    EXIT=1

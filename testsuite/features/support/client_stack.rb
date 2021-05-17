@@ -50,24 +50,18 @@ end
 # We get these data decoding the values in '/etc/os-release'
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', false)
-  if code.zero?
-    os_family = os_family_raw.strip.split('=')[1]
-    return nil, nil if os_family.nil?
-    os_family.delete! '"'
-    os_version_raw, _code = node.run('grep "^VERSION_ID=" /etc/os-release')
-    os_version = os_version_raw.strip.split('=')[1]
-    return nil, nil if os_version.nil?
-    os_version.delete! '"'
-    # on SLES, we need to replace the dot with '-SP'
-    os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
-    [os_version, os_family]
-  else
-    # The only node that we handle which doesn't support 'os-release' file is Centos 6
-    _os_family_raw, code = node.run('test -f /etc/centos-release', false)
-    return nil, nil unless code.zero?
-    ['6', 'centos']
-  end
+  os_family_raw = node.run('grep "^ID=" /etc/os-release')
+  puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  os_family = os_family_raw.strip.split('=')[1]
+  return nil, nil if os_family.nil?
+  os_family.delete! '"'
+  os_version_raw = node.run('grep "^VERSION_ID=" /etc/os-release')
+  os_version = os_version_raw.strip.split('=')[1]
+  return nil, nil if os_version.nil?
+  os_version.delete! '"'
+  # on SLES, we need to replace the dot with '-SP'
+  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
+  [os_version, os_family]
 end
 
 def get_gpg_keys(node, target = $server)

@@ -1,3 +1,20 @@
+- Fix the documentarion for the parseReleaseFile method
+- Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
+- Drop stale libs for old not supported browsers
+- fix file ownership and permissions in /srv/susemanager/pillar_data/ (bsc#1179954)
+- Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
+- fix disapearing Autoinstallation Menu for minions (bsc#1184813)
+- catch not found repository and create a standard error page (bsc#1183992)
+- Remove duplicate entries on AppStream filter channel browser
+- Do not require advisory_status to be set in ErrataHandler.create (bsc#1185965)
+- Fix the problem with wrong icons for virtual systems (bsc#1185507)
+
+-------------------------------------------------------------------
+Mon May 10 17:43:42 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.18-1
+- Java side of AlmaLinux and Amazon Linux 2 enablement
+
 -------------------------------------------------------------------
 Wed May 05 16:35:15 CEST 2021 - jgonzalez@suse.com
 
@@ -23,8 +40,6 @@ Wed May 05 16:35:15 CEST 2021 - jgonzalez@suse.com
 - change deprecated path /var/run into /run for systemd (bsc#1185059)
 - add virtual network edit action
 - Lower case fqdn comparation when calculating minion connection path (bsc#1184849)
-- Java side of AlmaLinux and Amazon Linux 2 enablement
-- Bugfix RhelUtils.java
 
 -------------------------------------------------------------------
 Mon Apr 19 14:51:51 CEST 2021 - jgonzalez@suse.com

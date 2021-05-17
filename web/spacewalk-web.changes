@@ -1,3 +1,10 @@
+- Drop stale libs for old not supported browsers
+- Fix date-time picker radio controls (bsc#1185968)
+
+-------------------------------------------------------------------
+Mon May 10 17:45:18 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.16-1
 - Fix rerender loop in CLM filter modal
 
 -------------------------------------------------------------------

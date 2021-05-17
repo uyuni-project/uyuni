@@ -83,7 +83,7 @@ public class ChannelsApiController {
     }
 
     /**
-     * Get existing modular channels for a user in a channel id to channel label map
+     * Get existing modular channels for a user
      *
      * @param req the request
      * @param res the response
@@ -92,6 +92,7 @@ public class ChannelsApiController {
      */
     public static String getModularChannels(Request req, Response res, User user) {
         List<ChannelsJson.ChannelJson> jsonChannels = user.getOrg().getAccessibleChannels().stream()
+                .distinct()
                 .filter(Channel::isModular)
                 .map(ChannelsJson.ChannelJson::new)
                 .collect(Collectors.toList());

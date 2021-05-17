@@ -101,7 +101,9 @@ After do |scenario|
       puts "Error taking a screenshot: #{e.message}"
     ensure
       debug_server_on_realtime_failure
-      page.reset!
+      previous_url = current_url
+      step %(I am authorized for the "Admin" section)
+      visit previous_url
     end
   end
   page.instance_variable_set(:@touched, false)
@@ -158,18 +160,6 @@ Before('@virthost_xen') do
   skip_this_scenario unless $xen_server
 end
 
-Before('@ceos6_minion') do
-  skip_this_scenario unless $ceos6_minion
-end
-
-Before('@ceos6_ssh_minion') do
-  skip_this_scenario unless $ceos6_ssh_minion
-end
-
-Before('@ceos6_client') do
-  skip_this_scenario unless $ceos6_client
-end
-
 Before('@ceos7_minion') do
   skip_this_scenario unless $ceos7_minion
 end
@@ -188,14 +178,6 @@ end
 
 Before('@ceos8_ssh_minion') do
   skip_this_scenario unless $ceos8_ssh_minion
-end
-
-Before('@ubuntu1604_minion') do
-  skip_this_scenario unless $ubuntu1604_minion
-end
-
-Before('@ubuntu1604_ssh_minion') do
-  skip_this_scenario unless $ubuntu1604_ssh_minion
 end
 
 Before('@ubuntu1804_minion') do

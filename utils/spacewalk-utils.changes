@@ -1,3 +1,7 @@
+- spacewalk-hostname-rename: change hostname in /root/.mgr-sync (bsc#1183994)
+- adapt hostname rename check to allow also short hostname in various
+  hostname files on the filesystem (bsc#1176512)
+
 -------------------------------------------------------------------
 Wed May 05 16:39:14 CEST 2021 - jgonzalez@suse.com
 

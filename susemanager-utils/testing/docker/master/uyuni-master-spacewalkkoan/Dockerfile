@@ -1,6 +1,6 @@
 # Container used to test spacewalk-koan for Uyuni
 #
-# VERSION                4.1.2
+# VERSION                4.2
 
 FROM registry.mgr.suse.de/uyuni-master-base:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"

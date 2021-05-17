@@ -1,6 +1,6 @@
 # Container used to test cobbler against Uyuni
 #
-# VERSION                4.1.2
+# VERSION                4.2
 
 FROM registry.mgr.suse.de/uyuni-master-root:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"

@@ -772,6 +772,15 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
+When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  # use sumaform states to migrate to latest SP the system repositories:
+  node.run('salt-call --local --file-root /root/salt/ state.apply repos')
+  # disable again the non-SUMA repositories:
+  node.run("for repo in $(zypper lr | awk 'NR>7 && !/susemanager:/ {print $3}'); do zypper mr -d $repo; done")
+  # node.run('salt-call state.apply channels.disablelocalrepos') does not work
+end
+
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
@@ -844,6 +853,8 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
     pkgs = 'openscap-utils scap-security-guide-redhat'
   elsif os_family =~ /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
+  else
+    raise "The node #{node.hostname} has not a supported OS Family"
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")

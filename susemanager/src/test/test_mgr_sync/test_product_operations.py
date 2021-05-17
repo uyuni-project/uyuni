@@ -145,6 +145,11 @@ Status:
   [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 x86_64
   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP2 x86_64
   [ ] SUSE WebYaST 1.3 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+  [ ] SUSE WebYaST 1.3 x86_64
 [I] SUSE Linux Enterprise Server 11 SP3 x86_64
   [ ] Novell Open Enterprise Server 2 11.2 x86_64
   [ ] SUSE Cloud 2.0 x86_64
@@ -153,11 +158,6 @@ Status:
   [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
   [ ] SUSE Linux Enterprise Real Time 11 x86_64
   [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
-  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
-  [ ] SUSE WebYaST 1.3 x86_64
-[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
-  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
-  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
   [ ] SUSE WebYaST 1.3 x86_64
 [ ] SUSE Manager Proxy 1.2 x86_64
@@ -205,6 +205,7 @@ Status:
   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 x86_64
 [ ] SUSE Linux Enterprise Server 11 SP1 x86_64
 [ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
 [I] SUSE Linux Enterprise Server 11 SP3 x86_64
   [ ] Novell Open Enterprise Server 2 11.2 x86_64
   [ ] SUSE Cloud 2.0 x86_64
@@ -215,7 +216,6 @@ Status:
   [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
   [ ] SUSE WebYaST 1.3 x86_64
-[ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
 [ ] SUSE Manager Proxy 1.2 x86_64
 [ ] SUSE Manager Proxy 1.7 x86_64
 [ ] SUSE Manager Proxy 2.1 x86_64
@@ -385,17 +385,17 @@ Status:
 011)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 x86_64
 012) [ ] SUSE Linux Enterprise Server 11 SP1 x86_64
 013) [ ] SUSE Linux Enterprise Server 11 SP2 x86_64
+014) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
      [I] SUSE Linux Enterprise Server 11 SP3 x86_64
-014)   [ ] Novell Open Enterprise Server 2 11.2 x86_64
-015)   [ ] SUSE Cloud 2.0 x86_64
-016)   [ ] SUSE Cloud 3 x86_64
-017)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
-018)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
-019)   [ ] SUSE Linux Enterprise Real Time 11 x86_64
+015)   [ ] Novell Open Enterprise Server 2 11.2 x86_64
+016)   [ ] SUSE Cloud 2.0 x86_64
+017)   [ ] SUSE Cloud 3 x86_64
+018)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64
+019)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 x86_64
+020)   [ ] SUSE Linux Enterprise Real Time 11 x86_64
        [I] SUSE Linux Enterprise Software Development Kit 11 SP3 x86_64
-020)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
-021)   [ ] SUSE WebYaST 1.3 x86_64
-022) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare x86_64
+021)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 x86_64
+022)   [ ] SUSE WebYaST 1.3 x86_64
 023) [ ] SUSE Manager Proxy 1.2 x86_64
 024) [ ] SUSE Manager Proxy 1.7 x86_64
 025) [ ] SUSE Manager Proxy 2.1 x86_64
