@@ -33,6 +33,7 @@ Release:        1%{?dist}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       lsof
+Requires:       sysvinit-tools
 Requires:       spacewalk-base
 Requires:       perl(MIME::Base64)
 Requires:       %{pythonX}
