@@ -1,10 +1,13 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+# This feature depends on:
+# - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
+# - sumaform : As it is configuring monitoring to be enabled after deployment
 
 @sle_minion
 @scope_monitoring
-Feature: Monitor SUMA environment with Prometheus on a normal minion
-  In order to monitore SUSE Manager server
+Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
+  In order to monitor SUSE Manager server
   As an authorized user
   I want to enable Prometheus exporters
 
