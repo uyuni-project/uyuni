@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-04-06 10:58+0000\n"
+"PO-Revision-Date: 2021-05-17 14:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -161,9 +161,8 @@ msgid "Save Changes"
 msgstr "변경사항 저장"
 
 #: ../html/src/components/config-channels.tsx:318
-#, fuzzy
 msgid "Execute States"
-msgstr "반복 상태"
+msgstr "실행 상태"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
@@ -2098,12 +2097,11 @@ msgstr "규칙"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
+msgstr "선택한 필터 중 일부가 프로젝트에서 사용되며 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "선택"
+msgstr "미사용 항목 선택"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2117,9 +2115,8 @@ msgid "Content Lifecycle Filters"
 msgstr "컨텐트 라이프싸이클 필터"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "이름을 기준으로 필터링"
+msgstr "이름 또는 프로젝트를 기준으로 필터링"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
@@ -2312,7 +2309,7 @@ msgstr "프로젝트를 빌드하는 중..."
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
-msgstr ""
+msgstr "프로젝트에 동기화되지 않은 패치가 있는 채널이 포함되어 있습니다. 그러한 채널은 조직 설정에 따라 동기화됩니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2522,7 +2519,7 @@ msgstr "이 채널이 권장됩니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
-msgstr ""
+msgstr "동기화되지 않은 패치 있음"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
@@ -2585,10 +2582,8 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid "Formula saved. Edit configuration options "
-msgstr ""
-"수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 선택한 후 다음을 적용: "
+msgstr "수식이 저장되었습니다. 구성 옵션 편집 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -2602,9 +2597,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "구성 변경 사항을 적용하려면 다시 시작해야 합니다."
+msgstr " 구성 변경 사항을 적용하려면."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -3295,38 +3289,32 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
-#, fuzzy
 msgid "Skip to the last maintenance window"
-msgstr "향후 유지보수 기간 없음"
+msgstr "마지막 유지보수 기간으로 건너뛰기"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
-#, fuzzy
 msgid "Skip to the next maintenance window"
-msgstr "향후 유지보수 기간 없음"
+msgstr "마지막 유지보수 기간으로 건너뛰기"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
-#, fuzzy
 msgid "There are no more past maintenance windows"
-msgstr "향후 유지보수 기간 없음"
+msgstr "마지막 유지보수 기간이 더 이상 없음"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
-#, fuzzy
 msgid "There are no more future maintenance windows"
-msgstr "향후 유지보수 기간 없음"
+msgstr "더 이상 향후 유지보수 기간이 없음"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
-msgstr ""
+msgstr "오늘"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
-#, fuzzy
 msgid "Month"
-msgstr "매월:"
+msgstr "월"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
-#, fuzzy
 msgid "Day"
-msgstr "매일:"
+msgstr "일"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
@@ -3596,104 +3584,95 @@ msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할�
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "플레이북을 찾을 수 없습니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr ""
+msgstr "인벤토리 파일이 비어 있습니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
-#, fuzzy
 msgid "Loading content.."
-msgstr "로드하는 중..."
+msgstr "컨텐트를 로드하는 중..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
-#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
-"Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
+msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr ""
+msgstr "Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
-msgstr ""
+msgstr "플레이북 디렉터리"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
-msgstr ""
+msgstr "플레이북 디렉터리 추가"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
-msgstr ""
+msgstr "예: /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
 msgid "Inventory Files"
-msgstr ""
+msgstr "인벤토리 파일"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "Add an Inventory file"
-msgstr ""
+msgstr "인벤토리 파일 추가"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
+msgstr "예: /etc/ansible/testing/hosts"
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
 msgid "Loading.."
-msgstr "로드하는 중..."
+msgstr "로드하는 중.."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "구성된 항목이 없습니다. 다음에 경로 추가: "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
-#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "전역 필터를 로드하는 중..."
+msgstr "플레이북 컨텐츠를 로드하는 중..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
-#, fuzzy
 msgid "Back to playbook list"
-msgstr "목록으로 돌아가기"
+msgstr "플레이북 목록으로 돌아가기"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "검사 예약"
+msgstr "플레이북 실행 예약"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "'{0}' 플레이북"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "플레이북 실행 예약"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr ""
+msgstr "인벤토리 경로"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "플레이북 컨텐트"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "작업이 작업 체인에 추가되었습니다. "
+msgstr "작업이 작업 체인에 추가되었습니다."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "작업이 "
+msgstr "플레이븍 실행이"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -3706,12 +3685,11 @@ msgstr "구성"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "모든 변경 사항을 저장한 후 적용하십시오!"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "Highstate 적용"
+msgstr "변경 사항 적용"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3723,9 +3701,8 @@ msgid "1 Change"
 msgstr "1개 변경"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
 msgid "Search package"
-msgstr "검색"
+msgstr "패키지 검색"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
@@ -4073,53 +4050,46 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {0}"
-msgstr "{0}에 대한 Highstate"
+msgstr "{0}에 대한 상태 요약"
 
 #: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "해당 시스템이 없습니다."
 
 #: ../html/src/manager/state/highstate-summary.tsx:20
-#, fuzzy
 msgid "State channel"
-msgstr "소프트웨어 채널"
+msgstr "상태 채널"
 
 #: ../html/src/manager/state/highstate-summary.tsx:21
-#, fuzzy
 msgid "Config channel"
-msgstr "채널 복제"
+msgstr "채널 구성"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
-#, fuzzy
 msgid "internal"
-msgstr "유지보수"
+msgstr "내부"
 
 #: ../html/src/manager/state/highstate-summary.tsx:32
-#, fuzzy
 msgid "Internal states"
-msgstr "인터페이스"
+msgstr "내부 상태"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
-msgstr ""
+msgstr "highstate 요약을 검색하는 중..."
 
 #: ../html/src/manager/state/highstate-summary.tsx:58
-#, fuzzy
 msgid "State Source"
-msgstr "소스"
+msgstr "상태 소스"
 
 #: ../html/src/manager/state/highstate-summary.tsx:60
 msgid "Inherited From"
-msgstr ""
+msgstr "상속 출처"
 
 #: ../html/src/manager/state/highstate-summary.tsx:78
 msgid "Show full highstate output"
-msgstr ""
+msgstr "전체 highstate 출력 표시"
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
-#, fuzzy
 msgid "System Group"
 msgstr "시스템 그룹"
 
@@ -4264,20 +4234,18 @@ msgid "SUSE Manager Default"
 msgstr "SUSE Manager 기본값"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "하위 채널 없음"
+msgstr "하위 채널 로드 중.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "기본 채널"
+msgstr "기본 채널:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
-msgstr ""
+msgstr "설치된 SUSE Linux 버전에 해당하는 채널이 제공되었습니다. 기본값 대신, "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
@@ -4287,7 +4255,7 @@ msgstr "하위 채널:"
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr ""
+msgstr "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4376,6 +4344,9 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
+"사용자는 부트스트랩 프로세스 중에만 영향을 미칩니다. 추가 연결은 rhn.conf에 지정된 사용자에 의해 수행됩니다. "
+"'ssh_push_sudo_user' 키의 기본 사용자는 'root'입니다. 이 사용자는 부트스트랩 절차 중에 {0}의 SSH 키가 "
+"배포된 후에 설정됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4404,9 +4375,8 @@ msgstr "상태 적용 응답에서 결과를 찾을 수 없습니다."
 
 #: ../html/src/manager/systems/delete-system.tsx:72
 #: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
 msgid "Delete Profile Without Cleanup"
-msgstr "프로파일 삭제"
+msgstr "정리하지 않고 프로파일 삭제"
 
 #: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
@@ -4795,11 +4765,11 @@ msgstr "그래픽"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "연결 끊김"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "연결 실패"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4807,7 +4777,7 @@ msgstr "전체 크기 전환"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "게스트가 실행 중이 아님"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
