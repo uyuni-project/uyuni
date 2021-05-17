@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-16 21:57+0000\n"
+"PO-Revision-Date: 2021-05-17 06:39+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -5097,27 +5097,26 @@ msgstr "DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
-msgstr ""
+msgstr "Forwardery"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
-msgstr ""
+msgstr "Doména"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
-msgstr ""
+msgstr "Adresa serveru DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
-msgstr ""
+msgstr "Zde musí být platný kvalifikovaný název hostitele"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
-#, fuzzy
 msgid "Has to be an IP address"
-msgstr "Adresa PCI nadřazeného adaptéru"
+msgstr "Zde musí být adresa IP"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
@@ -5125,26 +5124,24 @@ msgid "Hosts"
 msgstr "Hostitelé"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
-#, fuzzy
 msgid "Address"
-msgstr "MAC adresa"
+msgstr "Adresa"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
-msgstr ""
+msgstr "názvy hostitelů (oddělené čárkami)"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
-msgstr ""
+msgstr "Zde musí být seznam názvů hostitelů oddělených čárkami"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
-msgstr ""
+msgstr "Záznamy SRV"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
-#, fuzzy
 msgid "Service name"
-msgstr "Název zdroje"
+msgstr "Název služby"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
