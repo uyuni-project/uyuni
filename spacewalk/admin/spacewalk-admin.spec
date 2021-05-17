@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %endif
@@ -27,16 +28,16 @@ Summary:        Various utility scripts and data files for Spacewalk installatio
 License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Version:        4.2.6
 Release:        1%{?dist}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       lsof
-Requires:       sysvinit-tools
-Requires:       spacewalk-base
-Requires:       perl(MIME::Base64)
 Requires:       %{pythonX}
+Requires:       lsof
+Requires:       spacewalk-base
+Requires:       sysvinit-tools
+Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 BuildRequires:  systemd
@@ -91,7 +92,6 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/salt-se
 if [ -x /usr/bin/systemctl ]; then
     /usr/bin/systemctl daemon-reload || :
 fi
-
 
 %files
 %license LICENSE
