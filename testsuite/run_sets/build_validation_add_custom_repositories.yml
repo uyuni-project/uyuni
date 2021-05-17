@@ -3,7 +3,6 @@
 ## Add common channels and special repositories BEGIN ###
 
 - features/build_validation/add_custom_repositories/srv_common_channels.feature
-- features/build_validation/add_custom_repositories/add_ceos6_repositories.feature
 - features/build_validation/add_custom_repositories/add_ceos7_repositories.feature
 - features/build_validation/add_custom_repositories/add_ceos8_repositories.feature
 
