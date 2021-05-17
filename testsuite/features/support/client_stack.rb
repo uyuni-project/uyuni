@@ -51,19 +51,16 @@ end
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
   os_family_raw, code = node.run('grep "^ID=" /etc/os-release')
-  if code.zero?
-    os_family = os_family_raw.strip.split('=')[1]
-    return nil, nil if os_family.nil?
-    os_family.delete! '"'
-    os_version_raw = node.run('grep "^VERSION_ID=" /etc/os-release')
-    os_version = os_version_raw.strip.split('=')[1]
-    return nil, nil if os_version.nil?
-    os_version.delete! '"'
-    # on SLES, we need to replace the dot with '-SP'
-    os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
-  else
-    raise "No os-release found in the node: #{node.hostname}"
-  end
+  raise "No os-release found in the node: #{node.hostname}" unless code.zero?
+  os_family = os_family_raw.strip.split('=')[1]
+  return nil, nil if os_family.nil?
+  os_family.delete! '"'
+  os_version_raw = node.run('grep "^VERSION_ID=" /etc/os-release')
+  os_version = os_version_raw.strip.split('=')[1]
+  return nil, nil if os_version.nil?
+  os_version.delete! '"'
+  # on SLES, we need to replace the dot with '-SP'
+  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
   puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
