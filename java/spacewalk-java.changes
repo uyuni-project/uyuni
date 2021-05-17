@@ -1,3 +1,4 @@
+- fix problem reading product_tree.json from wrong location in offline setups (bsc#1184283)
 - XMLRPC: Endpoint for aligning channel metadata based on another channel (bsc#1182810)
 - Fix the problem with wrong icons for virtual systems (bsc#1185507)
 - Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
