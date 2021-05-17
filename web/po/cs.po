@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-17 08:57+0000\n"
+"PO-Revision-Date: 2021-05-17 18:00+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
 "Language: cs\n"
@@ -5241,14 +5241,12 @@ msgid "VSI type id"
 msgstr "id typu VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
-#, fuzzy
 msgid "VSI type id version"
-msgstr "Verze obrazu"
+msgstr "Verze typového id VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
-#, fuzzy
 msgid "VSI instance id"
-msgstr "Instance"
+msgstr "ID instance VSI"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
