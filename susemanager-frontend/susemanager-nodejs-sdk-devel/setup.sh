@@ -11,7 +11,5 @@ set -euxo pipefail
         flock -x -w 600 200;
     fi
 ) 200>/tmp/setup_yarn.lock
-# (cd susemanager-frontend/susemanager-nodejs-sdk-devel; yarn run remove-packages-before-obs-zip)
 (cd susemanager-frontend/susemanager-nodejs-sdk-devel; yarn zip)
-# (cd susemanager-frontend/susemanager-nodejs-sdk-devel; yarn run restore-packages-after-obs-zip)
 echo "susemanager-nodejs-modules.tar.gz"
