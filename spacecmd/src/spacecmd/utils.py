@@ -626,12 +626,13 @@ def parse_list_str(list_s, sep=","):
     simple parser for a list of items separated with "," (comma) or given
     separator chars.
 
-    >>> assert parse_list_str("") == []
+    >>> assert parse_list_str("") == [""]
     >>> assert parse_list_str("a,b") == ["a", "b"]
-    >>> assert parse_list_str("a,b,") == ["a", "b"]
-    >>> assert parse_list_str("a:b:", ":") == ["a", "b"]
+    >>> assert parse_list_str("a,b,") == ["a", "b", ""]
+    >>> assert parse_list_str("a,,b,c") == ["a", "", "b", "c"]
+    >>> assert parse_list_str("a:b:", ":") == ["a", "b", ""]
     """
-    return [p for p in list_s.split(sep) if p]
+    return [p for p in list_s.split(sep)]
 
 
 def parse_api_args(args, sep=','):

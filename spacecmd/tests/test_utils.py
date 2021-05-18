@@ -501,10 +501,11 @@ class TestSCUtils:
         :return:
         """
 
-        assert spacecmd.utils.parse_list_str("") == []
+        assert spacecmd.utils.parse_list_str("") == [""]
         assert spacecmd.utils.parse_list_str("a,b") == ["a", "b"]
-        assert spacecmd.utils.parse_list_str("a,b,") == ["a", "b"]
-        assert spacecmd.utils.parse_list_str("a:b:", ":") == ["a", "b"]
+        assert spacecmd.utils.parse_list_str("a,b,") == ["a", "b", ""]
+        assert spacecmd.utils.parse_list_str("a,,b,c") == ["a", "", "b", "c"]
+        assert spacecmd.utils.parse_list_str("a:b:", ":") == ["a", "b", ""]
 
     def test_parse_api_args(self):
         """

@@ -1,3 +1,5 @@
+- Parse empty argument when nothing in between the separator
+
 -------------------------------------------------------------------
 Wed May 05 16:31:43 CEST 2021 - jgonzalez@suse.com
 
