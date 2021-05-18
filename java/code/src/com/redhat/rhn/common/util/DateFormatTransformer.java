@@ -45,11 +45,12 @@ public class DateFormatTransformer implements Transform<Date> {
     }
 
     /**
-     * Parses a datetime from XML format (e.g. 2017-02-22T10:23).
-     * @return a transformer for parsing YYYY-MM-dd'T'HH:mm
+     * Parses a datetime from XML format (e.g. 2017-02-22T10:23:55).
+     * See https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/SimpleDateFormat.html
+     * @return a transformer for parsing yyyy-MM-dd'T'HH:mm:ss
      */
     public static DateFormatTransformer createXmlDateTransformer() {
-        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         return new DateFormatTransformer(dateFormat);
     }
 }
