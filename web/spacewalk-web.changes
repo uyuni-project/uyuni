@@ -1,3 +1,4 @@
+- Refresh JWT virtual console token before it expires
 - Handle virtual machines running on pacemaker cluster
 
 -------------------------------------------------------------------
