@@ -32,10 +32,8 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
-import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
@@ -442,18 +440,20 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
         repositories.addAll(addRepos);
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url, String user, String password) {
+                // allow all none SCC URLs
+                return true;
+            }
+        };
         Credentials credentials = null;
         if (fromdir) {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
             csm = new ContentSyncManager() {
                 @Override
-                protected boolean accessibleUrl(String url) {
-                    return true;
-                }
-
-                @Override
                 protected boolean accessibleUrl(String url, String user, String password) {
+                    // allow all none SCC URLs
                     return true;
                 }
             };
@@ -473,12 +473,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
             csm.refreshRepositoriesAuthentication(repositories, credentials, null);
-
-            // set noauth for rhel-x86_64-server-7
-            SCCRepositoryNoAuth newAuth = new SCCRepositoryNoAuth();
-            newAuth.setCredentials(credentials);
-            newAuth.setRepo(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
-            SCCCachingFactory.saveRepositoryAuth(newAuth);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh();
     }
