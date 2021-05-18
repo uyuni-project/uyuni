@@ -22,10 +22,10 @@ export function VirtualizationNetworkDevsApi(props: Props) {
         }
       }, (xhr) => {
         const errMessages = xhr.status === 0
-          ? [Messages.Utils.error(
+          ? Messages.Utils.error(
             t('Could not get network devices from the server. Please try again.'),
-          )]
-          : [Messages.Utils.error(Network.errorMessageByStatus(xhr.status))];
+          )
+          : Messages.Utils.error(Network.errorMessageByStatus(xhr.status));
         setMessages(errMessages);
       });
     return () => {subscribded = false};
