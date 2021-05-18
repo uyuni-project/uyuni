@@ -50,12 +50,13 @@ end
 # We get these data decoding the values in '/etc/os-release'
 # rubocop:disable Metrics/AbcSize
 def get_os_version(node)
-  os_family_raw, code = node.run('grep "^ID=" /etc/os-release')
-  raise "No os-release found in the node: #{node.hostname}" unless code.zero?
+  os_family_raw, code = node.run('grep "^ID=" /etc/os-release', false)
+  return nil, nil unless code.zero?
   os_family = os_family_raw.strip.split('=')[1]
   return nil, nil if os_family.nil?
   os_family.delete! '"'
-  os_version_raw = node.run('grep "^VERSION_ID=" /etc/os-release')
+  os_version_raw, code = node.run('grep "^VERSION_ID=" /etc/os-release', false)
+  return nil, nil unless code.zero?
   os_version = os_version_raw.strip.split('=')[1]
   return nil, nil if os_version.nil?
   os_version.delete! '"'
@@ -64,6 +65,7 @@ def get_os_version(node)
   puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
+
 # rubocop:enable Metrics/AbcSize
 
 def get_gpg_keys(node, target = $server)
