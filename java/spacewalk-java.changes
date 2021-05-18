@@ -1,3 +1,5 @@
+- Fix start/end timestamps for xccdf scan details (bsc#1186016)
+- Fix report links for SCAP Scans (bsc#1186017)
 - Fix the documentation for the parseReleaseFile method
 - Add group by clause to reduce the number of rows for groupAdvisoryTypes CTE to improve performance(bsc#1185015)
 - Drop stale libs for old not supported browsers
