@@ -300,9 +300,11 @@ class DpkgRepo:
         release_file = None
         if os.access(self._get_parent_url(local_path, 2, "InRelease"), os.R_OK):
             release_file = self._get_parent_url(local_path, 2, "InRelease")
+            local_path = self._get_parent_url(local_path, 2)
             self._flat = False
         elif os.access(self._get_parent_url(local_path, 2, "Release"), os.R_OK):
             release_file = self._get_parent_url(local_path, 2, "Release")
+            local_path = self._get_parent_url(local_path, 2)
             self._flat = False
         else:
             self._flat = True

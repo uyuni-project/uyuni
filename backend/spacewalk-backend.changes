@@ -1,3 +1,5 @@
+- Fix for GPG checking on synchonizing mirrored dpkg repo (bsc#1184351)
+
 -------------------------------------------------------------------
 Wed May 05 16:32:29 CEST 2021 - jgonzalez@suse.com
 
