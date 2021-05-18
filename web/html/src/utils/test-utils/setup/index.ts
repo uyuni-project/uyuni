@@ -1,10 +1,11 @@
 import "manager/polyfills";
 import jQuery from "jquery";
+import t from "./t";
 
 // Allows us to mock and test the existing network layer easily
 global.jQuery = jQuery;
 
-global.t = string => string;
+global.t = t;
 
 global.Loggerhead = {
   error: string => {
