@@ -32,11 +32,20 @@ type State = {
   hostId: string,
 };
 
+function getTokenLifetime(token: String): Date {
+  const jwsParts = token.split('.');
+  const claims = JSON.parse(atob(jwsParts[1]));
+  return new Date(claims["exp"] * 1000) - new Date(claims["iat"] * 1000);
+}
+
 class GuestsConsole extends React.Component<Props, State> {
   client: ConsoleClientType;
   popupSubmit: Function;
   websocket: WebSocket;
   pageUnloading: boolean;
+  intervalId: ?number;
+  // This is intentionally not in state since we don't want this alone to trigger a rerender
+  isRefreshing = false;
 
   clients = {
     vnc: VncClient,
@@ -66,12 +75,19 @@ class GuestsConsole extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.connect();
+    // Schedule token refresh two minutes before its expiration
+    const tokenTime = getTokenLifetime(this.state.currentToken);
+    this.intervalId = window.setInterval(this.refreshToken, tokenTime - 120000);
 
-    window.onbeforeunload = () => {
-      this.pageUnloading = true;
-      this.client?.removeErrorHandler();
-    };
+    this.connect();
+  }
+
+  componentWillUnmount() {
+    this.pageUnloading = true;
+    this.client?.removeErrorHandler();
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
   }
 
   openVirtSocket = () => {
@@ -169,10 +185,16 @@ class GuestsConsole extends React.Component<Props, State> {
   }
 
   refreshToken = () => {
+    if (this.isRefreshing) {
+      return;
+    }
+    this.isRefreshing = true;
     Network.post(`/rhn/manager/api/systems/details/virtualization/guests/consoleToken/${this.props.guestUuid}`,
                  this.state.currentToken, "application/json").promise.then(
       response => {
+        this.isRefreshing = false;
         this.popupSubmit = undefined;
+
         this.setState({
           connected: false,
           currentToken: response,
@@ -180,6 +202,7 @@ class GuestsConsole extends React.Component<Props, State> {
         }, this.connect);
       },
       xhr => {
+        this.isRefreshing = false;
         if (xhr.status === 400) {
           // We have hit a time where the VM is not yet in the DB, retry
           this.refreshToken();
