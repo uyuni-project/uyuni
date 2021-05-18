@@ -1,11 +1,14 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+# This feature depends on:
+# - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
+# - sumaform : As it is configuring monitoring to be enabled after deployment
 
 @centos_minion
 @scope_monitoring
 @scope_res
-Feature: Monitor SUMA environment with Prometheus on a CentOS minion
-  In order to monitore SUSE Manager server
+Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
+  In order to monitor SUSE Manager server
   As an authorized user
   I want to enable Prometheus exporters
 
@@ -52,7 +55,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS minion
     Then I should see a "Formula saved" text
 
   Scenario: Cleanup: apply highstate after test monitoring on the CentOS minion
-    And I follow "States" in the content area
+    When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
