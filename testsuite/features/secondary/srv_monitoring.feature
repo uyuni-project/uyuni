@@ -1,8 +1,13 @@
 # Copyright (c) 2019-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
+# This feature is a dependency for:
+# - features/secondary/min_monitoring.feature : If this feature fails could let monitoring feature disabled for SLE minion
+# - features/secondary/min_centos_monitoring.feature : If this feature fails could let monitoring feature disabled for CentOS minion
+# This feature depends on:
+# - sumaform : As it is configuring monitoring to be enabled after deployment
 
 @scope_monitoring
-Feature: Enable and disable monitoring of the server
+Feature: Disable and re-enable monitoring of the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
