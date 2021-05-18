@@ -434,7 +434,7 @@ export function NetworkProperties(props: Props) {
                         value => Object.values(value).every(item =>
                           typeof item === "string" && (item === "" || item.match(/^[0-9]+$/))),
                         ({nat_port_start, nat_port_end}) => (nat_port_start === "" && nat_port_end === "") ||
-                          parseInt(nat_port_start) <= parseInt(nat_port_end),
+                          parseInt(nat_port_start, 10) <= parseInt(nat_port_end, 10),
                       ]}
                       invalidHint={t('Both values has to be positive integers')}
                     />
