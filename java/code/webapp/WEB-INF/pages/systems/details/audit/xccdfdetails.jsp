@@ -115,7 +115,8 @@
               <c:param name="name" value="${file.filename}" />
           </c:url>
           <a href="${fileUrl}"
-             target="${file.HTML ? '_blank' : '_self'}"><c:out value="${file.filename}"/></a> &nbsp;
+             target="${file.HTML ? '_blank' : '_self'}"
+             data-senna-off="true"><c:out value="${file.filename}"/></a> &nbsp;
         </c:forEach>
       </td>
     </tr>
