@@ -214,7 +214,7 @@ class TestCommonRepo:
                 assert repo.get_release_index() == "Plasma conduit overflow"
                 assert not repo.is_flat()
                 assert gpg_check.called
-                assert gpg_check.mock_calls[0][1][0] == "/mirror/ubuntu/dists/bionic/"
+                gpg_check.assert_called_with("/mirror/ubuntu/dists/bionic/")
 
     @patch("spacewalk.common.repo.requests.get", MagicMock(
         return_value=FakeRequests().conf(status_code=http.HTTPStatus.NO_CONTENT, content=b"", url="")))
