@@ -178,8 +178,8 @@ BASE_CHANNEL_BY_CLIENT = { 'proxy' => 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool',
                            'ceos8_ssh_minion' => 'RHEL8-Pool for x86_64',
                            'ubuntu1804_minion' => 'ubuntu-18.04-pool',
                            'ubuntu1804_ssh_minion' => 'ubuntu-18.04-pool',
-                           'ubuntu2004_minion' => 'ubuntu-20.04-pool',
-                           'ubuntu2004_ssh_minion' => 'ubuntu-20.04-pool',
+                           'ubuntu2004_minion' => 'ubuntu-2004-amd64-main',
+                           'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main',
                            'debian9_minion' => 'debian-9-pool',
                            'debian9_ssh_minion' => 'debian-9-pool',
                            'debian10_minion' => 'debian-10-pool',
@@ -196,7 +196,7 @@ LABEL_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-prod
                           'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                           'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
                           'ubuntu-18.04-pool' => 'ubuntu-18.04-pool-amd64',
-                          'ubuntu-20.04-pool' => 'ubuntu-20.04-pool-amd64',
+                          'ubuntu-2004-amd64-main' => 'ubuntu-2004-amd64-main-amd64',
                           'debian-9-pool' => 'debian-9-pool-amd64',
                           'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
 
@@ -212,7 +212,7 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' =>
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
-                                    'ubuntu-20.04-pool' => 'ubuntu-18.04-amd64',
+                                    'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
                                     'debian-9-pool-amd64' => 'debian-9-pool-amd64',
                                     'debian-10-pool-amd64' => 'debian-10-pool-amd64' }.freeze
 
@@ -228,7 +228,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-P
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                                            'RHEL8-Pool for x86_64' => nil,
                                            'ubuntu-18.04-pool' => nil,
-                                           'ubuntu-20.04-pool' => nil,
+                                           'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
                                            'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
 
