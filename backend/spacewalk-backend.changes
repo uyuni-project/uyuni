@@ -2,6 +2,12 @@
 - Fix for GPG checking on synchonizing mirrored dpkg repo (bsc#1184351)
 
 -------------------------------------------------------------------
+Wed May 12 13:55:17 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.24-1
+- switch to www group for satellite logs (bsc#1185097)
+
+-------------------------------------------------------------------
 Tue May 04 13:05:39 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.23-1
