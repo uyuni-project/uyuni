@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
@@ -525,15 +526,6 @@ public class HardwareMapper {
         }
     }
 
-    private boolean isVirtualGuest(String virtTypeLowerCase, String virtSubtype) {
-        if (StringUtils.isNotBlank(virtTypeLowerCase) &&
-                !"physical".equals(virtTypeLowerCase) &&
-                !("xen".equals(virtTypeLowerCase) && "Xen Dom0".equals(virtSubtype))) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Map PAYG information for the server to the database.
      */
@@ -561,7 +553,7 @@ public class HardwareMapper {
 
         VirtualInstanceType type = null;
 
-        if (isVirtualGuest(virtTypeLowerCase, virtSubtype)) {
+        if (VirtualizationEntitlement.isVirtualGuest(virtTypeLowerCase, virtSubtype)) {
             if (StringUtils.isNotBlank(virtUuid)) {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
