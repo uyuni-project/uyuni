@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 19 16:32:47 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.17-1
+- Add support of DISABLE_LOCAL_REPOS=0 for salt minions (bsc#1185568)
+- Add missing environment variable SALT_RUNNING for pkg module
+  to the minion configuration
+
+-------------------------------------------------------------------
 Tue May 04 13:28:41 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.16-1

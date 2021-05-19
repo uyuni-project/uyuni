@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 19 16:34:19 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.25-1
+- Do not install python2-salt on Salt 3002.2 Docker build hosts (bsc#1185506)
+- Add support for 'disable_local_repos' salt minion config parameter
+  (bsc#1185568)
+
+-------------------------------------------------------------------
 Tue May 04 13:55:56 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.24-1

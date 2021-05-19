@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed May 19 16:33:14 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- prevent stopping publishing messages on XPUB socket of salt-broker
+  (bsc#1182954)
+- using Loader=yaml.SafeLoader for yaml.load as using yaml.load
+  without Loader is deprecated as the default Loader is unsafe
+
+-------------------------------------------------------------------
 Mon Mar 01 13:21:13 CET 2021 - jgonzalez@suse.com
 
 - version 4.1.4-1
