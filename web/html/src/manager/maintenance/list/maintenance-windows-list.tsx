@@ -18,7 +18,7 @@ type MaintenanceListProps = {
 const MaintenanceWindowsList = (props: MaintenanceListProps) => {
   const [type] = useState(props.type);
 
-  const createButton = [
+  const buttons = [
     <div className="btn-group pull-right">
       <Button
         className="btn-default"
@@ -36,7 +36,7 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
       <InnerPanel
         title={t("Maintenance") + " " + (type === "schedule" ? t("Schedules") : t("Calendars"))}
         icon="spacewalk-icon-schedule"
-        buttons={createButton}
+        buttons={buttons}
       >
         <div className="panel panel-default">
           <div className="panel-heading">

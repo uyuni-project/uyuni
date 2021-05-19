@@ -92,12 +92,12 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
-  const buttons = (
+  const buttons = [
     <div className="btn-group pull-right">
       <Button icon="fa-angle-left" className="btn-default" text={t("Back")} title={t("Back to playbook list")} handler={onBack} />
       <AsyncButton defaultType="btn-success" action={schedule} title={t("Schedule playbook execution")} text={t("Schedule")} />
-    </div>
-  );
+    </div>,
+  ];
 
   return (
     <>
