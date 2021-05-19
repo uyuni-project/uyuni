@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 19 16:48:09 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.25-1
 - Fix binary blob corruptions in tradidional config file deployment (bsc#1183864)
 - Fix for GPG checking on synchonizing mirrored dpkg repo (bsc#1184351)
 
