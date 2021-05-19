@@ -516,15 +516,20 @@ class ConfigFilesHandler(rhnHandler):
 
 def format_file_results(row, server=None):
     encoding = ''
-    contents = None
-    contents = rhnSQL._fix_encoding(rhnSQL.read_lob(row['file_contents']) or '')
     checksum = row['checksum'] or ''
+    is_binary = row['is_binary'] == 'Y'
+    raw_contents = rhnSQL.read_lob(row['file_contents'])
+    if is_binary:
+        contents = raw_contents
+    else:
+        contents = rhnSQL._fix_encoding(raw_contents or '')
 
-    if server and (row['is_binary'] == 'N') and contents:
-
-        interpolator = ServerTemplatedDocument(server,
-                                               start_delim=row['delim_start'],
-                                               end_delim=row['delim_end'])
+    if server and not is_binary and contents:
+        interpolator = ServerTemplatedDocument(
+            server,
+            start_delim=row['delim_start'],
+            end_delim=row['delim_end']
+        )
         contents = interpolator.interpolate(contents)
         if row['checksum_type']:
             checksummer = hashlib.new(row['checksum_type'])
@@ -535,7 +540,11 @@ def format_file_results(row, server=None):
         client_caps = rhnCapability.get_client_capabilities()
         if client_caps and 'configfiles.base64_enc' in client_caps:
             encoding = 'base64'
-            contents = base64.encodestring(contents.encode()).decode()
+            if is_binary:
+                contents = contents
+            else:
+                contents = contents.encode()
+            contents = base64.encodestring(contents).decode()
     if row.get('modified', False):
         m_date = xmlrpclib.DateTime(str(row['modified']))
     else:
