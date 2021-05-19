@@ -19,6 +19,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * VirtualizationEntitlement
@@ -63,7 +65,22 @@ public class VirtualizationEntitlement extends Entitlement {
      * {@inheritDoc}
      */
     public boolean isAllowedOnServer(Server server, ValueMap grains) {
-        return super.isAllowedOnServer(server) &&
-                grains.getOptionalAsString("virtual").orElse("physical").equals("physical");
+        String type = grains.getOptionalAsString("virtual").orElse("physical");
+        String subtype = grains.getOptionalAsString("virtual_subtype").orElse("");
+        return super.isAllowedOnServer(server) && !isVirtualGuest(type, subtype);
+    }
+
+    /**
+     * Returns whether a system is a virtual guest or not according to its virtual and virtual_subtype grains.
+     *
+     * @param virtTypeLowerCase the virtual grain value
+     * @param virtSubtype the virtual_subtype grain value
+     *
+     * @return if the system is virtual
+     */
+    public static boolean isVirtualGuest(String virtTypeLowerCase, String virtSubtype) {
+        return StringUtils.isNotBlank(virtTypeLowerCase) &&
+                !"physical".equals(virtTypeLowerCase) &&
+                !("xen".equals(virtTypeLowerCase) && "Xen Dom0".equals(virtSubtype));
     }
 }
