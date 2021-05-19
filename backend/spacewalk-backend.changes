@@ -1,3 +1,6 @@
+- Fix binary blob corruptions in tradidional config file deployment (bsc#1183864)
+- Fix for GPG checking on synchonizing mirrored dpkg repo (bsc#1184351)
+
 -------------------------------------------------------------------
 Tue May 04 13:05:39 CEST 2021 - jgonzalez@suse.com
 

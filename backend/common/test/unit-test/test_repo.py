@@ -200,6 +200,22 @@ class TestCommonRepo:
             assert not repo.is_flat()
             assert not gpg_check.called
 
+    @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
+    @patch('builtins.open', MagicMock())
+    def test_get_release_index_mirrored_gpg_check(self):
+        """
+        Get release index file contents from mirrored repo with GPG verification.
+
+        :return:
+        """
+        repo = DpkgRepo("file:///mirror/ubuntu/dists/bionic/main/binary-amd64/", gpg_verify=True)
+        with patch("os.access", MagicMock(return_value=True)) as os_access:
+            with patch("spacewalk.common.repo.DpkgRepo._has_valid_gpg_signature", MagicMock()) as gpg_check:
+                assert repo.get_release_index() == "Plasma conduit overflow"
+                assert not repo.is_flat()
+                assert gpg_check.called
+                gpg_check.assert_called_with("/mirror/ubuntu/dists/bionic/")
+
     @patch("spacewalk.common.repo.requests.get", MagicMock(
         return_value=FakeRequests().conf(status_code=http.HTTPStatus.NO_CONTENT, content=b"", url="")))
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
