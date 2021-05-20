@@ -155,6 +155,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
@@ -628,6 +629,7 @@ public class SaltServerActionService {
                                                 Object::toString,
                                                 Object::toString,
                                                 Object::toString,
+                                                Object::toString,
                                                 Object::toString
                                         ));
                                         return Optional.empty();
@@ -678,6 +680,10 @@ public class SaltServerActionService {
                             e ->  {
                                 LOG.error(e);
                                 return "Salt error: " + e.getMessage();
+                            },
+                            e -> {
+                                LOG.error(e);
+                                return "Salt SSH error: " + e.getRetcode() + " " + e.getMessage();
                             }
                     )).orElse("Unknonw error");
                     // no result, fail the entire chain
@@ -2537,7 +2543,7 @@ public class SaltServerActionService {
                     Arrays.asList(new MinionSummary(minion)));
 
             for (LocalCall<?> call : calls.keySet()) {
-                Optional<JsonElement> result;
+                Optional<Result<JsonElement>> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
@@ -2564,23 +2570,35 @@ public class SaltServerActionService {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Salt call result: " + r);
                     }
-                    String function = (String) call.getPayload().get("fun");
 
-                    // reboot needs special handling in case of ssh push
-                    if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        sa.setPickupTime(new Date());
-                    }
-                    else {
-                        saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                                r, function);
-                    }
+                    r.consume(error -> {
+                        sa.setStatus(STATUS_FAILED);
+                        sa.setResultMsg(error.fold(
+                                e -> "function " + e.getFunctionName() + " not available.",
+                                e -> "module " + e.getModuleName() + " not supported.",
+                                e -> "error parsing json.",
+                                GenericError::getMessage,
+                                e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+                        ));
+                        sa.setCompletionTime(new Date());
+                    }, jsonResult -> {
+                        String function = (String) call.getPayload().get("fun");
 
-                    // Perform a "check-in" after every executed action
-                    minion.updateServerInfo();
+                        // reboot needs special handling in case of ssh push
+                        if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            sa.setPickupTime(new Date());
+                        }
+                        else {
+                            saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                                    jsonResult, function);
+                        }
+
+                        // Perform a "check-in" after every executed action
+                        minion.updateServerInfo();
 
                     // Perform a package profile update in the end if necessary
-                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, result)) {
+                    if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(function, Optional.of(jsonResult))) {
                         LOG.info("Scheduling a package profile update");
                         Action pkgList;
                         try {
@@ -2593,7 +2611,8 @@ public class SaltServerActionService {
                             LOG.error(e);
                         }
                     }
-                });
+                 });
+              });
             }
         }
         return;
