@@ -41,7 +41,7 @@ class RecurringStatesList extends React.Component {
     }
 
     render() {
-        const createButton = [
+        const buttons = [
             <div className="btn-group pull-right">
                 <Button
                     className="btn-default"
@@ -55,7 +55,7 @@ class RecurringStatesList extends React.Component {
 
         return (
             <div>
-                <InnerPanel title={t("Recurring States")} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? null : createButton}>
+                <InnerPanel title={t("Recurring States")} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? [] : buttons}>
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <div>
