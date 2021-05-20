@@ -1,3 +1,5 @@
+- Fix deleting stopped virtual network (bsc#1186281)
+
 -------------------------------------------------------------------
 Wed May 19 16:34:19 CEST 2021 - jgonzalez@suse.com
 
