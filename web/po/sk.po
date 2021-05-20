@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-09 15:57+0000\n"
+"PO-Revision-Date: 2021-05-20 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -65,7 +65,7 @@ msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
-msgstr "nový akčný reťazec"
+msgstr "nový reťazec akcií"
 
 #: ../html/src/components/action-schedule.tsx:188
 msgid ""
@@ -163,9 +163,8 @@ msgid "Save Changes"
 msgstr "Uložiť zmeny"
 
 #: ../html/src/components/config-channels.tsx:318
-#, fuzzy
 msgid "Execute States"
-msgstr "Opakujúce sa stavy"
+msgstr "Stavy vykonania"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
@@ -2117,11 +2116,11 @@ msgstr "Pravidlo"
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
+"Niektoré z vybraných filtrov sa používajú v projektoch a nemožno ich vymazať."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "Vybrať"
+msgstr "Vybrať nepoužité"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2135,9 +2134,8 @@ msgid "Content Lifecycle Filters"
 msgstr "Filtre životného cyklu obsahu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "Filtrovať podľa názvu"
+msgstr "Filtrovať podľa názvu alebo projektu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
@@ -2608,11 +2606,8 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid "Formula saved. Edit configuration options "
-msgstr ""
-"Vzorec bol uložený. Upraviť možnosti konfigurácie v povolených vzorcoch a "
-"použiť "
+msgstr "Vzorec bol uložený. Upraviť možnosti konfigurácie "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -3624,94 +3619,90 @@ msgstr "Nenašiel sa žiadny scenár."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr ""
+msgstr "Inventárny súbor je prázdny."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
-#, fuzzy
 msgid "Loading content.."
-msgstr "Načítava sa..."
+msgstr "Načítava sa obsah.."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
-#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "Chyba pri plánovaní úlohy v Taskomatic. Prosím, skontrolujte záznamy."
+msgstr ""
+"Pri načítavaní dát sa vyskytla chyba. Prosím, skontrolujte záznamy servera."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
 msgstr ""
+"Konfigurácia riadiaceho uzla Ansible: pridať cesty pre zisťovanie scenárov a "
+"sebapozorovanie inventárnych súborov."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
-msgstr ""
+msgstr "Adresáre scenárov"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
-msgstr ""
+msgstr "Pridať adresár scenára"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
-msgstr ""
+msgstr "napr. /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
 msgid "Inventory Files"
-msgstr ""
+msgstr "Inventárne súbory"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "Add an Inventory file"
-msgstr ""
+msgstr "Pridať inventárny súbor"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
+msgstr "napr. /etc/ansible/testing/hosts"
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
 msgid "Loading.."
-msgstr "Načítava sa..."
+msgstr "Načítava sa.."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "Nič nakonfigurované. Pridajte, prosím, cesty v "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
-#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "Načítavajú sa globálne filtre..."
+msgstr "Načítavajú obsahy scenárov.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
-#, fuzzy
 msgid "Back to playbook list"
-msgstr "Späť na zoznam"
+msgstr "Späť na zoznam scenárov"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "Naplánovať kontrolu"
+msgstr "Naplánovať vykonanie scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "Scenár '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "Naplánovať vykonanie scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr ""
+msgstr "Inventárna cesta"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "Obsah scenára"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "Akcia bola úspešne pridaná do Reťazca akcií"
+msgstr "Akcia bola úspešne pridaná do reťazca akcií"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
 msgid "Playbook execution has been"
@@ -3728,12 +3719,11 @@ msgstr "Konfigurácia"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "Pred použitím si uložte všetky svoje zmeny!"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "Použiť Highstate"
+msgstr "Použiť zmeny"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3745,9 +3735,8 @@ msgid "1 Change"
 msgstr "1 zmena"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
 msgid "Search package"
-msgstr "Hľadať"
+msgstr "Hľadať balík"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
@@ -4288,6 +4277,8 @@ msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
 msgstr ""
+"poskytnutý kanál, ktorý zodpovedá nainštalovanej verzii SUSE Linux. Namiesto "
+"predvoleného, "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
@@ -4298,6 +4289,8 @@ msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
 msgstr ""
+"Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude "
+"prihlásený k vybraným kanálom potomkov."
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4389,6 +4382,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
+"Používateľ bude mať účinok iba počas zavádzacieho procesu. Ďalšie pripojenia "
+"uskutoční používateľ uvedený v rhn.conf. Predvolený používateľ pre kľúč "
+"'ssh_push_sudo_user' je 'root'. Tento používateľ je nastavený po nasadení "
+"kľúča SSH {0} počas zavádzacej procedúry."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4417,9 +4414,8 @@ msgstr "V odpovedi aplikácie stavu sa nenašiel žiadny výsledok."
 
 #: ../html/src/manager/systems/delete-system.tsx:72
 #: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
 msgid "Delete Profile Without Cleanup"
-msgstr "Vymazať profil"
+msgstr "Vymazať profil bez vyčistenia"
 
 #: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
@@ -4812,11 +4808,11 @@ msgstr "Grafika"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "Odpojené"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "Nepodarilo sa pripojiť"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4824,7 +4820,7 @@ msgstr "Prepnúť plnú veľkosť"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "Hosť nie je spustený"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
