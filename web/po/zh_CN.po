@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 19:45+0000\n"
+"POT-Creation-Date: 2021-05-04 13:34+0000\n"
 "PO-Revision-Date: 2021-02-08 09:56+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -3563,25 +3563,15 @@ msgid ""
 "systems in the set."
 msgstr "指派一个日程安排会替换集内所有系统中以前的任何指派。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
-msgid "Registered Systems"
-msgstr "未注册的系统"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
-msgid "Unknown Hostnames"
-msgstr "节点主机名"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
 #, fuzzy
 msgid "Loading content.."
 msgstr "正在装载..."
