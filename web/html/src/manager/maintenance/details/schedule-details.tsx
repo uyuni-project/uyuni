@@ -23,9 +23,9 @@ import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 type MaintenanceScheduleDetailsProps = {
   id: number;
-  name: string;
+  name: string; // Name of the maintenance schedule
   type: "SINGLE" | "MULTI";
-  calendarName: string;
+  calendarName: string | undefined;
   onDelete: (item: { name: string }) => Promise<any>;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
@@ -79,8 +79,8 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 
 type OverviewProps = {
   id: number,
-  name: string;
-  calendarName: string;
+  name: string; // Name of the maintenance schedule
+  calendarName: string | undefined;
   type: "SINGLE" | "MULTI";
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
@@ -102,22 +102,24 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
           <Column columnKey="right" cell={row => row.right} />
         </Table>
       </BootstrapPanel>
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <h4>
-            {props.name}
-          </h4>
+      { props.calendarName &&
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h4>
+              {props.name}
+            </h4>
+          </div>
+          <div className="panel-body">
+            <WebCalendar
+              id={props.id}
+              type={"schedule"}
+              messages={props.onMessage}
+              clearMessages={props.clearMessages}
+              responseError={props.responseError}
+            />
+          </div>
         </div>
-        <div className="panel-body">
-          <WebCalendar
-            id={props.id}
-            type={"schedule"}
-            messages={props.onMessage}
-            clearMessages={props.clearMessages}
-            responseError={props.responseError}
-          />
-        </div>
-      </div>
+      }
     </div>
   );
 };
