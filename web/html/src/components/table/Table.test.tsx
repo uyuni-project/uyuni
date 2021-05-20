@@ -4,13 +4,7 @@
  */
 
 import * as React from "react";
-import {
-  render,
-  waitForElementToBeRemoved,
-  screen,
-  server,
-  type,
-} from "utils/test-utils";
+import { render, waitForElementToBeRemoved, screen, server, type, RenderOptions } from "utils/test-utils";
 
 import { Table } from "./Table";
 import { Column } from "./Column";
@@ -23,21 +17,19 @@ describe("Table component", () => {
     data: [],
     identifier: item => item.value,
     // Only used to await loading states here in tests
-    loadingText: "LOADING_TEXT"
+    loadingText: "LOADING_TEXT",
   };
 
   /** Render and wait for the first load to be done */
-  async function renderAndLoad(...args) {
-    const result = render(...args);
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText(baseProps.loadingText)
-    );
+  async function renderAndLoad(ui: React.ReactElement, options?: Omit<RenderOptions, "queries">) {
+    const result = render(ui, options);
+    await waitForElementToBeRemoved(() => screen.queryByText(baseProps.loadingText));
     return result;
   }
 
   test("renders with minimal props", async done => {
     expect(async () => {
-      await renderAndLoad(<Table {...baseProps} />);
+      await renderAndLoad(<Table {...baseProps}>{null}</Table>);
       done();
     }).not.toThrow();
   });
@@ -45,14 +37,14 @@ describe("Table component", () => {
   test("renders static data", async () => {
     const data = [
       {
-        value: "Value 0"
+        value: "Value 0",
       },
       {
-        value: "Value 1"
+        value: "Value 1",
       },
       {
-        value: "Value 2"
-      }
+        value: "Value 2",
+      },
     ];
 
     await renderAndLoad(
@@ -69,18 +61,18 @@ describe("Table component", () => {
   test("renders async data", async () => {
     const data = [
       {
-        value: "Value 0"
+        value: "Value 0",
       },
       {
-        value: "Value 1"
+        value: "Value 1",
       },
       {
-        value: "Value 2"
-      }
+        value: "Value 2",
+      },
     ];
     server.mockGetJson("/getData", {
       items: data,
-      total: data.length
+      total: data.length,
     });
 
     await renderAndLoad(
@@ -100,44 +92,36 @@ describe("Table component", () => {
 
     server.mockGetJson("/getData", {
       items: [{ value: "Value" }],
-      total: totalItems
+      total: totalItems,
     });
 
     await renderAndLoad(
-      <Table
-        {...baseProps}
-        data={"/getData"}
-        initialItemsPerPage={itemsPerPage}
-      >
+      <Table {...baseProps} data={"/getData"} initialItemsPerPage={itemsPerPage}>
         <Column columnKey="value" cell={item => item.value} />
       </Table>
     );
 
     expect(
       screen.queryByText(`${totalItems}`, {
-        selector: "option"
+        selector: "option",
       })
     ).not.toBe(null);
   });
 
   test("loading indicator for tables using SimpleDataProvider", async () => {
-    const data = [{value: "Value 0"}];
+    const data = [{ value: "Value 0" }];
 
-    const { rerender } = render(
-      <Table {...baseProps} loading={true} />
-    );
+    const { rerender } = render(<Table {...baseProps} loading={true}>{null}</Table>);
 
     // Check if loading indicator appears
     expect(screen.queryByText(baseProps.loadingText)).not.toBe(null);
 
     rerender(
-      <Table {...baseProps} data={data} loading={false} >
+      <Table {...baseProps} data={data} loading={false}>
         <Column columnKey="value" cell={item => item.value} />
       </Table>
     );
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText(baseProps.loadingText)
-    );
+    await waitForElementToBeRemoved(() => screen.queryByText(baseProps.loadingText));
 
     // Check if loading indicator disappears and data is displayed
     expect(screen.queryByText(baseProps.loadingText)).toBe(null);
@@ -147,21 +131,21 @@ describe("Table component", () => {
   test("is filtered by a basic SearchField", async () => {
     const data = [
       {
-        value: "Value 0"
+        value: "Value 0",
       },
       {
-        value: "Value 1"
+        value: "Value 1",
       },
       {
-        value: "Value 2"
-      }
+        value: "Value 2",
+      },
     ];
     const filter = (datum, criteria) => {
       if (criteria) {
         return datum.value.indexOf(criteria) !== -1;
       }
       return true;
-    }
+    };
     await renderAndLoad(
       <Table {...baseProps} data={data} searchField={<SearchField filter={filter} />}>
         <Column columnKey="value" cell={item => item.value} />
