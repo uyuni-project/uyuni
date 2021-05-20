@@ -10725,10 +10725,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
-        <source>{0} filter(s) from template created successfully</source>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>
