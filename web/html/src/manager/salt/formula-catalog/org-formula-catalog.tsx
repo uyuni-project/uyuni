@@ -45,7 +45,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (row: string, criteria?: string) => {
+  searchData = (row: string = "", criteria?: string) => {
     return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 
