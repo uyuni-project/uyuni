@@ -13,12 +13,6 @@ Feature: Setup SUSE Manager proxy
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
 
-  Scenario: Install proxy software
-    # uncomment when product is out:
-    # When I install "SUSE-Manager-Proxy" product on the proxy
-    And I install proxy pattern on the proxy
-    And I let squid use avahi on the proxy
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
@@ -34,12 +28,15 @@ Feature: Setup SUSE Manager proxy
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "proxy"
 
-  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel for proxy is working
-    When I refresh the metadata for "proxy"
-
   Scenario: Detect latest Salt changes on the proxy
     When I query latest Salt changes on "proxy"
+
+  Scenario: Install proxy software
+    When I refresh the metadata for "proxy"
+    # uncomment when product is out:
+    # When I install "SUSE-Manager-Proxy" product on the proxy
+    And I install proxy pattern on the proxy
+    And I let squid use avahi on the proxy
 
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
