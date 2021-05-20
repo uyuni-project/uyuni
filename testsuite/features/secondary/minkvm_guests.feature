@@ -379,8 +379,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I click on "Graphical Console" in row "test-vm2"
     And I switch to last opened window
     And I wait until I see the VNC graphical console
-    Then I wait at most 500 seconds until I see modal containing "Disconnected" text
-    And I wait at most 500 seconds until Salt master sees "test-vm2" as "unaccepted"
+    And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
     When I close the last opened window
 
 @long_test

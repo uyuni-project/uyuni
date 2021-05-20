@@ -781,6 +781,14 @@ When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   # node.run('salt-call state.apply channels.disablelocalrepos') does not work
 end
 
+When(/^I (enable|disable) Ubuntu "([^"]*)" repository on "([^"]*)"$/) do |action, repo, host|
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  raise "#{node.hostname} is not a Ubuntu host." unless os_family =~ /^ubuntu/
+
+  node.run("sudo add-apt-repository -y -u #{action == 'disable' ? '--remove' : ''} #{repo}")
+end
+
 When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
@@ -1146,7 +1154,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           "--network network=test-net0 --graphics vnc "\
+           "--network network=test-net0 --graphics vnc,listen=0.0.0.0 "\
            "--serial file,path=/tmp/#{vm_name}.console.log "\
            "--import --hvm --noautoconsole --noreboot")
 end

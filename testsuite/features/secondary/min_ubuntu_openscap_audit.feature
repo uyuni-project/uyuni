@@ -12,24 +12,23 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-@ubuntu_minion
-  Scenario: Install the client tools packages on the Ubuntu minion
-    When I enable client tools repositories on "ubuntu_minion"
+  Scenario: Enable all the necessary repositories for OpenSCAP on Ubuntu minion
+    When I enable Ubuntu "universe" repository on "ubuntu_minion"
+    And I enable client tools repositories on "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Install the OpenSCAP packages on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I refresh the metadata for "ubuntu_minion"
     And I install OpenSCAP dependencies on "ubuntu_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until event "Package List Refresh" is completed
 
   Scenario: Schedule an OpenSCAP audit job on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
+    And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
     And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu2004-xccdf.xml" as "path"
     And I click on "Schedule"
@@ -76,6 +75,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
 
-@ubuntu_minion
-  Scenario: Cleanup: remove the client tools packages on the Ubuntu minion
+  Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Ubuntu minion
     When I disable client tools repositories on "ubuntu_minion"
+    And I disable Ubuntu "universe" repository on "ubuntu_minion"

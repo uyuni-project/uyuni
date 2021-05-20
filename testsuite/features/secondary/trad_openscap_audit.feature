@@ -21,6 +21,7 @@ Feature: OpenSCAP audit of traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
+    And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile Default" as "params"
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
