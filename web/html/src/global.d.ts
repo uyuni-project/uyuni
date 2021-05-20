@@ -28,6 +28,7 @@ declare global {
         appInstance?: any;
       };
     };
+    spaImportReactPage: (pageName: string) => Promise<unknown>;
 
     userPrefPageSize?: number;
   }

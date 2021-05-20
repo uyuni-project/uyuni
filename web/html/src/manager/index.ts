@@ -1,16 +1,14 @@
-/* eslint-disable */
-
 /*
 How to add a new route:
 All the routes exported on the files '<*folder_name*>/index.js' will be automatically registered.
 Check the file content-management/index.js for an example
 */
 
-import './polyfills';
-import 'react-hot-loader';
+import "./polyfills";
+import "react-hot-loader";
 
 import SpaRenderer from "core/spa/spa-renderer";
-import 'core/spa/spa-engine';
+import "core/spa/spa-engine";
 
 import Admin from "./admin";
 import Audit from "./audit";
@@ -29,7 +27,7 @@ import Shared from "./shared";
 import Systems from "./systems";
 import Virtualization from "./virtualization";
 import Visualization from "./visualization";
-import Clusters from "./clusters"
+import Clusters from "./clusters";
 
 const pages = {
   ...Admin,
@@ -50,9 +48,9 @@ const pages = {
   ...Virtualization,
   ...Visualization,
   ...Clusters,
-}
+};
 
-window.spaImportReactPage =  function spaImportReactPage(pageName) {
+window.spaImportReactPage = function spaImportReactPage(pageName) {
   SpaRenderer.addReactApp(pageName);
   return pages[pageName]();
 };
