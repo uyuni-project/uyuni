@@ -37,7 +37,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     this.refreshServerData();
   }
 
-  sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
+  sortByText = (aRaw = "", bRaw = "", columnKey, sortDirection) => {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   };
 
