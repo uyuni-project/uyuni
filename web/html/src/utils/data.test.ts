@@ -13,7 +13,7 @@ describe("object getValue", () => {
   });
 
   test("default value", () => {
-    const obj = {};
+    const obj: any = {};
     expect(data.getValue(obj, "foo.bar.baz", "default")).toEqual("default");
   });
 
