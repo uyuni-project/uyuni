@@ -17,8 +17,6 @@ package com.suse.manager.maintenance;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import com.suse.manager.webui.utils.ViewHelper;
-
 import java.time.Instant;
 
 /**
@@ -44,9 +42,6 @@ public class MaintenanceWindowData {
     // maintenance window end date/time (milliseconds since epoch, used in struts pages)
     private long toMilliseconds;
 
-    // maintenance window start date/time (local date format, used in react pages)
-    private String fromLocalDate;
-
     /**
      * Standard constructor
      *
@@ -58,7 +53,6 @@ public class MaintenanceWindowData {
         this.to = LocalizationService.getInstance().formatDate(toIn);
         this.fromMilliseconds = fromIn.toEpochMilli();
         this.toMilliseconds = toIn.toEpochMilli();
-        this.fromLocalDate = ViewHelper.getInstance().renderDate(fromIn);
     }
 
     /**
@@ -74,7 +68,6 @@ public class MaintenanceWindowData {
         this.to = LocalizationService.getInstance().formatDate(toIn);
         this.fromMilliseconds = fromIn.toEpochMilli();
         this.toMilliseconds = toIn.toEpochMilli();
-        this.fromLocalDate = ViewHelper.getInstance().renderDate(fromIn);
     }
 
     /**
@@ -120,14 +113,5 @@ public class MaintenanceWindowData {
      */
     public long getToMilliseconds() {
         return toMilliseconds;
-    }
-
-    /**
-     * Gets the fromLocalDate.
-     *
-     * @return fromLocalDate
-     */
-    public String getFromLocalDate() {
-        return fromLocalDate;
     }
 }
