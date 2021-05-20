@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-05 01:58+0000\n"
-"PO-Revision-Date: 2021-02-08 09:56+0000\n"
-"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
+"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"PO-Revision-Date: 2021-05-14 10:57+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
 "Language: zh_CN\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -157,9 +157,8 @@ msgid "Save Changes"
 msgstr "保存更改"
 
 #: ../html/src/components/config-channels.tsx:318
-#, fuzzy
 msgid "Execute States"
-msgstr "重复性状态"
+msgstr "执行状态"
 
 #: ../html/src/components/config-channels.tsx:325
 msgid "Reorder"
@@ -211,7 +210,7 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/dialog/DangerDialog.tsx:50
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -228,7 +227,7 @@ msgstr "取消"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
@@ -282,7 +281,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -357,9 +356,9 @@ msgstr "名字"
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/InputBase.test.tsx:41
+#: ../html/src/components/input/InputBase.test.tsx:67
+#: ../html/src/components/input/InputBase.test.tsx:95
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
 #: ../html/src/components/input/form.stories.js:28
@@ -379,11 +378,6 @@ msgstr "登录"
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "去除"
-
-#: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
-msgid "required"
-msgstr "需要重引导"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -439,7 +433,7 @@ msgid "Flavor"
 msgstr "风格"
 
 #: ../html/src/components/input/Select.stories.js:64
-#: ../html/src/components/input/Select.test.tsx:57
+#: ../html/src/components/input/Select.test.tsx:71
 msgid "Start typing..."
 msgstr "开始键入..."
 
@@ -447,8 +441,7 @@ msgstr "开始键入..."
 msgid "No flavors"
 msgstr "无风格"
 
-#: ../html/src/components/input/Select.test.tsx:58
-#, fuzzy
+#: ../html/src/components/input/Select.test.tsx:72
 msgid "No flavor"
 msgstr "无风格"
 
@@ -462,7 +455,7 @@ msgstr "第一页"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
 msgid "Prev"
-msgstr "上一步"
+msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/setup/products/products.tsx:398
@@ -475,12 +468,11 @@ msgstr "上一步"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
 msgid "Next"
-msgstr "下一步"
+msgstr "下一页"
 
 #: ../html/src/components/pagination.tsx:33
-#, fuzzy
 msgid "Last"
-msgstr "姓氏"
+msgstr "最后一页"
 
 #: ../html/src/components/pagination.tsx:88
 msgid "Page"
@@ -571,7 +563,7 @@ msgid "Edit Configuration Channel"
 msgstr "编辑配置频道"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -692,30 +684,24 @@ msgstr "已成功禁用监视。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
+msgstr "Tomcat Prometheus 导出器已启动，但 JMX 配置已禁用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
+msgstr "Tomcat Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
-msgstr ""
-"Taskomatic 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以"
-"启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
+msgstr "Taskomatic Prometheus 导出器已启动，但 JMX 配置已禁用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
-#, fuzzy
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
-msgstr ""
-"Taskomatic 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以"
-"禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
+msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -764,9 +750,8 @@ msgid "Disabled"
 msgstr "已禁用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:147
-#, fuzzy
 msgid "Server Monitoring"
-msgstr "服务器自我监视"
+msgstr "服务器监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
 msgid "The server uses "
@@ -774,11 +759,11 @@ msgstr "服务器使用 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:151
 msgid "Prometheus"
-msgstr "普罗米修斯"
+msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:153
 msgid " exporters to expose metrics about your environment."
-msgstr ""
+msgstr " 导出器显示有关您的环境的度量。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:156
 msgid "Refer to the "
@@ -790,7 +775,7 @@ msgstr "文档"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:164
 msgid " to learn how to to consume these metrics."
-msgstr ""
+msgstr " 了解如何使用这些度量。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:242
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:262
@@ -850,7 +835,6 @@ msgid "Monitoring"
 msgstr "监视"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:393
-#, fuzzy
 msgid "Restarting"
 msgstr "重启动"
 
@@ -940,22 +924,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:362
-#, fuzzy
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"此列表中显示的产品已直接链接到您的                   组织身份凭证（镜像身份凭"
-"证）和 SUSE 订阅。"
+msgstr "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
-#, fuzzy
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr ""
-"如果您确信缺少了产品，请确认已在上一个向导步骤中                   添加了正确"
-"的组织身份凭证。"
+msgstr "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
@@ -979,7 +957,7 @@ msgstr "产品说明"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:625
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1352,9 +1330,8 @@ msgid "Messages"
 msgstr "消息"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:88
-#, fuzzy
 msgid "Pins"
-msgstr "关联 "
+msgstr "关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:90
 msgid ""
@@ -1388,7 +1365,6 @@ msgid "Part number"
 msgstr "部件号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:119
-#, fuzzy
 msgid "Subscription"
 msgstr "订阅"
 
@@ -1405,13 +1381,12 @@ msgid "End date"
 msgstr "结束日期"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:159
-#, fuzzy
 msgid "Delete Pin"
-msgstr "删除配置文件"
+msgstr "删除关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:167
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
+msgstr "未定义关联。您可以使用下面的按钮创建一个。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:172
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:173
@@ -1424,9 +1399,8 @@ msgid "pending next run"
 msgstr "等待下一次运行"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:203
-#, fuzzy
 msgid "satisfied"
-msgstr "不符合"
+msgstr "符合"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:210
 msgid "not satisfied"
@@ -1538,26 +1512,23 @@ msgstr "不匹配的系统"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 msgid "Download CSV"
-msgstr ""
+msgstr "下载 CSV"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:37
 msgid "Physical deployment only"
-msgstr ""
+msgstr "仅物理部署"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:40
-#, fuzzy
 msgid "Unlimited Virtual Machines"
-msgstr "创建虚拟机"
+msgstr "不限虚拟机数量"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:43
-#, fuzzy
 msgid "1-2 Sockets or 1-2 Virtual Machines"
-msgstr "创建虚拟机"
+msgstr "1-2 个插槽或 1-2 台虚拟机"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
-#, fuzzy
 msgid "Per-instance"
-msgstr "实例"
+msgstr "每个实例"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
 msgid "Edit Virtual Host Managers"
@@ -1739,9 +1710,8 @@ msgid "scheduled"
 msgstr "已安排"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:27
-#, fuzzy
 msgid " successfully."
-msgstr "成功"
+msgstr " 成功。"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
 #: ../html/src/manager/images/image-build.tsx:217
@@ -1756,9 +1726,8 @@ msgid "Cluster "
 msgstr "群集 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:40
-#, fuzzy
 msgid " has been added successfully."
-msgstr "已成功删除。"
+msgstr " 已成功删除。"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:90
 #: ../html/src/manager/clusters/cluster/cluster.tsx:102
@@ -1829,9 +1798,8 @@ msgid "Join"
 msgstr "加入"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
-#, fuzzy
 msgid " has been deleted successfully."
-msgstr "已成功删除。"
+msgstr " 已成功删除。"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:46
 msgid "Add an existing cluster"
@@ -1951,87 +1919,68 @@ msgstr "频道"
 msgid "Module Name"
 msgstr "模块名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:21
 msgid "Updating the filter..."
 msgstr "正在更新过滤器..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
-msgid "Check the required fields below"
-msgstr "检查以下必填字段"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
-msgid "Filter updated successfully"
-msgstr "已成功更新过滤器"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
-msgid "Filter created successfully"
-msgstr "已成功创建过滤器"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
 msgid "Filter Details"
 msgstr "过滤器细节"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
 msgid "Create a new filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:114
 msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:146
+msgid "Check the required fields below"
+msgstr "检查以下必填字段"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:155
+msgid "Filter updated successfully"
+msgstr "已成功更新过滤器"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
+msgid "Filter created successfully"
+msgstr "已成功创建过滤器"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:63
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
-msgid "Prefix"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
-msgid "Use a template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
-msgid "Use a manual filter"
-msgstr "创建新过滤器"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:79
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:92
 msgid "Matcher"
 msgstr "匹配器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "软件包名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:126
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -2041,73 +1990,72 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:135
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:148
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:149
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:160
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Package Manager Restart Required"
 msgstr "需要重启动软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 msgid "Rule"
 msgstr "规则"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
+msgstr "部分选定过滤器已用于项目中，无法删除。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
-#, fuzzy
 msgid "Select unused"
-msgstr "选择"
+msgstr "选择未使用的项"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
 #: ../html/src/manager/images/image-profiles.tsx:138
@@ -2121,36 +2069,12 @@ msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
-#, fuzzy
 msgid "Filter by name or project"
-msgstr "按名称过滤"
+msgstr "按名称或项目过滤"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "使用中的项目"
-
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
-msgid "Live patching based on a SUSE product"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
-msgid "Template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
-msgid "Product"
-msgstr "产品"
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
-msgid "Kernel"
-msgstr "内核选项"
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
-msgid "latest"
-msgstr "最新"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -2337,7 +2261,7 @@ msgstr "正在构建项目..."
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
-msgstr ""
+msgstr "该项目包含的频道具有未同步的补丁。将根据您的组织设置同步这些补丁。"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -2547,7 +2471,7 @@ msgstr "建议使用此频道"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
 msgid "has unsynchronized patches"
-msgstr ""
+msgstr "具有未同步的补丁"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
 msgid "Sources"
@@ -2568,34 +2492,31 @@ msgstr "找不到页面"
 
 #: ../html/src/manager/errors/not-found.tsx:7
 msgid "The page you requested, {0}, was not found."
-msgstr ""
+msgstr "未找到您请求的页面 {0}。"
 
 #: ../html/src/manager/errors/not-found.tsx:11
-#, fuzzy
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr ""
-"如果您在浏览器中键入了此地址，请仔细检查拼写和大写字母。您复制的地址也可能已"
-"过时。"
+msgstr "如果您在浏览器中键入了此地址，请仔细检查拼写和字母大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
+msgstr "如果您使用的是链接，该链接可能不正确或已过时。请单击后退按钮 "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
+msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
+msgstr "如果您觉得您错误抵达了此页面，请联系我们并描述您是如何收到 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
 msgid ""
@@ -2605,9 +2526,8 @@ msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-#, fuzzy
 msgid "Formula saved. Edit configuration options "
-msgstr "已保存公式。请在已启用的公式中编辑配置选项，并应用 "
+msgstr "已保存公式。请编辑配置选项 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -2621,9 +2541,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "需要重启动才能使配置更改生效。"
+msgstr " 以使更改生效。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -2657,9 +2576,8 @@ msgid "Building the image has been "
 msgstr "映像构建 "
 
 #: ../html/src/manager/images/image-build.tsx:253
-#, fuzzy
 msgid "Profile Summary"
-msgstr "摘要"
+msgstr "配置文件摘要"
 
 #: ../html/src/manager/images/image-build.tsx:263
 msgid "No profile selected"
@@ -2687,12 +2605,10 @@ msgid "Activation Key"
 msgstr "激活密钥"
 
 #: ../html/src/manager/images/image-build.tsx:355
-#, fuzzy
 msgid "Build Image"
-msgstr "重构建映像"
+msgstr "构建映像"
 
 #: ../html/src/manager/images/image-build.tsx:371
-#, fuzzy
 msgid "Image Profile"
 msgstr "映像配置文件"
 
@@ -2756,9 +2672,8 @@ msgid "Target Image Store"
 msgstr "目标映像储存"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:317
-#, fuzzy
 msgid "Dockerfile URL"
-msgstr "Dockerfile"
+msgstr "Dockerfile URL"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:343
 msgid "Config URL"
@@ -2856,7 +2771,7 @@ msgstr "您确定要删除选定的配置文件吗？（已选择 {0} 个配置�
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
-msgstr ""
+msgstr "使用身份凭证"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
@@ -3175,9 +3090,8 @@ msgid "Updated"
 msgstr "已更新"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:31
-#, fuzzy
 msgid "Loading runtime information..."
-msgstr "其他信息"
+msgstr "正在装载运行时信息..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:65
 msgid "Instance is consistent with SUSE Manager"
@@ -3288,7 +3202,7 @@ msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的
 
 #: ../html/src/manager/login/login.tsx:109
 msgid "Learn more about"
-msgstr ""
+msgstr "了解详细信息"
 
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
@@ -3312,38 +3226,32 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
-#, fuzzy
 msgid "Skip to the last maintenance window"
-msgstr "没有即将到来的维护时段"
+msgstr "跳到最后一个维护时段"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
-#, fuzzy
 msgid "Skip to the next maintenance window"
-msgstr "没有即将到来的维护时段"
+msgstr "跳到下一个维护时段"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
-#, fuzzy
 msgid "There are no more past maintenance windows"
-msgstr "没有即将到来的维护时段"
+msgstr "没有更多过去的维护时段"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
-#, fuzzy
 msgid "There are no more future maintenance windows"
-msgstr "没有即将到来的维护时段"
+msgstr "没有更多将来的维护时段"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
 msgid "Today"
-msgstr ""
+msgstr "今天"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
-#, fuzzy
 msgid "Month"
-msgstr "每月："
+msgstr "月"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
-#, fuzzy
 msgid "Day"
-msgstr "每日："
+msgstr "日"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:99
@@ -3570,9 +3478,8 @@ msgid "Maintenance schedule has been cleared"
 msgstr "已清除维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
-#, fuzzy
 msgid "Maintenance schedule has been assigned"
-msgstr "已清除维护日程安排"
+msgstr "已指派维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
@@ -3610,114 +3517,97 @@ msgid ""
 "systems in the set."
 msgstr "指派一个日程安排会替换集内所有系统中以前的任何指派。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "未找到剧本。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
-msgstr ""
+msgstr "库存文件为空。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
-msgid "Registered Systems"
-msgstr "未注册的系统"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
-msgid "Unknown Hostnames"
-msgstr "节点主机名"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
-#, fuzzy
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
 msgid "Loading content.."
-msgstr "正在装载..."
+msgstr "正在装载内容..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
-#, fuzzy
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "在 Taskomatic 中安排作业时出错。请查看日志。"
+msgstr "装载数据时出错。请查看服务器日志。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr ""
+msgstr "Ansible 控制节点配置：添加用于剧本发现和库存文件自检的路径。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
-msgstr ""
+msgstr "剧本目录"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "Add a Playbook directory"
-msgstr ""
+msgstr "添加剧本目录"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
 msgid "e.g., /srv/playbooks"
-msgstr ""
+msgstr "例如 /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
 msgid "Inventory Files"
-msgstr ""
+msgstr "库存文件"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "Add an Inventory file"
-msgstr ""
+msgstr "添加库存文件"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
+msgstr "例如 /etc/ansible/testing/hosts"
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:63
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:93
-#, fuzzy
 msgid "Loading.."
 msgstr "正在装载..."
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:69
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "未配置任何设置。请在以下位置添加路径 "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
-#, fuzzy
 msgid "Loading playbook contents.."
-msgstr "正在装载全局过滤器..."
+msgstr "正在装载剧本内容..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 msgid "Back to playbook list"
-msgstr ""
+msgstr "返回剧本列表"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-#, fuzzy
 msgid "Schedule playbook execution"
-msgstr "安排检查"
+msgstr "安排剧本执行"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Playbook '{0}'"
-msgstr ""
+msgstr "剧本 \"{0}\""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "安排剧本的执行"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
 msgid "Inventory Path"
-msgstr ""
+msgstr "库存路径"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Playbook Content"
-msgstr ""
+msgstr "剧本内容"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "操作已成功添加到操作链 "
+msgstr "操作已成功添加到操作链"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "操作 "
+msgstr "剧本的执行已"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -3730,12 +3620,11 @@ msgstr "配置"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "请保存所有更改后再应用！"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:196
-#, fuzzy
 msgid "Apply changes"
-msgstr "应用 Highstate"
+msgstr "应用更改"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:202
 #: ../html/src/manager/minion/packages/package-states.tsx:206
@@ -3747,9 +3636,8 @@ msgid "1 Change"
 msgstr "1 项更改"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:241
-#, fuzzy
 msgid "Search package"
-msgstr "搜索"
+msgstr "搜索软件包"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:278
 msgid "No current changes."
@@ -4040,9 +3928,8 @@ msgid "Accept"
 msgstr "接受"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:42
-#, fuzzy
 msgid "Reject"
-msgstr "已拒绝"
+msgstr "拒绝"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:67
 msgid "accepted"
@@ -4058,7 +3945,7 @@ msgstr "已拒绝"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:146
 msgid "Keys"
-msgstr ""
+msgstr "密钥"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:176
 msgid "Fingerprint"
@@ -4095,52 +3982,46 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {0}"
-msgstr "{0} Highstate"
+msgstr "{0} 的状态摘要"
 
 #: ../html/src/manager/state/display-highstate.tsx:73
 msgid "There are no applicable systems."
 msgstr "没有适用的系统。"
 
 #: ../html/src/manager/state/highstate-summary.tsx:20
-#, fuzzy
 msgid "State channel"
-msgstr "软件频道"
+msgstr "状态频道"
 
 #: ../html/src/manager/state/highstate-summary.tsx:21
-#, fuzzy
 msgid "Config channel"
-msgstr "克隆频道"
+msgstr "配置频道"
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
-#, fuzzy
 msgid "internal"
-msgstr "维护"
+msgstr "内部"
 
 #: ../html/src/manager/state/highstate-summary.tsx:32
 msgid "Internal states"
-msgstr ""
+msgstr "内部状态"
 
 #: ../html/src/manager/state/highstate-summary.tsx:50
 msgid "Retrieving highstate summary..."
-msgstr ""
+msgstr "正在检索 Highstate 摘要..."
 
 #: ../html/src/manager/state/highstate-summary.tsx:58
-#, fuzzy
 msgid "State Source"
-msgstr "源"
+msgstr "状态来源"
 
 #: ../html/src/manager/state/highstate-summary.tsx:60
 msgid "Inherited From"
-msgstr ""
+msgstr "继承自"
 
 #: ../html/src/manager/state/highstate-summary.tsx:78
 msgid "Show full highstate output"
-msgstr ""
+msgstr "显示完整 Highstate 输出"
 
 #: ../html/src/manager/state/highstate-summary.tsx:132
-#, fuzzy
 msgid "System Group"
 msgstr "系统组"
 
@@ -4178,12 +4059,11 @@ msgstr "创建重复性"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:14
 msgid "Minion"
-msgstr ""
+msgstr "受控端"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:16
-#, fuzzy
 msgid "Group"
-msgstr "组 ID"
+msgstr "组"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:52
 msgid "Execution time"
@@ -4240,23 +4120,20 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "您确定要删除此日程安排吗？"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Update "
-msgstr "更新"
+msgstr "更新 "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#, fuzzy
 msgid "Create "
-msgstr "创建"
+msgstr "创建 "
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:131
 msgid "Back to list"
-msgstr ""
+msgstr "返回列表"
 
 #: ../html/src/manager/state/recurring-states-edit.tsx:140
-#, fuzzy
 msgid "Schedule Recurring Highstate"
-msgstr "重复性状态"
+msgstr "安排重复 Highstate"
 
 #: ../html/src/manager/state/recurring-states-list.tsx:70
 msgid "Recurring States"
@@ -4287,20 +4164,18 @@ msgid "SUSE Manager Default"
 msgstr "SUSE Manager Default"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "无子频道"
+msgstr "正在装载子频道..."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "基础频道"
+msgstr "基础频道："
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
-msgstr ""
+msgstr "提供的与所安装 SUSE Linux 版本对应的频道。除了默认频道， "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
@@ -4310,7 +4185,7 @@ msgstr "子频道："
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr ""
+msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4397,6 +4272,8 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
+"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建立。\n"
+"\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间部署 {0} 的 SSH 密钥后设置。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4423,9 +4300,8 @@ msgstr "在状态应用响应中未找到结果。"
 
 #: ../html/src/manager/systems/delete-system.tsx:72
 #: ../html/src/manager/systems/delete-system.tsx:73
-#, fuzzy
 msgid "Delete Profile Without Cleanup"
-msgstr "删除配置文件"
+msgstr "删除配置文件但不清理"
 
 #: ../html/src/manager/systems/delete-system.tsx:93
 msgid "An error occurred during cleanup"
@@ -4806,11 +4682,11 @@ msgstr "显卡"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Disconnected"
-msgstr ""
+msgstr "已断开连接"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:136
 msgid "Failed to connect"
-msgstr ""
+msgstr "无法连接"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:253
 msgid "Toggle full size"
@@ -4818,7 +4694,7 @@ msgstr "切换完整大小"
 
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:275
 msgid "Guest is not running"
-msgstr ""
+msgstr "Guest 未运行"
 
 #: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
 msgid "Something went wrong, connection is closed"
@@ -4965,9 +4841,8 @@ msgid "Clear Fields"
 msgstr "清除字段"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
-#, fuzzy
 msgid "Create Virtual Network"
-msgstr "虚拟网络"
+msgstr "创建虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:97
@@ -4988,7 +4863,7 @@ msgstr "这是配置为在此主机上运行的虚拟网络列表。"
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
-msgstr ""
+msgstr "此系统上的 Salt 版本不支持创建和编辑虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:67
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:343
@@ -5006,18 +4881,16 @@ msgid "Bridge"
 msgstr "网桥"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:221
-#, fuzzy
 msgid "network properties"
-msgstr "编辑属性"
+msgstr "网络属性"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:239
-#, fuzzy
 msgid "Network type"
-msgstr "网络"
+msgstr "网络类型"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:251
 msgid "Macvtap mode"
-msgstr ""
+msgstr "Macvtap 模式"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:260
 #: ../html/src/manager/virtualization/pools/pool-properties.js:259
@@ -5026,130 +4899,120 @@ msgstr "在虚拟主机引导期间启动"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:268
 msgid "Connectivity"
-msgstr ""
+msgstr "连接"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:283
 msgid "Maximum Transmission Unit (MTU)"
-msgstr ""
+msgstr "最大传输单位 (MTU)"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:287
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
-#, fuzzy
 msgid "The value has to be a positive integer"
-msgstr "两个值都必须为正整数"
+msgstr "值必须为正整数"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:295
-#, fuzzy
 msgid "Virtual Port Type"
-msgstr "虚拟机类型"
+msgstr "虚拟端口类型"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:315
 msgid "Select interfaces"
-msgstr ""
+msgstr "选择接口"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:321
 msgid "By physical function"
-msgstr ""
+msgstr "按物理功能"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By virtual functions"
-msgstr ""
+msgstr "按虚拟功能"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:322
 msgid "By interfaces"
-msgstr ""
+msgstr "按接口"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:332
 msgid "Interfaces"
-msgstr ""
+msgstr "接口"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:354
 msgid "Physical Function"
-msgstr ""
+msgstr "物理功能"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:369
-#, fuzzy
 msgid "Virtual Functions"
-msgstr "虚拟网络"
+msgstr "虚拟功能"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:393
 msgid "VLAN tag"
-msgstr ""
+msgstr "VLAN 标记"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:397
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
 msgid "Integer between 0 and 4095"
-msgstr ""
+msgstr "0 到 4095 之间的整数"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:404
 msgid "VLAN tags trunking"
-msgstr ""
+msgstr "VLAN 标记中继"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:414
 #: ../html/src/manager/virtualization/nets/network-properties.js:415
 msgid "NAT IPv4 range"
-msgstr ""
+msgstr "NAT IPv4 范围"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:424
-#, fuzzy
 msgid "Both values has to be IPv4 addresses"
-msgstr "两个值都必须为正整数"
+msgstr "两个值都必须为 IPv4 地址"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:428
 #: ../html/src/manager/virtualization/nets/network-properties.js:429
-#, fuzzy
 msgid "NAT port range"
-msgstr "端口范围"
+msgstr "NAT 端口范围"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:439
-#, fuzzy
 msgid "Both values has to be positive integers"
 msgstr "两个值都必须为正整数"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:449
-#, fuzzy
 msgid "Addressing"
-msgstr "MAC 地址"
+msgstr "寻址"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:455
-#, fuzzy
 msgid "Enable IPv6"
-msgstr "启用"
+msgstr "启用 IPv6"
 
 #: ../html/src/manager/virtualization/nets/network-properties.js:461
-#, fuzzy
 msgid "Domain name"
-msgstr "映像名称"
+msgstr "域名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
 msgid "Forwarders"
-msgstr ""
+msgstr "转发器"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
 msgid "Domain"
-msgstr ""
+msgstr "域"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
 msgid "DNS server address"
-msgstr ""
+msgstr "DNS 服务器地址"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
 msgid "Has to be a valid qualified host name"
-msgstr ""
+msgstr "必须为有效的限定主机名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
-#, fuzzy
 msgid "Has to be an IP address"
-msgstr "适配器父项 PCI 地址"
+msgstr "必须为 IP 地址"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
 #: ../html/src/manager/virtualization/pools/pool-properties.js:283
@@ -5157,40 +5020,36 @@ msgid "Hosts"
 msgstr "主机"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
-#, fuzzy
 msgid "Address"
-msgstr "MAC 地址"
+msgstr "地址"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
 msgid "hostnames (comma-separated)"
-msgstr ""
+msgstr "主机名（以逗号分隔）"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
 msgid "Has to be a comma-separated list of host names"
-msgstr ""
+msgstr "必须为主机名逗号分隔列表"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
 msgid "SRV records"
-msgstr ""
+msgstr "SRV 记录"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
-#, fuzzy
 msgid "Service name"
-msgstr "源名称"
+msgstr "服务名称"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
 msgid "Protocol"
-msgstr ""
+msgstr "协议"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
-#, fuzzy
 msgid "Service domain name"
-msgstr "源名称"
+msgstr "服务域名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
-#, fuzzy
 msgid "Target hostname"
-msgstr "目标类型"
+msgstr "目标主机名"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
 #: ../html/src/manager/virtualization/pools/pool-properties.js:214
@@ -5198,27 +5057,24 @@ msgid "Port"
 msgstr "端口"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
-#, fuzzy
 msgid "Target priority"
-msgstr "目标类型"
+msgstr "目标优先级"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
-#, fuzzy
 msgid "Target weight"
-msgstr "目标类型"
+msgstr "目标权重"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
 msgid "TXT records"
-msgstr ""
+msgstr "TXT 记录"
 
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
 msgid "Value"
-msgstr ""
+msgstr "值"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
-#, fuzzy
 msgid "Network address"
-msgstr "网络"
+msgstr "网络地址"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
@@ -5226,143 +5082,133 @@ msgstr "网络"
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
 msgid "v6"
-msgstr ""
+msgstr "v6"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
-#, fuzzy
 msgid "IP address"
-msgstr "MAC 地址"
+msgstr "IP 地址"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
 msgid "DHCP Unique Identifier (DUID)"
-msgstr ""
+msgstr "DHCP 唯一标识符 (DUID)"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
-#, fuzzy
 msgid "Needs to be a MAC address"
-msgstr "保留空白会生成 MAC 地址"
+msgstr "必须为 MAC 地址"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
-#, fuzzy
 msgid "BOOTP image file"
-msgstr "映像配置文件"
+msgstr "BOOTP 映像文件"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
 msgid "BOOTP server"
-msgstr ""
+msgstr "BOOTP 服务器"
 
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
 msgid "TFTP root path"
-msgstr ""
+msgstr "TFTP 根路径"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
 msgid "Parameters"
-msgstr ""
+msgstr "参数"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
-#, fuzzy
 msgid "By profile id"
-msgstr "编辑配置文件"
+msgstr "按配置文件 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
 msgid "Virtual Station Interface (VSI) parameters"
-msgstr ""
+msgstr "虚拟站接口 (VSI) 参数"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
 msgid "Profile id"
-msgstr ""
+msgstr "配置文件 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
 msgid "Interface id"
-msgstr ""
+msgstr "接口 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
-#, fuzzy
 msgid "VSI manager id"
-msgstr "不受管"
+msgstr "VSI 管理器 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
 msgid "VSI type id"
-msgstr ""
+msgstr "VSI 类型 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
-#, fuzzy
 msgid "VSI type id version"
-msgstr "映像版本"
+msgstr "VSI 类型 ID 版本"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
-#, fuzzy
 msgid "VSI instance id"
-msgstr "实例"
+msgstr "VSI 实例 ID"
 
 #: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
 msgid "Value needs to be a valid UUID"
-msgstr ""
+msgstr "值必须为有效的 UUID"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
 msgid "VLANs"
-msgstr ""
+msgstr "VLAN"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
-#, fuzzy
 msgid "Tag"
-msgstr "目标"
+msgstr "标记"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
-#, fuzzy
 msgid "Native mode"
-msgstr "收集器模块"
+msgstr "本机模式"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
 msgid "Tagged"
-msgstr ""
+msgstr "已标记"
 
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
-msgstr ""
+msgstr "未标记"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
-msgstr ""
+msgstr "使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
 msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
+msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
 msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
+msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
-msgstr ""
+msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
 msgid "Virtual network with no connection to other networks"
-msgstr ""
+msgstr "不连接其他网络的虚拟网络"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
 msgid ""
 "Network based on macvtap driver to use a pool of physical interfaces. No "
 "possible communication between guest and host"
-msgstr ""
+msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
 msgid "SR-IOV pool"
-msgstr ""
+msgstr "SR-IOV 池"
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
+msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
-#, fuzzy
 msgid "Could not get network devices from the server. Please try again."
-msgstr "无法从服务器获取储存池功能。请重试。"
+msgstr "无法从服务器获取网络设备。请重试。"
 
 #: ../html/src/manager/virtualization/pools/create/pools-create.js:31
 msgid "Create Virtual Storage Pool"

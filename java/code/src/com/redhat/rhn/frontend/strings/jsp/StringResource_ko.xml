@@ -1017,7 +1017,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
-        <target state="needs-adaptation">링크를 통해 이동한 경우 링크가 잘못되거나 오래되었을 수 있습니다. 브라우저의 뒤로 버튼을 클릭하여 다른 링크를 사용하거나 맨 위(또는 왼쪽) 탐색 막대를 사용하여 찾고 있는 페이지를 찾아보십시오.</target>
+        <target state="translated">링크를 통해 이동한 경우 링크가 잘못되거나 오래되었을 수 있습니다. 브라우저의 뒤로 버튼을 클릭하여 다른 링크를 시도하거나 맨 위 아이콘을 사용하여 홈페이지를 찾아보십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -1028,7 +1028,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
-        <target state="needs-adaptation">책갈피를 사용한 경우 책갈피가 생성된 이후에 페이지가 다른 위치로 이동했을 수 있습니다. 맨 위(또는 왼쪽) 탐색 막대를 사용하여 찾고 있는 페이지를 찾고 문서를 찾고 있는 경우에는 책갈피를 업데이트하십시오.</target>
+        <target state="translated">책갈피를 사용한 경우, 책갈피가 생성된 이후에 페이지가 다른 위치로 이동했을 수 있습니다. 맨 위(또는 왼쪽) 탐색 막대를 사용하여 찾고 있는 페이지를 찾고 문서를 찾고 있는 경우에는 책갈피를 업데이트하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -4498,14 +4498,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
         <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
-        <target state="needs-adaptation">스테이징 컨텐트, 오류 이메일 알림, 소프트웨어 작동 중지 보고(작동 중지 파일 업로드 제한은 음수가 아니어야 함, 0은 제한이 없음을 의미) 및 SCAP 설정을 사용하여 아래에 조직을 구성하십시오.</target>
+        <target state="translated">스테이징 컨텐트, 오류 이메일 알림 및 SCAP 설정을 사용하여 아래에 조직을 구성하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
-        <target state="needs-adaptation">조직 구성이 아래에 나열되어 있습니다. 컨텐트 스테이징, 오류 이메일 알림, 소프트웨어 작동 중단 보고 및 SCAP 설정의 구성 방법을 참조하십시오.</target>
+        <target state="translated">조직 구성이 아래에 나열되어 있습니다. 컨텐트 스테이징, 오류 이메일 알림 및 SCAP 설정의 구성 방법을 참조하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -5625,9 +5625,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="ssm.overview.misc.migrate" xml:space="preserve">
+      <trans-unit approved="no" id="ssm.overview.misc.migrate" xml:space="preserve">
           <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
-        <target state="needs-adaptation">시스템을 다른 조직으로 &lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;마이그레이션&lt;/a&gt;</target>
+        <target state="translated">시스템을 다른 조직으로 &lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;전송&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5678,14 +5678,14 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
           <source>Transfer Systems</source>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+        <target state="translated">시스템 전송</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
           <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
-        <target state="needs-adaptation">선택한 시스템을 선택한 조직으로 마이그레이션합니다. 작업이 성공적으로 수행되면 시스템은 더이상 조직에 표시되지 않습니다.</target>
+        <target state="translated">선택한 시스템을 선택한 조직으로 전송합니다. 작업이 성공적으로 수행되면 해당 시스템이 더이상 조직에 표시되지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5835,7 +5835,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.migrate" xml:space="preserve">
           <source>Transfer</source>
-        <target state="needs-adaptation">마이그레이션</target>
+        <target state="translated">전송</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -5905,21 +5905,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.header" xml:space="preserve">
           <source>Transfer Systems</source>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+        <target state="translated">시스템 전송</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.summary" xml:space="preserve">
           <source>Transfer multiple systems from the current organization to another (trusted) organization in a single action.  The transferred systems will no longer be visible in the original organization.</source>
-        <target state="needs-adaptation">현재 조직에서 다른 (신뢰할 수 있는) 조직으로 단일 동작으로 여러 시스템을 마이그레이션합니다. 마이그레이션된 시스템은 기존 조직에 더 이상 나타나지 않습니다.</target>
+        <target state="translated">현재 조직에서 다른 (신뢰할 수 있는) 조직으로 단일 동작으로 여러 시스템을 전송니다. 전송된 시스템은 기존 조직에 더 이상 표시되지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.migrate.migrate" xml:space="preserve">
           <source>Transfer Systems to another organization</source>
-        <target state="needs-adaptation">시스템을 다른 조직으로 마이그레이션</target>
+        <target state="translated">시스템을 다른 조직으로 전송</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -8623,14 +8623,14 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">조직으로 이전된 시스템</target>
+        <target state="translated">조직으로 전송된 시스템</target>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedfrom" xml:space="preserve">
         <source>Systems Transferred from Your Organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
-        <target state="needs-adaptation">조직에서 이전된 시스템</target>
+        <target state="translated">조직에서 전송된 시스템</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmprofiledeletion" xml:space="preserve">
         <source>Confirm Profile Deletion</source>
@@ -17499,7 +17499,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>현재 버전</target>
       </trans-unit>
@@ -17507,7 +17507,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>마지막 수정</target>
       </trans-unit>
@@ -17536,7 +17536,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>이 채널에 등록된 시스템 중 배치할 수 있는 시스템이 없음</target>
       </trans-unit>
@@ -17544,7 +17544,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>작업</target>
       </trans-unit>
@@ -17552,7 +17552,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17560,7 +17560,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>모든 파일을 배치</target>
       </trans-unit>
@@ -17568,7 +17568,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>선택한 파일을 배치</target>
       </trans-unit>
@@ -17576,7 +17576,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>설정 파일 배치</target>
       </trans-unit>
@@ -17584,7 +17584,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>아래 목록에서 배치하려는 파일을 선택할 수 있습니다. 그 후 선택한 파일을 배치할 시스템을 선택해야 합니다.</target>
       </trans-unit>
@@ -17592,7 +17592,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17600,7 +17600,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>확인 &amp; 선택한 시스템 배치</target>
       </trans-unit>
@@ -17608,7 +17608,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>설정 파일 배치: 배치할 시스템 선택</target>
       </trans-unit>
@@ -17616,7 +17616,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>선택한 파일을 배치할 시스템을 선택하십시오.</target>
       </trans-unit>
@@ -17624,7 +17624,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes" />
+          <context context-type="paramnotes"/>
         </context-group>
         <target>&lt;strong&gt;경고:&lt;/strong&gt; {0} 설정 채널에서 배치하려는 파일이 보다 높은 순위의 채널에 있는 같은 이름을 가진 파일에 의해 덮어쓰이거나 순위가 앞서게 되었을 경우, 특정 시스템이 등록되어 {0} 설정 채널에 있는 파일 버전이 아닌 덮어쓰여진/ 가장 높은 순위에 있는 파일 버전이 이 시스템에 배치됩니다.</target>
       </trans-unit>
@@ -24348,7 +24348,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">조직 간의 시스템 마이그레이션</target>
+        <target state="translated">조직 간 시스템 전송</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.org" xml:space="preserve">
         <source>Organization Name</source>
@@ -24362,14 +24362,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">시스템 마이그레이션</target>
+        <target state="translated">시스템 전송</target>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.success" xml:space="preserve">
         <source>System successfully transferred</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="needs-adaptation">시스템이 마이그레이션되었습니다</target>
+        <target state="translated">시스템이 전송되었습니다.</target>
       </trans-unit>
       <trans-unit id="sdc.details.customdata.header" xml:space="preserve">
         <source>Custom System Information</source>
@@ -24871,7 +24871,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.hardware.fqdns" xml:space="preserve">
         <source>Primary FQDN:</source>
-        <target state="needs-adaptation">FQDN:</target>
+        <target state="translated">기본 FQDN:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -29029,7 +29029,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
         <source>Product Migration - Target</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 대상</target>
+        <target state="translated">제품 마이그레이션 - 대상</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -29045,7 +29045,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Product Migration - Channels</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 채널</target>
+        <target state="translated">제품 마이그레이션 - 채널</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -29077,15 +29077,15 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
         <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션은 &lt;strong&gt;SUSE&lt;/strong&gt; 시스템에서만 지원됩니다.</target>
+        <target state="translated">제품 마이그레이션은 &lt;strong&gt;SUSE&lt;/strong&gt; 시스템에서만 지원됩니다.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
         <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션은 현재 이 시스템에서 지원되지 않습니다. &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;의 최신 버전을 설치하십시오.</target>
+        <target state="translated">현재 이 시스템에서는 제품 마이그레이션이 지원되지 않습니다. &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;의 최신 버전을 설치하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
         <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-        <target state="needs-adaptation">이 시스템에 대한 서비스 팩 마이그레이션이 이미 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;예약&lt;/a&gt;되었습니다.</target>
+        <target state="translated">이 시스템에 대한 제품 마이그레이션이 이미 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;예약&lt;/a&gt;되었습니다.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -29097,11 +29097,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
-        <target state="needs-adaptation">이 시스템에 해결되지 않은 패키지 관리 스택 업데이트가 있습니다. 모든 소프트웨어 업데이트 스택 관련 패키지를 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
+        <target state="translated">이 시스템에 해결되지 않은 제품 관리 스택 업데이트가 있습니다. 모든 소프트웨어 업데이트 스택 관련 패키지를 업데이트한 후 제품 마이그레이션을 시작하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="needs-adaptation">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 서비스 팩 마이그레이션을 시작하십시오.</target>
+        <target state="translated">이 시스템에 설치된 &lt;strong&gt;Salt&lt;/strong&gt; 패키지 버전이 오래되었습니다. 패키지를 최신 버전으로 업데이트한 후 제품 마이그레이션을 시작하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
@@ -29109,7 +29109,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
-        <target state="needs-adaptation">서비스 팩 마이그레이션 - 확인</target>
+        <target state="translated">제품 마이그레이션 - 확인</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -29121,7 +29121,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
-        <target state="needs-adaptation">가능한 모든 문제를 감지하려면 항상 &lt;strong&gt;시험 실행&lt;/strong&gt;을 수행한 후 실제 서비스 팩 마이그레이션을 예약하십시오.</target>
+        <target state="translated">가능한 모든 문제를 감지하려면 항상 &lt;strong&gt;시험 실행&lt;/strong&gt;을 수행한 후 실제 제품 마이그레이션을 예약하십시오.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -29625,96 +29625,89 @@ given channel.</source>
         </context-group>
         <target state="translated">구성 상태 채널 생성</target>
       </trans-unit>
-    <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
+      <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">컨텐트</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">상태</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">최종</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">안정적</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">테스트</target>
+      </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">철회됨</target>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">철회된 패치</target>
+      </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">철회된 패치에 속한 패키지</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
         <source>Forward registrations to SUSE Customer Center</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">SUSE 고객 센터로 등록 전달</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated action chain data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">오래된 동작 체인 데이터 정리</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated token data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">오래된 토큰 데이터 정리</target>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
         <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">온라인 방식으로 SUSE에서 공식적으로 지원하는 마이그레이션만 표시합니다. 오프라인 마이그레이션의 경우, 업그레이드 모드의 자동 설치 기능을 사용해야 합니다.</target>
+      </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
-      <target state="new" />
-  </trans-unit>
+        <target state="translated">Ansible 제어 노드</target>
+      </trans-unit>
       <trans-unit id="Product Migration" xml:space="preserve">
         <source>Product Migration</source>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
-        <source>Execute Ansible playbook</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="translated">제품 마이그레이션</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

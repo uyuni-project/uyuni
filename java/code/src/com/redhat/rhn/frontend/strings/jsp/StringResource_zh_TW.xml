@@ -29198,13 +29198,6 @@ given channel.</source>
         <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
-      <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
-        <source>Execute Ansible playbook</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
-        </context-group>
-      <target state="new" />
-  </trans-unit>
       </body>
   </file>
 </xliff>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 13:12+0100\n"
-"PO-Revision-Date: 2021-04-04 20:57+0000\n"
+"PO-Revision-Date: 2021-05-17 14:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "dnf-plugin-spacewalk-master/ko/>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../spacewalk.py:41
 msgid "Spacewalk based repositories will be disabled."
-msgstr ""
+msgstr "Spacewalk 기반"
 
 #: ../spacewalk.py:42
 msgid "Spacewalk channel support will be disabled."
-msgstr ""
+msgstr "Spacewalk 채널 지원이 비활성화됩니다."
 
 #: ../spacewalk.py:43
 msgid "There was an error communicating with Spacewalk server."
@@ -33,7 +33,7 @@ msgstr "Spacewalk 서버와 통신하는 동안 오류가 발생했습니다."
 
 #: ../spacewalk.py:44
 msgid "This system is not registered with Spacewalk server."
-msgstr ""
+msgstr "이 시스템은 Spacewalk 서버로 등록되지 않았습니다."
 
 #: ../spacewalk.py:45
 msgid "This system is not subscribed to any channels."
@@ -41,7 +41,7 @@ msgstr "이 시스템은 아무 채널에도 등록되지 않았습니다."
 
 #: ../spacewalk.py:46
 msgid "SystemId could not be acquired."
-msgstr ""
+msgstr "시스템을"
 
 #: ../spacewalk.py:47
 msgid "You can use rhn_register to register."
@@ -49,7 +49,7 @@ msgstr "rhn_register를 사용하여 등록할 수 있습니다."
 
 #: ../spacewalk.py:48
 msgid "This system is receiving updates from Spacewalk server."
-msgstr ""
+msgstr "이 시스템은 acquire"
 
 #: ../spacewalk.py:49
 #, python-format
@@ -58,6 +58,8 @@ msgid ""
 "verified only with locally installed gpg keys. GPG key '%s' has been "
 "rejected."
 msgstr ""
+"보안 상의 이유로 Spacewalk 기반 리포지토리로부터 받은 패키지는 로컬에 설치된 gpg 키로만 유효성 검사를 수행할 수 있습니다. "
+"GPG 키 '%s'가 거부되었습니다."
 
 #: ../spacewalk.py:50
 msgid "Package profile information could not be sent."
@@ -66,8 +68,8 @@ msgstr "패키지 프로파일 정보를 보낼 수 없습니다."
 #: ../spacewalk.py:51
 #, python-format
 msgid "Missing required login information for Spacewalk: %s"
-msgstr ""
+msgstr "Spacewalk에 대하여 누락된 필수 로그인 정보: %s"
 
 #: ../spacewalk.py:52
 msgid "Spacewalk plugin has to be run under with the root privileges."
-msgstr ""
+msgstr "Spacewalk 플러그인은 루트 권한으로 실행되어야 합니다."

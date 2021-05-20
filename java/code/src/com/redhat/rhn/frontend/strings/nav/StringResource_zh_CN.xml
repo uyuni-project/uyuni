@@ -1201,34 +1201,34 @@
         <source>Image List</source>
         <target>映像列表</target>
       </trans-unit>
-    <trans-unit id="Ansible" xml:space="preserve">
+      <trans-unit id="Ansible" xml:space="preserve" approved="yes">
         <source>Ansible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Ansible Control Node" xml:space="preserve">
+        <target state="final">Ansible</target>
+      </trans-unit>
+      <trans-unit id="Ansible Control Node" xml:space="preserve" approved="yes">
         <source>Control Node</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Playbooks" xml:space="preserve">
+        <target state="final">控制节点</target>
+      </trans-unit>
+      <trans-unit id="Playbooks" xml:space="preserve" approved="yes">
         <source>Playbooks</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      <trans-unit id="Inventories" xml:space="preserve">
+        <target state="final">剧本</target>
+      </trans-unit>
+      <trans-unit id="Inventories" xml:space="preserve" approved="yes">
         <source>Inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-      <target state="new" />
-  </trans-unit>
-      </body>
+        <target state="final">库存</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

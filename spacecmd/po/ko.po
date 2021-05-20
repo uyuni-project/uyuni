@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 15:15+0200\n"
-"PO-Revision-Date: 2021-04-02 06:58+0000\n"
+"PO-Revision-Date: 2021-05-17 14:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
-">\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
+"\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -713,14 +713,12 @@ msgid "This version of the API doesn't support this method"
 msgstr "이 API 버전은 이 메서드를 지원하지 않음"
 
 #: ../src/spacecmd/configchannel.py:104
-#, fuzzy
 msgid "configchannel_listgroups: List the groups subscribed to a"
-msgstr "configchannel_listsystems: a에 가입한 시스템 나열"
+msgstr "configchannel_listgroups: a에 가입한 그룹 나열"
 
 #: ../src/spacecmd/configchannel.py:106
-#, fuzzy
 msgid "usage: configchannel_listgroups CHANNEL"
-msgstr "사용법: configchannel_listsystems CHANNEL"
+msgstr "사용법: configchannel_listgroups CHANNEL"
 
 #: ../src/spacecmd/configchannel.py:139
 msgid "configchannel_listfiles: List the files in a config channel"
@@ -2267,36 +2265,30 @@ msgid "Members"
 msgstr "구성원"
 
 #: ../src/spacecmd/group.py:488
-#, fuzzy
 msgid ""
 "group_listconfigchannels: List configuration channels assigned to a system "
 "group"
-msgstr "system_listconfigchannels: 시스템의 구성 채널 나열"
+msgstr "group_listconfigchannels: 시스템 그룹에 할당된 구성 채널 나열"
 
 #: ../src/spacecmd/group.py:489
-#, fuzzy
 msgid "usage: group_listconfigchannels GROUP"
-msgstr "사용법: group_listsystems GROUP"
+msgstr "사용법: group_listconfigchannels GROUP"
 
 #: ../src/spacecmd/group.py:531
-#, fuzzy
 msgid "group_addconfigchannels: Add config channels to a group"
-msgstr "system_addconfigchannels: 시스템에 구성 채널 추가"
+msgstr "group_addconfigchannels: 그룹에 구성 채널 추가"
 
 #: ../src/spacecmd/group.py:532
-#, fuzzy
 msgid "usage: group_addconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "사용법: kickstart_addchildchannels PROFILE <CHANNEL ...>"
+msgstr "사용법: group_addconfigchannels <GROUP> <CHANNEL ...>"
 
 #: ../src/spacecmd/group.py:570
-#, fuzzy
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr "system_removeconfigchannels: 시스템에서 구성 채널 제거"
+msgstr "group_removeconfigchannels: 그룹에서 구성 채널 제거"
 
 #: ../src/spacecmd/group.py:571
-#, fuzzy
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
-msgstr "사용법: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
+msgstr "사용법: group_removeconfigchannels <GROUP> <CHANNEL ...>"
 
 #: ../src/spacecmd/kickstart.py:74
 msgid "kickstart_list: List the available Kickstart profiles"
@@ -3759,14 +3751,14 @@ msgid "Trusted Since:          %s"
 msgstr "다음 이후 트러스트됨:          %s"
 
 #: ../src/spacecmd/org.py:323
-#, fuzzy, python-format
+#, python-format
 msgid "Systems Transferred From:  %i"
-msgstr "시스템 마이그레이션 출처:  %i"
+msgstr "시스템 마이그레이션 출처: %i"
 
 #: ../src/spacecmd/org.py:324
-#, fuzzy, python-format
+#, python-format
 msgid "Systems Transferred To:    %i"
-msgstr "시스템 마이그레이션 대상:    %i"
+msgstr "시스템 전송 대상: %i"
 
 #: ../src/spacecmd/org.py:326
 msgid "Channels Consumed"
@@ -7711,16 +7703,14 @@ msgid "    Friendly names: "
 msgstr "    식별 이름: "
 
 #: ../src/spacecmd/system.py:4315 ../src/spacecmd/system.py:4330
-#, fuzzy
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
-msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 제거될 예정입니다."
+msgstr "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다."
 
 #: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
-#, fuzzy
 msgid "This method is deprecated and will be removed in a future API version"
-msgstr "이 메서드는 더 이상 사용되지 않으며 API 버전 %s에서 제거될 예정입니다."
+msgstr "이 메서드는 더 이상 사용되지 않으며 향후 API 버전에서 제거될 예정입니다."
 
 #: ../src/spacecmd/system.py:4317
 msgid ""
@@ -7754,15 +7744,11 @@ msgstr ""
 "        -c CHILD_CHANNELS (쉼표로 구분된 하위 채널 레이블(공백 없음))"
 
 #: ../src/spacecmd/system.py:4338
-#, fuzzy
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr ""
-"system_schedulespmigration: 시스템에 대한 서비스 팩 마이그레이션을 예약합니"
-"다."
+msgstr "system_scheduleproductmigration: 시스템에 대한 제품 마이그레이션을 예약합니다."
 
 #: ../src/spacecmd/system.py:4339
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7775,10 +7761,9 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"사용법: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
+"사용법: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [옵션] \n"
-"    MIGRATION_TARGET 파라미터의 경우 system_listmigrationtargets를 참조하십시"
-"오. \n"
+"    MIGRATION_TARGET 파라미터의 경우 system_listmigrationtargets를 참조하십시오. \n"
 "    MIGRATION_TARGET 파라미터의 경우 다음 형식으로 전달되어야 함: "
 "[3143,3146,3147,3145,3144,3148,3062]. \n"
 "    옵션: \n"
@@ -7795,9 +7780,8 @@ msgid ". Skipping it."
 msgstr ". 건너뛰는 중입니다."
 
 #: ../src/spacecmd/system.py:4392
-#, fuzzy
 msgid "Scheduling Product migration for system "
-msgstr "시스템에 대한 서비스 팩 마이그레이션 예약 중 "
+msgstr "시스템에 대한 제품 마이그레이션 예약 중 "
 
 #: ../src/spacecmd/system.py:4397
 msgid "Scheduled action ID: "

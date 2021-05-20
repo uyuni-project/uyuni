@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-05 01:58+0000\n"
-"PO-Revision-Date: 2021-04-24 19:57+0000\n"
+"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"PO-Revision-Date: 2021-05-09 15:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -217,7 +217,7 @@ msgstr "Naozaj chcete {0} vybrané položky {1}? ({2} položiek {1} vybraných)"
 #: ../html/src/components/dialog/DangerDialog.tsx:50
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -234,7 +234,7 @@ msgstr "Zrušiť"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
@@ -289,7 +289,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -366,9 +366,9 @@ msgstr "Krstné meno"
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
+#: ../html/src/components/input/InputBase.test.tsx:41
+#: ../html/src/components/input/InputBase.test.tsx:67
+#: ../html/src/components/input/InputBase.test.tsx:95
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
 #: ../html/src/components/input/form.stories.js:28
@@ -388,11 +388,6 @@ msgstr "Prihlasovacie meno"
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "Odstrániť"
-
-#: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
-msgid "required"
-msgstr "Vyžaduje sa reštart"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -448,7 +443,7 @@ msgid "Flavor"
 msgstr "Druh"
 
 #: ../html/src/components/input/Select.stories.js:64
-#: ../html/src/components/input/Select.test.tsx:57
+#: ../html/src/components/input/Select.test.tsx:71
 msgid "Start typing..."
 msgstr "Začať písať..."
 
@@ -456,7 +451,7 @@ msgstr "Začať písať..."
 msgid "No flavors"
 msgstr "Žiadne druhy"
 
-#: ../html/src/components/input/Select.test.tsx:58
+#: ../html/src/components/input/Select.test.tsx:72
 msgid "No flavor"
 msgstr "Žiadny druh"
 
@@ -580,7 +575,7 @@ msgid "Edit Configuration Channel"
 msgstr "Upraviť konfiguračný kanál"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
 msgid "Security Advisory"
 msgstr "Bezpečnostné upozornenie"
 
@@ -996,7 +991,7 @@ msgstr "Popis produktu"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:625
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1987,35 +1982,35 @@ msgstr "Kanál"
 msgid "Module Name"
 msgstr "Názov modulu"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:21
 msgid "Updating the filter..."
 msgstr "Aktualizovanie filtra..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
-msgid "Check the required fields below"
-msgstr "Skontrolujte povinné polia nižšie"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
-msgid "Filter updated successfully"
-msgstr "Filter bol úspešne aktualizovaný"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
-msgid "Filter created successfully"
-msgstr "Filter bol úspešne vytvorený"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
 msgid "Filter Details"
 msgstr "Podrobnosti filtra"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
 msgid "Create a new filter"
 msgstr "Vytvoriť nový filter"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:114
 msgid "Filter deleted successfully"
 msgstr "Filter bol úspešne vymazaný"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:146
+msgid "Check the required fields below"
+msgstr "Skontrolujte povinné polia nižšie"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:155
+msgid "Filter updated successfully"
+msgstr "Filter bol úspešne aktualizovaný"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
+msgid "Filter created successfully"
+msgstr "Filter bol úspešne vytvorený"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:63
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
@@ -2023,53 +2018,34 @@ msgstr ""
 "Majte na pamäti, že všetky pridružené projekty musia byť po aktualizácii "
 "filtra znovu zostavené"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid "Filter Name"
 msgstr "Názov filtra"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
-msgid "Prefix"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
-msgid "Use a template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
-msgid "Use a manual filter"
-msgstr "Vytvoriť nový filter"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:79
 msgid "Filter Type"
 msgstr "Typ filtra"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:92
 msgid "Matcher"
 msgstr "Párovač"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "Názov balíka"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:126
 msgid "Epoch"
 msgstr "Obdobie"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -2079,61 +2055,61 @@ msgstr "Obdobie"
 msgid "Version"
 msgstr "Verzia"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Release"
 msgstr "Vydanie"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:135
 msgid "Advisory name"
 msgstr "Názov upozornenia"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:148
 msgid "Bug Fix Advisory"
 msgstr "Upozornenie na opravu chyby"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:149
 msgid "Product Enhancement Advisory"
 msgstr "Upozornenie na vylepšenia produktu"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "Typ upozornenia"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:160
 msgid "Issued"
 msgstr "Vydané"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "Súhrn"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Reboot Required"
 msgstr "Vyžaduje sa reštart"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Package Manager Restart Required"
 msgstr "Vyžaduje sa reštart správcu balíkov"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Advisory Keywords"
 msgstr "Kľúčové slová upozornenia"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "Odmietnuť"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "Umožniť"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 msgid "Rule"
 msgstr "Pravidlo"
 
@@ -2166,29 +2142,6 @@ msgstr "Filtrovať podľa názvu"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "Používané projekty"
-
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
-msgid "Live patching based on a SUSE product"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
-msgid "Template"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
-msgid "Product"
-msgstr "Produkty"
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
-msgid "Kernel"
-msgstr "Voľby jadra"
-
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
-msgid "latest"
-msgstr "Najnovší"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -2673,9 +2626,8 @@ msgstr "Highstate"
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-#, fuzzy
 msgid " for the changes to take effect."
-msgstr "Aby sa prejavili konfiguračné zmeny, je potrebný reštart."
+msgstr " aby sa prejavili zmeny."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -3666,25 +3618,15 @@ msgstr ""
 "Priradenie plánu nahradí všetky predchádzajúce priradenia vo všetkých "
 "systémoch v sade."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
 msgid "No Playbook found."
-msgstr ""
+msgstr "Nenašiel sa žiadny scenár."
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
 msgid "Inventory file empty."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
-msgid "Registered Systems"
-msgstr "Neregistrovaný systém"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
-msgid "Unknown Hostnames"
-msgstr "Názov hostiteľa uzla"
-
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
 #, fuzzy
 msgid "Loading content.."
 msgstr "Načítava sa..."
@@ -3769,12 +3711,11 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
 #, fuzzy
 msgid "Action has been successfully added to action chain"
-msgstr "Akcia bola úspešne pridaná do Reťazca akcií "
+msgstr "Akcia bola úspešne pridaná do Reťazca akcií"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
-#, fuzzy
 msgid "Playbook execution has been"
-msgstr "Akcia bola "
+msgstr "Vykonanie scenára bolo"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
 msgid "Applying the config channels has been "
@@ -4335,14 +4276,12 @@ msgid "SUSE Manager Default"
 msgstr "Predvolené nastavenie SUSE Manager"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:53
-#, fuzzy
 msgid "Loading child channels.."
-msgstr "žiadne kanály potomkov"
+msgstr "Načítavajú sa kanály potomkov.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:101
-#, fuzzy
 msgid "Base Channel:"
-msgstr "Základný kanál"
+msgstr "Základný kanál:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:121
 msgid ""
