@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-21 09:57+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"PO-Revision-Date: 2021-05-21 11:01+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -2493,41 +2493,31 @@ msgstr "リクエストされたページ {0} が見つかりませんでした�
 msgid ""
 "If you typed this address into your browser, double-check the spelling and "
 "capitalization."
-msgstr ""
-"このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い"
-"方に誤りがないかを再度確認してください。"
+msgstr "このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:17
 msgid ""
 "If you followed a link, the link may be incorrect or outdated. Click on the "
 "back button in your "
-msgstr ""
-"リンクをたどっている場合、リンクが正しくないか、古くなっている可能性がありま"
-"す。戻るボタンを押して戻ってください。 "
+msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンを押して戻ってください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:24
 msgid ""
 "If you used a bookmark, the page may have moved to a different location "
 "since the bookmark was "
-msgstr ""
-"ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動して"
-"いる場合もあります。 "
+msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:31
 msgid ""
 "If you feel you've reached this page in error, please contact us with "
 "details of how you received "
-msgstr ""
-"このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージ"
-"と共にご連絡ください。 "
+msgstr "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージと共にご連絡ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
-msgstr ""
-"このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
-"た"
+msgstr "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしました"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
@@ -2574,9 +2564,7 @@ msgstr "イメージの構築をスケジュールしました。"
 msgid ""
 "There was an error while scheduling a task. Please make sure that the task "
 "scheduler is running."
-msgstr ""
-"タスクをスケジュールする際にエラーが発生しました。タスクスケジューラが動作し"
-"ていることをご確認ください。"
+msgstr "タスクをスケジュールする際にエラーが発生しました。タスクスケジューラが動作していることをご確認ください。"
 
 #: ../html/src/manager/images/image-build.tsx:222
 msgid "Building the image has been "
@@ -2643,9 +2631,7 @@ msgstr "イメージの取り込み"
 
 #: ../html/src/manager/images/image-import.tsx:254
 msgid "You can import Container images only using this feature."
-msgstr ""
-"この機能を利用することによってのみ、コンテナイメージを取り込むことができま"
-"す。"
+msgstr "この機能を利用することによってのみ、コンテナイメージを取り込むことができます。"
 
 #: ../html/src/manager/images/image-import.tsx:283
 msgid "Image name"
@@ -2726,9 +2712,7 @@ msgstr "イメージプロファイルの作成"
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
-msgstr ""
-"ラベルを指定する必要があります。ラベルは他と重複しない文字列で、コロン (:) を"
-"含めることはできません。"
+msgstr "ラベルを指定する必要があります。ラベルは他と重複しない文字列で、コロン (:) を含めることはできません。"
 
 #: ../html/src/manager/images/image-profiles.tsx:23
 msgid "Dockerfile"
@@ -2778,9 +2762,7 @@ msgstr "選択したプロファイルを削除してよろしいですか？"
 #: ../html/src/manager/images/image-profiles.tsx:247
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
-msgstr ""
-"選択したプロファイルを削除してよろしいですか？ ({0} 個のプロファイルが選択さ"
-"れています)"
+msgstr "選択したプロファイルを削除してよろしいですか？ ({0} 個のプロファイルが選択されています)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:174
 msgid "Use credentials"
@@ -2806,9 +2788,7 @@ msgstr "ストアの種類"
 
 #: ../html/src/manager/images/image-store-edit.tsx:271
 msgid "Label is required and must be unique."
-msgstr ""
-"ラベルを設定する必要があります。ラベルは他と重複しないものでなければなりませ"
-"ん。"
+msgstr "ラベルを設定する必要があります。ラベルは他と重複しないものでなければなりません。"
 
 #: ../html/src/manager/images/image-store-edit.tsx:277
 msgid "Store URI"
@@ -2848,8 +2828,7 @@ msgstr "選択したストアを削除してよろしいですか？"
 
 #: ../html/src/manager/images/image-stores.tsx:243
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
-msgstr ""
-"選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
+msgstr "選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
 
 #: ../html/src/manager/images/image-view-overview.tsx:36
 #: ../html/src/manager/images/image-view-overview.tsx:37
