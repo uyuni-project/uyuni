@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-20 18:57+0000\n"
+"PO-Revision-Date: 2021-05-21 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -389,9 +389,8 @@ msgid "Remove"
 msgstr "Odstrániť"
 
 #: ../html/src/components/input/InputBase.tsx:276
-#, fuzzy
 msgid "required"
-msgstr "Vyžaduje sa reštart"
+msgstr "požadované"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -2028,22 +2027,23 @@ msgstr "Názov filtra"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
 msgid "Prefix"
-msgstr ""
+msgstr "Predpona"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
+"Predpona bude doplnená pred názov každého jednotlivého filtra vytvoreného "
+"podľa šablóny"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
 msgid "Use a template"
-msgstr ""
+msgstr "Použiť šablónu"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
-#, fuzzy
 msgid "Use a manual filter"
-msgstr "Vytvoriť nový filter"
+msgstr "Použiť ručný filter"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
@@ -2167,26 +2167,23 @@ msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "Opravy za chodu na základe produktu SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
 msgid "Template"
-msgstr ""
+msgstr "Šablóna"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
-#, fuzzy
 msgid "Product"
-msgstr "Produkty"
+msgstr "Produkt"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
-#, fuzzy
 msgid "Kernel"
-msgstr "Voľby jadra"
+msgstr "Jadro"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
-#, fuzzy
 msgid "latest"
-msgstr "Najnovší"
+msgstr "najnovšie"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -3669,14 +3666,12 @@ msgid "Inventory file empty."
 msgstr "Inventárny súbor je prázdny."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
-#, fuzzy
 msgid "Registered Systems"
-msgstr "Neregistrovaný systém"
+msgstr "Registrované systémy"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
-#, fuzzy
 msgid "Unknown Hostnames"
-msgstr "Názov hostiteľa uzla"
+msgstr "Neznáme názvy hostiteľov"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
