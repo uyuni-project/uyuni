@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 15:15+0200\n"
+"POT-Creation-Date: 2021-05-21 13:18+0200\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
@@ -7885,12 +7885,13 @@ msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
 msgstr ""
-"このメソッドは廃止予定であり、 API バージョン %s で削除される予定です。代わりに system_scheduleproductmigration "
-"をお使いください。"
+"このメソッドは廃止予定であり、 API バージョン %s で削除される予定です。代わり"
+"に system_scheduleproductmigration をお使いください。"
 
 #: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
 msgid "This method is deprecated and will be removed in a future API version"
-msgstr "このメソッドは廃止予定であり、将来の API バージョンで削除される予定です"
+msgstr ""
+"このメソッドは廃止予定であり、将来の API バージョンで削除される予定です"
 
 #: ../src/spacecmd/system.py:4317
 msgid ""
@@ -7927,7 +7928,8 @@ msgstr ""
 #: ../src/spacecmd/system.py:4338
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
-msgstr "system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
+msgstr ""
+"system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
 
 #: ../src/spacecmd/system.py:4339
 msgid ""
@@ -7942,14 +7944,17 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"使用方法: system_scheduleproductmigration <システム> <ベースチャンネルのラベル> <移行先> [オプション] \n"
-"    <移行先> として指定可能なターゲットの一覧を表示するには system_listmigrationtargets を使用する。\n"
-"    <移行先> は下記のような書式で渡されなければならないことに注意: [3143,3146,3147,3145,3144,3148,3062]. "
-"\n"
+"使用方法: system_scheduleproductmigration <システム> <ベースチャンネルのラベ"
+"ル> <移行先> [オプション] \n"
+"    <移行先> として指定可能なターゲットの一覧を表示するには "
+"system_listmigrationtargets を使用する。\n"
+"    <移行先> は下記のような書式で渡されなければならないことに注意: "
+"[3143,3146,3147,3145,3144,3148,3062]. \n"
 "    オプション: \n"
 "        -s (開始時刻) \n"
 "        -d 予行演習モード (実際には処理を行なわない) \n"
-"        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白は使用しないこと)"
+"        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
+"は使用しないこと)"
 
 #: ../src/spacecmd/system.py:4389
 msgid "Cannot find system "
@@ -8287,42 +8292,42 @@ msgstr "順位が正しくありません"
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:691
+#: ../src/spacecmd/utils.py:692
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:698
+#: ../src/spacecmd/utils.py:699
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:709
+#: ../src/spacecmd/utils.py:710
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:711
+#: ../src/spacecmd/utils.py:712
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
-#: ../src/spacecmd/utils.py:713
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:741
+#: ../src/spacecmd/utils.py:742
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:757
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:843
+#: ../src/spacecmd/utils.py:844
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

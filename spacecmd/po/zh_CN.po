@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 15:15+0200\n"
+"POT-Creation-Date: 2021-05-21 13:18+0200\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -1249,8 +1249,10 @@ msgstr ""
 "用法：configchannel_export <频道>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个频道，则默认文件名\n"
-"                      为 <CHANNEL>.json；如果导出多个频道，则默认文件名为 ccs.json；\n"
-"                      如果未指定频道（例如全部导出），则默认文件名为 cc_all.json\n"
+"                      为 <CHANNEL>.json；如果导出多个频道，则默认文件名为 "
+"ccs.json；\n"
+"                      如果未指定频道（例如全部导出），则默认文件名为 cc_all."
+"json\n"
 "\n"
 "注意：频道列表是可选的，默认为全部导出"
 
@@ -3015,9 +3017,10 @@ msgstr ""
 "用法：kickstart_export <KSPROFILE>... [选项])\n"
 "选项：\n"
 "    -f outfile.json：指定输出文件名。如果导出单个 kickstart，则默认文件名\n"
-"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件名为 profiles."
-"json；\n"
-"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 ks_all.json\n"
+"                      为 <KSPROFILE>.json；如果导出多个 kickstart，则默认文件"
+"名为 profiles.json；\n"
+"                      如果未指定 KSPROFILE（例如全部导出），则默认文件名为 "
+"ks_all.json\n"
 "\n"
 "注意：KSPROFILE 列表是可选的，默认为全部导出"
 
@@ -7660,7 +7663,9 @@ msgstr "    友好名称： "
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
-msgstr "此方法已弃用并会从将来的 API 版本中去除。请改为使用 system_scheduleproductmigration。"
+msgstr ""
+"此方法已弃用并会从将来的 API 版本中去除。请改为使用 "
+"system_scheduleproductmigration。"
 
 #: ../src/spacecmd/system.py:4316 ../src/spacecmd/system.py:4331
 msgid "This method is deprecated and will be removed in a future API version"
@@ -7711,7 +7716,8 @@ msgid ""
 "        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
 "spaces))"
 msgstr ""
-"用法：system_scheduleproductmigration <系统> <基础频道标签> <迁移目标> [选项] \n"
+"用法：system_scheduleproductmigration <系统> <基础频道标签> <迁移目标> [选"
+"项] \n"
 "    有关迁移目标参数，请参见 system_listmigrationtargets。\n"
 "    必须按以下格式传递迁移目标参数：[3143,3146,3147,3145,3144,3148,3062]。\n"
 "    选项：\n"
@@ -8054,39 +8060,39 @@ msgstr "无效排名"
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:691
+#: ../src/spacecmd/utils.py:692
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:698
+#: ../src/spacecmd/utils.py:699
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:709
+#: ../src/spacecmd/utils.py:710
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:711
+#: ../src/spacecmd/utils.py:712
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
-#: ../src/spacecmd/utils.py:713
+#: ../src/spacecmd/utils.py:714
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:741
+#: ../src/spacecmd/utils.py:742
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:757
+#: ../src/spacecmd/utils.py:758
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:843
+#: ../src/spacecmd/utils.py:844
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
