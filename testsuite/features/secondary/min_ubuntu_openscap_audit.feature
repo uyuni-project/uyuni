@@ -23,13 +23,13 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
     And I install OpenSCAP dependencies on "ubuntu_minion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
-    And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until event "Package List Refresh" is completed
 
   Scenario: Schedule an OpenSCAP audit job on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
+    And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
     And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu2004-xccdf.xml" as "path"
     And I click on "Schedule"
