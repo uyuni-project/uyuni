@@ -12,11 +12,10 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-@ubuntu_minion
-  Scenario: Install the client tools packages on the Ubuntu minion
-    When I enable client tools repositories on "ubuntu_minion"
+  Scenario: Enable all the necessary repositories for OpenSCAP on Ubuntu minion
+    When I enable Ubuntu "universe" repository on "ubuntu_minion"
+    And I enable client tools repositories on "ubuntu_minion"
 
-@ubuntu_minion
   Scenario: Install the OpenSCAP packages on the Ubuntu minion
     Given I am on the Systems overview page of this "ubuntu_minion"
     When I refresh the metadata for "ubuntu_minion"
@@ -76,6 +75,6 @@ Feature: OpenSCAP audit of Ubuntu Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Ubuntu minion
     When I remove OpenSCAP dependencies from "ubuntu_minion"
 
-@ubuntu_minion
-  Scenario: Cleanup: remove the client tools packages on the Ubuntu minion
+  Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Ubuntu minion
     When I disable client tools repositories on "ubuntu_minion"
+    And I disable Ubuntu "universe" repository on "ubuntu_minion"
