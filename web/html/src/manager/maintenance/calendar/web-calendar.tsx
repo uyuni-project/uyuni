@@ -79,7 +79,7 @@ const WebCalendar = (props: WebCalendarProps) => {
       const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
       return Network.get(endpoint, "application/json").promise
         .then(events => {
-          setEvents(colorEvents(events));
+          setEvents(processEvents(events));
           navigateTo(operation);
           props.clearMessages();
           setCurrentDate(getApi().currentDataManager.data.currentDate);
@@ -102,7 +102,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more past maintenance windows")));
         } else {
-          setEvents(colorEvents(events));
+          setEvents(processEvents(events));
           // Skip to next event that is not in current month
           const filteredEvents = events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month());
@@ -132,7 +132,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));
         } else {
-          setEvents(colorEvents(events));
+          setEvents(processEvents(events));
           // Skip to next event that is not in current month
           const firstEvent = moment.parseZone(events.filter(event =>
             moment.parseZone(event.start).month() !== moment(currentDate).month())[0].start
@@ -232,7 +232,8 @@ const WebCalendar = (props: WebCalendarProps) => {
     return filteredEvents.length > 0;
   }
 
-  const colorEvents = (events) => {
+  const processEvents = (events) => {
+    // Add a color to the event cycling through the list of available colors
     if (props.eventNames && props.eventNames.length > 0) {
       props.eventNames.forEach((name, i) =>
         events.filter(event => event.title === name).map(event =>
@@ -240,7 +241,29 @@ const WebCalendar = (props: WebCalendarProps) => {
         )
       );
     }
+    events.forEach(event =>
+      Object.assign(event, {
+        start: event.start.split(" ")[0],
+        startTimezone: event.start.split(" ")[1],
+        end: event.end.split(" ")[0],
+        endTimezone: event.end.split(" ")[1]
+      })
+    );
     return events;
+  }
+
+  const setEventContent = (eventContent) => {
+    if (eventContent.view.type === "dayGridMonth") {
+      return <>{eventContent.timeText} {eventContent.event.extendedProps.startTimezone} {eventContent.event.title}</>;
+    }
+    else {
+      // Add the timezone to the timeText string e.g. '9:00am - 12:00pm' becomes '9:00am CEST - 12:00pm CEST'
+      const timeText = eventContent.timeText.split(" - ");
+      return <>
+        {timeText[0] + " " + eventContent.event.extendedProps.startTimezone + " - " + timeText[1] + " " +
+        eventContent.event.extendedProps.endTimezone} {eventContent.event.title}
+      </>;
+    }
   }
 
   return (
@@ -295,6 +318,7 @@ const WebCalendar = (props: WebCalendarProps) => {
         events={events}
         eventColor={'#192072'}
         editable={false}
+        eventContent={(eventContent) => setEventContent(eventContent)}
         eventsSet={() => setEvents(events)}
         eventDisplay={"block"}
         nowIndicator={true}
