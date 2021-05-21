@@ -17,15 +17,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-05 00:57+0000\n"
-"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"PO-Revision-Date: 2021-05-21 09:57+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -35,14 +35,11 @@ msgstr "残り"
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
-msgstr ""
-"Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいず"
-"れかをお使いください"
+msgstr "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいずれかをお使いください"
 
 #: ../html/src/components/FormulaForm.tsx:19
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"formula を保存しました。この formula に対する highstate の適用は不要です。"
+msgstr "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
 #: ../html/src/components/FormulaForm.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
@@ -60,9 +57,7 @@ msgstr "項目の書式が正しくありません: {0}"
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
-msgstr ""
-"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
-"を行なうことができます。"
+msgstr "このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定を行なうことができます。"
 
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
@@ -74,9 +69,8 @@ msgid ""
 "that systems in the set use at most 1 maintenance schedule if you want to "
 "schedule by date or maintenance window."
 msgstr ""
-"選択したシステムには複数のメンテナンススケジュールが存在しています。日付やメ"
-"ンテナンスウィンドウでスケジュールを設定したい場合は、システムに対して最大で"
-"も 1 つのメンテナンススケジュールのみを設定してください。"
+"選択したシステムには複数のメンテナンススケジュールが存在しています。日付やメンテナンスウィンドウでスケジュールを設定したい場合は、"
+"システムに対して最大でも 1 つのメンテナンススケジュールのみを設定してください。"
 
 #: ../html/src/components/action-schedule.tsx:195
 msgid "No upcoming maintenance windows"
@@ -124,9 +118,7 @@ msgstr "保存時にエラーが発生しました。"
 
 #: ../html/src/components/config-channels.tsx:242
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
-"状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
-"てください。"
+msgstr "状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なってください。"
 
 #: ../html/src/components/config-channels.tsx:295
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:53
@@ -211,9 +203,7 @@ msgstr "{1} を {0} してよろしいですか "
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:83
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
-msgstr ""
-"選択した {1} に対して {0} してよろしいですか？ ({2} 個の {1} が選択されていま"
-"す)"
+msgstr "選択した {1} に対して {0} してよろしいですか？ ({2} 個の {1} が選択されています)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:49
 #: ../html/src/components/dialog/DangerDialog.tsx:50
@@ -283,9 +273,8 @@ msgid ""
 "then be configured on group and system level. This allows you to "
 "automatically install and configure software."
 msgstr ""
-"このページでは、このグループやシステムに対する Salt Formula を選択することが"
-"できます。設定後、グループやシステムのレベルで設定を行なうことができるように"
-"なります。これはソフトウェアの自動インストールや設定を行なうためのものです。"
+"このページでは、このグループやシステムに対する Salt Formula を選択することができます。設定後、グループやシステムのレベルで設定を行なうことが"
+"できるようになります。これはソフトウェアの自動インストールや設定を行なうためのものです。"
 
 #: ../html/src/components/formula-selection.tsx:290
 #: ../html/src/components/panels/CreatorPanel.tsx:123
@@ -306,8 +295,7 @@ msgstr "Formula"
 
 #: ../html/src/components/formulas/EditGroup.tsx:320
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
+msgstr "この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
@@ -666,29 +654,23 @@ msgstr "内部エラーが発生しました。詳細はサーバ内のログを
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:21
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
-"モニタリングの有効化に失敗しました。詳細はサーバ内のログをお読みください。"
+msgstr "モニタリングの有効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
-msgstr ""
-"全てのモニタリングサービスの有効化に失敗しました。いくつかのサービスが無効化"
-"されています。詳細はサーバ内のログをお読みください。"
+msgstr "全てのモニタリングサービスの有効化に失敗しました。いくつかのサービスが無効化されています。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:25
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
-"モニタリングの無効化に失敗しました。詳細はサーバ内のログをお読みください。"
+msgstr "モニタリングの無効化に失敗しました。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
-msgstr ""
-"全てのモニタリングサービスの無効化に失敗しました。いくつかのサービスが有効化"
-"されています。詳細はサーバ内のログをお読みください。"
+msgstr "全てのモニタリングサービスの無効化に失敗しました。いくつかのサービスが有効化されています。詳細はサーバ内のログをお読みください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
 msgid "Monitoring enabled successfully."
@@ -701,32 +683,24 @@ msgstr "モニタリングの無効化が正常に完了しました。"
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid ""
 "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
-"Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されていま"
-"す。 "
+msgstr "Tomcat Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid ""
 "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
-"Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されていま"
-"す。 "
+msgstr "Tomcat Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:40
 msgid ""
 "The Taskomatic Prometheus exporter is up but the JMX configuration is "
 "disabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されて"
-"います。 "
+msgstr "Taskomatic Prometheus エクスポータが動作していますが、 JMX 設定が無効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid ""
 "The Taskomatic Prometheus exporter is down but the JMX configuration is "
 "enabled. "
-msgstr ""
-"Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されて"
-"います。 "
+msgstr "Taskomatic Prometheus エクスポータが停止していますが、 JMX 設定が有効化されています。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "Monitoring status hasn't changed."
@@ -734,8 +708,7 @@ msgstr "モニタリング状態は変更されていません。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:51
 msgid "An error occured. Monitoring status unknown. Refresh the page."
-msgstr ""
-"エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
+msgstr "エラーが発生しました。モニタリング状態は不明です。ページを更新してください。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
@@ -912,8 +885,8 @@ msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
-"利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools "
-"Channel を必要とする製品は表示されなくなります。"
+"利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools Channel "
+"を必要とする製品は表示されなくなります。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -927,9 +900,7 @@ msgstr "セットアップウィザード"
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
-msgstr ""
-"製品データの更新処理が裏で動作しています。しばらくしてからやり直してくださ"
-"い。"
+msgstr "製品データの更新処理が裏で動作しています。しばらくしてからやり直してください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:281
 msgid "The product catalog is still refreshing, please wait."
@@ -956,25 +927,19 @@ msgstr "なぜ一覧に全ての製品が表示されていないのですか？
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
-"(ミラークレデンシャル) に直接結びついています。"
+msgstr "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 (ミラークレデンシャル) に直接結びついています。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:367
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
-msgstr ""
-"存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
-"報を追加していることをご確認ください。"
+msgstr "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:377
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
-msgstr ""
-"このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
-"スター上でのみ管理することができます。"
+msgstr "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マスター上でのみ管理することができます。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:453
 msgid "Filter by architecture"
@@ -1132,9 +1097,7 @@ msgstr "実行時の状態"
 msgid ""
 "The server is running or has finished executing the following tasks during "
 "the latest 5 minutes."
-msgstr ""
-"サーバは下記のタスクを処理中であるか、もしくは直近 5 分の間に実行が完了してい"
-"ます。"
+msgstr "サーバは下記のタスクを処理中であるか、もしくは直近 5 分の間に実行が完了しています。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:184
 msgid "Data is refreshed every "
@@ -1194,9 +1157,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
-"セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
-"してください。"
+msgstr "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込みしてください。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
@@ -1268,9 +1229,7 @@ msgstr "マッチングデータの状態"
 msgid ""
 "Could not start a matching run. Please contact your SUSE Manager "
 "administrator to make sure the task scheduler is running."
-msgstr ""
-"マッチング処理を開始できません。 SUSE Manager の管理者に連絡して、タスクスケ"
-"ジューラが動作しているかどうかをご確認ください。"
+msgstr "マッチング処理を開始できません。 SUSE Manager の管理者に連絡して、タスクスケジューラが動作しているかどうかをご確認ください。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:87
 msgid "No match data is currently available."
@@ -1288,15 +1247,12 @@ msgstr "マッチングデータは現在計算中です。 {0} に開始して�
 msgid ""
 "Latest successful match data was computed {0}, you can trigger a new run by "
 "clicking the button below."
-msgstr ""
-"直近のマッチングデータは {0} に計算されていますが、下記のボタンを押すことで新"
-"たに実行することもできます。"
+msgstr "直近のマッチングデータは {0} に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:114
 msgid ""
 "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
-"マッチングデータの計算は通常、夜間のタスクスケジュールとして実行されます ( "
+msgstr "マッチングデータの計算は通常、夜間のタスクスケジュールとして実行されます ( "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:116
 msgid "change the task schedule from the administration page"
@@ -1317,9 +1273,7 @@ msgstr "サポート対象外のパーツ番号が検出されました"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:25
 msgid ""
 "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
-"物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータ"
-"をご確認ください"
+msgstr "物理システムが仮想化ゲストであるものとして報告されました。ハードウェアデータをご確認ください"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:29
 msgid "Virtual guest has unknown host, assuming it is a physical system"
@@ -1333,17 +1287,13 @@ msgstr "システムのソケット数が未知です。 16 個あるものと�
 msgid ""
 "Two subscriptions with the same part number are in a bundle - merged into a "
 "single one"
-msgstr ""
-"同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つに"
-"まとめられます"
+msgstr "同じパーツ番号の 2 つのサブスクリプションが設定されています - これらは 1 つにまとめられます"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid ""
 "Two subscriptions with the same part number (and other properties) have been "
 "merged together - start/end dates might be indicative"
-msgstr ""
-"同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめ"
-"ました - 開始／終了日をご確認ください"
+msgstr "同じパーツ番号および同じプロパティの 2 つのサブスクリプションを 1 つにまとめました - 開始／終了日をご確認ください"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:47
 msgid "Pinned match adjusted due to merged subscriptions"
@@ -1381,32 +1331,25 @@ msgstr "ピン"
 msgid ""
 "You can pin a subscription to a system to suggest a certain association to "
 "the matching algorithm. "
-msgstr ""
-"システムへのサブスクリプションに対してピンを設定することで、マッチングアルゴ"
-"リズムに特定の関連づけを提案させることができます。 "
+msgstr "システムへのサブスクリプションに対してピンを設定することで、マッチングアルゴリズムに特定の関連づけを提案させることができます。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:93
 msgid ""
 "Next time a matching is attempted, the algorithm will try to produce a "
 "result that applies the subscription to the system you specified. "
-msgstr ""
-"次回のマッチング処理の動作でアルゴリズムは、指定したシステムにサブスクリプ"
-"ションを適用する結果を生成しようとします。 "
+msgstr "次回のマッチング処理の動作でアルゴリズムは、指定したシステムにサブスクリプションを適用する結果を生成しようとします。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:96
 msgid ""
 "Note that the algorithm might determine that a certain pin cannot be "
 "respected, "
-msgstr ""
-"なお、アルゴリズム側では特定のピンを無視するよう判断する場合があります。 "
+msgstr "なお、アルゴリズム側では特定のピンを無視するよう判断する場合があります。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
 msgid ""
 "depending on a subscription's availablility and applicability rules, in that "
 "case it will be shown as not satisfied. "
-msgstr ""
-"これはサブスクリプションが利用できるかどうかと、適用ルールに従って決まりま"
-"す。この場合、満たされていないものとして表示されます。 "
+msgstr "これはサブスクリプションが利用できるかどうかと、適用ルールに従って決まります。この場合、満たされていないものとして表示されます。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:113
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:142
@@ -1509,9 +1452,7 @@ msgstr "ピンの保存"
 msgid ""
 "No subscriptions have been found to match this system, considering all "
 "products installed, either directly or in virtual guests."
-msgstr ""
-"直接もしくは仮想化ゲストにインストールされている全ての製品を考慮しても、この"
-"システムに該当するサブスクリプションは見つかりませんでした。"
+msgstr "直接もしくは仮想化ゲストにインストールされている全ての製品を考慮しても、このシステムに該当するサブスクリプションは見つかりませんでした。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:60
 msgid "Filter by description"
@@ -1797,9 +1738,7 @@ msgstr "クラスタを削除してよろしいですか？"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:106
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
-"これはクラスタそのものを削除する処理ではありません。 Uyuni から削除するだけで"
-"す"
+msgstr "これはクラスタそのものを削除する処理ではありません。 Uyuni から削除するだけです"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:772
@@ -1820,15 +1759,12 @@ msgid ""
 "Container as a Service Platform (CaaSP) channels assigned - or any children "
 "channels of CaaSP channels"
 msgstr ""
-"Container as a Service Platform (CaaSP) チャンネル、もしくは CaaSP の子チャン"
-"ネルを割り当てていること"
+"Container as a Service Platform (CaaSP) チャンネル、もしくは CaaSP の子チャンネルを割り当てていること"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:58
 msgid ""
 "The management node can access the node as root via ssh without password"
-msgstr ""
-"管理ノードから対象のノードに対して、パスワード無しの ssh で root アクセスでき"
-"ること"
+msgstr "管理ノードから対象のノードに対して、パスワード無しの ssh で root アクセスできること"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:66
 msgid "Select system to join"
@@ -2010,9 +1946,7 @@ msgstr "フィルタを作成しました"
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
-msgstr ""
-"フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要が"
-"あることに注意してください"
+msgstr "フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要があることに注意してください"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid "Filter Name"
@@ -2180,9 +2114,7 @@ msgstr "プロジェクトを削除してよろしいですか"
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
-msgstr ""
-"要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。やり"
-"直してください。"
+msgstr "要求に対して割り込みが発生したか、サーバから不正な応答を受け取りました。やり直してください。"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 msgid "Package"
@@ -2232,9 +2164,7 @@ msgstr "バージョン上限 (等しいものを含む)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
 msgid "contains package with epoch/version/release lower or equal than"
-msgstr ""
-"指定したエポック／バージョン／リリースと同じか、もしくはそれよりも古いパッ"
-"ケージ"
+msgstr "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも古いパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "version equal"
@@ -2250,9 +2180,7 @@ msgstr "バージョン下限 (等しいものを含む)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
 msgid "contains package with epoch/version/release greater or equal than"
-msgstr ""
-"指定したエポック／バージョン／リリースと同じか、もしくはそれよりも新しいパッ"
-"ケージ"
+msgstr "指定したエポック／バージョン／リリースと同じか、もしくはそれよりも新しいパッケージ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
 msgid "contains package with epoch/version/release greater than"
@@ -2328,9 +2256,7 @@ msgstr "プロジェクトをビルドしています..."
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
-msgstr ""
-"このプロジェクトには同期されていないパッチを含むチャンネルがあります。これら"
-"の同期は、お使いの組織の設定に従って行なわれます。"
+msgstr "このプロジェクトには同期されていないパッチを含むチャンネルがあります。これらの同期は、お使いの組織の設定に従って行なわれます。"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
 msgid "Version Message"
@@ -4289,7 +4215,7 @@ msgstr "ベースチャンネル:"
 msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
-msgstr ""
+msgstr "インストール済みのSUSE Linuxバージョンに対応する提供されたチャンネル。既定では、 "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
