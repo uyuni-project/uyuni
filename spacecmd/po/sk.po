@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-20 18:57+0000\n"
+"PO-Revision-Date: 2021-05-21 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1758,7 +1758,7 @@ msgstr "distribution_delete: Vymazať strom Kickstart"
 
 #: ../src/spacecmd/distribution.py:170
 msgid "usage: distribution_delete LABEL"
-msgstr "strom Kickstart"
+msgstr "použitie: distribution_delete OZNAČNIE"
 
 #: ../src/spacecmd/distribution.py:194 ../src/spacecmd/distribution.py:233
 #, python-format
@@ -1775,34 +1775,34 @@ msgstr "distribution_details: Zobraziť podrobnosti stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:211
 msgid "usage: distribution_details LABEL"
-msgstr ""
+msgstr "použitie: distribution_details OZNAČENIE"
 
 #: ../src/spacecmd/distribution.py:249 ../src/spacecmd/package.py:92
 #, python-format
 msgid "Name:    %s"
-msgstr ""
+msgstr "Názov:    %s"
 
 #: ../src/spacecmd/distribution.py:250 ../src/spacecmd/package.py:99
 #, python-format
 msgid "Path:    %s"
-msgstr ""
+msgstr "Cesta:    %s"
 
 #: ../src/spacecmd/distribution.py:251 ../src/spacecmd/softwarechannel.py:657
 #, python-format
 msgid "Channel: %s"
-msgstr ""
+msgstr "Kanál: %s"
 
 #: ../src/spacecmd/distribution.py:259
 msgid "distribution_rename: Rename a Kickstart tree"
-msgstr ""
+msgstr "distribution_rename: Premenovať Kickstart strom"
 
 #: ../src/spacecmd/distribution.py:260
 msgid "usage: distribution_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: distribution_rename STARÝNÁZOV NOVÝNÁZOV"
 
 #: ../src/spacecmd/distribution.py:289
 msgid "distribution_update: Update the path of a Kickstart tree"
-msgstr ""
+msgstr "distribution_update: Aktualizovať cestu stromu Kickstart"
 
 #: ../src/spacecmd/distribution.py:290
 msgid ""
@@ -1822,15 +1822,15 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:50
 msgid "errata_list: List all patches"
-msgstr ""
+msgstr "errata_list: Vypísať zoznam všetkých opráv"
 
 #: ../src/spacecmd/errata.py:51
 msgid "usage: errata_list"
-msgstr ""
+msgstr "použitie: errata_list"
 
 #: ../src/spacecmd/errata.py:67
 msgid "errata_summary: Print a summary of all errata"
-msgstr ""
+msgstr "errata_summary: Vytlačiť súhrn všetkých opráv chýb"
 
 #: ../src/spacecmd/errata.py:68
 msgid "usage: errata_summary"
