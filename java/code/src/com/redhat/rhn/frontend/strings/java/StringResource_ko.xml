@@ -6437,12 +6437,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>자동 설치 가능한 배포판은 커널이나 initrd 이미지로의 기본 경로가 잘못되었거나 경로가 존재하지 않기 때문에 유효하지 않습니다. 사용자 지정 배포판을 사용하려면 배포판을 선택하고 기본 경로를 적절하게 변경하십시오.</target>
       </trans-unit>
-      <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
         <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target state="translated">추가 커널 파라미터의 길이는 2048자를 초과할 수 없습니다.</target>
+        <target state="final">추가 커널 파라미터의 길이는 2048자를 초과할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.locale.success" xml:space="preserve">
         <source>Kickstart locale options updated.</source>
@@ -8680,19 +8680,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="final">참고: 이 시스템의 @@PRODUCT_NAME@@내에서 가상화 기능을 활성화하여 사용할 경우 해당 도구 하위 채널에서 mgr-virtualization-host 패키지를 설치합니다. 호스트 시스템의 가상화를 활성화하기 위한 기타 고려사항 및 요구사항은 문서를 참조하십시오.</target>
       </trans-unit>
-      <trans-unit approved="no" id="system.migrate.user_no_perms" xml:space="preserve">
+      <trans-unit approved="yes" id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">이 사용자에는 이 시스템을 전송하는 데 필요한 권한이 없습니다.</target>
+        <target state="final">이 사용자에는 이 시스템을 전송하는 데 필요한 권한이 없습니다.</target>
       </trans-unit>
-      <trans-unit approved="no" id="system.migrate.org_not_trusted" xml:space="preserve">
+      <trans-unit approved="yes" id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be transferred between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
-        <target state="translated">시스템은 신뢰할 수 있는 조직 사이에서만 전송할 수 있습니다.</target>
+        <target state="final">시스템은 신뢰할 수 있는 조직 사이에서만 전송할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="system.migrate.no_trusted_orgs" xml:space="preserve">
         <source>This organization has no trusts defined with other organizations, or no other organizations are defined.</source>
@@ -9835,13 +9835,13 @@ Follow this url to see the full list of inactive systems:
         <source>Server Delete</source>
         <target>서버 삭제</target>
       </trans-unit>
-      <trans-unit approved="no" id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
         <source>Systems Transferred</source>
-        <target state="translated">전송된 시스템</target>
+        <target state="final">전송된 시스템</target>
       </trans-unit>
-      <trans-unit approved="no" id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="translated">시스템 전송</target>
+        <target state="final">시스템 전송</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone" xml:space="preserve">
         <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
@@ -9895,7 +9895,7 @@ Follow this url to see the full list of inactive systems:
         <source>Base Channel Subscription Updates</source>
         <target>기본 채널 서브스크립션 업데이트</target>
       </trans-unit>
-      <trans-unit id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
 The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
 synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
@@ -10230,9 +10230,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
         <target>기본 조직의 권한 부여를 업데이트할 권한이 없습니다. 이러한 권한 부여는 @@PRODUCT_NAME@@ 인증서 파일에 따라 결정됩니다.</target>
       </trans-unit>
-      <trans-unit id="distupgrade.upgrade" xml:space="preserve">
+      <trans-unit approved="yes" id="distupgrade.upgrade" xml:space="preserve">
         <source>Product Migration</source>
-        <target state="translated">제품 마이그레이션</target>
+        <target state="final">제품 마이그레이션</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
@@ -10970,69 +10970,69 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error during applying the bootstrap state, message: {0}</source>
         <target state="final">부트스트랩 상태를 적용하는 동안 오류 발생. 메시지: {0}</target>
       </trans-unit>
-      <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+      <trans-unit approved="yes" id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-        <target state="translated">철회된 패키지:</target>
+        <target state="final">철회된 패키지: {0}</target>
       </trans-unit>
-      <trans-unit id="api.errata.retractederrata" xml:space="preserve">
+      <trans-unit approved="yes" id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-        <target state="translated">철회된 패치: {0}</target>
+        <target state="final">철회된 패치: {0}</target>
       </trans-unit>
-      <trans-unit id="Transfer" xml:space="preserve">
+      <trans-unit approved="yes" id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">전송</target>
+        <target state="final">전송</target>
       </trans-unit>
-      <trans-unit id="virt.network_update" xml:space="preserve">
+      <trans-unit approved="yes" id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-        <target state="translated">가상 네트워크 업데이트</target>
+        <target state="final">가상 네트워크 업데이트</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. 이 작업을 수행하면 &lt;em&gt;not&lt;/em&gt; 상태가 적용됩니다. 상태를 적용하려면,  &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; 를 실행하십시오.</target>
+        <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. 이 작업을 수행하면 &lt;em&gt;not&lt;/em&gt; 상태가 적용됩니다. 상태를 적용하려면,  &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; 를 실행하십시오.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. 이 작업은 This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</target>
+        <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. 이 작업을 수행하면 &lt;em&gt;not&lt;/em&gt; 상태가 적용됩니다. 상태를 적용하려면, &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
       </trans-unit>
-      <trans-unit id="ansible.invalid_path" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="translated">유효하지 않은 경로(유효한 절대 경로여야 함)</target>
+        <target state="final">유효하지 않은 경로(유효한 절대 경로여야 함)</target>
       </trans-unit>
-      <trans-unit id="ansible.duplicate_path" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="translated">이미 존재하는 경로</target>
+        <target state="final">이미 존재하는 경로</target>
       </trans-unit>
-      <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="translated">제어 노드가 응답하지 않음</target>
+        <target state="final">제어 노드가 응답하지 않음</target>
       </trans-unit>
-      <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="translated">유효하지 않은 경로 유형</target>
+        <target state="final">유효하지 않은 경로 유형</target>
       </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
@@ -11041,20 +11041,24 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="translated">salt 상태 실행 중 오류 발생: {0}</target>
       </trans-unit>
-      <trans-unit id="ansible.entity_not_found" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="translated">요청된 엔터티를 찾을 수 없거나 액세스할 수 없음</target>
+        <target state="final">요청된 엔터티를 찾을 수 없거나 액세스할 수 없음</target>
       </trans-unit>
-      <trans-unit id="ansible.playbook" xml:space="preserve">
+      <trans-unit approved="yes" id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="translated">Ansible</target>
+        <target state="final">Ansible 플레이북 실행</target>
       </trans-unit>
-    </body>
+    <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
+        <source>{0} filter(s) from template created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

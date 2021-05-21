@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 13:12+0100\n"
-"PO-Revision-Date: 2021-05-17 14:57+0000\n"
+"PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "dnf-plugin-spacewalk-master/ko/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../spacewalk.py:41
 msgid "Spacewalk based repositories will be disabled."
-msgstr "Spacewalk 기반"
+msgstr "Spacewalk 기반 리포지토리가 비활성화됩니다."
 
 #: ../spacewalk.py:42
 msgid "Spacewalk channel support will be disabled."
@@ -41,7 +41,7 @@ msgstr "이 시스템은 아무 채널에도 등록되지 않았습니다."
 
 #: ../spacewalk.py:46
 msgid "SystemId could not be acquired."
-msgstr "시스템을"
+msgstr "SystemId를 가져올 수 없습니다."
 
 #: ../spacewalk.py:47
 msgid "You can use rhn_register to register."
@@ -49,7 +49,7 @@ msgstr "rhn_register를 사용하여 등록할 수 있습니다."
 
 #: ../spacewalk.py:48
 msgid "This system is receiving updates from Spacewalk server."
-msgstr "이 시스템은 acquire"
+msgstr "이 시스템은 Spacewalk 서버에서 업데이트를 받고 있습니다."
 
 #: ../spacewalk.py:49
 #, python-format
@@ -59,7 +59,7 @@ msgid ""
 "rejected."
 msgstr ""
 "보안 상의 이유로 Spacewalk 기반 리포지토리로부터 받은 패키지는 로컬에 설치된 gpg 키로만 유효성 검사를 수행할 수 있습니다. "
-"GPG 키 '%s'가 거부되었습니다."
+"GPG 키 '%s'(이)가 거부되었습니다."
 
 #: ../spacewalk.py:50
 msgid "Package profile information could not be sent."

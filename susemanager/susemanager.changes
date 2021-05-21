@@ -1,4 +1,6 @@
 - add migration script from pg version 10 to 13
+- add python3-pycryptodome to Ubuntu and Debian 10 bootstrap repos (bsc#1186346)
+- add gnupg and its dependencies to debian 10 bootstrap repo
 - sort products in mgr-sync output
 - fix creating deb bootstrap repos with packages having new checksums
   (bsc#1184330)

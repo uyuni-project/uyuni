@@ -450,7 +450,7 @@
         </context-group>
         <target state="translated">审计</target>
       </trans-unit>
-      <trans-unit id="OpenSCAP" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -886,14 +886,14 @@
         </context-group>
         <target state="translated">Proxy</target>
       </trans-unit>
-      <trans-unit id="product_proxy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
         <target>@@PRODUCT_NAME@@ Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="product_server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
         <target>@@PRODUCT_NAME@@ Server</target>
         <context-group name="ctx">
@@ -1264,7 +1264,7 @@
         </context-group>
         <target state="translated">您不能删除您自己。</target>
       </trans-unit>
-      <trans-unit id="user.satadmin.remove" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="user.satadmin.remove" xml:space="preserve">
         <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
@@ -1573,7 +1573,7 @@
         </context-group>
         <target state="translated">前缀 [{0}] 无效。必须是 {1} 中的一个。</target>
       </trans-unit>
-      <trans-unit id="error.readonly_org_admin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.readonly_org_admin" xml:space="preserve">
         <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
@@ -1823,7 +1823,7 @@
         </context-group>
         <target state="translated">您已成功为 &lt;strong&gt;{0}&lt;/strong&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt;硬件配置文件刷新。</target>
       </trans-unit>
-      <trans-unit id="message.interfaceSet" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.interfaceSet" xml:space="preserve">
         <source>Networking properties updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
@@ -2232,7 +2232,7 @@
         </context-group>
         <target state="translated">以下软件包在与 kickstart 文件 {0} 关联的任何频道中都未提供。要使所有 kickstart 功能都正常工作，这些软件包至少应该存在于与此文件关联的其中一个频道中。</target>
       </trans-unit>
-      <trans-unit id="kickstart.invalidchannel.satmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.invalidchannel.satmessage" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
@@ -2560,7 +2560,7 @@ and try again.
         </context-group>
         <target state="translated">运行任意脚本</target>
       </trans-unit>
-      <trans-unit id="rhnsd.configure" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="rhnsd.configure" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daemon Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
@@ -3498,7 +3498,7 @@ and try again.
         </context-group>
         <target state="translated">您不能删除基础组织 {0}</target>
       </trans-unit>
-      <trans-unit id="userdisable.error.orgadmin" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="userdisable.error.orgadmin" xml:space="preserve">
         <source>You cannot deactivate another organization
 administrator. Please remove the 'Organization Administrator' role from this
 user before attempting to deactivate their account.</source>
@@ -6439,7 +6439,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">可自动安装的发行套件无效，因为内核或 initrd 映像的基础路径错误或不存在。要使您的自定义发行套件有效，请选择该发行套件并相应修改其基础路径。</target>
       </trans-unit>
-      <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="kickstart.troubleshooting.validation.kernelparams.too_long" xml:space="preserve">
         <source>Extra kernel parameters can be no longer than 2048 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
@@ -8682,14 +8682,14 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子频道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
       </trans-unit>
-      <trans-unit id="system.migrate.user_no_perms" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
         </context-group>
         <target state="final">此用户缺乏转移此系统所需的权限。</target>
       </trans-unit>
-      <trans-unit id="system.migrate.org_not_trusted" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.migrate.org_not_trusted" xml:space="preserve">
         <source>Systems can only be transferred between trusted organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemMigrate.do</context>
@@ -9837,11 +9837,11 @@ Follow this url to see the full list of inactive systems:
         <source>Server Delete</source>
         <target state="translated">服务器删除</target>
       </trans-unit>
-      <trans-unit id="ssm.migrate.systems.confirmmessage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.migrate.systems.confirmmessage" xml:space="preserve">
         <source>Systems Transferred</source>
         <target state="final">系统已转移</target>
       </trans-unit>
-      <trans-unit id="ssm.migrate.systems.confirmbutton" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.migrate.systems.confirmbutton" xml:space="preserve">
         <source>Transfer Systems</source>
         <target state="final">转移系统</target>
       </trans-unit>
@@ -10234,7 +10234,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
         <target>不允许您更新默认组织中的权利。这些权利由您的 @@PRODUCT_NAME@@ 证书文件决定。</target>
       </trans-unit>
-      <trans-unit id="distupgrade.upgrade" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="distupgrade.upgrade" xml:space="preserve">
         <source>Product Migration</source>
         <target state="final">产品迁移</target>
       </trans-unit>
@@ -10444,21 +10444,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target>由于您添加了 "监视系统" 类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
         <target>由于您添加了 "监视系统" 类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.formula_error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
         <target>指派 Prometheus 导出器公式时出现问题。</target>
         <context-group name="ctx">
@@ -10951,114 +10951,118 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
         <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
-      <trans-unit id="virt.network_create" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
         <target state="final">虚拟网络创建</target>
       </trans-unit>
-      <trans-unit id="api.system.nosuchfqdn" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
         <target state="final">无此 FQDN：{0}。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
         <target state="final">无法读取/写入 "{0}"。请检查权限。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
         <target state="final">检查 "{0}" 的权限时出错。请查看服务器日志了解详细信息。</target>
       </trans-unit>
-      <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
         <target state="final">应用引导状态时出错，错误消息：{0}</target>
       </trans-unit>
-      <trans-unit id="api.package.retractedpackage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
         <target state="final">已收回软件包数：{0}</target>
       </trans-unit>
-      <trans-unit id="api.errata.retractederrata" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
         <target state="final">已收回补丁数：{0}</target>
       </trans-unit>
-      <trans-unit id="Transfer" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">转移</target>
       </trans-unit>
-      <trans-unit id="virt.network_update" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
         <target state="final">虚拟网络更新</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em />不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied. This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em/>不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
+        <target state="final">已应用 <strong>Ansible 控制节点</strong>类型。此操作将<em />不会导致应用状态。要应用状态，请使用<a href="/rhn/manager/systems/details/highstate?sid={0}">状态页</a>，或者在命令行中运行 <code class="text-info">state.highstate</code>。</target>
       </trans-unit>
-      <trans-unit id="ansible.invalid_path" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">路径无效（必须为有效的绝对路径）</target>
       </trans-unit>
-      <trans-unit id="ansible.duplicate_path" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">路径已存在</target>
       </trans-unit>
-      <trans-unit id="ansible.control_node_not_responding" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">控制节点未响应</target>
       </trans-unit>
-      <trans-unit id="ansible.invalid_path_type" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">路径类型无效</target>
       </trans-unit>
-      <trans-unit id="ansible.salt_error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">执行 Salt 状态时出错：{0}</target>
       </trans-unit>
-      <trans-unit id="ansible.entity_not_found" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
         <target state="final">未找到请求的实体或该实体无法访问</target>
       </trans-unit>
-      <trans-unit id="ansible.playbook" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
         <target state="final">执行 Ansible 剧本</target>
       </trans-unit>
-    </body>
+    <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
+        <source>{0} filter(s) from template created successfully</source>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>

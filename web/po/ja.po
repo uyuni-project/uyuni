@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-05 00:57+0000\n"
-"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"PO-Revision-Date: 2021-05-21 11:01+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -39,36 +39,11 @@ msgstr ""
 "Internet Explorer ブラウザはサポート対象外です。Firefox, Chrome, Edge のいず"
 "れかをお使いください"
 
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"formula を保存しました。この formula に対する highstate の適用は不要です。"
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr "必須の項目に入力を行なってください: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr "項目の書式が正しくありません: {0}"
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
-"を行なうことができます。"
-
 #: ../html/src/components/action-schedule.tsx:48
 msgid "new action chain"
 msgstr "新しい動作チェーン"
 
-#: ../html/src/components/action-schedule.tsx:188
+#: ../html/src/components/action-schedule.tsx:192
 msgid ""
 "There are multiple maintenance schedules for selected systems. Make sure "
 "that systems in the set use at most 1 maintenance schedule if you want to "
@@ -78,23 +53,23 @@ msgstr ""
 "ンテナンスウィンドウでスケジュールを設定したい場合は、システムに対して最大で"
 "も 1 つのメンテナンススケジュールのみを設定してください。"
 
-#: ../html/src/components/action-schedule.tsx:195
+#: ../html/src/components/action-schedule.tsx:199
 msgid "No upcoming maintenance windows"
 msgstr "次のメンテナンスウィンドウはありません"
 
-#: ../html/src/components/action-schedule.tsx:242
+#: ../html/src/components/action-schedule.tsx:246
 msgid "Earliest:"
 msgstr "指定時刻以降にスケジュール:"
 
-#: ../html/src/components/action-schedule.tsx:242
+#: ../html/src/components/action-schedule.tsx:246
 msgid "Maintenance Window:"
 msgstr "メンテナンスウィンドウ:"
 
-#: ../html/src/components/action-schedule.tsx:272
+#: ../html/src/components/action-schedule.tsx:276
 msgid "Add to:"
 msgstr "以下に追加:"
 
-#: ../html/src/components/action-schedule.tsx:290
+#: ../html/src/components/action-schedule.tsx:294
 msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
@@ -158,8 +133,8 @@ msgid "Confirm"
 msgstr "確認"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:178
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:183
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 msgid "Save Changes"
 msgstr "変更点の保存"
 
@@ -219,7 +194,7 @@ msgstr ""
 #: ../html/src/components/dialog/DangerDialog.tsx:50
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:129
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
@@ -236,7 +211,7 @@ msgstr "取り消し"
 #: ../html/src/components/dialog/DeleteDialog.tsx:22
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
 #: ../html/src/manager/images/image-profiles.tsx:137
@@ -273,6 +248,36 @@ msgstr "プロジェクトの削除"
 msgid "Are you sure you want to delete project "
 msgstr "下記のプロジェクトを削除してよろしいですか "
 
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+"formula を保存しました。この formula に対する highstate の適用は不要です。"
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr "必須の項目に入力を行なってください: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr "項目の書式が正しくありません: {0}"
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
+msgstr ""
+"このページでは Salt Formula を設定して、ソフトウェアの自動インストールと設定"
+"を行なうことができます。"
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
+msgstr ""
+"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
+
 #: ../html/src/components/formula-selection.tsx:145
 msgid " No group"
 msgstr " グループ無し"
@@ -291,7 +296,7 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:123
 #: ../html/src/manager/clusters/cluster/cluster-config.tsx:82
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:173
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:195
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:19
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:22
 #: ../html/src/manager/minion/packages/package-states.tsx:194
@@ -299,15 +304,10 @@ msgid "Save"
 msgstr "保存"
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
 msgid "Formulas"
 msgstr "Formula"
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"この項目は、生成される pillar データの 'key' 識別子として使用されます。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
@@ -332,6 +332,7 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/FormMultiInput.stories.js:262
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -340,7 +341,6 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr "送信"
@@ -357,8 +357,8 @@ msgid "Users"
 msgstr "ユーザー"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
 #: ../html/src/components/input/form.stories.js:26
+#: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
 msgstr "名"
 
@@ -367,12 +367,12 @@ msgstr "名"
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/InputBase.test.tsx:41
-#: ../html/src/components/input/InputBase.test.tsx:67
-#: ../html/src/components/input/InputBase.test.tsx:95
+#: ../html/src/components/input/form.stories.js:28
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr "最低 2 文字"
 
@@ -389,6 +389,11 @@ msgstr "ログイン"
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "削除"
+
+#: ../html/src/components/input/InputBase.tsx:276
+#, fuzzy
+msgid "required"
+msgstr "要再起動"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.tsx:189
@@ -444,7 +449,7 @@ msgid "Flavor"
 msgstr "フレーバー"
 
 #: ../html/src/components/input/Select.stories.js:64
-#: ../html/src/components/input/Select.test.tsx:71
+#: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "入力してください..."
 
@@ -452,7 +457,7 @@ msgstr "入力してください..."
 msgid "No flavors"
 msgstr "フレーバー無し"
 
-#: ../html/src/components/input/Select.test.tsx:72
+#: ../html/src/components/input/Select.test.tsx:58
 msgid "No flavor"
 msgstr "フレーバー無し"
 
@@ -574,7 +579,7 @@ msgid "Edit Configuration Channel"
 msgstr "設定チャンネルの編集"
 
 #: ../html/src/components/systems.tsx:43
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:147
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
 msgid "Security Advisory"
 msgstr "セキュリティアドバイザリ"
 
@@ -602,8 +607,8 @@ msgstr "すべてを選択"
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
+#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
@@ -741,7 +746,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:199
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
@@ -990,7 +995,7 @@ msgstr "製品説明"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:625
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:191
 msgid "Architecture"
@@ -1533,6 +1538,31 @@ msgstr "サブスクリプションが見つかりませんでした。"
 msgid "Your subscriptions"
 msgstr "お使いのサブスクリプション"
 
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+msgid "Edit Virtual Host Managers"
+msgstr "仮想ホストマネージャの編集"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+msgid "Subscription Matching"
+msgstr "サブスクリプションマッチング"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+msgid "Subscriptions"
+msgstr "サブスクリプション"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+msgid "Unmatched Products"
+msgstr "該当のない製品"
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+msgid "Pins "
+msgstr "ピン "
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+msgid "Messages "
+msgstr "メッセージ "
+
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr "製品名"
@@ -1549,11 +1579,6 @@ msgstr "システム一覧の表示"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
 msgstr "一致しない製品は見つかりませんでした。"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
-msgid "Unmatched Products"
-msgstr "該当のない製品"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
@@ -1582,26 +1607,6 @@ msgstr "1〜2 ソケットまたは 1〜2 台の仮想マシン"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
 msgstr "インスタンスごと"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
-msgid "Edit Virtual Host Managers"
-msgstr "仮想ホストマネージャの編集"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
-msgid "Subscription Matching"
-msgstr "サブスクリプションマッチング"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
-msgid "Subscriptions"
-msgstr "サブスクリプション"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
-msgid "Pins "
-msgstr "ピン "
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
-msgid "Messages "
-msgstr "メッセージ "
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:47
@@ -1978,35 +1983,35 @@ msgstr "チャンネル"
 msgid "Module Name"
 msgstr "モジュール名"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:21
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:35
 msgid "Updating the filter..."
 msgstr "フィルタを更新しています..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
-msgid "Filter Details"
-msgstr "フィルタの詳細"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:69
-msgid "Create a new filter"
-msgstr "新しいフィルタの作成"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:114
-msgid "Filter deleted successfully"
-msgstr "フィルタを削除しました"
-
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:146
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:85
 msgid "Check the required fields below"
 msgstr "下記の必要な項目にチェックを入れてください"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:94
 msgid "Filter updated successfully"
 msgstr "フィルタを更新しました"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:109
 msgid "Filter created successfully"
 msgstr "フィルタを作成しました"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:63
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+msgid "Filter Details"
+msgstr "フィルタの詳細"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:121
+msgid "Create a new filter"
+msgstr "新しいフィルタの作成"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:167
+msgid "Filter deleted successfully"
+msgstr "フィルタを削除しました"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
@@ -2014,34 +2019,53 @@ msgstr ""
 "フィルタを更新した場合、その後に関連する全てのプロジェクトを再構築する必要が"
 "あることに注意してください"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:69
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Filter Name"
 msgstr "フィルタ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:79
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:86
+msgid "Prefix"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:89
+msgid ""
+"The prefix will be prepended to the name of every individual filter created "
+"by the template"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:100
+msgid "Use a template"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
+#, fuzzy
+msgid "Use a manual filter"
+msgstr "新しいフィルタの作成"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Filter Type"
 msgstr "フィルタタイプ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:92
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
 msgid "Matcher"
 msgstr "マッチャー"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:106
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 #: ../html/src/manager/images/image-view-packages.tsx:48
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
 msgstr "パッケージ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:126
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 msgid "Epoch"
 msgstr "エポック"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:117
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:127
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
@@ -2051,68 +2075,70 @@ msgstr "エポック"
 msgid "Version"
 msgstr "バージョン"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:128
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 msgid "Release"
 msgstr "リリース"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:135
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 msgid "Advisory name"
 msgstr "アドバイザリ名"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:148
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
 msgid "Bug Fix Advisory"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:149
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Product Enhancement Advisory"
 msgstr "製品の機能強化アドバイザリ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:151
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "Advisory Type"
 msgstr "アドバイザリタイプ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:160
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Issued"
 msgstr "発行済み"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:123
 #: ../html/src/manager/images/image-view-patches.tsx:97
 msgid "Synopsis"
 msgstr "概要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:183
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
 msgid "Reboot Required"
 msgstr "要再起動"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
 msgid "Package Manager Restart Required"
 msgstr "要パッケージマネージャの再起動"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
 msgid "Advisory Keywords"
 msgstr "アドバイザリキーワード"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:214
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
 msgid "Deny"
 msgstr "拒否"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid "Allow"
 msgstr "許可"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:253
 msgid "Rule"
 msgstr "ルール"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:81
 msgid ""
 "Some of the selected filters are used in projects and can not be deleted."
-msgstr "選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除できません。"
+msgstr ""
+"選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除で"
+"きません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:117
 msgid "Select unused"
@@ -2136,6 +2162,29 @@ msgstr "名前またはプロジェクトでフィルタ"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:156
 msgid "Projects in use"
 msgstr "使用しているプロジェクト"
+
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
+msgid "Live patching based on a SUSE product"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
+msgid "Template"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
+#, fuzzy
+msgid "Product"
+msgstr "製品"
+
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
+#, fuzzy
+msgid "Kernel"
+msgstr "カーネルオプション"
+
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
+#, fuzzy
+msgid "latest"
+msgstr "最新"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:69
 msgid "Create a new content lifecycle project"
@@ -2404,18 +2453,6 @@ msgstr "未構築"
 msgid "Built time"
 msgstr "ビルド時間"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr "グローバルフィルタを読み込んでいます..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr "プロジェクトフィルタを更新しています..."
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
-msgstr "新しいフィルタの作成"
-
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
 msgid "Edit Filter {0}"
 msgstr "フィルタ {0} の編集"
@@ -2448,6 +2485,18 @@ msgstr "除外"
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "deny で既に除外している場合でも、完全なソースから選択します"
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr "グローバルフィルタを読み込んでいます..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr "プロジェクトフィルタを更新しています..."
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
+msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
 msgid "No version to promote or colliding environment build in progress"
@@ -2603,37 +2652,39 @@ msgstr ""
 "このグループ内の各 minion に対して、設定チャンネルの適用をスケジュールしまし"
 "た"
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
-msgstr "formula を保存しました。有効化された formula 内で設定オプションを編集し、下記を適用してください "
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:139
-msgid "Highstate"
-msgstr "Highstate"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
-msgid " for the changes to take effect."
-msgstr " 変更した設定を反映させるには、再起動が必要です。"
-
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
-msgid "Invalid target type."
-msgstr "ターゲットタイプが正しくありません。"
-
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the "
 msgstr "formula を保存しました。下記を適用します "
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/state/highstate.tsx:139
+msgid "Highstate"
+msgstr "Highstate"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+msgid " for the changes to take effect."
+msgstr " 変更した設定を反映させるには、再起動が必要です。"
+
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+msgid "Invalid target type."
+msgstr "ターゲットタイプが正しくありません。"
+
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid "Formula saved. Edit configuration options "
+msgstr ""
+"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
+"を適用してください "
 
 #: ../html/src/manager/images/image-build.tsx:35
 msgid "An unknown error has occurred."
@@ -3404,7 +3455,7 @@ msgid "Delete maintenance schedule"
 msgstr "メンテナンススケジュールの削除"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:57
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:166
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
 msgid "Assigned Systems"
 msgstr "割り当て済みのシステム"
 
@@ -3435,11 +3486,11 @@ msgstr "マルチ"
 msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:151
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3447,11 +3498,11 @@ msgstr "メンテナンススケジュールを {0} 個のシステムに割り�
 msgid "Cancel affected actions"
 msgstr "影響する動作のキャンセル"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:190
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Search systems"
 msgstr "システムの検索"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:209
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
 msgid "Current Schedule"
 msgstr "現在のスケジュール"
 
@@ -3626,28 +3677,41 @@ msgstr ""
 "スケジュールの割り当てを行なうと、このセット内の全てのシステムにある従来の割"
 "り当てを置き換えることになります。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:112
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:127
 msgid "No Playbook found."
 msgstr "playbook が見つかりませんでした。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:147
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:162
 msgid "Inventory file empty."
 msgstr "インベントリファイルの内容がありません。"
 
-#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:175
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:169
+#, fuzzy
+msgid "Registered Systems"
+msgstr "未登録のシステム"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:177
+#, fuzzy
+msgid "Unknown Hostnames"
+msgstr "ノードのホスト名"
+
+#: ../html/src/manager/minion/ansible/accordion-path-content.tsx:211
 msgid "Loading content.."
 msgstr "内容を読み込んでいます..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:50
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:43
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
+msgstr ""
+"データの読み込み時にエラーが発生しました。サーバ側のログを確認してください。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr "Ansible 制御ノード設定: playbook 検出のためのパス追加と、インベントリファイルの内部調査を行ないます。"
+msgstr ""
+"Ansible 制御ノード設定: playbook 検出のためのパス追加と、インベントリファイル"
+"の内部調査を行ないます。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
@@ -3722,8 +3786,8 @@ msgstr "動作を"
 msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
 
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
 msgid "Configuration"
 msgstr "設定"
 
@@ -4290,6 +4354,8 @@ msgid ""
 "provided channel that corresponds to the installed SUSE Linux version. "
 "Instead of the default, "
 msgstr ""
+"インストール済みのSUSE Linuxバージョンに対応する提供されたチャンネル。既定で"
+"は、 "
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:129
 msgid "Child Channels:"
@@ -4299,7 +4365,9 @@ msgstr "子チャンネル:"
 msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
-msgstr "このアクティベーションキーを利用して登録したシステムは、選択した子チャンネルをサブスクライブします。"
+msgstr ""
+"このアクティベーションキーを利用して登録したシステムは、選択した子チャンネル"
+"をサブスクライブします。"
 
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
@@ -4390,9 +4458,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after {0}'s SSH "
 "key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 "
-"'ssh_push_sudo_user' の鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH "
-"鍵を配置したあと、ブートストラップ処理の際に設定されます。"
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対して"
+"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user' の"
+"鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH 鍵を配置したあ"
+"と、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
@@ -4764,17 +4833,29 @@ msgstr "仮想ホストマネージャ"
 msgid "Add a virtual host manager"
 msgstr "仮想ホストマネージャの追加"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr "libvirt python モジュールをインストールしてください。"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Disconnected"
+msgstr "切断済み"
 
-#: ../html/src/manager/virtualization/ListTab.js:144
-msgid "{0} selected"
-msgstr "{0} 個を選択しました"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Failed to connect"
+msgstr "接続に失敗しました"
 
-#: ../html/src/manager/virtualization/ListTab.js:243
-msgid "Action Status"
-msgstr "動作の状態"
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
+msgid "Toggle full size"
+msgstr "フルサイズの切り替え"
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
+msgid "Guest is not running"
+msgstr "ゲストは動作していません"
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
+msgid "Something went wrong, connection is closed"
+msgstr "何らかの問題が発生しています。接続が閉じられました"
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
+msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
 #: ../html/src/manager/virtualization/nets/network-properties.js:231
@@ -4818,30 +4899,6 @@ msgstr "カーネルオプション"
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:237
 msgid "Graphics"
 msgstr "グラフィック"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
-msgid "Disconnected"
-msgstr "切断済み"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:136
-msgid "Failed to connect"
-msgstr "接続に失敗しました"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:253
-msgid "Toggle full size"
-msgstr "フルサイズの切り替え"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:275
-msgid "Guest is not running"
-msgstr "ゲストは動作していません"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
-msgid "Something went wrong, connection is closed"
-msgstr "何らかの問題が発生しています。接続が閉じられました"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
-msgstr "仮想マシンの作成"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
@@ -4936,6 +4993,10 @@ msgstr "ファイル"
 msgid "Format"
 msgstr "フォーマット"
 
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
+msgstr "ディスク"
+
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr "ソースストレージプール"
@@ -4951,10 +5012,6 @@ msgstr "ディスクサイズ (GiB)"
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
 msgstr "ソーステンプレートのイメージ URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr "ディスク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
 msgid "Network"
@@ -4978,6 +5035,18 @@ msgstr "ネットワーク"
 #: ../html/src/manager/virtualization/pools/pool-properties.js:590
 msgid "Clear Fields"
 msgstr "項目の消去"
+
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
+msgstr "libvirt python モジュールをインストールしてください。"
+
+#: ../html/src/manager/virtualization/ListTab.js:144
+msgid "{0} selected"
+msgstr "{0} 個を選択しました"
+
+#: ../html/src/manager/virtualization/ListTab.js:243
+msgid "Action Status"
+msgstr "動作の状態"
 
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
@@ -5213,6 +5282,52 @@ msgstr "TXT レコード"
 msgid "Value"
 msgstr "値"
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
+"IP アドレス、 DHCP/DNS サービスは追加されません"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
+"ク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
+"ない仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+msgid "Virtual network with no connection to other networks"
+msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
+msgstr ""
+"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
+"ゲストとホストの間では通信できません"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+msgid "SR-IOV pool"
+msgstr "SR-IOV プール"
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
+
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr "ネットワークアドレス"
@@ -5308,52 +5423,6 @@ msgstr "タグ有り"
 #: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
 msgid "Untagged"
 msgstr "タグ無し"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
-"IP アドレス、 DHCP/DNS サービスは追加されません"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
-"ク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
-"ない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワーク。"
-"ゲストとホストの間では通信できません"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr "SR-IOV プール"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
 
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 msgid "Could not get network devices from the server. Please try again."
