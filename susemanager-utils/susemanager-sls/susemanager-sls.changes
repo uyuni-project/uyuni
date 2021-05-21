@@ -1,6 +1,12 @@
 - Fix deleting stopped virtual network (bsc#1186281)
 
 -------------------------------------------------------------------
+Fri May 21 17:26:20 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.26-1
+- fix installation of gnupg on Debian 10
+
+-------------------------------------------------------------------
 Wed May 19 16:34:19 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.25-1

@@ -112,19 +112,6 @@ bootstrap_repo:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 {%- endif %}
 
-{%- if grains['os_family'] == 'RedHat' %}
-trust_res_gpg_key:
-  cmd.run:
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
-    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
-    - runas: root
-{%- elif grains['os_family'] == 'Debian' %}
-install_gnupg_debian:
-  pkg.latest:
-    - pkgs:
-      - gnupg
-{%- endif %}
-
 {% include 'channels/gpg-keys.sls' %}
 
 salt-minion-package:

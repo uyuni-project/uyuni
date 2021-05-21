@@ -3,6 +3,13 @@
   (bsc#1184330)
 
 -------------------------------------------------------------------
+Fri May 21 17:25:10 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.26-1
+- add python3-pycryptodome to Ubuntu and Debian 10 bootstrap repos (bsc#1186346)
+- add gnupg and its dependencies to debian 10 bootstrap repo
+
+-------------------------------------------------------------------
 Tue May 04 13:37:14 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.25-1
