@@ -29197,6 +29197,34 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>Product Migration</source>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="lookup.jsp.title.repo" xml:space="preserve">
+          <source>We're sorry, but the repository could not be found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve">
+          <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve">
+          <source>You do not have permission to view this repository.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
+        <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
       </body>
   </file>
 </xliff>

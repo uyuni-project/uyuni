@@ -17499,7 +17499,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>현재 버전</target>
       </trans-unit>
@@ -17507,7 +17507,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>마지막 수정</target>
       </trans-unit>
@@ -17536,7 +17536,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>이 채널에 등록된 시스템 중 배치할 수 있는 시스템이 없음</target>
       </trans-unit>
@@ -17544,7 +17544,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>작업</target>
       </trans-unit>
@@ -17552,7 +17552,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17560,7 +17560,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>모든 파일을 배치</target>
       </trans-unit>
@@ -17568,7 +17568,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일을 배치</target>
       </trans-unit>
@@ -17576,7 +17576,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치</target>
       </trans-unit>
@@ -17584,7 +17584,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>아래 목록에서 배치하려는 파일을 선택할 수 있습니다. 그 후 선택한 파일을 배치할 시스템을 선택해야 합니다.</target>
       </trans-unit>
@@ -17592,7 +17592,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -17600,7 +17600,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>확인 &amp; 선택한 시스템 배치</target>
       </trans-unit>
@@ -17608,7 +17608,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치: 배치할 시스템 선택</target>
       </trans-unit>
@@ -17616,7 +17616,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일을 배치할 시스템을 선택하십시오.</target>
       </trans-unit>
@@ -17624,7 +17624,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>&lt;strong&gt;경고:&lt;/strong&gt; {0} 설정 채널에서 배치하려는 파일이 보다 높은 순위의 채널에 있는 같은 이름을 가진 파일에 의해 덮어쓰이거나 순위가 앞서게 되었을 경우, 특정 시스템이 등록되어 {0} 설정 채널에 있는 파일 버전이 아닌 덮어쓰여진/ 가장 높은 순위에 있는 파일 버전이 이 시스템에 배치됩니다.</target>
       </trans-unit>
@@ -29708,6 +29708,34 @@ given channel.</source>
         <source>Product Migration</source>
         <target state="translated">제품 마이그레이션</target>
       </trans-unit>
-    </body>
+    <trans-unit id="lookup.jsp.title.repo" xml:space="preserve">
+          <source>We're sorry, but the repository could not be found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve">
+          <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve">
+          <source>You do not have permission to view this repository.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Lookup error page</context>
+        </context-group>
+        <target state="new" />
+  </trans-unit>
+        <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
+        <source>Execute Ansible playbook</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      </body>
   </file>
 </xliff>
