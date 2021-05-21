@@ -57,6 +57,20 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   end
 end
 
+When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
+  next if has_no_text?(text, wait: 3)
+  repeat_until_timeout(message: "Couldn't find text '#{text}'", timeout: seconds.to_i) do
+    break if has_no_text?(text, wait: 3)
+    begin
+      accept_prompt do
+        execute_script 'window.location.reload()'
+      end
+    rescue Capybara::ModalNotFound
+      # ignored
+    end
+  end
+end
+
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
   next if has_content?("This action's status is: Completed.", wait: 3)
