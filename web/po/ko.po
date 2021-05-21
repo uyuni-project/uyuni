@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2021-05-17 14:57+0000\n"
+"PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -1841,7 +1841,7 @@ msgstr "조인할 노드:"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.tsx:119
 msgid "Join"
-msgstr "조인"
+msgstr "가입"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:25
 msgid " has been deleted successfully."
@@ -2197,7 +2197,7 @@ msgstr "정규식이 패키지 이름과 일치"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:81
 msgid "equals"
-msgstr "같은"
+msgstr "같음"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
 msgid "contains package name equals"
@@ -2583,7 +2583,7 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 msgid "Formula saved. Edit configuration options "
-msgstr "수식이 저장되었습니다. 구성 옵션 편집 "
+msgstr "수식이 저장되었습니다. 변경 사항을 적용하려면 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
@@ -2598,7 +2598,7 @@ msgstr "Highstate"
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
 msgid " for the changes to take effect."
-msgstr " 구성 변경 사항을 적용하려면."
+msgstr " 구성 옵션을 편집하십시오."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
@@ -3603,7 +3603,7 @@ msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 �
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
-msgstr "Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일"
+msgstr "Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일 검사를 위한 경로를 추가합니다."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
 msgid "Playbook Directories"
