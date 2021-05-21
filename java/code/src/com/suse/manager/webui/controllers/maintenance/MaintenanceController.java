@@ -44,6 +44,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -174,10 +175,8 @@ public class MaintenanceController {
      */
     private static String applyTimezoneShift(User user, Long date) {
         ZoneId zoneId = ZoneId.of(user.getTimeZone().getOlsonName());
-        return ZonedDateTime
-                .ofInstant(Instant.ofEpochMilli(date), zoneId)
-                .toString()
-                .split("\\[")[0];
+       return ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), zoneId)
+               .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm z"));
     }
 
     private static List<MaintenanceWindowDataJson> eventsToJson(User user, List<MaintenanceWindowData> events) {
