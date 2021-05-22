@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-21 18:57+0000\n"
+"PO-Revision-Date: 2021-05-22 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1834,11 +1834,11 @@ msgstr "errata_summary: Vytlačiť súhrn všetkých opráv chýb"
 
 #: ../src/spacecmd/errata.py:68
 msgid "usage: errata_summary"
-msgstr ""
+msgstr "použitie: errata_summary"
 
 #: ../src/spacecmd/errata.py:82
 msgid "errata_apply: Apply an erratum to all affected systems"
-msgstr ""
+msgstr "errata_apply: Použiť opravu chyby na všetky dotknuté systémy"
 
 #: ../src/spacecmd/errata.py:83
 msgid ""
@@ -1847,6 +1847,10 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
+"použitie: errata_apply [voľby] OPRAVA_CHYBY|search:XXX ...)\n"
+"\n"
+"voľby:\n"
+"  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/errata.py:110 ../src/spacecmd/system.py:418
 #: ../src/spacecmd/system.py:726 ../src/spacecmd/system.py:881
@@ -1854,16 +1858,16 @@ msgstr ""
 #: ../src/spacecmd/system.py:3691 ../src/spacecmd/system.py:4001
 #: ../src/spacecmd/system.py:4063 ../src/spacecmd/system.py:4227
 msgid "Start Time [now]:"
-msgstr ""
+msgstr "Čas spustenia [teraz]:"
 
 #: ../src/spacecmd/errata.py:158
 msgid "No patches to apply"
-msgstr ""
+msgstr "Žiadne opravy na aplikovanie"
 
 #. a summary of which errata we're going to apply
 #: ../src/spacecmd/errata.py:162
 msgid "Errata             Systems"
-msgstr ""
+msgstr "Systémy             opráv chýb"
 
 #: ../src/spacecmd/errata.py:166 ../src/spacecmd/system.py:231
 #: ../src/spacecmd/system.py:468 ../src/spacecmd/system.py:821
@@ -1872,21 +1876,21 @@ msgstr ""
 #: ../src/spacecmd/system.py:4246
 #, python-format
 msgid "Start Time: %s"
-msgstr ""
+msgstr "Čas spustenia: %s"
 
 #: ../src/spacecmd/errata.py:168
 msgid "Apply these patches [y/N]:"
-msgstr ""
+msgstr "Použiť tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:197
 #, python-format
 msgid "Scheduled %i system(s) for %s"
-msgstr ""
+msgstr "Naplánovaných %i systém(ov) pre %s"
 
 #: ../src/spacecmd/errata.py:218
 #, python-format
 msgid "No patches to schedule for %s"
-msgstr ""
+msgstr "Žiadne opravy na naplánovanie pre %s"
 
 #: ../src/spacecmd/errata.py:227
 #, python-format
