@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-22 17:57+0000\n"
+"PO-Revision-Date: 2021-05-23 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1847,7 +1847,7 @@ msgid ""
 "options:\n"
 "  -s START_TIME"
 msgstr ""
-"použitie: errata_apply [voľby] OPRAVA_CHYBY|search:XXX ...)\n"
+"použitie: errata_apply [voľby] OPRAVY_CHÝB|search:XXX ...)\n"
 "\n"
 "voľby:\n"
 "  -s ČAS_SPUSTENIA"
@@ -1895,15 +1895,16 @@ msgstr "Žiadne opravy na naplánovanie pre %s"
 #: ../src/spacecmd/errata.py:227
 #, python-format
 msgid "Scheduled %i patches for %s"
-msgstr ""
+msgstr "Naplánovaných %i opráv pre %s"
 
 #: ../src/spacecmd/errata.py:236
 msgid "errata_listaffectedsystems: List of systems affected by an patch"
 msgstr ""
+"errata_listaffectedsystems: Vypísať zoznam systémov ovplyvnených opravou"
 
 #: ../src/spacecmd/errata.py:237
 msgid "usage: errata_listaffectedsystems ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_listaffectedsystems OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:275
 msgid "errata_listcves: List of CVEs addressed by an patch"
@@ -1911,11 +1912,11 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:276
 msgid "usage: errata_listcves ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_listcves OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:312
 msgid "No errata has been found"
-msgstr ""
+msgstr "Žiadne opravy chýb sa nenašli"
 
 #: ../src/spacecmd/errata.py:319
 msgid "errata_findbycve: List errata addressing a CVE"
@@ -1923,15 +1924,15 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:320
 msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
-msgstr ""
+msgstr "použitie: errata_findbycve CVE-YYYY-NNNN ..."
 
 #: ../src/spacecmd/errata.py:354
 msgid "errata_details: Show the details of an patch"
-msgstr ""
+msgstr "errata_details: Zobraziť podrobnosti opravy"
 
 #: ../src/spacecmd/errata.py:355
 msgid "usage: errata_details ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_details OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:390
 #, python-format
@@ -1997,11 +1998,11 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:447
 msgid "errata_delete: Delete an patch"
-msgstr ""
+msgstr "errata_delete: Vymazať opravu"
 
 #: ../src/spacecmd/errata.py:448
 msgid "usage: errata_delete ERRATA|search:XXX ..."
-msgstr ""
+msgstr "použitie: errata_delete OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:468
 msgid "No patches to delete"
@@ -2022,11 +2023,11 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:495
 msgid "errata_publish: Publish an patch to a channel"
-msgstr ""
+msgstr "errata_publish: Zverejniť opravu na kanáli"
 
 #: ../src/spacecmd/errata.py:496
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: errata_publish OPRAVY_CHÝB|search:XXX <KANÁL ...>"
 
 #: ../src/spacecmd/errata.py:523
 msgid "No patches to publish"
