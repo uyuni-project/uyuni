@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 24 18:32:50 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
+- Fix the migration issue to the latest schema version
+
+-------------------------------------------------------------------
 Mon May 24 12:41:06 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.13-1
