@@ -44,7 +44,7 @@
 %endif
 
 Name:           spacecmd
-Version:        4.2.8
+Version:        4.2.9
 Release:        1%{?dist}
 Summary:        Command-line interface to Spacewalk and Red Hat Satellite servers
 License:        GPL-3.0-or-later
