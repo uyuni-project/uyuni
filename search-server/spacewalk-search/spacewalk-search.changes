@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon May 24 12:38:26 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
 - prevent writing error messages when just skipping the indexer run
   (bsc#1185628)
 
