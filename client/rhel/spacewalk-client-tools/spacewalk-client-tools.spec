@@ -731,7 +731,7 @@ make -f Makefile.rhn-client-tools test
 %doc doc/mirrors.txt
 %doc doc/AUTHORS
 %{!?_licensedir:%global license %doc}
-%license LICENSE
+%license doc/LICENSE
 %{_mandir}/man8/rhn-profile-sync.8*
 %{_mandir}/man5/up2date.5*
 
