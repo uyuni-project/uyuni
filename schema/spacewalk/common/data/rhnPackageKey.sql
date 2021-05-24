@@ -160,6 +160,8 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 
 -- Aliyun Linux 2.1903
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'eb801c41873141a8', lookup_package_key_type('gpg'), lookup_package_provider('Alibaba') from dual where not exists (select 1 from rhnPackageKey where key_id = 'eb801c41873141a8'));
+-- Aliyun Linux 3.2104
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '53fe0598cac33616', lookup_package_key_type('gpg'), lookup_package_provider('Alibaba') from dual where not exists (select 1 from rhnPackageKey where key_id = '53fe0598cac33616'));
 
 -- Uyuni
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '972e5d6c0d20833e', lookup_package_key_type('gpg'), lookup_package_provider('Uyuni') from dual where not exists (select 1 from rhnPackageKey where key_id = '972e5d6c0d20833e'));

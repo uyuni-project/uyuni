@@ -1,3 +1,6 @@
+- Add Alibaba Cloud Linux 3 repositories
+- Remove i386 from Alibaba Cloud Linux 2 client tools since the operating system is not available for i386
+
 -------------------------------------------------------------------
 Fri Jun 04 12:43:25 CEST 2021 - jgonzalez@suse.com
 

@@ -1334,6 +1334,14 @@ DATA = {
         'BASECHANNEL': 'alibaba-2-aarch64', 'PKGLIST': RES7,
         'DEST': '/srv/www/htdocs/pub/repositories/alibaba/2/bootstrap/'
     },
+    'alibaba-3-x86_64-uyuni': {
+        'BASECHANNEL': 'alibaba-3-x86_64', 'PKGLIST': RES8 + RES8_X86,
+        'DEST': '/srv/www/htdocs/pub/repositories/alibaba/3/bootstrap/'
+    },
+    'alibaba-3-aarch64-uyuni': {
+        'BASECHANNEL': 'alibaba-3-aarch64', 'PKGLIST': RES8,
+        'DEST': '/srv/www/htdocs/pub/repositories/alibaba/3/bootstrap/'
+    },
     'almalinux-8-x86_64' : {
         'PDID' : [-23, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
