@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon May 24 12:39:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.17-1
 - Refresh JWT virtual console token before it expires
 - Drop stale libs for old not supported browsers
 - Fix date-time picker radio controls (bsc#1185968)
