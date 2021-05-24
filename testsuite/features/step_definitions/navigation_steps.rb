@@ -963,7 +963,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   end
 
   within(:xpath, path) do
-    find(:xpath, ".//button[@title = \"#{btn}\"]").click
+    click_button(btn, wait: 0)
   end
 end
 
