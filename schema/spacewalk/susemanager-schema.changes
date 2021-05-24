@@ -1,3 +1,5 @@
+- Fix idempotency tests
+
 -------------------------------------------------------------------
 Mon May 10 17:46:22 CEST 2021 - jgonzalez@suse.com
 

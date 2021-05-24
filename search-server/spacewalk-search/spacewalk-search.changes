@@ -1,5 +1,5 @@
 - prevent writing error messages when just skipping the indexer run
- (bsc#1185628)
+  (bsc#1185628)
 
 -------------------------------------------------------------------
 Thu Dec 03 13:50:06 CET 2020 - jgonzalez@suse.com
