@@ -90,11 +90,11 @@ public class DocSearchSetupAction extends BaseSearchAction {
         // get lang we are searching in
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
-        String locale;
+        String locale = null;
         if (user != null) {
             locale = user.getPreferredDocsLocale();
         }
-        else {
+        if (locale == null) {
             locale = ConfigDefaults.get().getDefaultDocsLocale();
         }
 
