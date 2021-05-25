@@ -1,3 +1,4 @@
+- Fix bugged search in formula catalog
 - Convert Virtualization modal dialogs to react-modal
 
 -------------------------------------------------------------------
