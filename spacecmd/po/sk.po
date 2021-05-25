@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-23 18:57+0000\n"
+"PO-Revision-Date: 2021-05-25 16:58+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1908,7 +1908,7 @@ msgstr "použitie: errata_listaffectedsystems OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:275
 msgid "errata_listcves: List of CVEs addressed by an patch"
-msgstr ""
+msgstr "errata_listcves: Zoznam CVE adresovaných opravou"
 
 #: ../src/spacecmd/errata.py:276
 msgid "usage: errata_listcves ERRATA|search:XXX ..."
@@ -1920,7 +1920,7 @@ msgstr "Žiadne opravy chýb sa nenašli"
 
 #: ../src/spacecmd/errata.py:319
 msgid "errata_findbycve: List errata addressing a CVE"
-msgstr ""
+msgstr "errata_findbycve: Vypísať zoznam opráv chýb adresujúcich CVE"
 
 #: ../src/spacecmd/errata.py:320
 msgid "usage: errata_findbycve CVE-YYYY-NNNN ..."
@@ -1937,31 +1937,31 @@ msgstr "použitie: errata_details OPRAVY_CHÝB|search:XXX ..."
 #: ../src/spacecmd/errata.py:390
 #, python-format
 msgid "%s is not a valid erratum"
-msgstr ""
+msgstr "%s nie je platná oprava chyby"
 
 #: ../src/spacecmd/errata.py:397
 #, python-format
 msgid "Name:       %s"
-msgstr ""
+msgstr "Názov:       %s"
 
 #: ../src/spacecmd/errata.py:398
 #, python-format
 msgid "Product:    %s"
-msgstr ""
+msgstr "Produkt:    %s"
 
 #: ../src/spacecmd/errata.py:399
 #, python-format
 msgid "Type:       %s"
-msgstr ""
+msgstr "Typ:       %s"
 
 #: ../src/spacecmd/errata.py:400
 #, python-format
 msgid "Issue Date: %s"
-msgstr ""
+msgstr "Dátum vydania: %s"
 
 #: ../src/spacecmd/errata.py:402
 msgid "Topic"
-msgstr ""
+msgstr "Predmet"
 
 #: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:106
 #: ../src/spacecmd/softwarechannel.py:592
@@ -1970,31 +1970,31 @@ msgstr "Popis"
 
 #: ../src/spacecmd/errata.py:412
 msgid "Notes"
-msgstr ""
+msgstr "Poznámky"
 
 #: ../src/spacecmd/errata.py:417
 msgid "CVEs"
-msgstr ""
+msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:421
 msgid "Solution"
-msgstr ""
+msgstr "Riešenie"
 
 #: ../src/spacecmd/errata.py:425
 msgid "References"
-msgstr ""
+msgstr "Odkazy"
 
 #: ../src/spacecmd/errata.py:429
 msgid "Affected Channels"
-msgstr ""
+msgstr "Ovplyvnené kanály"
 
 #: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:279
 msgid "Affected Systems"
-msgstr ""
+msgstr "Ovplyvnené systémy"
 
 #: ../src/spacecmd/errata.py:437
 msgid "Affected Packages"
-msgstr ""
+msgstr "Ovplyvnené balíky"
 
 #: ../src/spacecmd/errata.py:447
 msgid "errata_delete: Delete an patch"
@@ -2006,11 +2006,11 @@ msgstr "použitie: errata_delete OPRAVY_CHÝB|search:XXX ..."
 
 #: ../src/spacecmd/errata.py:468
 msgid "No patches to delete"
-msgstr ""
+msgstr "Žiadne opravy na vymazanie"
 
 #: ../src/spacecmd/errata.py:471
 msgid "Erratum            Channels"
-msgstr ""
+msgstr "Kanály opravy chyby"
 
 #: ../src/spacecmd/errata.py:479
 msgid "Delete these patches [y/N]:"
@@ -2043,7 +2043,7 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:541
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
-msgstr ""
+msgstr "použitie: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
 msgid "Example:"
