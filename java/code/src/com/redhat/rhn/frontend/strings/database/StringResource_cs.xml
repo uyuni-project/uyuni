@@ -1646,175 +1646,175 @@
       </trans-unit>
       <trans-unit id="Warning Active Locks" xml:space="preserve">
         <source>Warning Active Locks</source>
-        <target/>
+        <target>Varování: aktivní zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Sessions" xml:space="preserve">
         <source>Warning Active Sessions</source>
-        <target/>
+        <target>Varování: aktivní relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve">
         <source>Warning Avail Sessions Used Pct</source>
-        <target/>
+        <target>Varovné procento použitých dostupných relací</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocked Process Count" xml:space="preserve">
         <source>Warning Blocked Process Count</source>
-        <target/>
+        <target>Varovný počet blokovaných procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocking Sessions" xml:space="preserve">
         <source>Warning Blocking Sessions</source>
-        <target/>
+        <target>Varování: blokující relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Buffer Cache Hit Ratio" xml:space="preserve">
         <source>Warning Buffer Cache Hit Ratio</source>
-        <target/>
+        <target>Varovný poměr záznamů vyrovnávací paměti zásobníku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CLOSE_WAIT Connections" xml:space="preserve">
         <source>Warning CLOSE_WAIT Connections</source>
-        <target/>
+        <target>Varovná spojení CLOSE_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 1-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 1-Min Ave</source>
-        <target/>
+        <target>Varovné průměrné zatížení CPU 1-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 15-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 15-Min Ave</source>
-        <target/>
+        <target>Varovné průměrné zatížení CPU 15-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 5-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 5-Min Ave</source>
-        <target/>
+        <target>Varovné průměrné zatížení CPU 5-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Pct Used" xml:space="preserve">
         <source>Warning CPU Pct Used</source>
-        <target/>
+        <target>Varovné procento použitých CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Time Rate" xml:space="preserve">
         <source>Warning CPU Time Rate</source>
-        <target/>
+        <target>Varovná hodnota času CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Count" xml:space="preserve">
         <source>Warning Child Process Count</source>
-        <target/>
+        <target>Varovný počet podřízených procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Groups" xml:space="preserve">
         <source>Warning Child Process Groups</source>
-        <target/>
+        <target>Varovné skupiny podřízených procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connection Rate" xml:space="preserve">
         <source>Warning Connection Rate</source>
-        <target/>
+        <target>Varovná četnost spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connections" xml:space="preserve">
         <source>Warning Connections</source>
-        <target/>
+        <target>Varovná spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Count" xml:space="preserve">
         <source>Warning Count</source>
-        <target/>
+        <target>Varovný počet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Data Dictionary Hit Ratio" xml:space="preserve">
         <source>Warning Data Dictionary Hit Ratio</source>
-        <target/>
+        <target>Varovný poměr použití slovníku dat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Defunct Process Count" xml:space="preserve">
         <source>Warning Defunct Process Count</source>
-        <target/>
+        <target>Varovný počet zaseklých procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Disk Sort Ratio" xml:space="preserve">
         <source>Warning Disk Sort Ratio</source>
-        <target/>
+        <target>Varovný poměr řazení disků</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning ESTABLISHED Connections" xml:space="preserve">
         <source>Warning ESTABLISHED Connections</source>
-        <target/>
+        <target>Varování: navázaná spojení (ESTABLISHED)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Execution Time Moving Ave" xml:space="preserve">
         <source>Warning Execution Time Moving Ave</source>
-        <target/>
+        <target>Varovný klouzavý průměr doby provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Exit Status" xml:space="preserve">
         <source>Warning Exit Status</source>
-        <target/>
+        <target>Varovný stav ukončení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning FIN_WAIT Connections" xml:space="preserve">
         <source>Warning FIN_WAIT Connections</source>
-        <target/>
+        <target>Varovná spojení FIN_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Filesystem Pct Used" xml:space="preserve">
         <source>Warning Filesystem Pct Used</source>
-        <target/>
+        <target>Varovné procento použití systému souborů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
