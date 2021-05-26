@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-25 16:58+0000\n"
+"PO-Revision-Date: 2021-05-26 19:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2014,12 +2014,12 @@ msgstr "Kanály opravy chyby"
 
 #: ../src/spacecmd/errata.py:479
 msgid "Delete these patches [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:485
 #, python-format
 msgid "Deleted %i patches"
-msgstr ""
+msgstr "Vymazať %i opráv"
 
 #: ../src/spacecmd/errata.py:495
 msgid "errata_publish: Publish an patch to a channel"
@@ -2031,15 +2031,16 @@ msgstr "použitie: errata_publish OPRAVY_CHÝB|search:XXX <KANÁL ...>"
 
 #: ../src/spacecmd/errata.py:523
 msgid "No patches to publish"
-msgstr ""
+msgstr "Žiadne opravy na zverejnenie"
 
 #: ../src/spacecmd/errata.py:528
 msgid "Publish these patches [y/N]:"
-msgstr ""
+msgstr "Publikovať tieto opravy [a/N]:"
 
 #: ../src/spacecmd/errata.py:540
 msgid "errata_search: List patches that meet the given criteria"
 msgstr ""
+"errata_search: Vypísať zoznam opráv chýb, ktoré zodpovedajú daným kritériám"
 
 #: ../src/spacecmd/errata.py:541
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
@@ -2047,23 +2048,23 @@ msgstr "použitie: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
 #: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
 msgid "Example:"
-msgstr ""
+msgstr "Príklad:"
 
 #: ../src/spacecmd/filepreservation.py:42
 msgid "filepreservation_list: List all file preservations"
-msgstr ""
+msgstr "filepreservation_list: Vypísať zoznam všetkých zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:43
 msgid "usage: filepreservation_list"
-msgstr ""
+msgstr "použitie: filepreservation_list"
 
 #: ../src/spacecmd/filepreservation.py:58
 msgid "filepreservation_create: Create a file preservation list"
-msgstr ""
+msgstr "filepreservation_create: Vytvoriť zoznam uchovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:59
 msgid "usage: filepreservation_create [NAME] [FILE ...]"
-msgstr ""
+msgstr "použitie: filepreservation_create [NÁZOV] [SÚBOR ...]"
 
 #: ../src/spacecmd/filepreservation.py:78
 #: ../src/spacecmd/filepreservation.py:92
@@ -2076,11 +2077,11 @@ msgstr ""
 
 #: ../src/spacecmd/filepreservation.py:109
 msgid "filepreservation_delete: Delete a file preservation list"
-msgstr ""
+msgstr "filepreservation_delete: Vymazať zoznam zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:110
 msgid "usage: filepreservation_delete NAME"
-msgstr ""
+msgstr "použitie: filepreservation_delete NÁZOV"
 
 #: ../src/spacecmd/filepreservation.py:128
 msgid "Delete this list [y/N]:"
@@ -2091,10 +2092,12 @@ msgid ""
 "filepreservation_details: Show the details of a file\n"
 "'preservation list"
 msgstr ""
+"filepreservation_details: Zobraziť podrobnosti zoznam\n"
+"'zachovaní súborov"
 
 #: ../src/spacecmd/filepreservation.py:141
 msgid "usage: filepreservation_details NAME"
-msgstr ""
+msgstr "použitie: filepreservation_details NÁZOV"
 
 #: ../src/spacecmd/group.py:52
 msgid "group_addsystems: Add systems to a group"
@@ -2523,7 +2526,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:476
 msgid "File Preservations"
-msgstr ""
+msgstr "Zachovania súborov"
 
 #: ../src/spacecmd/kickstart.py:485
 msgid "Variables"
@@ -2821,20 +2824,24 @@ msgstr ""
 msgid ""
 "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
+"kickstart_addfilepreservations: Pridať zachovania súborov do profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1676
 msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
-msgstr ""
+msgstr "použitie: kickstart_addfilepreservations PROFIL <ZOZNAM_SÚBOROV ...>"
 
 #: ../src/spacecmd/kickstart.py:1711
 msgid ""
 "kickstart_removefilepreservations: Remove file preservations from a "
 "Kickstart profile"
 msgstr ""
+"kickstart_removefilepreservations: Odstrániť zachovania súborov z profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1713
 msgid "usage: kickstart_removefilepreservations PROFILE <FILE ...>"
-msgstr ""
+msgstr "použitie: kickstart_removefilepreservations PROFIL <SÚBOR ...>"
 
 #: ../src/spacecmd/kickstart.py:1758
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
@@ -3081,12 +3088,12 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2439
 #, python-format
 msgid "failed to add file preservation %s, skipping"
-msgstr ""
+msgstr "nepodarilo sa pridať zachovanie súboru %s, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2441
 #, python-format
 msgid "file preservation list %s doesn't exist, skipping"
-msgstr ""
+msgstr "zoznam zachovania súborov %s neexistuje, preskakuje sa"
 
 #: ../src/spacecmd/kickstart.py:2452
 #, python-format
@@ -5395,7 +5402,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1597
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
-msgstr ""
+msgstr "        -p/--publish : Publikovať opravy chýb na kanáli (neklonovať)"
 
 #: ../src/spacecmd/softwarechannel.py:1624
 #: ../src/spacecmd/softwarechannel.py:1629
@@ -5412,7 +5419,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1649
 #, python-format
 msgid "Publishing errata %s to %s"
-msgstr ""
+msgstr "Publikovanie opráv chýb %s na %s"
 
 #: ../src/spacecmd/softwarechannel.py:1667
 msgid ""
