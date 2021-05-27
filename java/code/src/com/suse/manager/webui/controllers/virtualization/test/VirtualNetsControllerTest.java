@@ -116,7 +116,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     public void testData() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
-                "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user);
+                "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user, host);
 
         List<VirtualNetworkInfoJson> nets = GSON.fromJson(json, new TypeToken<List<VirtualNetworkInfoJson>>() {}.getType());
         assertTrue(nets.stream().filter(net -> net.getName().equals("net0")).findFirst().isPresent());
@@ -131,7 +131,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     public void testDevices() throws Exception {
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.devices(getRequestWithCsrf(
-                "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user);
+                "/manager/api/systems/details/virtualization/nets/:sid/devices", host.getId()), response, user, host);
 
         List<JsonObject> devs = GSON.fromJson(json, new TypeToken<List<JsonObject>>() {}.getType());
 
@@ -160,7 +160,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/start",
                                               "{names: [\"net0\"]}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the start action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -183,7 +183,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/stop",
                         "{names: [\"net0\"]}",
                         host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the stop action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -206,7 +206,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/delete",
                         "{names: [\"net0\"]}",
                         host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the stop action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -231,7 +231,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                                 "virtualport: {type: 'openvswitch', interfaceid: 'thevportuuid'}, " +
                                 "vlans:[{tag: 41}]}, earliest: '2021-02-17T10:09:00.000Z'}",
                         host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the stop action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -263,7 +263,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
                                 "port: {start: '1234', end: '1235'}}, ipv4: {address: '192.168.10.0', prefix: 24}}, " +
                                 "earliest: '2021-02-17T10:09:00.000Z'}",
                         host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the stop action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);

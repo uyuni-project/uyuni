@@ -1,3 +1,5 @@
+- Fix random NullPointerException when rendering page tabs (bsc#1182769)
+
 -------------------------------------------------------------------
 Tue Jun 01 11:47:32 CEST 2021 - jgonzalez@suse.com
 

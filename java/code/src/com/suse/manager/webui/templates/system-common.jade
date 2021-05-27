@@ -32,7 +32,4 @@ else
     a(href="/docs/#{docsLocale}/reference/systems/system-details.html" target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link()
 
-- var sid = request.params("sid")
-if !sid
-  - var sid = request.queryParams("sid")
-!{h.renderNavigationMenuWithParams(request, "/WEB-INF/nav/system_detail.xml", {"sid": [sid]})}
+!{tabs}

@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.virtualization;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
@@ -118,36 +119,37 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::show)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::edit)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::edit)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::create)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::create)))), jade);
         get("/manager/systems/details/virtualization/guests/console/:guestuuid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUser(this::data));
+                withUserAndServer(this::data));
         post("/manager/api/systems/details/virtualization/guests/consoleToken/:guestuuid",
                 withUser(this::refreshConsoleToken));
-        post("/manager/api/systems/details/virtualization/guests/:sid/refresh", withUser(this::refresh));
+        post("/manager/api/systems/details/virtualization/guests/:sid/refresh",
+                withUserAndServer(this::refresh));
         post("/manager/api/systems/details/virtualization/guests/:sid/shutdown",
-                withUser(this::shutdown));
+                withUserAndServer(this::shutdown));
         post("/manager/api/systems/details/virtualization/guests/:sid/restart",
-                withUser(this::restart));
+                withUserAndServer(this::restart));
         post("/manager/api/systems/details/virtualization/guests/:sid/setVcpu",
-                withUser(this::setVcpu));
+                withUserAndServer(this::setVcpu));
         post("/manager/api/systems/details/virtualization/guests/:sid/setMemory",
-                withUser(this::setMemory));
+                withUserAndServer(this::setMemory));
         post("/manager/api/systems/details/virtualization/guests/:sid/new",
-                withUser(this::newGuest));
+                withUserAndServer(this::newGuest));
         post("/manager/api/systems/details/virtualization/guests/:sid/update",
-                withUser(this::update));
+                withUserAndServer(this::update));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(this::guestAction));
+                withUserAndServer(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
-                withUser(this::getGuest));
+                withUserAndServer(this::getGuest));
         get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                withUser(this::getDomainsCapabilities));
+                withUserAndServer(this::getDomainsCapabilities));
     }
 
     /**
@@ -156,13 +158,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView show(Request request, Response response, User user) {
+    public ModelAndView show(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = getServer(request, user);
 
-        /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
@@ -170,7 +171,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 virtManager.getHypervisor(server.getMinionId()).orElse("") :
                 "");
 
-        return renderPage(request, response, user, "show", () -> data);
+        return renderPage("show", () -> data);
     }
 
     /**
@@ -179,13 +180,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return JSON result of the API call
      */
-    public String data(Request request, Response response, User user) {
-        Long serverId = getServerId(request);
-
+    public String data(Request request, Response response, User user, Server server) {
         DataResult<VirtualSystemOverview> data =
-                SystemManager.virtualGuestsForHostList(user, serverId, null);
+                SystemManager.virtualGuestsForHostList(user, server.getId(), null);
         data.elaborate();
 
         for (VirtualSystemOverview current : data) {
@@ -206,11 +206,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the json response
      */
-    public String getGuest(Request request, Response response, User user) {
+    public String getGuest(Request request, Response response, User user, Server host) {
         String uuid = request.params("uuid");
-        Server host = getServer(request, user);
         MinionServer minion = host.asMinionServer().orElseThrow(NotFoundException::new);
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
@@ -228,10 +228,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the json response
      */
-    public String getDomainsCapabilities(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String getDomainsCapabilities(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
@@ -259,15 +259,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView edit(Request request, Response response, User user) {
+    public ModelAndView edit(Request request, Response response, User user, Server host) {
         Map<String, Object> data = new HashMap<>();
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
 
-        Server host = getServer(request, user);
         DataResult<VirtualSystemOverview> guests =
                 SystemManager.virtualGuestsForHostList(user, host.getId(), null);
 
@@ -283,7 +283,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
 
-        return renderPage(request, response, user, "edit", () -> data);
+        return renderPage("edit", () -> data);
     }
 
     /**
@@ -292,11 +292,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView create(Request request, Response response, User user) {
+    public ModelAndView create(Request request, Response response, User user, Server host) {
         Map<String, Object> data = new HashMap<>();
-        Server host = getServer(request, user);
 
         if (!host.hasEntitlement(EntitlementManager.SALT)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Only for Salt-managed virtual hosts");
@@ -312,7 +312,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 GSON.toJson(profiles.stream().collect(
                         Collectors.toMap(KickstartDto::getCobblerId, KickstartDto::getLabel))));
 
-        return renderPage(request, response, user, "create", () -> data);
+        return renderPage("create", () -> data);
     }
 
     /**
@@ -435,10 +435,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return Boolean indicating the success of the operation
      */
-    public Boolean refresh(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public Boolean refresh(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, true)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
@@ -456,15 +456,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String setMemory(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String setMemory(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return setterAction(request, response, user,
+        return setterAction(request, response, user, host,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                 data -> data.getValue().intValue(),
                 (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
@@ -477,15 +477,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String setVcpu(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String setVcpu(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return setterAction(request, response, user,
+        return setterAction(request, response, user, host,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                 data -> data.getValue().intValue(),
                 (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
@@ -498,15 +498,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String restart(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String restart(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return doGuestAction(request, response, user,
+        return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestForceActionCreator(
                         ActionFactory.TYPE_VIRTUALIZATION_REBOOT,
                         (action, force) -> ((VirtualizationRebootGuestAction)action).setForce(force),
@@ -520,15 +520,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String shutdown(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String shutdown(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return doGuestAction(request, response, user,
+        return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestForceActionCreator(
                         ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN,
                         (action, force) -> ((VirtualizationShutdownGuestAction)action).setForce(force),
@@ -542,9 +542,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the JSON result
      */
-    public String guestAction(Request request, Response response, User user) {
+    public String guestAction(Request request, Response response, User user, Server host) {
         Map<String, ActionType> actionsMap = new HashMap<>();
         actionsMap.put("start", ActionFactory.TYPE_VIRTUALIZATION_START);
         actionsMap.put("suspend", ActionFactory.TYPE_VIRTUALIZATION_SUSPEND);
@@ -552,7 +553,6 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         actionsMap.put("restart", ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
         actionsMap.put("delete", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
 
-        Server host = getServer(request, user);
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
@@ -560,7 +560,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         String actionParam = request.params("action");
         ActionType actionType = actionsMap.get(actionParam);
 
-        return doGuestAction(request, response, user,
+        return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestActionCreator(actionType, getGuestNames(user, host)),
                 VirtualGuestsBaseActionJson.class);
     }
@@ -573,19 +573,19 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String update(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String update(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
         if (host.asMinionServer().isPresent()) {
-            return newGuest(request, response, user);
+            return newGuest(request, response, user, host);
         }
 
-        String memResult = setterAction(request, response, user,
+        String memResult = setterAction(request, response, user, host,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                 data -> data.getMemory().intValue(),
                 (action, value) -> ((VirtualizationSetMemoryGuestAction)action).setMemory(value),
@@ -594,7 +594,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 GSON.fromJson(memResult, new TypeToken<Map<String, String>>() { }.getType())
         );
 
-        String vcpuResult = setterAction(request, response, user,
+        String vcpuResult = setterAction(request, response, user, host,
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                 data -> data.getVcpu().intValue(),
                 (action, value) -> ((VirtualizationSetVcpusGuestAction)action).setVcpu(value),
@@ -609,30 +609,29 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the action id or "Failed" in case of failure
      */
-    public String newGuest(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String newGuest(Request request, Response response, User user, Server host) {
         if (noHostSupportAction(host, true)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return doGuestAction(request, response, user,
+        return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestActionCreateCreator(host, user, request.raw(),
                         getGuestNames(user, host)), VirtualGuestsUpdateActionJson.class);
     }
 
     private <T extends VirtualGuestsBaseActionJson> String setterAction(Request request, Response response,
-                                                                        User user, ActionType actionType,
+                                User user, Server host, ActionType actionType,
                                 Function<T, Integer> getter,
                                 BiConsumer<Action, Integer> setter,
                                 Class<T> dataClass) {
-        Server host = getServer(request, user);
         if (noHostSupportAction(host, false)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Action not supported for this host");
         }
 
-        return doGuestAction(request, response, user,
+        return doGuestAction(request, response, user, host,
                 VirtualizationActionHelper.getGuestSetterActionCreator(
                         actionType, getter, setter, getGuestNames(user, host)),
                 dataClass);
@@ -663,10 +662,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     }
 
     private <T extends VirtualGuestsBaseActionJson> String doGuestAction(Request request, Response response, User user,
+                                 Server server,
                                  BiFunction<T, String, Action> actionCreator,
                                  Class<T> jsonClass) {
-        return action(request, response, user, actionCreator,
-                data -> data.getUuids(),
+        return action(request, response, user, server, actionCreator,
+                VirtualGuestsBaseActionJson::getUuids,
                 jsonClass
         );
     }
