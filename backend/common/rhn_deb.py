@@ -55,7 +55,6 @@ class deb_Header:
                 'name': debcontrol.get_as_string('Package'),
                 'arch': debcontrol.get_as_string('Architecture') + '-deb',
                 'summary': debcontrol.get_as_string('Description').splitlines()[0],
-                'vendor': debcontrol.get_as_string('Maintainer'),
                 'package_group': debcontrol.get_as_string('Section'),
                 'epoch':   '',
                 'version': 0,
@@ -70,7 +69,8 @@ class deb_Header:
                                  ('suggests', 'Suggests'),
                                  ('breaks', 'Breaks'),
                                  ('predepends', 'Pre-Depends'),
-                                 ('payload_size', 'Installed-Size')]:
+                                 ('payload_size', 'Installed-Size'),
+                                 ('maintainer', 'Maintainer')]:
                 if deb_k in debcontrol:
                     self.hdr[hdr_k] = debcontrol.get_as_string(deb_k)
             for k in list(debcontrol.keys()):
