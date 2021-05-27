@@ -17,7 +17,7 @@ package com.suse.manager.webui.controllers.virtualization;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -85,31 +85,31 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/storage/:sid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::show)))), jade);
         get("/manager/systems/details/virtualization/storage/:sid/new",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::createDialog)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::createDialog)))), jade);
         get("/manager/systems/details/virtualization/storage/:sid/edit/:name",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::editDialog)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::editDialog)))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
-                withUser(this::data));
+                withUserAndServer(this::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
-                withUser(this::getCapabilities));
+                withUserAndServer(this::getCapabilities));
         get("/manager/api/systems/details/virtualization/pools/:sid/pool/:name",
-                withUser(this::getPool));
+                withUserAndServer(this::getPool));
         post("/manager/api/systems/details/virtualization/pools/:sid/refresh",
-                withUser(this::poolRefresh));
+                withUserAndServer(this::poolRefresh));
         post("/manager/api/systems/details/virtualization/pools/:sid/start",
-                withUser(this::poolStart));
+                withUserAndServer(this::poolStart));
         post("/manager/api/systems/details/virtualization/pools/:sid/stop",
-                withUser(this::poolStop));
+                withUserAndServer(this::poolStop));
         post("/manager/api/systems/details/virtualization/pools/:sid/delete",
-                withUser(this::poolDelete));
+                withUserAndServer(this::poolDelete));
         post("/manager/api/systems/details/virtualization/pools/:sid/create",
-                withUser(this::poolCreate));
+                withUserAndServer(this::poolCreate));
         post("/manager/api/systems/details/virtualization/pools/:sid/edit",
-                withUser(this::poolEdit));
+                withUserAndServer(this::poolEdit));
         post("/manager/api/systems/details/virtualization/volumes/:sid/delete",
-                withUser(this::volumeDelete));
+                withUserAndServer(this::volumeDelete));
     }
 
     /**
@@ -118,11 +118,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView show(Request request, Response response, User user) {
-        Server host = getServer(request, user);
-        return renderPage(request, response, user, "show", () -> {
+    public ModelAndView show(Request request, Response response, User user, Server host) {
+        return renderPage("show", () -> {
             Map<String, Object> extra = new HashMap<>();
             extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
                     virtManager.getHypervisor(host.getMinionId()).orElse("") :
@@ -138,10 +138,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView createDialog(Request request, Response response, User user) {
-        return renderWithActionChains(request, response, user, "create", null);
+    public ModelAndView createDialog(Request request, Response response, User user, Server server) {
+        return renderWithActionChains(user, "create", null);
     }
 
 
@@ -151,10 +152,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView editDialog(Request request, Response response, User user) {
-        return renderWithActionChains(request, response, user, "edit",
+    public ModelAndView editDialog(Request request, Response response, User user, Server server) {
+        return renderWithActionChains(user, "edit",
             () -> {
                 Map<String, Object> data = new HashMap<>();
                 data.put("poolName", request.params("name"));
@@ -170,10 +172,10 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON result of the API call
      */
-    public String data(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String data(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getPools(minionId);
@@ -196,10 +198,10 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON-formatted capabilities
      */
-    public String getCapabilities(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String getCapabilities(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
@@ -216,10 +218,10 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON-formatted capabilities
      */
-    public String getPool(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String getPool(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
 
@@ -236,10 +238,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String poolRefresh(Request request, Response response, User user) {
-        return poolAction(request, response, user, (data) -> {
+    public String poolRefresh(Request request, Response response, User user, Server host) {
+        return poolAction(request, response, user, host, (data) -> {
             VirtualizationPoolRefreshAction action = (VirtualizationPoolRefreshAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
@@ -253,10 +256,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String poolStart(Request request, Response response, User user) {
-        return poolAction(request, response, user, (data) -> {
+    public String poolStart(Request request, Response response, User user, Server host) {
+        return poolAction(request, response, user, host, (data) -> {
             VirtualizationPoolStartAction action = (VirtualizationPoolStartAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_START);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
@@ -270,10 +274,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String poolStop(Request request, Response response, User user) {
-        return poolAction(request, response, user, (data) -> {
+    public String poolStop(Request request, Response response, User user, Server host) {
+        return poolAction(request, response, user, host, (data) -> {
             VirtualizationPoolStopAction action = (VirtualizationPoolStopAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_STOP);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
@@ -287,10 +292,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String poolDelete(Request request, Response response, User user) {
-        return poolAction(request, response, user, (data) -> {
+    public String poolDelete(Request request, Response response, User user, Server host) {
+        return poolAction(request, response, user, host, (data) -> {
             VirtualizationPoolDeleteAction action = (VirtualizationPoolDeleteAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
@@ -309,10 +315,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String poolCreate(Request request, Response response, User user) {
-        return poolCreateOrUpdate(request, response, user, null);
+    public String poolCreate(Request request, Response response, User user, Server host) {
+        return poolCreateOrUpdate(request, response, user, host, null);
     }
 
     /**
@@ -320,11 +327,12 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @param actionName the display name of the action. If null, default to the one from the ActionType
      * @return JSON list of created action IDs
      */
-    public String poolCreateOrUpdate(Request request, Response response, User user, String actionName) {
-        return poolAction(request, response, user, (data) -> {
+    public String poolCreateOrUpdate(Request request, Response response, User user, Server server, String actionName) {
+        return poolAction(request, response, user, server, (data) -> {
             VirtualizationPoolCreateAction action = (VirtualizationPoolCreateAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE);
             String displayName = actionName != null ? actionName : action.getActionType().getName();
@@ -360,11 +368,12 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return JSON list of created action IDs
      */
-    public String poolEdit(Request request, Response response, User user) {
+    public String poolEdit(Request request, Response response, User user, Server server) {
         String actionName = LocalizationService.getInstance().getMessage("virt.pool_update");
-        return poolCreateOrUpdate(request, response, user, actionName);
+        return poolCreateOrUpdate(request, response, user, server, actionName);
     }
 
     /**
@@ -373,10 +382,11 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return JSON list of created action IDs
      */
-    public String volumeDelete(Request request, Response response, User user) {
-        return volumeAction(request, response, user,
+    public String volumeDelete(Request request, Response response, User user, Server server) {
+        return volumeAction(request, response, user, server,
                 (data) -> (BaseVirtualizationVolumeAction)ActionFactory.createAction(
                         ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE),
                 VirtualVolumeBaseActionJson.class);
@@ -387,16 +397,14 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
     /**
      * Displays a virtual storage pool-relate page with actionChains in the model.
      *
-     * @param request the request
-     * @param response the response
      * @param user the user
      * @param template the name to the Jade template of the page
      * @param modelExtender provides additional properties to pass to the Jade template
      * @return the ModelAndView object to render the page
      */
-    private ModelAndView renderWithActionChains(Request request, Response response, User user,
-            String template, Supplier<Map<String, Object>> modelExtender) {
-        return renderPage(request, response, user, template,
+    private ModelAndView renderWithActionChains(User user, String template,
+                                                Supplier<Map<String, Object>> modelExtender) {
+        return renderPage(template,
             () -> {
                 Map<String, Object> data = new HashMap<>();
                 MinionController.addActionChains(user, data);
@@ -408,15 +416,15 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
         );
     }
 
-    private String poolAction(Request request, Response response, User user,
+    private String poolAction(Request request, Response response, User user, Server server,
             Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator) {
-        return poolAction(request, response, user, actionCreator, VirtualPoolBaseActionJson.class);
+        return poolAction(request, response, user, server, actionCreator, VirtualPoolBaseActionJson.class);
     }
 
-    private String poolAction(Request request, Response response, User user,
+    private String poolAction(Request request, Response response, User user, Server host,
             Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
             Class<? extends VirtualPoolBaseActionJson> jsonClass) {
-        return action(request, response, user,
+        return action(request, response, user, host,
                (data, key) -> {
                    VirtualPoolBaseActionJson poolData = (VirtualPoolBaseActionJson)data;
                    BaseVirtualizationPoolAction action = actionCreator.apply(poolData);
@@ -427,10 +435,10 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
                jsonClass);
     }
 
-    private String volumeAction(Request request, Response response, User user,
+    private String volumeAction(Request request, Response response, User user, Server host,
             Function<VirtualVolumeBaseActionJson, BaseVirtualizationVolumeAction> actionCreator,
             Class<? extends VirtualVolumeBaseActionJson> jsonClass) {
-        return action(request, response, user,
+        return action(request, response, user, host,
                 (data, key) -> {
                     BaseVirtualizationVolumeAction action = actionCreator.apply((VirtualVolumeBaseActionJson)data);
                     action.setName(action.getActionType().getName() + ": " + key);

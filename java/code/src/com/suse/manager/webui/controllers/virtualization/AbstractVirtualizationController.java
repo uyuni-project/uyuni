@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -125,23 +124,12 @@ public abstract class AbstractVirtualizationController {
     /**
      * Displays a page server-related virtual page
      *
-     * @param request the request
-     * @param response the response
-     * @param user the user
      * @param template the name to the Jade template of the page
      * @param modelExtender provides additional properties to pass to the Jade template
      * @return the ModelAndView object to render the page
      */
-    protected ModelAndView renderPage(Request request, Response response, User user,
-                                    String template,
-                                    Supplier<Map<String, Object>> modelExtender) {
+    protected ModelAndView renderPage(String template, Supplier<Map<String, Object>> modelExtender) {
         Map<String, Object> data = new HashMap<>();
-        Server server = getServer(request, user);
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(server.getId()));
-
         if (modelExtender != null) {
             data.putAll(modelExtender.get());
         }
@@ -152,19 +140,10 @@ public abstract class AbstractVirtualizationController {
     }
 
     protected String action(Request request, Response response, User user,
+                          Server host,
                           BiFunction<ScheduledRequestJson, String, Action> actionCreator,
                           Function<ScheduledRequestJson, List<String>> actionKeysGetter,
                           Class<? extends ScheduledRequestJson> jsonClass) {
-        long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-
         ScheduledRequestJson data;
         try {
             data = GSON.fromJson(request.body(), jsonClass);

@@ -14,31 +14,40 @@
  */
 package com.suse.manager.webui.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.webui.Languages;
-import de.neuland.jade4j.JadeConfiguration;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.http.HttpStatus;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -77,6 +86,97 @@ public class SparkApplicationHelper {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Returns a route that adds system related variables to the model.
+     * The request needs to have either a query parameter or a parameter named <code>sid</code> containing the
+     * server ID.
+     *
+     * Adds the server object, the tabs for the system page and the inSSM variables for use in all System page.
+     *
+     * @param route the route
+     *
+     * @return the route that adds the user preferences to the ModelAndView
+     */
+    public static TemplateViewRoute withUserAndServer(TemplateViewRouteWithUserAndServer route) {
+        return withUserAndServer(route, "sid");
+    }
+
+    /**
+     * Returns a route that adds system related variables to the model.
+     *
+     * Adds the server object, the tabs for the system page and the inSSM variables for use in all System page.
+     *
+     * @param route the route
+     * @param sidName the request parameter name or query parameter name for the server id
+     *
+     * @return the route that adds the user preferences to the ModelAndView
+     */
+    public static TemplateViewRoute withUserAndServer(TemplateViewRouteWithUserAndServer route, String sidName) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            try {
+                long serverId = Long.parseLong(request.queryParamOrDefault(sidName, request.params(sidName)));
+                Server server = SystemManager.lookupByIdAndUser(serverId, user);
+
+                ModelAndView modelAndView = route.handle(request, response, user, server);
+                Object model = modelAndView.getModel();
+
+                ((Map) model).put("server", server);
+                ((Map) model).put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(server.getId()));
+                Map<String, String[]> params = Collections.singletonMap("sid", new String[]{server.getId().toString()});
+                ((Map) model).put("tabs",
+                        ViewHelper.getInstance().renderNavigationMenuWithParams(request,
+                                "/WEB-INF/nav/system_detail.xml", params));
+                return modelAndView;
+            }
+            catch (NumberFormatException e) {
+                throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Invalid server id: " + request.params(sidName));
+            }
+            catch (LookupException e) {
+                throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Server not found: " + request.params(sidName));
+            }
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user and the server in your controller.
+     * The request needs to have either a query parameter or a parameter named <code>sid</code> containing the
+     * server ID.
+     *
+     * @param route the route
+     *
+     * @return the route that adds the user preferences to the ModelAndView
+     */
+    public static Route withUserAndServer(RouteWithUserAndServer route) {
+        return withUserAndServer(route, "sid");
+    }
+
+    /**
+     * Use in routes to automatically get the current user and the server in your controller.
+     *
+     * @param route the route
+     * @param sidName the name of the request parameter containing the server id
+     *
+     * @return the route that adds the user preferences to the ModelAndView
+     */
+    public static Route withUserAndServer(RouteWithUserAndServer route, String sidName) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            try {
+                long serverId = Long.parseLong(request.params(sidName));
+                Server server = SystemManager.lookupByIdAndUser(serverId, user);
+
+                return route.handle(request, response, user, server);
+            }
+            catch (NumberFormatException e) {
+                throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Invalid server id: " + request.params(sidName));
+            }
+            catch (LookupException e) {
+                throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Server not found: " + request.params(sidName));
+            }
         };
     }
 
@@ -339,32 +439,13 @@ public class SparkApplicationHelper {
      * @return the jade template engine
      */
     public static JadeTemplateEngine setup() {
-        // set up shared variables
-        Map<String, Object> sharedVariables = new HashMap<>();
-
         // this filter is evaluated before every request
         Spark.before((request, response) -> {
-            // add the current request to shared variables
-            sharedVariables.put("request", request);
             // default for text/html or OpenSynphony will complain
             response.type("text/html");
             // init the flash scope
             FlashScopeHelper.handleFlashData(request, response);
         });
-
-        // set up template engine
-        JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
-
-        // set up i10n engine and other default template variables
-        sharedVariables.put("l", Languages.getInstance());
-        sharedVariables.put("h", ViewHelper.getInstance());
-        sharedVariables.put("isDevMode",
-                Config.get().getBoolean("java.development_environment"));
-        sharedVariables.put("isUyuni", ConfigDefaults.get().isUyuni());
-        sharedVariables.put("webVersion", ConfigDefaults.get().getProductVersion());
-        sharedVariables.put("webBuildtimestamp", Config.get().getString("web.buildtimestamp"));
-        JadeConfiguration config = jade.configuration();
-        config.setSharedVariables(sharedVariables);
 
         // capture json endpoint exceptions, let others pass (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
@@ -380,6 +461,21 @@ public class SparkApplicationHelper {
             }
         });
 
+
+        // set up template engine
+        JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
+
+        // set up i10n engine and other default template variables
+        Map<String, Object> sharedVariables = new HashMap<>();
+        sharedVariables.put("l", Languages.getInstance());
+        sharedVariables.put("h", ViewHelper.getInstance());
+        sharedVariables.put("isDevMode",
+                Config.get().getBoolean("java.development_environment"));
+        sharedVariables.put("isUyuni", ConfigDefaults.get().isUyuni());
+        sharedVariables.put("webVersion", ConfigDefaults.get().getProductVersion());
+        sharedVariables.put("webBuildtimestamp", Config.get().getString("web.buildtimestamp"));
+        JadeConfiguration config = jade.configuration();
+        config.setSharedVariables(sharedVariables);
         return jade;
     }
 

@@ -150,7 +150,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         String json = virtualGuestsController.data(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/data", sid),
-                response, user);
+                response, user, host);
         List<Map<String, Object>> model = GSON.fromJson(json, List.class);
 
         // Sort both actual and expected arrays to ease assertions
@@ -179,7 +179,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
                                               sid, "shutdown"),
-                response, user);
+                response, user, host);
 
         // Make sure the shutdown action was queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -210,7 +210,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
-                response, user);
+                response, user, host);
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -240,7 +240,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
-                    response, user);
+                    response, user, host);
             fail();
         }
         catch (HaltException e) {
@@ -267,7 +267,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                                                        "\"" + guests[1].getUuid() + "\"], " +
                                                       "value: " + mem + "}",
                                               sid, "setMemory"),
-                response, user);
+                response, user, host);
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> scheduledActions = ActionManager.pendingActions(user, null);
@@ -303,7 +303,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
-                response, user);
+                response, user, host);
         GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() {}.getType());
         assertEquals(uuid, def.getUuid());
         assertEquals("sles12sp2", def.getName());
@@ -366,7 +366,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         String json = virtualGuestsController.getDomainsCapabilities(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                        host.getId()), response, user);
+                        host.getId()), response, user, host);
 
         DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() {}.getType());
         assertTrue(caps.osTypes.contains("hvm"));

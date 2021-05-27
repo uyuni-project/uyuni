@@ -126,7 +126,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     public void testData() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.data(getRequestWithCsrf(
-                "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user);
+                "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user, host);
 
         List<VirtualStoragePoolInfoJson> pools = GSON.fromJson(json, new TypeToken<List<VirtualStoragePoolInfoJson>>() {}.getType());
         VirtualStoragePoolInfoJson pool0 = pools.stream().filter(pool -> pool.getName().equals("pool0")).findFirst().get();
@@ -146,7 +146,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     public void testGetCapabilities() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.getCapabilities(getRequestWithCsrf(
-                "/manager/api/systems/details/virtualization/pools/:sid/capabilities", host.getId()), response, user);
+                "/manager/api/systems/details/virtualization/pools/:sid/capabilities", host.getId()), response, user, host);
         PoolCapabilitiesJson caps = GSON.fromJson(json, new TypeToken<PoolCapabilitiesJson>() { }.getType());
         assertTrue(caps.isComputed());
         PoolType pType = caps.getPoolTypes().stream().filter(type -> type.getName().equals("fs")).findFirst().get();
@@ -163,7 +163,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/refresh",
                                               "{poolNames: [\"pool0\", \"pool1\"]}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the two refresh actions are queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -197,7 +197,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/start",
                                               "{poolNames: [\"pool0\"]}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the start action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -219,7 +219,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/stop",
                                               "{poolNames: [\"pool0\"]}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the start action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -241,7 +241,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/delete",
                                               "{poolNames: [\"pool0\"], purge: true}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the start action is queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -264,7 +264,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/volumes/:sid/delete",
                                               "{volumes: {\"pool0\": [\"vol0\", \"vol1\"], \"pool1\": [\"vol2\"]}}",
                                               host.getId()),
-                response, user);
+                response, user, host);
 
         // Ensure the start action is queued
         List<BaseVirtualizationVolumeAction> actions = ActionManager.pendingActions(user, null).stream()

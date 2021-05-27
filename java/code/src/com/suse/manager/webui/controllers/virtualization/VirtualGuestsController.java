@@ -18,6 +18,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -112,21 +113,21 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/guests/:sid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::show)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::edit)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::edit)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/new",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::create)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::create)))), jade);
         get("/manager/systems/details/virtualization/guests/:sid/console/:guestuuid",
                 withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::console)))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
-                withUser(this::data));
+                withUserAndServer(this::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(this::guestAction));
+                withUserAndServer(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
-                withUser(this::getGuest));
+                withUserAndServer(this::getGuest));
         get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                withUser(this::getDomainsCapabilities));
+                withUserAndServer(this::getDomainsCapabilities));
     }
 
     /**
@@ -135,13 +136,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView show(Request request, Response response, User user) {
+    public ModelAndView show(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = getServer(request, user);
 
-        /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
@@ -149,7 +149,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                 virtManager.getHypervisor(server.getMinionId()).orElse("") :
                 "");
 
-        return renderPage(request, response, user, "show", () -> data);
+        return renderPage("show", () -> data);
     }
 
     /**
@@ -158,13 +158,12 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param server the server
      * @return JSON result of the API call
      */
-    public String data(Request request, Response response, User user) {
-        Long serverId = getServerId(request);
-
+    public String data(Request request, Response response, User user, Server server) {
         DataResult<VirtualSystemOverview> data =
-                SystemManager.virtualGuestsForHostList(user, serverId, null);
+                SystemManager.virtualGuestsForHostList(user, server.getId(), null);
         data.elaborate();
 
         for (VirtualSystemOverview current : data) {
@@ -185,11 +184,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the json response
      */
-    public String getGuest(Request request, Response response, User user) {
+    public String getGuest(Request request, Response response, User user, Server host) {
         String uuid = request.params("uuid");
-        Server host = getServer(request, user);
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
                 .findFirst().orElseThrow(NotFoundException::new);
@@ -206,10 +205,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the json response
      */
-    public String getDomainsCapabilities(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String getDomainsCapabilities(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
@@ -236,9 +235,10 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the virtual host system
      * @return the json response
      */
-    public String guestAction(Request request, Response response, User user) {
+    public String guestAction(Request request, Response response, User user, Server host) {
         HashMap<String, Class<? extends VirtualGuestsBaseActionJson>> actionsMap = new HashMap<>();
         actionsMap.put("start", VirtualGuestsBaseActionJson.class);
         actionsMap.put("suspend", VirtualGuestsBaseActionJson.class);
@@ -250,8 +250,6 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         actionsMap.put("delete", VirtualGuestsBaseActionJson.class);
         actionsMap.put("update", VirtualGuestsUpdateActionJson.class);
         actionsMap.put("new", VirtualGuestsUpdateActionJson.class);
-
-        Server host = getServer(request, user);
 
         String action = request.params("action");
         VirtualGuestsBaseActionJson data;
@@ -307,15 +305,15 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView edit(Request request, Response response, User user) {
+    public ModelAndView edit(Request request, Response response, User user, Server host) {
         Map<String, Object> data = new HashMap<>();
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
 
-        Server host = getServer(request, user);
         DataResult<VirtualSystemOverview> guests =
                 SystemManager.virtualGuestsForHostList(user, host.getId(), null);
 
@@ -330,7 +328,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         MinionController.addActionChains(user, data);
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
-        return renderPage(request, response, user, "edit", () -> data);
+        return renderPage("edit", () -> data);
     }
 
     /**
@@ -339,11 +337,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView create(Request request, Response response, User user) {
+    public ModelAndView create(Request request, Response response, User user, Server host) {
         Map<String, Object> data = new HashMap<>();
-        Server host = getServer(request, user);
 
         if (!host.hasEntitlement(EntitlementManager.SALT)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Only for Salt-managed virtual hosts");
@@ -353,7 +351,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         MinionController.addActionChains(user, data);
         data.put("isSalt", true);
 
-        return renderPage(request, response, user, "create", () -> data);
+        return renderPage("create", () -> data);
     }
 
     /**
@@ -400,7 +398,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         }
         data.put("token", token);
 
-        return renderPage(request, response, user, "console", () -> data);
+        return renderPage("console", () -> data);
     }
 
     private String triggerGuestUpdateAction(Server host,

@@ -1,3 +1,4 @@
+- Fix random NullPointerException when rendering page tabs (bsc#1182769)
 - Ensure XMLRPC returns 'issue_date' in ISO format when listing erratas (bsc#1188260)
 - Fix entitlements not being updated during system transfer (bsc#1188032)
 - Add Beijing timezone to selectable timezones (bsc#1188193)

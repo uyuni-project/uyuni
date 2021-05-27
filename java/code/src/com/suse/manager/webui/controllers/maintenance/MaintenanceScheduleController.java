@@ -33,12 +33,10 @@ import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemScheduleDto;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.maintenance.IcalUtils;
 import com.redhat.rhn.manager.ssm.SsmManager;
+import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.maintenance.IcalUtils;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
@@ -48,9 +46,14 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.MaintenanceScheduleJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -138,6 +141,8 @@ public class MaintenanceScheduleController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("systems", GSON.toJson(systemIds));
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
         return new ModelAndView(data, "templates/ssm/schedules.jade");
     }
 
