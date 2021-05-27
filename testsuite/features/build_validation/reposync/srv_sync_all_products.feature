@@ -9,6 +9,116 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Add SUSE Linux Enterprise Server 11 SP3
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 11 SP3 i586" as a product
+    Then I should see the "SUSE Linux Enterprise Server 11 SP3 i586" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 11 SP3 i586" product has been added
+    And I add "sles11-sp3-ltss-updates-i586" channel
+
+  Scenario: Add SUSE Linux Enterprise Server 11 SP4
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 11 SP4" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 11 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 11 SP4 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP4 x86_64"
+    And I select "SUSE Linux Enterprise Software Development Kit 11 SP4" as a product
+    Then I should see the "SUSE Linux Enterprise Software Development Kit 11 SP4" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 11 SP4 x86_64" product has been added
+    And I add "sles11-sp4-ltss-updates-x86_64" channel
+
+  Scenario: Add SUSE Linux Enterprise Server 12 SP4
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
+    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server 15
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
+    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server 15 SP1
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP1 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server 15 SP2
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
+    And I select "Desktop Applications Module 15 SP2 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP2 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP2 x86_64"
+    And I select "Development Tools Module 15 SP2 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP2 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server 15 SP3
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)"
+    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+    And I select "Desktop Applications Module 15 SP3 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
+    And I select "Development Tools Module 15 SP3 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP3 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
+    And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
+
+  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
+    And I select "RHEL or SLES ES or CentOS 8 Base" as a product
+    Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
+    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
+    And I select "SUSE Linux Enterprise Server with Expanded Support 8" as a product
+    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
+
   Scenario: Add Ubuntu 18.04
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -27,117 +137,25 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Ubuntu 20.04" product has been added
 
-  Scenario: SUSE Linux Enterprise Server 11 SP3
+  Scenario: Add Debian 9
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 11 SP3 i586" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 11 SP3 i586" as a product
-    Then I should see the "SUSE Linux Enterprise Server 11 SP3 i586" selected
+    And I enter "Debian 9" as the filtered product description
+    And I select "Debian 9" as a product
+    Then I should see the "Debian 9" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 11 SP3 i586" product has been added
-    And I add "sles11-sp3-ltss-updates-i586" channel
+    And I wait until I see "Debian 9" product has been added
 
-  Scenario: SUSE Linux Enterprise Server 11 SP4
+  Scenario: Add Debian 10
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 11 SP4" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 11 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 11 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 11 SP4 x86_64"
-    And I select "SUSE Linux Enterprise Software Development Kit 11 SP4" as a product
-    Then I should see the "SUSE Linux Enterprise Software Development Kit 11 SP4" selected
+    And I enter "Debian 10" as the filtered product description
+    And I select "Debian 10" as a product
+    Then I should see the "Debian 10" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 11 SP4 x86_64" product has been added
-    And I add "sles11-sp4-ltss-updates-x86_64" channel
+    And I wait until I see "Debian 10" product has been added
 
-  Scenario: SUSE Linux Enterprise Server 12 SP4
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4"
-    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
-
-  Scenario: SUSE Linux Enterprise Server 15
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
-    Then I should see the "SUSE Linux Enterprise Server 15 x86_64" selected
-    When I select "SUSE Linux Enterprise Server LTSS 15 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 15 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 x86_64" product has been added
-
-  Scenario: SUSE Linux Enterprise Server 15 SP1
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP1 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
-
-  Scenario: SUSE Linux Enterprise Server 15 SP2
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP2 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP2 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP2 x86_64"
-    And I select "Desktop Applications Module 15 SP2 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP2 x86_64" selected
-    When I open the sub-list of the product "Desktop Applications Module 15 SP2 x86_64"
-    And I select "Development Tools Module 15 SP2 x86_64" as a product
-    Then I should see the "Development Tools Module 15 SP2 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
-
-  Scenario: SUSE Linux Enterprise Server 15 SP3
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)"
-    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
-    And I select "Desktop Applications Module 15 SP3 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
-    When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
-    And I select "Development Tools Module 15 SP3 x86_64" as a product
-    Then I should see the "Development Tools Module 15 SP3 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64 (BETA)" product has been added
-
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 7
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
-
-  Scenario: SUSE Linux Enterprise Server with Expanded Support 8
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
-    And I select "RHEL or SLES ES or CentOS 8 Base" as a product
-    Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
-    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
-    And I select "SUSE Linux Enterprise Server with Expanded Support 8" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8" selected
-    When I click the Add Product button
-    And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
-
-  Scenario: SUSE Manager Proxy 4.1 x86_64
+  Scenario: Add SUSE Manager Proxy 4.1 x86_64
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.1 x86_64" as the filtered product description
@@ -146,7 +164,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Manager Proxy 4.1 x86_64" product has been added
 
-  Scenario: SUSE Manager Retail Branch Server 4.1 x86_64
+  Scenario: Add SUSE Manager Retail Branch Server 4.1 x86_64
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.1 x86_64" as the filtered product description
