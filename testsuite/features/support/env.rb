@@ -37,8 +37,8 @@ if File.exist?(custom_repos_path)
   # HACK
   # Build Validations will require longer timeouts due to the low performance of our VMs
   # if we ever improve this fact, we can reduce these timeouts.
-  Capybara.default_max_wait_time = 30
-  DEFAULT_TIMEOUT = 1800
+  Capybara.default_max_wait_time = 20
+  DEFAULT_TIMEOUT = 500
 end
 
 def enable_assertions
