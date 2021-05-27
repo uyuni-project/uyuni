@@ -213,8 +213,8 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' =>
                                     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
-                                    'debian-9-pool-amd64' => 'debian-9-pool-amd64',
-                                    'debian-10-pool-amd64' => 'debian-10-pool-amd64' }.freeze
+                                    'debian-9-pool' => 'debian-9-pool-amd64',
+                                    'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.2-Pool' => 'sle-product-suse-manager-proxy-4.2-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
