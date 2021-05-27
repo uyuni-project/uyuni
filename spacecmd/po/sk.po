@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-26 19:57+0000\n"
+"PO-Revision-Date: 2021-05-27 19:58+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2069,11 +2069,11 @@ msgstr "použitie: filepreservation_create [NÁZOV] [SÚBOR ...]"
 #: ../src/spacecmd/filepreservation.py:78
 #: ../src/spacecmd/filepreservation.py:92
 msgid "File List"
-msgstr ""
+msgstr "Zoznam súborov"
 
 #: ../src/spacecmd/filepreservation.py:83
 msgid "File [blank to finish]:"
-msgstr ""
+msgstr "Súbor [prázdne na dokončenie]:"
 
 #: ../src/spacecmd/filepreservation.py:109
 msgid "filepreservation_delete: Delete a file preservation list"
@@ -2085,7 +2085,7 @@ msgstr "použitie: filepreservation_delete NÁZOV"
 
 #: ../src/spacecmd/filepreservation.py:128
 msgid "Delete this list [y/N]:"
-msgstr ""
+msgstr "Vymazať tento zoznam [a/N]:"
 
 #: ../src/spacecmd/filepreservation.py:139
 msgid ""
@@ -2101,19 +2101,19 @@ msgstr "použitie: filepreservation_details NÁZOV"
 
 #: ../src/spacecmd/group.py:52
 msgid "group_addsystems: Add systems to a group"
-msgstr ""
+msgstr "group_addsystems: Pridať systémy do skupiny"
 
 #: ../src/spacecmd/group.py:53
 msgid "usage: group_addsystems GROUP <SYSTEMS>"
-msgstr ""
+msgstr "použitie: group_addsystems SKUPINA <SYSTÉMY>"
 
 #: ../src/spacecmd/group.py:54
 msgid "       group_addsystems GROUP <ssm>"
-msgstr ""
+msgstr "       group_addsystems SKUPINA <ssm>"
 
 #: ../src/spacecmd/group.py:105
 msgid "group_removesystems: Remove systems from a group"
-msgstr ""
+msgstr "group_removesystems: Odstrániť systémy zo skupiny"
 
 #: ../src/spacecmd/group.py:106
 msgid "usage: group_removesystems GROUP <SYSTEMS>"
