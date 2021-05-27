@@ -1,3 +1,5 @@
+- fix permission problem with /srv/susemanager/salt/custom files (bsc#1186325)
+
 -------------------------------------------------------------------
 Mon May 24 12:37:31 CEST 2021 - jgonzalez@suse.com
 
