@@ -65,6 +65,10 @@ if $build_validation
   $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   $ubuntu2004_minion = twopence_init("ssh:#{ENV['UBUNTU2004_MINION']}") if ENV['UBUNTU2004_MINION']
   $ubuntu2004_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU2004_SSHMINION']}") if ENV['UBUNTU2004_SSHMINION']
+  $debian9_minion = twopence_init("ssh:#{ENV['DEBIAN9_MINION']}") if ENV['DEBIAN9_MINION']
+  $debian9_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN9_SSHMINION']}") if ENV['DEBIAN9_SSHMINION']
+  $debian10_minion = twopence_init("ssh:#{ENV['DEBIAN10_MINION']}") if ENV['DEBIAN10_MINION']
+  $debian10_ssh_minion = twopence_init("ssh:#{ENV['DEBIAN10_SSHMINION']}") if ENV['DEBIAN10_SSHMINION']
   $sle11sp4_buildhost = twopence_init("ssh:#{ENV['SLE11SP4_BUILDHOST']}") if ENV['SLE11SP4_BUILDHOST']
   $sle11sp3_terminal = twopence_init("ssh:#{ENV['SLE11SP3_TERMINAL']}") if ENV['SLE11SP3_TERMINAL']
   $sle12sp4_buildhost = twopence_init("ssh:#{ENV['SLE12SP4_BUILDHOST']}") if ENV['SLE12SP4_BUILDHOST']
@@ -86,8 +90,10 @@ if $build_validation
              $sle15sp3_client, $sle15sp3_minion, $sle15sp3_ssh_minion,
              $ceos7_client, $ceos7_minion, $ceos7_ssh_minion,
              $ceos8_minion, $ceos8_ssh_minion,
-             $ubuntu1804_ssh_minion, $ubuntu1804_minion,
-             $ubuntu2004_ssh_minion, $ubuntu2004_minion,
+             $ubuntu1804_minion, $ubuntu1804_ssh_minion,
+             $ubuntu2004_minion, $ubuntu2004_ssh_minion,
+             $debian9_minion, $debian9_ssh_minion,
+             $debian10_minion, $debian10_ssh_minion,
              $sle11sp4_buildhost, $sle11sp3_terminal,
              $sle12sp4_buildhost, $sle12sp4_terminal,
              $sle15sp3_buildhost, $sle15sp3_terminal,
@@ -269,6 +275,10 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'ubuntu1804_ssh_minion'     => $ubuntu1804_ssh_minion,
                   'ubuntu2004_minion'         => $ubuntu2004_minion,
                   'ubuntu2004_ssh_minion'     => $ubuntu2004_ssh_minion,
+                  'debian9_minion'            => $debian9_minion,
+                  'debian9_ssh_minion'        => $debian9_ssh_minion,
+                  'debian10_minion'           => $debian10_minion,
+                  'debian10_ssh_minion'       => $debian10_ssh_minion,
                   'sle11sp4_buildhost'        => $sle11sp4_buildhost,
                   'sle11sp3_terminal'         => $sle11sp3_terminal,
                   'sle12sp4_buildhost'        => $sle12sp4_buildhost,
