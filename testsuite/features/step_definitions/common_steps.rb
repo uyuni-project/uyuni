@@ -1172,12 +1172,13 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
     if repository_exist? unique_repo_name
       puts "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
+      content_type = (client.include? 'ubuntu') || (client.include? 'debian') ? 'deb' : 'yum'
       steps %(
         When I follow the left menu "Software > Manage > Repositories"
         And I follow "Create Repository"
         And I enter "#{unique_repo_name}" as "label"
         And I enter "#{repo_url.strip}" as "url"
-        And I select "#{client.include?('ubuntu') ? 'deb' : 'yum'}" from "contenttype"
+        And I select "#{content_type}" from "contenttype"
         And I click on "Create Repository"
         Then I should see a "Repository created successfully" text or "The repository label '#{unique_repo_name}' is already in use" text
         And I should see "metadataSigned" as checked
