@@ -669,10 +669,10 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
   if host.include? 'ceos'
     node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', false)
-  elsif host.include? 'ubuntu'
+  elsif (host.include? 'ubuntu') || (host.include? 'debian')
     node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get purge salt-common salt-minion && apt-get autoremove', false)
   else
-    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', false)
+    node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion spacewalk-proxy-salt', false)
   end
   node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /var/log/salt /etc/salt /var/tmp/.root*', false)
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)

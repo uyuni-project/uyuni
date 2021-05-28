@@ -29,6 +29,7 @@ Feature: Setup SUSE Manager proxy
     When I copy server's keys to the proxy
     And I configure the proxy
     Then I should see "proxy" via spacecmd
+    And service "salt-broker" is active on "proxy"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
