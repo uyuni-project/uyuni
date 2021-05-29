@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-27 19:58+0000\n"
+"PO-Revision-Date: 2021-05-29 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2117,7 +2117,7 @@ msgstr "group_removesystems: Odstrániť systémy zo skupiny"
 
 #: ../src/spacecmd/group.py:106
 msgid "usage: group_removesystems GROUP <SYSTEMS>"
-msgstr ""
+msgstr "použitie: group_removesystems SKUPINA <SYSTÉMY>"
 
 #: ../src/spacecmd/group.py:147 ../src/spacecmd/system.py:119
 #: ../src/spacecmd/system.py:233 ../src/spacecmd/system.py:476
@@ -2128,14 +2128,14 @@ msgstr "Systémy"
 
 #: ../src/spacecmd/group.py:151
 msgid "Remove these systems [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto systémy [a/N]:"
 
 #: ../src/spacecmd/group.py:160 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:137
 #: ../src/spacecmd/ssm.py:187 ../src/spacecmd/system.py:4291
 #: ../src/spacecmd/system.py:4370
 msgid "No systems found"
-msgstr ""
+msgstr "Nenašli sa žiadne systémy"
 
 #: ../src/spacecmd/group.py:167
 msgid "group_create: Create a system group"
@@ -2143,7 +2143,7 @@ msgstr "group_create: Vytvoriť systémovú skupinu"
 
 #: ../src/spacecmd/group.py:168
 msgid "usage: group_create [NAME] [DESCRIPTION]"
-msgstr ""
+msgstr "použitie: group_create [NÁZOV] [POPIS]"
 
 #: ../src/spacecmd/group.py:194
 msgid "group_delete: Delete a system group"
@@ -2151,15 +2151,15 @@ msgstr "group_delete: Vymazať systémovú skupinu"
 
 #: ../src/spacecmd/group.py:195
 msgid "usage: group_delete NAME ..."
-msgstr ""
+msgstr "použitie: group_delete NÁZOV ..."
 
 #: ../src/spacecmd/group.py:214
 msgid "Delete these groups [y/N]:"
-msgstr ""
+msgstr "Vymazať tieto skupiny [a/N]:"
 
 #: ../src/spacecmd/group.py:226
 msgid "group_backup: backup a system group"
-msgstr ""
+msgstr "group_backup: zálohovať systémovú skupinu"
 
 #: ../src/spacecmd/group.py:227
 msgid ""
@@ -2169,16 +2169,22 @@ msgid ""
 "\"OUTDIR\" defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME\n"
 "\"ALL\" is a keyword and collects all groups\n"
 msgstr ""
+"použitie: group_backup <NÁZOV> [VÝST_ADR])\n"
+"                    group_backup ALL\n"
+"\n"
+"\"VÝST_ADR\" predvolená hodnota je $HOME/spacecmd-backup/group/YYYY-MM-DD/"
+"NÁZOV\n"
+"\"ALL\" je kľúčové slovo a zhromažďuje všetky skupiny\n"
 
 #: ../src/spacecmd/group.py:272
 #, python-format
 msgid "Backup Group: %s"
-msgstr ""
+msgstr "Zálohovať skupinu: %s"
 
 #: ../src/spacecmd/group.py:275
 #, python-format
 msgid "Output File: %s"
-msgstr ""
+msgstr "Výstupný súbor: %s"
 
 #: ../src/spacecmd/group.py:286
 msgid "group_restore: restore a system group"
