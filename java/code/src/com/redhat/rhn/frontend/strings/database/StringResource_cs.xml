@@ -1821,161 +1821,161 @@
       </trans-unit>
       <trans-unit id="Warning Heap Free" xml:space="preserve">
         <source>Warning Heap Free</source>
-        <target/>
+        <target>Varovná volná zásoba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning High Execution Time" xml:space="preserve">
         <source>Warning High Execution Time</source>
-        <target/>
+        <target>Varovná dlouhá doba provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Sessions" xml:space="preserve">
         <source>Warning Idle Sessions</source>
-        <target/>
+        <target>Varovná nečinná relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Threads" xml:space="preserve">
         <source>Warning Idle Threads</source>
-        <target/>
+        <target>Varovná nečinná vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Inodes Pct Used" xml:space="preserve">
         <source>Warning Inodes Pct Used</source>
-        <target/>
+        <target>Varovné procento použitých i-uzlů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Input Rate" xml:space="preserve">
         <source>Warning Input Rate</source>
-        <target/>
+        <target>Varovná rychlost na vstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Latency" xml:space="preserve">
         <source>Warning Latency</source>
-        <target/>
+        <target>Varovná latence</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Library Cache Miss Ratio" xml:space="preserve">
         <source>Warning Library Cache Miss Ratio</source>
-        <target/>
+        <target>Varovný poměr stavů "není v mezipaměti" knihovny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Line Rate" xml:space="preserve">
         <source>Warning Line Rate</source>
-        <target/>
+        <target>Varovná rychlost linky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Lines" xml:space="preserve">
         <source>Warning Lines</source>
-        <target/>
+        <target>Varovné linky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Match Rate" xml:space="preserve">
         <source>Warning Match Rate</source>
-        <target/>
+        <target>Varovná četnost shody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Matches" xml:space="preserve">
         <source>Warning Matches</source>
-        <target/>
+        <target>Varovné shody</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Open Tables" xml:space="preserve">
         <source>Warning Open Tables</source>
-        <target/>
+        <target>Varovné otevřené tabulky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Opened Tables" xml:space="preserve">
         <source>Warning Opened Tables</source>
-        <target/>
+        <target>Varovné otevírané tabulky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Output Rate" xml:space="preserve">
         <source>Warning Output Rate</source>
-        <target/>
+        <target>Varovná rychlost výstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Packet Loss Pct" xml:space="preserve">
         <source>Warning Packet Loss Pct</source>
-        <target/>
+        <target>Varovné procento ztráty paketů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Physical Memory Used" xml:space="preserve">
         <source>Warning Physical Memory Used</source>
-        <target/>
+        <target>Varovná použitá fyzická paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Process Count" xml:space="preserve">
         <source>Warning Process Count</source>
-        <target/>
+        <target>Varovný počet procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Rate" xml:space="preserve">
         <source>Warning Query Rate</source>
-        <target/>
+        <target>Varovná četnost dotazů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Time" xml:space="preserve">
         <source>Warning Query Time</source>
-        <target/>
+        <target>Varovná doba dotazů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Queue Length" xml:space="preserve">
         <source>Warning Queue Length</source>
-        <target/>
+        <target>Varovná délka fronty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning RAM Free" xml:space="preserve">
         <source>Warning RAM Free</source>
-        <target/>
+        <target>Varovná volná RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Read Rate" xml:space="preserve">
         <source>Warning Read Rate</source>
-        <target/>
+        <target>Varovná rychlost čtení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
