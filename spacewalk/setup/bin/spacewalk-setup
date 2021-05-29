@@ -968,9 +968,6 @@ sub populate_initial_configs {
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
-     serverDOTsusemanagerDOTmirrcred_email => '',
-     serverDOTsusemanagerDOTmirrcred_user => '',
-     serverDOTsusemanagerDOTmirrcred_pass => '',
      );
 
     for ($config_opts{'db_password'}) {
