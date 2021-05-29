@@ -1982,182 +1982,182 @@
       </trans-unit>
       <trans-unit id="Warning Redo Buffer Allocation Retries" xml:space="preserve">
         <source>Warning Redo Buffer Allocation Retries</source>
-        <target/>
+        <target>Varovný počet pokusů o přidělení bufferu pro opakování akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Log Space Requests" xml:space="preserve">
         <source>Warning Redo Log Space Requests</source>
-        <target/>
+        <target>Varovné požadavky na místo pro záznamy opakované akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Request Rate" xml:space="preserve">
         <source>Warning Request Rate</source>
-        <target/>
+        <target>Varovná četnost požadavků</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Requests" xml:space="preserve">
         <source>Warning Requests</source>
-        <target/>
+        <target>Varování: požadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Ave" xml:space="preserve">
         <source>Warning Round-trip Ave</source>
-        <target/>
+        <target>Varovný průměrný cyklus (Round-trip)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Avg" xml:space="preserve">
         <source>Warning Round-trip Avg</source>
-        <target/>
+        <target>Varovný průměr cyklu (Round-trip)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve">
         <source>Warning SYN_RCVD Connections</source>
-        <target/>
+        <target>Varovná připojení SYN_RCVD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Seconds" xml:space="preserve">
         <source>Warning Seconds</source>
-        <target/>
+        <target>Varovné sekundy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Size" xml:space="preserve">
         <source>Warning Size</source>
-        <target/>
+        <target>Varovná velikost</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Available" xml:space="preserve">
         <source>Warning Space Available</source>
-        <target/>
+        <target>Varovné dostupné místo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Used" xml:space="preserve">
         <source>Warning Space Used</source>
-        <target/>
+        <target>Varovné použité místo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Stopped Process Count" xml:space="preserve">
         <source>Warning Stopped Process Count</source>
-        <target/>
+        <target>Varovný počet zastavených procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Swap Pct Free" xml:space="preserve">
         <source>Warning Swap Pct Free</source>
-        <target/>
+        <target>Varovné procento volného odkládacího prostoru (swap)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning TIME_WAIT Connections" xml:space="preserve">
         <source>Warning TIME_WAIT Connections</source>
-        <target/>
+        <target>Varovná spojení TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads" xml:space="preserve">
         <source>Warning Threads</source>
-        <target/>
+        <target>Varování: vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads Running" xml:space="preserve">
         <source>Warning Threads Running</source>
-        <target/>
+        <target>Varování: běžící vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Total Connections" xml:space="preserve">
         <source>Warning Total Connections</source>
-        <target/>
+        <target>Varovný počet všech spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Traffic" xml:space="preserve">
         <source>Warning Traffic</source>
-        <target/>
+        <target>Varování: provoz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Child" xml:space="preserve">
         <source>Warning Transferred Per Child</source>
-        <target/>
+        <target>Varování přenesené podřízeným</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Slot" xml:space="preserve">
         <source>Warning Transferred Per Slot</source>
-        <target/>
+        <target>Varování přenesené na sloty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Users" xml:space="preserve">
         <source>Warning Users</source>
-        <target/>
+        <target>Varování: uživatelé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Value" xml:space="preserve">
         <source>Warning Value</source>
-        <target/>
+        <target>Varovná hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve">
         <source>Warning Virtual Mem Pct Free</source>
-        <target/>
+        <target>Varovné procento volné virtuální paměti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Memory Used" xml:space="preserve">
         <source>Warning Virtual Memory Used</source>
-        <target/>
+        <target>Varovná použitá virtuální paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Waiters" xml:space="preserve">
         <source>Warning Waiters</source>
-        <target/>
+        <target>Varování: Waiters</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Write Rate" xml:space="preserve">
         <source>Warning Write Rate</source>
-        <target/>
+        <target>Varovná četnost zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2165,56 +2165,56 @@
       <!-- PROBE METRICS -->
       <trans-unit id="metrics.Active locks" xml:space="preserve">
         <source>Active locks</source>
-        <target/>
+        <target>Aktivní zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Active sessions" xml:space="preserve">
         <source>Active sessions</source>
-        <target/>
+        <target>Aktivní relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocked processes" xml:space="preserve">
         <source>Blocked processes</source>
-        <target/>
+        <target>Blokované procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Blocking sessions" xml:space="preserve">
         <source>Blocking sessions</source>
-        <target/>
+        <target>Blokující relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Buffer cache hit ratio" xml:space="preserve">
         <source>Buffer cache hit ratio</source>
-        <target/>
+        <target>Poměr záznamů bufferu mezipaměti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CLOSE_WAIT conns" xml:space="preserve">
         <source>CLOSE_WAIT conns</source>
-        <target/>
+        <target>Spojení CLOSE_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min ave" xml:space="preserve">
         <source>CPU load 1-min ave</source>
-        <target/>
+        <target>Průměrné zatížení CPU 1-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min avg" xml:space="preserve">
         <source>CPU load 1-min avg</source>
-        <target/>
+        <target>Průměrné zatížení CPU 1-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
