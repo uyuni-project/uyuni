@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-29 17:57+0000\n"
+"PO-Revision-Date: 2021-05-30 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2188,7 +2188,7 @@ msgstr "Výstupný súbor: %s"
 
 #: ../src/spacecmd/group.py:286
 msgid "group_restore: restore a system group"
-msgstr ""
+msgstr "group_restore: obnoviť systémovú skupinu"
 
 #: ../src/spacecmd/group.py:287
 msgid ""
@@ -2202,44 +2202,54 @@ msgid ""
 "Setting dot (.) instead of full INPUTDIR will imply current directory.\n"
 "    "
 msgstr ""
+"\n"
+"usage: group_restore VSTUP_ADR [NÁZOV] ...\n"
+"       group_restore VSTUP_ADR ALL\n"
+"       group_restore VSTUP_ADR\n"
+"       group_restore .\n"
+"\n"
+"Zadanie iba VSTUP_ADR bude predvolené pre VŠETKY skupiny.\n"
+"Zadanie bodky (.) namiesto úplného VSTUP_ADR bude znamenať aktuálny adresár."
+"\n"
+"    "
 
 #: ../src/spacecmd/group.py:331
 #, python-format
 msgid "Restore dir %s does not exits or is not a directory"
-msgstr ""
+msgstr "Adresár obnovenia %s neexistuje alebo nejde o adresár"
 
 #: ../src/spacecmd/group.py:335
 #, python-format
 msgid "Restore dir %s has no restore items"
-msgstr ""
+msgstr "Adresár obnovenia %s nemá žiadne položky obnovenia"
 
 #: ../src/spacecmd/group.py:342
 #, python-format
 msgid "Group %s was not found in backup"
-msgstr ""
+msgstr "Skupina %s sa nenašla v zálohe"
 
 #: ../src/spacecmd/group.py:345
 #, python-format
 msgid "Found %s missing groups, terminating"
-msgstr ""
+msgstr "Nájdené %s chýbajúce skupiny, ukončuje sa"
 
 #: ../src/spacecmd/group.py:360
 #, python-format
 msgid "Group %s already restored"
-msgstr ""
+msgstr "Skupina %s je už obnovená"
 
 #: ../src/spacecmd/group.py:367
 msgid "Changing description from:"
-msgstr ""
+msgstr "Zmena popisu z:"
 
 #: ../src/spacecmd/group.py:369
 msgid "Continue [y/N]:"
-msgstr ""
+msgstr "Pokračovať [a/N]:"
 
 #: ../src/spacecmd/group.py:372 ../src/spacecmd/group.py:375
 #, python-format
 msgid "Updating description for group: %s"
-msgstr ""
+msgstr "Aktualizácia popisu pre skupinu: %s"
 
 #: ../src/spacecmd/group.py:378
 #, python-format
