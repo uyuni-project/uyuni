@@ -16,7 +16,7 @@ mgr_server_localhost_alias_absent:
 {% set os_base = 'centos' %}
 {%- elif "redhat" in grains['os']|lower %}
 {% set os_base = 'res' %}
-{%- elif "alibaba" in grains['os']|lower %}
+{%- elif "alinux" in grains['os']|lower %}
 {% set os_base = 'alibaba' %}
 {%- elif "opensuse" in grains['oscodename']|lower %}
 {% set os_base = 'opensuse' %}
