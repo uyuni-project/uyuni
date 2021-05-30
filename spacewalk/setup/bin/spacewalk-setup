@@ -964,7 +964,6 @@ sub populate_initial_configs {
      hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
      jabberDOThostname => $answers->{hostname},
-     serverDOTsatelliteDOTca_chain => '/usr/share/rhn/RHNS-CA-CERT',
      serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
      cobblerDOThost => $answers->{hostname},
@@ -976,11 +975,7 @@ sub populate_initial_configs {
 
   my %rhnopt = ();
   if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'server.satellite.rhn_parent'} = '';
     $rhnopt{'disconnected'} = "1";
-  }
-  else {
-    $rhnopt{'server.satellite.rhn_parent'} = $answers->{'rhn-parent'} || 'satellite.rhn.redhat.com';
   }
   for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
           web.l10n_resourcebundles web.default_mail_from/) {

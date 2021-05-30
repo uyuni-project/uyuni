@@ -5,7 +5,7 @@ PREFIX		?= /
 
 GLADES		= gui.glade progress.glade rh_register.glade
 PUPLET_SS       = puplet-screenshot.png
-KEYS		= RHNS-CA-CERT
+KEYS		=
 
 # Distro
 RHEL		= $(shell rpm --eval 0%{?rhel})
