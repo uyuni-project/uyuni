@@ -41,7 +41,7 @@ SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper
 
 CONF_FILES = service-list
 
-GPGKEY_FILES = RHN-GPG-KEY
+GPGKEY_FILES =
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service \

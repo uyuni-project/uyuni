@@ -108,7 +108,6 @@ fi
 %{_bindir}/salt-secrets-config.py
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
-%{rhnroot}/RHN-GPG-KEY
 %{_mandir}/man8/rhn-satellite.8*
 %{_mandir}/man8/rhn-config-schema.pl.8*
 %{_mandir}/man8/spacewalk-service.8*
