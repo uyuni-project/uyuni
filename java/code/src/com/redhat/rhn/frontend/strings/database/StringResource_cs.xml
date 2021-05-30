@@ -2221,217 +2221,217 @@
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve">
         <source>CPU load 15-min ave</source>
-        <target/>
+        <target>Průměrné zatížení CPU 15-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min avg" xml:space="preserve">
         <source>CPU load 15-min avg</source>
-        <target/>
+        <target>Průměrné zatížení CPU 15-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve">
         <source>CPU load 5-min ave</source>
-        <target/>
+        <target>Průměrné zatížení CPU 5-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve">
         <source>CPU load 5-min avg</source>
-        <target/>
+        <target>Průměrné zatížení CPU 5-min</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU pct used" xml:space="preserve">
         <source>CPU pct used</source>
-        <target/>
+        <target>Procento použitých CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU usage" xml:space="preserve">
         <source>CPU usage</source>
-        <target/>
+        <target>Využití CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Cache miss rate" xml:space="preserve">
         <source>Cache miss rate</source>
-        <target/>
+        <target>Četnost dat mimo vyrovnávací paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Child process groups" xml:space="preserve">
         <source>Child process groups</source>
-        <target/>
+        <target>Skupiny podřízených procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Conn rate" xml:space="preserve">
         <source>Conn rate</source>
-        <target/>
+        <target>Četnost spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Connections" xml:space="preserve">
         <source>Connections</source>
-        <target/>
+        <target>Spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Consistent get rate" xml:space="preserve">
         <source>Consistent get rate</source>
-        <target/>
+        <target>Konzistentní četnost získávání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Current requests" xml:space="preserve">
         <source>Current requests</source>
-        <target/>
+        <target>Aktuální požadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.DB block get rate" xml:space="preserve">
         <source>DB block get rate</source>
-        <target/>
+        <target>Četnost získávání bloku DB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Data dict hit ratio" xml:space="preserve">
         <source>Data dict hit ratio</source>
-        <target/>
+        <target>Poměr výběrů z datového slovníku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Defunct processes" xml:space="preserve">
         <source>Defunct processes</source>
-        <target/>
+        <target>Nefunkční procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort rate" xml:space="preserve">
         <source>Disk sort rate</source>
-        <target/>
+        <target>Četnost řazení disku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort ratio" xml:space="preserve">
         <source>Disk sort ratio</source>
-        <target/>
+        <target>Poměr řazení disku</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.ESTABLISHED conns" xml:space="preserve">
         <source>ESTABLISHED conns</source>
-        <target/>
+        <target>Navázaná (ESTABLISHED) spojení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Exec time moving ave" xml:space="preserve">
         <source>Exec time moving ave</source>
-        <target/>
+        <target>Klouzavý průměr doby provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution rate" xml:space="preserve">
         <source>Execution rate</source>
-        <target/>
+        <target>Četnost provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution time ave" xml:space="preserve">
         <source>Execution time ave</source>
-        <target/>
+        <target>Průměrná doba provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.FIN_WAIT conns" xml:space="preserve">
         <source>FIN_WAIT conns</source>
-        <target/>
+        <target>Spojení FIN_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Filesystem pct used" xml:space="preserve">
         <source>Filesystem pct used</source>
-        <target/>
+        <target>Procento použití souborového systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Get rate" xml:space="preserve">
         <source>Get rate</source>
-        <target/>
+        <target>Četnost získávání (get)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.High exec time" xml:space="preserve">
         <source>High exec time</source>
-        <target/>
+        <target>Dlouhá doba provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle sessions" xml:space="preserve">
         <source>Idle sessions</source>
-        <target/>
+        <target>Nečinné relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Idle threads" xml:space="preserve">
         <source>Idle threads</source>
-        <target/>
+        <target>Nečinná vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
         <source>Inodes pct used</source>
-        <target/>
+        <target>Procento použitých inodů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Input rate" xml:space="preserve">
         <source>Input rate</source>
-        <target/>
+        <target>Četnost vstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Invocation rate" xml:space="preserve">
         <source>Invocation rate</source>
-        <target/>
+        <target>Četnost volání</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Latency" xml:space="preserve">
         <source>Latency</source>
-        <target/>
+        <target>Opoždění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
