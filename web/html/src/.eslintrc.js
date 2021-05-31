@@ -4,6 +4,7 @@ module.exports = {
   extends: [
     // This requires `eslint-plugin-flowtype` but we don't actually use it, see https://github.com/facebook/create-react-app/issues/6129
     "react-app",
+    "prettier"
   ],
 
   plugins: [
