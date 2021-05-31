@@ -284,8 +284,9 @@ Before('@sle15sp3_client') do
   skip_this_scenario unless $sle15sp3_client
 end
 
-Before('@skip_for_ubuntu') do |scenario|
-  skip_this_scenario if scenario.feature.location.file.include? 'ubuntu'
+Before('@skip_for_debianlike') do |scenario|
+  filename = scenario.feature.location.file
+  skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
 end
 
 Before('@skip_for_minion') do |scenario|
