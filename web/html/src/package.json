@@ -19,7 +19,7 @@
     "storybook": "start-storybook -s ./.storybook/public",
     "tsc": "tsc",
     "flow-to-ts": "flow-to-ts --prettier --semi true --trailing-comma es5 --print-width 120 --write --delete-source",
-    "prettier": "prettier --config .prettierrc.js --write {components,core,manager,utils}/**/*.{js,jsx,ts,tsx,css,less,json}",
+    "prettier": "prettier --config .prettierrc.js --write \"{components,core,manager,utils}/**/*.{js,jsx,ts,tsx,css,less,json}\"",
     "migrate": "node build/migrate-ts/index.js"
   },
   "engines": {
