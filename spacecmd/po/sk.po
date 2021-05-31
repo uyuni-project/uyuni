@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-05-30 18:57+0000\n"
+"PO-Revision-Date: 2021-05-31 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2254,7 +2254,7 @@ msgstr "Aktualizácia popisu pre skupinu: %s"
 #: ../src/spacecmd/group.py:378
 #, python-format
 msgid "Creating new group %s"
-msgstr ""
+msgstr "Vytvorenie novej skupiny %s"
 
 #: ../src/spacecmd/group.py:387
 msgid "group_list: List available system groups"
@@ -2262,20 +2262,20 @@ msgstr "group_list: Vypísať zoznam dostupných systémových skupín"
 
 #: ../src/spacecmd/group.py:388
 msgid "usage: group_list"
-msgstr ""
+msgstr "použitie: group_list"
 
 #: ../src/spacecmd/group.py:405
 msgid "group_listsystems: List the members of a group"
-msgstr ""
+msgstr "group_listsystems: Vypísať zoznam členov skupiny"
 
 #: ../src/spacecmd/group.py:406
 msgid "usage: group_listsystems GROUP"
-msgstr ""
+msgstr "použitie: group_listsystems SKUPINA"
 
 #: ../src/spacecmd/group.py:428
 #, python-format
 msgid "%s is not a valid group"
-msgstr ""
+msgstr "%s nie je platná skupina"
 
 #: ../src/spacecmd/group.py:441
 msgid "group_details: Show the details of a system group"
@@ -2283,36 +2283,36 @@ msgstr "group_details: Zobraziť podrobnosti o systémovej skupine"
 
 #: ../src/spacecmd/group.py:442
 msgid "usage: group_details GROUP ..."
-msgstr ""
+msgstr "použitie: group_details SKUPINA ..."
 
 #: ../src/spacecmd/group.py:465 ../src/spacecmd/group.py:513
 #, python-format
 msgid "The group \"%s\" is invalid"
-msgstr ""
+msgstr "Skupina \"%s\" je neplatná"
 
 #: ../src/spacecmd/group.py:472
 #, python-format
 msgid "ID:                %i"
-msgstr ""
+msgstr "ID:                %i"
 
 #: ../src/spacecmd/group.py:473
 #, python-format
 msgid "Name:              %s"
-msgstr ""
+msgstr "Názov:              %s"
 
 #: ../src/spacecmd/group.py:474
 #, python-format
 msgid "Description:       %s"
-msgstr ""
+msgstr "Popis:       %s"
 
 #: ../src/spacecmd/group.py:475
 #, python-format
 msgid "Number of Systems: %i"
-msgstr ""
+msgstr "Počet systémov: %i"
 
 #: ../src/spacecmd/group.py:479
 msgid "Members"
-msgstr ""
+msgstr "Členovia"
 
 #: ../src/spacecmd/group.py:488
 msgid ""
