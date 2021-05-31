@@ -35,6 +35,7 @@
     "copy-webpack-plugin": "^6.1.0",
     "core-js": "^3.8.1",
     "css-loader": "^2.1.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-loader": "^3.0.3",
