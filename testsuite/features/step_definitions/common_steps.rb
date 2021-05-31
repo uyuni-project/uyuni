@@ -1150,7 +1150,7 @@ When(/^I check for failed events on history event page$/) do
   event_table_xpath = "//div[@class='table-responsive']/table/tbody"
   rows = find(:xpath, event_table_xpath)
   rows.all('tr').each do |tr|
-    if tr.has_css?('.fa.fa-times-circle-o.fa-1-5x.text-danger')
+    if tr.all(:css, '.fa.fa-times-circle-o.fa-1-5x.text-danger').any?
       failings << "#{tr.text}\n"
     end
   end
