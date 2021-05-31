@@ -754,7 +754,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
                        repos.split(' ').map do |repo|
                          if os_family =~ /^centos/
                            "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif os_family =~ /^ubuntu/
+                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
                            "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
                          end
                        end
@@ -762,7 +762,7 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
                        repos.split(' ').map do |repo|
                          if os_family =~ /^centos/
                            "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-                         elsif os_family =~ /^ubuntu/
+                         elsif (os_family =~ /^ubuntu/) || (os_family =~ /^debian/)
                            "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
                          end
                        end
