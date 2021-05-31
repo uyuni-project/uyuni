@@ -634,10 +634,8 @@ rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
 %endif
 
-# Prettifying symlinks, excluding openSUSE
-%if ! 0%{?is_opensuse}
+# Prettifying symlinks
 mv $RPM_BUILD_ROOT%{jardir}/jboss-loggingjboss-logging.jar $RPM_BUILD_ROOT%{jardir}/jboss-logging.jar
-%endif
 
 # Prettifying symlinks for RHEL
 %if 0%{?rhel}
