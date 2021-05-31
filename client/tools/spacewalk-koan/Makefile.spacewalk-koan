@@ -17,7 +17,7 @@ INSTALL_DATA    = $(INSTALL_BIN)
 
 # Docker tests variables
 DOCKER_IMAGE          = suma-head-spacewalkkoan
-DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/tools/"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
 INITIAL_CMD           = /manager/susemanager-utils/testing/automation/initial-objects.sh
