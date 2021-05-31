@@ -1,16 +1,17 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   root: true,
-  extends: [
-    // This requires `eslint-plugin-flowtype` but we don't actually use it, see https://github.com/facebook/create-react-app/issues/6129
-    "react-app",
-    "prettier"
-  ],
 
   plugins: [
     "react-hooks",
     "@typescript-eslint",
-    "eslint-plugin-local-rules"
+    "eslint-plugin-local-rules",
+    "prettier"
+  ],
+  extends: [
+    // This requires `eslint-plugin-flowtype` but we don't actually use it, see https://github.com/facebook/create-react-app/issues/6129
+    "react-app",
+    "plugin:prettier/recommended"
   ],
 
   env: {
@@ -24,6 +25,7 @@ module.exports = {
   },
 
   rules: {
+    "prettier/prettier": "error",
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
