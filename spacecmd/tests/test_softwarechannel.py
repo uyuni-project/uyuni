@@ -5,8 +5,7 @@ Test software channel module.
 
 from mock import MagicMock, patch
 import spacecmd.softwarechannel
-from xmlrpc import client as xmlrpclib
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect
 import pytest
 import rpm
 
