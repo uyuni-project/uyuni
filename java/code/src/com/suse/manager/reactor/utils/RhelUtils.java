@@ -38,7 +38,7 @@ public class RhelUtils {
     private static final Pattern ORACLE_RELEASE_MATCHER =
             Pattern.compile("(.+)\\srelease\\s([\\d.]+).*", Pattern.DOTALL);
     private static final Pattern ALIBABA_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*LTS\\s*\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*[LTS]*\\s*\\((.+)\\).*", Pattern.DOTALL);
 
     /**
      * Information about RHEL based OSes.
@@ -171,8 +171,15 @@ public class RhelUtils {
             if (amatcher.matches()) {
                 String name =
                         amatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
-                String majorVersion = StringUtils.substringBefore(amatcher.group(2), ".");
-                String minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
+                String majorVersion;
+                String minorVersion;
+                if(amatcher.group(2).contains(".")) {
+                    majorVersion = StringUtils.substringBefore(amatcher.group(2), ".");
+                    minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
+                } else {
+                    majorVersion = amatcher.group(2);
+                    minorVersion = "";
+                }
                 String release = amatcher.group(3);
                 return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
             }

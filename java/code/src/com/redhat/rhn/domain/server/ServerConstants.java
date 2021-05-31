@@ -29,7 +29,8 @@ public class ServerConstants {
     public static final String LEAP = "Leap";
     public static final String UBUNTU = "Ubuntu";
     public static final String REDHAT = "RedHat";
-    public static final String ALIBABA = "Alibaba Cloud Linux (Aliyun Linux)";
+    public static final String ALIBABA = "Alibaba Cloud Linux (Aliyun Linux)"; // Alibaba Cloud Linux 2
+    public static final String ALIBABA3 = "Alibaba Cloud Linux"; // Alibaba Cloud Linux 3
     public static final String ALMA = "AlmaLinux";
     public static final String AMAZON = "Amazon Linux";
 

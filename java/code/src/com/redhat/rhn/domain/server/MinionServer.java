@@ -212,7 +212,7 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isAlibaba2() { return ServerConstants.ALIBABA.equals(getOs()) && getRelease().equals("2"); }
 
-    private boolean isAlibaba3() { return ServerConstants.ALIBABA.equals(getOs()) && getRelease().equals("3"); }
+    private boolean isAlibaba3() { return ServerConstants.ALIBABA3.equals(getOs()) && getRelease().equals("3"); }
 
     private boolean isAmazon2() {
         return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
