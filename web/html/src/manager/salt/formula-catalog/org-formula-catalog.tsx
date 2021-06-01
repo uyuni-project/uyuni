@@ -56,7 +56,7 @@ class FormulaCatalog extends React.Component<Props, State> {
         text: (
           <p>
             The formula catalog page enables viewing of currently installed{" "}
-            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">
+            <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">
               Salt Formulas
             </a>
             . Apply these formulas to individual systems or server groups. Formulas allow automatic installation and

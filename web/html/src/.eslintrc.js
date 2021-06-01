@@ -25,15 +25,16 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
-    // TODO: Eventually this should be ["error", "always"]
-    "radix": ["warn", "always"],
+    "radix": ["error", "always"],
     // TODO: Eventually we should enforce this as well
     // "no-eq-null": "error",
     // TODO: This needs to be reworked with Typescript support in mind
     "no-use-before-define": "off",
     // See https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    // This rule is misleading, using [] as a dependency array is completely valid, see https://stackoverflow.com/a/58579462/1470607
+    "react-hooks/exhaustive-deps": "off"
   },
 
   settings: {
