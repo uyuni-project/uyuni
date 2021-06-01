@@ -18,4 +18,8 @@ module.exports = {
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],
   setupFiles: ["./utils/test-utils/setup.ts"],
+  globals: {
+    ...defaults.globals,
+    csrfToken: "TEST" // TODO: Any better ideas?
+  }
 };
