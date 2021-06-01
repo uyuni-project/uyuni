@@ -1,4 +1,5 @@
 - fixing ISE when searching in docs for logged-in users (bsc#1186319)
+- Fix package building on openSUSE Leap 15.3
 
 -------------------------------------------------------------------
 Mon May 24 12:37:31 CEST 2021 - jgonzalez@suse.com

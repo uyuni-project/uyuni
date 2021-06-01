@@ -1,13 +1,13 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.2
+    project: openSUSE:Leap:15.3
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.2
+    repository: openSUSE_Leap_15.3
 artifacts:
   - artifact: asm
     package: asm3
@@ -131,13 +131,13 @@ artifacts:
   - artifact: javassist
     repository: Uyuni_Other
   - artifact: jboss-logging
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jcommon
     repository: Uyuni_Other
   - artifact: jdom
     repository: Leap
   - artifact: joda-time
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j
@@ -172,7 +172,7 @@ artifacts:
   - artifact: pgjdbc-ng
     repository: Uyuni_Other
   - artifact: postgresql-jdbc
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: quartz
     repository: Uyuni_Other
   - artifact: redstone-xmlrpc
@@ -212,7 +212,7 @@ artifacts:
     jar: log4j12
     repository: Leap
   - artifact: snakeyaml
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
