@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 28 09:11:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.4-1
+- Maintainer field in debian packages are only recommended (bsc#1186508)
+
+-------------------------------------------------------------------
 Wed Jan 27 13:17:30 CET 2021 - jgonzalez@suse.com
 
 - version 4.2.3-1

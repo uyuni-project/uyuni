@@ -61,7 +61,7 @@
         <dependency org="suse" name="netty-transport-native-unix-common" rev="4.1.44.Final" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="pgjdbc-ng" rev="0.8.3" />
-        <dependency org="suse" name="postgresql-jdbc" rev="42.2.10" />
+        <dependency org="suse" name="postgresql-jdbc" rev="42.2.16" />
         <dependency org="suse" name="quartz" rev="2.3.0" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
@@ -75,7 +75,7 @@
         <dependency org="suse" name="sitemesh" rev="2.1" />
         <dependency org="suse" name="slf4j-api" rev="1.7.30" />
         <dependency org="suse" name="slf4j-log4j12" rev="1.7.30" />
-        <dependency org="suse" name="snakeyaml" rev="1.10" />
+        <dependency org="suse" name="snakeyaml" rev="1.25" />
         <dependency org="suse" name="spark-core" rev="2.7.2" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
         <dependency org="suse" name="spy" rev="0.8.3" />
@@ -98,12 +98,12 @@
         <!-- <dependency org="suse" name="commons-lang" rev="2.6" /> -->
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="jasper" rev="9.0.35" />
-        <dependency org="suse" name="jasper-el" rev="9.0.35" />
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.35" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.35" />
-        <dependency org="suse" name="tomcat-juli" rev="9.0.35" />
-        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.35" />
+        <dependency org="suse" name="jasper" rev="9.0.36" />
+        <dependency org="suse" name="jasper-el" rev="9.0.36" />
+        <dependency org="suse" name="tomcat-el-3.0-api" rev="9.0.36" />
+        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="9.0.36" />
+        <dependency org="suse" name="tomcat-juli" rev="9.0.36" />
+        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="9.0.36" />
 
         <!-- Compilation and testing -->
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">

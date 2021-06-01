@@ -1,7 +1,6 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@susemanager
 @scope_ansible
 @scope_salt_ssh
 @ssh_minion

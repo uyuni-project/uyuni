@@ -2229,19 +2229,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("\n" +
                 "---\n" +
                 "retcode: 255.0\n" +
-                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern:\n" +
-                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "\n" +
-                "    '\n" +
+                "stderr: |\n" +
+                "    F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
                 "stdout: ''\n" +
                 "success: false\n" +
                 "\n" +
                 "---\n" +
                 "retcode: 255.0\n" +
-                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-3.lan: failed to apply state kubernetes.install-node-pattern:\n" +
-                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "\n" +
-                "    '\n" +
+                "stderr: |\n" +
+                "    F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-3.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
                 "stdout: ''\n" +
                 "success: false\n", serverAction.getResultMsg());
     }
@@ -2298,11 +2294,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
                 "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
                 "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
-                "stdout: '[join] applying states to new node\n" +
-                "\n" +
+                "stdout: |\n" +
+                "    [join] applying states to new node\n" +
                 "    [join] node successfully joined the cluster\n" +
-                "\n" +
-                "    '\n" +
                 "success: true\n" +
                 "\n" +
                 "---\n" +
@@ -2317,11 +2311,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
                 "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
                 "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
-                "stdout: '[join] applying states to new node\n" +
-                "\n" +
+                "stdout: |\n" +
+                "    [join] applying states to new node\n" +
                 "    [join] node successfully joined the cluster\n" +
-                "\n" +
-                "    '\n" +
                 "success: true\n", serverAction.getResultMsg());
     }
 
@@ -2368,10 +2360,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("\n" +
                 "---\n" +
                 "retcode: 255.0\n" +
-                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error removing node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern:\n" +
-                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
-                "\n" +
-                "    '\n" +
+                "stderr: |\n" +
+                "    F0528 17:04:20.778517   11913 join.go:63] error removing node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern: failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
                 "stdout: ''\n" +
                 "success: false\n", serverAction.getResultMsg());
     }
@@ -2419,14 +2409,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "---\n" +
                 "retcode: 0.0\n" +
                 "stderr: ''\n" +
-                "stdout: '[remove-node] removing worker node dev-min-caasp-worker-1.lan (drain timeout: 0s)\n" +
-                "\n" +
-                "    [remove-node] failed disarming kubelet: failed waiting for job caasp-kubelet-disarm-e009966a26df3d53840afc6318dc0d3c12f46858; node could be down, continuing\n" +
-                "    with node removal...\n" +
-                "\n" +
+                "stdout: |\n" +
+                "    [remove-node] removing worker node dev-min-caasp-worker-1.lan (drain timeout: 0s)\n" +
+                "    [remove-node] failed disarming kubelet: failed waiting for job caasp-kubelet-disarm-e009966a26df3d53840afc6318dc0d3c12f46858; node could be down, continuing with node removal...\n" +
                 "    [remove-node] node dev-min-caasp-worker-1.lan successfully removed from the cluster\n" +
-                "\n" +
-                "    '\n" +
                 "success: true\n", serverAction.getResultMsg());
     }
 
@@ -2473,14 +2459,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "---\n" +
                 "retcode: 0.0\n" +
                 "stderr: ''\n" +
-                "stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
-                "\n" +
+                "stdout: |\n" +
+                "    Current Kubernetes cluster version: 1.16.2\n" +
                 "    Latest Kubernetes version: 1.16.2\n" +
                 "\n" +
-                "\n" +
                 "    Congratulations! You are already at the latest version available\n" +
-                "\n" +
-                "    '\n" +
                 "success: true\n", serverAction.getResultMsg());
     }
 
@@ -2529,48 +2512,39 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 "stage0_upgrade_addons:\n" +
                 "    retcode: 0.0\n" +
                 "    stderr: ''\n" +
-                "    stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
-                "\n" +
+                "    stdout: |\n" +
+                "        Current Kubernetes cluster version: 1.16.2\n" +
                 "        Latest Kubernetes version: 1.16.2\n" +
                 "\n" +
-                "\n" +
                 "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
-                "\n" +
-                "        '\n" +
                 "    success: true\n" +
                 "stage1_upgrade_nodes:\n" +
                 "    dev-min-caasp-master.lan:\n" +
                 "        retcode: 1.0\n" +
                 "        stderr: ''\n" +
-                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "\n" +
-                "            '\n" +
+                "        stdout: |\n" +
+                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
                 "        success: false\n" +
                 "    dev-min-caasp-worker-1.lan:\n" +
                 "        retcode: 1.0\n" +
                 "        stderr: ''\n" +
-                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "\n" +
-                "            '\n" +
+                "        stdout: |\n" +
+                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
                 "        success: false\n" +
                 "    dev-min-caasp-worker-2.lan:\n" +
                 "        retcode: 1.0\n" +
                 "        stderr: ''\n" +
-                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
-                "\n" +
-                "            '\n" +
+                "        stdout: |\n" +
+                "            Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
                 "        success: false\n" +
                 "stage2_upgrade_addons:\n" +
                 "    retcode: 0.0\n" +
                 "    stderr: ''\n" +
-                "    stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
-                "\n" +
+                "    stdout: |\n" +
+                "        Current Kubernetes cluster version: 1.16.2\n" +
                 "        Latest Kubernetes version: 1.16.2\n" +
                 "\n" +
-                "\n" +
                 "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
-                "\n" +
-                "        '\n" +
                 "    success: true\n" +
                 "success: false\n", serverAction.getResultMsg());
     }
