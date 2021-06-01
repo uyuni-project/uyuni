@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 01 11:47:32 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.20-1
 - fix permission problem with /srv/susemanager/salt/custom files (bsc#1186325)
 - fixing ISE when searching in docs for logged-in users (bsc#1186319)
 - Fix package building on openSUSE Leap 15.3
