@@ -77,7 +77,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
     return (
       <Creatable
-        id={this.props.id}
+        inputId={this.props.id}
         name={this.props.name}
         onFocus={this.props.onFocus}
         onChange={this.onChange}
