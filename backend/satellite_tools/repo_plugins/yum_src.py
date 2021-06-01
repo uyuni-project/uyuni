@@ -708,18 +708,17 @@ type=rpm-md
         if tag == 'repomd':
             return repomd_path
 
-        def get_location(data_item):
+        def get_location_from_xml_element(data_item):
             for sub_item in data_item:
                 if sub_item.tag.endswith("location"):
                     return sub_item.attrib.get("href")
-
-        repomd = open(repomd_path, 'rb')
+                    
         path = None
-        for _event, elem in etree.iterparse(repomd):
-            if elem.tag.endswith("data") and elem.attrib.get("type") == tag:
-                path = get_location(elem)
-                break
-        repomd.close()
+        with open(repomd_path, 'rb') as repomd:
+            for _, elem in etree.iterparse(repomd):
+                if elem.tag.endswith("data") and elem.attrib.get("type") == tag:
+                    path = get_location_from_xml_element(elem)
+                    break
         if not path:
             return None
         return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, path)
