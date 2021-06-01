@@ -1,3 +1,4 @@
+- fix permission problem with /srv/susemanager/salt/custom files (bsc#1186325)
 - Strip the modular metadata for newly created channels in CLM if modular filters present (bsc#1184118)
 - fixing ISE when searching in docs for logged-in users (bsc#1186319)
 - Allow virtualization host entitlement on Xen Dom0 (bsc#1185522)

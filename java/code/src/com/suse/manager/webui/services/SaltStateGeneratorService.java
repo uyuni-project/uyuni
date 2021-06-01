@@ -22,8 +22,10 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FI
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_IMAGES_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
@@ -382,10 +384,14 @@ public enum SaltStateGeneratorService {
                 states.stream().map(confChannelSaltManager::getChannelStateName).collect(Collectors.toList());
         try {
             Files.createDirectories(baseDir);
+            FileUtils.setAttributes(baseDir, "tomcat", "susemanager",
+                    Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
             Path filePath = baseDir.resolve(defaultExtension(fileName));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltConfigChannelState(stateNames));
+            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
