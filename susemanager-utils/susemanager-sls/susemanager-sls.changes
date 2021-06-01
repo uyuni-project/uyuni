@@ -1,4 +1,4 @@
-- Do not assume Amazon bootstrap repo on RES7 instances (bsc#1186703)
+- Do not assume Amazon bootstrap repo on RHEL and AlmaLinux instances (bsc#1186703)
 
 -------------------------------------------------------------------
 Mon May 24 12:42:03 CEST 2021 - jgonzalez@suse.com
