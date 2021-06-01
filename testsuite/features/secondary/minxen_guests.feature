@@ -40,7 +40,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     Then the "virtualization-host" formula should be checked
 
   Scenario: Parametrize the Xen virtualization host
-    When I follow "Formulas" in the content area
+    When I follow first "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "Xen" from "hypervisor"
     And I select "NAT" in virtual network mode field

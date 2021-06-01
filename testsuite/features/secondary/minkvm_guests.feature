@@ -40,7 +40,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then the "virtualization-host" formula should be checked
 
   Scenario: Parametrize the KVM virtualization host
-    When I follow "Formulas" in the content area
+    When I follow first "Formulas" in the content area
     And I follow first "Virtualization Host" in the content area
     And I select "NAT" in virtual network mode field
     And I enter "192.168.124.1" in virtual network IPv4 address field
