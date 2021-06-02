@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -289,7 +290,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @OneToMany(mappedBy = "repository")
+    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
     public Set<SUSEProductSCCRepository> getProducts() {
         return products;
     }
@@ -299,6 +300,15 @@ public class SCCRepository extends BaseDomainHelper {
      */
     public void setProducts(Set<SUSEProductSCCRepository> productsIn) {
         this.products = productsIn;
+    }
+
+    /**
+     * @param productIn the product to add
+     */
+    public void addProduct(SUSEProductSCCRepository productIn) {
+        productIn.setRepository(this);
+        this.products.add(productIn);
+
     }
 
     /**

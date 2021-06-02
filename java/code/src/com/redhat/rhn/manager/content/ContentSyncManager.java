@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -51,6 +49,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
@@ -66,6 +65,13 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.UpgradePathJson;
 import com.suse.utils.Opt;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -97,8 +103,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Content synchronization logic.
@@ -580,6 +584,7 @@ public class ContentSyncManager {
      * @param mirrorUrl optional mirror url
      */
     public void linkAndRefreshContentSource(String mirrorUrl) {
+        log.debug("linkAndRefreshContentSource called");
         // flush needed to let the next queries find something
         HibernateFactory.getSession().flush();
         // find all CountentSource with org id == NULL which do not have a sccrepositoryauth
@@ -750,6 +755,18 @@ public class ContentSyncManager {
             SCCRepositoryAuth newAuth = null;
             if (tokenOpt.isPresent()) {
                 newAuth = new SCCRepositoryTokenAuth(tokenOpt.get());
+            }
+            else if (repo.getProducts().isEmpty()) {
+                log.debug("Repo '" + repo.getUrl() + "' not in the product tree. Skipping");
+                continue;
+            }
+            else if (c != null &&
+                    repo.getProducts().stream()
+                        .map(pd -> pd.getProduct())
+                        .anyMatch(p -> p.getFree() &&
+                                p.getChannelFamily().getLabel().equals("SLE-M-T"))) {
+                log.debug("Free repo detected. Setting NoAuth for " + repo.getUrl());
+                newAuth = new SCCRepositoryNoAuth();
             }
             else {
                 try {
@@ -1601,6 +1618,7 @@ public class ContentSyncManager {
                             if (productIdsSwitchedToReleased.contains(entry.getProductId())) {
                                 channelsToCleanup.add(entry.getChannelLabel());
                             }
+                            repo.addProduct(prodRepoLink);
                             return prodRepoLink;
                         }, prodRepoLink -> {
                             if (entry.getReleaseStage() != ReleaseStage.released) {
