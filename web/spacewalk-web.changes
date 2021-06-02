@@ -1,3 +1,5 @@
+- Fix image building scheduling UI (bsc#1186728)
+
 -------------------------------------------------------------------
 Mon May 24 12:39:25 CEST 2021 - jgonzalez@suse.com
 
