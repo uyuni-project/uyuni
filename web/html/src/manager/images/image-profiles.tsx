@@ -50,6 +50,9 @@ class ImageProfiles extends React.Component<Props, State> {
       imageprofiles: [],
       selectedItems: [],
     };
+  }
+
+  componentDidMount() {
     this.reloadData();
   }
 
