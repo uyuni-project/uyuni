@@ -10,7 +10,7 @@ import { FormGroup } from "components/input/FormGroup";
 import { Select } from "components/input/Select";
 import { Text } from "components/input/Text";
 import { ActionLink, ActionChainLink } from "components/links";
-import { ActionSchedule } from "components/action-schedule";
+import { ActionChain, ActionSchedule } from "components/action-schedule";
 import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -181,26 +181,24 @@ class BuildImage extends React.Component<Props, State> {
     });
   }
 
-  onDateTimeChanged(date) {
-    /**
-     * TODO: This is a bug and is probably not what was intended
-     * Do not assign to state fields directly, use `setState()` instead
-     */
-    this.state.model.earliest = date;
-    this.state.model.actionChain = null;
+  onDateTimeChanged(date: Date) {
+     const model: State['model'] = Object.assign({}, this.state.model, {
+      earliest: date,
+      actionChain: null,
+     });
     this.setState({
       actionChain: null,
+      model,
     });
   }
 
-  onActionChainChanged(actionChain) {
-    /**
-     * TODO: This is a bug and is probably not what was intended
-     * Do not assign to state fields directly, use `setState()` instead
-     */
-    this.state.model.actionChain = actionChain.text;
+  onActionChainChanged(actionChain: ActionChain | null) {
+    const model: State['model'] = Object.assign({}, this.state.model, {
+      actionChain: actionChain?.text,
+    });
     this.setState({
-      actionChain: actionChain,
+      actionChain,
+      model,
     });
   }
 
