@@ -1,3 +1,5 @@
+- do not check accessibility of free product repositories (bsc#1182817)
+
 -------------------------------------------------------------------
 Thu Jun 10 13:46:09 CEST 2021 - jgonzalez@suse.com
 
