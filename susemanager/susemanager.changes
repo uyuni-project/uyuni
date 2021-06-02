@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 02 11:08:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
 - Add the bootstrap repository definitions for Amazon Linux 2 and
   AlmaLinux 8 for SUSE Manager
 
