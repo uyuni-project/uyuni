@@ -254,7 +254,7 @@ Resumen:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve" approved="yes">
           <source>
 ---------------------
 Affected Systems List
@@ -269,7 +269,7 @@ as root on the system in question to refresh your software profile.
 ---------------------
 Lista de sistemas afectados
 ---------------------
-Puede que esta asesoría de erratas aplique a los sistemas listados a continuación. Si sabe que
+Puede que esta evaluación de erratas aplique a los sistemas listados a continuación. Si sabe que
 estas erratas no aplican a uno de los sistemas listados entonces es posible que
 el perfil del paquete para ese servidor esté desactualizado. En ese caso debe ejecutar
 'up2date -p' (RHEL 4 y anteriores) o 'rhn-profile-sync' (RHEL 5 y posteriores) como usuario root en el sistema en cuestión para actualizar el perfil de su software.
@@ -348,7 +348,7 @@ Puede abordar los problemas que señalamos de dos maneras:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve" approved="yes">
           <source>
 Changing Notification Preferences
 ---------------------------------
@@ -374,10 +374,11 @@ click the "Details" tab.
         <target>
 Cambio de preferencias en la notificación
 ---------------------------------
-Para habilitar o inhabilitar sus preferencias de alerta de erratas de de forma global, inicie sesión en @@PRODUCT_NAME@@
-y navegue desde "Visión General" / "Su cuenta" a la pestaña de "Preferencias".
+Para habilitar o inhabilitar sus preferencias de alerta de erratas de de forma global, inicie 
+sesión en @@PRODUCT_NAME@@ y navegue desde "Visión General" / "Su cuenta" a la 
+pestaña de "Preferencias".
 
-        URL: {0}
+ URL: {0}
 
 También puede habilitar o inhabilitar las notificaciones por sistema, al seleccionar un
 sistema individual de la "Lista de sistemas". De la vista de sistemas individuales
