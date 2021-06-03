@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 03 14:00:29 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.27-1
 - Enable certificate deployment for Leap 15.3 clients which is needed for
   bootstrapping (bsc#1186765)
 
