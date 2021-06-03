@@ -16,16 +16,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-04 13:34+0000\n"
-"PO-Revision-Date: 2020-12-15 03:26+0000\n"
+"PO-Revision-Date: 2021-06-03 18:57+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #: ../server/configFilesHandler.py:129
 #: ../server/handlers/xmlrpc/registration.py:217
@@ -667,6 +667,13 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Este sistema ya está registrado como Salt Minion. Si quiere registrarlo "
+"como cliente tradicional\n"
+"  por favor elimínelo primero mediante la web UI o API y después regístrelo "
+"usando las herramientas\n"
+"  tradicionales.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:127
@@ -691,7 +698,6 @@ msgstr ""
 "existe ya en el servidor"
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -699,8 +705,10 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"La opción –force rhnpush está deshabilitada en este servidor. Por favor "
-"contacte con su administrador Satélite para más información."
+"     La opción –force rhnpush está deshabilitada en este servidor. \n"
+"Por favor contacte con su administrador de @@PRODUCT_NAME@@ para más "
+"información.\n"
+"     "
 
 #. 60-70: token errors
 #: ../common/rhnException.py:140
@@ -733,6 +741,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     No se ha encontrado un canal base correspondiente a este sistema.\n"
+"     "
 
 #: ../common/rhnException.py:152
 msgid ""
@@ -752,7 +763,7 @@ msgstr "Usted no puede darse de baja del canal base."
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "No se puede subscribir al canal de @@PRODUCT_NAME@@ o Proxy."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
@@ -807,24 +818,21 @@ msgstr "Violación de la longitud máxima de la contraseña"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Este usuario tiene acceso de solo lectura a la API. Acción denegada."
 
 #: ../common/rhnException.py:186
-#, fuzzy
 msgid "System Name cannot be less than 1 character"
-msgstr "nombre de usuario debería ser menos de %d caracteres"
+msgstr "El nombre del sistema no puede tener menos de 1 carácter"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
-#, fuzzy
 msgid "SUSE Manager Proxy error."
-msgstr "Error del Proxy RHN."
+msgstr "Error de @@PRODUCT_NAME@@ Proxy."
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy incapaz de acceder"
+msgstr "@@PRODUCT_NAME@@ Proxy incapaz de acceder"
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
