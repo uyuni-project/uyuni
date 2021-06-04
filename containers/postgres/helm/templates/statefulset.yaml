@@ -19,9 +19,15 @@ spec:
             - name: DB_NAME
               value: {{ quote .Values.dbName }}
             - name: DB_USER
-              value: {{ quote .Values.dbUser }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: username
             - name: DB_PASSWORD
-              value: {{ quote .Values.dbPassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: password
           ports:
             - containerPort: 5432
           volumeMounts:

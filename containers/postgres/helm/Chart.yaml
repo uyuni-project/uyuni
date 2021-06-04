@@ -1,6 +1,6 @@
 apiVersion: v2
 name: postgres
-version: "1.0.0"
+version: "1.0.1"
 description: PostgreSQL Server
 type: application
 keywords:
