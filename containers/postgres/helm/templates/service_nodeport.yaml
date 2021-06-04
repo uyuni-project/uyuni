@@ -1,0 +1,17 @@
+{{- if .Values.nodePort }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service-nodeport
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  type: NodePort
+  ports:
+  - name: postgres
+    protocol: TCP
+    port: 5432
+    nodePort: {{ .Values.nodePort }}
+  selector:
+    app: {{ .Release.Name }}
+{{- end }}

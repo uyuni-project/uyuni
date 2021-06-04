@@ -1,0 +1,3 @@
+DB_NAME=uyuni
+DB_USER=uyuni
+DB_PASSWORD=uyuni

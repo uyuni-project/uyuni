@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  serviceName: {{ .Release.Name }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: docker.io/opensuse/uyuni/server/postgres:1.0
+          env:
+            - name: DB_NAME
+              value: {{ quote .Values.dbName }}
+            - name: DB_USER
+              value: {{ quote .Values.dbUser }}
+            - name: DB_PASSWORD
+              value: {{ quote .Values.dbPassword }}
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: {{ .Release.Name }}-pvc
+              mountPath: /var/lib/pgsql/data
+      initContainers:
+        - name: {{ .Release.Name }}-init
+          image: docker.io/opensuse/uyuni/server/postgres-init:1.0
+          env:
+            - name: DB_NAME
+              value: {{ quote .Values.dbName }}
+            - name: DB_USER
+              value: {{ quote .Values.dbUser }}
+            - name: DB_PASSWORD
+              value: {{ quote .Values.dbPassword }}
+          volumeMounts:
+            - name: {{ .Release.Name }}-pvc
+              mountPath: /var/lib/pgsql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-pvc
+      spec:
+        accessModes: [ReadWriteOnce]
+        volumeMode: Filesystem
+        {{- if .Values.storageClassName }}
+        storageClassName: {{ .Values.storageClassName }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.storageSize }}

@@ -1,0 +1,12 @@
+dbName: "uyuni"
+dbUser: "uyuni"
+dbPassword: "uyuni"
+
+storageSize: 50Gi
+
+# nil means the default storage class for the cluster,
+# see https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/
+storageClassName: null
+
+# uncomment to expose the service to outside the cluster at the specified port
+# nodePort: 30432

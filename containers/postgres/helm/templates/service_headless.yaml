@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service-headless
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  ports:
+  - name: postgres
+    protocol: TCP
+    port: 5432
+  clusterIP: None
+  selector:
+    app: {{ .Release.Name }}

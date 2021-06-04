@@ -1,0 +1,8 @@
+apiVersion: v2
+name: postgres
+version: "1.0.0"
+description: PostgreSQL Server
+type: application
+keywords:
+  - postgres
+  - server
