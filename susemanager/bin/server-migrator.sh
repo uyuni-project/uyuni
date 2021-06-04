@@ -22,18 +22,18 @@ echo
 spacewalk-service stop
 mv /etc/zypp/repos.d /etc/zypp/repos.d.old
 mkdir /etc/zypp/repos.d
-zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15.2/repo/oss repo-oss
-zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/15.2/oss repo-update
-zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.2/repo/non-oss repo-non-oss
-zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.2/non-oss/ repo-update-non-oss
+zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15.3/repo/oss repo-oss
+zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/15.3/oss repo-update
+zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.3/repo/non-oss repo-non-oss
+zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.3/non-oss/ repo-update-non-oss
 zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ uyuni-server-stable
 zypper ref
 zypper -n dup --allow-vendor-change
 
 echo
 echo "==================================================================="
-echo "If you did not yet migrate the database to postgresql12, do so now"
-echo "by running /usr/lib/susemanager/bin/pg-migrate-10-to-12.sh"
+echo "If you did not yet migrate the database to postgresql13, do so now"
+echo "by running /usr/lib/susemanager/bin/pg-migrate-12-to-13.sh"
 echo
 echo "Reboot system afterwards."
 echo "==================================================================="
