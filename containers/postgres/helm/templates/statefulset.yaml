@@ -27,19 +27,6 @@ spec:
           volumeMounts:
             - name: {{ .Release.Name }}-pvc
               mountPath: /var/lib/pgsql/data
-      initContainers:
-        - name: {{ .Release.Name }}-init
-          image: docker.io/opensuse/uyuni/server/postgres-init:1.0
-          env:
-            - name: DB_NAME
-              value: {{ quote .Values.dbName }}
-            - name: DB_USER
-              value: {{ quote .Values.dbUser }}
-            - name: DB_PASSWORD
-              value: {{ quote .Values.dbPassword }}
-          volumeMounts:
-            - name: {{ .Release.Name }}-pvc
-              mountPath: /var/lib/pgsql/data
   volumeClaimTemplates:
     - metadata:
         name: {{ .Release.Name }}-pvc
