@@ -560,11 +560,11 @@ public class ContentSyncManager {
         ContentSource source = auth.getContentSource();
 
         if (source == null) {
-            String url = contentSourceUrlOverwrite(auth.getRepository(), auth.getUrl(), mirrorUrl);
+            String url = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
             source = Optional.ofNullable(ChannelFactory.findVendorContentSourceByRepo(url))
                     .orElse(new ContentSource());
             source.setLabel(channel.getLabel());
-            source.setMetadataSigned(auth.getRepository().isSigned());
+            source.setMetadataSigned(auth.getRepo().isSigned());
             source.setOrg(null);
             source.setSourceUrl(url);
             source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
@@ -628,12 +628,12 @@ public class ContentSyncManager {
         SCCCachingFactory.lookupRepositoryAuthWithContentSource().stream()
             .forEach(a -> {
                 ContentSource cs = a.getContentSource();
-                String overwriteUrl = contentSourceUrlOverwrite(a.getRepository(), a.getUrl(), mirrorUrl);
+                String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
                 if (!cs.getSourceUrl().equals(overwriteUrl)) {
                     cs.setSourceUrl(overwriteUrl);
                 }
-                if (cs.getMetadataSigned() != a.getRepository().isSigned()) {
-                    cs.setMetadataSigned(a.getRepository().isSigned());
+                if (cs.getMetadataSigned() != a.getRepo().isSigned()) {
+                    cs.setMetadataSigned(a.getRepo().isSigned());
                 }
             });
     }
@@ -647,7 +647,7 @@ public class ContentSyncManager {
     public boolean isRefreshNeeded(String mirrorUrl) {
         for (SCCRepositoryAuth a : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {
             ContentSource cs = a.getContentSource();
-            String overwriteUrl = contentSourceUrlOverwrite(a.getRepository(), a.getUrl(), mirrorUrl);
+            String overwriteUrl = contentSourceUrlOverwrite(a.getRepo(), a.getUrl(), mirrorUrl);
             if (!cs.getSourceUrl().equals(overwriteUrl)) {
                 log.debug("Source and overwrite urls differ: " + cs.getSourceUrl() + " != " + overwriteUrl);
                 return true;
@@ -802,7 +802,7 @@ public class ContentSyncManager {
             if (authsThisCred.isEmpty()) {
                 // We need to create a new auth for this repo
                 newAuth.setCredentials(c);
-                newAuth.setRepository(repo);
+                newAuth.setRepo(repo);
                 allAuths.add(newAuth);
                 repo.setRepositoryAuth(allAuths);
                 SCCCachingFactory.saveRepositoryAuth(newAuth);
@@ -827,7 +827,7 @@ public class ContentSyncManager {
                 else if (!exAuth.getClass().equals(newAuth.getClass())) {
                     // class differ => remove and later add
                     newAuth.setCredentials(c);
-                    newAuth.setRepository(repo);
+                    newAuth.setRepo(repo);
                     SCCCachingFactory.saveRepositoryAuth(newAuth);
                     allAuths.add(newAuth);
                     allAuths.remove(exAuth);
@@ -844,7 +844,7 @@ public class ContentSyncManager {
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(c);
         authList.stream()
-            .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepository().getSccId()))
+            .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
             .forEach(repoAuth -> SCCCachingFactory.deleteRepositoryAuth(repoAuth));
 
         if (withFix) {
@@ -945,7 +945,7 @@ public class ContentSyncManager {
             if (authsThisCred.isEmpty()) {
                 // We need to create a new auth for this repo
                 newAuth.setCredentials(c);
-                newAuth.setRepository(repo);
+                newAuth.setRepo(repo);
                 allAuths.add(newAuth);
                 repo.setRepositoryAuth(allAuths);
                 SCCCachingFactory.saveRepositoryAuth(newAuth);

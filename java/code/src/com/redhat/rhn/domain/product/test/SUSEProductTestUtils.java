@@ -403,7 +403,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
             // set noauth for rhel-x86_64-server-7
             SCCRepositoryNoAuth newAuth = new SCCRepositoryNoAuth();
             newAuth.setCredentials(credentials);
-            newAuth.setRepository(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
+            newAuth.setRepo(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
             SCCCachingFactory.saveRepositoryAuth(newAuth);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh();
@@ -532,7 +532,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
     public static SCCRepositoryAuth createSCCRepositoryTokenAuth(Credentials c, SCCRepository r) {
         SCCRepositoryAuth auth = new SCCRepositoryTokenAuth(TestUtils.randomString().toLowerCase());
-        auth.setRepository(r);
+        auth.setRepo(r);
         auth.setCredentials(c);
         return TestUtils.saveAndReload(auth);
     }

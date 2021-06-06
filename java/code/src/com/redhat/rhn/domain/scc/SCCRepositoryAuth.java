@@ -128,14 +128,14 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      */
     @ManyToOne
     @JoinColumn(name = "repo_id")
-    public SCCRepository getRepository() {
+    public SCCRepository getRepo() {
         return repo;
     }
 
     /**
      * @param repoIn the repository to set
      */
-    public void setRepository(SCCRepository repoIn) {
+    public void setRepo(SCCRepository repoIn) {
         repo = repoIn;
     }
 
@@ -193,7 +193,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
         SCCRepositoryAuth otherSCCRepository = (SCCRepositoryAuth) other;
         return new EqualsBuilder()
             .append(getCredentials(), otherSCCRepository.getCredentials())
-            .append(getRepository(), otherSCCRepository.getRepository())
+            .append(getRepo(), otherSCCRepository.getRepo())
             .isEquals();
     }
 
@@ -204,7 +204,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getCredentials())
-            .append(getRepository())
+            .append(getRepo())
             .toHashCode();
     }
 }
