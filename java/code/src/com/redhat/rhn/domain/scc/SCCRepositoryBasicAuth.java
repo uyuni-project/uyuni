@@ -52,7 +52,7 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
     @Transient
     public String getUrl() {
         try {
-            URI url = new URI(getRepository().getUrl());
+            URI url = new URI(getRepo().getUrl());
 
             List<String> sourceParams = new ArrayList<String>(Arrays.asList(
                     StringUtils.split(Optional.ofNullable(url.getQuery()).orElse(""), '&')));

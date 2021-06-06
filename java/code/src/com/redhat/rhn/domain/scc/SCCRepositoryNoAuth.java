@@ -39,9 +39,9 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     @Transient
     public String getUrl() {
         if (getCredentials() == null) {
-            return MgrSyncUtils.urlToFSPath(getRepository().getUrl(), getRepository().getName()).toString();
+            return MgrSyncUtils.urlToFSPath(getRepo().getUrl(), getRepo().getName()).toString();
         }
-        return getRepository().getUrl();
+        return getRepo().getUrl();
     }
 
     @Override
