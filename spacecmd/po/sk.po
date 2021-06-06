@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-02 17:57+0000\n"
+"PO-Revision-Date: 2021-06-06 14:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2434,25 +2434,25 @@ msgstr "použitie: kickstart_delete PROFIL1 PROFIL2"
 
 #: ../src/spacecmd/kickstart.py:182
 msgid "usage: kickstart_delete \"PROF*\""
-msgstr ""
+msgstr "použitie: kickstart_delete \"PROF*\""
 
 #: ../src/spacecmd/kickstart.py:205 ../src/spacecmd/kickstart.py:2598
 #: ../src/spacecmd/kickstart.py:2654 ../src/spacecmd/kickstart.py:2696
 msgid "No valid kickstart labels passed as arguments!"
-msgstr ""
+msgstr "Ako argumenty neboli zadané žiadne platné označenia kickstart!"
 
 #: ../src/spacecmd/kickstart.py:211
 msgid "The following kickstart labels are invalid:"
-msgstr ""
+msgstr "Nasledujúce označenia kickstart sú neplatné:"
 
 #: ../src/spacecmd/kickstart.py:216
 #, python-format
 msgid "Delete profile %s [y/N]:"
-msgstr ""
+msgstr "Vymazať profil %s [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:224
 msgid "kickstart_import: Import a Kickstart profile from a file"
-msgstr ""
+msgstr "kickstart_import: Importovať profil Kickstart zo súboru"
 
 #: ../src/spacecmd/kickstart.py:225
 msgid ""
@@ -2464,15 +2464,24 @@ msgid ""
 "  -d DISTRIBUTION\n"
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
+"použitie: kickstart_import [voľby])\n"
+"\n"
+"voľby:\n"
+"  -f SÚBOR\n"
+"  -n NÁZOV\n"
+"  -d DISTRIBÚCIA\n"
+"  -v VIRT_TYP ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:280 ../src/spacecmd/kickstart.py:1986
 msgid "A filename is required"
-msgstr ""
+msgstr "Vyžaduje sa názov súboru"
 
 #: ../src/spacecmd/kickstart.py:310
 msgid ""
 "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr ""
+"kickstart_import_raw: Importovať nespracovaný profil Kickstart alebo profil "
+"autoyast zo súboru"
 
 #: ../src/spacecmd/kickstart.py:311
 msgid ""
@@ -2484,10 +2493,17 @@ msgid ""
 "  -d DISTRIBUTION\n"
 "  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 msgstr ""
+"použitie: kickstart_import_raw [voľby])\n"
+"\n"
+"voľby:\n"
+"  -f SÚBOR\n"
+"  -n NÁZOV\n"
+"  -d DISTRIBÚCIA\n"
+"  -v VIRT_TYP ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"
 
 #: ../src/spacecmd/kickstart.py:327
 msgid "kickstart_details: Show the details of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_details: Zobraziť podrobnosti profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:328
 msgid "usage: kickstart_details PROFILE"
