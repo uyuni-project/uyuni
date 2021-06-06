@@ -245,7 +245,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the auth.
      */
-    @OneToMany(mappedBy = "repository")
+    @OneToMany(mappedBy = "repo")
     public Set<SCCRepositoryAuth> getRepositoryAuth() {
         return auth;
     }
