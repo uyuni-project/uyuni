@@ -41,7 +41,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
 
   UNSAFE_componentWillMount() {
     Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
-      .promise.then(data => {
+      .then(data => {
         this.setState({ nodes: data.data });
       })
       .catch(this.handleResponseError);
@@ -50,10 +50,9 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
   onRefresh() {
     return Network.post(
       "/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
-      JSON.stringify(this.props.data.id),
-      "application/json"
+      JSON.stringify(this.props.data.id)
     )
-      .promise.then(data => {
+      .then(data => {
         if (data.success) {
           this.setState({
             messages: MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered.")),

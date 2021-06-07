@@ -122,7 +122,7 @@ const useClustersApi = () => {
 
   const fetchClusterNodes = (clusterId: number): Promise<ClusterNodesResultType> => {
     return Network.get(`/rhn/manager/api/cluster/${clusterId}/nodes`)
-      .promise.then((data: JsonResult<ClusterNodesResultType>) => {
+      .then((data: JsonResult<ClusterNodesResultType>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -130,7 +130,7 @@ const useClustersApi = () => {
 
   const fetchManagementNodes = (provider: string): Promise<Array<ServerType>> => {
     return Network.get(`/rhn/manager/api/cluster/provider/${provider}/management-nodes`)
-      .promise.then((data: JsonResult<Array<ServerType>>) => {
+      .then((data: JsonResult<Array<ServerType>>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -138,7 +138,7 @@ const useClustersApi = () => {
 
   const fetchNodesToJoin = (clusterId: number): Promise<Array<ServerType>> => {
     return Network.get(`/rhn/manager/api/cluster/${clusterId}/nodes-to-join`)
-      .promise.then((data: JsonResult<Array<ServerType>>) => {
+      .then((data: JsonResult<Array<ServerType>>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -151,10 +151,9 @@ const useClustersApi = () => {
   ): Promise<any> => {
     return Network.post(
       `/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`,
-      JSON.stringify(context),
-      "application/json"
+      JSON.stringify(context)
     )
-      .promise.then((data: JsonResult<any>) => {
+      .then((data: JsonResult<any>) => {
         return Promise.resolve({
           formula_name: provider,
           formula_list: [],
@@ -167,7 +166,7 @@ const useClustersApi = () => {
 
   const fetchClusterFormulaData = (clusterId: number, formula: string): Promise<any> => {
     return Network.get(`/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`)
-      .promise.then((data: JsonResult<any>) => {
+      .then((data: JsonResult<any>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -175,18 +174,16 @@ const useClustersApi = () => {
 
   const fetchClusterUpgradePlan = (clusterId: number): Promise<string> => {
     return Network.get(`/rhn/manager/api/cluster/${clusterId}/upgrade-plan`)
-      .promise.then((data: JsonResult<string>) => {
+      .then((data: JsonResult<string>) => {
         return data.data;
       })
       .catch(handleResponseError);
   };
 
   const saveClusterFormulaData = (clusterId: number, formula: string, data: FormulaValuesType): Promise<any> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`,
-      JSON.stringify(data),
-      "application/json"
-    ).promise.catch(handleResponseError);
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`, JSON.stringify(data)).catch(
+      handleResponseError
+    );
   };
 
   const addCluster = (
@@ -206,10 +203,9 @@ const useClustersApi = () => {
         managementNodeId: managementNodeId,
         provider: providerLabel,
         managementSettings: managementSettings,
-      }),
-      "application/json"
+      })
     )
-      .promise.then((data: JsonResult<number>) => {
+      .then((data: JsonResult<number>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -228,10 +224,9 @@ const useClustersApi = () => {
         earliest: earliest,
         serverIds: serverIds,
         formula: joinFormula,
-      }),
-      "application/json"
+      })
     )
-      .promise.then((data: JsonResult<number>) => {
+      .then((data: JsonResult<number>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -250,10 +245,9 @@ const useClustersApi = () => {
         earliest: earliest,
         serverIds: serverIds,
         formula: removeFormula,
-      }),
-      "application/json"
+      })
     )
-      .promise.then((data: JsonResult<number>) => {
+      .then((data: JsonResult<number>) => {
         return data.data;
       })
       .catch(handleResponseError);
@@ -264,40 +258,33 @@ const useClustersApi = () => {
       `/rhn/manager/api/cluster/${clusterId}/upgrade`,
       JSON.stringify({
         earliest: earliest,
-      }),
-      "application/json"
+      })
     )
-      .promise.then((data: JsonResult<number>) => {
+      .then((data: JsonResult<number>) => {
         return data.data;
       })
       .catch(handleResponseError);
   };
 
   const saveClusterProps = (clusterId: number, cluster: EditableClusterPropsType): Promise<any> => {
-    return Network.post(`/rhn/manager/api/cluster/${clusterId}`, JSON.stringify(cluster), "application/json")
-      .promise.then((data: JsonResult<number>) => {
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}`, JSON.stringify(cluster))
+      .then((data: JsonResult<number>) => {
         return true;
       })
       .catch(handleResponseError);
   };
 
   const deleteCluster = (clusterId: number): Promise<any> => {
-    return Network.del(`/rhn/manager/api/cluster/${clusterId}`, null, "application/json").promise.catch(
-      handleResponseError
-    );
+    return Network.del(`/rhn/manager/api/cluster/${clusterId}`, null).catch(handleResponseError);
   };
 
   const refreshGroupNodes = (clusterId: number): Promise<any> => {
-    return Network.post(
-      `/rhn/manager/api/cluster/${clusterId}/refresh-group-nodes`,
-      null,
-      "application/json"
-    ).promise.catch(handleResponseError);
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/refresh-group-nodes`, null).catch(handleResponseError);
   };
 
   const fetchClusterProps = (clusterId: number): Promise<ClusterType> => {
     return Network.get(`/rhn/manager/api/cluster/${clusterId}`)
-      .promise.then((data: JsonResult<ClusterType>) => {
+      .then((data: JsonResult<ClusterType>) => {
         return data.data;
       })
       .catch(handleResponseError);

@@ -199,7 +199,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
 
   getImageInfoList() {
     let listPromise = Network.get("/rhn/manager/api/cm/images")
-      .promise.then(data => this.setState({ selected: undefined, images: data }))
+      .then(data => this.setState({ selected: undefined, images: data }))
       .catch(this.handleResponseError);
     let updatedData: any = {};
     if (this.props.runtimeInfoEnabled) {
@@ -207,12 +207,12 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
       this.setState({ imagesRuntime: {} });
       //Get a list of cluster ids
       Network.get("/rhn/manager/api/cm/clusters")
-        .promise.then(data => {
+        .then(data => {
           const runtimeUrl = "/rhn/manager/api/cm/runtime/";
           //Get runtime data for each individual cluster
           data.forEach(cluster => {
             const clusterPromise = Network.get(runtimeUrl + cluster.id)
-              .promise.then(data =>
+              .then(data =>
                 this.setState({
                   imagesRuntime: this.mergeRuntimeList(data.data, updatedData),
                 })
@@ -247,7 +247,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     else url = "/rhn/manager/api/cm/images/" + id;
 
     let detailsPromise = Network.get(url)
-      .promise.then(data => {
+      .then(data => {
         this.setState({ selected: data });
       })
       .catch(this.handleResponseError);
@@ -257,7 +257,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
       const runtimePromises: any[] = [];
       //Get a list of cluster ids
       Network.get("/rhn/manager/api/cm/clusters")
-        .promise.then(data => {
+        .then(data => {
           const runtimeUrl =
             tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/";
           //Get runtime data for each individual cluster
@@ -271,7 +271,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
           }
           data.forEach(cluster => {
             const clusterPromise = Network.get(runtimeUrl + cluster.id + "/" + id)
-              .promise.then(data =>
+              .then(data =>
                 this.setState({
                   selectedRuntime: this.mergeRuntimeData(data.data, updatedData),
                 })
@@ -298,8 +298,8 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   deleteImages(idList) {
-    return Network.post("/rhn/manager/api/cm/images/delete", JSON.stringify(idList), "application/json")
-      .promise.then(() => {
+    return Network.post("/rhn/manager/api/cm/images/delete", JSON.stringify(idList))
+      .then(() => {
         // Waits for the 'Back' action if not in the list page
         const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
         backAction.then(() =>
@@ -316,10 +316,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   inspectImage(id, earliest) {
     return Network.post(
       "/rhn/manager/api/cm/images/inspect/" + id,
-      JSON.stringify({ imageId: id, earliest: earliest }),
-      "application/json"
+      JSON.stringify({ imageId: id, earliest: earliest })
     )
-      .promise.then(() => {
+      .then(() => {
         this.reloadData();
         this.setState({
           messages: MessagesUtils.info(t("Image inspect has been scheduled.")),
@@ -331,10 +330,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   buildImage(profile, version, host, earliest) {
     return Network.post(
       "/rhn/manager/api/cm/build/" + profile,
-      JSON.stringify({ version: version, buildHostId: host, earliest: earliest }),
-      "application/json"
+      JSON.stringify({ version: version, buildHostId: host, earliest: earliest })
     )
-      .promise.then(() => {
+      .then(() => {
         //The image id is changed so this page is not available anymore.
         this.handleBackAction();
         this.setState({

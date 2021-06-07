@@ -41,7 +41,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     };
 
     Network.get("/rhn/manager/api/systems/details/ansible/paths/" + props.minionServerId)
-    .promise.then(blob => {
+    .then(blob => {
       if (blob.success) {
         const data: AnsiblePath[] = blob.data;
         this.setState({ playbooksPaths: data.filter(p => p.type === "playbook"), inventoriesPaths: data.filter(p => p.type === "inventory"), loading: false });
@@ -64,9 +64,8 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
   deletePath(path: AnsiblePath) {
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/delete",
-      path.id?.toString(),
-      "application/json"
-    ).promise.then(blob => {
+      path.id?.toString()
+    ).then(blob => {
       if (blob.success) {
         if (path.type === "playbook") {
           this.setState({ playbooksPaths: this.state.playbooksPaths.filter(p => p.id !== path.id) });
@@ -101,8 +100,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
         path: editPath?.path,
         id: editPath?.id
       }),
-      "application/json"
-    ).promise.then(blob => {
+    ).then(blob => {
       if (blob.success) {
         const newPath = createNewAnsiblePath({ id: editPath.id, minionServerId: editPath.minionServerId, type: editPath.type, path: editPath.path});
         if (type === "playbook") {
@@ -127,8 +125,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
         type: type,
         path: newPath
       }),
-      "application/json"
-    ).promise.then(blob => {
+    ).then(blob => {
       if (blob.success) {
         const newAnsiblePath = { id: blob.data.pathId, minionServerId: this.state.minionServerId, type: type, path: newPath};
         if (type === "playbook") {

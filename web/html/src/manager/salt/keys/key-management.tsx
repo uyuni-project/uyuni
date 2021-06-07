@@ -10,19 +10,19 @@ import { Highlight } from "components/table/Highlight";
 import SpaRenderer from "core/spa/spa-renderer";
 
 function listKeys() {
-  return Network.get("/rhn/manager/api/systems/keys").promise;
+  return Network.get("/rhn/manager/api/systems/keys");
 }
 
 function acceptKey(key: string) {
-  return Network.post("/rhn/manager/api/systems/keys/" + key + "/accept").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/accept");
 }
 
 function deleteKey(key: string) {
-  return Network.post("/rhn/manager/api/systems/keys/" + key + "/delete").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/delete");
 }
 
 function rejectKey(key: string) {
-  return Network.post("/rhn/manager/api/systems/keys/" + key + "/reject").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/reject");
 }
 
 function actionsFor(id, state, update, enabled) {

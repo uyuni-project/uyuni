@@ -53,13 +53,13 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
 
       let networkRequest: ReturnType<NetworkMethod>;
       if (action === "get" || !networkAction[action]) {
-        networkRequest = networkAction.get(apiUrl, "application/json");
+        networkRequest = networkAction.get(apiUrl);
       } else {
-        networkRequest = networkAction[action](apiUrl, JSON.stringify(actionBodyRequest), "application/json");
+        networkRequest = networkAction[action](apiUrl, JSON.stringify(actionBodyRequest));
       }
       setOnGoingNetworkRequest(networkRequest);
 
-      return networkRequest.promise
+      return networkRequest
         .then(response => {
           setIsLoading(false);
 

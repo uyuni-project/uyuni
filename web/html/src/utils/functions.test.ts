@@ -42,6 +42,11 @@ describe("cancelable", () => {
     expect(instance instanceof Promise).toEqual(true);
   });
 
+  test("has generic chainable properties like finally", () => {
+    const instance = cancelable(new Promise(() => undefined));
+    expect(instance.finally).toBeDefined();
+  });
+
   test("chaining off the promise property", async () => {
     const onSuccess = jest.fn();
     const onCancel = jest.fn();

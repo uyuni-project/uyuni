@@ -97,7 +97,7 @@ class FormulaForm extends React.Component<Props, State> {
     if (this.props.getDataPromise) {
       dataPromise = this.props.getDataPromise();
     } else {
-      dataPromise = Network.get(this.props.dataUrl).promise;
+      dataPromise = Network.get(this.props.dataUrl);
     }
 
     dataPromise.then(data => {
@@ -166,7 +166,7 @@ class FormulaForm extends React.Component<Props, State> {
         content: data.values,
       };
 
-      Network.post(this.props.saveUrl, JSON.stringify(formData), "application/json").promise.then(
+      Network.post(this.props.saveUrl, JSON.stringify(formData)).then(
         function(this: FormulaForm, data) {
           if (data instanceof Array) {
             this.setState({ messages: data.map(msg => this.getMessageText(msg)), errors: [] });

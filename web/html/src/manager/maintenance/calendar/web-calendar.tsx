@@ -50,7 +50,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     const date = getDate(operation);
     if (operation === "initial" || needsUpdate(date)) {
       const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${date.valueOf()}/${props.id}`;
-      return Network.get(endpoint, "application/json").promise
+      return Network.get(endpoint)
         .then(events => {
           setEvents(events);
           navigateTo(operation);
@@ -69,7 +69,7 @@ const WebCalendar = (props: WebCalendarProps) => {
       return;
     }
     const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${date.valueOf()}/${props.id}`;
-    return Network.get(endpoint, "application/json").promise
+    return Network.get(endpoint)
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more past maintenance windows")));
@@ -98,7 +98,7 @@ const WebCalendar = (props: WebCalendarProps) => {
       date = date.add(1, 'month').startOf('month');
     }
     const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${date.valueOf()}/${props.id}`;
-    return Network.get(endpoint, "application/json").promise
+    return Network.get(endpoint)
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));

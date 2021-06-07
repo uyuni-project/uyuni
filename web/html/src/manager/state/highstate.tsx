@@ -54,10 +54,9 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         earliest: Formats.LocalDateTime(this.state.earliest),
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
         test: this.state.test,
-      }),
-      "application/json"
+      })
     )
-      .promise.then(data => {
+      .then(data => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>

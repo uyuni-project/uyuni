@@ -67,7 +67,7 @@ class CreateImageStore extends React.Component<Props, State> {
   }
 
   setValues(id) {
-    Network.get("/rhn/manager/api/cm/imagestores/" + id).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imagestores/" + id).then(res => {
       if (res.success) {
         var data = res.data;
         this.setState({
@@ -86,7 +86,7 @@ class CreateImageStore extends React.Component<Props, State> {
     }
 
     return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
-      .promise.then(res => !res.success)
+      .then(res => !res.success)
       .catch(() => false);
   }
 
@@ -99,9 +99,8 @@ class CreateImageStore extends React.Component<Props, State> {
     model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/update/" + window.storeId,
-      JSON.stringify(model),
-      "application/json"
-    ).promise.then(data => {
+      JSON.stringify(model)
+    ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {
@@ -127,9 +126,8 @@ class CreateImageStore extends React.Component<Props, State> {
     model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/create",
-      JSON.stringify(model),
-      "application/json"
-    ).promise.then(data => {
+      JSON.stringify(model)
+    ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
       } else {

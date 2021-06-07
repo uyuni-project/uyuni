@@ -24,12 +24,12 @@ function handleResponseErrors(res) {
 }
 
 function getProducts(): Promise<Product[]> {
-  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products").promise
+  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products")
     .then((res: JsonResult<Product[]>) => res.success ? res.data : Promise.reject(res));
 }
 
 function getProductKernels(productId: number): Promise<Kernel[]> {
-  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${productId}`).promise
+  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${productId}`)
     .then((res: JsonResult<Kernel[]>) => res.success ? res.data : Promise.reject(res))
     .then(res => {
       res[0].latest = true;

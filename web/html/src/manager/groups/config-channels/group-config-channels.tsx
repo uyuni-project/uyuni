@@ -23,8 +23,7 @@ function applyRequest(component) {
       type: "GROUP",
       states: ["custom_groups"],
     }),
-    "application/json"
-  ).promise.then(data => {
+  ).then(data => {
     component.setState({
       messages: MessagesUtils.info(
         t("Applying the config channels has been scheduled for each minion server in this group")
@@ -40,8 +39,7 @@ function saveRequest(states) {
       id: window.groupId,
       type: "GROUP",
       channels: states,
-    }),
-    "application/json"
+    })
   );
 }
 

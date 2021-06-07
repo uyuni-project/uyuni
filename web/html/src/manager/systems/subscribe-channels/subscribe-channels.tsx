@@ -88,7 +88,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   updateView = () => {
     Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels`)
-      .promise.then(data => {
+      .then(data => {
         const base: ChannelDto = data.data && data.data.base ? data.data.base : this.getNoBase();
         const childrenIds = data.data.children ? data.data.children.map(c => c.id) : [];
         this.setState({
@@ -108,7 +108,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .catch(this.handleResponseError);
 
     Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels-available-base`)
-      .promise.then(data => {
+      .then(data => {
         this.setState({
           availableBase: data.data,
         });
@@ -127,7 +127,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       Network.get(
         `/rhn/manager/api/systems/${this.props.serverId}/channels/${newBaseId}/accessible-children${queryString}`
       )
-        .promise.then((data: JsonResult<Array<ChannelDto>>) => {
+        .then((data: JsonResult<Array<ChannelDto>>) => {
           const newChildren = new Map(
             data.data.sort((a, b) => a.name.localeCompare(b.name)).map(channel => [channel.id, channel])
           );
@@ -181,10 +181,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       if (mandatoryChannelsNotCached.length > 0) {
         Network.post(
           "/rhn/manager/api/admin/mandatoryChannels",
-          JSON.stringify(mandatoryChannelsNotCached),
-          "application/json"
+          JSON.stringify(mandatoryChannelsNotCached)
         )
-          .promise.then((data: JsonResult<Map<number, Array<number>>>) => {
+          .then((data: JsonResult<Map<number, Array<number>>>) => {
             const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
             let { requiredChannels, requiredByChannels } = ChannelUtils.processChannelDependencies(
               allTheNewMandatoryChannelsData
@@ -354,10 +353,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         children: selectedChildrenList,
         earliest: Formats.LocalDateTime(this.state.earliest),
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
-      }),
-      "application/json"
+      })
     )
-      .promise.then(data => {
+      .then(data => {
         if (data.success) {
           const msg = MessagesUtils.info(
             this.state.actionChain ? (

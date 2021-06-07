@@ -46,12 +46,12 @@ export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
     }
 
     return Network.post(uri, JSON.stringify(data), "application/json", false)
-      .promise.then(() => props.onMessage(MessagesUtils.success(successMsg)))
+      .then(() => props.onMessage(MessagesUtils.success(successMsg)))
       .catch(xhr => props.onMessage(MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
   };
 
   useEffect(() => {
-    Network.get("/rhn/manager/api/maintenance/schedule/list").promise.then(setSchedules);
+    Network.get("/rhn/manager/api/maintenance/schedule/list").then(setSchedules);
   }, []);
 
   return props.children(schedules, onAssign);

@@ -107,8 +107,8 @@ class RecurringStates extends React.Component<Props, State> {
   getRecurringScheduleList = () => {
     const entityParams = inferEntityParams();
     const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
-    return Network.get(endpoint, "application/json")
-      .promise.then(schedules => {
+    return Network.get(endpoint)
+      .then(schedules => {
         this.setState({
           action: undefined,
           selected: undefined,
@@ -140,8 +140,8 @@ class RecurringStates extends React.Component<Props, State> {
   }
 
   updateSchedule(schedule) {
-    return Network.post("/rhn/manager/api/recurringactions/save", JSON.stringify(schedule), "application/json")
-      .promise.then(_ => {
+    return Network.post("/rhn/manager/api/recurringactions/save", JSON.stringify(schedule))
+      .then(_ => {
         const successMsg = (
           <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
         );
@@ -162,7 +162,7 @@ class RecurringStates extends React.Component<Props, State> {
 
   deleteSchedule(item) {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .promise.then(_ => {
+      .then(_ => {
         this.setState({
           messages: MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."),
         });

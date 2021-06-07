@@ -89,7 +89,7 @@ const _COLS = {
 };
 
 function reloadData() {
-  return Network.get("/rhn/manager/api/admin/products", "application/json").promise;
+  return Network.get("/rhn/manager/api/admin/products");
 }
 
 /**
@@ -186,10 +186,9 @@ class ProductsPageWrapper extends React.Component {
     currentObject.setState({ addingProducts: true });
     Network.post(
       "/rhn/manager/admin/setup/products",
-      JSON.stringify(currentObject.state.selectedItems.map(i => i.identifier)),
-      "application/json"
+      JSON.stringify(currentObject.state.selectedItems.map(i => i.identifier))
     )
-      .promise.then(data => {
+      .then(data => {
         // returned data format is { productId : isFailedFlag }
         let failedProducts = currentObject.state.selectedItems.filter(i => data[i.identifier]);
         let resultMessages: MessageType[] | null = null;
@@ -217,8 +216,8 @@ class ProductsPageWrapper extends React.Component {
     currentObject.state.scheduledItems.concat([id]);
     var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
-    Network.post("/rhn/manager/admin/setup/products", JSON.stringify([id]), "application/json")
-      .promise.then(data => {
+    Network.post("/rhn/manager/admin/setup/products", JSON.stringify([id]))
+      .then(data => {
         if (!data[id]) {
           currentObject.setState({
             errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),

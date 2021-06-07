@@ -84,7 +84,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   getProfiles() {
-    Network.get("/rhn/manager/api/cm/imageprofiles").promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles").then(res => {
       this.setState({
         profiles: res,
       });
@@ -98,7 +98,7 @@ class BuildImage extends React.Component<Props, State> {
   getProfileDetails(profileId) {
     if (!profileId) return true;
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then(res => {
       if (res.success) {
         var data = res.data;
 
@@ -125,7 +125,7 @@ class BuildImage extends React.Component<Props, State> {
   }
 
   getBuildHosts(type) {
-    Network.get("/rhn/manager/api/cm/build/hosts/" + type, "application/json").promise.then(res => {
+    Network.get("/rhn/manager/api/cm/build/hosts/" + type).then(res => {
       this.setState({
         hosts: res,
       });
@@ -205,9 +205,8 @@ class BuildImage extends React.Component<Props, State> {
   onBuild(model) {
     Network.post(
       "/rhn/manager/api/cm/build/" + this.state.model.profileId,
-      JSON.stringify(model),
-      "application/json"
-    ).promise.then(data => {
+      JSON.stringify(model)
+    ).then(data => {
       if (data.success) {
         const msg = MessagesUtils.info(
           this.state.model.actionChain ? (

@@ -40,7 +40,7 @@ const useMonitoringApi = () => {
   }> => {
     setAction("checking");
     return Network.get("/rhn/manager/api/admin/config/monitoring")
-      .promise.then((data: JsonResult<ExportersResultType>) => {
+      .then((data: JsonResult<ExportersResultType>) => {
         setExportersStatus(data.data.exporters);
         setExportersMessages(data.data.messages);
         setRestartNeeded(isRestartNeeded(data.data));
@@ -54,12 +54,8 @@ const useMonitoringApi = () => {
 
   const changeStatus = (toEnable: boolean) => {
     setAction(toEnable ? "enabling" : "disabling");
-    return Network.post(
-      "/rhn/manager/api/admin/config/monitoring",
-      JSON.stringify({ enable: toEnable }),
-      "application/json"
-    )
-      .promise.then((data: JsonResult<ExportersResultType>) => {
+    return Network.post("/rhn/manager/api/admin/config/monitoring", JSON.stringify({ enable: toEnable }))
+      .then((data: JsonResult<ExportersResultType>) => {
         if (data.data.exporters) {
           setExportersStatus(data.data.exporters);
           setExportersMessages(data.data.messages);
