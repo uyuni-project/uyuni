@@ -2,7 +2,6 @@ import * as React from "react";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionSchedule } from "components/action-schedule";
 import Network from "utils/network";
-import { replacer } from "utils/json";
 import { Utils, Formats } from "utils/functions";
 import { Messages } from "components/messages";
 import { Table } from "components/table/Table";
@@ -305,7 +304,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     const childrenIds = Array.from(
       this.props.childChannels.flatMap(dto => dto.childChannels.map(channel => channel.id))
     );
-    Network.post("/rhn/manager/api/admin/mandatoryChannels", JSON.stringify(childrenIds))
+    Network.post("/rhn/manager/api/admin/mandatoryChannels", childrenIds)
       .then((response: JsonResult<Map<number, Array<number>>>) => {
         const channelDeps = ChannelUtils.processChannelDependencies(response.data);
         this.setState({
@@ -953,7 +952,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   onGotoChildChannels = () => {
     return Network.post(
       "/rhn/manager/systems/ssm/channels/allowed-changes",
-      JSON.stringify(this.state.baseChanges)
+      this.state.baseChanges
     )
       .then((data: JsonResult<Array<SsmAllowedChildChannelsDto>>) => {
         // group the allowed changes by the new base in order to show child channels only once
@@ -1037,7 +1036,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges,
     };
-    return Network.post("/rhn/manager/systems/ssm/channels", JSON.stringify(req, replacer))
+    return Network.post("/rhn/manager/systems/ssm/channels", req)
       .then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (

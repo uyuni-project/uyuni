@@ -93,7 +93,7 @@ class ImageStores extends React.Component<Props, State> {
   deleteStores(idList) {
     return Network.post(
       "/rhn/manager/api/cm/imagestores/delete",
-      JSON.stringify(idList)
+      idList
     ).then(data => {
       if (data.success) {
         this.setState({

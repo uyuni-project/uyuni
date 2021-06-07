@@ -186,7 +186,7 @@ class ProductsPageWrapper extends React.Component {
     currentObject.setState({ addingProducts: true });
     Network.post(
       "/rhn/manager/admin/setup/products",
-      JSON.stringify(currentObject.state.selectedItems.map(i => i.identifier))
+      currentObject.state.selectedItems.map(i => i.identifier)
     )
       .then(data => {
         // returned data format is { productId : isFailedFlag }
@@ -216,7 +216,7 @@ class ProductsPageWrapper extends React.Component {
     currentObject.state.scheduledItems.concat([id]);
     var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
-    Network.post("/rhn/manager/admin/setup/products", JSON.stringify([id]))
+    Network.post("/rhn/manager/admin/setup/products", [id])
       .then(data => {
         if (!data[id]) {
           currentObject.setState({

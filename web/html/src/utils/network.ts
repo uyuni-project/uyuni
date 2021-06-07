@@ -1,8 +1,8 @@
-import {Utils} from "../utils/functions";
-import {Utils as MessagesUtils} from "../components/messages";
+import {MessageType, Utils as MessagesUtils} from "components/messages";
+import {Utils} from "utils/functions";
+import {Cancelable} from "utils/functions";
 
-import {Cancelable} from "../utils/functions";
-import {MessageType} from "components/messages";
+import { replacer } from "./json";
 
 declare var csrfToken: string;
 
@@ -34,6 +34,12 @@ function request(
     contentType: string,
     processData: boolean = true
 ): Cancelable {
+    const isRegularObject = typeof data === "object" && !(data instanceof FormData);
+    const isNumber = typeof data === 'number';
+    if ((isRegularObject || isNumber) && processData === true) {
+        data = JSON.stringify(data, replacer);
+    }
+
     const a = jQuery.ajax({
         url: url,
         data: data,

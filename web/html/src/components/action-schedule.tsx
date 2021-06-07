@@ -74,10 +74,10 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   UNSAFE_componentWillMount = () => {
     if (this.state.systemIds && this.state.actionType) {
-      const postData = JSON.stringify({
+      const postData = {
         systemIds: this.state.systemIds,
         actionType: this.state.actionType,
-      });
+      };
       Network.post("/rhn/manager/api/maintenance/upcoming-windows", postData).then(data => {
           const multiMaintWindows = data.data.maintenanceWindowsMultiSchedules;
           const maintenanceWindows = data.data.maintenanceWindows;

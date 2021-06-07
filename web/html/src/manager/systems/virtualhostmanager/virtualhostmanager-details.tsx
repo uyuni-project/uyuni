@@ -49,7 +49,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
   onRefresh() {
     return Network.post(
       "/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
-      JSON.stringify(this.props.data.id)
+      this.props.data.id
     )
       .then(data => {
         if (data.success) {

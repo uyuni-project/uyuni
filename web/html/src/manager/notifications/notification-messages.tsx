@@ -171,7 +171,7 @@ class NotificationMessages extends React.Component<Props, State> {
 
     return Network.post(
       "/rhn/manager/notification-messages/update-messages-status",
-      JSON.stringify(dataRequest)
+      dataRequest
     )
       .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
@@ -203,7 +203,7 @@ class NotificationMessages extends React.Component<Props, State> {
   };
 
   deleteNotifications = ids => {
-    return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids))
+    return Network.post("/rhn/manager/notification-messages/delete", ids)
       .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({

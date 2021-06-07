@@ -105,7 +105,7 @@ const MaintenanceWindows = () => {
   };
 
   const update = itemIn => {
-    return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", JSON.stringify(itemIn))
+    return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", itemIn)
       .then(_ => {
         const successMsg = (
           <span>
@@ -126,7 +126,7 @@ const MaintenanceWindows = () => {
   };
 
   const deleteItem = itemIn => {
-    return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", JSON.stringify(itemIn))
+    return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", itemIn)
       .then(_ => {
         setMessages(
           MessagesUtils.info(
@@ -143,7 +143,7 @@ const MaintenanceWindows = () => {
   };
 
   const refreshCalendar = itemIn => {
-    return Network.post("/rhn/manager/api/maintenance/calendar/refresh", JSON.stringify(itemIn))
+    return Network.post("/rhn/manager/api/maintenance/calendar/refresh", itemIn)
       .then(_ => {
         const msgs = messages.concat(MessagesUtils.info(t("Calendar successfully refreshed")));
         setAction(undefined);

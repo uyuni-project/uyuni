@@ -94,12 +94,12 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     const editPath: Partial<AnsiblePath> = type === "playbook" ? this.state.editPlaybookPath : this.state.editInventoryPath;
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
-      JSON.stringify({
+      {
         minionServerId: editPath?.minionServerId,
         type: editPath?.type,
         path: editPath?.path,
         id: editPath?.id
-      }),
+      },
     ).then(blob => {
       if (blob.success) {
         const newPath = createNewAnsiblePath({ id: editPath.id, minionServerId: editPath.minionServerId, type: editPath.type, path: editPath.path});
@@ -120,11 +120,11 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     const newPath = type === "playbook" ? this.state.newPlaybookPath : this.state.newInventoryPath;
     Network.post(
       "/rhn/manager/api/systems/details/ansible/paths/save",
-      JSON.stringify({
+      {
         minionServerId: this.state.minionServerId,
         type: type,
         path: newPath
-      }),
+      },
     ).then(blob => {
       if (blob.success) {
         const newAnsiblePath = { id: blob.data.pathId, minionServerId: this.state.minionServerId, type: type, path: newPath};

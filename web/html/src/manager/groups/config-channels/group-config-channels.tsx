@@ -18,11 +18,11 @@ function matchUrl(target) {
 function applyRequest(component) {
   return Network.post(
     "/rhn/manager/api/states/apply",
-    JSON.stringify({
+    {
       id: window.groupId,
       type: "GROUP",
       states: ["custom_groups"],
-    }),
+    },
   ).then(data => {
     component.setState({
       messages: MessagesUtils.info(
@@ -35,11 +35,11 @@ function applyRequest(component) {
 function saveRequest(states) {
   return Network.post(
     "/rhn/manager/api/states/save",
-    JSON.stringify({
+    {
       id: window.groupId,
       type: "GROUP",
       channels: states,
-    })
+    }
   );
 }
 

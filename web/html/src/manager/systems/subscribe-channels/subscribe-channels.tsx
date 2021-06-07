@@ -181,7 +181,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       if (mandatoryChannelsNotCached.length > 0) {
         Network.post(
           "/rhn/manager/api/admin/mandatoryChannels",
-          JSON.stringify(mandatoryChannelsNotCached)
+          mandatoryChannelsNotCached
         )
           .then((data: JsonResult<Map<number, Array<number>>>) => {
             const allTheNewMandatoryChannelsData = Object.assign({}, this.state.mandatoryChannelsRaw, data.data);
@@ -348,12 +348,12 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     let selectedChildrenList = this.getSelectedChildren();
     return Network.post(
       `/rhn/manager/api/systems/${this.props.serverId}/channels`,
-      JSON.stringify({
+      {
         base: this.state.selectedBase,
         children: selectedChildrenList,
         earliest: Formats.LocalDateTime(this.state.earliest),
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
-      })
+      }
     )
       .then(data => {
         if (data.success) {

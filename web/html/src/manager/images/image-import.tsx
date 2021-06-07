@@ -191,7 +191,7 @@ class ImageImport extends React.Component {
         name: this.state.model.name,
         version: this.state.model.version,
       };
-      return Network.post("/rhn/manager/api/cm/images/import", JSON.stringify(importObj))
+      return Network.post("/rhn/manager/api/cm/images/import", importObj)
         .then(data => {
           if (data.success) {
             Utils.urlBounce("/rhn/manager/cm/images");
