@@ -45,7 +45,7 @@ export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
       };
     }
 
-    return Network.post(uri, JSON.stringify(data), "application/json", false)
+    return Network.post(uri, JSON.stringify(data), "application/json")
       .then(() => props.onMessage(MessagesUtils.success(successMsg)))
       .catch(xhr => props.onMessage(MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
   };
