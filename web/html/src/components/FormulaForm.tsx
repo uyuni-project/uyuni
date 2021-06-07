@@ -166,7 +166,7 @@ class FormulaForm extends React.Component<Props, State> {
         content: data.values,
       };
 
-      Network.post(this.props.saveUrl, JSON.stringify(formData)).then(
+      Network.post(this.props.saveUrl, formData).then(
         function(this: FormulaForm, data) {
           if (data instanceof Array) {
             this.setState({ messages: data.map(msg => this.getMessageText(msg)), errors: [] });

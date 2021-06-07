@@ -201,7 +201,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/update/" + window.profileId,
-      JSON.stringify(model)
+      model
     ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");
@@ -230,7 +230,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     model.path = model.path.trim();
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/create",
-      JSON.stringify(model)
+      model
     ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imageprofiles");

@@ -298,7 +298,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   deleteImages(idList) {
-    return Network.post("/rhn/manager/api/cm/images/delete", JSON.stringify(idList))
+    return Network.post("/rhn/manager/api/cm/images/delete", idList)
       .then(() => {
         // Waits for the 'Back' action if not in the list page
         const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
@@ -316,7 +316,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   inspectImage(id, earliest) {
     return Network.post(
       "/rhn/manager/api/cm/images/inspect/" + id,
-      JSON.stringify({ imageId: id, earliest: earliest })
+      { imageId: id, earliest: earliest }
     )
       .then(() => {
         this.reloadData();
@@ -330,7 +330,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   buildImage(profile, version, host, earliest) {
     return Network.post(
       "/rhn/manager/api/cm/build/" + profile,
-      JSON.stringify({ version: version, buildHostId: host, earliest: earliest })
+      { version: version, buildHostId: host, earliest: earliest }
     )
       .then(() => {
         //The image id is changed so this page is not available anymore.

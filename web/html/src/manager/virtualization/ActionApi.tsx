@@ -31,7 +31,7 @@ export function ActionApi(props: Props) {
   const [messages, setMessages] = React.useState<Array<MessageType>>([]);
 
   const onAction = (urlModifier: (arg0: string) => string, action: string, parameters: any) => {
-    Network.post(urlModifier(props.urlTemplate), JSON.stringify(parameters)).then(
+    Network.post(urlModifier(props.urlTemplate), parameters).then(
       response => {
         if (Object.values(response).includes("Failed")) {
           setMessages(MessagesUtils.error(t(`Failed to trigger ${action}`)));

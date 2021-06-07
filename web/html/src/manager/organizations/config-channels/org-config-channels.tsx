@@ -18,11 +18,11 @@ function matchUrl(target?: string) {
 function applyRequest(component) {
   return Network.post(
     "/rhn/manager/api/states/apply",
-    JSON.stringify({
+    {
       id: window.orgId,
       type: "ORG",
       states: ["custom_org"],
-    })
+    }
   ).then(data => {
     console.log("apply action queued:" + data);
     component.setState({
@@ -36,11 +36,11 @@ function applyRequest(component) {
 function saveRequest(states) {
   return Network.post(
     "/rhn/manager/api/states/save",
-    JSON.stringify({
+    {
       id: window.orgId,
       type: "ORG",
       channels: states,
-    })
+    }
   );
 }
 

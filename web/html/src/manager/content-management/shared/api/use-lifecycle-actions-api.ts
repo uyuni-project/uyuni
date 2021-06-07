@@ -55,7 +55,7 @@ const useLifecycleActionsApi = (props: Props): returnUseProjectActionsApi => {
       if (action === "get" || !networkAction[action]) {
         networkRequest = networkAction.get(apiUrl);
       } else {
-        networkRequest = networkAction[action](apiUrl, JSON.stringify(actionBodyRequest));
+        networkRequest = networkAction[action](apiUrl, actionBodyRequest);
       }
       setOnGoingNetworkRequest(networkRequest);
 

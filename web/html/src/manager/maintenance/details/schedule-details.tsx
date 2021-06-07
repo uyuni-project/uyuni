@@ -144,7 +144,7 @@ const SystemPicker = (props: SystemPickerProps) => {
   const onAssign = () => {
     return Network.post(
       `/rhn/manager/api/maintenance/schedule/${props.scheduleId}/setsystems`,
-      JSON.stringify({ systemIds: selectedSystems, cancelActions: isCancelActions })
+      { systemIds: selectedSystems, cancelActions: isCancelActions }
     )
       .then(() =>
         props.onMessage(

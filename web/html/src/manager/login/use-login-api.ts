@@ -43,7 +43,7 @@ const useLoginApi = () => {
       password: password.trim(),
     };
 
-    return Network.post("/rhn/manager/api/login", JSON.stringify(formData)).then(
+    return Network.post("/rhn/manager/api/login", formData).then(
       data => {
         setLoginApiState(state => {
           state.success = data.success;

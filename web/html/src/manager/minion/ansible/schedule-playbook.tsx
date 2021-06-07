@@ -47,10 +47,10 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
     const getPlaybookContents = () => {
       return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents",
-        JSON.stringify({
+        {
           pathId: playbook.path.id,
           playbookRelPathStr: playbook.name
-        }),
+        },
       )
         .then((res: JsonResult<string>) => res.success ? res.data : Promise.reject(res))
         .then(setPlaybookContent)
@@ -68,13 +68,13 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
   const schedule = () => {
     return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook",
-      JSON.stringify({
+      {
         playbookPath: playbook.fullPath,
         inventoryPath: inventoryPath?.text,
         controlNodeId: playbook.path.minionServerId,
         actionChainLabel: actionChain?.text || null,
         earliest: Formats.LocalDateTime(datetime)
-      }),
+      },
     )
       .then((res: JsonResult<number>) => res.success ? res.data : Promise.reject(res))
       .then(actionId =>

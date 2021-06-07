@@ -140,7 +140,7 @@ class RecurringStates extends React.Component<Props, State> {
   }
 
   updateSchedule(schedule) {
-    return Network.post("/rhn/manager/api/recurringactions/save", JSON.stringify(schedule))
+    return Network.post("/rhn/manager/api/recurringactions/save", schedule)
       .then(_ => {
         const successMsg = (
           <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>

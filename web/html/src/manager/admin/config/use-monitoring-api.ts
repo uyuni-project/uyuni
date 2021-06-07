@@ -54,7 +54,7 @@ const useMonitoringApi = () => {
 
   const changeStatus = (toEnable: boolean) => {
     setAction(toEnable ? "enabling" : "disabling");
-    return Network.post("/rhn/manager/api/admin/config/monitoring", JSON.stringify({ enable: toEnable }))
+    return Network.post("/rhn/manager/api/admin/config/monitoring", { enable: toEnable })
       .then((data: JsonResult<ExportersResultType>) => {
         if (data.data.exporters) {
           setExportersStatus(data.data.exporters);

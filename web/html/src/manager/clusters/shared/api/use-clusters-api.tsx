@@ -151,7 +151,7 @@ const useClustersApi = () => {
   ): Promise<any> => {
     return Network.post(
       `/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`,
-      JSON.stringify(context)
+      context
     )
       .then((data: JsonResult<any>) => {
         return Promise.resolve({
@@ -181,7 +181,7 @@ const useClustersApi = () => {
   };
 
   const saveClusterFormulaData = (clusterId: number, formula: string, data: FormulaValuesType): Promise<any> => {
-    return Network.post(`/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`, JSON.stringify(data)).catch(
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`, data).catch(
       handleResponseError
     );
   };
@@ -196,14 +196,14 @@ const useClustersApi = () => {
   ): Promise<number> => {
     return Network.post(
       "/rhn/manager/api/cluster/new/add",
-      JSON.stringify({
+      {
         name: name,
         label: label,
         description: description,
         managementNodeId: managementNodeId,
         provider: providerLabel,
         managementSettings: managementSettings,
-      })
+      }
     )
       .then((data: JsonResult<number>) => {
         return data.data;
@@ -220,11 +220,11 @@ const useClustersApi = () => {
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/join`,
-      JSON.stringify({
+      {
         earliest: earliest,
         serverIds: serverIds,
         formula: joinFormula,
-      })
+      }
     )
       .then((data: JsonResult<number>) => {
         return data.data;
@@ -241,11 +241,11 @@ const useClustersApi = () => {
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/remove-node`,
-      JSON.stringify({
+      {
         earliest: earliest,
         serverIds: serverIds,
         formula: removeFormula,
-      })
+      }
     )
       .then((data: JsonResult<number>) => {
         return data.data;
@@ -256,9 +256,9 @@ const useClustersApi = () => {
   const scheduleUpgradeCluster = (clusterId: number, earliest: Date, actionChain?: string | null): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/upgrade`,
-      JSON.stringify({
+      {
         earliest: earliest,
-      })
+      }
     )
       .then((data: JsonResult<number>) => {
         return data.data;
@@ -267,7 +267,7 @@ const useClustersApi = () => {
   };
 
   const saveClusterProps = (clusterId: number, cluster: EditableClusterPropsType): Promise<any> => {
-    return Network.post(`/rhn/manager/api/cluster/${clusterId}`, JSON.stringify(cluster))
+    return Network.post(`/rhn/manager/api/cluster/${clusterId}`, cluster)
       .then((data: JsonResult<number>) => {
         return true;
       })

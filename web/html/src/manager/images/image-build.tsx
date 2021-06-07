@@ -205,7 +205,7 @@ class BuildImage extends React.Component<Props, State> {
   onBuild(model) {
     Network.post(
       "/rhn/manager/api/cm/build/" + this.state.model.profileId,
-      JSON.stringify(model)
+      model
     ).then(data => {
       if (data.success) {
         const msg = MessagesUtils.info(

@@ -93,7 +93,7 @@ class ImageProfiles extends React.Component<Props, State> {
   deleteProfiles(idList) {
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/delete",
-      JSON.stringify(idList)
+      idList
     ).then(data => {
       if (data.success) {
         this.setState({

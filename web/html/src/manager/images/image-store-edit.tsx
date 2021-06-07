@@ -99,7 +99,7 @@ class CreateImageStore extends React.Component<Props, State> {
     model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/update/" + window.storeId,
-      JSON.stringify(model)
+      model
     ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");
@@ -126,7 +126,7 @@ class CreateImageStore extends React.Component<Props, State> {
     model.uri = model.uri.trim();
     return Network.post(
       "/rhn/manager/api/cm/imagestores/create",
-      JSON.stringify(model)
+      model
     ).then(data => {
       if (data.success) {
         Utils.urlBounce("/rhn/manager/cm/imagestores");

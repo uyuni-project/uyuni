@@ -30,10 +30,10 @@ const usePackageStatesApi = () => {
         }
         return Network.post(
           "/rhn/manager/api/states/packages/save",
-          JSON.stringify({
+          {
             sid: action.serverId,
             packageStates: toSave,
-          })
+          }
         ).then((data: Array<Package>) => {
           updateAfterSave(data, changed);
           setMessages(MessagesUtils.info(t("Package states have been saved.")));
@@ -42,11 +42,11 @@ const usePackageStatesApi = () => {
       case "Apply": {
         return Network.post(
           "/rhn/manager/api/states/apply",
-          JSON.stringify({
+          {
             id: action.serverId,
             type: "SERVER",
             states: ["packages"],
-          })
+          }
         ).then(data => {
           setMessages(
             MessagesUtils.info(

@@ -47,14 +47,11 @@ const YEARS = (function() {
 })();
 
 function cveAudit(cveId, target, statuses) {
-  return Network.post(
-    "/rhn/manager/api/audit/cve",
-    JSON.stringify({
-      cveIdentifier: cveId,
-      target: target,
-      statuses: statuses,
-    })
-  );
+  return Network.post("/rhn/manager/api/audit/cve", {
+    cveIdentifier: cveId,
+    target: target,
+    statuses: statuses,
+  });
 }
 
 type Props = {};

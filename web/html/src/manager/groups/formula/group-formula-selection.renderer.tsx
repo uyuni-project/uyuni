@@ -28,7 +28,7 @@ export const renderer = (renderId, { groupId, warningMessage }) => {
     formData.id = groupId;
     formData.selected = selectedFormulas;
 
-    return Network.post("/rhn/manager/api/formulas/select", JSON.stringify(formData)).then(
+    return Network.post("/rhn/manager/api/formulas/select", formData).then(
       data => {
         component.setState({
           messages: data.map(msg => getMessageText(msg)),
