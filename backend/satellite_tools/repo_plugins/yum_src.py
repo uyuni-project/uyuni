@@ -27,6 +27,8 @@ import configparser
 import fnmatch
 import glob
 import gzip
+import bz2
+import lzma
 import os
 import re
 import solv
@@ -740,7 +742,7 @@ type=rpm-md
         """
         if self._md_exists('repomd'):
             repomd_path = self._retrieve_md_path('repomd')
-            infile = repomd_path.endswith('.gz') and gzip.open(repomd_path) or open(repomd_path, 'rt')
+            infile = self._decompress(repomd_path)
             for repodata in etree.parse(infile).getroot():
                 if repodata.get('type') == 'primary':
                     checksum_elem = repodata.find(REPO_XML+'checksum')
@@ -888,7 +890,7 @@ type=rpm-md
         susedata = []
         if self._md_exists('susedata'):
             data_path = self._retrieve_md_path('susedata')
-            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            infile = self._decompress(data_path)
             for package in etree.parse(infile).getroot():
                 d = {}
                 d['pkgid'] = package.get('pkgid')
@@ -923,7 +925,7 @@ type=rpm-md
         products = []
         if self._md_exists('products'):
             data_path = self._retrieve_md_path('products')
-            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            infile = self._decompress(data_path)
             for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
@@ -949,7 +951,7 @@ type=rpm-md
         if self._md_exists('updateinfo'):
             notices = {}
             updates_path = self._retrieve_md_path('updateinfo')
-            infile = updates_path.endswith('.gz') and gzip.open(updates_path) or open(updates_path, 'rt')
+            infile = self._decompress(updates_path)
             for _event, elem in etree.iterparse(infile):
                 if elem.tag == 'update':
                     un = UpdateNotice(elem)
@@ -960,7 +962,7 @@ type=rpm-md
             return ('updateinfo', notices.values())
         elif self._md_exists('patches'):
             patches_path = self._retrieve_md_path('patches')
-            infile = patches_path.endswith('.gz') and gzip.open(patches_path) or open(patches_path, 'rt')
+            infile = self._decompress(patches_path)
             notices = []
             for patch in etree.parse(infile).getroot():
                 checksum_elem = patch.find(PATCHES_XML+'checksum')
@@ -1234,3 +1236,12 @@ type=rpm-md
 
     def _authenticate(self, url):
         pass
+
+    def _decompress(self, filename):
+        if filename.endswith('.gz'):
+            return gzip.open(filename)
+        elif filename.endswith('.bz2'):
+            return bz2.open(filename)
+        elif filename.endswith('.xz'):
+            return lzma.open(filename)
+        return open(filename, 'rt')
