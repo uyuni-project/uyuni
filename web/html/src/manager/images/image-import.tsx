@@ -98,8 +98,8 @@ class ImageImport extends React.Component {
 
   getImageStores() {
     const type = "registry";
-    Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json")
-      .promise.then(data => {
+    Network.get("/rhn/manager/api/cm/imagestores/type/" + type)
+      .then(data => {
         this.setState({
           imageStores: data,
         });
@@ -109,7 +109,7 @@ class ImageImport extends React.Component {
 
   getBuildHosts() {
     Network.get("/rhn/manager/api/cm/build/hosts/container_build_host")
-      .promise.then(data => {
+      .then(data => {
         this.setState({
           hosts: data,
         });
@@ -119,7 +119,7 @@ class ImageImport extends React.Component {
 
   getActivationKeys() {
     Network.get("/rhn/manager/api/cm/activationkeys")
-      .promise.then(data => {
+      .then(data => {
         this.setState({
           activationkeys: data,
         });
@@ -135,7 +135,7 @@ class ImageImport extends React.Component {
       return;
     }
 
-    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).then(res => {
       // Prevent out-of-order async results
       if (res.activationKey !== this.state.model.activationKey) return false;
 
@@ -191,8 +191,8 @@ class ImageImport extends React.Component {
         name: this.state.model.name,
         version: this.state.model.version,
       };
-      return Network.post("/rhn/manager/api/cm/images/import", JSON.stringify(importObj), "application/json")
-        .promise.then(data => {
+      return Network.post("/rhn/manager/api/cm/images/import", JSON.stringify(importObj))
+        .then(data => {
           if (data.success) {
             Utils.urlBounce("/rhn/manager/cm/images");
           } else {

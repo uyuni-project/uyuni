@@ -44,7 +44,7 @@ const _MESSAGE_TYPE = {
 };
 
 function reloadData(dataUrlSlice: string) {
-  return Network.get("/rhn/manager/notification-messages/" + dataUrlSlice, "application/json").promise;
+  return Network.get("/rhn/manager/notification-messages/" + dataUrlSlice);
 }
 
 type Props = {};
@@ -171,10 +171,9 @@ class NotificationMessages extends React.Component<Props, State> {
 
     return Network.post(
       "/rhn/manager/notification-messages/update-messages-status",
-      JSON.stringify(dataRequest),
-      "application/json"
+      JSON.stringify(dataRequest)
     )
-      .promise.then(data => {
+      .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({
           // serverData = prev serverData without those are changed + those changed with the changes
@@ -204,8 +203,8 @@ class NotificationMessages extends React.Component<Props, State> {
   };
 
   deleteNotifications = ids => {
-    return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids), "application/json")
-      .promise.then(data => {
+    return Network.post("/rhn/manager/notification-messages/delete", JSON.stringify(ids))
+      .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({
           serverData: prevState.serverData.filter(m => !ids.includes(m.id)),
@@ -337,8 +336,8 @@ class NotificationMessages extends React.Component<Props, State> {
   };
 
   retryOnboarding = minionId => {
-    return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, undefined, "application/json")
-      .promise.then(data => {
+    return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId)
+      .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })
@@ -346,8 +345,8 @@ class NotificationMessages extends React.Component<Props, State> {
   };
 
   retryReposync = channelId => {
-    return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, undefined, "application/json")
-      .promise.then(data => {
+    return Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId)
+      .then(data => {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })

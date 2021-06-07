@@ -23,7 +23,7 @@ export type JsonResult<T> = {
  * 
  * See: https://stackoverflow.com/a/51445345/1470607
  */
-type CommonMimeTypes = "application/json" | "application/xml";
+type CommonMimeTypes = "application/json" | "application/xml" | "application/x-www-form-urlencoded";
 type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 
 function request(
@@ -31,15 +31,14 @@ function request(
     type: "GET" | "POST" | "DELETE" | "PUT",
     headers: Record<string, string>,
     data: any,
-    /** NB! The default contentType for jQuery.ajax() is 'application/x-www-form-urlencoded; charset=UTF-8' */
-    contentType?: string,
+    contentType: string,
     processData: boolean = true
 ): Cancelable {
     const a = jQuery.ajax({
         url: url,
         data: data,
         type: type,
-        contentType: contentType,
+        contentType: `${contentType}; charset=UTF-8`,
         processData: processData,
         beforeSend: xhr => {
             if (headers !== undefined) {
@@ -52,15 +51,15 @@ function request(
     return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
+function post<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
     return request(url, "POST", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function del<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
+function del<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
     return request(url, "DELETE", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 
-function put<T>(url: string, data?: DataType<T>, contentType?: string, processData: boolean = true): Cancelable {
+function put<T>(url: string, data?: DataType<T>, contentType: string = "application/json", processData: boolean = true): Cancelable {
     return request(url, "PUT", {"X-CSRF-Token": csrfToken}, data, contentType, processData);
 }
 

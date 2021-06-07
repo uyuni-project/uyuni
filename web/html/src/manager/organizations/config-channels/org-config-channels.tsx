@@ -22,9 +22,8 @@ function applyRequest(component) {
       id: window.orgId,
       type: "ORG",
       states: ["custom_org"],
-    }),
-    "application/json"
-  ).promise.then(data => {
+    })
+  ).then(data => {
     console.log("apply action queued:" + data);
     component.setState({
       messages: MessagesUtils.info(
@@ -41,8 +40,7 @@ function saveRequest(states) {
       id: window.orgId,
       type: "ORG",
       channels: states,
-    }),
-    "application/json"
+    })
   );
 }
 

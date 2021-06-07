@@ -105,8 +105,8 @@ const MaintenanceWindows = () => {
   };
 
   const update = itemIn => {
-    return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", JSON.stringify(itemIn), "application/json")
-      .promise.then(_ => {
+    return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", JSON.stringify(itemIn))
+      .then(_ => {
         const successMsg = (
           <span>
             {t(
@@ -126,8 +126,8 @@ const MaintenanceWindows = () => {
   };
 
   const deleteItem = itemIn => {
-    return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", JSON.stringify(itemIn), "application/json")
-      .promise.then(_ => {
+    return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", JSON.stringify(itemIn))
+      .then(_ => {
         setMessages(
           MessagesUtils.info(
             (window.type === "schedule" ? "Schedule " : "Calendar ") + "'" + itemIn.name + "' has been deleted."
@@ -143,8 +143,8 @@ const MaintenanceWindows = () => {
   };
 
   const refreshCalendar = itemIn => {
-    return Network.post("/rhn/manager/api/maintenance/calendar/refresh", JSON.stringify(itemIn), "application/json")
-      .promise.then(_ => {
+    return Network.post("/rhn/manager/api/maintenance/calendar/refresh", JSON.stringify(itemIn))
+      .then(_ => {
         const msgs = messages.concat(MessagesUtils.info(t("Calendar successfully refreshed")));
         setAction(undefined);
         setMessages(msgs.slice(-messagesCounterLimit));

@@ -48,12 +48,8 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
 
     const mandatoryChannelsNotCached = needDepsInfoChannels.filter(channelId => !mandatoryChannelsRaw[channelId]);
     if (mandatoryChannelsNotCached.length > 0) {
-      Network.post(
-        "/rhn/manager/api/admin/mandatoryChannels",
-        JSON.stringify(mandatoryChannelsNotCached),
-        "application/json"
-      )
-        .promise.then((data: JsonResult<Map<number, Array<number>>>) => {
+      Network.post("/rhn/manager/api/admin/mandatoryChannels", JSON.stringify(mandatoryChannelsNotCached))
+        .then((data: JsonResult<Map<number, Array<number>>>) => {
           const allTheNewMandatoryChannelsData = Object.assign({}, mandatoryChannelsRaw, data.data);
           let dependencies: ChannelsDependencies = processChannelDependencies(allTheNewMandatoryChannelsData);
 

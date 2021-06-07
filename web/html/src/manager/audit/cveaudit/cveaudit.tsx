@@ -53,9 +53,8 @@ function cveAudit(cveId, target, statuses) {
       cveIdentifier: cveId,
       target: target,
       statuses: statuses,
-    }),
-    "application/json"
-  ).promise;
+    })
+  );
 }
 
 type Props = {};

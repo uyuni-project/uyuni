@@ -33,9 +33,8 @@ const usePackageStatesApi = () => {
           JSON.stringify({
             sid: action.serverId,
             packageStates: toSave,
-          }),
-          "application/json"
-        ).promise.then((data: Array<Package>) => {
+          })
+        ).then((data: Array<Package>) => {
           updateAfterSave(data, changed);
           setMessages(MessagesUtils.info(t("Package states have been saved.")));
         });
@@ -47,9 +46,8 @@ const usePackageStatesApi = () => {
             id: action.serverId,
             type: "SERVER",
             states: ["packages"],
-          }),
-          "application/json"
-        ).promise.then(data => {
+          })
+        ).then(data => {
           setMessages(
             MessagesUtils.info(
               <span>
@@ -63,7 +61,7 @@ const usePackageStatesApi = () => {
         });
       }
       case "GetServerPackages": {
-        return Network.get("/rhn/manager/api/states/packages?sid=" + action.serverId).promise.then(
+        return Network.get("/rhn/manager/api/states/packages?sid=" + action.serverId).then(
           (data: Array<Package>) => {
             updateAfterServerGetPackages(data);
           }
@@ -72,7 +70,7 @@ const usePackageStatesApi = () => {
       case "Search": {
         return Network.get(
           "/rhn/manager/api/states/packages/match?sid=" + action.serverId + "&target=" + action.filter
-        ).promise.then((data: Array<Package>) => {
+        ).then((data: Array<Package>) => {
           updateAfterSearch(data);
           return null;
         });

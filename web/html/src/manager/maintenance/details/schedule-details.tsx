@@ -141,7 +141,7 @@ const SystemPicker = (props: SystemPickerProps) => {
 
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
-      .promise.then(setSelectedSystems)
+      .then(setSelectedSystems)
       .catch(xhr => props.onMessage(Network.responseErrorMessage(xhr)));
   }, [props.scheduleId]);
 
@@ -152,7 +152,7 @@ const SystemPicker = (props: SystemPickerProps) => {
       "application/json",
       false
     )
-      .promise.then(() =>
+      .then(() =>
         props.onMessage(
           MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))
         )

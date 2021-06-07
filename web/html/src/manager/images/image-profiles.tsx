@@ -64,7 +64,7 @@ class ImageProfiles extends React.Component<Props, State> {
   }
 
   reloadData() {
-    Network.get("/rhn/manager/api/cm/imageprofiles").promise.then(data => {
+    Network.get("/rhn/manager/api/cm/imageprofiles").then(data => {
       this.setState({
         imageprofiles: data,
       });
@@ -93,9 +93,8 @@ class ImageProfiles extends React.Component<Props, State> {
   deleteProfiles(idList) {
     return Network.post(
       "/rhn/manager/api/cm/imageprofiles/delete",
-      JSON.stringify(idList),
-      "application/json"
-    ).promise.then(data => {
+      JSON.stringify(idList)
+    ).then(data => {
       if (data.success) {
         this.setState({
           messages: (

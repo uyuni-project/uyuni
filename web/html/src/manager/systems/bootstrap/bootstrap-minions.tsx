@@ -186,9 +186,8 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const request = Network.post(
       this.state.manageWithSSH ? "/rhn/manager/api/systems/bootstrap-ssh" : "/rhn/manager/api/systems/bootstrap",
-      JSON.stringify(formData),
-      "application/json"
-    ).promise.then(
+      JSON.stringify(formData)
+    ).then(
       data => {
         this.setState({
           success: data.success,

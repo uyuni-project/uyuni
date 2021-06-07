@@ -213,9 +213,8 @@ class GuestsConsole extends React.Component<Props, State> {
     this.isRefreshing = true;
     Network.post(
       `/rhn/manager/api/systems/details/virtualization/guests/consoleToken/${this.props.guestUuid}`,
-      this.state.currentToken,
-      "application/json"
-    ).promise.then(
+      this.state.currentToken
+    ).then(
       response => {
         this.isRefreshing = false;
         this.popupSubmit = undefined;

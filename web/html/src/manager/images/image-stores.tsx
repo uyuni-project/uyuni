@@ -64,7 +64,7 @@ class ImageStores extends React.Component<Props, State> {
   }
 
   reloadData() {
-    Network.get("/rhn/manager/api/cm/imagestores").promise.then(data => {
+    Network.get("/rhn/manager/api/cm/imagestores").then(data => {
       this.setState({
         imagestores: data,
       });
@@ -93,9 +93,8 @@ class ImageStores extends React.Component<Props, State> {
   deleteStores(idList) {
     return Network.post(
       "/rhn/manager/api/cm/imagestores/delete",
-      JSON.stringify(idList),
-      "application/json"
-    ).promise.then(data => {
+      JSON.stringify(idList)
+    ).then(data => {
       if (data.success) {
         this.setState({
           messages: (

@@ -28,7 +28,7 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 
   refreshServerData = () => {
-    Network.get("/rhn/manager/api/formula-catalog/data").promise.then(data => {
+    Network.get("/rhn/manager/api/formula-catalog/data").then(data => {
       this.setState({ serverData: data });
     });
   };

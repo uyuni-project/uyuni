@@ -22,9 +22,8 @@ function applyRequest(component) {
       id: window.serverId,
       type: "SERVER",
       states: ["custom"],
-    }),
-    "application/json"
-  ).promise.then(data => {
+    })
+  ).then(data => {
     component.setState({
       messages: MessagesUtils.info(
         <span>
@@ -43,8 +42,7 @@ function saveRequest(states) {
       id: window.serverId,
       type: "SERVER",
       channels: states,
-    }),
-    "application/json"
+    })
   );
 }
 

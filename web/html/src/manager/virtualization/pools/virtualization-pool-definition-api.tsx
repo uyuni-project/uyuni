@@ -22,9 +22,8 @@ export function VirtualizationPoolDefinitionApi(props: Props) {
 
   React.useEffect(() => {
     Network.get(
-      `/rhn/manager/api/systems/details/virtualization/pools/${props.hostid}/pool/${props.poolName}`,
-      "application/json"
-    ).promise.then(
+      `/rhn/manager/api/systems/details/virtualization/pools/${props.hostid}/pool/${props.poolName}`
+    ).then(
       response => {
         setDefinition(response);
       },

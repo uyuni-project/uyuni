@@ -305,8 +305,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     const childrenIds = Array.from(
       this.props.childChannels.flatMap(dto => dto.childChannels.map(channel => channel.id))
     );
-    Network.post("/rhn/manager/api/admin/mandatoryChannels", JSON.stringify(childrenIds), "application/json")
-      .promise.then((response: JsonResult<Map<number, Array<number>>>) => {
+    Network.post("/rhn/manager/api/admin/mandatoryChannels", JSON.stringify(childrenIds))
+      .then((response: JsonResult<Map<number, Array<number>>>) => {
         const channelDeps = ChannelUtils.processChannelDependencies(response.data);
         this.setState({
           requiredChannels: channelDeps.requiredChannels,
@@ -890,7 +890,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
   componentDidMount() {
     Network.get(`/rhn/manager/systems/ssm/channels/bases`)
-      .promise.then((data: JsonResult<Array<SsmAllowedBaseChannelsJson>>) => {
+      .then((data: JsonResult<Array<SsmAllowedBaseChannelsJson>>) => {
         this.setState({
           allowedBaseChannels: data.data,
           baseChanges: {
@@ -953,10 +953,9 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   onGotoChildChannels = () => {
     return Network.post(
       "/rhn/manager/systems/ssm/channels/allowed-changes",
-      JSON.stringify(this.state.baseChanges),
-      "application/json"
+      JSON.stringify(this.state.baseChanges)
     )
-      .promise.then((data: JsonResult<Array<SsmAllowedChildChannelsDto>>) => {
+      .then((data: JsonResult<Array<SsmAllowedChildChannelsDto>>) => {
         // group the allowed changes by the new base in order to show child channels only once
         const groupByNewBase: Map<string, SsmAllowedChildChannelsDto> = new Map();
         const finalChanges: Array<ChannelChangeDto> = [];
@@ -1038,8 +1037,8 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges,
     };
-    return Network.post("/rhn/manager/systems/ssm/channels", JSON.stringify(req, replacer), "application/json")
-      .promise.then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
+    return Network.post("/rhn/manager/systems/ssm/channels", JSON.stringify(req, replacer))
+      .then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
