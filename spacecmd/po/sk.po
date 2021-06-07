@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-06 14:57+0000\n"
+"PO-Revision-Date: 2021-06-07 16:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2507,45 +2507,45 @@ msgstr "kickstart_details: Zobraziť podrobnosti profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:328
 msgid "usage: kickstart_details PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_details PROFIL"
 
 #: ../src/spacecmd/kickstart.py:355
 msgid "Invalid Kickstart profile"
-msgstr ""
+msgstr "Neplatný profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:417
 #, python-format
 msgid "Tree:        %s"
-msgstr ""
+msgstr "Strom:        %s"
 
 #: ../src/spacecmd/kickstart.py:418
 #, python-format
 msgid "Active:      %s"
-msgstr ""
+msgstr "Aktívny:      %s"
 
 #: ../src/spacecmd/kickstart.py:419
 #, python-format
 msgid "Advanced:    %s"
-msgstr ""
+msgstr "Pokročilé:    %s"
 
 #: ../src/spacecmd/kickstart.py:420
 #, python-format
 msgid "Org Default: %s"
-msgstr ""
+msgstr "Predvolený Org: %s"
 
 #: ../src/spacecmd/kickstart.py:423
 #, python-format
 msgid "Configuration Management: %s"
-msgstr ""
+msgstr "Správa konfigurácie: %s"
 
 #: ../src/spacecmd/kickstart.py:424
 #, python-format
 msgid "Remote Commands:          %s"
-msgstr ""
+msgstr "Vzdialené príkazy:          %s"
 
 #: ../src/spacecmd/kickstart.py:436
 msgid "Advanced Options"
-msgstr ""
+msgstr "Pokročilé možnosti"
 
 #: ../src/spacecmd/kickstart.py:444
 msgid "Custom Options"
@@ -2557,11 +2557,11 @@ msgstr "Rozdelenie"
 
 #: ../src/spacecmd/kickstart.py:456
 msgid "Software"
-msgstr ""
+msgstr "Softvér"
 
 #: ../src/spacecmd/kickstart.py:469
 msgid "Crypto Keys"
-msgstr ""
+msgstr "Krypto kľúče"
 
 #: ../src/spacecmd/kickstart.py:476
 msgid "File Preservations"
@@ -2569,11 +2569,11 @@ msgstr "Zachovania súborov"
 
 #: ../src/spacecmd/kickstart.py:485
 msgid "Variables"
-msgstr ""
+msgstr "Premenné"
 
 #: ../src/spacecmd/kickstart.py:492
 msgid "Scripts"
-msgstr ""
+msgstr "Skripty"
 
 #: ../src/spacecmd/kickstart.py:503 ../src/spacecmd/kickstart.py:1902
 #, python-format
@@ -2680,6 +2680,8 @@ msgid ""
 "kickstart_enableconfigmanagement: Enable configuration management on a "
 "Kickstart profile"
 msgstr ""
+"kickstart_enableconfigmanagement: Povoliť správu konfigurácie na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:815
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
@@ -2690,6 +2692,8 @@ msgid ""
 "kickstart_disableconfigmanagement: Disable configuration management on a "
 "Kickstart profile"
 msgstr ""
+"kickstart_disableconfigmanagement: Zakázať správu konfigurácie na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:848
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
@@ -3892,7 +3896,7 @@ msgstr ""
 
 #: ../src/spacecmd/package.py:128
 msgid "Advanced Search:"
-msgstr ""
+msgstr "Pokročilé vyhľadávanie:"
 
 #: ../src/spacecmd/package.py:129
 msgid ""
