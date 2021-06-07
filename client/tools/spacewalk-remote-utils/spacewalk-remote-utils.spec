@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-remote-utils
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,13 +22,13 @@
 %endif
 
 Name:           spacewalk-remote-utils
-Version:        4.2.1
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Utilities to interact with a Spacewalk server remotely.
 License:        GPL-2.0-only
 Group:          Applications/System
 
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

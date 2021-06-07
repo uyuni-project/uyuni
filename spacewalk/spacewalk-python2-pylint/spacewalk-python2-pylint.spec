@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-python2-pylint
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,13 +18,13 @@
 
 
 Name:           spacewalk-python2-pylint
-Version:        4.2.1
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Pylint configuration for python2 spacewalk python packages
 License:        GPL-2.0-only
 Group:          Development/Debuggers
 
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
@@ -78,6 +78,7 @@ install -m 644 spacewalk-python2-pylint.8 %{buildroot}/%{_mandir}/man8
 %{_bindir}/spacewalk-python2-pylint
 %config(noreplace)  %{_sysconfdir}/spacewalk-python2-pylint.rc
 %doc %{_mandir}/man8/spacewalk-python2-pylint.8*
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 
 %changelog

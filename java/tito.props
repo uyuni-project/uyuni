@@ -5,4 +5,4 @@ salt-netapi-client=0.18
 salt-netapi-client=0.18
 
 [dbschema]
-conf/rhn_java.conf=4.2.12
+conf/rhn_java.conf=4.3.1

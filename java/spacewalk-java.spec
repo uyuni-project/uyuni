@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2021 SUSE LLC.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -51,7 +51,6 @@
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define log4j                      (log4j or log4j12)
 
-
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
 %else
@@ -62,8 +61,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.23
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -83,9 +82,9 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io
+BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
-BuildRequires:  apache-commons-jexl
 BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
@@ -93,10 +92,14 @@ BuildRequires:  cglib
 %if 0%{?suse_version}
 BuildRequires:  classmate
 %endif
+BuildRequires:  %{apache_commons_discovery}
+BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  %{apache_commons_validator}
+BuildRequires:  %{ehcache}
+BuildRequires:  apache-commons-el
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
-BuildRequires:  %{ehcache}
 BuildRequires:  google-gson >= 2.2.4
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
@@ -105,18 +108,14 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  jaf
-BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  apache-commons-el
-BuildRequires:  %{apache_commons_fileupload}
-BuildRequires:  %{apache_commons_validator}
 %if 0%{?rhel} >= 8 || 0%{?fedora}
-BuildRequires:  (glassfish-jaxb-api or jaxb-api)
 BuildRequires:  glassfish-jaxb-core
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  istack-commons-runtime
 BuildRequires:  java-11-openjdk-devel
 BuildRequires:  maven-javadoc-plugin
+BuildRequires:  (glassfish-jaxb-api or jaxb-api)
 %else
 BuildRequires:  java-devel >= %{java_version}
 %endif
@@ -165,41 +164,41 @@ BuildRequires:  velocity
 BuildRequires:  woodstox
 BuildRequires:  xmlsec
 
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
 Requires:       apache-commons-io
+Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
-Requires:       apache-commons-jexl
 Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 %if 0%{?suse_version}
 Requires:       classmate
 %endif
+Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
 Requires:       dwr >= 3
-Requires:       %{ehcache}
 Requires:       (jaf or gnu-jaf)
 %if 0%{?rhel} || 0%{?fedora}
-Requires:       (glassfish-jaxb-api or jaxb-api)
 Requires:       glassfish-jaxb-core
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
 Requires:       istack-commons-runtime
+Requires:       (glassfish-jaxb-api or jaxb-api)
 %endif
+Requires:       %{apache_commons_digester}
 Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       jade4j
-Requires:       %{apache_commons_digester}
 %if 0%{?rhel} >= 8
 Requires:       java-11-openjdk
 %else
@@ -223,19 +222,19 @@ Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
-Requires:       system-lock-formula
-Requires:       uyuni-cluster-provider-caasp
 Requires:       sudo
 Requires:       susemanager-docs_en
+Requires:       system-lock-formula
 Requires:       tomcat-taglibs-standard
+Requires:       uyuni-cluster-provider-caasp
 Requires(pre):  uyuni-base-server
 Requires:       %{apache_commons_discovery}
-Requires:       apache-commons-el
 Requires:       %{apache_commons_fileupload}
+Requires:       %{log4j}
+Requires:       apache-commons-el
 Requires:       jcommon
 Requires:       jdom
 Requires:       jta
-Requires:       %{log4j}
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       simple-xml
@@ -353,7 +352,6 @@ This package contains apidoc sources of spacewalk-java.
 Summary:        Java version of taskomatic
 Group:          Applications/Internet
 
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
@@ -362,27 +360,28 @@ Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
+Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 %if 0%{?suse_version}
 Requires:       classmate
 %endif
+Requires:       %{ehcache}
 Requires:       cobbler >= 3.0.0
 Requires:       concurrent
-Requires:       %{ehcache}
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 %if 0%{?rhel} >= 8
-Requires:	java-11-openjdk
+Requires:       java-11-openjdk
 %else
 Requires:       java >= %{java_version}
 %endif
+Requires:       %{log4j}
 Requires:       javassist
 Requires:       jboss-logging
 Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
-Requires:       %{log4j}
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
@@ -700,7 +699,6 @@ if [ ! -e /var/log/rhn/gatherer.log ]; then
     touch /var/log/rhn/gatherer.log
 fi
 chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
-
 
 %files
 %defattr(-,root,root)

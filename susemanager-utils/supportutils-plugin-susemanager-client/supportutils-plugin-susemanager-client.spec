@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager-client
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager-client
-Version:        4.2.2
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Client
 License:        GPL-2.0-only

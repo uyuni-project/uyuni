@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-installer
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -34,9 +34,9 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.4
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -50,8 +50,8 @@ Requires:       aaa_base
 Requires:       apache2
 Requires:       glibc
 Requires(pre):  spacewalk-proxy-common
-Requires:       spacewalk-proxy-salt
 Requires:       firewalld
+Requires:       spacewalk-proxy-salt
 %else
 Requires:       glibc-common
 
@@ -165,7 +165,8 @@ spacewalk-%{pythonX}-pylint .
 %{_usr}/share/rhn/get_system_id.xslt
 %{_usr}/sbin/rhn-proxy-activate
 %{_usr}/sbin/fetch-certificate
-%doc LICENSE answers.txt
+%doc answers.txt
+%license LICENSE
 %dir %{_usr}/share/rhn/proxy-template
 %dir %{_usr}/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd

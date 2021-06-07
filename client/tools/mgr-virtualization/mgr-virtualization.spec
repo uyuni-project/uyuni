@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-virtualization
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -45,12 +45,12 @@ Name:           mgr-virtualization
 Summary:        Spacewalk action support for virualization
 License:        GPL-2.0-only
 Group:          System Environment/Base
-Version:        4.2.1
+Version:        4.3.0
+Release:        0
 Provides:       rhn-virtualization = %{oldversion}
 Obsoletes:      rhn-virtualization < %{oldversion}
-Release:        1%{?dist}
 
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
@@ -103,9 +103,9 @@ package.
 Summary:        Files needed by rhn-virtualization-host
 Group:          System Environment/Base
 Provides:       python3-%{oldname}-common = %{oldversion}
-Obsoletes:      python3-%{oldname}-common < %{oldversion}
 Obsoletes:      %{name}-common < %{oldversion}
 Obsoletes:      %{oldname}-common < %{oldversion}
+Obsoletes:      python3-%{oldname}-common < %{oldversion}
 Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 BuildRequires:  python3-devel
@@ -299,7 +299,8 @@ fi
 %{python_sitelib}/virtualization/errors.py*
 %{python_sitelib}/virtualization/notification.py*
 %{python_sitelib}/virtualization/util.py*
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %if 0%{?suse_version}
 %dir %{python_sitelib}/virtualization
 %endif
@@ -315,7 +316,8 @@ fi
 %{python3_sitelib}/virtualization/errors.py*
 %{python3_sitelib}/virtualization/notification.py*
 %{python3_sitelib}/virtualization/util.py*
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir %{python3_sitelib}/virtualization/__pycache__
 %{python3_sitelib}/virtualization/__pycache__/__init__.*
 %{python3_sitelib}/virtualization/__pycache__/batching_log_notifier.*
@@ -345,7 +347,8 @@ fi
 %endif
 %{rhn_conf_dir}/*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 
 %if 0%{?build_py2}
 %files -n python2-%{name}-host

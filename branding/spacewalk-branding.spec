@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-branding
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %global debug_package %{nil}
 
@@ -32,13 +33,13 @@
 %endif
 
 Name:           spacewalk-branding
-Version:        4.2.10
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Spacewalk branding data
-License:        GPL-2.0-only and OFL-1.1
+License:        GPL-2.0-only AND OFL-1.1
 Group:          Applications/Internet
 
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:  noarch
@@ -116,7 +117,7 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
-%doc LICENSE
+%license LICENSE
 %if 0%{?suse_version}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF
