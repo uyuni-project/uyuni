@@ -1,3 +1,6 @@
+- adapt parsed strings from AlmaLinux and AmazonLinux match
+  SCC/sumatoolbox product definition (bsc#1186750)
+
 -------------------------------------------------------------------
 Tue Jun 01 11:47:32 CEST 2021 - jgonzalez@suse.com
 
