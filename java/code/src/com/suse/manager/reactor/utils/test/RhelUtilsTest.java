@@ -22,14 +22,13 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -127,7 +126,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAlma() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ALMALINUX_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("Alma", os.get().getName()); // It's "Alma" instead of "AlmaLinux" because /etc/almalinux-release is being matched by the RHEL matcher, which removes the "Linux" suffix
+        assertEquals("AlmaLinux", os.get().getName());
         assertEquals("8", os.get().getMajorVersion());
         assertEquals("3", os.get().getMinorVersion());
         assertEquals("Purple Manul", os.get().getRelease());
@@ -136,7 +135,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileAmazon() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(AMAZON_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("Amazon", os.get().getName()); // It's "Amazon" instead of "AmazonLinux" because /etc/system-release is being matched by the RHEL matcher, which removes the "Linux" suffix
+        assertEquals("AmazonLinux", os.get().getName());
         assertEquals("2", os.get().getMajorVersion());
         assertEquals("Karoo", os.get().getRelease());
     }
@@ -269,7 +268,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
-                    assertEquals("Alma", prod.get().getName());
+                    assertEquals("AlmaLinux", prod.get().getName());
                     assertEquals("Purple Manul", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
                 });
@@ -280,7 +279,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
-                    assertEquals("Amazon", prod.get().getName());
+                    assertEquals("AmazonLinux", prod.get().getName());
                     assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
                 });

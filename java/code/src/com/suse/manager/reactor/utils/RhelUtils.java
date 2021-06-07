@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
@@ -156,11 +157,18 @@ public class RhelUtils {
      * @return the parsed content of the release file
      */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
+        // We match here data from the system and try to find the product
+        // how it is named in SCC or sumatoolbox. This requires sometimes
+        // some changes on the string we parse.
+        //
         // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
         Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
         if (matcher.matches()) {
             String name =
                     matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
+            if (name.startsWith("Alma") || name.startsWith("Amazon")) {
+                name = matcher.group(1).replaceAll(" ", "");
+            }
             String majorVersion = StringUtils.substringBefore(matcher.group(2), ".");
             String minorVersion = StringUtils.substringAfter(matcher.group(2), ".");
             String release = matcher.group(3);
@@ -269,7 +277,7 @@ public class RhelUtils {
 
         // next check if Amazon Linux
         if (amazonReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return amazonReleaseFile.map(v -> detectPlainRHEL(v, arch, "Amazon"));
+            return amazonReleaseFile.map(v -> detectPlainRHEL(v, arch, "AmazonLinux"));
         }
 
         // next check if Centos
