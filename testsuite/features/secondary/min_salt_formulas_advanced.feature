@@ -168,7 +168,7 @@ Feature: Use advanced features of Salt formulas
      And the pillar data for "testing" should not contain "pw_opt" on "sle_minion"
 
   Scenario: Fill in and verify non-default values in minion formula
-     When I follow "Formulas" in the content area
+     When I follow first "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I enter "min_text1" as "testing#str"
      And I enter "min_text2" as "testing#str_def"
@@ -197,7 +197,7 @@ Feature: Use advanced features of Salt formulas
 
 # https://github.com/SUSE/spacewalk/issues/4546
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
-     When I follow "Formulas" in the content area
+     When I follow first "Formulas" in the content area
      And I follow first "Testform" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"

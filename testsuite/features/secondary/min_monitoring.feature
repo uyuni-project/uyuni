@@ -29,7 +29,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     Then I should see a "Formula saved" text
 
   Scenario: Configure Prometheus formula
-    When I follow "Formulas" in the content area
+    When I follow first "Formulas" in the content area
     And I follow "Prometheus" in the content area
     And I enter "admin" as "Username"
     And I enter "admin" as "Password"
@@ -37,7 +37,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     Then I should see a "Formula saved" text
 
   Scenario: Configure Prometheus exporter formula
-    When I follow "Formulas" in the content area
+    When I follow first "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter

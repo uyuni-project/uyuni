@@ -29,7 +29,7 @@ Feature: Use salt formulas
      Then the "locale" formula should be checked
 
   Scenario: Parametrize the formula on the minion
-     When I follow "Formulas" in the content area
+     When I follow first "Formulas" in the content area
      And I follow first "Locale" in the content area
      And I select "Etc/GMT-5" in timezone name field
      And I select "French" in language field

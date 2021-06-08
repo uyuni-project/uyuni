@@ -28,7 +28,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS Salt minion
     Then I should see a "Formula saved" text
 
   Scenario: Configure Prometheus exporter formula on the CentOS minion
-    When I follow "Formulas" in the content area
+    When I follow first "Formulas" in the content area
     And I follow "Prometheus Exporters" in the content area
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
