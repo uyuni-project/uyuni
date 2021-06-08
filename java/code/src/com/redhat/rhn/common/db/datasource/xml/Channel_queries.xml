@@ -1189,4 +1189,34 @@ ORDER BY CC.modified DESC
     </query>
 </callable-mode>
 
+<callable-mode name="analyze_errata_packages">
+    <query>
+        ANALYZE rhnErrataPackage
+    </query>
+</callable-mode>
+
+<callable-mode name="analyze_channel_errata">
+    <query>
+        ANALYZE rhnChannelErrata
+    </query>
+</callable-mode>
+
+<callable-mode name="analyze_errata_cloned">
+    <query>
+        ANALYZE rhnErrataCloned
+    </query>
+</callable-mode>
+
+<callable-mode name="analyze_errata">
+    <query>
+        ANALYZE rhnErrata
+    </query>
+</callable-mode>
+
+<callable-mode name="analyze_serverNeededCache">
+    <query>
+        ANALYZE rhnServerNeededCache
+    </query>
+</callable-mode>
+
 </datasource_modes>
