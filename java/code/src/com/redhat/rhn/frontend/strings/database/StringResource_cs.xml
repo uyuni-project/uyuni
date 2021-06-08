@@ -2438,168 +2438,168 @@
       </trans-unit>
       <trans-unit id="metrics.Library cache miss ratio" xml:space="preserve">
         <source>Library cache miss ratio</source>
-        <target/>
+        <target>Podíl nenalezení v mezipaměti knihovny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Line rate" xml:space="preserve">
         <source>Line rate</source>
-        <target/>
+        <target>Rychlost linky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Lines" xml:space="preserve">
         <source>Lines</source>
-        <target/>
+        <target>Linky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Low exec time" xml:space="preserve">
         <source>Low exec time</source>
-        <target/>
+        <target>Krátká doba provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child" xml:space="preserve">
         <source>Max transferred per child</source>
-        <target/>
+        <target>Maximum přenosů na podřízeného</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per slot" xml:space="preserve">
         <source>Max transferred per slot</source>
-        <target/>
+        <target>Maximum přenosů na slot</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Memory sort rate" xml:space="preserve">
         <source>Memory sort rate</source>
-        <target/>
+        <target>Četnost řazení paměti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Open objects" xml:space="preserve">
         <source>Open objects</source>
-        <target/>
+        <target>Otevřené objekty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Opened objects" xml:space="preserve">
         <source>Opened objects</source>
-        <target/>
+        <target>Otevírané objekty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Output rate" xml:space="preserve">
         <source>Output rate</source>
-        <target/>
+        <target>Rychlost výstupu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Packet loss pct" xml:space="preserve">
         <source>Packet loss pct</source>
-        <target/>
+        <target>Procento ztráty paketů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern match rate" xml:space="preserve">
         <source>Pattern match rate</source>
-        <target/>
+        <target>Četnost shody předloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern matches" xml:space="preserve">
         <source>Pattern matches</source>
-        <target/>
+        <target>Shody předloh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Physical memory used" xml:space="preserve">
         <source>Physical memory used</source>
-        <target/>
+        <target>Použitá fyzická paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Physical read rate" xml:space="preserve">
         <source>Physical read rate</source>
-        <target/>
+        <target>Rychlost fyzického čtení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe exec time ave" xml:space="preserve">
         <source>Probe exec time ave</source>
-        <target/>
+        <target>Zjistit průměrnou dobu provádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe latency ave" xml:space="preserve">
         <source>Probe latency ave</source>
-        <target/>
+        <target>Zjistit průměrné zpoždění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probes" xml:space="preserve">
         <source>Probes</source>
-        <target/>
+        <target>Sondy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Processes" xml:space="preserve">
         <source>Processes</source>
-        <target/>
+        <target>Procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query rate" xml:space="preserve">
         <source>Query rate</source>
-        <target/>
+        <target>Četnost dotazů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query time" xml:space="preserve">
         <source>Query time</source>
-        <target/>
+        <target>Doba dotazů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Queue length" xml:space="preserve">
         <source>Queue length</source>
-        <target/>
+        <target>Délka fronty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.RAM free" xml:space="preserve">
         <source>RAM free</source>
-        <target/>
+        <target>Volná RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Read rate" xml:space="preserve">
         <source>Read rate</source>
-        <target/>
+        <target>Rychlost čtení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
