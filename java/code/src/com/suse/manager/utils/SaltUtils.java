@@ -146,7 +146,6 @@ import com.suse.utils.Opt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -712,9 +711,8 @@ public class SaltUtils {
         else if (action instanceof BaseVirtualizationGuestAction) {
             // Tell VirtNotifications that we got a change, passing actionId
             VirtNotifications.spreadActionUpdate(action);
-            JsonObject result = jsonResult.getAsJsonObject();
-            String key = result.keySet().iterator().next();
-            serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
+            // Dump the whole message since the failure could be anywhere in the chain
+            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
         else if (action instanceof BaseVirtualizationPoolAction || action instanceof BaseVirtualizationNetworkAction) {
             // Tell VirtNotifications that we got a pool action change, passing action
