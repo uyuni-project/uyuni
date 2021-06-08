@@ -66,6 +66,7 @@ public abstract class RhnJavaJob implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void appendExceptionToLogError(Exception e) {
         log.error("Executing a task threw an exception: " + e.getClass().getName());
         log.error("Message: " + e.getMessage());
@@ -79,6 +80,7 @@ public abstract class RhnJavaJob implements RhnJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext context, TaskoRun run)
         throws JobExecutionException {
         run.start();
@@ -107,9 +109,17 @@ public abstract class RhnJavaJob implements RhnJob {
         int exitCode = ce.execute(args);
 
         if (exitCode != 0) {
+            String msg = ce.getLastCommandErrorMessage();
+            if (msg.isBlank()) {
+                msg = ce.getLastCommandOutput();
+            }
+            if (msg.length() > 2300) {
+                msg = "... " + msg.substring(msg.length() - 2300);
+            }
             throw new JobExecutionException(
                     "Command '" + Arrays.asList(args) +
-                    "' exited with error code " + exitCode);
+                    "' exited with error code " + exitCode +
+                    (msg.isBlank() ? "" : ": " + msg));
         }
     }
 }

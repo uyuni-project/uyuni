@@ -71,7 +71,7 @@ public class RepoSyncTask extends RhnJavaJob {
                 }
                 catch (JobExecutionException e) {
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                            new ChannelSyncFailed(channel.getId(), channel.getName())
+                            new ChannelSyncFailed(channel.getId(), channel.getName(), e.getMessage())
                     );
                     if (channel.getOrg() == null) {
                         UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
