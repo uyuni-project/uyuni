@@ -397,6 +397,7 @@ def do_errata_details(self, args):
         print(_('Name:       %s') % erratum)
         print(_('Product:    %s') % (details.get('product') or "N/A"))
         print(_('Type:       %s') % (details.get('type') or "N/A"))
+        print(_('Status:     %s') % (details.get('advisory_status') or "N/A"))
         print(_('Issue Date: %s') % (details.get('issue_date') or "N/A"))
         print('')
         print(_('Topic'))
