@@ -581,6 +581,7 @@ def do_errata_search(self, args, doreturn=False):
                     # build a structure to pass to print_errata_summary()
                     errata.append({'advisory_name': name,
                                    'advisory_type': match['advisory_type'],
+                                   'advisory_status': match['advisory_status'],
                                    'advisory_synopsis': match['advisory_synopsis'],
                                    'date': match['date']})
 
