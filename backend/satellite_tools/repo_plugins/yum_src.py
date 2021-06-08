@@ -54,6 +54,7 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
+from rhn.i18n import sstr
 
 
 # namespace prefix to parse patches.xml file
@@ -632,15 +633,19 @@ type=rpm-md
         zypper_cmd = "zypper"
         if not self.interactive:
             zypper_cmd = "{} -n".format(zypper_cmd)
-        ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
             zypper_cmd,
             REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             REPOSYNC_ZYPPER_RPMDB_PATH,
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/")
-        ))
-        if ret_error:
+        )
+        process = subprocess.run(zypper_cmd.split(' '), stderr=subprocess.PIPE)
+
+        if process.returncode:
+            if process.stderr:
+                raise RepoMDError("Cannot access repository.\n{}".format(sstr(process.stderr)))
             raise RepoMDError("Cannot access repository. Maybe repository GPG keys are not imported")
 
         repo.is_configured = True
