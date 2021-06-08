@@ -1,3 +1,4 @@
+- show reposync errors in user notification details
 - do not check accessibility of free product repositories (bsc#1182817)
 
 -------------------------------------------------------------------
