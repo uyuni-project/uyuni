@@ -98,6 +98,8 @@ def do_package_details(self, args):
             print(_('File:      %s' % details.get('file')))
             print(_('Path:      %s' % details.get('path')))
             print(_('Size:      %s' % details.get('size')))
+            print(_('Retracted: %s' % (_('Yes') if details.get('part_of_retracted_patch')
+                else _('No'))))
             print('%s%s' % ((details.get('checksum_type').upper() + ":").ljust(11),
                              details.get('checksum')))
             print('')
