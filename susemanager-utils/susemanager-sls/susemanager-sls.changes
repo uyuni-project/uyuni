@@ -1,3 +1,5 @@
+- Accept GPG key in Amazon Linux 2 for res7tools channel (bsc#1187102)
+
 -------------------------------------------------------------------
 Thu Jun 03 13:56:59 CEST 2021 - jgonzalez@suse.com
 
