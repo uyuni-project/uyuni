@@ -471,9 +471,12 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
                                            '-serial', '-in', caCertFilename])
     out = sstr(outstream.read())
     outstream.close()
-    errstream.read()
+    sslerrmsg = ("non-zero exitcode.\n"
+                "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"
+                f"exit-code: {ret}\n"
+                f"error: {sstr(errstream.read())}\n")
     errstream.close()
-    assert not ret
+    assert not ret, sslerrmsg
     caSerial = out.strip().split('=')
     assert len(caSerial) > 1
     caSerial = caSerial[1]
