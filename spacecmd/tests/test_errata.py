@@ -313,6 +313,7 @@ class TestSCErrata:
                               "URL:http://www.securityfocus.com/bid/0000 "
                               "XF:weblogic-http-response-information(00000) "
                               "URL:http://www.iss.net/security_center/static/00000.php ",
+                "advisory_status": "retracted",
 
             },
             {
@@ -390,7 +391,7 @@ class TestSCErrata:
 
         assert_list_args_expect(mprint.call_args_list,
                                 ['Name:       cve-one', 'Product:    PRODUCT-1', 'Type:       TYPE-1',
-                                 'Status:     N/A', 'Issue Date: DATE-1', '', 'Topic', '-----',
+                                 'Status:     retracted', 'Issue Date: DATE-1', '', 'Topic', '-----',
                                  'The quick brown fox jumped over the lazy dog', '', 'Description', '-----------',
                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
                                  'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
