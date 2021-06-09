@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-07 16:57+0000\n"
+"PO-Revision-Date: 2021-06-09 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1798,7 +1798,7 @@ msgstr "distribution_rename: Premenovať Kickstart strom"
 
 #: ../src/spacecmd/distribution.py:260
 msgid "usage: distribution_rename OLDNAME NEWNAME"
-msgstr "použitie: distribution_rename STARÝNÁZOV NOVÝNÁZOV"
+msgstr "použitie: distribution_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/distribution.py:289
 msgid "distribution_update: Update the path of a Kickstart tree"
@@ -2578,50 +2578,52 @@ msgstr "Skripty"
 #: ../src/spacecmd/kickstart.py:503 ../src/spacecmd/kickstart.py:1902
 #, python-format
 msgid "Chroot:      %s"
-msgstr ""
+msgstr "Chroot:      %s"
 
 #: ../src/spacecmd/kickstart.py:506 ../src/spacecmd/kickstart.py:1903
 #, python-format
 msgid "Interpreter: %s"
-msgstr ""
+msgstr "Interpreter: %s"
 
 #: ../src/spacecmd/kickstart.py:532
 msgid "Could not retrieve the Kickstart file"
-msgstr ""
+msgstr "Nepodarilo sa získať súbor Kickstart"
 
 #: ../src/spacecmd/kickstart.py:538
 msgid "kickstart_getcontents: Show the contents of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_getcontents: Zobraziť obsah profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:539
 msgid "                   as they would be presented to a client"
-msgstr ""
+msgstr "                   ako by boli predložené klientovi"
 
 #: ../src/spacecmd/kickstart.py:540
 msgid "usage: kickstart_getcontents LABEL"
-msgstr ""
+msgstr "použitie: kickstart_getcontents OZNAČENIE"
 
 #: ../src/spacecmd/kickstart.py:574
 msgid "kickstart_rename: Rename a Kickstart profile"
-msgstr ""
+msgstr "kickstart_rename: Premenovať profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:575
 msgid "usage: kickstart_rename OLDNAME NEWNAME"
-msgstr ""
+msgstr "použitie: kickstart_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 
 #: ../src/spacecmd/kickstart.py:603
 msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
 msgstr ""
+"kickstart_listcryptokeys: Vypíše zoznam krypto kľúčov spojených s profilom "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:605
 msgid "usage: kickstart_listcryptokeys PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listcryptokeys PROFIL"
 
 #: ../src/spacecmd/kickstart.py:634
 msgid "No crypto keys has been found"
-msgstr ""
+msgstr "Neboli nájdené žiadne krypto kľúče"
 
 #: ../src/spacecmd/kickstart.py:640
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
@@ -2959,7 +2961,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1953
 msgid "Interpreter [/bin/bash]:"
-msgstr ""
+msgstr "Interpreter [/bin/bash]:"
 
 #: ../src/spacecmd/kickstart.py:1990
 msgid "The execution time is required"
@@ -2978,7 +2980,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2008
 #, python-format
 msgid "Chroot:         %s"
-msgstr ""
+msgstr "Chroot:         %s"
 
 #: ../src/spacecmd/kickstart.py:2009
 #, python-format
@@ -2988,7 +2990,7 @@ msgstr ""
 #: ../src/spacecmd/kickstart.py:2010
 #, python-format
 msgid "Interpreter:    %s"
-msgstr ""
+msgstr "Interpreter:    %s"
 
 #: ../src/spacecmd/kickstart.py:2011
 msgid "Contents:"
