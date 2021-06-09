@@ -75,7 +75,7 @@ const FilterForm = (props: Props) => {
             name="filter_name"
             label={t("Filter Name")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             required
             disabled={props.editing}
           />
@@ -85,7 +85,7 @@ const FilterForm = (props: Props) => {
             name="labelPrefix"
             label={t("Prefix")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             hint={t("The prefix will be prepended to the name of every individual filter created by the template")}
             required
             disabled={props.editing}
@@ -114,7 +114,7 @@ const FilterForm = (props: Props) => {
               name="type"
               label={t("Filter Type")}
               labelClass="col-md-3"
-              divClass="col-md-6"
+              divClass="col-md-8"
               required
               disabled={props.editing}
               options={getClmFiltersOptions()}
@@ -127,7 +127,7 @@ const FilterForm = (props: Props) => {
                 name="matcher"
                 label={t("Matcher")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
                 disabled={props.editing}
                 options={selectedFilterMatchers}
@@ -141,27 +141,27 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.NAME.key}
                 label={t("Package Name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
 
             {clmFilterOptions.NEVRA.key === filterType && (
               <>
-                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-6" />
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-8" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="architecture" label={t("Architecture")} labelClass="col-md-3" divClass="col-md-8" />
               </>
             )}
 
             {clmFilterOptions.PACKAGE_NEVR.key === filterType && (
               <>
-                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-6" />
-                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-6" required />
-                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-6" required />
+                <Text name="packageName" label={t("Package Name")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="epoch" label={t("Epoch")} labelClass="col-md-3" divClass="col-md-8" />
+                <Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-8" required />
+                <Text name="release" label={t("Release")} labelClass="col-md-3" divClass="col-md-8" required />
               </>
             )}
 
@@ -170,7 +170,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.ADVISORY_NAME.key}
                 label={t("Advisory name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -186,7 +186,7 @@ const FilterForm = (props: Props) => {
                 ]}
                 label={t("Advisory Type")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
 
@@ -195,7 +195,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.ISSUE_DATE.key}
                 label={t("Issued")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -205,7 +205,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.SYNOPSIS.key}
                 label={t("Synopsis")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -221,7 +221,7 @@ const FilterForm = (props: Props) => {
                 openOption
                 label={t("Advisory Keywords")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
 
@@ -230,7 +230,7 @@ const FilterForm = (props: Props) => {
                 name={clmFilterOptions.PACKAGE_NAME.key}
                 label={t("Package Name")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
                 required
               />
             )}
@@ -251,7 +251,7 @@ const FilterForm = (props: Props) => {
                 ]}
                 label={t("Rule")}
                 labelClass="col-md-3"
-                divClass="col-md-6"
+                divClass="col-md-8"
               />
             )}
           </React.Fragment>

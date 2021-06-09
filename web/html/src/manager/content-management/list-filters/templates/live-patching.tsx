@@ -88,7 +88,7 @@ export default (props: FilterFormProps & { template: Template }) => {
             name="productId"
             label={t("Product")}
             labelClass="col-md-3"
-            divClass="col-md-6"
+            divClass="col-md-8"
             required
             disabled={props.editing}
             options={products}
@@ -101,7 +101,7 @@ export default (props: FilterFormProps & { template: Template }) => {
         name="kernelId"
         label={t("Kernel")}
         labelClass="col-md-3"
-        divClass="col-md-6"
+        divClass="col-md-8"
         required={!!(clientId || productId)}
         disabled={!clientId && !productId}
         options={kernels}
