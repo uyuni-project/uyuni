@@ -2,49 +2,96 @@ import moment from "moment-timezone";
 
 declare global {
   interface Window {
-    userTimeZone?: string;
-    serverTimeZone?: string;
+    userTimeZone?: string; // Mandatory, but try to recover if they're not present
+    userDateFormat?: string; // Mandatory, but try to recover if they're not present
+    userTimeFormat?: string; // Fully optional
+    serverTimeZone?: string; // Fully optional
   }
 }
 
-const DEFAULT_TIME_ZONE = "UTC";
 if (!window.userTimeZone) {
-  Loggerhead.error(`User time zone not set, defaulting to ${DEFAULT_TIME_ZONE}`);
+  Loggerhead.error("User time zone not set, defaulting to UTC");
 }
 if (!window.serverTimeZone) {
-  Loggerhead.error(`Server time zone not set, defaulting to ${DEFAULT_TIME_ZONE}`);
+  Loggerhead.error("Server time zone not set, defaulting to UTC");
 }
 
-const userTimeZone = window.userTimeZone || DEFAULT_TIME_ZONE;
-const serverTimeZone = window.serverTimeZone || DEFAULT_TIME_ZONE;
+const userTimeZone = window.userTimeZone || "UTC";
+// See "Localized formats" in https://momentjs.com/docs/#/displaying/
+const userDateFormat = window.userDateFormat || "LL";
+const userTimeFormat = window.userTimeFormat || "LT";
+const serverTimeZone = window.serverTimeZone || "UTC";
+
+declare module "moment" {
+  export interface Moment {
+    /** Get a localized date-time string in user's time zone, e.g. `"January 31, 2020 1:00 AM"` */
+    toUserDateTimeString(): string;
+    /** Get a localized date string in user's time zone, e.g. `"January 31, 2020"` */
+    toUserDateString(): string;
+    /** Get a localized time string in user's time zone, e.g. `"1:00 AM"` */
+    toUserTimeString(): string;
+    // TODO: Where and how do we need this?
+    /** Get a localized time zone string for the user, e.g. `"America/Los_Angeles"` */
+    toUserTimeZoneString(): string;
+    // TODO: Same coverage for server
+    toServerDateTimeString(): string;
+    toServerDateString(): string;
+    toServerTimeString(): string;
+    toAPIValue(): string;
+  }
+}
 
 // TODO: What else do we need here?
 // TODO: Add descriptions
-function toUserDisplayString(this: LocalizedMoment) {
-  // TODO: .__internalFormat() instead
-  // Since moments are internally mutable, we make a copy before transitioning to a new timezone
+// TODO: What's a good way to name these
+// TODO: Add tests that ensure the assigned props remain after using operations on it etc
+moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
+  // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
   return moment(this)
     .tz(userTimeZone)
-    .toISOString(true);
-}
+    .format(`${userDateFormat} ${userTimeFormat}`);
+};
 
-function toServerDisplayString(this: LocalizedMoment) {
+moment.fn.toUserDateString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(userTimeZone)
+    .format(userDateFormat);
+};
+
+moment.fn.toUserTimeString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(userTimeZone)
+    .format(userTimeFormat);
+};
+
+moment.fn.toUserTimeZoneString = function(this: moment.Moment) {
+  return userTimeZone;
+};
+
+moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
   return moment(this)
     .tz(serverTimeZone)
-    .toISOString(true);
-}
+    .format(`${userDateFormat} ${userTimeFormat}`);
+};
 
-function toAPIString(this: LocalizedMoment) {
+moment.fn.toServerDateString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(serverTimeZone)
+    .format(userDateFormat);
+};
+
+moment.fn.toServerTimeString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(serverTimeZone)
+    .format(userTimeFormat);
+};
+
+// TODO: Specify whether this should be a string, a Unix timestamp, or something else
+moment.fn.toAPIValue = function(this: moment.Moment): string {
   return moment(this)
     .tz("UTC")
     .toISOString(false);
-}
-
-function throwOnManualFormat(...args: unknown[]) {
-  throw new Error("Trying to manually format a localized moment");
-}
-
-export type LocalizedMoment = ReturnType<typeof localizedMoment>;
+};
 
 export default function localizedMoment(input?: Exclude<moment.MomentInput, Date>) {
   // Please don't use raw Javascript Date instances
@@ -64,26 +111,5 @@ export default function localizedMoment(input?: Exclude<moment.MomentInput, Date
     throw new RangeError("Invalid localized moment");
   }
 
-  const __internalFormat = utcMoment.format;
-  // TODO: Add tests that ensure the assigned props remain after using operations on it etc
-  return Object.assign(utcMoment, {
-    toUserDisplayString,
-    toServerDisplayString,
-    toAPIString,
-    toISOString: toAPIString,
-    /**
-     * Please don't use `format()` to manually format a localized moment instance.
-     * Instead of doing this, please use one of the localized instance methods like `toUserString()` etc to
-     * consistently output a correctly localized datetime strings.
-     */
-    format: throwOnManualFormat,
-    /**
-     * Please don't use `toString()` to manually format a localized moment instance.
-     * Instead of doing this, please use one of the localized instance methods like `toUserString()` etc to
-     * consistently output a correctly localized datetime strings.
-     */
-    toString: throwOnManualFormat,
-    // TODO: Check whether `this` is bound correctly
-    __internalFormat,
-  });
+  return utcMoment;
 }

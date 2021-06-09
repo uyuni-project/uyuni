@@ -8,18 +8,6 @@ import localizedMoment from "./datetime";
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
 
-  test("can't be formatted manually", () => {
-    expect(() => {
-      localizedMoment().format("YYYY MM DD");
-    }).toThrow();
-  });
-
-  test("can't be stringified without a specific target", () => {
-    expect(() => {
-      localizedMoment().toString();
-    }).toThrow();
-  });
-
   test("can't be passed a Date instance", () => {
     expect(() => {
       localizedMoment(new Date() as any);
@@ -34,11 +22,11 @@ describe("localizedMoment", () => {
 
   test("displaying formats doesn't mutate the underlying instance", () => {
     const result = localizedMoment(validISOString);
-    result.toUserDisplayString();
+    result.toUserDateTimeString();
     expect(result.tz()).toEqual("UTC");
-    result.toServerDisplayString();
+    result.toServerDateTimeString();
     expect(result.tz()).toEqual("UTC");
-    result.toAPIString();
+    result.toAPIValue();
     expect(result.tz()).toEqual("UTC");
   });
 
