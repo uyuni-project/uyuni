@@ -1,3 +1,5 @@
+- Change Prometheus exporters formula data schema to make it more generic and extendable
+
 -------------------------------------------------------------------
 Wed May 12 13:58:47 CEST 2021 - jgonzalez@suse.com
 
