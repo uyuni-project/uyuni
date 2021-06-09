@@ -17,7 +17,7 @@ describe("localizedMoment", () => {
   test("parses valid input", () => {
     const result = localizedMoment(validISOString);
     expect(result.isValid()).toEqual(true);
-    expect(result.toAPIString()).toEqual(validISOString);
+    expect(result.toAPIValue()).toEqual(validISOString);
   });
 
   test("displaying formats doesn't mutate the underlying instance", () => {
