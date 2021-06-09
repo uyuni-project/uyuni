@@ -197,7 +197,6 @@ const FilterForm = (props: Props) => {
                 labelClass="col-md-3"
                 divClass="col-md-6"
                 required
-                timezone={timezone}
               />
             )}
 

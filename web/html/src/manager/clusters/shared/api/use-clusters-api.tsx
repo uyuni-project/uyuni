@@ -219,13 +219,14 @@ const useClustersApi = () => {
     clusterId: number,
     serverIds: Array<number>,
     joinFormula: FormulaValuesType,
-    earliest: Date,
+    earliest: moment.Moment,
     actionChain?: string | null
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/join`,
       JSON.stringify({
-        earliest: earliest,
+        // TODO: This is actually obsolete since stringifying will turn to ISO anyway?
+        earliest: earliest.toAPIValue(),
         serverIds: serverIds,
         formula: joinFormula,
       }),
@@ -241,13 +242,13 @@ const useClustersApi = () => {
     clusterId: number,
     serverIds: Array<number>,
     removeFormula: FormulaValuesType,
-    earliest: Date,
+    earliest: moment.Moment,
     actionChain?: string | null
   ): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/remove-node`,
       JSON.stringify({
-        earliest: earliest,
+        earliest: earliest.toAPIValue(),
         serverIds: serverIds,
         formula: removeFormula,
       }),
@@ -259,11 +260,11 @@ const useClustersApi = () => {
       .catch(handleResponseError);
   };
 
-  const scheduleUpgradeCluster = (clusterId: number, earliest: Date, actionChain?: string | null): Promise<number> => {
+  const scheduleUpgradeCluster = (clusterId: number, earliest: moment.Moment, actionChain?: string | null): Promise<number> => {
     return Network.post(
       `/rhn/manager/api/cluster/${clusterId}/upgrade`,
       JSON.stringify({
-        earliest: earliest,
+        earliest: earliest.toAPIValue(),
       }),
       "application/json"
     )

@@ -2,27 +2,25 @@ import * as React from "react";
 import { DateTimePicker } from "../datetimepicker";
 import { InputBase, InputBaseProps } from "./InputBase";
 import { FormContext } from "./Form";
+import { localizedMoment } from "utils";
 
-type Props = InputBaseProps & {
-  /** Time zone for the displayed time */
-  timezone?: string;
-
+type Props = InputBaseProps<moment.Moment> & {
   /** name of the field to map in the form model */
   name: string;
 };
 
 export function DateTime(props: Props) {
-  const { timezone, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase {...propsToPass}>
+    <InputBase<moment.Moment> {...props}>
       {({ setValue }) => {
-        const onChange = value => {
+        const onChange = (value: moment.Moment) => {
           setValue(props.name, value);
         };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
-        if (fieldValue instanceof Date) {
-          return <DateTimePicker onChange={onChange} value={fieldValue} timezone={timezone} />;
+        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || undefined;
+        // TODO: Check what's reasonable here
+        if (fieldValue) {
+          return <DateTimePicker onChange={onChange} value={localizedMoment(fieldValue)} />;
         } else {
           return null;
         }

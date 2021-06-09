@@ -4,6 +4,7 @@ import * as Partitioning from "./data-processing/partitioning";
 import * as Preprocessing from "./data-processing/preprocessing";
 import * as Utils from "./utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/visualization/hierarchy.jade
 declare global {
@@ -209,11 +210,12 @@ function updateDetailBox(d) {
   if (Utils.isSystemType(d)) {
     appendSimpleRow("Base entitlement", cell => cell.text(data.base_entitlement));
     appendSimpleRow("Base channel", cell => cell.text(data.base_channel));
+    const checkIn = localizedMoment(data.checkin);
     appendSimpleRow("Checkin time", cell =>
       cell
         .append("time")
-        .attr("title", moment(data.checkin).format("LLLL"))
-        .text(moment(data.checkin).fromNow())
+        .attr("title", checkIn.toUserDateTimeString())
+        .text(checkIn.fromNow())
     );
     appendSimpleRow("Installed products", cell => cell.text(data.installedProducts));
     appendSimpleRow("Patch status", cell => appendPatchStatus(cell, data.patch_counts));

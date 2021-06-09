@@ -1,5 +1,9 @@
 import moment from "moment-timezone";
 
+// TODO: Remove, these are only for easier debugging
+window.userTimeZone = "America/Los_Angeles";
+window.serverTimeZone = "Asia/Tokyo";
+
 declare global {
   interface Window {
     userTimeZone?: string; // Mandatory, but try to recover if they're not present
@@ -37,6 +41,7 @@ declare module "moment" {
     toServerDateTimeString(): string;
     toServerDateString(): string;
     toServerTimeString(): string;
+    toServerTimeZoneString(): string;
     toAPIValue(): string;
   }
 }
@@ -86,6 +91,10 @@ moment.fn.toServerTimeString = function(this: moment.Moment): string {
     .format(userTimeFormat);
 };
 
+moment.fn.toServerTimeZoneString = function(this: moment.Moment) {
+  return serverTimeZone;
+};
+
 // TODO: Specify whether this should be a string, a Unix timestamp, or something else
 moment.fn.toAPIValue = function(this: moment.Moment): string {
   return moment(this)
@@ -93,12 +102,7 @@ moment.fn.toAPIValue = function(this: moment.Moment): string {
     .toISOString(false);
 };
 
-export default function localizedMoment(input?: Exclude<moment.MomentInput, Date>) {
-  // Please don't use raw Javascript Date instances
-  if (input instanceof Date) {
-    throw new TypeError("Raw Javascript Date instance passed to localized moment");
-  }
-
+function localizedMoment(input?: moment.MomentInput) {
   // TODO: Specify string formats, don't allow inputs without a timezone
   const allowedFormats = [moment.ISO_8601];
   const utcMoment =
@@ -113,3 +117,6 @@ export default function localizedMoment(input?: Exclude<moment.MomentInput, Date
 
   return utcMoment;
 }
+
+const merged: typeof moment = Object.setPrototypeOf(localizedMoment, moment);
+export { merged as localizedMoment };

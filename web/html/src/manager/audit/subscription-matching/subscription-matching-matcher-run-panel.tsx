@@ -1,4 +1,5 @@
 import * as React from "react";
+import { localizedMoment } from "utils";
 import Network from "utils/network";
 
 type MatcherRunPanelProps = {
@@ -94,7 +95,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.latestEnd == null) {
     return (
       <div>
-        {t("Matching data is currently being recomputed, it was started {0}.", moment(props.latestStart).fromNow())}
+        {t("Matching data is currently being recomputed, it was started {0}.", localizedMoment(props.latestStart).fromNow())}
       </div>
     );
   }
@@ -103,7 +104,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     <div>
       {t(
         "Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.",
-        moment(props.latestEnd).fromNow()
+        localizedMoment(props.latestEnd).fromNow()
       )}
     </div>
   );

@@ -2,13 +2,11 @@ import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import { Utils } from "utils/functions";
-
-declare var Loggerhead: any;
+import { localizedMoment } from "utils";
 
 export function mapFilterFormToRequest(
   filterForm: Partial<FilterFormType>,
   projectLabel?: string,
-  localTime?: string
 ): FilterServerType {
   const requestForm: any = {};
   requestForm.projectLabel = projectLabel;
@@ -38,7 +36,7 @@ export function mapFilterFormToRequest(
   if (filterForm.type === clmFilterOptions.ISSUE_DATE.key) {
     const formDateValue = filterForm[clmFilterOptions.ISSUE_DATE.key];
     requestForm.criteriaValue = formDateValue
-      ? moment(Utils.dateWithoutTimezone(formDateValue, localTime || "")).format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      ? localizedMoment(formDateValue).toAPIValue()
       : "";
   } else if (filterForm.type === clmFilterOptions.NEVRA.key) {
     // UI filter NEVRA form can map either into nevr or nevra

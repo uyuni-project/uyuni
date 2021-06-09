@@ -8,6 +8,7 @@ import Network from "utils/network";
 import { Utils } from "utils/functions";
 import SpaRenderer from "core/spa/spa-renderer";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 type Props = {
   refreshInterval: number;
@@ -204,13 +205,13 @@ class TaskoTop extends React.Component<Props> {
                 columnKey="startTime"
                 comparator={Utils.sortByText}
                 header={t("Start Time")}
-                cell={row => moment(row["startTime"]).format("HH:mm:ss")}
+                cell={row => localizedMoment(row["startTime"]).toUserTimeString()}
               />
               <Column
                 columnKey="endTime"
                 comparator={this.sortByEndTime}
                 header={t("End Time")}
-                cell={row => (row["endTime"] == null ? "" : moment(row["endTime"]).format("HH:mm:ss"))}
+                cell={row => (row["endTime"] == null ? "" : localizedMoment(row["endTime"]).toUserTimeString())}
               />
               <Column
                 columnKey="elapsedTime"

@@ -1,11 +1,13 @@
 import * as React from "react";
+import { localizedMoment } from "utils";
 
 type Props = {
-  time: string | Date;
+  time: string | moment.Moment;
 };
 
-const DateTime = (props: Props) => (
-  <span title={moment(props.time).format("YYYY-MM-DD HH:mm:ss Z")}>{moment(props.time).fromNow()}</span>
-);
+const DateTime = (props: Props) => {
+  const value = localizedMoment(props.time);
+  return <span title={value.toISOString()}>{value.fromNow()}</span>;
+};
 
 export { DateTime };

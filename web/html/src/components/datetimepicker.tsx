@@ -1,22 +1,15 @@
 import * as React from "react";
+import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
-type Instance = JQuery & {
-  getTime: () => any;
-  getFullYear: () => any;
-  getMonth: () => any;
-  getDate: () => any;
-  getHours: () => any;
-  getMinutes: () => any;
-  getSeconds: () => any;
-};
-type StaticProperties = { dates: any; };
+type Instance = JQuery & Date;
+type StaticProperties = { dates: any };
 type Picker = ((...args: any[]) => Instance) & StaticProperties;
 
 declare global {
   interface JQuery {
-      datepicker: Picker;
-      timepicker: Picker;
+    datepicker: Picker;
+    timepicker: Picker;
   }
 }
 
@@ -44,9 +37,9 @@ jQuery.fn.datepicker.dates["en_US"] = {
 type DatePickerProps = {
   id?: string;
   open: boolean;
-  value: Date;
+  value: moment.Moment;
   onToggle: (state: boolean) => void;
-  onDateChanged: (value: any) => any;
+  onDateChanged: (value: moment.Moment) => void;
 };
 
 class DatePicker extends React.Component<DatePickerProps> {
@@ -68,19 +61,20 @@ class DatePicker extends React.Component<DatePickerProps> {
   componentDidMount() {
     this._input?.datepicker({});
     this.setVisible(this.props.open);
-    this._input?.datepicker("setDate", this.props.value);
+    this._input?.datepicker("setDate", this.props.value.toDate());
     this._input?.on("changeDate", () => {
-      const datepickerValue = this._input?.datepicker("getDate");
+      // TODO: Check the types here
+      const unsafeDate: Date | undefined = this._input?.datepicker("getDate");
+      const datepickerValue = unsafeDate ? localizedMoment(unsafeDate) : null;
 
       // Call the callback only if value has actually changed
-      const propsTime = this.props.value.getTime();
-      const pickerTime = datepickerValue?.getTime();
-      if (propsTime !== pickerTime) {
+      if (this.props.value.valueOf() !== datepickerValue?.valueOf()) {
+        // TODO: Check this
         //in case the date is unselected
-        if (!Number.isNaN(pickerTime)) {
+        if (datepickerValue) {
           this.props.onDateChanged(datepickerValue);
         }
-        this._input?.datepicker("setDate", this.props.value);
+        this._input?.datepicker("setDate", this.props.value.toDate());
       }
     });
     this._input?.on("show", () => {
@@ -97,8 +91,8 @@ class DatePicker extends React.Component<DatePickerProps> {
     });
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    this._input?.datepicker("setDate", props.value);
+  UNSAFE_componentWillReceiveProps(props: DatePickerProps) {
+    this._input?.datepicker("setDate", props.value.toDate());
     this.setVisible(props.open);
   }
 
@@ -123,10 +117,10 @@ class DatePicker extends React.Component<DatePickerProps> {
 
 type TimePickerProps = {
   id?: string;
-  value: Date;
+  value: moment.Moment;
   open?: boolean;
   onToggle: (state: boolean) => void;
-  onTimeChanged: (value: any) => any;
+  onTimeChanged: (value: moment.Moment) => void;
 };
 
 class TimePicker extends React.Component<TimePickerProps> {
@@ -144,10 +138,11 @@ class TimePicker extends React.Component<TimePickerProps> {
     });
     this._input?.timepicker("setTime", this.props.value);
     this._input?.on("changeTime", () => {
-      const timepickerValue = this._input?.timepicker("getTime");
+      const timepickerValue = localizedMoment(this._input?.timepicker("getTime"));
+      console.log(this.props.value.valueOf(), timepickerValue.valueOf());
 
       // Call the callback only if value has actually changed
-      if (this.props.value.getTime() !== timepickerValue?.getTime()) {
+      if (this.props.value.valueOf() !== timepickerValue.valueOf()) {
         this.props.onTimeChanged(timepickerValue);
         this._input?.timepicker("setTime", this.props.value);
       }
@@ -166,13 +161,16 @@ class TimePicker extends React.Component<TimePickerProps> {
     });
   }
 
-  setVisible(visible: boolean) {
-    if (visible) this._input?.timepicker("show");
-    else this._input?.timepicker("hide");
+  setVisible(visible?: boolean) {
+    if (visible) {
+      this._input?.timepicker("show");
+    } else {
+      this._input?.timepicker("hide");
+    }
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.value.getTime() !== this.props.value.getTime()) {
+  UNSAFE_componentWillReceiveProps(props: TimePickerProps) {
+    if (props.value.valueOf() !== this.props.value.valueOf()) {
       this._input?.timepicker("setTime", props.value);
     }
     this.setVisible(props.open);
@@ -194,9 +192,8 @@ class TimePicker extends React.Component<TimePickerProps> {
 
 type DateTimePickerProps = {
   id?: string;
-  value: Date;
-  timezone?: string;
-  onChange: (value: any) => any;
+  value: moment.Moment;
+  onChange: (value: moment.Moment) => void;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
 };
@@ -219,17 +216,15 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
     };
   }
 
-  onDateChanged(date) {
-    const value = this.props.value;
-    const merged = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      value.getHours(),
-      value.getMinutes(),
-      value.getSeconds(),
-      value.getMilliseconds()
-    );
+  onDateChanged(value: moment.Moment) {
+    const originalValue = this.props.value;
+    // TODO: Remove double creation
+    const newValue = localizedMoment(value);
+    const merged = localizedMoment(originalValue)
+      .year(newValue.year())
+      .month(newValue.month())
+      .date(newValue.date());
+    console.log(merged.toISOString(), merged.toUserDateString());
     this.props.onChange(merged);
   }
 
@@ -257,17 +252,16 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
     });
   }
 
-  onTimeChanged(date) {
-    const value = this.props.value;
-    const merged = new Date(
-      value.getFullYear(),
-      value.getMonth(),
-      value.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds(),
-      date.getMilliseconds()
-    );
+  onTimeChanged(value: moment.Moment) {
+    const originalValue = this.props.value;
+    // TODO: Remove double creation
+    const newValue = localizedMoment(value);
+    const merged = localizedMoment(originalValue)
+      .hours(newValue.hours())
+      .minutes(newValue.minutes())
+      .seconds(newValue.seconds())
+      .milliseconds(newValue.milliseconds());
+    console.log(merged.toISOString(), merged.toUserDateString());
     this.props.onChange(merged);
   }
 
@@ -310,7 +304,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             key="time-picker"
           />,
           <span className="input-group-addon" key="tz">
-            {this.props.timezone}
+            {this.props.value.toServerTimeZoneString()}
           </span>,
         ]}
       </div>

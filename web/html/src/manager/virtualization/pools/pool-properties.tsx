@@ -15,11 +15,11 @@ import Validation from "components/validation";
 import { SubmitButton, Button } from "components/buttons";
 import { Messages } from "components/messages";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
 import { VirtualizationPoolCapsApi } from "./virtualization-pools-capabilities-api";
 import * as FieldsData from "./properties/fields-data";
 
 import { MessageType } from "components/messages";
+import { localizedMoment } from "utils";
 
 type Props = {
   serverId: string;
@@ -59,7 +59,7 @@ export function PoolProperties(props: Props) {
   const [model, setModel] = React.useState(props.initialModel ? flattenModel(props.initialModel) : {});
   const [invalid, setInvalid] = React.useState(false);
   const [actionChain, setActionChain] = React.useState<ActionChain | null | undefined>(null);
-  const [earliest, setEarliest] = React.useState(Utils.dateWithTimezone(props.localTime));
+  const [earliest, setEarliest] = React.useState(localizedMoment());
 
   React.useEffect(() => {
     clearFields(props.initialModel, setModel);
@@ -95,8 +95,8 @@ export function PoolProperties(props: Props) {
     props.submit(data);
   };
 
-  const onDateTimeChanged = (date: Date) => {
-    setEarliest(date);
+  const onDateTimeChanged = (value: moment.Moment) => {
+    setEarliest(value);
   };
 
   const onActionChainChanged = (newActionChain: ActionChain | null | undefined) => {
@@ -564,8 +564,6 @@ export function PoolProperties(props: Props) {
 
               <Panel key="schedule" title={t("Schedule")} headingLevel="h3">
                 <ActionSchedule
-                  timezone={props.timezone}
-                  localTime={props.localTime}
                   earliest={earliest}
                   actionChains={props.actionChains}
                   onActionChainChanged={onActionChainChanged}

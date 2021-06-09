@@ -7,7 +7,7 @@ import { Form } from "components/input/Form";
 import { SubmitButton, Button } from "components/buttons";
 import { Messages } from "components/messages";
 import { ActionSchedule } from "components/action-schedule";
-import { Utils } from "utils/functions";
+import { localizedMoment } from "utils";
 
 type Props = {
   submitText: string;
@@ -22,7 +22,9 @@ type Props = {
 };
 
 type State = {
-  model: any;
+  model: {
+    earliest: moment.Moment
+  } & any;
   isInvalid: boolean;
   actionChain: ActionChain | null | undefined;
 };
@@ -35,7 +37,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      model: Object.assign({}, props.initialModel, { earliest: Utils.dateWithTimezone(props.localTime) }),
+      model: Object.assign({}, props.initialModel, { earliest: localizedMoment() }),
       isInvalid: false,
       actionChain: null,
     };
@@ -64,9 +66,9 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     this.props.submit(model);
   };
 
-  onDateTimeChanged = (date: Date) => {
+  onDateTimeChanged = (value: moment.Moment) => {
     this.setState(state => ({
-      model: Object.assign({}, state.model, { earliest: date, actionChain: null }),
+      model: Object.assign({}, state.model, { earliest: value, actionChain: null }),
       actionChain: null,
     }));
   };
@@ -98,8 +100,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           })}
           <Panel key="schedule" title={t("Schedule")} headingLevel="h3">
             <ActionSchedule
-              timezone={this.props.timezone}
-              localTime={this.props.localTime}
               earliest={this.state.model.earliest}
               actionChains={this.props.actionChains}
               onActionChainChanged={this.onActionChainChanged}

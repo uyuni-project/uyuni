@@ -12,6 +12,7 @@ import { PlaybookDetails } from "./accordion-path-content";
 import { Formats, Utils } from "utils/functions";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Loading } from "components/utils/Loading";
+import { localizedMoment } from "utils";
 
 interface SchedulePlaybookProps {
   playbook: PlaybookDetails,
@@ -25,11 +26,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
-  const [datetime, setDatetime] = useState(new Date());
-
-  // TODO: Use UserLocalization hook instead
-  const timezone = window.timezone;
-  const localTime = window.localTime;
+  const [datetime, setDatetime] = useState(localizedMoment());
 
   useEffect(() => {
     const getInventoryPaths = () => {
@@ -61,11 +58,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
     }
 
     Promise.all([getInventoryPaths(), getPlaybookContents()]).finally(() => setLoading(false));
-  }, [playbook, localTime]);
-
-  useEffect(() => {
-    setDatetime(Utils.dateWithTimezone(localTime || ""));
-  }, [localTime]);
+  }, [playbook]);
 
   const schedule = () => {
     return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook",
@@ -74,7 +67,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         inventoryPath: inventoryPath?.text,
         controlNodeId: playbook.path.minionServerId,
         actionChainLabel: actionChain?.text || null,
-        earliest: Formats.LocalDateTime(datetime)
+        earliest: datetime.toAPIValue()
       }),
       "application/json"
     ).promise
@@ -115,8 +108,6 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
           </div>
           <div className="panel-body">
             <ActionSchedule
-              timezone={timezone}
-              localTime={localTime}
               earliest={datetime}
               actionChains={window.actionChains}
               onDateTimeChanged={setDatetime}

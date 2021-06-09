@@ -18,6 +18,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { JsonResult } from "utils/network";
 import { ActionChain } from "components/action-schedule";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import { localizedMoment } from "utils";
 
 // See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
@@ -568,14 +569,14 @@ type SummaryPageProps = {
   allowedChanges: Array<SsmAllowedChildChannelsDto>;
   finalChanges: Array<ChannelChangeDto>;
   footer: React.ReactNode;
-  onChangeEarliest: (earliest: Date) => void;
+  onChangeEarliest: (earliest: moment.Moment) => void;
   onChangeActionChain: (actionChain: ActionChain | null | undefined) => void;
 };
 
 type SummaryPageState = {
   popupServersList: Array<SsmServerDto>;
   popupServersChannelName: string;
-  earliest: Date;
+  earliest: moment.Moment;
   actionChain: ActionChain | null | undefined;
 };
 
@@ -585,14 +586,14 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.state = {
       popupServersList: [],
       popupServersChannelName: "",
-      earliest: Utils.dateWithTimezone(window.localTime),
+      earliest: localizedMoment(),
       actionChain: null,
     };
   }
 
-  onDateTimeChanged = (date: Date) => {
-    this.setState({ earliest: date });
-    this.props.onChangeEarliest(date);
+  onDateTimeChanged = (value: moment.Moment) => {
+    this.setState({ earliest: value });
+    this.props.onChangeEarliest(value);
   };
 
   showServersListPopUp = (channelName: string, servers: Array<SsmServerDto>) => {
@@ -611,7 +612,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 
   // This is used internally by testsuite/features/step_definitions/datepicker_steps.rb
   setScheduleTime = newtime => {
-    const time = new Date(newtime);
+    const time = localizedMoment(newtime);
     this.setState({
       earliest: time,
     });
@@ -714,8 +715,6 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
         {rows}
 
         <ActionSchedule
-          timezone={window.timezone}
-          localTime={localTime}
           earliest={this.state.earliest}
           actionChains={window.actionChains}
           onActionChainChanged={this.onActionChainChanged}
@@ -827,7 +826,7 @@ type SsmChannelState = {
   messages: Array<any>;
   baseChanges: SsmBaseChannelChangesJson;
   finalChanges: Array<ChannelChangeDto>;
-  earliest: Date;
+  earliest: moment.Moment;
   actionChain: ActionChain | null | undefined;
   page: number;
   scheduleResults: Array<ScheduleChannelChangesResultDto>;
@@ -882,7 +881,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       baseChanges: { changes: [] },
       finalChanges: [],
       page: 0,
-      earliest: new Date(),
+      earliest: localizedMoment(),
       actionChain: null,
       scheduleResults: [],
     };
@@ -1020,9 +1019,9 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
     });
   };
 
-  onChangeEarliest = (earliest: Date) => {
+  onChangeEarliest = (value: moment.Moment) => {
     this.setState({
-      earliest: earliest,
+      earliest: value,
     });
   };
 
@@ -1034,7 +1033,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
   onConfirm = () => {
     const req: SsmScheduleChannelChangesJson = {
-      earliest: Formats.LocalDateTime(this.state.earliest),
+      earliest: this.state.earliest.toAPIValue(),
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges,
     };

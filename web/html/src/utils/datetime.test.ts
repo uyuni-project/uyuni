@@ -3,16 +3,10 @@ window.userTimeZone = "America/Los_Angeles";
 window.serverTimeZone = "Asia/Tokyo";
 
 // eslint-disable-next-line import/first
-import localizedMoment from "./datetime";
+import { localizedMoment } from "./datetime";
 
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
-
-  test("can't be passed a Date instance", () => {
-    expect(() => {
-      localizedMoment(new Date() as any);
-    }).toThrow();
-  });
 
   test("parses valid input", () => {
     const result = localizedMoment(validISOString);
@@ -28,6 +22,10 @@ describe("localizedMoment", () => {
     expect(result.tz()).toEqual("UTC");
     result.toAPIValue();
     expect(result.tz()).toEqual("UTC");
+  });
+
+  test("keeps utility functions", () => {
+    expect(localizedMoment.isMoment(localizedMoment())).toEqual(true);
   });
 
   // TODO: What format do we expect to output here?
