@@ -1,3 +1,5 @@
+- exclude openSUSE Leap 15.3 from product installation (bsc#1186858)
+
 -------------------------------------------------------------------
 Thu Jun 03 14:00:29 CEST 2021 - jgonzalez@suse.com
 
