@@ -1,3 +1,4 @@
+- exclude openSUSE Leap 15.3 from product installation (bsc#1186858)
 - Accept GPG key in Amazon Linux 2 for res7tools channel (bsc#1187102)
 
 -------------------------------------------------------------------
