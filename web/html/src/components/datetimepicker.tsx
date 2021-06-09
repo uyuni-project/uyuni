@@ -4,12 +4,15 @@ import { localizedMoment } from "utils";
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & Date;
 type StaticProperties = { dates: any };
-type Picker = ((...args: any[]) => Instance) & StaticProperties;
+type PickerType = ((config: object) => Instance) & ((method: "show" | "hide") => Instance) & StaticProperties;
+
+type DatePickerType = PickerType & ((method: "setUTCDate", value: Date) => void) & ((method: "getUTCDate") => Date);
+type TimePickerType = PickerType & ((method: "setTime", value: Date) => void) & ((method: "getTime") => Date);
 
 declare global {
   interface JQuery {
-    datepicker: Picker;
-    timepicker: Picker;
+    datepicker: DatePickerType;
+    timepicker: TimePickerType;
   }
 }
 
@@ -61,10 +64,10 @@ class DatePicker extends React.Component<DatePickerProps> {
   componentDidMount() {
     this._input?.datepicker({});
     this.setVisible(this.props.open);
-    this._input?.datepicker("setDate", this.props.value.toDate());
+    this._input?.datepicker("setUTCDate", this.props.value.toDate());
     this._input?.on("changeDate", () => {
       // TODO: Check the types here
-      const unsafeDate: Date | undefined = this._input?.datepicker("getDate");
+      const unsafeDate: Date | undefined = this._input?.datepicker("getUTCDate");
       const datepickerValue = unsafeDate ? localizedMoment(unsafeDate) : null;
 
       // Call the callback only if value has actually changed
@@ -74,7 +77,7 @@ class DatePicker extends React.Component<DatePickerProps> {
         if (datepickerValue) {
           this.props.onDateChanged(datepickerValue);
         }
-        this._input?.datepicker("setDate", this.props.value.toDate());
+        this._input?.datepicker("setUTCDate", this.props.value.toDate());
       }
     });
     this._input?.on("show", () => {
@@ -92,7 +95,7 @@ class DatePicker extends React.Component<DatePickerProps> {
   }
 
   UNSAFE_componentWillReceiveProps(props: DatePickerProps) {
-    this._input?.datepicker("setDate", props.value.toDate());
+    this._input?.datepicker("setUTCDate", props.value.toDate());
     this.setVisible(props.open);
   }
 
@@ -136,7 +139,7 @@ class TimePicker extends React.Component<TimePickerProps> {
     this._input?.on("timeFormatError", () => {
       // Do nothing
     });
-    this._input?.timepicker("setTime", this.props.value);
+    this._input?.timepicker("setTime", this.props.value.toDate());
     this._input?.on("changeTime", () => {
       const timepickerValue = localizedMoment(this._input?.timepicker("getTime"));
       console.log(this.props.value.valueOf(), timepickerValue.valueOf());
@@ -144,7 +147,7 @@ class TimePicker extends React.Component<TimePickerProps> {
       // Call the callback only if value has actually changed
       if (this.props.value.valueOf() !== timepickerValue.valueOf()) {
         this.props.onTimeChanged(timepickerValue);
-        this._input?.timepicker("setTime", this.props.value);
+        this._input?.timepicker("setTime", this.props.value.toDate());
       }
     });
     this._input?.on("showTimepicker", () => {
@@ -171,7 +174,7 @@ class TimePicker extends React.Component<TimePickerProps> {
 
   UNSAFE_componentWillReceiveProps(props: TimePickerProps) {
     if (props.value.valueOf() !== this.props.value.valueOf()) {
-      this._input?.timepicker("setTime", props.value);
+      this._input?.timepicker("setTime", props.value.toDate());
     }
     this.setVisible(props.open);
   }
