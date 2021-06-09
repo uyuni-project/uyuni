@@ -1,3 +1,5 @@
+- adapt parsed strings from AlmaLinux and AmazonLinux match
+  SCC/sumatoolbox product definition (bsc#1186750)
 - Run database table analyze in most used tables of CLM for better performance (bsc#1186704)
 
 -------------------------------------------------------------------
