@@ -1,6 +1,12 @@
 - Fix deleting stopped virtual network (bsc#1186281)
 
 -------------------------------------------------------------------
+Wed Jun 09 16:59:01 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.28-1
+- exclude openSUSE Leap 15.3 from product installation (bsc#1186858)
+
+-------------------------------------------------------------------
 Thu Jun 03 14:00:29 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.27-1
