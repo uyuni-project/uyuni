@@ -19,7 +19,7 @@ def test_softwarechannel_list_doreturn_nolabels(shell):
     """
     shell.client.channel.listAllChannels = MagicMock(return_value=[])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(shell, "", doreturn=True)
     assert out is not None
     assert out == []
@@ -37,7 +37,7 @@ def test_softwarechannel_list_noreturn_nolabels(shell):
     """
     shell.client.channel.listAllChannels = MagicMock(return_value=[])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(shell, "", doreturn=False)
     assert out is None
     assert not shell.help_softwarechannel_list.called
@@ -58,7 +58,7 @@ def test_softwarechannel_list_noreturn_labels_std(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
             shell, "", doreturn=False)
 
@@ -90,7 +90,7 @@ def test_softwarechannel_list_noreturn_labels_verbose(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
             shell, "-v", doreturn=False)
 
@@ -126,7 +126,7 @@ def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
             shell, "-v -t", doreturn=False)
 
@@ -154,7 +154,7 @@ def test_softwarechannel_listmanageablechannels_noarg(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(shell, "")
 
     assert out is None
@@ -184,7 +184,7 @@ def test_softwarechannel_listmanageablechannels_default_verbose(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
             shell, "--verbose")
 
@@ -211,7 +211,7 @@ def test_softwarechannel_listmanageablechannels_data_sparse(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(shell, "", doreturn=True)
 
     assert out is not None
@@ -240,7 +240,7 @@ def test_softwarechannel_listmanageablechannels_data_verbose(shell):
     ])
 
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
             shell, "--verbose", doreturn=True)
 
@@ -259,7 +259,7 @@ def test_listchildchannels(shell):
     shell.list_child_channels = MagicMock(return_value=["x_child_channel", "z_child_channel",
                                                         "b_child_channel", "a_child_channel",])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "")
 
     assert not shell.client.channel.software.getDetails.called
@@ -282,7 +282,7 @@ def test_listchildchannels_verbose(shell):
         {"summary": "Z summary"},
     ])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "--verbose")
 
     assert shell.client.channel.software.getDetails.called
@@ -300,7 +300,7 @@ def test_listsystems_noargs(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "")
 
     assert out is None
@@ -322,7 +322,7 @@ def test_listsystems_noargs_channel_no_data(shell):
         {"name": "third.zoo.lan"},
     ])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "my_channel")
 
     assert not shell.help_softwarechannel_listsystems.called
@@ -346,7 +346,7 @@ def test_listsystems_noargs_channel_data_return(shell):
         {"name": "third.zoo.lan"},
     ])
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "my_channel", doreturn=True)
 
     assert not shell.help_softwarechannel_listsystems.called
@@ -362,7 +362,7 @@ def test_listpackages_noargs_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(shell, "")
 
     assert out is None
@@ -377,7 +377,7 @@ def test_listpackages_too_much_args_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
             shell, "one_channel other_channel somemore_channels")
 
@@ -403,7 +403,7 @@ def test_listpackages_one_channel_no_data(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(shell, "one_channel")
 
     assert out is None
@@ -430,7 +430,7 @@ def test_listpackages_one_channel_with_data(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
             shell, "one_channel", doreturn=True)
 
@@ -448,7 +448,7 @@ def test_listallpackages_noargs_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(shell, "")
 
     assert out is None
@@ -463,7 +463,7 @@ def test_listallpackages_too_much_args_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
             shell, "one_channel other_channel somemore_channels")
 
@@ -489,7 +489,7 @@ def test_listallpackages_one_channel_no_data(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(shell, "one_channel")
 
     assert out is None
@@ -516,7 +516,7 @@ def test_listallpackages_one_channel_with_data(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
             shell, "one_channel", doreturn=True)
 
@@ -562,7 +562,7 @@ def test_listlatestpackages_noargs_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(shell, "")
 
     assert out is None
@@ -576,7 +576,7 @@ def test_listlatestpackages_wrongargs_nodata(shell):
     :return:
     """
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
             shell, "one two three")
 
@@ -601,7 +601,7 @@ def test_listlatestpackages_channel_packages(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
             shell, "some_channel")
 
@@ -629,7 +629,7 @@ def test_listlatestpackages_channel_packages_as_data(shell):
         ]
     )
     mprint = MagicMock()
-    with patch("spacecmd.softwarechannel.print", mprint) as prt:
+    with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
             shell, "some_channel", doreturn=True)
 
