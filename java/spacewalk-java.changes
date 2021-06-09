@@ -1,3 +1,4 @@
+- Change Prometheus exporters formula data schema to make it more generic and extendable
 - adapt logging for testing accessability of URLs (bsc#1182817)
 - fix problem reading product_tree.json from wrong location in offline setups (bsc#1184283)
 - for a SUSE system get metadata and package from same source (bsc#1184475)
