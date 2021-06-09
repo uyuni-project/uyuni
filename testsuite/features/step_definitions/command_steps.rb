@@ -9,10 +9,21 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run('hostname -f')
+  result, return_code = node.run('hostname -f', false)
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
   raise 'hostname is not fully qualified' unless result == node.full_hostname
+end
+
+Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  result, _rc = node.run('hostname --version', false)
+  if result =~ /^hostname 3\./
+    result, return_code = node.run('hostname -A | tr " " "\n" | sort -u', false)
+    result.delete!("\n")
+    raise 'cannot do reverse resolution' unless return_code.zero?
+    raise 'reverse resolution does not give expected results' unless result == node.full_hostname
+  end
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
