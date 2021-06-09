@@ -32,6 +32,9 @@ trust_suse_manager_tools_rhel_gpg_key:
 {%- elif grains['osmajorrelease']|int == 8 %}
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res8tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res8tools:name') }}
+{%- elif grains['osmajorrelease']|int == 2 and grains['os'] == 'Amazon' %}
+    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
 {% else %}
     - name: /usr/bin/true
 {%- endif %}
