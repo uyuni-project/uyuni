@@ -390,9 +390,8 @@ class TestSCErrata:
 
         assert_list_args_expect(mprint.call_args_list,
                                 ['Name:       cve-one', 'Product:    PRODUCT-1', 'Type:       TYPE-1',
-                                 'Issue Date: DATE-1', '', 'Topic', '-----', 'The quick brown fox jumped over the '
-                                                                             'lazy dog', '', 'Description',
-                                 '-----------',
+                                 'Status:     N/A', 'Issue Date: DATE-1', '', 'Topic', '-----',
+                                 'The quick brown fox jumped over the lazy dog', '', 'Description', '-----------',
                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
                                  'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
@@ -416,9 +415,8 @@ class TestSCErrata:
                                  'Affected Systems', '----------------', '3', '', 'Affected Packages',
                                  '-----------------', 'pico-1-234.x86\nvim-42-123.x86', '----------',
                                  'Name:       cve-two', 'Product:    PRODUCT-2', 'Type:       TYPE-2',
-                                 'Issue Date: DATE-2', '', 'Topic', '-----', 'The quick brown fox jumped over '
-                                                                             'the lazy dog',
-                                 '', 'Description', '-----------',
+                                 'Status:     N/A', 'Issue Date: DATE-2', '', 'Topic', '-----',
+                                 'The quick brown fox jumped over the lazy dog', '', 'Description', '-----------',
                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, '
                                  'nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet '
                                  'turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere '
@@ -483,17 +481,17 @@ class TestSCErrata:
         assert mprint.called
 
         assert_list_args_expect(mprint.call_args_list,
-                                ['Name:       cve-one', 'Product:    N/A', 'Type:       N/A', 'Issue Date: N/A', '',
-                                 'Topic', '-----', 'N/A', '', 'Description', '-----------', 'N/A', '', 'CVEs', '----',
-                                 '', '', 'Solution', '--------', 'N/A', '', 'References', '----------', 'N/A', '',
-                                 'Affected Channels',
+                                ['Name:       cve-one', 'Product:    N/A', 'Type:       N/A', 'Status:     N/A',
+                                 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------', 'N/A',
+                                 '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '', 'References',
+                                 '----------', 'N/A', '', 'Affected Channels',
                                  '-----------------', '', '', 'Affected Systems', '----------------', '0', '',
                                  'Affected Packages', '-----------------', 'pico-1-234.x86\nvim-42-123.x86',
                                  '----------', 'Name:       cve-two', 'Product:    N/A', 'Type:       N/A',
-                                 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description', '-----------',
-                                 'N/A', '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '', 'References',
-                                 '----------', 'N/A', '', 'Affected Channels', '-----------------', '', '',
-                                 'Affected Systems', '----------------', '0', '', 'Affected Packages',
+                                 'Status:     N/A', 'Issue Date: N/A', '', 'Topic', '-----', 'N/A', '', 'Description',
+                                 '-----------', 'N/A', '', 'CVEs', '----', '', '', 'Solution', '--------', 'N/A', '',
+                                 'References', '----------', 'N/A', '', 'Affected Channels', '-----------------', '',
+                                 '', 'Affected Systems', '----------------', '0', '', 'Affected Packages',
                                  '-----------------', 'pico-2-12.x86\nvim-28-45.x86'])
 
     def test_errata_delete_noargs(self, shell):
