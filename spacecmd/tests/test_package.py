@@ -261,7 +261,7 @@ class TestSCPackage:
                 "name": "emacs-data", "version": "24.5.7", "release": "42.1", "epoch": "2",
                 "arch_label": "x86", "file": "emacs-x11.rpm", "path": "/tmp", "size": "22000",
                 "checksum_type": "md5", "checksum": "9d188ed99c1114eba7a8e499798da47c",
-                "description": "Better editor than Vim, using X11"
+                "description": "Better editor than Vim, using X11", "part_of_retracted_patch": True
             },
             {
                 "name": "emacs-x11", "version": "24.5.7", "release": "42.1", "epoch": "2",
@@ -297,7 +297,7 @@ class TestSCPackage:
             'File:      emacs-x11.rpm',
             'Path:      /tmp',
             'Size:      22000',
-            'Retracted: No',
+            'Retracted: Yes',
             'MD5:       9d188ed99c1114eba7a8e499798da47c',
             '',
             'Installed Systems: 3',
