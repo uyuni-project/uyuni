@@ -35,7 +35,7 @@
 %endif
 
 Name:           spacewalk-utils
-Version:        4.0.20
+Version:        4.0.21
 Release:        1%{?dist}
 Summary:        Utilities that may be run against a Spacewalk server.
 License:        GPL-2.0-only AND GPL-3.0-or-later

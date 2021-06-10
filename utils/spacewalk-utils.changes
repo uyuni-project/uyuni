@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 10 13:05:39 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.21-1
 - Bugfix for ubuntu-18.04 repo urls: multiverse, restricted and backports
 - Add multiverse, restricted and backports to Ubuntu 16.04, 18.04 and 20.04
 
