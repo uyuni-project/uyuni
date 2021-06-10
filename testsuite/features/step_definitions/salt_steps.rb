@@ -389,9 +389,7 @@ end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
-  output, _code = node.run("ip address show dev eth0")
-  ip = output.split("\n")[2].split[1].split('/')[0]
-  fill_in FIELD_IDS[field], with: ip
+  fill_in FIELD_IDS[field], with: node.public_ip
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
