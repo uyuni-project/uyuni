@@ -31,7 +31,7 @@ declare module "moment" {
   export interface Moment {
     /**
      * Unless you specifically need the server time, please use the `toUser...` equivalent.
-     * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31T13:00:00.000+09:00"`
+     * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31 13:00 GMT+9"`
      */
     toServerString(): string;
     /**
@@ -50,7 +50,7 @@ declare module "moment" {
      */
     toServerTimeString(): string;
 
-    /** Get a localized date-time-zone string in the user's time zone, e.g. `"2020-01-31T130:00:00.000+09:00"` */
+    /** Get a localized date-time-zone string in the user's time zone, e.g. `"2020-01-31 13:00 GMT+9"` */
     toUserString(): string;
     /** Get a localized date-time string in the user's time zone, e.g. `"2020-01-31 13:00"` */
     toUserDateTimeString(): string;
@@ -63,16 +63,12 @@ declare module "moment" {
     toAPIValue(): string;
   }
 
-  /** The server's time zone, e.g. `"Asia/Tokyo"` or `"GMT+9"` depending on the configuration */
+  /** The server's time zone, e.g. `"GMT+9"` */
   const serverTimeZone: string;
-  /** The user's time zone, e.g. `"Asia/Tokyo"` or `"GMT+9"` depending on the configuration */
+  /** The user's time zone, e.g. `"GMT+9"` */
   const userTimeZone: string;
 }
 
-// TODO: What else do we need here?
-// TODO: Add descriptions
-// TODO: What's a good way to name these
-// TODO: Add tests that ensure the assigned props remain after using operations on it etc
 moment.fn.toServerString = function(this: moment.Moment): string {
   return moment(this)
     .tz(serverTimeZone)

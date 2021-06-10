@@ -1,4 +1,4 @@
-import { localizedMoment } from "./datetime";
+import { localizedMoment } from "./localizedMoment";
 
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
