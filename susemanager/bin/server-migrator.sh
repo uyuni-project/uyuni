@@ -27,6 +27,7 @@ zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/1
 zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/15.3/repo/non-oss repo-non-oss
 zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/15.3/non-oss/ repo-update-non-oss
 zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ uyuni-server-stable
+zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise 15" http://download.opensuse.org/update/leap/15.3/sle repo-sle-update
 zypper ref
 zypper -n dup --allow-vendor-change
 
