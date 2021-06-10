@@ -47,7 +47,7 @@ type DatePickerProps = {
   onDateChanged: (year: number, month: number, date: number) => void;
 };
 
-class DatePicker extends React.Component<DatePickerProps> {
+class DatePicker extends React.PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
   constructor(props: DatePickerProps) {
@@ -143,7 +143,7 @@ type TimePickerProps = {
   onTimeChanged: (hours: number, minutes: number, seconds: number) => void;
 };
 
-class TimePicker extends React.Component<TimePickerProps> {
+class TimePicker extends React.PureComponent<TimePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -184,7 +184,6 @@ class TimePicker extends React.Component<TimePickerProps> {
   }
 
   UNSAFE_componentWillReceiveProps(props: TimePickerProps) {
-    console.log("will receive", props.hours);
     if (
       !(
         this.props.hours === props.hours &&

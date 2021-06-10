@@ -1,8 +1,8 @@
 import moment from "moment-timezone";
 
 // TODO: Remove, these are only for easier debugging
-window.userTimeZone = "America/Los_Angeles"; // GMT-7
 window.serverTimeZone = "Asia/Tokyo"; // GMT+9
+window.userTimeZone = "America/Los_Angeles"; // GMT-7
 
 declare global {
   interface Window {
@@ -13,42 +13,44 @@ declare global {
   }
 }
 
-if (!window.userTimeZone) {
-  Loggerhead.error("User time zone not set, defaulting to UTC");
-}
+const serverTimeZone = window.serverTimeZone || "UTC";
 if (!window.serverTimeZone) {
   Loggerhead.error("Server time zone not set, defaulting to UTC");
 }
 
-const userTimeZone = window.userTimeZone || "UTC";
+const userTimeZone = window.userTimeZone || serverTimeZone;
+if (!window.userTimeZone) {
+  Loggerhead.error(`User time zone not set, defaulting to server time zone (${serverTimeZone})`);
+}
+
 // See https://momentjs.com/docs/#/displaying/
 const userDateFormat = window.userDateFormat || "YYYY-MM-DD";
 const userTimeFormat = window.userTimeFormat || "HH:mm";
-const serverTimeZone = window.serverTimeZone || "UTC";
 
 declare module "moment" {
   export interface Moment {
-    /** Get a localized date-time string in user's time zone, e.g. `"January 31, 2020 1:00 AM"` */
-    toUserDateTimeString(): string;
-    /** Get a localized date string in user's time zone, e.g. `"January 31, 2020"` */
-    toUserDateString(): string;
-    /** Get a localized time string in user's time zone, e.g. `"1:00 AM"` */
-    toUserTimeString(): string;
-    // TODO: Where and how do we need this?
-    // TODO: Move this to the prototype not the instance instead?
-    // TODO: Same coverage for server
+    /** Get a localized date-time string in the servers's time zone, e.g. `"January 31, 2020 1:00 AM"` */
     toServerDateTimeString(): string;
+    /** Get a localized date string in the server's time zone, e.g. `"January 31, 2020"` */
     toServerDateString(): string;
+    /** Get a localized time string in the server's time zone, e.g. `"1:00 AM"` */
     toServerTimeString(): string;
-    /** TODO: Check if redundant. Equal to .toISOString() */
+
+    /** Get a localized date-time string in the user's time zone, e.g. `"January 31, 2020 1:00 AM"` */
+    toUserDateTimeString(): string;
+    /** Get a localized date string in the user's time zone, e.g. `"January 31, 2020"` */
+    toUserDateString(): string;
+    /** Get a localized time string in the user's time zone, e.g. `"1:00 AM"` */
+    toUserTimeString(): string;
+
+    /** TODO: This is redundant, stringifying a moment already makes it an ISO string */
     toAPIValue(): string;
   }
 
-  /** Localized time zone string for the user, e.g. `"America/Los_Angeles"` */
-  const userTimeZone: string;
-  const userDateFormat: string;
-  const userTimeFormat: string;
+  /** The server's time zone, e.g. `"Asia/Tokyo"` or `"GMT+9"` depending on the configuration */
   const serverTimeZone: string;
+  /** The user's time zone, e.g. `"Asia/Tokyo"` or `"GMT+9"` depending on the configuration */
+  const userTimeZone: string;
 }
 
 // TODO: What else do we need here?
