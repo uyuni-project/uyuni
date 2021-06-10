@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-09 17:57+0000\n"
+"PO-Revision-Date: 2021-06-10 18:58+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1541,7 +1541,7 @@ msgstr "neznámy typ súboru "
 
 #: ../src/spacecmd/cryptokey.py:44
 msgid "cryptokey_create: Create a cryptographic key"
-msgstr "cryptokey_create: Vytvoriť kryptografický kľúč"
+msgstr "cryptokey_create: Vytvoriť šifrovací kľúč"
 
 #: ../src/spacecmd/cryptokey.py:45
 msgid ""
@@ -1585,7 +1585,7 @@ msgstr "Neplatný typ kľúča"
 
 #: ../src/spacecmd/cryptokey.py:115
 msgid "cryptokey_delete: Delete a cryptographic key"
-msgstr "cryptokey_delete: Vymazať kryptografický kľúč"
+msgstr "cryptokey_delete: Vymazať šifrovací kľúč"
 
 #: ../src/spacecmd/cryptokey.py:116
 msgid "usage: cryptokey_delete NAME"
@@ -1597,8 +1597,7 @@ msgstr "Vymazať kľúč(e) [a/N]:"
 
 #: ../src/spacecmd/cryptokey.py:157
 msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
-msgstr ""
-"cryptokey_list: Vypísať zoznam všetkých kryptografických kľúčov (SSL, GPG)"
+msgstr "cryptokey_list: Vypísať zoznam všetkých šifrovacích kľúčov (SSL, GPG)"
 
 #: ../src/spacecmd/cryptokey.py:158
 msgid "usage: cryptokey_list"
@@ -1606,7 +1605,7 @@ msgstr "použitie: cryptokey_list"
 
 #: ../src/spacecmd/cryptokey.py:175
 msgid "cryptokey_details: Show the contents of a cryptographic key"
-msgstr "cryptokey_details: Zobraziť obsah kryptografického kľúča"
+msgstr "cryptokey_details: Zobraziť obsah šifrovacieho kľúča"
 
 #: ../src/spacecmd/cryptokey.py:176
 msgid "usage: cryptokey_details KEY ..."
@@ -1615,7 +1614,7 @@ msgstr "použitie: cryptokey_details KĽÚČ ..."
 #: ../src/spacecmd/cryptokey.py:208
 #, python-format
 msgid "%s is not a valid crypto key"
-msgstr "%s nie je platný krypto kľúč"
+msgstr "%s nie je platný šifrovací kľúč"
 
 #: ../src/spacecmd/custominfo.py:40
 msgid "custominfo_createkey: Create a custom key"
@@ -2561,7 +2560,7 @@ msgstr "Softvér"
 
 #: ../src/spacecmd/kickstart.py:469
 msgid "Crypto Keys"
-msgstr "Krypto kľúče"
+msgstr "Šifrovacie kľúče"
 
 #: ../src/spacecmd/kickstart.py:476
 msgid "File Preservations"
@@ -2614,8 +2613,8 @@ msgid ""
 "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
 "profile"
 msgstr ""
-"kickstart_listcryptokeys: Vypíše zoznam krypto kľúčov spojených s profilom "
-"Kickstart"
+"kickstart_listcryptokeys: Vypíše zoznam šifrovacích kľúčov spojených s "
+"profilom Kickstart"
 
 #: ../src/spacecmd/kickstart.py:605
 msgid "usage: kickstart_listcryptokeys PROFILE"
@@ -2623,23 +2622,24 @@ msgstr "použitie: kickstart_listcryptokeys PROFIL"
 
 #: ../src/spacecmd/kickstart.py:634
 msgid "No crypto keys has been found"
-msgstr "Neboli nájdené žiadne krypto kľúče"
+msgstr "Neboli nájdené žiadne šifrovacie kľúče"
 
 #: ../src/spacecmd/kickstart.py:640
 msgid "kickstart_addcryptokeys: Add crypto keys to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addcryptokeys: Pridať šifrovacie kľúče do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:641
 msgid "usage: kickstart_addcryptokeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_addcryptokeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:667
 msgid "kickstart_removecryptokeys: Remove crypto keys from a Kickstart profile"
 msgstr ""
+"kickstart_removecryptokeys: Odstrániť šifrovacie kľúče z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:669
 msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removecryptokeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:709
 msgid ""
@@ -2651,7 +2651,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:711
 msgid "usage: kickstart_listactivationkeys PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listactivationkeys PROFIL"
 
 #: ../src/spacecmd/kickstart.py:741
 msgid "kickstart_addactivationkeys: Add activation keys to a Kickstart profile"
@@ -2660,7 +2660,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:743
 msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_addactivationkeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:772
 msgid ""
@@ -2671,11 +2671,11 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:774
 msgid "usage: kickstart_removeactivationkeys PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removeactivationkeys PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:798
 msgid "Remove these keys [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto kľúče [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:813
 msgid ""
@@ -2687,7 +2687,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:815
 msgid "usage: kickstart_enableconfigmanagement PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enableconfigmanagement PROFIL"
 
 #: ../src/spacecmd/kickstart.py:846
 msgid ""
@@ -2699,7 +2699,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:848
 msgid "usage: kickstart_disableconfigmanagement PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_disableconfigmanagement PROFIL"
 
 #: ../src/spacecmd/kickstart.py:879
 msgid ""
