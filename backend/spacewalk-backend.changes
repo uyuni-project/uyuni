@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 10 13:04:14 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.38-1
 - Maintainer field in debian packages are only recommended (bsc#1186508)
 - switch to www group for satellite logs (bsc#1185097)
 
