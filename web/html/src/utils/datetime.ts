@@ -147,7 +147,7 @@ function localizedMomentConstructor(input?: moment.MomentInput) {
     typeof input === "string" ? moment.utc(input, allowedFormats, true).tz("UTC") : moment.utc(input, true).tz("UTC");
 
   if (!utcMoment.isValid()) {
-    throw new RangeError("Invalid localized moment on input " + input);
+    throw new RangeError("Invalid localized moment on input " + JSON.stringify(input));
   }
 
   return utcMoment;
