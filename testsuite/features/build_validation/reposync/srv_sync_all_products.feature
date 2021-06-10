@@ -44,6 +44,15 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
 
+  Scenario: Add SUSE Linux Enterprise Server 12 SP5
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 12 SP5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
+
   Scenario: Add SUSE Linux Enterprise Server 15
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text

@@ -76,11 +76,11 @@ if $build_validation
   $sle15sp3_buildhost = twopence_init("ssh:#{ENV['SLE15SP3_BUILDHOST']}") if ENV['SLE15SP3_BUILDHOST']
   $sle15sp3_terminal = twopence_init("ssh:#{ENV['SLE15SP3_TERMINAL']}") if ENV['SLE15SP3_TERMINAL']
   # As we share core features for all the environments, we share also those vm twopence objects
-  $client = $sle12sp4_client
-  $minion = $sle12sp4_minion
-  $ssh_minion = $sle12sp4_ssh_minion
-  $ceos_minion = $ceos7_ssh_minion
-  $ubuntu_minion = $ubuntu1804_minion
+  $client = $sle12sp5_client
+  $minion = $sle12sp5_minion
+  $ssh_minion = $sle12sp5_ssh_minion
+  $ceos_minion = $ceos8_ssh_minion
+  $ubuntu_minion = $ubuntu2004_minion
   $nodes += [$sle11sp4_client, $sle11sp4_minion, $sle11sp4_ssh_minion,
              $sle12sp4_client, $sle12sp4_minion, $sle12sp4_ssh_minion,
              $sle12sp5_client, $sle12sp5_minion, $sle12sp5_ssh_minion,
