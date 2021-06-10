@@ -252,7 +252,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       timeOpen: false,
       hideDate: props.hideDatePicker || false,
       hideTime: props.hideTimePicker || false,
-      timeZone: localizedMoment.serverTimeZone,
+      // Use the user's configured time zone by default
+      timeZone: localizedMoment.userTimeZone,
     };
   }
 

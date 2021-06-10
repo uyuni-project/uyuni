@@ -1,8 +1,8 @@
 import moment from "moment-timezone";
 
 // TODO: Remove, these are only for easier debugging
-// window.serverTimeZone = "Asia/Tokyo"; // GMT+9
-// window.userTimeZone = "America/Los_Angeles"; // GMT-7
+window.serverTimeZone = "Asia/Tokyo"; // GMT+9
+window.userTimeZone = "America/Los_Angeles"; // GMT-7
 
 declare global {
   interface Window {
@@ -29,18 +29,34 @@ const userTimeFormat = window.userTimeFormat || "HH:mm";
 
 declare module "moment" {
   export interface Moment {
-    /** Get a localized date-time string in the servers's time zone, e.g. `"January 31, 2020 1:00 AM"` */
+    /**
+     * Unless you specifically need the server time, please use the `toUser...` equivalent.
+     * Get a localized ISO string in the server's time zone, e.g. `"2020-01-31T13:00:00.000+09:00"`
+     */
+    toServerISOString(): string;
+    /**
+     * Unless you specifically need the server time, please use the `toUser...` equivalent.
+     * Get a localized date-time string in the servers's time zone, e.g. `"2020-01-31 13:00"`
+     */
     toServerDateTimeString(): string;
-    /** Get a localized date string in the server's time zone, e.g. `"January 31, 2020"` */
+    /**
+     * Unless you specifically need the server time, please use the `toUser...` equivalent.
+     * Get a localized date string in the server's time zone, e.g. `"2020-01-31"`
+     */
     toServerDateString(): string;
-    /** Get a localized time string in the server's time zone, e.g. `"1:00 AM"` */
+    /**
+     * Unless you specifically need the server time, please use the `toUser...` equivalent.
+     * Get a localized time string in the server's time zone, e.g. `"13:00"`
+     */
     toServerTimeString(): string;
 
-    /** Get a localized date-time string in the user's time zone, e.g. `"January 31, 2020 1:00 AM"` */
+    /** Get a localized ISO string in the user's time zone, e.g. `"2020-01-31T130:00:00.000+09:00"` */
+    toUserISOString(): string;
+    /** Get a localized date-time string in the user's time zone, e.g. `"2020-01-31 13:00"` */
     toUserDateTimeString(): string;
-    /** Get a localized date string in the user's time zone, e.g. `"January 31, 2020"` */
+    /** Get a localized date string in the user's time zone, e.g. `"2020-01-31"` */
     toUserDateString(): string;
-    /** Get a localized time string in the user's time zone, e.g. `"1:00 AM"` */
+    /** Get a localized time string in the user's time zone, e.g. `"13:00"` */
     toUserTimeString(): string;
 
     /** TODO: This is redundant, stringifying a moment already makes it an ISO string */
@@ -57,23 +73,10 @@ declare module "moment" {
 // TODO: Add descriptions
 // TODO: What's a good way to name these
 // TODO: Add tests that ensure the assigned props remain after using operations on it etc
-moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
-  // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
+moment.fn.toServerISOString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat}`);
-};
-
-moment.fn.toUserDateString = function(this: moment.Moment): string {
-  return moment(this)
-    .tz(userTimeZone)
-    .format(userDateFormat);
-};
-
-moment.fn.toUserTimeString = function(this: moment.Moment): string {
-  return moment(this)
-    .tz(userTimeZone)
-    .format(userTimeFormat);
+    .tz(localizedMoment.serverTimeZone)
+    .toISOString(true);
 };
 
 moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
@@ -94,7 +97,32 @@ moment.fn.toServerTimeString = function(this: moment.Moment): string {
     .format(userTimeFormat);
 };
 
-// TODO: Specify whether this should be a string, a Unix timestamp, or something else
+moment.fn.toUserISOString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(localizedMoment.userTimeZone)
+    .toISOString(true);
+};
+
+moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
+  // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
+  return moment(this)
+    .tz(userTimeZone)
+    .format(`${userDateFormat} ${userTimeFormat}`);
+};
+
+moment.fn.toUserDateString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(userTimeZone)
+    .format(userDateFormat);
+};
+
+moment.fn.toUserTimeString = function(this: moment.Moment): string {
+  return moment(this)
+    .tz(userTimeZone)
+    .format(userTimeFormat);
+};
+
+// TODO: This is obsolete
 moment.fn.toAPIValue = function(this: moment.Moment): string {
   return moment(this)
     .tz("UTC")
@@ -117,11 +145,10 @@ Object.defineProperties(moment, {
   serverTimeZone: {
     value: serverTimeZone,
     writable: false,
-  }
+  },
 });
 
-function localizedMoment(input?: moment.MomentInput) {
-  // TODO: Specify string formats, don't allow inputs without a timezone
+function localizedMomentConstructor(input?: moment.MomentInput) {
   const allowedFormats = [moment.ISO_8601];
   // We parse all inputs into UTC and only format them for output
   const utcMoment =
@@ -134,8 +161,8 @@ function localizedMoment(input?: moment.MomentInput) {
   return utcMoment;
 }
 
-const merged: typeof moment = Object.setPrototypeOf(localizedMoment, moment);
-export { merged as localizedMoment };
+const localizedMoment: typeof moment = Object.setPrototypeOf(localizedMomentConstructor, moment);
+export { localizedMoment };
 
 // TODO: Only for debugging
-(window as any).localizedMoment = merged;
+(window as any).localizedMoment = localizedMoment;

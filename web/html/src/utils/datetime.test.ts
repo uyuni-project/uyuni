@@ -1,8 +1,5 @@
 import { localizedMoment } from "./datetime";
 
-console.log(window.userTimeZone);
-console.log(window.serverTimeZone);
-
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
 
@@ -26,6 +23,22 @@ describe("localizedMoment", () => {
     expect(localizedMoment.isMoment(localizedMoment())).toEqual(true);
   });
 
+  test("keeps globals", () => {
+    expect(localizedMoment.serverTimeZone).toBeDefined();
+    expect(localizedMoment.userTimeZone).toBeDefined();
+  });
+
+  test("implements all custom methods", () => {
+    expect(localizedMoment().toServerISOString()).toBeDefined();
+    expect(localizedMoment().toServerDateTimeString()).toBeDefined();
+    expect(localizedMoment().toServerDateString()).toBeDefined();
+    expect(localizedMoment().toServerTimeString()).toBeDefined();
+    expect(localizedMoment().toUserISOString()).toBeDefined();
+    expect(localizedMoment().toUserDateTimeString()).toBeDefined();
+    expect(localizedMoment().toUserDateString()).toBeDefined();
+    expect(localizedMoment().toUserTimeString()).toBeDefined();
+  });
+
   test("correctly rolls between zones", () => {
     const original = localizedMoment(validISOString);
     // This is not how we usually consume this, but it is a valid use case which covers corner cases
@@ -40,7 +53,15 @@ describe("localizedMoment", () => {
     // Note the shifted date
     expect(zonedStringB).toEqual("2020-01-31T08:00:00.000+09:00");
 
-    expect(localizedMoment(zonedStringB).toISOString()).toEqual(validISOString);
+    expect(localizedMoment(zonedStringB).toISOString(false)).toEqual(validISOString);
+  });
+
+  test("server ISO string keeps offset", () => {
+    expect(localizedMoment().toServerISOString()).toContain("+09:00");
+  });
+
+  test("user ISO string keeps offset", () => {
+    expect(localizedMoment().toUserISOString()).toContain("-07:00");
   });
 
   // TODO: What format do we expect to output here?
