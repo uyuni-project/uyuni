@@ -56,11 +56,11 @@ describe("localizedMoment", () => {
     expect(localizedMoment(zonedStringB).toISOString(false)).toEqual(validISOString);
   });
 
-  test("server ISO string keeps offset", () => {
+  test("full server string keeps offset", () => {
     expect(localizedMoment().toServerString()).toContain("Asia/Tokyo");
   });
 
-  test("user ISO string keeps offset", () => {
+  test("full user string keeps offset", () => {
     expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
   });
 
