@@ -3,7 +3,7 @@ import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Utils } from "utils/functions";
-import { DateTime } from "components/datetime";
+import { FromNow } from "components/datetime";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -99,7 +99,7 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
           columnKey="update"
           comparator={Utils.sortByDate}
           header={t("Updated")}
-          cell={row => <DateTime time={row.update} />}
+          cell={row => <FromNow time={row.update} />}
         />
       </Table>
     );

@@ -17,7 +17,7 @@ import { ImageViewOverview } from "./image-view-overview";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewRuntime } from "./image-view-runtime";
-import { DateTime } from "components/datetime";
+import { FromNow } from "components/datetime";
 import SpaRenderer from "core/spa/spa-renderer";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
@@ -662,7 +662,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             columnKey="modified"
             header={t("Last Modified")}
             comparator={Utils.sortByDate}
-            cell={row => <DateTime time={row.modified} />}
+            cell={row => <FromNow time={row.modified} />}
           />
           <Column
             width="10%"

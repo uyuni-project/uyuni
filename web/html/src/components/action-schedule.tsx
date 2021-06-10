@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DateTimePicker } from "./datetimepicker";
+import { DateTimePicker } from "components/datetime";
 import { Combobox } from "./combobox";
 import { ComboboxItem } from "./combobox";
 import Network from "utils/network";

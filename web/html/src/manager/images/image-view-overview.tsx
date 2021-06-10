@@ -1,6 +1,6 @@
 import * as React from "react";
 import { LinkButton, Button } from "components/buttons";
-import { DateTime } from "components/datetime";
+import { FromNow } from "components/datetime";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -130,7 +130,7 @@ function ActionStatus(props) {
             <tr>
               <td>{t("Picked Up")}:</td>
               <td>
-                <DateTime time={action.pickup_time} />
+                <FromNow time={action.pickup_time} />
               </td>
             </tr>
           )}
@@ -138,7 +138,7 @@ function ActionStatus(props) {
             <tr>
               <td>{t("Completed")}:</td>
               <td>
-                <DateTime time={action.completion_time} />
+                <FromNow time={action.completion_time} />
               </td>
             </tr>
           )}

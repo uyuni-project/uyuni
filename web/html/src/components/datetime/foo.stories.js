@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { DateTimePicker } from "./datetimepicker";
+import { DateTimePicker } from "./DatetimePicker";
 
 import * as moment from "moment";
 import { localizedMoment } from "utils";
