@@ -134,13 +134,6 @@ $nodes.each do |node|
   puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
 end
 
-# Initialize IP address or domain name
-$nodes.each do |node|
-  next if node.nil?
-
-  node.init_ip(node.full_hostname)
-end
-
 # This function is used to get one of the nodes based on its type
 def get_target(host)
   node = $node_by_host[host]
@@ -286,3 +279,66 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle12sp4_terminal'         => $sle12sp4_terminal,
                   'sle15sp3_buildhost'        => $sle15sp3_buildhost,
                   'sle15sp3_terminal'         => $sle15sp3_terminal }
+
+# This is the inverse of `node_by_host`.
+# For each node we choose as key the canonical host, i.e. we drop aliases.
+# For instance, we use 'ssh_minion` and ignore the alias 'ssh_spack_migrated_minion`.
+$host_by_node = {}
+$node_by_host.each do |host, node|
+  next if node.nil?
+
+  [host, node].each do |it|
+    raise ">>> Either host '#{host}' of node '#{node}' is empty.  Please check" if it == ''
+  end
+
+  ignored_hosts = %w[sle_ssh_tunnel_client sle_migrated_minion sle_spack_migrated_minion
+                     ssh_spack_migrated_minion sle_ssh_tunnel_minion
+                     ceos_ssh_minion ubuntu_ssh_minion]
+  next if ignored_hosts.include? host
+
+  $host_by_node[node] = host
+end
+
+# rubocop:disable Metrics/MethodLength
+def client_public_ip(host)
+  node = $node_by_host[host]
+  raise "Cannot resolve node for host '#{host}'" if node.nil?
+
+  # For each node that we support we must know which network interface uses (see the case below).
+  # Having the IP as an attribute is something useful for the clients.
+  # Let's not implement it for nodes where we are likely not need this feature (e.g. ctl).
+  not_implemented = [$localhost]
+  not_implemented.each do |it|
+    return 'NOT_IMPLEMENTED' if node == it
+  end
+
+  interface = case host
+              when /^sle/, /^ssh/, /^ceos/, /^debian/, 'server', 'proxy', 'build_host'
+                'eth0'
+              when /^ubuntu/
+                'ens3'
+              when 'kvm_server', 'xen_server'
+                'br0'
+              else
+                raise "Unknown net interface for #{host}"
+              end
+  output, code = node.run("ip address show dev #{interface} | grep 'inet '")
+  raise 'Cannot resolve public ip' unless code.zero?
+
+  output.split[1].split('/')[0]
+end
+# rubocop:enable Metrics/MethodLength
+
+# Initialize IP address or domain name
+$nodes.each do |node|
+  next if node.nil?
+  next if node.is_a?(String) && node.empty?
+
+  node.init_ip(node.full_hostname)
+
+  host = $host_by_node[node]
+  raise "Cannot resolve host for node: '#{node.hostname}'" if host.nil? || host == ''
+
+  ip = client_public_ip host
+  node.init_public_ip ip
+end

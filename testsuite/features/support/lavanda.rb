@@ -21,6 +21,10 @@ module LavandaBasic
     @in_ip = ip
   end
 
+  def init_public_ip(public_ip)
+    @in_public_ip = public_ip
+  end
+
   # getter functions, executed on testsuite
   def hostname
     raise 'empty hostname, something wrong' if @in_hostname.empty?
@@ -35,6 +39,11 @@ module LavandaBasic
   def ip
     raise 'empty ip, something wrong' if @in_ip.empty?
     @in_ip
+  end
+
+  def public_ip
+    raise 'empty public_ip, something wrong' if @in_public_ip.empty?
+    @in_public_ip
   end
 
   # run functions
