@@ -226,10 +226,8 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle_migrated_minion'       => $client,
                   'sle_ssh_tunnel_client'     => $client,
                   'sle_minion'                => $minion,
-                  'sle_spack_migrated_minion' => $minion,
                   'sle_ssh_tunnel_minion'     => $minion,
                   'ssh_minion'                => $ssh_minion,
-                  'ssh_spack_migrated_minion' => $ssh_minion,
                   'ceos_client'               => $ceos_minion,
                   'ceos_minion'               => $ceos_minion,
                   'ceos_ssh_minion'           => $ceos_minion,
@@ -281,7 +279,7 @@ $node_by_host = { 'localhost'                 => $localhost,
 
 # This is the inverse of `node_by_host`.
 # For each node we choose as key the canonical host, i.e. we drop aliases.
-# For instance, we use 'ssh_minion` and ignore the alias 'ssh_spack_migrated_minion`.
+# For instance, we use 'sle_minion` and ignore the alias 'sle_migrated_minion`.
 $host_by_node = {}
 $node_by_host.each do |host, node|
   next if node.nil?
@@ -290,8 +288,8 @@ $node_by_host.each do |host, node|
     raise ">>> Either host '#{host}' of node '#{node}' is empty.  Please check" if it == ''
   end
 
-  ignored_hosts = %w[sle_ssh_tunnel_client sle_migrated_minion sle_spack_migrated_minion
-                     ssh_spack_migrated_minion sle_ssh_tunnel_minion
+  ignored_hosts = %w[sle_ssh_tunnel_client sle_migrated_minion
+                     sle_ssh_tunnel_minion
                      ceos_ssh_minion ubuntu_ssh_minion]
   next if ignored_hosts.include? host
 

@@ -35,7 +35,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see "ssh_minion" hostname
 
   Scenario: Migrate this SSH minion to SLE 15 SP2
-    Given I am on the Systems overview page of this "ssh_spack_migrated_minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
@@ -48,7 +48,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Then I should see a "This system is scheduled to be migrated to" text
 
   Scenario: Check the migration is successful for this SSH minion
-    Given I am on the Systems overview page of this "ssh_spack_migrated_minion"
+    Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Events"
     And I follow "History"
     And I wait until event "Apply states" is completed
@@ -56,13 +56,13 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
-    And vendor change should be enabled for SP migration on "ssh_spack_migrated_minion"
+    And vendor change should be enabled for SP migration on "ssh_minion"
 
   Scenario: Install the latest Salt on this SSH minion
-    When I migrate the non-SUMA repositories on "ssh_spack_migrated_minion"
-    And I enable repositories before installing Salt on this "ssh_spack_migrated_minion"
-    And I install Salt packages from "ssh_spack_migrated_minion"
-    And I disable repositories after installing Salt on this "ssh_spack_migrated_minion"
+    When I migrate the non-SUMA repositories on "ssh_minion"
+    And I enable repositories before installing Salt on this "ssh_minion"
+    And I install Salt packages from "ssh_minion"
+    And I disable repositories after installing Salt on this "ssh_minion"
 
   Scenario: Subscribe the SSH-managed SLES minion to a base channel
     Given I am on the Systems overview page of this "ssh_minion"
