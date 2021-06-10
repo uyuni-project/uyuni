@@ -31,9 +31,9 @@ declare module "moment" {
   export interface Moment {
     /**
      * Unless you specifically need the server time, please use the `toUser...` equivalent.
-     * Get a localized ISO string in the server's time zone, e.g. `"2020-01-31T13:00:00.000+09:00"`
+     * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31T13:00:00.000+09:00"`
      */
-    toServerISOString(): string;
+    toServerString(): string;
     /**
      * Unless you specifically need the server time, please use the `toUser...` equivalent.
      * Get a localized date-time string in the servers's time zone, e.g. `"2020-01-31 13:00"`
@@ -50,8 +50,8 @@ declare module "moment" {
      */
     toServerTimeString(): string;
 
-    /** Get a localized ISO string in the user's time zone, e.g. `"2020-01-31T130:00:00.000+09:00"` */
-    toUserISOString(): string;
+    /** Get a localized date-time-zone string in the user's time zone, e.g. `"2020-01-31T130:00:00.000+09:00"` */
+    toUserString(): string;
     /** Get a localized date-time string in the user's time zone, e.g. `"2020-01-31 13:00"` */
     toUserDateTimeString(): string;
     /** Get a localized date string in the user's time zone, e.g. `"2020-01-31"` */
@@ -73,10 +73,10 @@ declare module "moment" {
 // TODO: Add descriptions
 // TODO: What's a good way to name these
 // TODO: Add tests that ensure the assigned props remain after using operations on it etc
-moment.fn.toServerISOString = function(this: moment.Moment): string {
+moment.fn.toServerString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(localizedMoment.serverTimeZone)
-    .toISOString(true);
+    .tz(serverTimeZone)
+    .format(`${userDateFormat} ${userTimeFormat} [${serverTimeZone}]`);
 };
 
 moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
@@ -97,10 +97,10 @@ moment.fn.toServerTimeString = function(this: moment.Moment): string {
     .format(userTimeFormat);
 };
 
-moment.fn.toUserISOString = function(this: moment.Moment): string {
+moment.fn.toUserString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(localizedMoment.userTimeZone)
-    .toISOString(true);
+    .tz(userTimeZone)
+    .format(`${userDateFormat} ${userTimeFormat} [${userTimeZone}]`);
 };
 
 moment.fn.toUserDateTimeString = function(this: moment.Moment): string {

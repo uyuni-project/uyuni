@@ -8,7 +8,7 @@ type Props = {
 // TODO: Rename FromNow or something similar
 const DateTime = (props: Props) => {
   const value = localizedMoment(props.time).tz(localizedMoment.userTimeZone);
-  return <span title={value.toUserISOString()}>{value.fromNow()}</span>;
+  return <span title={value.toUserString()}>{value.fromNow()}</span>;
 };
 
 export { DateTime };

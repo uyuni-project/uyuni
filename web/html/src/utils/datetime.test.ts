@@ -29,11 +29,11 @@ describe("localizedMoment", () => {
   });
 
   test("implements all custom methods", () => {
-    expect(localizedMoment().toServerISOString()).toBeDefined();
+    expect(localizedMoment().toServerString()).toBeDefined();
     expect(localizedMoment().toServerDateTimeString()).toBeDefined();
     expect(localizedMoment().toServerDateString()).toBeDefined();
     expect(localizedMoment().toServerTimeString()).toBeDefined();
-    expect(localizedMoment().toUserISOString()).toBeDefined();
+    expect(localizedMoment().toUserString()).toBeDefined();
     expect(localizedMoment().toUserDateTimeString()).toBeDefined();
     expect(localizedMoment().toUserDateString()).toBeDefined();
     expect(localizedMoment().toUserTimeString()).toBeDefined();
@@ -57,11 +57,11 @@ describe("localizedMoment", () => {
   });
 
   test("server ISO string keeps offset", () => {
-    expect(localizedMoment().toServerISOString()).toContain("+09:00");
+    expect(localizedMoment().toServerString()).toContain("Asia/Tokyo");
   });
 
   test("user ISO string keeps offset", () => {
-    expect(localizedMoment().toUserISOString()).toContain("-07:00");
+    expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
   });
 
   // TODO: What format do we expect to output here?
