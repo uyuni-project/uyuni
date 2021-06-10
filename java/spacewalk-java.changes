@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 10 13:46:09 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.22-1
 - Fix product migration when scheduled from the event page (bsc#1187066)
 
 -------------------------------------------------------------------
