@@ -542,6 +542,7 @@ public class SPMigrationAction extends RhnAction {
 
         request.setAttribute(BASE_CHANNEL, baseChannel);
         request.setAttribute(CHILD_CHANNELS, childChannels);
+        request.setAttribute(ALLOW_VENDOR_CHANGE, details.isAllowVendorChange());
 
         return CONFIRM;
     }
