@@ -18,4 +18,9 @@ module.exports = {
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],
   setupFiles: ["./utils/test-utils/setup.ts"],
+  globals: {
+    // These are simply sufficiently different so it's easy to check outputs
+    userTimeZone: "America/Los_Angeles", // GMT-7
+    serverTimeZone: "Asia/Tokyo", // GMT+9
+  },
 };

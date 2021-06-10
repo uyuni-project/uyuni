@@ -1,9 +1,7 @@
-// These are simply sufficiently different so it's easy to check outputs
-window.userTimeZone = "America/Los_Angeles"; // GMT-7
-window.serverTimeZone = "Asia/Tokyo"; // GMT+9
-
-// eslint-disable-next-line import/first
 import { localizedMoment } from "./datetime";
+
+console.log(window.userTimeZone);
+console.log(window.serverTimeZone);
 
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
@@ -32,12 +30,12 @@ describe("localizedMoment", () => {
     const original = localizedMoment(validISOString);
     // This is not how we usually consume this, but it is a valid use case which covers corner cases
     const zonedStringA = localizedMoment(original)
-      .tz(original.toUserTimeZoneString())
+      .tz(localizedMoment.userTimeZone)
       .toISOString(true);
     expect(zonedStringA).toEqual("2020-01-30T15:00:00.000-08:00");
 
     const zonedStringB = localizedMoment(zonedStringA)
-      .tz(original.toServerTimeZoneString())
+      .tz(localizedMoment.serverTimeZone)
       .toISOString(true);
     // Note the shifted date
     expect(zonedStringB).toEqual("2020-01-31T08:00:00.000+09:00");
