@@ -6,8 +6,8 @@ window.userTimeZone = "America/Los_Angeles"; // GMT-7
 
 declare global {
   interface Window {
-    userTimeZone?: string; // Mandatory, but try to recover if they're not present
-    userDateFormat?: string; // Mandatory, but try to recover if they're not present
+    userTimeZone?: string; // Mandatory, but try to recover if not present
+    userDateFormat?: string; // Mandatory, but try to recover if not present
     userTimeFormat?: string; // Fully optional
     serverTimeZone?: string; // Fully optional
   }
