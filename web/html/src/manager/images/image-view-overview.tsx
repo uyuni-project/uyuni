@@ -7,7 +7,6 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { PopUp } from "components/popup";
 import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
-import { Utils } from "utils/functions";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { localizedMoment } from "utils";
 
@@ -786,7 +785,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
           onChange={this.onChange.bind(this)}
           divClass="col-md-12"
         >
-          <InputDateTime name="earliest" required timezone={window.timezone} />
+          <InputDateTime name="earliest" required />
         </Form>
       </div>
     );
