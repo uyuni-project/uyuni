@@ -652,7 +652,8 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
             DistUpgradeActionDetails actionDetails = dupAction.getDetails();
-            if (actionDetails.isDryRun()) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED) || actionDetails.isDryRun()) {
+                // Collect changed channel list to revert the channel change
                 Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
                         .stream().collect(Collectors.partitioningBy(
                                 ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
@@ -670,20 +671,15 @@ public class SaltUtils {
                 MessageQueue.publish(
                         new ApplyStatesEventMessage(serverAction.getServerId(), false,
                                 ApplyStatesEventMessage.CHANNELS));
-                String message = parseDryRunMessage(jsonResult);
-                serverAction.setResultMsg(message);
             }
             else {
-                String message = parseMigrationMessage(jsonResult);
-                serverAction.setResultMsg(message);
-
                 // Make sure grains are updated after dist upgrade
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     MinionList minionTarget = new MinionList(minionServer.getMinionId());
                     saltApi.syncGrains(minionTarget);
                 });
             }
-
+            serverAction.setResultMsg(parseMigrationMessage(jsonResult, actionDetails.isDryRun()));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
             handleScapXccdfEval(serverAction, jsonResult, action);
@@ -902,7 +898,11 @@ public class SaltUtils {
         }
     }
 
-    private String parseMigrationMessage(JsonElement jsonResult) {
+    private String parseMigrationMessage(JsonElement jsonResult, boolean isDryRun) {
+        if (isDryRun) {
+            return parseDryRunMessage(jsonResult);
+        }
+
         try {
             DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                     jsonResult, DistUpgradeSlsResult.class);
