@@ -15,29 +15,29 @@ export const Example = () => {
   return (
     <div>
       <p>
-        user time zone: {value.toUserTimeZoneString()} (
+        user time zone: {localizedMoment.userTimeZone} (
         {localizedMoment(value)
-          .tz(value.toUserTimeZoneString())
+          .tz(localizedMoment.userTimeZone)
           .format("Z")}
         )
       </p>
       <p>
-        server time zone: {value.toServerTimeZoneString()} (
+        server time zone: {localizedMoment.serverTimeZone} (
         {localizedMoment(value)
-          .tz(value.toServerTimeZoneString())
+          .tz(localizedMoment.serverTimeZone)
           .format("Z")}
         )
       </p>
       <p>
         user time:
         {localizedMoment(value)
-          .tz(value.toUserTimeZoneString())
+          .tz(localizedMoment.userTimeZone)
           .toISOString(true)}
       </p>
       <p>
         server time:
         {localizedMoment(value)
-          .tz(value.toServerTimeZoneString())
+          .tz(localizedMoment.serverTimeZone)
           .toISOString(true)}
       </p>
       <p>iso time: {value.toISOString()}</p>

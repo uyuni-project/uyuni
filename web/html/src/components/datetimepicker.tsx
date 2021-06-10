@@ -184,6 +184,7 @@ class TimePicker extends React.Component<TimePickerProps> {
   }
 
   UNSAFE_componentWillReceiveProps(props: TimePickerProps) {
+    console.log("will receive", props.hours);
     if (
       !(
         this.props.hours === props.hours &&
@@ -191,7 +192,7 @@ class TimePicker extends React.Component<TimePickerProps> {
         this.props.seconds === props.seconds
       )
     ) {
-      this._input?.timepicker("setTime", this.toFauxBrowserDate(this.props));
+      this._input?.timepicker("setTime", this.toFauxBrowserDate(props));
     }
     this.setVisible(props.open);
   }
@@ -252,33 +253,45 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       timeOpen: false,
       hideDate: props.hideDatePicker || false,
       hideTime: props.hideTimePicker || false,
-      timeZone: localizedMoment().toServerTimeZoneString(),
+      timeZone: localizedMoment.serverTimeZone,
     };
   }
 
-  onToggleDate(open) {
+  onToggleDate = open => {
     this.setState({
       dateOpen: open,
     });
-  }
+  };
 
-  onToggleTime(open) {
+  onToggleTime = open => {
     this.setState({
       timeOpen: open,
     });
-  }
+  };
 
-  toggleDatepicker() {
+  toggleDatepicker = () => {
     this.setState({
       dateOpen: !this.state.dateOpen,
     });
-  }
+  };
 
-  toggleTimepicker() {
+  toggleTimepicker = () => {
     this.setState({
       timeOpen: !this.state.timeOpen,
     });
-  }
+  };
+
+  toggleTimeZone = () => {
+    if (localizedMoment.serverTimeZone === localizedMoment.userTimeZone) {
+      return;
+    }
+    this.setState({
+      timeZone:
+        this.state.timeZone === localizedMoment.serverTimeZone
+          ? localizedMoment.userTimeZone
+          : localizedMoment.serverTimeZone,
+    });
+  };
 
   onDateChanged = (year: number, month: number, day: number) => {
     const newValue = localizedMoment(this.props.value)
@@ -287,7 +300,6 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       .year(year)
       .month(month)
       .date(day);
-    console.log("onDateChanged", newValue.toISOString(), newValue.toUserDateString());
     if (this.props.value.valueOf() !== newValue.valueOf()) {
       // Always propagate a standard UTC state
       this.props.onChange(localizedMoment(newValue));
@@ -302,14 +314,6 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       .minutes(minutes)
       .seconds(seconds)
       .milliseconds(0);
-    console.log(
-      "onTimeChanged",
-      this.props.value.valueOf(),
-      newValue.valueOf(),
-      ":::",
-      this.props.value.toISOString(),
-      newValue.toISOString()
-    );
     if (this.props.value.valueOf() !== newValue.valueOf()) {
       // Always propagate a standard UTC state
       this.props.onChange(localizedMoment(newValue));
@@ -317,9 +321,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
   };
 
   render() {
-    const timeZone = this.props.value.toServerTimeZoneString();
     // Make a copy so we don't modify the passed prop
-    const zonedMoment = localizedMoment(this.props.value).tz(timeZone);
+    const zonedMoment = localizedMoment(this.props.value).tz(this.state.timeZone);
     const year = zonedMoment.year();
     const month = zonedMoment.month();
     const date = zonedMoment.date();
@@ -329,18 +332,13 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
     return (
       <div className="input-group">
         {!this.state.hideDate && [
-          <span
-            className="input-group-addon"
-            data-picker-type="date"
-            onClick={this.toggleDatepicker.bind(this)}
-            key="calendar"
-          >
+          <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker} key="calendar">
             &nbsp;<i className="fa fa-calendar"></i>
           </span>,
           <DatePicker
             id={this.props.id ? this.props.id + "_date" : undefined}
             onDateChanged={this.onDateChanged}
-            onToggle={this.onToggleDate.bind(this)}
+            onToggle={this.onToggleDate}
             open={this.state.dateOpen}
             year={year}
             month={month}
@@ -349,25 +347,20 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
           />,
         ]}
         {!this.state.hideTime && [
-          <span
-            className="input-group-addon"
-            data-picker-type="time"
-            onClick={this.toggleTimepicker.bind(this)}
-            key="clock"
-          >
+          <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker} key="clock">
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>,
           <TimePicker
             id={this.props.id ? this.props.id + "_time" : undefined}
             onTimeChanged={this.onTimeChanged}
-            onToggle={this.onToggleTime.bind(this)}
+            onToggle={this.onToggleTime}
             open={this.state.timeOpen}
             hours={hours}
             minutes={minutes}
             seconds={seconds}
             key="time-picker"
           />,
-          <span className="input-group-addon" key="tz">
+          <span className="input-group-addon" key="tz" onClick={this.toggleTimeZone}>
             {this.state.timeZone}
           </span>,
         ]}

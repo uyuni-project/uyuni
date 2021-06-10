@@ -36,17 +36,15 @@ declare module "moment" {
     toUserTimeString(): string;
     // TODO: Where and how do we need this?
     // TODO: Move this to the prototype not the instance instead?
-    /** Get a localized time zone string for the user, e.g. `"America/Los_Angeles"` */
-    toUserTimeZoneString(): string;
     // TODO: Same coverage for server
     toServerDateTimeString(): string;
     toServerDateString(): string;
     toServerTimeString(): string;
-    toServerTimeZoneString(): string;
     /** TODO: Check if redundant. Equal to .toISOString() */
     toAPIValue(): string;
   }
-  // TODO: Remove above methods in favor of these
+
+  /** Localized time zone string for the user, e.g. `"America/Los_Angeles"` */
   const userTimeZone: string;
   const userDateFormat: string;
   const userTimeFormat: string;
@@ -76,10 +74,6 @@ moment.fn.toUserTimeString = function(this: moment.Moment): string {
     .format(userTimeFormat);
 };
 
-moment.fn.toUserTimeZoneString = function(this: moment.Moment) {
-  return userTimeZone;
-};
-
 moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
   return moment(this)
     .tz(serverTimeZone)
@@ -96,10 +90,6 @@ moment.fn.toServerTimeString = function(this: moment.Moment): string {
   return moment(this)
     .tz(serverTimeZone)
     .format(userTimeFormat);
-};
-
-moment.fn.toServerTimeZoneString = function(this: moment.Moment) {
-  return serverTimeZone;
 };
 
 // TODO: Specify whether this should be a string, a Unix timestamp, or something else
