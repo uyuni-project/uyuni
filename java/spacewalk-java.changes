@@ -1,3 +1,5 @@
+- Fix product migration when scheduled from the event page (bsc#1187066)
+
 -------------------------------------------------------------------
 Wed Jun 09 10:19:43 CEST 2021 - jgonzalez@suse.com
 
