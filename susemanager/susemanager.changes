@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 10 13:06:17 CEST 2021 - jgonzalez@suse.com
+
+- version 4.0.34-1
 - add python3-pycryptodome to Ubuntu 18 and 20 bootstrap repos (bsc#1186346)
 - Require gio-branding-SLE for SLE15 but not for openSUSE Leap 15
 - Add python3-distro to RES8, SLE15 and Ubuntu20.04 bootstrap
