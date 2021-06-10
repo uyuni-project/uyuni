@@ -134,14 +134,6 @@ Object.defineProperties(moment, {
     value: userTimeZone,
     writable: false,
   },
-  userDateFormat: {
-    value: userDateFormat,
-    writable: false,
-  },
-  userTimeFormat: {
-    value: userTimeFormat,
-    writable: false,
-  },
   serverTimeZone: {
     value: serverTimeZone,
     writable: false,

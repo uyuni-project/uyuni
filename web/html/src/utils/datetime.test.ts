@@ -28,6 +28,11 @@ describe("localizedMoment", () => {
     expect(localizedMoment.userTimeZone).toBeDefined();
   });
 
+  test("doesn't expose internals", () => {
+    expect((localizedMoment as any).userDateFormat).not.toBeDefined();
+    expect((localizedMoment as any).userTimeFormat).not.toBeDefined();
+  });
+
   test("implements all custom methods", () => {
     expect(localizedMoment().toServerString()).toBeDefined();
     expect(localizedMoment().toServerDateTimeString()).toBeDefined();
@@ -63,12 +68,4 @@ describe("localizedMoment", () => {
   test("full user string keeps offset", () => {
     expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
   });
-
-  // TODO: What format do we expect to output here?
-  /*
-  test("toUserDisplayString", () => {
-    const result = localizedMoment(validISOString);
-    console.log(result.toUserDisplayString());
-  });
-  */
 });
