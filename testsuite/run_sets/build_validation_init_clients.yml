@@ -14,6 +14,9 @@
 - features/build_validation/init_clients/sle12sp4_minion.feature
 - features/build_validation/init_clients/sle12sp4_ssh_minion.feature
 - features/build_validation/init_clients/sle12sp4_client.feature
+- features/build_validation/init_clients/sle12sp4_minion.feature
+- features/build_validation/init_clients/sle12sp4_ssh_minion.feature
+- features/build_validation/init_clients/sle12sp4_client.feature
 - features/build_validation/init_clients/sle15_minion.feature
 - features/build_validation/init_clients/sle15_ssh_minion.feature
 - features/build_validation/init_clients/sle15_client.feature
