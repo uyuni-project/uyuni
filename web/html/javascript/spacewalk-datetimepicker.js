@@ -7,6 +7,7 @@ function setupDatePicker() {
   // date picker is setup using data attributes
   jQuery('input[data-provide="date-picker"]').each(function() {
     var input = jQuery(this);
+    // console.log('bound date picker to', input.get(0));
     input.datepicker();
     var name = input.data('picker-name');
     jQuery('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="date"]').on("click", function() {
@@ -39,6 +40,7 @@ function setupDatePicker() {
 
   jQuery('input[data-provide="time-picker"]').each(function() {
     var input = jQuery(this);
+    // console.log('bound time picker to', input.get(0));
     var name = input.data('picker-name');
 
     // initialize the time picker

@@ -364,6 +364,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             {this.state.timeZone}
           </span>,
         ]}
+        {/** This is solely for `manager/legacy/DatetimePicker.tsx` */}
+        {this.props.children}
       </div>
     );
   }

@@ -9,6 +9,7 @@ import "react-hot-loader";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import "core/spa/spa-engine";
+import "./legacy";
 
 import Admin from "./admin";
 import Audit from "./audit";
