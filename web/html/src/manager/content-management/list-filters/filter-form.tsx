@@ -4,11 +4,10 @@ import { Text, DateTime, Radio, Select, Form } from "components/input";
 import AppStreamsForm from "./appstreams/appstreams";
 import { FilterFormType } from "../shared/type/filter.type";
 import { clmFilterOptions, findClmFilterByKey, getClmFiltersOptions } from "../shared/business/filters.enum";
-import useUserLocalization from "core/user-localization/use-user-localization";
-import { Utils } from "utils/functions";
 import produce from "utils/produce";
 
 import TemplatesForm from "./templates";
+import { localizedMoment } from "utils";
 
 enum FilterBy {
   Type = "Type",
@@ -24,7 +23,6 @@ export type Props = {
 };
 
 const FilterForm = (props: Props) => {
-  const { timezone, localTime } = useUserLocalization();
   const [filterBy, setFilterBy] = useState(FilterBy.Type);
 
   // If the filter type changes, resets the matcher filter
@@ -43,7 +41,7 @@ const FilterForm = (props: Props) => {
             draft[clmFilterOptions.ADVISORY_TYPE.key] = "Security Advisory";
           }
           if (clmFilterOptions.ISSUE_DATE.key === filter.type) {
-            draft[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(localTime || "");
+            draft[clmFilterOptions.ISSUE_DATE.key] = localizedMoment();
           }
         })
       );

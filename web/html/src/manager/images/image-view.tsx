@@ -313,10 +313,10 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
       .catch(this.handleResponseError);
   }
 
-  inspectImage(id, earliest) {
+  inspectImage(id: unknown, earliest: moment.Moment) {
     return Network.post(
       "/rhn/manager/api/cm/images/inspect/" + id,
-      JSON.stringify({ imageId: id, earliest: earliest }),
+      JSON.stringify({ imageId: id, earliest: earliest.toAPIValue() }),
       "application/json"
     )
       .promise.then(() => {
@@ -741,7 +741,7 @@ type ImageViewDetailsProps = {
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
   onBuild?: (...args: any[]) => any;
-  onInspect: (...args: any[]) => any;
+  onInspect?: (id: string, earliest: moment.Moment) => void;
   onTabChange?: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
   onCancel: (...args: any[]) => any;

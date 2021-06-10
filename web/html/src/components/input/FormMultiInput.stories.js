@@ -45,7 +45,7 @@ export const MultipleFields = () => {
         panelTitle={index => model[`user${index}_lastname`] || 'New user'}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_firstname`}
@@ -111,7 +111,7 @@ export const SingleField = () => {
         disabled={false}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_login`}
@@ -168,7 +168,7 @@ export const CustomFieldsWithModal = () => {
         disabled={false}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <div>{ model[`user${index}_login`]}</div>
             </>
@@ -228,7 +228,7 @@ export const TableFields = () => {
         rowClass="multi-input-table-row"
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_firstname`}

@@ -3,13 +3,19 @@ import { localizedMoment } from "utils";
 import Network from "utils/network";
 
 type MatcherRunPanelProps = {
-  initialLatestStart?: any;
-  initialLatestEnd?: any;
+  initialLatestStart?: moment.Moment | null;
+  initialLatestEnd?: moment.Moment | null;
   dataAvailable?: boolean;
   onMatcherRunSchedule: (...args: any[]) => any;
 };
 
-class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
+type MatcherRunPanelState = {
+  latestStart?: moment.Moment | null;
+  latestEnd?: moment.Moment | null;
+  error: boolean;
+}
+
+class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPanelState> {
   state = {
     latestStart: this.props.initialLatestStart,
     latestEnd: this.props.initialLatestEnd,
@@ -28,7 +34,7 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
 
   onScheduled = () => {
     this.setState({
-      latestStart: new Date().toJSON(),
+      latestStart: localizedMoment(),
       latestEnd: null,
       error: false,
     });
@@ -67,8 +73,8 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps> {
 
 type MatcherRunDescriptionProps = {
   error?: any;
-  latestStart?: any;
-  latestEnd?: any;
+  latestStart?: moment.Moment | null;
+  latestEnd?: moment.Moment | null;
 }
 
 const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
@@ -95,7 +101,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.latestEnd == null) {
     return (
       <div>
-        {t("Matching data is currently being recomputed, it was started {0}.", localizedMoment(props.latestStart).fromNow())}
+        {t("Matching data is currently being recomputed, it was started {0}.", props.latestStart.fromNow())}
       </div>
     );
   }
@@ -104,7 +110,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     <div>
       {t(
         "Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.",
-        localizedMoment(props.latestEnd).fromNow()
+        props.latestEnd.fromNow()
       )}
     </div>
   );

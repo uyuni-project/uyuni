@@ -1,8 +1,8 @@
 import moment from "moment-timezone";
 
 // TODO: Remove, these are only for easier debugging
-window.userTimeZone = "America/Los_Angeles";
-window.serverTimeZone = "Asia/Tokyo";
+window.userTimeZone = "America/Los_Angeles"; // GMT-7
+window.serverTimeZone = "Asia/Tokyo"; // GMT+9
 
 declare global {
   interface Window {
@@ -21,9 +21,9 @@ if (!window.serverTimeZone) {
 }
 
 const userTimeZone = window.userTimeZone || "UTC";
-// See "Localized formats" in https://momentjs.com/docs/#/displaying/
-const userDateFormat = window.userDateFormat || "LL";
-const userTimeFormat = window.userTimeFormat || "LT";
+// See https://momentjs.com/docs/#/displaying/
+const userDateFormat = window.userDateFormat || "YYYY-MM-DD";
+const userTimeFormat = window.userTimeFormat || "HH:mm";
 const serverTimeZone = window.serverTimeZone || "UTC";
 
 declare module "moment" {
@@ -35,6 +35,7 @@ declare module "moment" {
     /** Get a localized time string in user's time zone, e.g. `"1:00 AM"` */
     toUserTimeString(): string;
     // TODO: Where and how do we need this?
+    // TODO: Move this to the prototype not the instance instead?
     /** Get a localized time zone string for the user, e.g. `"America/Los_Angeles"` */
     toUserTimeZoneString(): string;
     // TODO: Same coverage for server
@@ -42,8 +43,14 @@ declare module "moment" {
     toServerDateString(): string;
     toServerTimeString(): string;
     toServerTimeZoneString(): string;
+    /** TODO: Check if redundant. Equal to .toISOString() */
     toAPIValue(): string;
   }
+  // TODO: Remove above methods in favor of these
+  const userTimeZone: string;
+  const userDateFormat: string;
+  const userTimeFormat: string;
+  const serverTimeZone: string;
 }
 
 // TODO: What else do we need here?
@@ -102,17 +109,34 @@ moment.fn.toAPIValue = function(this: moment.Moment): string {
     .toISOString(false);
 };
 
+Object.defineProperties(moment, {
+  userTimeZone: {
+    value: userTimeZone,
+    writable: false,
+  },
+  userDateFormat: {
+    value: userDateFormat,
+    writable: false,
+  },
+  userTimeFormat: {
+    value: userTimeFormat,
+    writable: false,
+  },
+  serverTimeZone: {
+    value: serverTimeZone,
+    writable: false,
+  }
+});
+
 function localizedMoment(input?: moment.MomentInput) {
   // TODO: Specify string formats, don't allow inputs without a timezone
   const allowedFormats = [moment.ISO_8601];
+  // We parse all inputs into UTC and only format them for output
   const utcMoment =
-    typeof input === "string"
-      ? // We parse all inputs into UTC and only format them for output
-        moment.utc(input, allowedFormats, true).tz("UTC")
-      : moment.utc(input, true).tz("UTC");
+    typeof input === "string" ? moment.utc(input, allowedFormats, true).tz("UTC") : moment.utc(input, true).tz("UTC");
 
   if (!utcMoment.isValid()) {
-    throw new RangeError("Invalid localized moment");
+    throw new RangeError("Invalid localized moment on input " + input);
   }
 
   return utcMoment;
@@ -120,3 +144,6 @@ function localizedMoment(input?: moment.MomentInput) {
 
 const merged: typeof moment = Object.setPrototypeOf(localizedMoment, moment);
 export { merged as localizedMoment };
+
+// TODO: Only for debugging
+(window as any).localizedMoment = merged;

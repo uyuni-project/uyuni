@@ -9,6 +9,7 @@ import { Form } from "components/input/Form";
 import { DateTime as InputDateTime } from "components/input/DateTime";
 import { Utils } from "utils/functions";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+import { localizedMoment } from "utils";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
@@ -451,7 +452,7 @@ type ImageViewOverviewProps = {
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
   onBuild?: (...args: any[]) => any;
-  onInspect?: (...args: any[]) => any;
+  onInspect?: (id: string, earliest: moment.Moment) => void;
   onDelete?: (...args: any[]) => any;
 };
 
@@ -648,7 +649,9 @@ type BuildDialogProps = {
 }
 
 type BuildDialogState = {
-  model: any;
+  model: {
+    earliest: moment.Moment,
+  };
 };
 
 class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
@@ -656,7 +659,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
     super(props);
     this.state = {
       model: {
-        earliest: Utils.dateWithTimezone(window.localTime),
+        earliest: localizedMoment(),
       },
     };
   }
@@ -710,7 +713,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
           onChange={this.onChange.bind(this)}
           divClass="col-md-12"
         >
-          <InputDateTime name="earliest" required timezone={window.timezone} />
+          <InputDateTime name="earliest" required  />
         </Form>
       </div>
     );
@@ -721,11 +724,13 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
 
 type InspectDialogProps = {
   data: any;
-  onInspect?: (...args: any[]) => any;
+  onInspect?: (id: string, earliest: moment.Moment) => void;
 };
 
 type InspectDialogState = {
-  model: any;
+  model: {
+    earliest: moment.Moment,
+  };
 };
 
 class InspectDialog extends React.Component<InspectDialogProps, InspectDialogState> {
@@ -733,7 +738,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
     super(props);
     this.state = {
       model: {
-        earliest: Utils.dateWithTimezone(window.localTime),
+        earliest: localizedMoment(),
       },
     };
   }

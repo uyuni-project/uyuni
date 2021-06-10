@@ -18,8 +18,9 @@ export function DateTime(props: Props) {
           setValue(props.name, value);
         };
         const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || undefined;
-        // TODO: Check what's reasonable here
-        if (fieldValue) {
+        // TODO: Double-check what's reasonable here
+        const isValid = fieldValue?.isValid?.() ?? true;
+        if (fieldValue && isValid) {
           return <DateTimePicker onChange={onChange} value={localizedMoment(fieldValue)} />;
         } else {
           return null;
@@ -30,7 +31,6 @@ export function DateTime(props: Props) {
 }
 
 DateTime.defaultProps = {
-  timezone: undefined,
   defaultValue: undefined,
   label: undefined,
   hint: undefined,

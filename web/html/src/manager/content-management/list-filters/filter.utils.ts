@@ -1,7 +1,6 @@
 import _isEmpty from "lodash/isEmpty";
 import { clmFilterOptions, findClmFilterByKey } from "../shared/business/filters.enum";
 import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
-import { Utils } from "utils/functions";
 import { localizedMoment } from "utils";
 
 export function mapFilterFormToRequest(
@@ -84,7 +83,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     // Custom filters mappers for complex filter forms
     // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
     if (filterResponse.criteriaKey === clmFilterOptions.ISSUE_DATE.key) {
-      filterForm[clmFilterOptions.ISSUE_DATE.key] = Utils.dateWithTimezone(filterResponse.criteriaValue);
+      filterForm[clmFilterOptions.ISSUE_DATE.key] = localizedMoment(filterResponse.criteriaValue);
     } else if (filterResponse.criteriaKey === "nevr") {
       // NEVR filter is mapped into NEVRA in the UI
       filterForm.type = clmFilterOptions.NEVRA.key;
