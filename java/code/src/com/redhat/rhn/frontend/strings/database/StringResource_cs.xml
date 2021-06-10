@@ -2606,140 +2606,140 @@
       </trans-unit>
       <trans-unit id="metrics.Redo buffer allocation retry rate" xml:space="preserve">
         <source>Redo buffer allocation retry rate</source>
-        <target/>
+        <target>Četnost opakovaných pokusů získat buffer pro opakované akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Redo log space request rate" xml:space="preserve">
         <source>Redo log space request rate</source>
-        <target/>
+        <target>Četnost požadavků na prostor pro žurnál opakovaných akcí</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Reload rate" xml:space="preserve">
         <source>Reload rate</source>
-        <target/>
+        <target>Rychlost opětovného zavádění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Request rate" xml:space="preserve">
         <source>Request rate</source>
-        <target/>
+        <target>Četnost požadavků</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Round-trip avg" xml:space="preserve">
         <source>Round-trip avg</source>
-        <target/>
+        <target>Průměrný oběh</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.SYN_RCVD conns" xml:space="preserve">
         <source>SYN_RCVD conns</source>
-        <target/>
+        <target>Spojení SYN_RCVD</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Size" xml:space="preserve">
         <source>Size</source>
-        <target/>
+        <target>Velikost</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Sleeping processes" xml:space="preserve">
         <source>Sleeping processes</source>
-        <target/>
+        <target>Spící procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Space available" xml:space="preserve">
         <source>Space available</source>
-        <target/>
+        <target>Dostupné místo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Space used" xml:space="preserve">
         <source>Space used</source>
-        <target/>
+        <target>Použité místo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Stopped processes" xml:space="preserve">
         <source>Stopped processes</source>
-        <target/>
+        <target>Zastavené procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Swap pct free" xml:space="preserve">
         <source>Swap pct free</source>
-        <target/>
+        <target>Volné procento odkládacího prostoru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.TIME_WAIT conns" xml:space="preserve">
         <source>TIME_WAIT conns</source>
-        <target/>
+        <target>Spojení TIME_WAIT</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Threads" xml:space="preserve">
         <source>Threads</source>
-        <target/>
+        <target>Vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Threads running" xml:space="preserve">
         <source>Threads running</source>
-        <target/>
+        <target>Běžící vlákna</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Total conns" xml:space="preserve">
         <source>Total conns</source>
-        <target/>
+        <target>Spojení celkem</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Traffic" xml:space="preserve">
         <source>Traffic</source>
-        <target/>
+        <target>Provoz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Used Sessions" xml:space="preserve">
         <source>Used Sessions</source>
-        <target/>
+        <target>Použité relace</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Users" xml:space="preserve">
         <source>Users</source>
-        <target/>
+        <target>Uživatelé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Value" xml:space="preserve">
         <source>Value</source>
-        <target/>
+        <target>Hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
