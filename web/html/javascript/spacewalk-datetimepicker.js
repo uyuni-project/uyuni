@@ -4,6 +4,7 @@
  *   startDate: preselected date in the picker (Date object)
  */
 function setupDatePicker() {
+  return;
   // date picker is setup using data attributes
   jQuery('input[data-provide="date-picker"]').each(function() {
     var input = jQuery(this);

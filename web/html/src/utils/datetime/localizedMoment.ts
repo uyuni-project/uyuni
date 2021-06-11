@@ -1,8 +1,8 @@
 import moment from "moment-timezone";
 
 // TODO: Remove, these are only for easier debugging
-window.serverTimeZone = "Asia/Tokyo"; // GMT+9
-window.userTimeZone = "America/Los_Angeles"; // GMT-7
+window.serverTimeZone = "Asia/Tokyo";
+window.userTimeZone = "America/Los_Angeles";
 
 declare global {
   interface Window {

@@ -264,8 +264,14 @@ public class DateTimePickerTag extends TagSupport {
         out.append(createHiddenInput("minute", String.valueOf(data.getMinute())).render());
         if (data.isLatin()) {
             out.append(createHiddenInput("am_pm",
-                    String.valueOf((data.getHour() > 12) ? 1 : 0)).render());
+                    String.valueOf((data.getHourOfDay() > 12) ? 1 : 0)).render());
         }
+
+        // TODO: Try and see whether this is enough to merge a datetime to the given target
+        // TODO: Alternatively, make the date into ISO string
+        DateFormat tzOffset = new SimpleDateFormat("Z", data.getLocale());
+        tzOffset.setTimeZone(data.getCalendar().getTimeZone());
+        out.append(createHiddenInput("tz", tzOffset.format(data.getDate())).render());
     }
 
     private HtmlTag createHiddenInput(String type, String value) {

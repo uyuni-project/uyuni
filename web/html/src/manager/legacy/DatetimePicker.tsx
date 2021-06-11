@@ -9,6 +9,8 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { localizedMoment } from "utils";
+// TODO: Fix capitalization & `git mv`
+import { DateTimePicker } from "components/datetime";
 
 console.log("Legacy fire!");
 
@@ -22,12 +24,8 @@ class LegacyDatetimePicker extends React.PureComponent<Props> {
   }
 }
 
-function getNestedAttribute(target: HTMLElement, attributeName: string): string | undefined {
-  return target.querySelector(`[${attributeName}]`)?.getAttribute(attributeName) ?? undefined;
-}
-
-function getNestedNumericAttribute(target: HTMLElement, attributeName: string): number | undefined {
-  return maybeNumber(getNestedAttribute(target, attributeName));
+function getNestedAttribute(targetGroup: HTMLElement, attributeName: string): string | undefined {
+  return targetGroup.querySelector(`[${attributeName}]`)?.getAttribute(attributeName) ?? undefined;
 }
 
 function maybeNumber(input?: string): number | undefined {
@@ -40,6 +38,23 @@ function maybeNumber(input?: string): number | undefined {
     return undefined;
   }
   return parsed;
+}
+
+function getInitialValue(targetGroup: HTMLElement, fieldName: string) {
+  return getNestedAttribute(targetGroup, `data-initial-${fieldName}`);
+}
+
+function getFallbackValue(pickerName: string, fieldName: string) {
+  const target = document.getElementById(`${pickerName}_${fieldName}`) as HTMLInputElement | null;
+  if (!target) {
+    throw new TypeError(`Found no ${fieldName} field for picker ${pickerName}`);
+  }
+  return target.value;
+}
+
+/** Try and get an initial value from target group, a fallback value from hidden inputs, or undefined otherwise */
+function getValue(targetGroup: HTMLElement, fallbackName: string, fieldName: string) {
+  return getInitialValue(targetGroup, fieldName) ?? getFallbackValue(fallbackName, fieldName) ?? undefined;
 }
 
 function mountDatePickerTo(inputGroupDiv: HTMLElement | null) {
@@ -55,14 +70,30 @@ function mountDatePickerTo(inputGroupDiv: HTMLElement | null) {
     return;
   }
 
-  // Extract relevant options
-  const hasDate = !!inputGroupDiv.querySelector('[data-provide="date-picker"]');
-  const hasTime = !!inputGroupDiv.querySelector('[data-provide="time-picker"]');
-  const year = getNestedNumericAttribute(inputGroupDiv, "data-initial-year");
-  const month = getNestedNumericAttribute(inputGroupDiv, "data-initial-month");
-  const date = getNestedNumericAttribute(inputGroupDiv, "data-initial-day"); // Note different terminology
-  const hour = getNestedNumericAttribute(inputGroupDiv, "data-initial-hour"); // TODO: This can be 12-hour AM/PM?
-  const minute = getNestedNumericAttribute(inputGroupDiv, "data-initial-minute");
+  // Extract configuration options
+  const hasDatePicker = !!inputGroupDiv.querySelector('[data-provide="date-picker"]');
+  const hasTimePicker = !!inputGroupDiv.querySelector('[data-provide="time-picker"]');
+  // Depending on the config, the expected result can be 12-hour or 24-hour
+  const expectsAmPm = !!document.getElementById(`${name}_am_pm`);
+
+  const year = maybeNumber(getValue(inputGroupDiv, name, "year"));
+  const month = maybeNumber(getValue(inputGroupDiv, name, "month"));
+  const date = maybeNumber(getValue(inputGroupDiv, name, "day")); // Note different terminology
+  const minute = maybeNumber(getValue(inputGroupDiv, name, "minute"));
+
+  const amPm = (expectsAmPm ? maybeNumber(getValue(inputGroupDiv, name, "am_pm")) : 0) ?? 0;
+  // The initial value is provided in 24-hour format
+  let hour = maybeNumber(getInitialValue(inputGroupDiv, "hour"));
+  if (typeof hour === "undefined") {
+    // NB! The fallback value _may or may not_ be in 12-hour format
+    hour = maybeNumber(getFallbackValue(name, "hour"));
+    if (typeof hour !== "undefined") {
+      hour = (hour + amPm * 12) % 24;
+    }
+  }
+
+  // TODO: Make work
+  const outputTimezone = getValue(inputGroupDiv, name, "tz");
 
   // Merge the initial value
   const value = localizedMoment();
@@ -82,16 +113,30 @@ function mountDatePickerTo(inputGroupDiv: HTMLElement | null) {
     value.minute(minute);
   }
   console.log(value.toUserString());
-  console.log({ name, hasDate, hasTime, year, month, date, hour, minute });
-  console.log(':::');
+  console.log({
+    name,
+    hasDatePicker,
+    hasTimePicker,
+    year,
+    month,
+    date,
+    hour,
+    minute,
+    expectsAmPm,
+    amPm,
+    outputTimezone,
+  });
+  console.log(":::");
 
   // TODO: NB!!! Handle AM/PM divide when setting back values
   // TODO: What time zone do legacy pages want the inputs to be in?
 
   // Only ever bind once
-  // inputGroupDiv.removeAttribute("data-provide");
-  // inputGroupDiv.innerHTML = "";
-  // ReactDOM.render(<LegacyDatetimePicker name="TODO" />, inputGroupDiv);
+  inputGroupDiv.removeAttribute("data-provide");
+  inputGroupDiv.removeAttribute("class");
+  inputGroupDiv.removeAttribute("id");
+  inputGroupDiv.innerHTML = "";
+  ReactDOM.render(<DateTimePicker value={value} onChange={value => console.log(value.toISOString())} />, inputGroupDiv);
 }
 
 function mountAll() {
