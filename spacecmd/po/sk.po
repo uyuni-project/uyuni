@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-10 18:58+0000\n"
+"PO-Revision-Date: 2021-06-14 12:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2705,41 +2705,46 @@ msgstr "použitie: kickstart_disableconfigmanagement PROFIL"
 msgid ""
 "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr ""
+"kickstart_enableremotecommands: Povoliť vzdialené príkazy na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:881
 msgid "usage: kickstart_enableremotecommands PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enableremotecommands PROFIL"
 
 #: ../src/spacecmd/kickstart.py:912
 msgid ""
 "kickstart_disableremotecommands: Disable remote commands on a Kickstart "
 "profile"
 msgstr ""
+"kickstart_disableremotecommands: Zakázať vzdialené príkazy na profile "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:914
 msgid "usage: kickstart_disableremotecommands PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_disableremotecommands PROFIL"
 
 #: ../src/spacecmd/kickstart.py:944
 msgid "kickstart_setlocale: Set the locale for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setlocale: Nastaviť lokalizáciu pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:945
 msgid "usage: kickstart_setlocale PROFILE LOCALE"
-msgstr ""
+msgstr "použitie: kickstart_setlocale PROFIL LOKALIZÁCIA"
 
 #: ../src/spacecmd/kickstart.py:983
 msgid "kickstart_setselinux: Set the SELinux mode for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setselinux: Nastaviť režim pre SELinux pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:985
 msgid "usage: kickstart_setselinux PROFILE MODE"
-msgstr ""
+msgstr "použitie: kickstart_setselinux PROFIL REŽIM"
 
 #: ../src/spacecmd/kickstart.py:1020
 msgid ""
 "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr ""
+"kickstart_setpartitions: Nastaviť schému rozdelenia pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1022
 msgid "usage: kickstart_setpartitions PROFILE"
@@ -6581,6 +6586,31 @@ msgid ""
 "auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
+"použitie: system_addconfigfile [SYSTÉM] [voľby]\n"
+"\n"
+"voľby:\n"
+"  -S/--sandbox : vypísať iba zoznam súborov system-sandbox\n"
+"  -L/--local   : vypísať iba zoznam lokálne spravovaných súborov\n"
+"  -p CESTA\n"
+"  -r REVÍZIA\n"
+"  -o VLASTNÍK [predvolené: root]\n"
+"  -g SKUPINA [predvolené: root]\n"
+"  -m REŽIM [predvolené: 0644]\n"
+"  -x KONTEXT_SELINUX\n"
+"  -d cesta je adresár\n"
+"  -s cesta je symbolický odkaz\n"
+"  -b cesta je binárny (alebo iný súbor, ktorý vyžaduje kódovanie base64)\n"
+"  -t CIEĽ_SYMBOLICKÉHO_ODKAZU\n"
+"  -f lokálna cesta k obsahu súboru\n"
+"\n"
+"  Poznámka vo veci binárny/base64: Niektoré textové súbory, najmä tie, ktoré "
+"obsahujú\n"
+"  koncové znaky nových riadkov, tie, ktoré obsahujú riadiace znaky ASCII ("
+"alebo iné znaky,\n"
+"  ktoré nie sú v XML povolené) je potrebné poslať ako binárne (-b). Vyvinulo "
+"sa určité úsilie\n"
+"  na automatickú detekciu súborov, ktoré to vyžadujú, ale možno budete "
+"musieť výslovne určiť.\n"
 
 #: ../src/spacecmd/system.py:1488
 #, python-format
