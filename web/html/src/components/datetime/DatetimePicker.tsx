@@ -16,26 +16,28 @@ declare global {
   }
 }
 
-jQuery.fn.datepicker.dates["en_US"] = {
-  days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-  daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  daysMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  months: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ],
-  monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-};
+if (jQuery.fn.datepicker) {
+  jQuery.fn.datepicker.dates["en_US"] = {
+    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    daysMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  };
+}
 
 type DatePickerProps = {
   id?: string;
@@ -230,6 +232,7 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
 
 type DateTimePickerProps = {
   id?: string;
+  legacyId?: string;
   value: moment.Moment;
   onChange: (value: moment.Moment) => void;
   hideDatePicker?: boolean;
@@ -329,6 +332,18 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
     const hours = zonedMoment.hours();
     const minutes = zonedMoment.minutes();
     const seconds = zonedMoment.seconds();
+
+    // Legacy id offers compatibility with the DateTimePickerTag.java format
+    const datePickerId = this.props.legacyId
+      ? `${this.props.legacyId}_datepicker_widget_input`
+      : this.props.id
+      ? this.props.id + "_date"
+      : undefined;
+    const timePickerId = this.props.legacyId
+      ? `${this.props.legacyId}_timepicker_widget_input`
+      : this.props.id
+      ? this.props.id + "_time"
+      : undefined;
     return (
       <div className="input-group">
         {!this.state.hideDate && [
@@ -336,7 +351,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             &nbsp;<i className="fa fa-calendar"></i>
           </span>,
           <DatePicker
-            id={this.props.id ? this.props.id + "_date" : undefined}
+            id={datePickerId}
             onDateChanged={this.onDateChanged}
             onToggle={this.onToggleDate}
             open={this.state.dateOpen}
@@ -351,7 +366,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>,
           <TimePicker
-            id={this.props.id ? this.props.id + "_time" : undefined}
+            id={timePickerId}
             onTimeChanged={this.onTimeChanged}
             onToggle={this.onToggleTime}
             open={this.state.timeOpen}

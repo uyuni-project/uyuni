@@ -176,77 +176,24 @@ public class DateTimePickerTag extends TagSupport {
 
     private void writePickerHtml(Writer out) throws IOException {
 
+        // This is a mounting point for the React-based picker
         HtmlTag group = new HtmlTag("div");
-        group.setAttribute("class", "input-group");
         group.setAttribute("id", data.getName() + "_datepicker_widget");
+        group.setAttribute("class", "legacy-date-time-picker");
 
+        group.setAttribute("data-name", data.getName());
         if (!data.getDisableDate()) {
-            HtmlTag dateAddon = createInputAddonTag("date", "header-calendar");
-            group.addBody(dateAddon);
-
-            SimpleDateFormat dateFmt = (SimpleDateFormat)
-                    DateFormat.getDateInstance(DateFormat.SHORT, data.getLocale());
-
-            HtmlTag dateInput = new HtmlTag("input");
-            dateInput.setAttribute("id", data.getName() + "_datepicker_widget_input");
-            dateInput.setAttribute("data-provide", "date-picker");
-            dateInput.setAttribute("data-date-today-highlight", "true");
-            dateInput.setAttribute("data-date-orientation", "top auto");
-            dateInput.setAttribute("data-date-autoclose", "true");
-            dateInput.setAttribute("data-date-language", data.getLocale().toString());
-            dateInput.setAttribute("data-date-format",
-                    toDatepickerFormat(dateFmt.toPattern()));
-            dateInput.setAttribute("type", "text");
-            dateInput.setAttribute("class", "form-control");
-            dateInput.setAttribute("id", data.getName() + "_datepicker_widget_input");
-            dateInput.setAttribute("size", "15");
-
-            dateInput.setAttribute("data-picker-name", data.getName());
-            dateInput.setAttribute("data-initial-year", String.valueOf(data.getYear()));
-            dateInput.setAttribute("data-initial-month", String.valueOf(data.getMonth()));
-            dateInput.setAttribute("data-initial-day", String.valueOf(data.getDay()));
-
-            String firstDay = getJavascriptPickerDayIndex(
-                    data.getCalendar().getFirstDayOfWeek());
-            dateInput.setAttribute("data-date-week-start", firstDay);
-
-            group.addBody(dateInput);
+            group.setAttribute("data-has-date", "");
         }
-
         if (!data.getDisableTime()) {
-            HtmlTag timeAddon = createInputAddonTag("time", "header-clock");
-            group.addBody(timeAddon);
-
-            SimpleDateFormat timeFmt = (SimpleDateFormat)
-                    DateFormat.getTimeInstance(DateFormat.SHORT, data.getLocale());
-
-            HtmlTag timeInput = new HtmlTag("input");
-            timeInput.setAttribute("type", "text");
-            timeInput.setAttribute("data-provide", "time-picker");
-            timeInput.setAttribute("class", "form-control");
-            timeInput.setAttribute("data-time-format",
-                                         toPhpTimeFormat(timeFmt.toPattern()));
-            timeInput.setAttribute("id", data.getName() + "_timepicker_widget_input");
-            timeInput.setAttribute("size", "10");
-
-            timeInput.setAttribute("data-picker-name", data.getName());
-            timeInput.setAttribute("data-initial-hour",
-                    String.valueOf(data.getHourOfDay()));
-            timeInput.setAttribute("data-initial-minute", String.valueOf(data.getMinute()));
-
-            group.addBody(timeInput);
+            group.setAttribute("data-has-time", "");
         }
+        if (data.isLatin()) {
+            group.setAttribute("data-is-am-pm", "");
+        }
+        DateFormat isoFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        group.setAttribute("data-value", isoFmt.format(data.getDate()));
 
-        HtmlTag tzAddon = new HtmlTag("span");
-        tzAddon.setAttribute("id", data.getName() + "_tz_input_addon");
-        tzAddon.setAttribute("data-picker-name", data.getName());
-        tzAddon.setAttribute("class", "input-group-addon text tz_input_addon");
-
-        DateFormat tzFmt = new SimpleDateFormat("z", data.getLocale());
-        tzFmt.setTimeZone(data.getCalendar().getTimeZone());
-        tzAddon.addBody(tzFmt.format(data.getDate()));
-
-        group.addBody(tzAddon);
         out.append(group.render());
 
         // compatibility with the old struts form
@@ -266,12 +213,6 @@ public class DateTimePickerTag extends TagSupport {
             out.append(createHiddenInput("am_pm",
                     String.valueOf((data.getHourOfDay() > 12) ? 1 : 0)).render());
         }
-
-        // TODO: Try and see whether this is enough to merge a datetime to the given target
-        // TODO: Alternatively, make the date into ISO string
-        DateFormat tzOffset = new SimpleDateFormat("Z", data.getLocale());
-        tzOffset.setTimeZone(data.getCalendar().getTimeZone());
-        out.append(createHiddenInput("tz", tzOffset.format(data.getDate())).render());
     }
 
     private HtmlTag createHiddenInput(String type, String value) {
