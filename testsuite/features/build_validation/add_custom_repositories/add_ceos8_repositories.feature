@@ -15,7 +15,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I follow "Create Channel"
     When I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
     And I enter "centos-8-iso" as "Channel Label"
-    And I select the parent channel for the "ceos8_minion" from "Parent Channel"
+    And I select "RHEL8-Pool for x86_64" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for CentOS 8 DVD created" text
@@ -49,15 +49,16 @@ Feature: Adding the CentOS 8 distribution custom repositories
     When I wait until the channel "centos-8-iso" has been synced
 
   Scenario: Create CLM filters to remove AppStream metadata
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Content Lifecycle > Filters"
-    And I follow "Create Filter"
+    And I click on "Create Filter"
     And I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save"
     Then I should see a "ruby-2.7" text
-    When I follow "Create Filter"
+    When I click on "Create Filter"
     And I enter "python-3.8" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "python38" as "moduleName"
@@ -89,7 +90,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I enter "Filtered channels without AppStream channels" as "description"
     And I click on "Save"
     Then I should see a "not built" text
-    When I click on "Build (9)"
+    When I click on "Build (11)"
     And I enter "Initial build" as "message"
     And I click the environment build button
     Then I should see a "Version 1: Initial build" text

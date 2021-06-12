@@ -210,11 +210,11 @@ CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' =>
                                     'SLES15-SP2-Pool' => 'SLE-15-SP2-x86_64',
                                     'SLES15-SP3-Pool' => 'SLE-15-SP3-x86_64',
                                     'RHEL x86_64 Server 7' => 'RES7-x86_64',
-                                    'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
+                                    'no-appstream-result-RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
                                     'ubuntu-18.04-pool' => 'ubuntu-18.04-amd64',
                                     'ubuntu-2004-amd64-main' => 'ubuntu-20.04-amd64',
-                                    'debian-9-pool' => 'debian-9-pool-amd64',
-                                    'debian-10-pool' => 'debian-10-pool-amd64' }.freeze
+                                    'debian-9-pool' => 'debian9-amd64',
+                                    'debian-10-pool' => 'debian10-amd64' }.freeze
 
 PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-Pool' => 'sle-product-suse-manager-proxy-4.1-pool-x86_64',
                                            'SLES11-SP3-Pool' => nil,
@@ -226,7 +226,7 @@ PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL = { 'SLE-Product-SUSE-Manager-Proxy-4.1-P
                                            'SLES15-SP2-Pool' => 'sle-product-sles15-sp2-pool-x86_64',
                                            'SLES15-SP3-Pool' => 'sle-product-sles15-sp3-pool-x86_64',
                                            'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
-                                           'RHEL8-Pool for x86_64' => nil,
+                                           'no-appstream-result-RHEL8-Pool for x86_64' => nil,
                                            'ubuntu-18.04-pool' => nil,
                                            'ubuntu-2004-amd64-main' => nil,
                                            'debian-9-pool' => 'debian-9-pool-amd64',
