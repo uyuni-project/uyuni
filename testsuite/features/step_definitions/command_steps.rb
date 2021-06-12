@@ -339,6 +339,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   end
 end
 
+Then(/^the reposync logs should not report errors$/) do
+  result, code = $server.run('grep "ERROR:" /var/log/rhn/reposync/*.log', false)
+  raise "Errors during reposync:\n#{result}" if code.zero?
+end
+
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
   $server.run("find /var/spacewalk/packages -name #{pkg}")
 end
