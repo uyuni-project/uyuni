@@ -10,8 +10,6 @@ import { localizedMoment } from "utils";
 // TODO: Fix capitalization & `git mv`
 import { DateTimePicker } from "components/datetime";
 
-console.log("Legacy fire!");
-
 function mountDatePickerTo(mountingPoint: HTMLElement | null) {
   if (!mountingPoint) {
     Loggerhead.error("Found no mounting point for picker");

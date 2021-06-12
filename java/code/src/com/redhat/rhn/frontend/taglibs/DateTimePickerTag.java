@@ -17,12 +17,9 @@ package com.redhat.rhn.frontend.taglibs;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
@@ -44,8 +41,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  *
  */
 public class DateTimePickerTag extends TagSupport {
-
-    private static final String JS_INCLUDE_GUARD_ATTR = "__spacewalk_datepicker_included";
 
     private DatePicker data;
 
@@ -81,7 +76,6 @@ public class DateTimePickerTag extends TagSupport {
     public int doEndTag() throws JspException {
        try {
           writePickerHtml(pageContext.getOut());
-          writePickerJavascript(pageContext.getOut());
        }
        catch (IOException e) {
            throw new JspException(e);
@@ -222,50 +216,5 @@ public class DateTimePickerTag extends TagSupport {
         input.setAttribute("type", "hidden");
         input.setAttribute("value", value);
         return input;
-    }
-
-    private void writePickerJavascript(Writer out) throws IOException {
-        if (pageContext.getRequest().getAttribute(JS_INCLUDE_GUARD_ATTR) == null) {
-            writeJavascriptIncludes(out);
-            out.append("<script type='text/javascript'>\n");
-            writeI18NMap(out);
-            pageContext.getRequest().setAttribute(JS_INCLUDE_GUARD_ATTR, true);
-            out.append("</script>\n");
-        }
-    }
-
-    private void writeJavascriptIncludes(Writer out) throws IOException {
-        out.append("<script type='text/javascript' " +
-                    "src='/javascript/spacewalk-datetimepicker.js'></script>\n");
-    }
-
-    private void writeI18NMap(Writer out) throws IOException {
-        // generate i18n for the picker here
-        DateFormatSymbols syms = data.getDateFormatSymbols();
-        out.append("$.fn.datepicker.dates['" + data.getLocale() + "'] = {\n");
-
-        Writer names = new StringWriter();
-        Writer shortNames = new StringWriter();
-        String[] nameStrings = syms.getWeekdays();
-        String[] shortNameStrings = syms.getShortWeekdays();
-        for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
-            names.append(String.format(" '%s',", nameStrings[i]));
-            shortNames.append(String.format(" '%s',", shortNameStrings[i]));
-        }
-        out.append("days:      [" + names.toString() + "],\n");
-        out.append("daysShort: [" + shortNames.toString() + "],\n");
-        out.append("daysMin:   [" + shortNames.toString() + "],\n");
-
-        names = new StringWriter();
-        shortNames = new StringWriter();
-        nameStrings = syms.getMonths();
-        shortNameStrings = syms.getShortMonths();
-        for (int i = Calendar.JANUARY; i <= Calendar.DECEMBER; i++) {
-            names.append(String.format(" '%s',", nameStrings[i]));
-            shortNames.append(String.format(" '%s',", shortNameStrings[i]));
-        }
-        out.append("months:      [" + names.toString() + "],\n");
-        out.append("monthsShort: [" + shortNames.toString() + "],\n");
-        out.append("};\n");
     }
 }
