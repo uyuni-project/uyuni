@@ -12,11 +12,11 @@ describe("localizedMoment", () => {
   test("displaying formats doesn't mutate the underlying instance", () => {
     const result = localizedMoment(validISOString);
     result.toUserDateTimeString();
-    expect(result.tz()).toEqual("UTC");
+    expect(result.utcOffset()).toEqual(0);
     result.toServerDateTimeString();
-    expect(result.tz()).toEqual("UTC");
+    expect(result.utcOffset()).toEqual(0);
     result.toAPIValue();
-    expect(result.tz()).toEqual("UTC");
+    expect(result.utcOffset()).toEqual(0);
   });
 
   test("keeps utility functions", () => {
@@ -48,12 +48,12 @@ describe("localizedMoment", () => {
     const original = localizedMoment(validISOString);
     // This is not how we usually consume this, but it is a valid use case which covers corner cases
     const zonedStringA = localizedMoment(original)
-      .tz(localizedMoment.userTimeZone)
+      .utcOffset(localizedMoment.userTimeZone.utcOffset)
       .toISOString(true);
-    expect(zonedStringA).toEqual("2020-01-30T15:00:00.000-08:00");
+    expect(zonedStringA).toEqual("2020-01-30T16:00:00.000-07:00");
 
     const zonedStringB = localizedMoment(zonedStringA)
-      .tz(localizedMoment.serverTimeZone)
+      .utcOffset(localizedMoment.serverTimeZone.utcOffset)
       .toISOString(true);
     // Note the shifted date
     expect(zonedStringB).toEqual("2020-01-31T08:00:00.000+09:00");
@@ -62,10 +62,10 @@ describe("localizedMoment", () => {
   });
 
   test("full server string keeps offset", () => {
-    expect(localizedMoment().toServerString()).toContain("Asia/Tokyo");
+    expect(localizedMoment().toServerString()).toContain("GMT+9");
   });
 
   test("full user string keeps offset", () => {
-    expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
+    expect(localizedMoment().toUserString()).toContain("GMT-7");
   });
 });

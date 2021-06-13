@@ -1,26 +1,38 @@
-import moment from "moment-timezone";
+import moment from "moment";
 
 // TODO: Remove, these are only for easier debugging
-window.serverTimeZone = "Asia/Tokyo";
-window.userTimeZone = "America/Los_Angeles";
+window.serverTime = moment()
+  .utcOffset(9)
+  .toISOString(true);
+window.serverTimeZoneString = "GMT+9";
+window.userTime = moment()
+  .utcOffset(-7)
+  .toISOString(true);
+window.userTimeZoneString = "GMT-7";
 
 declare global {
   interface Window {
-    userTimeZone?: string; // Mandatory, but try to recover if not present
-    userDateFormat?: string; // Mandatory, but try to recover if not present
-    userTimeFormat?: string; // Fully optional
-    serverTimeZone?: string; // Fully optional
+    serverTime?: string;
+    serverTimeZoneString?: string;
+    userTime?: string;
+    userTimeZoneString?: string;
+    userDateFormat?: string; // Optional
+    userTimeFormat?: string; // Optional
   }
 }
 
-const serverTimeZone = window.serverTimeZone || "UTC";
-if (!window.serverTimeZone) {
-  Loggerhead.error("Server time zone not set, defaulting to UTC");
+const serverUtcOffset = moment.parseZone(window.serverTime || moment(), moment.ISO_8601, true).utcOffset();
+const serverTimeZoneString = window.serverTimeZoneString || t("Local");
+if (!window.serverTime) {
+  Loggerhead.error(`Server time not available, defaulting to browser time (UTC offset ${serverUtcOffset} minutes)`);
 }
 
-const userTimeZone = window.userTimeZone || serverTimeZone;
-if (!window.userTimeZone) {
-  Loggerhead.error(`User time zone not set, defaulting to server time zone (${serverTimeZone})`);
+const userUtcOffset = window.userTime
+  ? moment.parseZone(window.userTime, moment.ISO_8601, true).utcOffset()
+  : serverUtcOffset;
+const userTimeZoneString = window.userTimeZoneString || serverTimeZoneString;
+if (!window.userTime) {
+  Loggerhead.error(`User time not available, defaulting to server time (UTC offset ${serverUtcOffset} minutes)`);
 }
 
 // See https://momentjs.com/docs/#/displaying/
@@ -63,84 +75,96 @@ declare module "moment" {
     toAPIValue(): string;
   }
 
-  /** The server's time zone, e.g. `"GMT+9"` */
-  const serverTimeZone: string;
-  /** The user's time zone, e.g. `"GMT+9"` */
-  const userTimeZone: string;
+  const serverTimeZone: {
+    /** The server's time zone as an offset from UTC in minutes */
+    utcOffset: number;
+    /** The server's time zone as a string, e.g. `"GMT+9"` */
+    displayValue: string;
+  };
+  const userTimeZone: {
+    /** The user's time zone as an offset from UTC in minutes */
+    utcOffset: number;
+    /** The user's time zone as a string, e.g. `"GMT+9"` */
+    displayValue: string;
+  };
 }
 
 moment.fn.toServerString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat} [${serverTimeZone}]`);
+    .utcOffset(serverUtcOffset)
+    .format(`${userDateFormat} ${userTimeFormat} [${serverTimeZoneString}]`);
 };
 
 moment.fn.toServerDateTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
+    .utcOffset(serverUtcOffset)
     .format(`${userDateFormat} ${userTimeFormat}`);
 };
 
 moment.fn.toServerDateString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
+    .utcOffset(serverUtcOffset)
     .format(userDateFormat);
 };
 
 moment.fn.toServerTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(serverTimeZone)
+    .utcOffset(serverUtcOffset)
     .format(userTimeFormat);
 };
 
 moment.fn.toUserString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
-    .format(`${userDateFormat} ${userTimeFormat} [${userTimeZone}]`);
+    .utcOffset(userUtcOffset)
+    .format(`${userDateFormat} ${userTimeFormat} [${userTimeZoneString}]`);
 };
 
 moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
   // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
   return moment(this)
-    .tz(userTimeZone)
+    .utcOffset(userUtcOffset)
     .format(`${userDateFormat} ${userTimeFormat}`);
 };
 
 moment.fn.toUserDateString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
+    .utcOffset(userUtcOffset)
     .format(userDateFormat);
 };
 
 moment.fn.toUserTimeString = function(this: moment.Moment): string {
   return moment(this)
-    .tz(userTimeZone)
+    .utcOffset(userUtcOffset)
     .format(userTimeFormat);
 };
 
-// TODO: This is obsolete
+// TODO: This is obsolete after the API update PR is merged
 moment.fn.toAPIValue = function(this: moment.Moment): string {
   return moment(this)
-    .tz("UTC")
+    .utcOffset(0)
     .toISOString(false);
 };
 
 Object.defineProperties(moment, {
-  userTimeZone: {
-    value: userTimeZone,
+  serverTimeZone: {
+    value: {
+      utcOffset: serverUtcOffset,
+      displayValue: serverTimeZoneString,
+    } as typeof moment["serverTimeZone"],
     writable: false,
   },
-  serverTimeZone: {
-    value: serverTimeZone,
+  userTimeZone: {
+    value: {
+      utcOffset: userUtcOffset,
+      displayValue: userTimeZoneString,
+    } as typeof moment["userTimeZone"],
     writable: false,
   },
 });
 
 function localizedMomentConstructor(input?: moment.MomentInput) {
-  const allowedFormats = [moment.ISO_8601];
-  // We parse all inputs into UTC and only format them for output
-  const utcMoment =
-    typeof input === "string" ? moment.utc(input, allowedFormats, true).tz("UTC") : moment.utc(input, true).tz("UTC");
+  // We make all inputs UTC internally and only format them for output
+  const utcMoment = typeof input === "string" ? moment(input, moment.ISO_8601, true).utc() : moment(input, true).utc();
 
   if (!utcMoment.isValid()) {
     throw new RangeError("Invalid localized moment on input " + JSON.stringify(input));

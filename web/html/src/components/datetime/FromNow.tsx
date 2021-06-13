@@ -6,7 +6,7 @@ type Props = {
 };
 
 const FromNow = (props: Props) => {
-  const value = localizedMoment(props.time).tz(localizedMoment.userTimeZone);
+  const value = localizedMoment(props.time).utcOffset(localizedMoment.userTimeZone.utcOffset);
   return <span title={value.toUserString()}>{value.fromNow()}</span>;
 };
 

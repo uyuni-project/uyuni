@@ -1,12 +1,12 @@
 /**
  * This binding is a replacement for the old spacewalk-datetimepicker.js
  * It is the Javascript helper side for DateTimePickerTag.java but bound to the timezone-aware picker component.
+ * This wrapper is NOT HMR-ready, you will need to reload for your changes.
  */
 import * as React from "react";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { localizedMoment } from "utils";
-// TODO: Fix capitalization & `git mv`
 import { DateTimePicker } from "components/datetime";
 
 function mountDatePickerTo(mountingPoint: HTMLElement | null) {
@@ -82,9 +82,16 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
     );
   };
 
+  ReactDOM.render(<StatefulWrapper />, mountingPoint);
+
   // Only ever bind once
   mountingPoint.removeAttribute("class");
-  ReactDOM.render(<StatefulWrapper />, mountingPoint);
+  // Clean up the DOM
+  mountingPoint.removeAttribute("data-name");
+  mountingPoint.removeAttribute("data-has-date");
+  mountingPoint.removeAttribute("data-has-time");
+  mountingPoint.removeAttribute("data-is-am-pm");
+  mountingPoint.removeAttribute("data-value");
 }
 
 // TODO: Also on SPA navigation

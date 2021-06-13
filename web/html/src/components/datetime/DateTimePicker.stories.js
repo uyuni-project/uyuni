@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { DateTimePicker } from "./DatetimePicker";
 
-import * as moment from "moment";
+import moment from "moment";
 import { localizedMoment } from "utils";
 
 export default {
@@ -17,27 +17,27 @@ export const Example = () => {
       <p>
         user time zone: {localizedMoment.userTimeZone} (
         {localizedMoment(value)
-          .tz(localizedMoment.userTimeZone)
+          .utcOffset(localizedMoment.userTimeZone.utcOffset)
           .format("Z")}
         )
       </p>
       <p>
         server time zone: {localizedMoment.serverTimeZone} (
         {localizedMoment(value)
-          .tz(localizedMoment.serverTimeZone)
+          .utcOffset(localizedMoment.serverTimeZone.utcOffset)
           .format("Z")}
         )
       </p>
       <p>
         user time:
         {localizedMoment(value)
-          .tz(localizedMoment.userTimeZone)
+          .utcOffset(localizedMoment.userTimeZone.utcOffset)
           .toISOString(true)}
       </p>
       <p>
         server time:
         {localizedMoment(value)
-          .tz(localizedMoment.serverTimeZone)
+          .utcOffset(localizedMoment.serverTimeZone.utcOffset)
           .toISOString(true)}
       </p>
       <p>iso time: {value.toISOString()}</p>
