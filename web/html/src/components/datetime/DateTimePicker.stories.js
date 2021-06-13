@@ -1,28 +1,25 @@
 import * as React from "react";
+import { storiesOf } from "@storybook/react";
+
 import { useState } from "react";
 import { DateTimePicker } from "./DateTimePicker";
 
 import moment from "moment";
 import { localizedMoment } from "utils";
 
-export default {
-  component: DateTimePicker,
-  title: "datetimepicker",
-};
-
-export const Example = () => {
+storiesOf("DateTimePicker", module).add("basic timezone support", () => {
   const [value, setValue] = useState(localizedMoment());
   return (
     <div>
       <p>
-        user time zone: {localizedMoment.userTimeZone} (
+        user time zone: {localizedMoment.userTimeZone.displayValue} (
         {localizedMoment(value)
           .utcOffset(localizedMoment.userTimeZone.utcOffset)
           .format("Z")}
         )
       </p>
       <p>
-        server time zone: {localizedMoment.serverTimeZone} (
+        server time zone: {localizedMoment.serverTimeZone.displayValue} (
         {localizedMoment(value)
           .utcOffset(localizedMoment.serverTimeZone.utcOffset)
           .format("Z")}
@@ -45,4 +42,4 @@ export const Example = () => {
       <DateTimePicker value={value} onChange={newValue => setValue(newValue)} />
     </div>
   );
-};
+});
