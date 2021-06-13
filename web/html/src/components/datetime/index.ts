@@ -1,2 +1,2 @@
-export * from './DatetimePicker';
+export * from './DateTimePicker';
 export * from './FromNow';
