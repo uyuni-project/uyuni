@@ -1,8 +1,7 @@
 /**
  * This binding is a replacement for the old spacewalk-datetimepicker.js
- * It is the Javascript helper side for DateTimePickerTag.java but bound to the timezone-aware picker component
+ * It is the Javascript helper side for DateTimePickerTag.java but bound to the timezone-aware picker component.
  */
-
 import * as React from "react";
 import { useState } from "react";
 import ReactDOM from "react-dom";
@@ -50,22 +49,12 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
     return;
   }
 
-  console.log({ hasDatePicker, hasTimePicker, isAmPm, rawValue, utcOffset });
-
-  const Component = () => {
+  const StatefulWrapper = () => {
     const [value, setValue] = useState(initialValue);
 
     const onChange = (value: moment.Moment) => {
       // Create a copy of the value in the original UTC offset
       const adjustedValue = localizedMoment(value).utcOffset(utcOffset);
-      console.log(
-        adjustedValue.toString(),
-        adjustedValue.year(),
-        adjustedValue.month(),
-        adjustedValue.date(),
-        adjustedValue.hour(),
-        adjustedValue.minute()
-      );
       yearInput.value = adjustedValue.year().toString();
       monthInput.value = adjustedValue.month().toString();
       dateInput.value = adjustedValue.date().toString();
@@ -77,12 +66,14 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
       } else {
         hourInput.value = hour.toString();
       }
-      minuteInput.value = adjustedValue.minute().toString();
 
+      minuteInput.value = adjustedValue.minute().toString();
       setValue(value);
     };
+
     return (
       <DateTimePicker
+        legacyId={name}
         value={value}
         onChange={onChange}
         hideDatePicker={!hasDatePicker}
@@ -93,7 +84,7 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
 
   // Only ever bind once
   mountingPoint.removeAttribute("class");
-  ReactDOM.render(<Component />, mountingPoint);
+  ReactDOM.render(<StatefulWrapper />, mountingPoint);
 }
 
 // TODO: Also on SPA navigation
@@ -102,5 +93,3 @@ jQuery(document).ready(function() {
     mountDatePickerTo(node)
   );
 });
-
-export {};

@@ -16,6 +16,7 @@ declare global {
   }
 }
 
+// Hot reload sometimes goes wonky with jQuery
 if (jQuery.fn.datepicker) {
   jQuery.fn.datepicker.dates["en_US"] = {
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -62,7 +63,6 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
     this.setVisible(this.props.open);
     this._input?.datepicker("setDate", this.toFauxBrowserDate(this.props));
     this._input?.on("changeDate", () => {
-      // TODO: Check the types here
       const unsafeDate: Date | undefined = this._input?.datepicker("getDate");
 
       // Only if value has actually changed
@@ -379,8 +379,6 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             {this.state.timeZone}
           </span>,
         ]}
-        {/** This is solely for `manager/legacy/DatetimePicker.tsx` */}
-        {this.props.children}
       </div>
     );
   }
