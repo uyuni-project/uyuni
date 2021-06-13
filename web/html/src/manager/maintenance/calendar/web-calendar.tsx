@@ -1,6 +1,6 @@
 import * as React from "react";
-// TODO: This should be localizedMoment instead
-import moment from "moment-timezone";
+// TODO: This should probably be localizedMoment instead
+import moment from "moment";
 import { useState, useEffect, useRef } from "react";
 
 import FullCalendar from "@fullcalendar/react";
