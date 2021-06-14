@@ -26,6 +26,7 @@ declare global {
         init?: Function;
         navigate?: Function;
         appInstance?: any;
+        onSpaEndNavigation?: (callback: Function) => void;
       };
     };
     spaImportReactPage: (pageName: string) => Promise<unknown>;

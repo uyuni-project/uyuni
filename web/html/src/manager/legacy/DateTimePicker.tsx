@@ -94,9 +94,11 @@ function mountDatePickerTo(mountingPoint: HTMLElement | null) {
   mountingPoint.removeAttribute("data-value");
 }
 
-// TODO: Also on SPA navigation
-jQuery(document).ready(function() {
+function mountAll() {
   Array.from(document.querySelectorAll<HTMLDivElement>(".legacy-date-time-picker")).forEach(node =>
     mountDatePickerTo(node)
   );
-});
+}
+
+jQuery(document).ready(mountAll);
+window.pageRenderers?.spaengine?.onSpaEndNavigation?.(mountAll);
