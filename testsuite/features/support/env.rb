@@ -236,6 +236,18 @@ Before('@sle12sp4_client') do
   skip_this_scenario unless $sle12sp4_client
 end
 
+Before('@sle12sp5_ssh_minion') do
+  skip_this_scenario unless $sle12sp5_ssh_minion
+end
+
+Before('@sle12sp5_minion') do
+  skip_this_scenario unless $sle12sp5_minion
+end
+
+Before('@sle12sp5_client') do
+  skip_this_scenario unless $sle12sp5_client
+end
+
 Before('@sle15_ssh_minion') do
   skip_this_scenario unless $sle15_ssh_minion
 end
