@@ -3,7 +3,10 @@
 Loggerhead.set({ url: '/rhn/manager/frontend-log' });
 
 Loggerhead.setHeaders = function(headers) {
-  headers['X-CSRF-Token'] = document.getElementsByName('csrf_token')[0].value;
+  const csrf_token = document.getElementsByName('csrf_token');
+  if (csrf_token && csrf_token[0]) {
+    headers['X-CSRF-Token'] = csrf_token[0].value;
+  }
   return headers;
 }
 

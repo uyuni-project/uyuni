@@ -1,23 +1,12 @@
 import moment from "moment";
 
-// Backwards compatibility for testing
+// Backwards compatibility
 if (window.localTime) {
   window.serverTime = window.localTime;
 }
 if (window.timezone) {
   window.serverTimeZoneString = window.timezone;
 }
-// TODO: Remove, these are only for easier debugging
-/*
-window.serverTime = moment()
-  .utcOffset(9)
-  .toISOString(true);
-window.serverTimeZoneString = "GMT+9";
-window.userTime = moment()
-  .utcOffset(-7)
-  .toISOString(true);
-window.userTimeZoneString = "GMT-7";
-*/
 
 declare global {
   interface Window {
@@ -33,7 +22,11 @@ declare global {
 const serverUtcOffset = moment.parseZone(window.serverTime || moment(), moment.ISO_8601, true).utcOffset();
 const serverTimeZoneString = window.serverTimeZoneString || "Local";
 if (!window.serverTime) {
-  Loggerhead.error(`Server time not available, defaulting to browser time (UTC offset ${serverUtcOffset} minutes)`);
+  Loggerhead.error(
+    `Server time not available, defaulting to browser time (${moment()
+      .utcOffset(serverUtcOffset)
+      .format("Z")})`
+  );
 }
 
 const userUtcOffset = window.userTime
@@ -41,7 +34,11 @@ const userUtcOffset = window.userTime
   : serverUtcOffset;
 const userTimeZoneString = window.userTimeZoneString || serverTimeZoneString;
 if (!window.userTime) {
-  Loggerhead.error(`User time not available, defaulting to server time (UTC offset ${serverUtcOffset} minutes)`);
+  Loggerhead.error(
+    `User time not available, defaulting to ${window.serverTime ? "server" : "browser"} time (${moment()
+      .utcOffset(userUtcOffset)
+      .format("Z")})`
+  );
 }
 
 // See https://momentjs.com/docs/#/displaying/
@@ -184,6 +181,3 @@ function localizedMomentConstructor(input?: moment.MomentInput) {
 
 const localizedMoment: typeof moment = Object.setPrototypeOf(localizedMomentConstructor, moment);
 export { localizedMoment };
-
-// TODO: Only for debugging
-(window as any).localizedMoment = localizedMoment;
