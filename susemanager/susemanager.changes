@@ -1,3 +1,5 @@
+- Fix database database migration script from PostgreSQL 12 to 13
+
 -------------------------------------------------------------------
 Wed Jun 02 11:08:38 CEST 2021 - jgonzalez@suse.com
 

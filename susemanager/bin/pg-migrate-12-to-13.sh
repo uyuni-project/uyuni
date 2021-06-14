@@ -92,8 +92,8 @@ else
     echo "`date +"%H:%M:%S"`   Initialization of new postgresql $NEW_VERSION database failed!"
     echo "`date +"%H:%M:%S"`   Trying to restore previous state..."
     mv /var/lib/pgsql/data /var/lib/pgsql/data-new-failed
-    mv /var/lib/pgsql/data-pg10 /var/lib/pgsql/data
-    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql10
+    mv /var/lib/pgsql/data-pg${OLD_VERSION} /var/lib/pgsql/data
+    /usr/sbin/update-alternatives --set postgresql /usr/lib/postgresql${OLD_VERSION}
     exit 1
 fi
 
