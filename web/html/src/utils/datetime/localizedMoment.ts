@@ -1,13 +1,5 @@
 import moment from "moment";
 
-// Backwards compatibility
-if (window.localTime) {
-  window.serverTime = window.localTime;
-}
-if (window.timezone) {
-  window.serverTimeZoneString = window.timezone;
-}
-
 declare global {
   interface Window {
     serverTime?: string;
