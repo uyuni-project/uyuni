@@ -272,7 +272,7 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'debian9_minion' => 'amd64',
                       'debian9_ssh_minion' => 'amd64',
                       'debian10_minion' => 'amd64',
-                      'debian10_ssh_minion' => 'ams64' }.freeze
+                      'debian10_ssh_minion' => 'amd64' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   '12-SP4' =>

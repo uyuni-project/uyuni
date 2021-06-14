@@ -3,6 +3,9 @@
 
 @ceos8_minion
 Feature: Adding the CentOS 8 distribution custom repositories
+  In order to use CentOS 8 channels with Red Hat "modules"
+  As a SUSE Manager administrator
+  I want to filter them out to remove the modules information
 
   Scenario: Download the iso of CentOS 8 DVD and mount it on the server
     When I mount as "centos-8-iso" the ISO from "http://minima-mirror-bv.mgr.prv.suse.net/pub/centos/8/isos/x86_64/CentOS-8.2.2004-x86_64-dvd1.iso" in the server
