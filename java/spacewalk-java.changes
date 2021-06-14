@@ -21,6 +21,12 @@ Wed May 12 13:58:47 CEST 2021 - jgonzalez@suse.com
 - Do not require advisory_status to be set in ErrataHandler.create (bsc#1185965)
 
 -------------------------------------------------------------------
+Thu Jun 10 12:28:59 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.36-1
+- Change Prometheus exporters formula data schema to make it more generic and extendable
+
+-------------------------------------------------------------------
 Wed May 12 13:58:47 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.35-1

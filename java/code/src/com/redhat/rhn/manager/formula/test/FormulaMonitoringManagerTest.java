@@ -86,16 +86,18 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
         // Save data that enables monitoring
         Map<String, Object> formulaData = new HashMap<>();
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        Map<String, Object> exportersData = new HashMap<>();
+        exportersData.put("node_exporter", Collections.singletonMap("enabled", true));
+        exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        formulaData.put("exporters", exportersData);
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
 
         // Save data that disables monitoring
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("node_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+        exportersData.put("apache_exporter", Collections.singletonMap("enabled", false));
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
