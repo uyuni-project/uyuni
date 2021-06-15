@@ -127,5 +127,8 @@ systemctl start postgresql
 echo "Reindexing database. This may take a while, please do not cancel it!"
 database=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
 spacewalk-sql --select-mode - <<<"REINDEX DATABASE ${database};"
+if [ ${?} -ne 0 ]; then
+    echo "The reindexing failed. Please review the PostgreSQL logs at /var/lib/pgsql/data/log"
+    exit 1
+fi
 spacewalk-service start
-
