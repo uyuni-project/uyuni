@@ -2746,140 +2746,140 @@
       </trans-unit>
       <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve">
         <source>Virtual mem pct free</source>
-        <target/>
+        <target>Procento volné virtuální paměti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
-        <target/>
+        <target>Použitá virtuální paměť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Waiters" xml:space="preserve">
         <source>Waiters</source>
-        <target/>
+        <target>Hlídače</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Write rate" xml:space="preserve">
         <source>Write rate</source>
-        <target/>
+        <target>Rychlost zápisu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.value" xml:space="preserve">
         <source>value</source>
-        <target/>
+        <target>hodnota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="METOO" xml:space="preserve">
         <source>Supplemental Notification</source>
-        <target/>
+        <target>Doplňkové oznámení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BLACKHOLE" xml:space="preserve">
         <source>Suspend Standard Notifications</source>
-        <target/>
+        <target>Pozastavit standardní oznámení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ACK" xml:space="preserve">
         <source>Automatic Acknowledgement</source>
-        <target/>
+        <target>Automatické potvrzení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="REDIR" xml:space="preserve">
         <source>Redirect Standard Notifications</source>
-        <target/>
+        <target>Přesměrovat standardní upozornění</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/Filters.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CRITICAL" xml:space="preserve">
         <source>CRITICAL</source>
-        <target/>
+        <target>KRITICKÉ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK" xml:space="preserve">
         <source>OK</source>
-        <target/>
+        <target>OK</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="UNKNOWN" xml:space="preserve">
         <source>UNKNOWN</source>
-        <target/>
+        <target>NEZNÁMÉ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PENDING" xml:space="preserve">
         <source>PENDING</source>
-        <target/>
+        <target>NEVYŘÍZENO</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="WARNING" xml:space="preserve">
         <source>WARNING</source>
-        <target/>
+        <target>VAROVÁNÍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="npunix" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check.</source>
-        <target/>
+        <target>Na monitorovaném hostiteli musí běžet RHNMD, aby se provedla tato kontrola.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oracle" xml:space="preserve">
           <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target/>
+        <target>Kontroly Oracle vyžadují konfiguraci databáze a veřejných asociací vytvořených spuštěním $ORACLE_HOME/rdbms/admin/catalog.sql. Dále musí mít v každé instanci Oracle uživatel Oracle, konfigurovaný ke kontrole, minimálně oprávnění CONNECT a SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="snmp" xml:space="preserve">
           <source>SNMP must be running on the monitored host to perform this check.</source>
-        <target/>
+        <target>K provedení této kontroly musí být na monitorovaném hostiteli spuštěno SNMP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bea61_snmp" xml:space="preserve">
           <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-        <target/>
+        <target>Tuto kontrolu lze konfigurovat na spravovaném serveru BEA, je-li uvedena adresa IP serveru správy domény, na němž musí být též povoleno SNMP, což lze provést z konzoly Weblogic.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="npunix_oracle" xml:space="preserve">
           <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target/>
+        <target>K provedení této kontroly musí být na monitorovaném hostiteli spuštěno RHNMD. Kontroly Oracle vyžadují konfiguraci databáze a veřejných asociací vytvořených spuštěním $ORACLE_HOME/rdbms/admin/catalog.sql. Dále musí mít v každé instanci Oracle uživatel Oracle, konfigurovaný ke kontrole, minimálně oprávnění CONNECT a SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="apache1_3" xml:space="preserve">
           <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-        <target/>
+        <target>Aby tato kontrola fungovala správně, musí být direktiva ExtendedStatus v souboru httpd.conf tohoto webu nastavena na On.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2893,28 +2893,28 @@
       </trans-unit>
       <trans-unit id="Apache" xml:space="preserve">
           <source>Apache</source>
-        <target/>
+        <target>Apache</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BEA Weblogic" xml:space="preserve">
           <source>BEA Weblogic</source>
-        <target/>
+        <target>BEA Weblogic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="General" xml:space="preserve">
           <source>General</source>
-        <target/>
+        <target>Obecné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Linux" xml:space="preserve">
           <source>Linux</source>
-        <target/>
+        <target>Linux</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
