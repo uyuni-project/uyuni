@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-14 12:57+0000\n"
+"PO-Revision-Date: 2021-06-15 07:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2748,93 +2748,95 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1022
 msgid "usage: kickstart_setpartitions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_setpartitions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1071
 msgid "kickstart_setdistribution: Set the distribution for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_setdistribution: Nastaviť distribúciu pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1073
 msgid "usage: kickstart_setdistribution PROFILE DISTRIBUTION"
-msgstr ""
+msgstr "použitie: kickstart_setdistribution PROFIL DISTRIBÚCIA"
 
 #: ../src/spacecmd/kickstart.py:1107
 msgid "kickstart_enablelogging: Enable logging for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_enablelogging: Povoliť zaznamenávanie pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1108
 msgid "usage: kickstart_enablelogging PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_enablelogging PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1140
 msgid "kickstart_addvariable: Add a variable to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addvariable: Pridať premennú do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1141
 msgid "usage: kickstart_addvariable PROFILE KEY VALUE"
-msgstr ""
+msgstr "použitie: kickstart_addvariable PROFIL KĽÚČ HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:1179
 msgid "kickstart_updatevariable: Update a variable in a Kickstart profile"
-msgstr ""
+msgstr "kickstart_updatevariable: Aktualizovať premennú v profile Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1181
 msgid "usage: kickstart_updatevariable PROFILE KEY VALUE"
-msgstr ""
+msgstr "použitie: kickstart_updatevariable PROFIL KĽÚČ HODNOTA"
 
 #: ../src/spacecmd/kickstart.py:1216
 msgid "kickstart_removevariables: Remove variables from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removevariables: Odstrániť premenné z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1218
 msgid "usage: kickstart_removevariables PROFILE <KEY ...>"
-msgstr ""
+msgstr "použitie: kickstart_removevariables PROFIL <KĽÚČ ...>"
 
 #: ../src/spacecmd/kickstart.py:1267
 msgid "kickstart_listvariables: List the variables of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listvariables: Vypísať zoznam premenných profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1269
 msgid "usage: kickstart_listvariables PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listvariables PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1302
 msgid "kickstart_addoption: Set an option for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addoption: Nastaviť možnosť pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1303
 msgid "usage: kickstart_addoption PROFILE KEY [VALUE]"
-msgstr ""
+msgstr "použitie: kickstart_addoption PROFIL KĽÚČ [HODNOTA]"
 
 #: ../src/spacecmd/kickstart.py:1350
 #, python-format
 msgid "%s needs to be set as a custom option"
-msgstr ""
+msgstr "%s je potrebné nastaviť ako vlastnú možnosť"
 
 #: ../src/spacecmd/kickstart.py:1358
 msgid "kickstart_removeoptions: Remove options from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removeoptions: Odstrániť možnosti z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1359
 msgid "usage: kickstart_removeoptions PROFILE <OPTION ...>"
-msgstr ""
+msgstr "použitie: kickstart_removeoptions PROFIL <MOŽNOSŤ ...>"
 
 #: ../src/spacecmd/kickstart.py:1411
 msgid "kickstart_listoptions: List the options of a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listoptions: Vypísať zoznam možností profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1413
 msgid "usage: kickstart_listoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1447
 msgid ""
 "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr ""
+"kickstart_listcustomoptions: Vypísať zoznam vlastných možností profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1449
 msgid "usage: kickstart_listcustomoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listcustomoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1483
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
@@ -3518,7 +3520,7 @@ msgstr ""
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:525
 msgid "** Generating errata cache **"
-msgstr ""
+msgstr "** Generovanie vyrovnávacej pamäte opráv chýb **"
 
 #. tell the user what's going on
 #: ../src/spacecmd/misc.py:574
@@ -3974,7 +3976,7 @@ msgstr ""
 
 #: ../src/spacecmd/package.py:329
 msgid "List the errata that provide this package"
-msgstr ""
+msgstr "Vypísať zoznam opráv chýb, ktoré poskytuje tento balík"
 
 #: ../src/spacecmd/package.py:375
 msgid "List the dependencies for a package"
@@ -4222,14 +4224,18 @@ msgstr ""
 #: ../src/spacecmd/report.py:131
 msgid "report_errata: List all errata and how many systems they affect"
 msgstr ""
+"report_errata: Vypísať všetkých opráv chýb a počtu systémov, ktorých sa "
+"týkajú"
 
 #: ../src/spacecmd/report.py:132
 msgid "usage: report_errata [ERRATA|search:XXX ...]"
-msgstr ""
+msgstr "použitie: report_errata [OPRAVY_CHÝB|search:XXX ...]"
 
 #: ../src/spacecmd/report.py:144
 msgid "All errata requested - this may take a few minutes, please be patient!"
 msgstr ""
+"Požadované sú všetky opravy chýb - môže to trvať niekoľko minút, buďte, "
+"prosím, trpezliví!"
 
 #: ../src/spacecmd/report.py:167
 #, python-format
@@ -5028,7 +5034,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:622
 msgid "softwarechannel_listerrata: List the errata associated with a"
-msgstr ""
+msgstr "softwarechannel_listerrata: Vypísať zoznam opráv chýb spojených s"
 
 #: ../src/spacecmd/softwarechannel.py:623
 msgid "                            software channel"
@@ -5038,6 +5044,8 @@ msgstr ""
 msgid ""
 "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
+"použitie: softwarechannel_listerrata <KANÁL ...> [from=rrrrmmdd "
+"[to=rrrrmmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:682
 msgid "softwarechannel_listarches: lists the potential software"
@@ -7784,7 +7792,7 @@ msgstr ""
 
 #: ../src/spacecmd/utils.py:482
 msgid "Enhancement Errata"
-msgstr ""
+msgstr "Vylepšovacie opravy chýb"
 
 #: ../src/spacecmd/utils.py:492
 msgid "Current Selections"
