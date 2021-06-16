@@ -34,8 +34,3 @@ Then(/^the response header "(.*?)" should not be present$/) do |arg1|
   refute_includes(@headers.keys, arg1.downcase,
                   "Header '#{arg1}' present in '#{@url}'")
 end
-
-Then(/^the login form does not contain a jsessionid$/) do
-  form = find(:xpath, '//form[@name="loginForm"]')
-  refute_includes(form['action'], 'jsessionid=', 'URL rewriting is enabled: jsessionid present')
-end
