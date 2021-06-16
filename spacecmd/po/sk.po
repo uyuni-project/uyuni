@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-15 07:57+0000\n"
+"PO-Revision-Date: 2021-06-16 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2841,36 +2841,40 @@ msgstr "použitie: kickstart_listcustomoptions PROFIL"
 #: ../src/spacecmd/kickstart.py:1483
 msgid "kickstart_setcustomoptions: Set custom options for a Kickstart profile"
 msgstr ""
+"kickstart_setcustomoptions: Nastaviť vlastné možnosti pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1485
 msgid "usage: kickstart_setcustomoptions PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_setcustomoptions PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1533
 msgid "kickstart_addchildchannels: Add a child channels to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addchildchannels: Pridať kanály potomkov k profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1535
 msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: kickstart_addchildchannels PROFIL <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:1593
 msgid ""
 "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr ""
+"kickstart_removechildchannels: Odstrániť kanály potomkov z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1595
 msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
-msgstr ""
+msgstr "použitie: kickstart_removechildchannels PROFIL <KANÁL ...>"
 
 #: ../src/spacecmd/kickstart.py:1638
 msgid ""
 "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr ""
+"kickstart_listchildchannels: Vypísať zoznam kanálov potomkov profilu "
+"Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1640
 msgid "usage: kickstart_listchildchannels PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listchildchannels PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1674
 msgid ""
@@ -2897,27 +2901,27 @@ msgstr "použitie: kickstart_removefilepreservations PROFIL <SÚBOR ...>"
 
 #: ../src/spacecmd/kickstart.py:1758
 msgid "kickstart_listpackages: List the packages for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listpackages: Vypísať zoznam balíkov pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1760
 msgid "usage: kickstart_listpackages PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listpackages PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1792
 msgid "kickstart_addpackages: Add packages to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addpackages: Pridať balíky do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1793
 msgid "usage: kickstart_addpackages PROFILE <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: kickstart_addpackages PROFIL <BALÍK ...>"
 
 #: ../src/spacecmd/kickstart.py:1826
 msgid "kickstart_removepackages: Remove packages from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removepackages: Odstrániť balíky z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1828
 msgid "usage: kickstart_removepackages PROFILE <PACKAGE ...>"
-msgstr ""
+msgstr "použitie: kickstart_removepackages PROFIL <BALÍK ...>"
 
 #: ../src/spacecmd/kickstart.py:1871
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
@@ -5305,7 +5309,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1114
 #: ../src/spacecmd/softwarechannel.py:1203
 msgid "Original State (No Errata) [y/N]:"
-msgstr ""
+msgstr "Pôvodný stav (Žiadne opravy chýb) [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1118
 #: ../src/spacecmd/softwarechannel.py:1206
@@ -5400,6 +5404,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1434
 msgid "usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>"
 msgstr ""
+"použitie: softwarechannel_removeerrata KANÁL <OPRAVY_CHÝB:search:XXX ...>"
 
 #: ../src/spacecmd/softwarechannel.py:1487
 msgid "No patches to remove"
@@ -5409,7 +5414,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1827
 #, python-format
 msgid "Total Errata:   %s"
-msgstr ""
+msgstr "Celkový počet opráv chýb:   %s"
 
 #: ../src/spacecmd/softwarechannel.py:1499
 #: ../src/spacecmd/softwarechannel.py:1830
@@ -5438,6 +5443,8 @@ msgid ""
 "softwarechannel_adderratabydate: Add errata from one channel into another "
 "channel based on a date range"
 msgstr ""
+"softwarechannel_adderratabydate: Pridať opravy chýb z jedného kanála do "
+"druhého na základe dátumového rozsahu"
 
 #: ../src/spacecmd/softwarechannel.py:1594
 msgid ""
@@ -5484,6 +5491,8 @@ msgid ""
 "softwarechannel_listerratabydate: list errata from channelbased on a date "
 "range"
 msgstr ""
+"softwarechannel_listerratabydate: vypísať zoznam opráv chýb z kanála na "
+"základe dátumového rozsahu"
 
 #: ../src/spacecmd/softwarechannel.py:1669
 msgid "usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE"
@@ -5491,7 +5500,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1713
 msgid "No errata found between the given dates"
-msgstr ""
+msgstr "Medzi uvedenými dátumami sa nenašli žiadne opravy chýb"
 
 #: ../src/spacecmd/softwarechannel.py:1724
 msgid ""
