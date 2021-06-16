@@ -1,14 +1,19 @@
 import moment from "moment-timezone";
 
 // TODO: Only for testing
+/*
 window.serverTimeZone = "Asia/Tokyo"; // GMT+9
 window.serverTime = "2020-01-31T08:00:00.000+09:00";
 window.userTimeZone = "America/Los_Angeles"; // GMT-7
+*/
 
 declare global {
   interface Window {
+    /** The server time as an ISO string with offset intact, e.g. `"2020-01-31T08:00:00.000+09:00"` */
     serverTime?: string;
+    /** The server IANA time zone, e.g. `"Asia/Tokyo"` */
     serverTimeZone?: string;
+    /** The user's configured IANA time zone, e.g. `"Asia/Tokyo"` */
     userTimeZone?: string;
     userDateFormat?: string; // Optional
     userTimeFormat?: string; // Optional
@@ -53,7 +58,7 @@ declare module "moment" {
   export interface Moment {
     /**
      * Unless you specifically need the server time, please use the `toUser...` equivalent.
-     * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31 13:00 GMT+9"`
+     * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31 13:00 Asia/Tokyo"`
      */
     toServerString(): string;
     /**
@@ -72,7 +77,7 @@ declare module "moment" {
      */
     toServerTimeString(): string;
 
-    /** Get a localized date-time-zone string in the user's time zone, e.g. `"2020-01-31 13:00 GMT+9"` */
+    /** Get a localized date-time-zone string in the user's time zone, e.g. `"2020-01-31 13:00 Asia/Tokyo"` */
     toUserString(): string;
     /** Get a localized date-time string in the user's time zone, e.g. `"2020-01-31 13:00"` */
     toUserDateTimeString(): string;
@@ -90,6 +95,7 @@ declare module "moment" {
 }
 
 moment.fn.toServerString = function(this: moment.Moment): string {
+  // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
   return moment(this)
     .tz(serverTimeZone)
     .format(`${userDateFormat} ${userTimeFormat} [${serverTimeZone}]`);
@@ -120,7 +126,6 @@ moment.fn.toUserString = function(this: moment.Moment): string {
 };
 
 moment.fn.toUserDateTimeString = function(this: moment.Moment): string {
-  // Here and elsewhere, since moments are internally mutable, we make a copy before transitioning to a new timezone
   return moment(this)
     .tz(userTimeZone)
     .format(`${userDateFormat} ${userTimeFormat}`);
@@ -147,11 +152,11 @@ moment.fn.toAPIValue = function(this: moment.Moment): string {
 
 Object.defineProperties(moment, {
   serverTimeZone: {
-    value: serverTimeZone,
+    value: serverTimeZone as typeof moment["serverTimeZone"],
     writable: false,
   },
   userTimeZone: {
-    value: userTimeZone,
+    value: userTimeZone as typeof moment["serverTimeZone"],
     writable: false,
   },
 });
