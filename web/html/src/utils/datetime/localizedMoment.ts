@@ -42,14 +42,14 @@ const userTimeZone = validateOrGuessTimeZone(window.userTimeZone, "User");
 const userDateFormat = window.userDateFormat || "YYYY-MM-DD";
 const userTimeFormat = window.userTimeFormat || "HH:mm";
 
-// Sanity check
+// Sanity check, if the server and the browser have wildly differing time zone adjusted time, someone is probably wrong
 if (window.serverTime) {
   const diff = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), "minutes");
   if (Math.abs(diff) > 10) {
-    Loggerhead.error(`Server and browser time differ considerably (${diff} minutes)`);
+    Loggerhead.error(`Server and browser disagree on what the time is (offset by ${diff} minutes)`);
   }
 } else {
-  Loggerhead.error(`Server time not available`);
+  Loggerhead.error("Server time not available");
 }
 
 declare module "moment" {
