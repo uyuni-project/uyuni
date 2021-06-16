@@ -12,11 +12,11 @@ describe("localizedMoment", () => {
   test("displaying formats doesn't mutate the underlying instance", () => {
     const result = localizedMoment(validISOString);
     result.toUserDateTimeString();
-    expect(result.utcOffset()).toEqual(0);
+    expect(result.tz()).toEqual("UTC");
     result.toServerDateTimeString();
-    expect(result.utcOffset()).toEqual(0);
+    expect(result.tz()).toEqual("UTC");
     result.toAPIValue();
-    expect(result.utcOffset()).toEqual(0);
+    expect(result.tz()).toEqual("UTC");
   });
 
   test("keeps utility functions", () => {
