@@ -29,9 +29,7 @@ function validateOrGuessTimeZone(input: string | undefined, errorLabel: string) 
     moment.tz(input);
   } catch (error) {
     const guess = moment.tz.guess(true);
-    Loggerhead.error(
-      `${errorLabel} time zone not available, defaulting to guessed time zone (${guess}). ${error}`
-    );
+    Loggerhead.error(`${errorLabel} time zone not available, defaulting to guessed time zone (${guess}). ${error}`);
     return guess;
   }
   return input;
@@ -46,8 +44,8 @@ const userTimeFormat = window.userTimeFormat || "HH:mm";
 
 // Sanity check
 if (window.serverTime) {
-  const diff = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), 'minutes');
-  if(Math.abs(diff) > 10) {
+  const diff = localizedMomentConstructor(window.serverTime).diff(localizedMomentConstructor(), "minutes");
+  if (Math.abs(diff) > 10) {
     Loggerhead.error(`Server and browser time differ considerably (${diff} minutes)`);
   }
 } else {
