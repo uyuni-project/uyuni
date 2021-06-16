@@ -28,19 +28,13 @@ sure that branch is more monitored
 [Uyuni](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-cucumber-NUE/)
 
 
+[4.2](https://ci.suse.de/view/Manager/view/Manager-4.2/job/manager-4.2-dev-acceptance-tests-NUE/)
+
+
 [4.1](https://ci.suse.de/view/Manager/view/Manager-4.1/job/manager-4.1-cucumber-PRV/)
 
 
-[4.0](https://ci.suse.de/view/Manager/view/Manager-4.0/job/manager-4.0-cucumber-PRV/)
+[BV testsuite](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.2-qa-beta-build-validation/)
 
 
-[3.2](https://ci.suse.de/view/Manager/view/Manager-3.2/job/manager-3.2-cucumber-NUE/)
-Lower priority atm
-
-[QAM setup](https://ci.suse.de/view/Manager/view/Manager-4.1/job/manager-4.1-qam-setup-cucumber/)
-Has to be run before the next one
-
-[QAM testsuite](https://ci.suse.de/view/Manager/view/Manager-4.1/job/manager-4.1-qam-cucumber/)
-Only run after the setup above has finished
-
-[openQA installation](https://ci.suse.de/view/Manager/view/Manager-4.1/job/manager-4.1-openqa-installation/)
+[openQA installation](https://ci.suse.de/view/Manager/view/Manager-qa/job/manager-4.2-qa-openqa-installation/)
