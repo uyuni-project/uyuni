@@ -14,27 +14,27 @@ storiesOf("DateTimePicker", module).add("basic timezone support", () => {
       <p>
         user time zone: {localizedMoment.userTimeZone.displayValue} (
         {localizedMoment(value)
-          .utcOffset(localizedMoment.userTimeZone.utcOffset)
+          .tz(localizedMoment.userTimeZone)
           .format("Z")}
         )
       </p>
       <p>
         server time zone: {localizedMoment.serverTimeZone.displayValue} (
         {localizedMoment(value)
-          .utcOffset(localizedMoment.serverTimeZone.utcOffset)
+          .tz(localizedMoment.serverTimeZone)
           .format("Z")}
         )
       </p>
       <p>
         user time:
         {localizedMoment(value)
-          .utcOffset(localizedMoment.userTimeZone.utcOffset)
+          .tz(localizedMoment.userTimeZone)
           .toISOString(true)}
       </p>
       <p>
         server time:
         {localizedMoment(value)
-          .utcOffset(localizedMoment.serverTimeZone.utcOffset)
+          .tz(localizedMoment.serverTimeZone)
           .toISOString(true)}
       </p>
       <p>iso time: {value.toISOString()}</p>

@@ -299,7 +299,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
   onDateChanged = (year: number, month: number, day: number) => {
     const newValue = localizedMoment(this.props.value)
       // The user made the choice in the given timezone
-      .utcOffset(this.state.timeZone.utcOffset)
+      .tz(this.state.timeZone)
       .year(year)
       .month(month)
       .date(day);
@@ -312,7 +312,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
   onTimeChanged = (hours: number, minutes: number, seconds: number) => {
     const newValue = localizedMoment(this.props.value)
       // The user made the choice in the given timezone
-      .utcOffset(this.state.timeZone.utcOffset)
+      .tz(this.state.timeZone)
       .hours(hours)
       .minutes(minutes)
       .seconds(seconds)
@@ -325,7 +325,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
 
   render() {
     // Make a copy so we don't modify the passed prop
-    const zonedMoment = localizedMoment(this.props.value).utcOffset(this.state.timeZone.utcOffset);
+    const zonedMoment = localizedMoment(this.props.value).tz(this.state.timeZone);
     const year = zonedMoment.year();
     const month = zonedMoment.month();
     const date = zonedMoment.date();
@@ -376,7 +376,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             key="time-picker"
           />,
           <span className="input-group-addon" key="tz" onClick={this.toggleTimeZone}>
-            {this.state.timeZone.displayValue}
+            {this.state.timeZone}
           </span>,
         ]}
       </div>
