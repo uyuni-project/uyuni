@@ -1,3 +1,5 @@
+- Fix message in database migration (bsc#1187451)
+
 -------------------------------------------------------------------
 Wed Jun 16 10:59:25 CEST 2021 - jgonzalez@suse.com
 
