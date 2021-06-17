@@ -1,0 +1,97 @@
+{
+  "data": {
+    "_stamp": "2021-06-08T13:16:42.941931",
+    "cmd": "_return",
+    "fun": "state.apply",
+    "fun_args": [
+      {
+        "mods": [
+          "virt.create-vm"
+        ],
+        "pillar": {
+          "arch": "x86_64",
+          "boot_dev": "network hd",
+          "disks": [
+            {
+              "device": "disk",
+              "format": "qcow2",
+              "image": "/var/testsuite-data/disk-image-template.qcow2",
+              "model": "virtio",
+              "name": "system",
+              "pool": "default"
+            }
+          ],
+          "graphics": {
+            "type": "vnc"
+          },
+          "interfaces": [
+            {
+              "name": "eth0",
+              "source": "default",
+              "type": "network"
+            }
+          ],
+          "mem": 1048576,
+          "name": "vm01",
+          "os_type": "hvm",
+          "vcpus": 1,
+          "vm_type": "kvm"
+        },
+        "queue": true
+      }
+    ],
+    "id": "demo-kvm1.tf.local",
+    "jid": "20210608131640965375",
+    "metadata": {
+      "batch-mode": true,
+      "suma-action-chain": false,
+      "suma-action-id": 914,
+      "suma-force-pkg-list-refresh": false,
+      "suma-minion-startup": false
+    },
+    "out": "highstate",
+    "retcode": 2,
+    "return": {
+      "virt_utils_|-nets-vm01_|-nets-vm01_|-network_running": {
+        "__id__": "nets-vm01",
+        "__run_num__": 0,
+        "__sls__": "virt.create-vm",
+        "changes": {},
+        "comment": "all networks are already running",
+        "duration": 3.875,
+        "name": "nets-vm01",
+        "result": true,
+        "start_time": "15:16:41.595716"
+      },
+      "virt_utils_|-pools-vm01_|-pools-vm01_|-pool_running": {
+        "__id__": "pools-vm01",
+        "__run_num__": 1,
+        "__sls__": "virt.create-vm",
+        "changes": {},
+        "comment": "default-broken pool is not defined",
+        "duration": 3.624,
+        "name": "pools-vm01",
+        "result": false,
+        "start_time": "15:16:41.599759"
+      },
+      "virt_|-domain_first_boot_define_|-vm01_|-running": {
+        "__id__": "domain_first_boot_define",
+        "__run_num__": 2,
+        "__sls__": "virt.create-vm",
+        "changes": {
+          "vm01": {
+            "definition": true,
+            "started": true
+          }
+        },
+        "comment": "Domain vm01 defined and started",
+        "duration": 1327.191,
+        "name": "vm01",
+        "result": true,
+        "start_time": "15:16:41.604384"
+      }
+    },
+    "success": false
+  },
+  "tag": "salt/job/20210608131640965375/ret/demo-kvm1.tf.local"
+}
