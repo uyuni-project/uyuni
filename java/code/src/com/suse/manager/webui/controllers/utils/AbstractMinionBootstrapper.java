@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.ContactMethod;
@@ -242,6 +243,9 @@ public abstract class AbstractMinionBootstrapper {
                 .orElse(ConfigDefaults.get().getCobblerHost());
 
         pillarData.put("mgr_server", mgrServer);
+        if ("ssh-push-tunnel".equals(contactMethod)) {
+            pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
+        }
         pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
