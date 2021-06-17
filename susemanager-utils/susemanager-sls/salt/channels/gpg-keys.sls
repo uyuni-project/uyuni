@@ -1,3 +1,5 @@
+{%- set mgr_server = salt['pillar.get']('mgr_server')%}
+{%- set port = salt['pillar.get']('mgr_server_https_port', 443)%}
 
 {%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 {%- if grains['os_family'] == 'Debian' %}
@@ -9,7 +11,7 @@ mgr_debian_repo_keyring:
 {% else %}
 mgr_trust_customer_gpg_key:
   cmd.run:
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/mgr-gpg-pub.key
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/mgr-gpg-pub.key
     - runas: root
 {%- endif %}
 {%- endif %}
@@ -17,20 +19,20 @@ mgr_trust_customer_gpg_key:
 {%- if grains['os_family'] == 'RedHat' %}
 trust_res_gpg_key:
   cmd.run:
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
     - runas: root
 
 trust_suse_manager_tools_rhel_gpg_key:
   cmd.run:
 {%- if grains['osmajorrelease']|int == 6 %}
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res6tools:name') }}
 {%- elif grains['osmajorrelease']|int == 7 %}
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
 {%- elif grains['osmajorrelease']|int == 8 %}
-    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res8tools:file') }}
+    - name: rpm --import https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:res8tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res8tools:name') }}
 {%- elif grains['osmajorrelease']|int == 2 and grains['os'] == 'Amazon' %}
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
@@ -49,5 +51,5 @@ install_gnupg_debian:
 trust_suse_manager_tools_deb_gpg_key:
   mgrcompat.module_run:
     - name: pkg.add_repo_key
-    - path: https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:ubuntutools:file') }}
+    - path: https://{{mgr_server}}:{{port}}/pub/{{ salt['pillar.get']('gpgkeys:ubuntutools:file') }}
 {%- endif %}
