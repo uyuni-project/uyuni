@@ -3159,231 +3159,231 @@
       </trans-unit>
       <trans-unit id="Load" xml:space="preserve">
           <source>Load</source>
-        <target/>
+        <target>Zatížení</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locks" xml:space="preserve">
           <source>Locks</source>
-        <target/>
+        <target>Zámky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log Pattern Match" xml:space="preserve">
           <source>Log Pattern Match</source>
-        <target/>
+        <target>Shoda předloh žurnálu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log Size Growth" xml:space="preserve">
           <source>Log Size Growth</source>
-        <target/>
+        <target>Nárůst žurnálu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
-        <target/>
+        <target state="needs-translation">LongLegs (dlouhé nohy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Mail Transfer (SMTP)" xml:space="preserve">
           <source>Mail Transfer (SMTP)</source>
-        <target/>
+        <target>Přenos pošty (SMTP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Memory Usage" xml:space="preserve">
           <source>Memory Usage</source>
-        <target/>
+        <target>Využití paměti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Open Tables" xml:space="preserve">
           <source>Open Tables</source>
-        <target/>
+        <target>Otevřené tabulky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Opened Tables" xml:space="preserve">
           <source>Opened Tables</source>
-        <target/>
+        <target>Otevírané tabulky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="POP Mail" xml:space="preserve">
           <source>POP Mail</source>
-        <target/>
+        <target>Pošta POP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Ping" xml:space="preserve">
           <source>Ping</source>
-        <target/>
+        <target>Ping</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Probe Count" xml:space="preserve">
           <source>Probe Count</source>
-        <target/>
+        <target>Počet sond</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Process Count Total" xml:space="preserve">
           <source>Process Count Total</source>
-        <target/>
+        <target>Celkem procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Process Counts" xml:space="preserve">
           <source>Process Counts</source>
-        <target/>
+        <target>Počty procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Process Counts by State" xml:space="preserve">
           <source>Process Counts by State</source>
-        <target/>
+        <target>Počty procesů dle stavu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Process Health" xml:space="preserve">
           <source>Process Health</source>
-        <target/>
+        <target>Zdraví procesů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Process Running" xml:space="preserve">
           <source>Process Running</source>
-        <target/>
+        <target>Běžící proces</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Processes" xml:space="preserve">
           <source>Processes</source>
-        <target/>
+        <target>Procesy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Query Rate" xml:space="preserve">
           <source>Query Rate</source>
-        <target/>
+        <target>Četnost dotazů</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="RPC Service" xml:space="preserve">
           <source>RPC Service</source>
-        <target/>
+        <target>Služba RPC</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Redo Log" xml:space="preserve">
           <source>Redo Log</source>
-        <target/>
+        <target>Záznam opakované akce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Ping" xml:space="preserve">
           <source>Remote Ping</source>
-        <target/>
+        <target>Vzdálený ping</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Program" xml:space="preserve">
           <source>Remote Program</source>
-        <target/>
+        <target>Vzdálený program</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Program with Data" xml:space="preserve">
           <source>Remote Program with Data</source>
-        <target/>
+        <target>Vzdálený program s daty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Requests" xml:space="preserve">
           <source>Requests</source>
-        <target/>
+        <target>Požadavky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SNMP Check" xml:space="preserve">
           <source>SNMP Check</source>
-        <target/>
+        <target>Kontrola SNMP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="SSH" xml:space="preserve">
           <source>SSH</source>
-        <target/>
+        <target>SSH</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Secure Web server (HTTPS)" xml:space="preserve">
           <source>Secure Web server (HTTPS)</source>
-        <target/>
+        <target>Bezpečný webový server (HTTPS)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Server State" xml:space="preserve">
           <source>Server State</source>
-        <target/>
+        <target>Stav serveru</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Servlet" xml:space="preserve">
           <source>Servlet</source>
-        <target/>
+        <target>Servlet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Swap" xml:space="preserve">
           <source>Swap</source>
-        <target/>
+        <target>Odkládací prostor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Swap Usage" xml:space="preserve">
           <source>Swap Usage</source>
-        <target/>
+        <target>Odkládací prostor - využití</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="TCP Check" xml:space="preserve">
           <source>TCP Check</source>
-        <target/>
+        <target>Kontrola TCP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
