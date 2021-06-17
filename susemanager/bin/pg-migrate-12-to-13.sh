@@ -122,7 +122,7 @@ fi
 cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data/*
 
-echo "`date +"%H:%M:%S"`   Starting spacewalk services..."
+echo "`date +"%H:%M:%S"`   Starting PostgreSQL service..."
 systemctl start postgresql
 echo "Reindexing database. This may take a while, please do not cancel it!"
 database=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
@@ -131,4 +131,5 @@ if [ ${?} -ne 0 ]; then
     echo "The reindexing failed. Please review the PostgreSQL logs at /var/lib/pgsql/data/log"
     exit 1
 fi
+echo "`date +"%H:%M:%S"`   Starting spacewalk services..."
 spacewalk-service start
