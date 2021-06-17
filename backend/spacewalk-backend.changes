@@ -1,3 +1,11 @@
+- show better error message when reposync failed
+
+-------------------------------------------------------------------
+Mon Jun 14 17:33:06 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.13-1
+- fix downloading comps files by matching type in repomd.xml (bsc#1186653)
+
 -------------------------------------------------------------------
 Mon May 24 12:36:07 CEST 2021 - jgonzalez@suse.com
 

@@ -1,3 +1,17 @@
+- Fix message in database migration (bsc#1187451)
+
+-------------------------------------------------------------------
+Wed Jun 16 10:59:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.16-1
+- Fix database corruption after migrating the server to PostgreSQL 13 (bsc#1187217)
+ 
+-------------------------------------------------------------------
+Mon Jun 14 17:33:40 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.15-1
+- Fix database database migration script from PostgreSQL 12 to 13
+
 -------------------------------------------------------------------
 Wed Jun 02 11:08:38 CEST 2021 - jgonzalez@suse.com
 

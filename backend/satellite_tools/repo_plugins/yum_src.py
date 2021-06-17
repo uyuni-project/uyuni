@@ -27,6 +27,8 @@ import configparser
 import fnmatch
 import glob
 import gzip
+import bz2
+import lzma
 import os
 import re
 import solv
@@ -52,6 +54,7 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
+from rhn.i18n import sstr
 
 
 # namespace prefix to parse patches.xml file
@@ -630,15 +633,19 @@ type=rpm-md
         zypper_cmd = "zypper"
         if not self.interactive:
             zypper_cmd = "{} -n".format(zypper_cmd)
-        ret_error = os.system("{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
             zypper_cmd,
             REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             REPOSYNC_ZYPPER_RPMDB_PATH,
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/")
-        ))
-        if ret_error:
+        )
+        process = subprocess.run(zypper_cmd.split(' '), stderr=subprocess.PIPE)
+
+        if process.returncode:
+            if process.stderr:
+                raise RepoMDError("Cannot access repository.\n{}".format(sstr(process.stderr)))
             raise RepoMDError("Cannot access repository. Maybe repository GPG keys are not imported")
 
         repo.is_configured = True
@@ -704,12 +711,24 @@ type=rpm-md
             self.setup_repo(self.repo)
 
         _repodata_path = self._get_repodata_path()
-        _file_globs = ["/*{}.xml.gz", "/*{}.xml", "/*{}.yaml.gz", "/*{}.yaml"]
-        for f in _file_globs:
-            _md_files = glob.glob(_repodata_path + f.format(tag))
-            if _md_files:
-                return _md_files[0]
-        return None
+        repomd_path = os.path.join(_repodata_path, 'repomd.xml')
+        if tag == 'repomd':
+            return repomd_path
+
+        def get_location_from_xml_element(data_item):
+            for sub_item in data_item:
+                if sub_item.tag.endswith("location"):
+                    return sub_item.attrib.get("href")
+                    
+        path = None
+        with open(repomd_path, 'rb') as repomd:
+            for _, elem in etree.iterparse(repomd):
+                if elem.tag.endswith("data") and elem.attrib.get("type") == tag:
+                    path = get_location_from_xml_element(elem)
+                    break
+        if not path:
+            return None
+        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, path)
 
     def _get_repodata_path(self):
         """
@@ -730,7 +749,7 @@ type=rpm-md
         """
         if self._md_exists('repomd'):
             repomd_path = self._retrieve_md_path('repomd')
-            infile = repomd_path.endswith('.gz') and gzip.open(repomd_path) or open(repomd_path, 'rt')
+            infile = self._decompress(repomd_path)
             for repodata in etree.parse(infile).getroot():
                 if repodata.get('type') == 'primary':
                     checksum_elem = repodata.find(REPO_XML+'checksum')
@@ -878,7 +897,7 @@ type=rpm-md
         susedata = []
         if self._md_exists('susedata'):
             data_path = self._retrieve_md_path('susedata')
-            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            infile = self._decompress(data_path)
             for package in etree.parse(infile).getroot():
                 d = {}
                 d['pkgid'] = package.get('pkgid')
@@ -913,7 +932,7 @@ type=rpm-md
         products = []
         if self._md_exists('products'):
             data_path = self._retrieve_md_path('products')
-            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            infile = self._decompress(data_path)
             for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
@@ -939,7 +958,7 @@ type=rpm-md
         if self._md_exists('updateinfo'):
             notices = {}
             updates_path = self._retrieve_md_path('updateinfo')
-            infile = updates_path.endswith('.gz') and gzip.open(updates_path) or open(updates_path, 'rt')
+            infile = self._decompress(updates_path)
             for _event, elem in etree.iterparse(infile):
                 if elem.tag == 'update':
                     un = UpdateNotice(elem)
@@ -950,7 +969,7 @@ type=rpm-md
             return ('updateinfo', notices.values())
         elif self._md_exists('patches'):
             patches_path = self._retrieve_md_path('patches')
-            infile = patches_path.endswith('.gz') and gzip.open(patches_path) or open(patches_path, 'rt')
+            infile = self._decompress(patches_path)
             notices = []
             for patch in etree.parse(infile).getroot():
                 checksum_elem = patch.find(PATCHES_XML+'checksum')
@@ -978,8 +997,8 @@ type=rpm-md
         """
         # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz
         groups = None
-        if self._md_exists('comps'):
-            groups = self._retrieve_md_path('comps')
+        if self._md_exists('group'):
+            groups = self._retrieve_md_path('group')
         return groups
 
     def get_modules(self):
@@ -1223,3 +1242,12 @@ type=rpm-md
 
     def _authenticate(self, url):
         pass
+
+    def _decompress(self, filename):
+        if filename.endswith('.gz'):
+            return gzip.open(filename)
+        elif filename.endswith('.bz2'):
+            return bz2.open(filename)
+        elif filename.endswith('.xz'):
+            return lzma.open(filename)
+        return open(filename, 'rt')

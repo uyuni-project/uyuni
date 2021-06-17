@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -217,5 +219,18 @@ public class ProductTreeEntry {
      */
     public boolean isSigned() {
         return signed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("root", getRootProductId())
+        .append("product", getProductId())
+        .append("repo", getRepositoryId())
+        .append("channel", getChannelLabel())
+        .append("parent", getParentChannelLabel());
+        return builder.toString();
     }
 }

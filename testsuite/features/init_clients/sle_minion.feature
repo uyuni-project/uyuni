@@ -40,7 +40,7 @@ Feature: Bootstrap a Salt minion via the GUI
     Then I should see "sle_minion" hostname
 
   Scenario: Migrate this minion to SLE 15 SP2
-    Given I am on the Systems overview page of this "sle_spack_migrated_minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
@@ -53,20 +53,20 @@ Feature: Bootstrap a Salt minion via the GUI
     Then I should see a "This system is scheduled to be migrated to" text
 
   Scenario: Check the migration is successful for this minion
-    Given I am on the Systems overview page of this "sle_spack_migrated_minion"
+    Given I am on the Systems overview page of this "sle_minion"
     When I follow "Events"
     And I follow "History"
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
-    And vendor change should be enabled for product migration on "sle_spack_migrated_minion"
+    And vendor change should be enabled for product migration on "sle_minion"
 
   Scenario: Install the latest Salt on this minion
-    When I migrate the non-SUMA repositories on "sle_spack_migrated_minion"
-    And I enable repositories before installing Salt on this "sle_spack_migrated_minion"
-    And I install Salt packages from "sle_spack_migrated_minion"
-    And I disable repositories after installing Salt on this "sle_spack_migrated_minion"
+    When I migrate the non-SUMA repositories on "sle_minion"
+    And I enable repositories before installing Salt on this "sle_minion"
+    And I install Salt packages from "sle_minion"
+    And I disable repositories after installing Salt on this "sle_minion"
 
   Scenario: Subscribe the SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"

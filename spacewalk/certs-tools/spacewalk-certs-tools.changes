@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 10 13:45:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.10-1
+- added error message when re-running configure-proxy.sh and
+  chosing the option not to import the existing certificates
+
+-------------------------------------------------------------------
 Wed Jun 09 10:20:18 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.9-1
