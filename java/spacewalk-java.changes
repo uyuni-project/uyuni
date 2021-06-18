@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jun 18 12:41:30 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.23-1
 - Show the full state return message for VM actions
 - show reposync errors in user notification details
 - do not check accessibility of free product repositories (bsc#1182817)
