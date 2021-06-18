@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-16 18:57+0000\n"
+"PO-Revision-Date: 2021-06-18 07:58+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -2925,16 +2925,16 @@ msgstr "použitie: kickstart_removepackages PROFIL <BALÍK ...>"
 
 #: ../src/spacecmd/kickstart.py:1871
 msgid "kickstart_listscripts: List the scripts for a Kickstart profile"
-msgstr ""
+msgstr "kickstart_listscripts: Vypísať zoznam skriptov pre profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1873
 msgid "usage: kickstart_listscripts PROFILE"
-msgstr ""
+msgstr "použitie: kickstart_listscripts PROFIL"
 
 #: ../src/spacecmd/kickstart.py:1892
 #, python-format
 msgid "No scripts has been found for profile '%s'"
-msgstr ""
+msgstr "Pre profil '%s' sa nenašli žiadne skripty"
 
 #: ../src/spacecmd/kickstart.py:1900
 #, python-format
@@ -2943,7 +2943,7 @@ msgstr "ID:          %i"
 
 #: ../src/spacecmd/kickstart.py:1915
 msgid "kickstart_addscript: Add a script to a Kickstart profile"
-msgstr ""
+msgstr "kickstart_addscript: Pridať skript do profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:1916
 msgid ""
@@ -2957,18 +2957,27 @@ msgid ""
 "  -c execute in a chroot environment\n"
 "  -t ENABLING_TEMPLATING"
 msgstr ""
+"použitie: kickstart_addscript PROFIL [voľby])\n"
+"\n"
+"voľby:\n"
+"  -p PROFIL\n"
+"  -e ČAS_VYKONANIA ['pre', 'post']\n"
+"  -i INTERPRETER\n"
+"  -f SÚBOR\n"
+"  -c vykonať v prostredí chroot\n"
+"  -t POVOLENIE_ŠABLÓNOVANIA"
 
 #: ../src/spacecmd/kickstart.py:1949
 msgid "Profile Name:"
-msgstr ""
+msgstr "Názov profilu:"
 
 #: ../src/spacecmd/kickstart.py:1951
 msgid "Pre/Post Script [post]:"
-msgstr ""
+msgstr "Skript Pre/Post [post]:"
 
 #: ../src/spacecmd/kickstart.py:1952
 msgid "Chrooted [Y/n]:"
-msgstr ""
+msgstr "S aplikovaným chroot [A/n]:"
 
 #: ../src/spacecmd/kickstart.py:1953
 msgid "Interpreter [/bin/bash]:"
@@ -2976,17 +2985,17 @@ msgstr "Interpreter [/bin/bash]:"
 
 #: ../src/spacecmd/kickstart.py:1990
 msgid "The execution time is required"
-msgstr ""
+msgstr "Vyžaduje sa čas vykonania"
 
 #: ../src/spacecmd/kickstart.py:2006
 #, python-format
 msgid "Profile Name:   %s"
-msgstr ""
+msgstr "Názov profilu:   %s"
 
 #: ../src/spacecmd/kickstart.py:2007
 #, python-format
 msgid "Execution Time: %s"
-msgstr ""
+msgstr "Čas vykonania: %s"
 
 #: ../src/spacecmd/kickstart.py:2008
 #, python-format
@@ -2996,7 +3005,7 @@ msgstr "Chroot:         %s"
 #: ../src/spacecmd/kickstart.py:2009
 #, python-format
 msgid "Template:       %s"
-msgstr ""
+msgstr "Šablóna:       %s"
 
 #: ../src/spacecmd/kickstart.py:2010
 #, python-format
@@ -3005,31 +3014,31 @@ msgstr "Interpreter:    %s"
 
 #: ../src/spacecmd/kickstart.py:2011
 msgid "Contents:"
-msgstr ""
+msgstr "Obsah:"
 
 #: ../src/spacecmd/kickstart.py:2031
 msgid "kickstart_removescript: Remove a script from a Kickstart profile"
-msgstr ""
+msgstr "kickstart_removescript: Odstrániť skript z profilu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2032
 msgid "usage: kickstart_removescript PROFILE [ID]"
-msgstr ""
+msgstr "použitie: kickstart_removescript PROFIL [ID]"
 
 #: ../src/spacecmd/kickstart.py:2060 ../src/spacecmd/kickstart.py:2073
 msgid "Invalid script ID"
-msgstr ""
+msgstr "Neplatný skript ID"
 
 #: ../src/spacecmd/kickstart.py:2068
 msgid "Script ID:"
-msgstr ""
+msgstr "ID skriptu:"
 
 #: ../src/spacecmd/kickstart.py:2075
 msgid "Remove this script [y/N]:"
-msgstr ""
+msgstr "Odstrániť tento skript [a/N]:"
 
 #: ../src/spacecmd/kickstart.py:2088
 msgid "kickstart_clone: Clone a Kickstart profile"
-msgstr ""
+msgstr "kickstart_clone: Klonovať profil Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2089
 msgid ""
@@ -3039,6 +3048,11 @@ msgid ""
 "  -n NAME\n"
 "  -c CLONE_NAME"
 msgstr ""
+"použitie: kickstart_clone [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -c NÁZOV_KLONU"
 
 #: ../src/spacecmd/kickstart.py:2114
 msgid "Kickstart Profiles"
