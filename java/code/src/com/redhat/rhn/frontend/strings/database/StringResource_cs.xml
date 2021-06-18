@@ -3187,7 +3187,7 @@
       </trans-unit>
       <trans-unit id="LongLegs" xml:space="preserve">
           <source>LongLegs</source>
-        <target state="needs-translation">LongLegs (dlouhé nohy)</target>
+        <target state="translated">LongLegs (algoritmy optimalizace trasy)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3390,7 +3390,7 @@
       </trans-unit>
       <trans-unit id="TCP Connections by State" xml:space="preserve">
           <source>TCP Connections by State</source>
-        <target/>
+        <target>Připojení TCP podle stavu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
