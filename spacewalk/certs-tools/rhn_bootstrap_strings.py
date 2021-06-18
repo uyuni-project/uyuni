@@ -155,13 +155,15 @@ CLIENT_REPOS_ROOT=
 
 # Avoid installing venv-salt-minion instead salt-minion
 # even if it available in the bootstrap repo
-AVOID_VENV_SALT_MINION=0
+AVOID_VENV_SALT_MINION={avoid_venv}
 
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
 # -----------------------------------------------------------------------------
 #
+
+VENV_ENABLED=0
 
 #
 # do not try to register a SUSE Manager server at itself
@@ -248,6 +250,7 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
+                          avoid_venv=1 if bool(options.no_bundle) else 0,
                           using_ssl=1,
                           using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
@@ -437,7 +440,7 @@ if [ "$INSTALLER" == yum ]; then
 
     function getY_MISSING() {{
         local NEEDED="{PKG_NAME_YUM}"
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="{PKG_NAME_VENV}"
         fi
         Y_MISSING=""
@@ -486,7 +489,7 @@ if [ "$INSTALLER" == yum ]; then
     fi
     # try update main packages for registration from any repo which is available
     get_rhnlib_pkgs
-    if [ "0$VENV_ENABLED" -eq 1 ]; then
+    if [ $VENV_ENABLED -eq 1 ]; then
         yum -y upgrade {PKG_NAME_VENV_UPDATE_YUM} ||:
     else
         yum -y upgrade {PKG_NAME_UPDATE_YUM} $RHNLIB_PKG ||:
@@ -520,7 +523,7 @@ elif [ "$INSTALLER" == zypper ]; then
 
     function getZ_MISSING() {{
         local NEEDED="{PKG_NAME}"
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="{PKG_NAME_VENV}"
         fi
         if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
@@ -641,7 +644,7 @@ elif [ "$INSTALLER" == zypper ]; then
 
     get_rhnlib_pkgs
     # try update main packages for registration from any repo which is available
-    if [ "0$VENV_ENABLED" -eq 1 ]; then
+    if [ $VENV_ENABLED -eq 1 ]; then
         zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
     else
         zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
@@ -674,7 +677,7 @@ elif [ "$INSTALLER" == apt ]; then
 
     function getA_MISSING() {{
         local NEEDED="salt-common salt-minion"
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             NEEDED="venv-salt-minion"
         fi
         A_MISSING=""
@@ -741,14 +744,14 @@ elif [ "$INSTALLER" == apt ]; then
         echo "* going to install missing packages..."
         # check if there are any leftovers from previous salt-minion installs and purge them
         SALT_MINION_PKG="salt-minion"
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             SALT_MINION_PKG="venv-salt-minion"
         fi
         dpkg-query -W -f='${{Status}}' "$SALT_MINION_PKG" 2>/dev/null | grep -q "deinstall ok config-files"
         if [ "$?" -eq 0 ]; then
             echo "* purging previous Salt config files"
             apt-get --yes purge "$SALT_MINION_PKG"
-            if [ "0$VENV_ENABLED" -eq 1 ]; then
+            if [ $VENV_ENABLED -eq 1 ]; then
                 rm -rf /etc/opt/venv-salt-minion/
             else
                 apt-get purge salt-common
@@ -765,7 +768,7 @@ elif [ "$INSTALLER" == apt ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    if [ "0$VENV_ENABLED" -eq 1 ]; then
+    if [ $VENV_ENABLED -eq 1 ]; then
         apt-get --yes install --no-install-recommends --only-upgrade venv-salt-minion ||:
     else
         apt-get --yes install --no-install-recommends --only-upgrade salt-common salt-minion ||:
@@ -1111,7 +1114,7 @@ MINION_ID_FILE="/etc/salt/minion_id"
 SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
 MINION_SERVICE="salt-minion"
 
-if [ "0$VENV_ENABLED" -eq 1 ]; then
+if [ $VENV_ENABLED -eq 1 ]; then
     MINION_ID_FILE="/etc/opt/venv-salt-minion/minion_id"
     SUSEMANAGER_MASTER_FILE="/etc/opt/venv-salt-minion/minion.d/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
@@ -1280,13 +1283,13 @@ if [ $DISABLE_LOCAL_REPOS -eq 1 ] && [ $SALT_ENABLED -eq 0 ]; then
 fi
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
     if [ "$INSTALLER" == zypper ]; then
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             echo "zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER_SYNC}; zypper --non-interactive up (conditional)"
         else
             echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}; zypper --non-interactive up (conditional)"
         fi
     elif [ "$INSTALLER" == yum ]; then
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             echo "yum -y upgrade yum {PKG_NAME_VENV_YUM_SYNC}; yum upgrade (conditional)"
         else
             echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}; yum upgrade (conditional)"
@@ -1296,13 +1299,13 @@ if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
     fi
 else
     if [ "$INSTALLER" == zypper ]; then
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             echo "zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER_SYNC}"
         else
             echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}"
         fi
     elif [ "$INSTALLER" == yum ]; then
-        if [ "0$VENV_ENABLED" -eq 1 ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
             echo "yum -y upgrade yum {PKG_NAME_VENV_YUM_SYNC}"
         else
             echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}"
@@ -1323,7 +1326,7 @@ if [ "$INSTALLER" == zypper ]; then
     if [ $SALT_ENABLED -eq 0 ]; then
         zypper --non-interactive ref -s
     fi
-    if [ "0$VENV_ENABLED" -eq 1 ]; then
+    if [ $VENV_ENABLED -eq 1 ]; then
         zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER}
     else
         zypper --non-interactive up zypper {PKG_NAME_ZYPPER}
@@ -1341,7 +1344,7 @@ if [ "$INSTALLER" == zypper ]; then
     fi
 elif [ "$INSTALLER" == yum ]; then
     yum repolist
-    if [ "0$VENV_ENABLED" -eq 1 ]; then
+    if [ $VENV_ENABLED -eq 1 ]; then
         /usr/bin/yum -y upgrade yum {PKG_NAME_VENV_YUM}
     else
         /usr/bin/yum -y upgrade yum {PKG_NAME_YUM}

@@ -11,55 +11,55 @@
 {%- set venv_minion_installed = pkgs_installed.get('venv-salt-minion', False) and True %}
 {%- set venv_minion_available = venv_minion_installed or salt['pkg.latest_version']('venv-salt-minion') or False %}
 {%- if venv_minion_available %}
-venv-salt-minion-pkg:
+mgr_venv_salt_minion_pkg:
   pkg.installed:
     - name: venv-salt-minion
     - onlyif:
       - ([ {{ venv_minion_installed }} = "False" ])
 
-copy-salt-minion-id:
+mgr_copy_salt_minion_id:
   file.copy:
     - name: /etc/opt/venv-salt-minion/minion_id
     - source: /etc/salt/minion_id
     - require:
-      - pkg: venv-salt-minion-pkg
+      - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
       - test -f /etc/salt/minion_id
 
-copy-salt-minion-configs:
+mgr_copy_salt_minion_configs:
   cmd.run:
     - name: cp -r /etc/salt/minion.d /etc/opt/venv-salt-minion/
     - require:
-      - pkg: venv-salt-minion-pkg
+      - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
       - ([ {{ venv_managed_minion }} = "False" ])
 
-copy-salt-minion-keys:
+mgr_copy_salt_minion_keys:
   cmd.run:
     - name: cp -r /etc/salt/pki/minion/minion* /etc/opt/venv-salt-minion/pki/minion/
     - require:
-      - cmd: copy-salt-minion-configs
+      - cmd: mgr_copy_salt_minion_configs
     - onlyif:
       - test -f /etc/salt/pki/minion/minion_master.pub
     - unless:
       - test -f /etc/opt/venv-salt-minion/pki/minion/minion_master.pub
 
-enable-venv-salt-minion:
+mgr_enable_venv_salt_minion:
   service.running:
     - name: venv-salt-minion
     - enable: True
     - require:
-      - cmd: copy-salt-minion-keys
+      - cmd: mgr_copy_salt_minion_keys
 
-disable-salt-minion:
+mgr_disable_salt_minion:
   service.dead:
     - name: salt-minion
     - enable: False
     - require:
-      - service: enable-venv-salt-minion
+      - service: mgr_enable_venv_salt_minion
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt') %}
-purge-non-venv-salt-packages:
+mgr_purge_non_venv_salt_packages:
   pkg.purged:
     - pkgs:
       - salt
@@ -68,33 +68,33 @@ purge-non-venv-salt-packages:
       - python2-salt
       - python3-salt
     - require:
-      - service: disable-salt-minion
+      - service: mgr_disable_salt_minion
 {%- endif %}
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt_files') %}
-purge-non-venv-salt-pki-dir:
+mgr_purge_non_venv_salt_pki_dir:
   cmd.run:
     - name: rm -rf /etc/salt/minion* /etc/salt/pki/minion
     - onlyif:
       - test -d /etc/salt/pki/minion
     - require:
-      - service: disable-salt-minion
+      - service: mgr_disable_salt_minion
 
-purge-non-venv-salt-conf-dir:
+mgr_purge_non_venv_salt_conf_dir:
   file.absent:
     - name: /etc/salt
     - unless:
       - find /etc/salt -type f -print -quit | grep -q .
     - require:
-      - cmd: purge-non-venv-salt-pki-dir
+      - cmd: mgr_purge_non_venv_salt_pki_dir
 {%- endif %}
 {%- else %}
-venv-salt-minion-unavailable:
+mgr_venv_salt_minion_unavailable:
   test.fail_without_changes:
     - comment: venv-salt-minion package is not available
 {%- endif %}
 {%- else %}
-salt-minion-of-another-master:
+mgr_salt_minion_of_another_master:
   test.fail_without_changes:
     - comment: The salt-minion is managed by another master
 {%- endif %}
