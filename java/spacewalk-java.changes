@@ -1,3 +1,4 @@
+- New filter template: Live patching based on a system
 - Adapt generated pillar data to run the new Salt scap state
 - Handle virtual machines running on pacemaker cluster
 - SP migration: wait some seconds before scheduling "package refresh" action after migration is completed (bsc#1187963)
