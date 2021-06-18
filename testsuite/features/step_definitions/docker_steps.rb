@@ -41,6 +41,7 @@ end
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
+  puts "List of images: #{images_list}"
   image_id = 0
   images_list.each do |element|
     if element['name'] == name
@@ -52,6 +53,7 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
+    puts "Image Details: #{idetails}"
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
     raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'

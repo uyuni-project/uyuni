@@ -1049,3 +1049,13 @@ end
 When(/^I close the modal dialog$/) do
   find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
 end
+
+When(/^I refresh the page$/) do
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
+  end
+end
