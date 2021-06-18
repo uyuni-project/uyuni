@@ -1269,9 +1269,7 @@ class RepoSync(object):
                     # Set to_link to False, no need to link again
                     to_process[index] = (pack, True, False)
 
-            except KeyboardInterrupt:
-                raise
-            except rhnSQL.SQLError:
+            except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise
             except Exception:
                 failed_packages += 1
@@ -1282,41 +1280,51 @@ class RepoSync(object):
                     raise
                 to_process[index] = (pack, False, False)
             finally:
-                # importing packages by batch or if the current packages is the last
-                if mpm_bin_batch and (import_count == to_download_count
-                                      or len(mpm_bin_batch) % self.import_batch_size == 0):
-                    importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
-                    importer.setUploadForce(1)
-                    importer.run()
-                    rhnSQL.commit()
-                    del importer.batch
-                    affected_channels.extend(importer.affected_channels)
-                    del mpm_bin_batch
-                    mpm_bin_batch = importLib.Collection()
+                try:
+                    # importing packages by batch or if the current packages is the last
+                    if mpm_bin_batch and (import_count == to_download_count
+                                          or len(mpm_bin_batch) % self.import_batch_size == 0):
+                        importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
+                        importer.setUploadForce(1)
+                        importer.run()
+                        rhnSQL.commit()
+                        del importer.batch
+                        affected_channels.extend(importer.affected_channels)
+                        del mpm_bin_batch
+                        mpm_bin_batch = importLib.Collection()
 
-                if mpm_src_batch and (import_count == to_download_count
-                                      or len(mpm_src_batch) % self.import_batch_size == 0):
-                    src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend, caller=upload_caller)
-                    src_importer.setUploadForce(1)
-                    src_importer.run()
-                    rhnSQL.commit()
-                    del mpm_src_batch
-                    mpm_src_batch = importLib.Collection()
+                    if mpm_src_batch and (import_count == to_download_count
+                                          or len(mpm_src_batch) % self.import_batch_size == 0):
+                        src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend, caller=upload_caller)
+                        src_importer.setUploadForce(1)
+                        src_importer.run()
+                        rhnSQL.commit()
+                        del mpm_src_batch
+                        mpm_src_batch = importLib.Collection()
 
-                if is_non_local_repo and stage_path:
-                    if os.path.exists(stage_path):
-                        os.remove(stage_path)
-                    if os.path.exists(os.path.dirname(stage_path)):
-                        # remove the checksum directory if empty
-                        try:
-                            os.rmdir(os.path.dirname(stage_path))
-                        except OSError as exc:
-                            # skip if directory is not empty or has been removed by
-                            # some of the other threads in the meanwhile
-                            if exc.errno in (errno.ENOTEMPTY, errno.ENOENT):
-                                pass
-                            else:
-                                raise exc
+                except (KeyboardInterrupt, rhnSQL.SQLError):
+                    raise
+                except Exception:
+                    e = str(sys.exc_info()[1])
+                    if e:
+                        log2(0, 1, e, stream=sys.stderr)
+                    if self.fail:
+                        raise
+                finally:
+                    if is_non_local_repo and stage_path:
+                        if os.path.exists(stage_path):
+                            os.remove(stage_path)
+                        if os.path.exists(os.path.dirname(stage_path)):
+                            # remove the checksum directory if empty
+                            try:
+                                os.rmdir(os.path.dirname(stage_path))
+                            except OSError as exc:
+                                # skip if directory is not empty or has been removed by
+                                # some of the other threads in the meanwhile
+                                if exc.errno in (errno.ENOTEMPTY, errno.ENOENT):
+                                    pass
+                                else:
+                                    raise exc
             pack.clear_header()
 
         rhnSQL.closeDB()
