@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-18 07:58+0000\n"
+"PO-Revision-Date: 2021-06-19 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1272,7 +1272,8 @@ msgstr "ID akcie: %i"
 #: ../src/spacecmd/configchannel.py:1102
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr ""
-"configchannel_export: exportovať konfiguračný kanál(y) do súboru formátu json"
+"configchannel_export: exportovať konfiguračný kanál(y) do súboru vo formáte "
+"json"
 
 #: ../src/spacecmd/configchannel.py:1103
 msgid ""
@@ -3056,27 +3057,28 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2114
 msgid "Kickstart Profiles"
-msgstr ""
+msgstr "Profily Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2119
 msgid "Original Profile:"
-msgstr ""
+msgstr "Pôvodný profil:"
 
 #: ../src/spacecmd/kickstart.py:2120
 msgid "Cloned Profile:"
-msgstr ""
+msgstr "Klonovaný profil:"
 
 #: ../src/spacecmd/kickstart.py:2128
 msgid "The Kickstart clone name is required"
-msgstr ""
+msgstr "Vyžaduje sa názov klonu Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2133
 msgid "Kickstart profile you've entered was not found"
-msgstr ""
+msgstr "Profil Kickstart, ktorý ste zadali, sa nenašiel"
 
 #: ../src/spacecmd/kickstart.py:2146
 msgid "kickstart_export: export kickstart profile(s) to json format file"
 msgstr ""
+"kickstart_export: exportovať profil(y) kickstart do súboru vo formáte json"
 
 #: ../src/spacecmd/kickstart.py:2147
 msgid ""
@@ -3091,22 +3093,35 @@ msgid ""
 "\n"
 "Note : KSPROFILE list is optional, default is to export ALL"
 msgstr ""
+"použitie: kickstart_export <KS_PROFIL>... [voľby])\n"
+"options:\n"
+"    -f outfile.json : určuje názov výstupného súboru, predvolené hodnoty sú "
+"<KS_PROFIL>.json,\n"
+"                      ak sa exportuje jeden, profiles.json pre viac "
+"profilov\n"
+"                      kickstart alebo ks_all.json, ak nie je zadaný žiadny "
+"KS_PROFIL\n"
+"                      napr. (exportovať VŠETKY)\n"
+"\n"
+"Note : Zoznam KS_PROFILOV je voliteľný, predvolený je export VŠETKÝCH"
 
 #: ../src/spacecmd/kickstart.py:2273
 #, python-format
 msgid "Exporting ALL kickstart profiles to %s"
-msgstr ""
+msgstr "Exportovanie VŠETKÝCH profilov kickstart do %s"
 
 #: ../src/spacecmd/kickstart.py:2281
 msgid ""
 "Error, no valid kickstart profile passed, check name is  correct with "
 "spacecmd kickstart_list"
 msgstr ""
+"Chyba, nebol zadaný žiadny platný profil kickstart, skontrolujte správnosť "
+"názvu pomocou spacecmd kickstart_list"
 
 #: ../src/spacecmd/kickstart.py:2301
 #, python-format
 msgid "Exporting ks %s to %s"
-msgstr ""
+msgstr "Exportovanie ks %s do %s"
 
 #: ../src/spacecmd/kickstart.py:2308
 #, python-format
