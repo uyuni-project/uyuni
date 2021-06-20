@@ -734,8 +734,17 @@ public class ContentSyncManager {
     public void refreshRepositoriesAuthentication(
             Collection<SCCRepositoryJson> repositories, Credentials c, String mirrorUrl, boolean withFix) {
         List<Long> repoIdsFromCredential = new LinkedList<>();
+        List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
+                .map(r -> r.getSccId())
+                .collect(Collectors.toList());
+        List<SCCRepositoryJson> ptfRepos = repositories.stream()
+            .filter(r -> !availableRepoIds.contains(r.getSCCId()))
+            .filter(r -> r.isPtfRepository())
+            .collect(Collectors.toList());
+        generatePtfChannels(ptfRepos);
         Map<Long, SCCRepository> availableRepos = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(SCCRepository::getSccId, r -> r));
+
         List<SCCRepositoryAuth> allRepoAuths = SCCCachingFactory.lookupRepositoryAuth();
         if (c == null) {
             // cleanup if we come from scc
@@ -916,6 +925,78 @@ public class ContentSyncManager {
                 SCCCachingFactory.saveRepository(repository7);
             }));
         }
+    }
+
+    private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
+        List<SCCRepository> reposToSave = new ArrayList<>();
+        List<SUSEProductSCCRepository> productReposToSave = new ArrayList<>();
+        for (SCCRepositoryJson jrepo : repositories) {
+            try {
+                URI uri = new URI(jrepo.getUrl());
+                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/ptf[_debug]
+                String[] parts = uri.getPath().split("/");
+                if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
+                    continue;
+                }
+                String prdArch = parts[6];
+                String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
+
+                SCCRepository repo = new SCCRepository();
+                repo.setSigned(true);
+                repo.update(jrepo);
+                reposToSave.add(repo);
+
+                SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
+                if (product == null) {
+                    log.warn("Skipping PTF repo for unknown product: " + uri);
+                    continue;
+                }
+                List<String> channelParts = new ArrayList<>(
+                        Arrays.asList(parts[3], product.getName(), product.getVersion(), "PTFs"));
+                // FIXME: or better .equals("ptf_debug")?
+                if (parts[7].contains("debug")) {
+                    channelParts.add("debuginfo");
+                }
+                channelParts.add(prdArch);
+
+                SUSEProductFactory.findAllRootProductsOf(product).forEach(root -> {
+                    SUSEProductSCCRepository prodRepoLink = new SUSEProductSCCRepository();
+                    prodRepoLink.setProduct(product);
+                    prodRepoLink.setRepository(repo);
+                    prodRepoLink.setRootProduct(root);
+
+                    prodRepoLink.setUpdateTag(null); // check with reality, would it make sense to set one?
+                    prodRepoLink.setMandatory(false);
+                    product.getRepositories().stream()
+                        .filter(r -> r.getRootProduct().equals(root))
+                        .filter(r -> r.getParentChannelLabel() != null)
+                        .findFirst()
+                        .ifPresent(r -> {
+                            List<String> suffix = new ArrayList<>();
+                            prodRepoLink.setParentChannelLabel(r.getParentChannelLabel());
+                            int archIdx = r.getChannelName().lastIndexOf(prdArch);
+                            if (archIdx > -1) {
+                                suffix = Arrays.asList(
+                                        r.getChannelName().substring(archIdx + prdArch.length())
+                                        .strip().split("[\\s-]"));
+                            }
+                            List<String> cList = Stream.concat(channelParts.stream(), suffix.stream())
+                                .filter(e -> !e.isBlank())
+                                .map(String::toLowerCase)
+                                .collect(Collectors.toList());
+                            prodRepoLink.setChannelLabel(String.join("-", cList));
+                            prodRepoLink.setChannelName(String.join(" ", cList));
+
+                        });
+                    productReposToSave.add(prodRepoLink);
+                });
+            }
+            catch (URISyntaxException e) {
+                log.warn("Unable to parse URL '" + jrepo.getUrl() + "'. Skipping", e);
+            }
+        }
+        reposToSave.stream().forEach(SUSEProductFactory::save);
+        productReposToSave.stream().forEach(SUSEProductFactory::save);
     }
 
     /**

@@ -100,7 +100,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProductSCCRepository> allProductRepos() {
         Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
-        return (List<SUSEProductSCCRepository>) c.list();
+        return c.list();
     }
 
     /**
@@ -206,7 +206,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProductSCCRepository> lookupByChannelLabel(String channelLabel) {
         Session session = HibernateFactory.getSession();
-        return (List<SUSEProductSCCRepository>)session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
+        return session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
                 .setParameter("label", channelLabel).list();
     }
 
@@ -495,7 +495,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static SUSEProduct getProductById(Long id) {
         Session session = HibernateFactory.getSession();
-        SUSEProduct p = (SUSEProduct) session.get(SUSEProduct.class, id);
+        SUSEProduct p = session.get(SUSEProduct.class, id);
         return p;
     }
 
@@ -642,13 +642,13 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Find all root products of a product.
-     * @param base product to find roots for
+     * @param prd product to find roots for
      * @return list of root products of the given product
      */
     @SuppressWarnings("unchecked")
-    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct base) {
+    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct prd) {
         Map<String, Object> params = new HashMap<>();
-        params.put("baseId", base.getId());
+        params.put("extId", prd.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
     }
 
