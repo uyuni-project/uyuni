@@ -150,6 +150,13 @@ public class SCCRepositoryJson {
     }
 
     /**
+     * @return return if this repo is a PTF repository
+     */
+    public boolean isPtfRepository() {
+        return url.contains("/PTF/");
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

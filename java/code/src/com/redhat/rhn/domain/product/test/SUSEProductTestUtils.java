@@ -470,6 +470,8 @@ public class SUSEProductTestUtils extends HibernateFactory {
         csm.updateChannelFamilies(channelFamilies);
         csm.updateSUSEProducts(products, upgradePaths, staticTree, addRepos);
         if (withRepos) {
+            HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().clear();
             csm.refreshRepositoriesAuthentication(repositories, credentials, null);
 
             // set noauth for rhel-x86_64-server-7
