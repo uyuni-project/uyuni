@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-19 18:57+0000\n"
+"PO-Revision-Date: 2021-06-21 17:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -3126,49 +3126,49 @@ msgstr "Exportovanie ks %s do %s"
 #: ../src/spacecmd/kickstart.py:2308
 #, python-format
 msgid "File %s exists, "
-msgstr ""
+msgstr "Súbor %s existuje, "
 
 #: ../src/spacecmd/kickstart.py:2309
 msgid "confirm overwrite file? (y/n)"
-msgstr ""
+msgstr "potvrdiť prepísanie súboru? (a/n)"
 
 #: ../src/spacecmd/kickstart.py:2312
 msgid "Error saving exported kickstart profiles to file"
-msgstr ""
+msgstr "Chyba pri ukladaní exportovaných profilov kickstart do súboru"
 
 #: ../src/spacecmd/kickstart.py:2322
 msgid "kickstart_import: import kickstart profile(s) from json file"
-msgstr ""
+msgstr "kickstart_import: importovať profil(y) kickstart zo súboru json"
 
 #: ../src/spacecmd/kickstart.py:2323
 msgid "usage: kickstart_import <JSONFILES...>"
-msgstr ""
+msgstr "použitie: kickstart_import <SÚBORY_JSON...>"
 
 #: ../src/spacecmd/kickstart.py:2344
 #, python-format
 msgid "Error importing kickstart %s"
-msgstr ""
+msgstr "Chyba pri importovaní kickstart %s"
 
 #: ../src/spacecmd/kickstart.py:2357
 #, python-format
 msgid "ERROR : kickstart profile %s already exists! Skipping!"
-msgstr ""
+msgstr "CHYBA : profil kickstart %s už existuje! Preskakuje sa!"
 
 #. create the ks, we need to drop the org prefix from the ks name
 #: ../src/spacecmd/kickstart.py:2361
 #, python-format
 msgid "Found ks %s"
-msgstr ""
+msgstr "Nájdený ks %s"
 
 #: ../src/spacecmd/kickstart.py:2417
 #, python-format
 msgid "Error adding %s script"
-msgstr ""
+msgstr "Chyba pri pridávaní skriptu %s"
 
 #: ../src/spacecmd/kickstart.py:2425
 #, python-format
 msgid "failed to add ip range %s-%s, continuing"
-msgstr ""
+msgstr "nepodarilo sa pridať rozsah ip %s-%s, pokračuje sa"
 
 #: ../src/spacecmd/kickstart.py:2439
 #, python-format
@@ -3183,12 +3183,12 @@ msgstr "zoznam zachovania súborov %s neexistuje, preskakuje sa"
 #: ../src/spacecmd/kickstart.py:2452
 #, python-format
 msgid "Actvationkey %s does not exist on the "
-msgstr ""
+msgstr "Aktivačný kľúč %s neexistuje na "
 
 #: ../src/spacecmd/kickstart.py:2463
 #, python-format
 msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
-msgstr ""
+msgstr "Kľúč GPG/SSL %s na serveri Spacewalk neexistuje, preskakuje sa"
 
 #. There are some frustrating ommisions from the API which means we can't
 #. export/import some settings, so we post a warning that some manual
@@ -3198,36 +3198,38 @@ msgid ""
 "Due to API ommissions, there are some settings which cannot be imported, "
 "please check and fixup manually if necessary"
 msgstr ""
+"Z dôvodu vynechaní API existujú niektoré nastavenia, ktoré nie je možné "
+"importovať, v prípade potreby, prosím, skontrolujte a opravte ručne"
 
 #: ../src/spacecmd/kickstart.py:2474
 msgid " * Details->Preserve ks.cfg"
-msgstr ""
+msgstr " * Podrobnosti->Zachovať ks.cfg"
 
 #: ../src/spacecmd/kickstart.py:2475
 msgid " * Details->Comment"
-msgstr ""
+msgstr " * Podrobnosti->Komentár"
 
 #: ../src/spacecmd/kickstart.py:2479
 msgid " * Details->Organization Default Profile"
-msgstr ""
+msgstr " * Podrobnosti->Predvolený profil organizácie"
 
 #. No way to set the kernel options
 #: ../src/spacecmd/kickstart.py:2481
 msgid " * Details->Kernel Options"
-msgstr ""
+msgstr " * Podrobnosti->Voľby jadra"
 
 #: ../src/spacecmd/kickstart.py:2485
 #, python-format
 msgid " * Details->Post Kernel Options : %s"
-msgstr ""
+msgstr " * Podrobnosti->Voľby jadra po : %s"
 
 #: ../src/spacecmd/kickstart.py:2501
 msgid "no kickstart label given"
-msgstr ""
+msgstr "nie je uvedené označenie kickstart"
 
 #: ../src/spacecmd/kickstart.py:2504
 msgid "invalid kickstart label "
-msgstr ""
+msgstr "neplatné označenie kickstart "
 
 #: ../src/spacecmd/kickstart.py:2521
 msgid "kickstart_diff: diff kickstart files"
