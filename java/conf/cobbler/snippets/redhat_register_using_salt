@@ -64,7 +64,7 @@ echo "* Disable all repos not provided by SUSE Manager Server."
 for F in /tmp/yum.repos.d/*.repo; do
   test -f "$F" || continue
   basename "$F" | grep -q -E 'spacewalk:|susemanager:' && continue
-  # parse throught the file and make sure each repo section contains 'enabled=0'
+  # parse through the file and make sure each repo section contains 'enabled=0'
   awk '
       BEGIN           {{ saw=0 }}
       /^ *[[]/        {{ if ( saw==1 ) print "enabled=0"; else saw=1 }}
