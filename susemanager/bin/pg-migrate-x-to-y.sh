@@ -18,7 +18,7 @@ while getopts "s:d:f" o;do
        *)
            echo "Usage: $0 [-s initial postgresql to migrate from] [-d destination postgresql to migrate to] [-f fast upgrade]"
            echo "For example:"
-           echo "  $0 -s10 -d13"
+           echo "  $0 -s 10 -d 13"
            echo "  Will migrate from 10 to 13"
            echo "If you do not specify s or d, they will be infered from the running system."
            exit -1
