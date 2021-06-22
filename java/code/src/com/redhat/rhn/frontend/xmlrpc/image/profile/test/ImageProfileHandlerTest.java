@@ -89,7 +89,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         ImageStore store = createImageStore("mystore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
         ActivationKey key = createActivationKey(admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_KIWI,
-                "mystore", "/path/to/kiwiconfig", key.getKey());
+                "mystore", "/path/to/kiwiconfig", key.getKey(), "--profile test1");
 
         assertEquals(1, result);
 
@@ -99,6 +99,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(key.getToken(), profile.getToken());
         assertEquals(store, profile.getTargetStore());
         assertEquals("/path/to/kiwiconfig", profile.asKiwiProfile().get().getPath());
+        assertEquals("--profile test1", profile.asKiwiProfile().get().getKiwiOptions());
     }
 
     public final void testListImageProfiles() throws Exception {
@@ -129,6 +130,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(ImageProfile.TYPE_KIWI, p2.getImageType());
         assertEquals("myosimagestore", p2.getTargetStore().getLabel());
         assertEquals("/path/to/kiwiconfig", p2.getPath());
+        assertEquals("", p2.getKiwiOptions());
     }
 
     public final void testCreateImageProfile() throws Exception {

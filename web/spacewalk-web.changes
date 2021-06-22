@@ -1,3 +1,4 @@
+- Add support for Kiwi options
 - Fix virtualization guests to handle null HostInfo
 - Compare lowercase CPU arch with libvirt domain capabilities
 - Refresh JWT virtual console token before it expires

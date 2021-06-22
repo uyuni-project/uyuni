@@ -42,10 +42,7 @@ mgr_buildimage_prepare_activation_key_in_source:
 #
 {%- set kiwi = 'kiwi-ng' %}
 
-{%- set profile_opt = '' %}
-{%- if pillar.get('kiwi_profile') %}
-{%-   set profile_opt = '--profile ' + pillar.get('kiwi_profile') %}
-{%- endif %}
+{%- set kiwi_options = pillar.get('kiwi_options', '') %}
 
 {%- macro kiwi_params() -%}
   --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false --add-bootstrap-package rhn-org-trusted-ssl-cert-osimage {{ ' ' }}
@@ -56,14 +53,14 @@ mgr_buildimage_prepare_activation_key_in_source:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log --shared-cache-dir={{ cache_dir }} {{ profile_opt }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log --shared-cache-dir={{ cache_dir }} {{ kiwi_options }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
       - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
   cmd.run:
-    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log --shared-cache-dir={{ cache_dir }} {{ profile_opt }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
+    - name: "{{ kiwi }} --logfile={{ root_dir }}/create.log --shared-cache-dir={{ cache_dir }} {{ kiwi_options }} system create --root {{ chroot_dir }} --target-dir  {{ dest_dir }}"
     - require:
       - cmd: mgr_buildimage_kiwi_prepare
 

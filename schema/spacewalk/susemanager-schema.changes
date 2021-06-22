@@ -1,3 +1,4 @@
+- Add Kiwi commandline options to Kiwi profile
 - Upgrade scripts idempotency fixes
 - Simplify the VM creation action in DB
 - Handle virtual machines running on pacemaker cluster
