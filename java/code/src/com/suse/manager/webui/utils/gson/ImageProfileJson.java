@@ -34,6 +34,7 @@ public class ImageProfileJson {
     private String label;
     private String imageType;
     private String path;
+    private String kiwiOptions;
     private String store;
     private ActivationKeyJson activationKey;
     private ChannelsJson channels;
@@ -95,6 +96,19 @@ public class ImageProfileJson {
         this.path = pathIn;
     }
 
+    /**
+     * @return the Kiwi options
+     */
+    public String getKiwiOptions() {
+        return kiwiOptions;
+    }
+
+    /**
+     * @param kiwiOptionsIn the kiwi options to set
+     */
+    public void setKiwiOptions(String kiwiOptionsIn) {
+        this.kiwiOptions = kiwiOptionsIn;
+    }
     /**
      * @return the store
      */
@@ -175,6 +189,7 @@ public class ImageProfileJson {
         }
         else if (profile instanceof KiwiProfile) {
             json.setPath(((KiwiProfile) profile).getPath());
+            json.setKiwiOptions(((KiwiProfile) profile).getKiwiOptions());
         }
 
         json.setCustomData(profile.getCustomDataValues().stream().collect(Collectors.toMap(

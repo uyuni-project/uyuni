@@ -107,6 +107,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @param storeLabel the image store label
      * @param path the path or git uri to the source
      * @param activationKey the activation key which defines the channels
+     * @param kiwiOptions command line options passed to Kiwi
      * @return 1 on success
      *
      * @xmlrpc.doc Create a new Image Profile
@@ -116,10 +117,11 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "storeLabel")
      * @xmlrpc.param #param("string", "path")
      * @xmlrpc.param #param_desc("string", "activationKey", "Optional")
+     * @xmlrpc.param #param("string", "kiwiOptions")
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String type, String storeLabel,
-            String path, String activationKey) {
+            String path, String activationKey, String kiwiOptions) {
         ensureImageAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(label)) {
@@ -180,6 +182,7 @@ public class ImageProfileHandler extends BaseHandler {
         else if (ImageProfile.TYPE_KIWI.equals(type)) {
             KiwiProfile kiwiProfile = new KiwiProfile();
             kiwiProfile.setPath(path);
+            kiwiProfile.setKiwiOptions(kiwiOptions);
             profile = kiwiProfile;
         }
         else {
@@ -199,6 +202,30 @@ public class ImageProfileHandler extends BaseHandler {
         ImageProfileFactory.save(profile);
 
         return 1;
+    }
+
+    /**
+     * Create a new Image Profile
+     * @param loggedInUser the current User
+     * @param label the label
+     * @param type the profile type label
+     * @param storeLabel the image store label
+     * @param path the path or git uri to the source
+     * @param activationKey the activation key which defines the channels
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Create a new Image Profile
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param #param("string", "type")
+     * @xmlrpc.param #param("string", "storeLabel")
+     * @xmlrpc.param #param("string", "path")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Optional")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int create(User loggedInUser, String label, String type, String storeLabel,
+            String path, String activationKey) {
+        return create(loggedInUser, label, type, storeLabel, path, activationKey, "");
     }
 
     /**
@@ -278,6 +305,18 @@ public class ImageProfileHandler extends BaseHandler {
                 default:
                     throw new InvalidParameterException("The type " + profile.getImageType() +
                             " doesn't support 'Path' property");
+            }
+        }
+        if (details.containsKey("kiwiOptions")) {
+            String kiwiOptions = (String) details.get("kiwiOptions");
+
+            switch (profile.getImageType()) {
+                case ImageProfile.TYPE_KIWI:
+                    profile.asKiwiProfile().get().setKiwiOptions(kiwiOptions);
+                    break;
+                default:
+                    throw new InvalidParameterException("The type " + profile.getImageType() +
+                            " doesn't support 'kiwiOptions' property");
             }
         }
         if (details.containsKey("activationKey")) {
