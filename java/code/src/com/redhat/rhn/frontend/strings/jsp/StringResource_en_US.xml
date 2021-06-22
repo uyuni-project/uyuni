@@ -24428,6 +24428,9 @@ given channel.</source>
       <trans-unit id="task.status.uuid-cleanup">
         <source>UUID cleanup</source>
       </trans-unit>
+      <trans-unit id="task.status.channel-modular-data-cleanup">
+        <source>Modular Data Cleanup</source>
+      </trans-unit>
       <trans-unit id="task.status.message">
         <source>The following is a status report for the various tasks run by the @@PRODUCT_NAME@@ task engine:</source>
       </trans-unit>
