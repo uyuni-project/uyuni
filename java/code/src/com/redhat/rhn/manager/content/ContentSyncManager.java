@@ -933,7 +933,7 @@ public class ContentSyncManager {
         for (SCCRepositoryJson jrepo : repositories) {
             try {
                 URI uri = new URI(jrepo.getUrl());
-                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/ptf[_debug]
+                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test][_debug]
                 String[] parts = uri.getPath().split("/");
                 if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
                     continue;
@@ -952,10 +952,25 @@ public class ContentSyncManager {
                     continue;
                 }
                 List<String> channelParts = new ArrayList<>(
-                        Arrays.asList(parts[3], product.getName(), product.getVersion(), "PTFs"));
-                // FIXME: or better .equals("ptf_debug")?
-                if (parts[7].contains("debug")) {
-                    channelParts.add("debuginfo");
+                        Arrays.asList(parts[3], product.getName(), product.getVersion()));
+                switch (parts[7]) {
+                case "ptf":
+                    channelParts.add("PTFs");
+                    break;
+                case "ptf_debug":
+                    channelParts.add("PTFs");
+                    channelParts.add("Debuginfo");
+                    break;
+                case "test":
+                    channelParts.add("TEST");
+                    break;
+                case "test_debug":
+                    channelParts.add("TEST");
+                    channelParts.add("Debuginfo");
+                    break;
+                default:
+                    log.warn("Unknown repo type: " + parts[7] + ". Skipping");
+                    continue;
                 }
                 channelParts.add(prdArch);
 
@@ -965,7 +980,7 @@ public class ContentSyncManager {
                     prodRepoLink.setRepository(repo);
                     prodRepoLink.setRootProduct(root);
 
-                    prodRepoLink.setUpdateTag(null); // check with reality, would it make sense to set one?
+                    prodRepoLink.setUpdateTag(null);
                     prodRepoLink.setMandatory(false);
                     product.getRepositories().stream()
                         .filter(r -> r.getRootProduct().equals(root))
