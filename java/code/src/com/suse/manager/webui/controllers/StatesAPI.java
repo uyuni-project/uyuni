@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -123,7 +123,6 @@ public class StatesAPI {
     private final ServerGroupManager serverGroupManager;
 
     private static final Gson GSON = new GsonBuilder().create();
-    public static final String SALT_PACKAGE_FILES = "packages";
 
     /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
     public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
@@ -643,7 +642,7 @@ public class StatesAPI {
 
         try {
             Path baseDir = Paths.get(
-                    SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SALT_PACKAGE_FILES);
+                    SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
                     getPackagesSlsName(new MinionSummary(server)));
@@ -658,12 +657,31 @@ public class StatesAPI {
     }
 
     /**
+     * Remove package state file for the given minion
+     *
+     * @param minion the minion
+     */
+    public static void removePackageState(MinionServer minion) {
+        Path baseDir = Paths.get(
+                SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
+        Path filePath = baseDir.resolve(getPackagesSlsName(new MinionSummary(minion)));
+
+        try {
+            Files.deleteIfExists(filePath);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Get the name of the package sls file.
      * @param server the minion server
      * @return the name of the package sls file
      */
     public static String getPackagesSlsName(MinionSummary server) {
-        return "packages_" + server.getDigitalServerId() + ".sls";
+        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls";
     }
 
     /**
