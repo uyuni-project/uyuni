@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-06-22 19:57+0000\n"
+"PO-Revision-Date: 2021-06-23 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -3285,44 +3285,45 @@ msgstr "Typy aktualizácií"
 
 #: ../src/spacecmd/kickstart.py:2640
 msgid "Update Type [none]:"
-msgstr ""
+msgstr "Typ aktualizácie [none]:"
 
 #: ../src/spacecmd/kickstart.py:2671
 msgid "kickstart_getsoftwaredetails: Gets kickstart profile software details"
 msgstr ""
+"kickstart_getsoftwaredetails: Získa podrobnosti o softvéri profilu kickstart"
 
 #: ../src/spacecmd/kickstart.py:2672
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL"
-msgstr ""
+msgstr "použitie: kickstart_getsoftwaredetails OZNAČENIE_KS"
 
 #: ../src/spacecmd/kickstart.py:2673
 msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
-msgstr ""
+msgstr "použitie: kickstart_getsoftwaredetails OZNAČENIE_KS OZNAČENIE_KS2 ..."
 
 #: ../src/spacecmd/kickstart.py:2708
 #, python-format
 msgid "noBase:        %s"
-msgstr ""
+msgstr "noBase:        %s"
 
 #: ../src/spacecmd/kickstart.py:2709
 #, python-format
 msgid "ignoreMissing: %s"
-msgstr ""
+msgstr "ignoreMissing: %s"
 
 #: ../src/spacecmd/kickstart.py:2711
 #, python-format
 msgid "Kickstart Label: %s"
-msgstr ""
+msgstr "Označenie kickstart: %s"
 
 #: ../src/spacecmd/kickstart.py:2712
 #, python-format
 msgid "noBase:          %s"
-msgstr ""
+msgstr "noBase:          %s"
 
 #: ../src/spacecmd/kickstart.py:2713
 #, python-format
 msgid "ignoreMissing:   %s"
-msgstr ""
+msgstr "ignoreMissing:   %s"
 
 #: ../src/spacecmd/kickstart.py:2722
 msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
@@ -3357,6 +3358,12 @@ msgid ""
 "group:GROUP\n"
 "channel:CHANNEL\n"
 msgstr ""
+"<SYSTEMS> môže byť ktorýkoľvek z nasledujúcich:\n"
+"name\n"
+"ssm (pozri 'help ssm')\n"
+"search:DOPYT (pozri 'help system_search')\n"
+"group:SKUPINA\n"
+"channel:KANÁL\n"
 
 #: ../src/spacecmd/misc.py:66
 msgid ""
