@@ -20,6 +20,7 @@ read -n 1 -s -r -p "Press any key to start the migration or CTRL+C to cancel..."
 echo
 
 spacewalk-service stop
+rm -rf /etc/zypp/repos.d.old
 mv /etc/zypp/repos.d /etc/zypp/repos.d.old
 mkdir /etc/zypp/repos.d
 zypper ar -n "Main Repository" http://download.opensuse.org/distribution/leap/15.3/repo/oss repo-oss
