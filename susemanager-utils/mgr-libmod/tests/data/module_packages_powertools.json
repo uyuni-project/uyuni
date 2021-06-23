@@ -1,0 +1,10 @@
+{
+	"function": "module_packages",
+	"paths": ["tests/data/sample-modules-powertools.yaml.gz"],
+	"streams": [
+		{
+			"name": "virt-devel",
+			"stream": "rhel"
+		}
+	]
+}
