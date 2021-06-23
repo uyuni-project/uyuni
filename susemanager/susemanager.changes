@@ -1,3 +1,5 @@
+- Show error message if server migration goes wrong
+
 -------------------------------------------------------------------
 Wed Jun 23 15:58:49 CEST 2021 - jgonzalez@suse.com
 
