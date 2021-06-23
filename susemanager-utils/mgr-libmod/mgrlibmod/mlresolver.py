@@ -64,6 +64,25 @@ class StreamIndexer:
                 return
         stream_map.append(group)
 
+    def get_dep_streams(self, ctx):
+        '''
+        get_dep_streams - get the first-level dependencies as (name, stream) tuples for a specified stream context
+        '''
+        deps = ctx.get_dependencies()[0]
+        dep_mods = [m for m in deps.get_runtime_modules() \
+                    if m not in RESERVED_STREAMS and m != ctx.get_module_name()]
+
+        module_streams = []
+        for module_name in dep_mods:
+            try:
+                stream_name = deps.get_runtime_streams(module_name)[0]
+            except:
+                # No stream specificed. Any stream will do
+                stream_name = None
+            module_streams.append((module_name, stream_name))
+
+        return module_streams
+
     def _eq(self, ctx1, ctx2):
         '''
         _eq - checks if two contexts have the same module name, stream name and runtime dependencies
@@ -84,28 +103,12 @@ class StreamIndexer:
         '''
         return [s for s in stream_map if self._is_same_stream(s[0], ctx)]
 
-    def _get_dep_streams(self, ctx):
-        '''
-        _get_deps - get the first-level dependencies as (name, stream) tuples for a specified stream context
-        '''
-        all_deps = []
-        deps = ctx.get_dependencies()[0]
-        dep_mods = [m for m in deps.get_runtime_modules() if m not in RESERVED_STREAMS]
-        for m in dep_mods:
-            try:
-                stream = deps.get_runtime_streams(m)[0]
-            except:
-                # No stream specified. Any stream will do
-                stream = None
-            all_deps.append((m, stream))
-        return all_deps
-
     def _all_deps_same(self, ctx1, ctx2):
         '''
         _all_deps_same - checks if two contexts have the same runtime dependencies
         '''
-        ctx1_deps = self._get_dep_streams(ctx1)
-        ctx2_deps = self._get_dep_streams(ctx2)
+        ctx1_deps = self.get_dep_streams(ctx1)
+        ctx2_deps = self.get_dep_streams(ctx2)
         return set(ctx1_deps) == set(ctx2_deps)
 
 
@@ -186,20 +189,16 @@ class DependencyResolver:
                 # There is only a single context for this stream so we'll pick it
                 if s not in selected:
                     self._indexer.add_group(s, selected)
-                deps = s[0].get_dependencies()[0]
-                dep_mods = [m for m in deps.get_runtime_modules() if m not in RESERVED_STREAMS]
-                for m in dep_mods:
-                    try:
-                        dep_str = deps.get_runtime_streams(m)[0]
-                    except:
+                dep_mods = self._indexer.get_dep_streams(s[0])
+                for (module, stream) in dep_mods:
+                    if not stream:
                         # No stream specified. Any stream will do
-                        if next((c[0] for c in ctx_pool if c[0].get_module_name() == m), False):
+                        if next((c[0] for c in ctx_pool if c[0].get_module_name() == module), False):
                             # Already has an alternative in the pool
                             continue
-                        dep_str = None
 
                     # Add the dependencies to the stack for further processing
-                    dep_ctx = self._proc.get_stream_contexts(mltypes.MLStreamType(m, dep_str))
+                    dep_ctx = self._proc.get_stream_contexts(mltypes.MLStreamType(module, stream))
                     for c in dep_ctx:
                         self._indexer.add(c, stack)
                         self._indexer.add(c, ctx_pool)
@@ -251,15 +250,9 @@ class DependencyResolver:
         """
         _are_deps_selected - check if all the dependencies of a stream are in a selection list
         """
-        deps = stream.get_dependencies()[0]
-        dep_mods = [m for m in deps.get_runtime_modules() if m not in RESERVED_STREAMS]
-        for m in dep_mods:
-            try:
-                dep_str = deps.get_runtime_streams(m)[0]
-            except:
-                # No stream specified. Any stream will do
-                dep_str = None
-            if not self._is_selected(m, dep_str, selection):
+        dep_mods = self._indexer.get_dep_streams(stream)
+        for (module, stream) in dep_mods:
+            if not self._is_selected(module, stream, selection):
                 return False
         return True
 
@@ -286,15 +279,9 @@ class DependencyResolver:
         :param ctx: a context object
         '''
         all_deps = []
-        deps = ctx.get_dependencies()[0]
-        dep_mods = [m for m in deps.get_runtime_modules() if m not in RESERVED_STREAMS]
-        for m in dep_mods:
-            try:
-                stream = deps.get_runtime_streams(m)[0]
-            except:
-                # No stream specified. Any stream will do
-                stream = None
-            all_deps.extend(self._proc.get_stream_contexts(mltypes.MLStreamType(m, stream)))
+        dep_mods = self._indexer.get_dep_streams(ctx)
+        for (module, stream) in dep_mods:
+            all_deps.extend(self._proc.get_stream_contexts(mltypes.MLStreamType(module, stream)))
         return all_deps
 
     def _do_resolve(self, selected, candidates):
