@@ -45,6 +45,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -54,6 +56,9 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -346,8 +351,24 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     oldMinionId + "' has been updated to '" + minionId + "'");
         }
         else if (!machineId.equals(oldMachineId)) {
+            SaltStateGeneratorService.INSTANCE.removeConfigChannelAssignments(registeredMinion);
+            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(
+                    registeredMinion, Optional.empty());
+            StatesAPI.removePackageState(registeredMinion);
+
             registeredMinion.setMachineId(machineId);
             ServerFactory.save(registeredMinion);
+
+            ServerStateRevision serverRev = StateFactory
+                    .latestStateRevision(registeredMinion)
+                    .orElseGet(() -> {
+                        ServerStateRevision rev = new ServerStateRevision();
+                        rev.setServer(registeredMinion);
+                        return rev;
+                    });
+            SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev);
+            StatesAPI.generateServerPackageState(registeredMinion);
+
             SystemManager.addHistoryEvent(registeredMinion, "Minion migrated", "The machine-id of Minion '" +
                     minionId + "' has been updated from '" + oldMachineId + "' to '" + machineId + "'");
         }
