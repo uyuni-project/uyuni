@@ -1,3 +1,4 @@
+- cleanup and regenerate system state files when machine id has changed (bsc#1187660)
 - manually disable repositories on redhat like systems
 - Do not update Kickstart session when download after session is complete or failed (bsc#1187621)
 - define a pillar for the https port when connection as ssh-push with tunnel (bsc#1187441)
