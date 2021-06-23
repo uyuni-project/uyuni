@@ -1343,7 +1343,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/almalinux/8/bootstrap/'
     },    
     'rockylinux-8-x86_64-uyuni' : {
-        'BASECHANNEL' : 'rockylinux-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'BASECHANNEL' : 'rockylinux8-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : '/srv/www/htdocs/pub/repositories/rockylinux/8/bootstrap/'
     },
     'ubuntu-16.04-amd64' : {
