@@ -1608,6 +1608,8 @@ public class SaltServerActionService {
         Map<String, Object> pillar = new HashMap<>();
         Matcher profile_matcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
         Matcher rule_matcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
+        Matcher tailoring_file_matcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
+        Matcher tailoring_id_matcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
 
         pillar.put("xccdffile", scapActionDetails.getPath());
         if (profile_matcher.find()) {
@@ -1615,6 +1617,12 @@ public class SaltServerActionService {
         }
         if (rule_matcher.find()) {
             pillar.put("rule", rule_matcher.group(1));
+        }
+        if (tailoring_file_matcher.find()) {
+            pillar.put("tailoring_file", tailoring_file_matcher.group(1));
+        }
+        if (tailoring_id_matcher.find()) {
+            pillar.put("tailoring_id", tailoring_id_matcher.group(1));
         }
         if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
             pillar.put("fetch_remote_resources", true);
