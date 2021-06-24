@@ -25,7 +25,7 @@
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
   <property name="tests.results.dir" value="test-results"/>
-  <property name="tests.coverage.results.dir" value="test-results/coverage/html"/>
+  <property name="tests.coverage.results.dir" value="test-results/coverage"/>
   <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
   <property name="tests.configuration.path" value="${basedir}/buildconf/test" />
 
@@ -390,7 +390,7 @@
     </coverage>
   </target>
 
-  <target name="test-coverage-report" description="Generate the unit test coverage report in html">
+  <target name="test-coverage-report" depends="test-coverage" description="Generate the unit test coverage reports">
     <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
     <report>
       <executiondata>
@@ -407,7 +407,9 @@
           <fileset dir="code/src"/>
         </sourcefiles>
       </structure>
-      <html destdir="${tests.coverage.results.dir}"/>
+      <html destdir="${tests.coverage.results.dir}/html"/>
+      <csv destfile="${tests.coverage.results.dir}/report.csv" />
+      <xml destfile="${tests.coverage.results.dir}/report.xml" />
     </report>
   </target>
 
