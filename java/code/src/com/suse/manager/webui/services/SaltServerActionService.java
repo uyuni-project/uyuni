@@ -202,9 +202,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
 import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -1593,10 +1596,26 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> scapXccdfEvalAction(
             List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        String parameters = "eval " +
-            scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
+        Map<String, Object> pillar = new HashMap<>();
+        Matcher profile_matcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
+        Matcher rule_matcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
+
+        pillar.put("xccdffile", scapActionDetails.getPath());
+        if (profile_matcher.find()) {
+            pillar.put("profile", profile_matcher.group(1));
+        }
+        if (rule_matcher.find()) {
+            pillar.put("rule", rule_matcher.group(1));
+        }
+        if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
+            pillar.put("fetch_remote_resources", true);
+        }
+        if (scapActionDetails.getParametersContents().matches(".*--remediate.*")) {
+            pillar.put("remediate", true);
+        }
+
         ret.put(State.apply(singletonList("scap"),
-                Optional.of(singletonMap("mgr_scap_params", (Object)parameters))),
+                Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
                 minionSummaries);
         return ret;
     }
