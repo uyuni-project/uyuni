@@ -7,11 +7,11 @@ import { ProgressBar } from 'components/progressbar';
 import { CustomDataHandler } from 'components/table/CustomDataHandler';
 import { SearchField } from 'components/table/SearchField';
 import { LinkButton } from 'components/buttons';
+import { Button } from 'components/buttons';
 import { AsyncButton } from 'components/buttons';
 import { Messages } from 'components/messages';
 import { Utils as MessagesUtils } from 'components/messages';
 import { ActionStatus } from 'components/action/ActionStatus';
-import { ModalButton } from 'components/dialog/ModalButton';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { VirtualizationListRefreshApi } from '../../virtualization-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
@@ -128,6 +128,7 @@ const DeleteActionConfirm = (props) => {
       }}
       canForce={false}
       onClose={props.onClose}
+      isOpen={props.isOpen}
     >
       { isPool && (
         <p>
@@ -149,6 +150,7 @@ export function PoolsList(props: Props) {
   const [selected, setSelected] = React.useState({});
   const [errors, setErrors] = React.useState([]);
   const [lastRefresh, setLastRefresh] = React.useState(Date.now());
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
 
   const refresh = (type: string) => {
     if (type === "pool") {
@@ -275,13 +277,14 @@ export function PoolsList(props: Props) {
                         icon="fa-edit"
                         href={`/rhn/manager/systems/details/virtualization/storage/${props.serverId}/edit/${pool.name}`}
                       />
-                      <ModalButton
+                      <Button
                         className="btn-default btn-sm"
                         title={t("Delete")}
                         icon="fa-trash"
-                        target='delete-modal'
-                        item={pool}
-                        onClick={setSelected}
+                        handler={() => {
+                          setSelected(pool);
+                          setDeleteModalOpen(true);
+                        }}
                       />
                     </div>
                   </CustomDiv>,
@@ -310,13 +313,14 @@ export function PoolsList(props: Props) {
                   </CustomDiv>,
                   <CustomDiv key="actions" className="col text-right" width="calc((100% + 3em) * 0.1)" um="">
                     <div className="btn-group">
-                      <ModalButton
+                      <Button
                         className="btn-default btn-sm"
                         title={t("Delete")}
                         icon="fa-trash"
-                        target='delete-modal'
-                        item={volume}
-                        onClick={setSelected}
+                        handler={() => {
+                          setSelected(volume);
+                          setDeleteModalOpen(true);
+                        }}
                       />
                     </div>
                   </CustomDiv>,
@@ -389,7 +393,11 @@ export function PoolsList(props: Props) {
                   <DeleteActionConfirm
                     id="delete-modal"
                     selected={[selected].filter(item => item)}
-                    onClose={() => setSelected({})}
+                    isOpen={deleteModalOpen}
+                    onClose={() => {
+                      setDeleteModalOpen(false);
+                      setSelected({});
+                    }}
                     onAction={onAction}
                   />
                 </>

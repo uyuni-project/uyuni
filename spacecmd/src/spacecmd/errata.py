@@ -188,7 +188,7 @@ def do_errata_apply(self, args, only_systems=None):
                     to_apply.setdefault(erratum_id, []).append(system_id)
 
         # apply the errata
-        for erratum in to_apply:
+        for erratum in sorted(to_apply):
             self.client.system.scheduleApplyErrata(self.session,
                                                    to_apply[erratum],
                                                    [erratum],

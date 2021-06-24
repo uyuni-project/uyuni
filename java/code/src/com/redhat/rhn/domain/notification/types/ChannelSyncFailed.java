@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.notification.types;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
+import java.util.Optional;
+
 /**
  * Notification data for channel sync failure.
  */
@@ -24,15 +26,18 @@ public class ChannelSyncFailed implements NotificationData {
 
     private Long channelId;
     private String channelName;
+    private String details;
 
     /**
      * Constructor
      * @param channelIdIn id of the channel that failed
      * @param channelNameIn name of the channel that failed
+     * @param detailsIn details if available
      */
-    public ChannelSyncFailed(Long channelIdIn, String channelNameIn) {
+    public ChannelSyncFailed(Long channelIdIn, String channelNameIn, String detailsIn) {
         this.channelId = channelIdIn;
         this.channelName = channelNameIn;
+        this.details = Optional.ofNullable(detailsIn).orElse("");
     }
 
     /**
@@ -79,6 +84,6 @@ public class ChannelSyncFailed implements NotificationData {
      */
     @Override
     public String getDetails() {
-        return "";
+        return details;
     }
 }

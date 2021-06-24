@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 18 15:19:29 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.7-1
+- set free flag for free products (bsc#1182817)
+
+-------------------------------------------------------------------
 Wed May 05 16:44:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.6-1

@@ -11,8 +11,10 @@ type Props = {
   onConfirm: (type: string, selected: any[], forceState: any) => any;
   canForce: boolean;
   forceName?: string;
-  onClose?: () => any;
+  onClose: () => void;
   children?: React.ReactNode;
+  /** whether the dialog should be shown or hidden */
+  isOpen: boolean;
 };
 
 type State = {
@@ -23,7 +25,7 @@ type State = {
  * A pop-up dialog to confirm an action on a selection of items.
  * This is based on the DangerDialog, but adds text to it and a force
  * checkbox.
- * Related items are passed to the ''selected' property as an array. Each
+ * Related items are passed to the 'selected' property as an array. Each
  * item is expected to have a 'name' property.
  */
 export class ActionConfirm extends React.Component<Props, State> {
@@ -36,14 +38,13 @@ export class ActionConfirm extends React.Component<Props, State> {
 
   closePopUp = () => {
     this.setState({ force: false });
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
+    this.props.onClose();
   };
 
   render() {
     return (
       <DangerDialog
+        isOpen={this.props.isOpen}
         id={this.props.id}
         title={t(
           `${this.props.name} ${
@@ -95,7 +96,7 @@ export class ActionConfirm extends React.Component<Props, State> {
         onConfirm={() =>
           this.props.onConfirm(this.props.type, this.props.selected, this.props.canForce ? { force: this.state.force } : {})
         }
-        onClosePopUp={() => this.closePopUp()}
+        onClose={() => this.closePopUp()}
         submitText={this.state.force && this.props.forceName ? this.props.forceName : this.props.name}
         submitIcon={this.props.icon}
       />

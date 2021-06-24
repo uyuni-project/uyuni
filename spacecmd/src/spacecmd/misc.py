@@ -598,8 +598,8 @@ def generate_package_cache(self, force=False):
     # We assume that package IDs are unique, so one ID is only
     # refering one package.
     self.all_packages_by_id = {}
-    for k, v in self.all_packages.items():
-        for i in v:
+    for k, v in sorted(self.all_packages.items()):
+        for i in sorted(v):
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
                 logging.debug(
@@ -796,7 +796,7 @@ def get_system_id(self, name):
 
         id_list = '%s = ' % name
 
-        for system_id in systems:
+        for system_id in sorted(systems):
             id_list = id_list + '%i, ' % system_id
 
         logging.warning('')

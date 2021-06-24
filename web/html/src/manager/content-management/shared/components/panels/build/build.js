@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Button} from "../../../../../../components/buttons";
-import {closeDialog, Dialog} from "../../../../../../components/dialog/Dialog";
+import {closeDialog, Dialog} from "components/dialog/LegacyDialog";
 import {ModalButton} from "../../../../../../components/dialog/ModalButton";
 import {Messages, Utils as MsgUtils} from 'components/messages';
 

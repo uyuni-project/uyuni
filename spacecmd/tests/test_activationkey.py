@@ -8,7 +8,7 @@ import time
 import hashlib
 import spacecmd.activationkey
 from xmlrpc import client as xmlrpclib
-from helpers import shell
+from helpers import shell, exc2str
 
 
 class TestSCActivationKey:
@@ -585,7 +585,7 @@ class TestSCActivationKeyMethods:
         with pytest.raises(Exception) as exc:
             spacecmd.activationkey.do_activationkey_addconfigchannels(shell, "--you-shall-not-pass=True")
 
-        assert "unrecognized arguments" in str(exc)
+        assert "unrecognized arguments" in exc2str(exc)
         assert not shell.help_activationkey_addconfigchannels.called
         assert not shell.client.activationkey.addConfigChannels.called
 
@@ -1575,7 +1575,7 @@ class TestSCActivationKeyMethods:
         with pytest.raises(Exception) as exc:
             spacecmd.activationkey.do_activationkey_clone(shell, "--nonsense=true")
 
-        assert "Exception: unrecognized arguments: --nonsense=true" in str(exc)
+        assert "unrecognized arguments: --nonsense=true" in exc2str(exc)
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
     @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))

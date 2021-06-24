@@ -18,6 +18,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
@@ -39,6 +40,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 
@@ -89,16 +91,16 @@ public class MinionController {
 
     private static void initStatesRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/packages",
-                withCsrfToken(withDocsLocale(MinionController::packageStates)),
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::packageStates))),
                 jade);
         get("/manager/systems/details/custom",
-                withCsrfToken(withDocsLocale(MinionController::minionCustomStates)),
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::minionCustomStates))),
                 jade);
         get("/manager/systems/details/highstate",
-                withCsrfToken(withDocsLocale(withUser(MinionController::highstate))),
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::highstate))),
                 jade);
         get("/manager/systems/details/recurring-states",
-                withCsrfToken(withDocsLocale(withUser(MinionController::recurringStates))),
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::recurringStates))),
                 jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
@@ -172,14 +174,12 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView packageStates(Request request, Response response) {
-        String serverId = request.queryParams("sid");
-        Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
-        return new ModelAndView(data, "templates/minion/packages.jade");
+    public static ModelAndView packageStates(Request request, Response response, User user, Server server) {
+        return new ModelAndView(new HashMap<String, Object>(), "templates/minion/packages.jade");
     }
 
     /**
@@ -207,6 +207,8 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/recurring-states.jade");
     }
 
@@ -222,6 +224,8 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/custom.jade");
     }
 
@@ -284,6 +288,8 @@ public class MinionController {
         data.put("groupId", orgId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(orgId),
                 user.getOrg()).getName());
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         return new ModelAndView(data, "templates/groups/custom.jade");
     }
 
@@ -313,6 +319,8 @@ public class MinionController {
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
         data.put("entityType", "GROUP");
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         return new ModelAndView(data, "templates/groups/recurring-states.jade");
     }
 
@@ -340,6 +348,8 @@ public class MinionController {
                 user.getOrg()).getName());
         data.put("entityType", "GROUP");
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/groups/highstate.jade");
     }
@@ -360,6 +370,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
         data.put("entityType", "SSM");
+        data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/ssm/highstate.jade");
     }
@@ -369,14 +380,12 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView minionCustomStates(Request request, Response response) {
-        String serverId = request.queryParams("sid");
-        Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
-        return new ModelAndView(data, "templates/minion/custom.jade");
+    public static ModelAndView minionCustomStates(Request request, Response response, User user, Server server) {
+        return new ModelAndView(new HashMap<String, Object>(), "templates/minion/custom.jade");
     }
 
     /**
@@ -385,15 +394,11 @@ public class MinionController {
      * @param request the request object
      * @param response the response object
      * @param user the current user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringStates(Request request, Response response, User user) {
-        String serverId = request.queryParams("sid");
+    public static ModelAndView recurringStates(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        if (MinionServerUtils.isMinionServer(server)) {
-            data.put("server", server);
-        }
         data.put("entityType", "MINION");
         return new ModelAndView(data, "templates/minion/recurring-states.jade");
     }
@@ -404,13 +409,11 @@ public class MinionController {
      * @param request the request object
      * @param response the response object
      * @param user the current user
+     * @param server the server
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView highstate(Request request, Response response, User user) {
-        String serverId = request.queryParams("sid");
+    public static ModelAndView highstate(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
         data.put("entityType", "MINION");
         addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/highstate.jade");

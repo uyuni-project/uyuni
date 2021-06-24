@@ -214,6 +214,8 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     public String toString() {
         return "(ProductId: " + getProduct().getProductId() +
                 ", RootProductId: " + getRootProduct().getProductId() +
-                ", RepositoryId: " + getRepository().getSccId() + ")";
+                ", RepositoryId: " + getRepository().getSccId() +
+                ", Label: " + getChannelLabel() +
+                ", Parent: " + getParentChannelLabel() + ")";
     }
 }

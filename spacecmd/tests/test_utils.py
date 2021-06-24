@@ -4,7 +4,7 @@ Test spacecmd.utils
 """
 from unittest.mock import MagicMock, patch, mock_open
 import pytest
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect, exc2str
 import spacecmd.utils
 from xmlrpc import client as xmlrpclib
 import os
@@ -731,7 +731,7 @@ class TestSCUtils:
         for value in [b"", 1, {}, [], ()]:
             with pytest.raises(IOError) as exc:
                 spacecmd.utils.string_to_bool(value)
-            assert "Parameter" in str(exc)
+            assert "Parameter" in exc2str(exc)
 
     def test_string_to_bool_correct_type(self):
         """

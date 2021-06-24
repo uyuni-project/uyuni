@@ -1,6 +1,12 @@
 import * as React from "react";
-import { DangerDialog } from "./DangerDialog";
-import { DialogProps } from "./Dialog";
+import { DangerDialog } from "./LegacyDangerDialog";
+import { DialogProps } from "./LegacyDialog";
+
+type DeleteDialogProps = DialogProps & {
+  item?: any;
+  onConfirm?: (...args: any[]) => any;
+  onConfirmAsync?: (...args: any[]) => Promise<any>;
+};
 
 /**
  * A pop-up dialog for delete confirmation.
@@ -8,7 +14,7 @@ import { DialogProps } from "./Dialog";
  * Related data may be passed with the 'item' property.
  * This 'item' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
  */
-export function DeleteDialog(props: DialogProps) {
+export function DeleteDialog(props: DeleteDialogProps) {
   return (
     <DangerDialog
       id={props.id}

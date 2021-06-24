@@ -12,7 +12,7 @@ import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Label } from "components/input/Label";
 import { Messages } from "components/messages";
 import { ModalLink } from "components/dialog/ModalLink";
-import { closeDialog, Dialog } from "../../../components/dialog/Dialog";
+import { closeDialog, Dialog } from "../../../components/dialog/LegacyDialog";
 import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
 import { Loading } from "components/utils/Loading";

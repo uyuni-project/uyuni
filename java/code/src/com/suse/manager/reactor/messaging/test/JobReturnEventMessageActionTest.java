@@ -72,6 +72,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -102,6 +103,7 @@ import com.suse.utils.Json;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -2024,6 +2026,33 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         //Check the output of dependent actions
         assertEquals("Prerequisite failed", rebootSeverAction.getResultMsg());
         assertEquals("Prerequisite failed", runScriptSeverAction.getResultMsg());
+    }
+
+    public void testStateErrorResponse() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("demo-kvm1.tf.local");
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
+
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("virtcreate.failure.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
+        messageAction.execute(message);
+
+        // Verify the action status
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_FAILED));
+
+        // Verify the action message
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getResultMsg().contains("default-broken pool is not defined"));
     }
 
     public void testActionChainResponse() throws Exception {
