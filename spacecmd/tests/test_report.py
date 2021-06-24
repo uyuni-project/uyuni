@@ -4,7 +4,7 @@ Tests for report.
 """
 from unittest.mock import MagicMock, patch
 import pytest
-from helpers import shell, assert_expect
+from helpers import shell, assert_expect, exc2str
 import spacecmd.report
 
 

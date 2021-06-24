@@ -1,3 +1,43 @@
+- porting the package to python3 with proper placement
+  compiled python files
+
+-------------------------------------------------------------------
+Wed Jun 23 16:13:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.19-1
+- Show error message if server migration goes wrong
+
+-------------------------------------------------------------------
+Wed Jun 23 15:58:49 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.18-1
+- Update migration script to openSUSE 15.3
+
+-------------------------------------------------------------------
+Fri Jun 18 12:41:57 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.17-1
+- Fix message in database migration (bsc#1187451)
+
+-------------------------------------------------------------------
+Wed Jun 16 10:59:25 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.16-1
+- Fix database corruption after migrating the server to PostgreSQL 13 (bsc#1187217)
+ 
+-------------------------------------------------------------------
+Mon Jun 14 17:33:40 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.15-1
+- Fix database database migration script from PostgreSQL 12 to 13
+
+-------------------------------------------------------------------
+Wed Jun 02 11:08:38 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
+- Add the bootstrap repository definitions for Amazon Linux 2 and
+  AlmaLinux 8 for SUSE Manager
+
 -------------------------------------------------------------------
 Mon May 24 12:40:08 CEST 2021 - jgonzalez@suse.com
 

@@ -8,6 +8,7 @@ import time
 import readline
 import pytest
 from spacecmd.shell import SpacewalkShell, UnknownCallException
+from helpers import exc2str
 
 
 class TestSCShell:
@@ -83,7 +84,7 @@ class TestSCShell:
         for cmd in ["exit", "quit", "eof"]:
             with pytest.raises(Exception) as exc:
                 shell.precmd(cmd)
-            assert "Exit attempt" in str(exc)
+            assert "Exit attempt" in exc2str(exc)
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())
@@ -127,7 +128,7 @@ class TestSCShell:
 
         with pytest.raises(Exception) as exc:
             shell.precmd("system_list")
-        assert "login attempt" in str(exc)
+        assert "login attempt" in exc2str(exc)
 
     @patch("spacecmd.shell.atexit", MagicMock())
     @patch("spacecmd.shell.readline.set_completer_delims", MagicMock())

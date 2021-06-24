@@ -976,7 +976,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   end
 
   within(:xpath, path) do
-    click_button(btn, wait: 0)
+    click_button(btn, wait: 5)
   end
 end
 
@@ -1048,4 +1048,14 @@ end
 
 When(/^I close the modal dialog$/) do
   find(:xpath, "//*[contains(@class, 'modal-header')]/button[contains(@class, 'close')]").click
+end
+
+When(/^I refresh the page$/) do
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
+  end
 end

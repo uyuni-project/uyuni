@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Jun 10 13:46:47 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
+- exclude openSUSE Leap 15.3 from product installation (bsc#1186858)
+- Accept GPG key in Amazon Linux 2 for res7tools channel (bsc#1187102)
+
+-------------------------------------------------------------------
+Thu Jun 03 13:56:59 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.13-1
+- Enable certificate deployment for Leap 15.3 clients which is needed for
+  bootstrapping (bsc#1186765)
+
+-------------------------------------------------------------------
 Tue Jun 01 17:36:54 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.12-1

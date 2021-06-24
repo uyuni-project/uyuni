@@ -1,4 +1,27 @@
 - Fix random NullPointerException when rendering page tabs (bsc#1182769)
+- Add missing task status strings (bsc#1186744)
+
+-------------------------------------------------------------------
+Fri Jun 18 12:41:30 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.23-1
+- Show the full state return message for VM actions
+- show reposync errors in user notification details
+- do not check accessibility of free product repositories (bsc#1182817)
+
+-------------------------------------------------------------------
+Thu Jun 10 13:46:09 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.22-1
+- Fix product migration when scheduled from the event page (bsc#1187066)
+
+-------------------------------------------------------------------
+Wed Jun 09 10:19:43 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.21-1
+- adapt parsed strings from AlmaLinux and AmazonLinux match
+  SCC/sumatoolbox product definition (bsc#1186750)
+- Run database table analyze in most used tables of CLM for better performance (bsc#1186704)
 
 -------------------------------------------------------------------
 Tue Jun 01 11:47:32 CEST 2021 - jgonzalez@suse.com

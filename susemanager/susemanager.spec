@@ -45,7 +45,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.2.13
+Version:        4.2.19
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -345,8 +345,10 @@ fi
 %{pythonsmroot}/susemanager/package_helper.py*
 %{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
-%if 0%{?rhel}
-%{pythonsmroot}/susemanager/__pycache__/*.pyc
+%if 0%{?rhel} || 0%{?build_py3}
+%{pythonsmroot}/susemanager/__pycache__/
+%{pythonsmroot}/susemanager/mgr_sync/__pycache__/
+%{_datadir}/susemanager/__pycache__/
 %endif
 %{_mandir}/man8/mgr-sync.8*
 %{wwwdocroot}/pub/repositories/empty/repodata/*.xml*

@@ -968,8 +968,16 @@ public class ContentManager {
         // want them in the cache. For this we need the errata to be up-to-date in target
         alignPackageCache(tgt, oldTgtPackages);
 
-        // a lot was inserted into rhnChannelPackage at this point. Make sure stats are up-to-date before continuing
-        ChannelFactory.analyzeChannelPackages();
+        // a lot was inserted into tables at this point. Make sure stats are up-to-date before continuing
+        analyzeAlignTables();
+
+        // Also check if content of cloned errata needs alignment (advisory status etc.)
+        if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
+            ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
+                ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
+                ErrataFactory.syncErrataDetails(cloned);
+            });
+        }
 
         // update the channel newest packages cache
         ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
@@ -978,6 +986,18 @@ public class ContentManager {
         tgt.setLastModified(new Date());
         HibernateFactory.getSession().saveOrUpdate(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
+    }
+
+    /**
+     * Run database analyze in tables more affected by the CLM channel align
+     */
+    private void analyzeAlignTables() {
+        ChannelFactory.analyzeChannelPackages();
+        ChannelFactory.analyzeErrataPackages();
+        ChannelFactory.analyzeChannelErrata();
+        ChannelFactory.analyzeErrataCloned();
+        ChannelFactory.analyzeErrata();
+        ChannelFactory.analyzeServerNeededCache();
     }
 
     private void alignPackageCache(Channel channel, Set<Package> oldChannelPackages) {
@@ -1034,14 +1054,6 @@ public class ContentManager {
         excludedErrata.forEach(e -> ErrataManager.removeErratumAndPackagesFromChannel(e, tgt, user));
         // Merge the included errata
         ErrataManager.mergeErrataToChannel(user, includedErrata, tgt, src, false, false);
-
-        // Also check if content of cloned errata needs alignment (advisory status etc.)
-        if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
-            ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
-                ClonedErrata cloned = (ClonedErrata) ErrataManager.lookupErrata(e.getId(), user);
-                ErrataFactory.syncErrataDetails(cloned);
-            });
-        }
     }
 
     /**

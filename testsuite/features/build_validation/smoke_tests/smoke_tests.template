@@ -14,6 +14,7 @@ Feature: Smoke tests for <client>
   - Schedule Software package refresh
   - Schedule Hardware refresh
   - Reboot the client via Web UI
+  - Install spacecmd from client tools
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -137,3 +138,15 @@ Feature: Smoke tests for <client>
     When I force picking pending events on "<client>" if necessary
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
+
+  Scenario: Install spacecmd from the client tools on the <client>
+    When I follow "Software" in the content area
+    And I follow "Install"
+    And I enter "spacecmd" as the filtered package name
+    And I click on the filter button
+    And I check "spacecmd" in the list
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package install has been scheduled for" text
+    When I force picking pending events on "<client>" if necessary
+    And I wait until event "Package Install/Upgrade scheduled by admin" is completed

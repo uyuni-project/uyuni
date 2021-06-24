@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Jun 18 15:23:09 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.19-1
+- Update the version for the WebUI
+
+-------------------------------------------------------------------
+Wed Jun 02 18:05:50 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.18-1
+- Fix image building scheduling UI (bsc#1186728)
+
+-------------------------------------------------------------------
 Mon May 24 12:39:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.17-1

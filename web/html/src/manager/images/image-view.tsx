@@ -88,7 +88,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
       imagesRuntime: {},
       selectedItems: [],
     };
+  }
 
+  componentDidMount() {
     this.updateView(getHashId(), getHashTab());
     window.addEventListener("popstate", () => {
       this.updateView(getHashId(), getHashTab());
