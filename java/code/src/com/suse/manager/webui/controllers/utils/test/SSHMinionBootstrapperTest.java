@@ -1,12 +1,15 @@
 package com.suse.manager.webui.controllers.utils.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+
 import org.jmock.Expectations;
 
 import java.util.Arrays;
@@ -80,13 +83,15 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
 
     @Override
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
+        String contactMethod = key.map(k -> k.getContactMethod().getLabel()).orElse(getDefaultContactMethod());
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
+        if (contactMethod.equals("ssh-push-tunnel")) {
+            pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
+        }
         pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", "myhost");
-        pillarData.put("contact_method", key
-                .map(k -> k.getContactMethod().getLabel())
-                .orElse(getDefaultContactMethod()));
+        pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", "root");
         return pillarData;
     }
