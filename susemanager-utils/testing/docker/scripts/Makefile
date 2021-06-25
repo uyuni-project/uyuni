@@ -1,4 +1,4 @@
-DOCKER_CONTAINER = registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-cobbler
+DOCKER_CONTAINER = registry.suse.de/devel/galaxy/manager/4.2/docker/containers/suma-4.2-cobbler
 
 all :: cobbler_tests
 

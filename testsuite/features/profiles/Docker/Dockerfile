@@ -1,4 +1,4 @@
-FROM registry.mgr.suse.de/toaster-sles12sp3-products
+FROM registry.suse.de/toaster-sles12sp3-products
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
