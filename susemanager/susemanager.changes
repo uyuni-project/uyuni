@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jun 25 17:59:46 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.27-1
 - sort products in mgr-sync output
 - fix creating deb bootstrap repos with packages having new checksums
   (bsc#1184330)
