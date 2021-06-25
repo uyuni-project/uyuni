@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jun 25 17:55:44 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.17-1
 - Align the modules.yaml of target channel after cloning errata (bsc#1182810)
 - adapt hostname rename check to allow also short hostname in various
   hostname files on the filesystem (bsc#1176512)
