@@ -705,7 +705,9 @@ public class DownloadFile extends DownloadAction {
             return manualServeByteRange(request, response, diskPath, range);
         }
         // Update kickstart session
-        if (ksession != null) {
+        if (ksession != null &&
+                (!(ksession.getState().getLabel().equals(KickstartSessionState.COMPLETE) ||
+                        ksession.getState().getLabel().equals(KickstartSessionState.FAILED)))) {
             ksession.setState(newState);
             if (ksession.getPackageFetchCount() == null) {
                 ksession.setPackageFetchCount(0L);
