@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jun 25 17:51:18 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.37-1
 - Add missing task status strings (bsc#1186744)
 - Fix product migration when scheduled from the event page (bsc#1187066)
 - fix permission problem with /srv/susemanager/salt/custom files (bsc#1186325)
