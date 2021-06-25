@@ -1,3 +1,5 @@
+- Do not update Kickstart session when download after session is complete or failed (bsc#1187621)
+
 -------------------------------------------------------------------
 Fri Jun 25 17:51:18 CEST 2021 - jgonzalez@suse.com
 
