@@ -9,7 +9,7 @@ Feature: Chanel subscription via SSM
 
 @sle_minion
   Scenario: Change child channels for SLES Minion subscribed to a base channel
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
@@ -35,7 +35,7 @@ Feature: Chanel subscription via SSM
 
 @sle_client
   Scenario: Change child channels for SLES Client subscribed to a base channel
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
     And I should see "1" systems selected for SSM
@@ -139,7 +139,7 @@ Feature: Chanel subscription via SSM
 
 @centos_minion
   Scenario: System default channel can't be determined on the CentOS minion
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "ceos_minion" client
     Then I should see "1" systems selected for SSM
@@ -169,7 +169,7 @@ Feature: Chanel subscription via SSM
 
 @ubuntu_minion
   Scenario: System default channel can't be determined on the Ubuntu minion
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "ubuntu_minion" client
     Then I should see "1" systems selected for SSM

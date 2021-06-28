@@ -10,8 +10,8 @@ Feature: Delete channels with child or clone is not allowed
     Given I am authorized for the "Admin" section
 
   Scenario: Clone the first channel before deletion from UI test
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
@@ -20,8 +20,8 @@ Feature: Delete channels with child or clone is not allowed
     Then I should see a "Clone of Test-Channel-x86_64" text
 
   Scenario: Clone the second channel using first channel as base
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Clone of Test-Channel-x86_64" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
@@ -30,8 +30,8 @@ Feature: Delete channels with child or clone is not allowed
     Then I should see a "Clone of Clone of Test-Channel-x86_64" text
 
   Scenario: Try to delete channel with clone
-    Given I am on the manage software channels page
-    When I follow "Clone of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
@@ -39,8 +39,8 @@ Feature: Delete channels with child or clone is not allowed
     And I should see a "Unable to delete channel" text
 
   Scenario: Delete channel without clones neither children
-    Given I am on the manage software channels page
-    When I follow "Clone of Clone of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
@@ -48,8 +48,8 @@ Feature: Delete channels with child or clone is not allowed
     And I should see a "has been deleted" text
 
   Scenario: Clone a child channel to the clone of x86_64 test channel
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64 Child Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
@@ -59,8 +59,8 @@ Feature: Delete channels with child or clone is not allowed
     Then I should see a "Clone of Test-Channel-x86_64 Child Channel" text
 
   Scenario: Try delete channel with child
-    Given I am on the manage software channels page
-    When I follow "Clone of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
@@ -69,8 +69,8 @@ Feature: Delete channels with child or clone is not allowed
     And I should see a "must delete those channels first before deleting the parent." text
 
   Scenario: Cleanup: remove cloned child channel
-    Given I am on the manage software channels page
-    When I follow "Clone of Test-Channel-x86_64 Child Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Test-Channel-x86_64 Child Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
@@ -78,8 +78,8 @@ Feature: Delete channels with child or clone is not allowed
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove cloned parent channel
-    Given I am on the manage software channels page
-    When I follow "Clone of Test-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
