@@ -131,7 +131,7 @@ const Promote = (props: Props) => {
                     })
                     .catch(error => {
                       showErrorToastr(error.messages, { autoHide: false });
-                      closeDialog();
+                      closeDialog(modalNameId);
                     });
                 }}
               />
