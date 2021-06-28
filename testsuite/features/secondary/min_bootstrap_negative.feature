@@ -75,7 +75,7 @@ Feature: Negative tests for bootstrapping normal minions
      And I select the hostname of "proxy" from "proxies"
      And I click on "Bootstrap"
      And I wait until I see "Successfully bootstrapped host!" text
-     And I am on the System Overview page
+     And I follow the left menu "Home > Overview"
      And I wait until I see the name of "sle_minion", refreshing the page
 
   Scenario: Cleanup: subscribe again to base channel after negative tests

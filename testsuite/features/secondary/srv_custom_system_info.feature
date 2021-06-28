@@ -18,7 +18,7 @@ Feature: Custom system info key-value pairs
     Then I should see a "Successfully added 1 custom key." text
 
   Scenario: Add a value to a system
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "Create Value"
@@ -29,7 +29,7 @@ Feature: Custom system info key-value pairs
     And I should see a "key-value" link
 
   Scenario: Edit the value
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow this "sle_client" link
     And I follow "Custom Info"
     And I follow "key-value"
