@@ -15,10 +15,10 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  # WORKAROUND
   Scenario: Remove dhcp packages on the proxy
+    # WORKAROUND
     When I remove package "dhcp dhcp-client" from this "proxy"
-  # End of WORKAROUND
+    # End of WORKAROUND
 
 @proxy
 @private_net
