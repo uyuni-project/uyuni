@@ -680,7 +680,7 @@ public class StatesAPI {
      * @return the name of the package sls file
      */
     public static String getPackagesSlsName(MinionSummary server) {
-        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls";
+        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + server.getMachineId() + ".sls";
     }
 
     /**
