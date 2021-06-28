@@ -12,6 +12,11 @@ Fri Jun 18 12:41:30 CEST 2021 - jgonzalez@suse.com
 - do not check accessibility of free product repositories (bsc#1182817)
 
 -------------------------------------------------------------------
+Thu Jun 17 10:38:51 UTC 2021 - Julio González Gil <jgonzalez@suse.com>
+
+- Use the correct product tag
+
+-------------------------------------------------------------------
 Thu Jun 10 13:46:09 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.22-1
