@@ -15,6 +15,13 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
+  # WORKAROUND
+  Scenario: Remove dhcp packages on the proxy
+    When I remove package "dhcp dhcp-client" from this "proxy"
+  # End of WORKAROUND
+
+@proxy
+@private_net
   Scenario: Install or update branch network formulas on the server
     When I manually install the "branch-network" formula on the server
     And I manually install the "dhcpd" formula on the server
