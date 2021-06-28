@@ -357,6 +357,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             StatesAPI.removePackageState(registeredMinion);
 
             registeredMinion.setMachineId(machineId);
+            registeredMinion.setDigitalServerId(machineId);
             ServerFactory.save(registeredMinion);
 
             ServerStateRevision serverRev = StateFactory
