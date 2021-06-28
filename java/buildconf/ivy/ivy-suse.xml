@@ -22,7 +22,7 @@
         <dependency org="manager-42" name="commons-jexl" rev="2.1.1" />
         <dependency org="manager-42" name="commons-lang3" rev="3.8.1" />
         <dependency org="manager-42" name="commons-logging" rev="1.2" />
-        <dependency org="manager-42" name="commons-validator" rev="1.3.1" />
+        <dependency org="manager-42" name="commons-validator" rev="1.1.4" />
         <dependency org="manager-42" name="concurrent" rev="1.3.4" />
         <dependency org="manager-42" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
         <dependency org="manager-42" name="dom4j" rev="1.6.1" />
@@ -44,7 +44,7 @@
         <dependency org="manager-42" name="jakarta-persistence-api" rev="2.2.2" />
         <dependency org="manager-42" name="java-saml" rev="2.4.0" />
         <dependency org="manager-42" name="java-saml-core" rev="2.4.0" />
-        <dependency org="manager-42" name="javassist" rev="3.20.0" />
+        <dependency org="manager-42" name="javassist" rev="3.23.1" />
         <dependency org="manager-42" name="jboss-logging" rev="3.3.0" />
         <dependency org="manager-42" name="jcommon" rev="1.0.16" />
         <dependency org="manager-42" name="jdom" rev="1.1.3" />
@@ -75,7 +75,7 @@
         <dependency org="manager-42" name="sitemesh" rev="2.1" />
         <dependency org="manager-42" name="slf4j-api" rev="1.7.30" />
         <dependency org="manager-42" name="slf4j-log4j12" rev="1.7.30" />
-        <dependency org="manager-42" name="snakeyaml" rev="1.25" />
+        <dependency org="manager-42" name="snakeyaml" rev="1.28" />
         <dependency org="manager-42" name="spark-core" rev="2.7.2" />
         <dependency org="manager-42" name="spark-template-jade" rev="2.3" />
         <dependency org="manager-42" name="spy" rev="0.8.3" />
