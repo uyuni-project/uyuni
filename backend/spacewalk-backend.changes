@@ -1,3 +1,6 @@
+- Add suite, component and arch handling for deb repo plugin
+  to improve non-flat deb repos synchronization
+
 -------------------------------------------------------------------
 Mon Aug 09 10:57:52 CEST 2021 - jgonzalez@suse.com
 

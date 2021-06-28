@@ -94,6 +94,66 @@ class DebRepo:
         self.url = url
         parts = url.rsplit('/dists/', 1)
         self.base_url = [parts[0]]
+
+        parsed_url = urlparse.urlparse(url)
+        query = urlparse.parse_qsl(parsed_url.query)
+        new_query = []
+        suite = None
+        component = None
+        arch = None
+        for qi in query:
+            if qi[0] == "uyuni_suite":
+                suite = qi[1]
+            elif qi[0] == "uyuni_component":
+                component = qi[1]
+            elif qi[0] == "uyuni_arch":
+                arch = qi[1]
+            else:
+                new_query.append(qi)
+        if suite:
+            parsed_url = parsed_url._replace(query=urlparse.urlencode(new_query))
+            base_url = urlparse.urlunparse(parsed_url)
+            path_list = parsed_url.path.split("/")
+            log2(0, 0, "Base URL: {}".format(base_url))
+            log2(0, 0, "Suite: {}".format(suite))
+            log2(0, 0, "Component: {}".format(component))
+            if "/" not in suite:
+                path_list.append("dists")
+            path_list.extend(suite.split("/"))
+            if component:
+                path_list.extend(component.split("/"))
+            if "/" not in suite:
+                if arch is None:
+                    rhnSQL.initDB()
+                    h = rhnSQL.prepare("""
+                                       SELECT ca.label AS arch_label
+                                       FROM rhnChannel AS c
+                                       LEFT JOIN rhnChannelArch AS ca
+                                           ON c.channel_arch_id = ca.id
+                                       WHERE c.label = :channel_label
+                                       """)
+                    h.execute(channel_label=channel_label)
+                    row = h.fetchone_dict()
+                    if row and "arch_label" in row:
+                        aspl = row["arch_label"].split("-")
+                        if len(aspl) == 3 and aspl[0] == "channel" and aspl[2] == "deb":
+                            arch_trans = {
+                                "ia32": "i386",
+                                "arm": "armhf",
+                            }
+                            if aspl[1] in arch_trans:
+                                arch = arch_trans[aspl[1]]
+                            else:
+                                arch = aspl[1]
+                if arch:
+                    log2(0, 0, "Channel architecture: {}".format(arch))
+                    path_list.append("binary-{}".format(arch))
+            while "" in path_list:
+                path_list.remove("")
+            parsed_url = parsed_url._replace(path="/".join(path_list))
+            self.url = url = urlparse.urlunparse(parsed_url)
+            self.base_url = [base_url]
+
         # Make sure baseurl ends with / and urljoin will work correctly
         if self.base_url[0][-1] != '/':
             self.base_url[0] += '/'
