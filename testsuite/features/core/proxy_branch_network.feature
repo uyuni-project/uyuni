@@ -13,12 +13,12 @@ Feature: Setup SUSE Manager for Retail branch network
   As the system administrator
   I want to prepare the branch network
 
+# WORKAROUND
 @proxy
 @private_net
-  # WORKAROUND
   Scenario: Remove dhcp packages on the proxy
     When I remove package "dhcp dhcp-client" from this "proxy"
-  # End of WORKAROUND
+# End of WORKAROUND
 
 @proxy
 @private_net
