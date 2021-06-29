@@ -1694,3 +1694,24 @@ And(/^I copy vCenter configuration file on server$/) do
   return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
 end
+
+When(/^I export "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
+  node = get_target("server")
+  node.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+end
+
+When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
+  node = get_target("server")
+  node.run("inter-server-sync import --importDir=#{path}")
+end
+
+Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
+  raise "Folder #{folder} not found" unless file_exists?($server, folder + "/sql_statements.sql")
+end
+
+Then(/^Export folder "(.*?)" doesn't exists on server$/) do |folder|
+     raise "Folder exists" if folder_exists?($server, folder)
+end
+When(/^I ensure folder "(.*?)" doesn't exists$/) do |folder|
+    folder_delete($server, folder) if folder_exists?($server, folder)
+end

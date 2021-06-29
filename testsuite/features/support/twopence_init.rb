@@ -185,9 +185,21 @@ def file_exists?(node, file)
   code.zero? && local.zero?
 end
 
+# This function tests whether a folder exists on a node
+def folder_exists?(node, file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
+  code.zero? && local.zero?
+end
+
 # This function deletes a file from a node
 def file_delete(node, file)
   _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
+  code
+end
+
+# This function deletes a file from a node
+def folder_delete(node, folder)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
   code
 end
 
