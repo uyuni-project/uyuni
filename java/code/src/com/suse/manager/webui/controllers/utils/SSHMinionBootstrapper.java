@@ -118,6 +118,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         return result;
     }
 
+    /**
+     * NO-OP: Ne don't want to delete the authorized ssh key from the minion
+     * @param params bootstrap params
+     * @param user the user
+     */
+    @Override
+    protected void handleAnsibleCleanup(BootstrapParameters params, User user) { }
+
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
         return new RegisterMinionEventMessageAction(systemQuery, saltApi);
