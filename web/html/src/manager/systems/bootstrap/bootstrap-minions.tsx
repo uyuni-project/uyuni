@@ -17,13 +17,21 @@ declare global {
 type Props = {
   proxies: any[];
   availableActivationKeys: any[];
+  ansibleInventoryId: number | null;
+  targetHost: string | null;
+};
+
+enum AuthMethod {
+  Password = "password",
+  SshKey = "ssh-key",
+  AnsiblePreauth = "ansible-preauth",
 };
 
 type State = {
   host: string;
   port: string;
   user: string;
-  authMethod: string;
+  authMethod: AuthMethod;
   password: string;
   privKey: string;
   privKeyPwd: string;
@@ -46,10 +54,10 @@ class BootstrapMinions extends React.Component<Props, State> {
     super(props);
 
     this.initState = {
-      host: "",
+      host: props.targetHost || "",
       port: "",
       user: "",
-      authMethod: "password",
+      authMethod: props.ansibleInventoryId ? AuthMethod.AnsiblePreauth : AuthMethod.Password,
       password: "",
       privKey: "",
       privKeyPwd: "",
@@ -184,11 +192,13 @@ class BootstrapMinions extends React.Component<Props, State> {
 
     const authMethod = this.state.authMethod;
     formData["authMethod"] = authMethod;
-    if (authMethod === "password") {
+    if (authMethod === AuthMethod.Password) {
       formData["password"] = this.state.password.trim();
-    } else if (authMethod === "ssh-key") {
+    } else if (authMethod === AuthMethod.SshKey) {
       formData["privKey"] = this.state.privKey;
       formData["privKeyPwd"] = this.state.privKeyPwd;
+    } else if (authMethod === AuthMethod.AnsiblePreauth) {
+      formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
     if (this.state.proxy) {
       formData["proxy"] = this.state.proxy;
@@ -295,7 +305,7 @@ class BootstrapMinions extends React.Component<Props, State> {
     const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
     const authenticationData =
-      this.state.authMethod === "password" ? (
+      this.state.authMethod === AuthMethod.Password ? (
         <div className="form-group">
           <label className="col-md-3 control-label">{t("Password")}:</label>
           <div className="col-md-6">
@@ -402,37 +412,50 @@ class BootstrapMinions extends React.Component<Props, State> {
               )}
             </div>
           </div>
-          <div className="form-group">
-            <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
-            <div className="col-md-6">
-              <div className="radio col-md-3">
-                <label>
-                  <input
-                    name="authMethod"
-                    type="radio"
-                    value="password"
-                    checked={this.state.authMethod === "password"}
-                    onChange={this.authMethodChanged}
-                  />
-                  <span>{t("Password")}</span>
-                </label>
+          {this.props.ansibleInventoryId &&
+              <div className="form-group">
+                <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
+                <div className="col-md-6">
+                  Authentication via Ansible controller
+                </div>
+              </div>}
+          {!this.props.ansibleInventoryId &&
+            <>
+              <div className="form-group">
+                <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
+
+                <div className="col-md-6">
+                  <div className="radio col-md-3">
+                    <label>
+                      <input
+                        name="authMethod"
+                        type="radio"
+                        value="password"
+                        checked={this.state.authMethod === "password"}
+                        onChange={this.authMethodChanged}
+                      />
+                      <span>{t("Password")}</span>
+                    </label>
+                  </div>
+                  <div className="radio col-md-3">
+                    <label>
+                      <input
+                        name="authMethod"
+                        type="radio"
+                        value="ssh-key"
+                        checked={this.state.authMethod === "ssh-key"}
+                        onChange={this.authMethodChanged}
+                      />
+                      <span>{t("SSH Private Key")}</span>
+                    </label>
+                  </div>
+                </div>
               </div>
-              <div className="radio col-md-3">
-                <label>
-                  <input
-                    name="authMethod"
-                    type="radio"
-                    value="ssh-key"
-                    checked={this.state.authMethod === "ssh-key"}
-                    onChange={this.authMethodChanged}
-                  />
-                  <span>{t("SSH Private Key")}</span>
-                </label>
-              </div>
-            </div>
-          </div>
-          {authenticationData}
+              {authenticationData}
+            </>
+          }
+
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Activation Key")}:</label>
             <div className="col-md-6">
@@ -549,8 +572,16 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) =>
-  SpaRenderer.renderNavigationReact(
-    <BootstrapMinions availableActivationKeys={window.availableActivationKeys} proxies={window.proxies} />,
+export const renderer = (id) => {
+  const params = new URLSearchParams(window.location.search);
+  const targetHost = params.get("targetHost");
+  const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "") || null;
+
+  return SpaRenderer.renderNavigationReact(
+    <BootstrapMinions
+      availableActivationKeys={window.availableActivationKeys}
+      proxies={window.proxies}
+      ansibleInventoryId={ansibleInventoryId}
+      targetHost={targetHost}/>,
     document.getElementById(id)
-  );
+  )};
