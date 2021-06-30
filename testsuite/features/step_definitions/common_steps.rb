@@ -168,10 +168,6 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
 
-When(/^I navigate to "([^"]*)" page$/) do |page|
-  visit("https://#{$server.full_hostname}/#{page}")
-end
-
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
@@ -255,10 +251,6 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, canonical_path)
 end
 
-When(/^I view system with id "([^"]*)"$/) do |arg1|
-  visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
-end
-
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
@@ -335,10 +327,6 @@ end
 # package steps
 Then(/^I should see package "([^"]*)"$/) do |package|
   step %(I should see a "#{package}" text)
-end
-
-Given(/^I am on the manage software channels page$/) do
-  visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
