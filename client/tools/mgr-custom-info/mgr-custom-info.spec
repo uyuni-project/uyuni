@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-custom-info
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -25,13 +25,13 @@ Name:           mgr-custom-info
 Summary:        Set and list custom values for Spacewalk-enabled machines
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.2.1
+Version:        4.3.0
+Release:        0
 # 5.4.43.2 was the last version+1 before renaming to mgr-custom-info
 Provides:       rhn-custom-info = 5.4.44
 Obsoletes:      rhn-custom-info < 5.4.44
-Release:        1%{?dist}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
@@ -83,7 +83,8 @@ ln -s rhn-custom-info $RPM_BUILD_ROOT/%{_bindir}/mgr-custom-info
 %defattr(-,root,root,-)
 %{pypath}/custominfo/
 %{_bindir}/*-custom-info
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog

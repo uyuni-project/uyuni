@@ -1,3 +1,4 @@
+- Bump version to 4.3.0
 - Fix for spacewalk-koan tests after switching to the new
   Docker images
 

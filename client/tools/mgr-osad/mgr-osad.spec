@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-osad
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -51,11 +51,11 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.2.5
+Version:        4.3.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -122,8 +122,8 @@ Requires:       python
 Requires:       python-jabberpy
 Requires:       python2-mgr-osa-common = %{version}
 Requires:       python2-rhn-client-tools >= 2.8.4
-Requires:       rhnlib >= 4.2.2
 Requires:       python2-uyuni-common-libs
+Requires:       rhnlib >= 4.2.2
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
@@ -189,8 +189,8 @@ Obsoletes:      osa-dispatcher < %{oldversion}
 Provides:       osa-dispatcher = %{oldversion}
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common
-Requires:       lsof
 Requires:       %{pythonX}-mgr-osa-dispatcher = %{version}-%{release}
+Requires:       lsof
 Requires:       spacewalk-backend-server >= 1.2.32
 Conflicts:      %{name} < %{version}-%{release}
 Conflicts:      %{name} > %{version}-%{release}
@@ -556,7 +556,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %else
 %attr(755,root,root) %{_initrddir}/osad
 %endif
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/logrotate.d/osad
 %ghost %attr(600,root,root) %{_var}/log/osad
 %if 0%{?suse_version}
@@ -606,7 +607,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %ghost %attr(640,%{apache_user},%{apache_group}) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
@@ -658,7 +660,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc osa-dispatcher-selinux/%{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
