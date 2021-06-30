@@ -27,7 +27,7 @@ Feature: Display patches
     And I should see a "virgo-dummy-3456" link
 
   Scenario: Check SLES release 6789 patches
-    Given I am on the patches page
+    When I follow the left menu "Patches > Patch List > Relevant"
     And I follow "andromeda-dummy-6789"
     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
     And I should see a "Test update for andromeda-dummy" text
@@ -36,7 +36,7 @@ Feature: Display patches
     And I should see a "reboot_suggested" text
 
   Scenario: Check packages of SLES release 6789 patches
-    Given I am on the patches page
+    When I follow the left menu "Patches > Patch List > Relevant"
     And I follow "andromeda-dummy-6789"
     And I follow "Packages"
     Then I should see a "Test-Channel-x86_64" link

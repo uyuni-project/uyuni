@@ -50,7 +50,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check if onboarding for the minion with the new module.run syntax was successful
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
