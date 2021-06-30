@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM registry.mgr.suse.de/suma-head-testsuite
+FROM registry.suse.de/suma-head-testsuite
 MAINTAINER Michael Calmer "mc@suse.com"
 
 ARG repo
