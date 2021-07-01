@@ -124,7 +124,7 @@ def click_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -133,7 +133,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -142,7 +142,7 @@ def click_link_or_button_and_wait(locator = nil, **options)
   begin
     raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
   rescue StandardError, Capybara::ExpectationNotMet => e
-    puts e.message # Skip errors related to .senna-loading element
+    STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -153,7 +153,7 @@ module CapybaraNodeElementExtension
     begin
       raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
     rescue StandardError, Capybara::ExpectationNotMet => e
-      puts e.message # Skip errors related to .senna-loading element
+      STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end

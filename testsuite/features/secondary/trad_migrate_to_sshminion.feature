@@ -45,7 +45,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     Given I am on the Systems overview page of this "sle_client"
     When I wait until I see the name of "sle_client", refreshing the page
     And I follow "Properties" in the content area
-    Then I wait until I see "Base System Type:     Salt" text, refreshing the page
+    Then I wait until I see "Base System Type:.*Salt" regex, refreshing the page
 
 @proxy
   Scenario: Check connection from migrated SSH minion to proxy
@@ -130,4 +130,4 @@ Feature: Migrate a traditional client into a Salt SSH minion
   Scenario: Cleanup: check that the migrated SSH minion is a traditional client again
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
-    Then I wait until I see "Base System Type:     Management" text, refreshing the page
+    Then I wait until I see "Base System Type:.*Management" regex, refreshing the page

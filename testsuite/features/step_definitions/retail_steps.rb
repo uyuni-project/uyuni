@@ -68,12 +68,12 @@ When(/^I enable repositories before installing branch server$/) do
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  puts $proxy.run("zypper mr --enable #{repos}")
+  log $proxy.run("zypper mr --enable #{repos}")
 
   # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    puts $proxy.run("zypper mr --enable #{repos}")
+    log $proxy.run("zypper mr --enable #{repos}")
   end
 end
 
@@ -82,12 +82,12 @@ When(/^I disable repositories after installing branch server$/) do
 
   # Distribution
   repos = 'os_pool_repo os_update_repo'
-  puts $proxy.run("zypper mr --disable #{repos}")
+  log $proxy.run("zypper mr --disable #{repos}")
 
   # Server Applications
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = 'module_server_applications_pool_repo module_server_applications_update_repo'
-    puts $proxy.run("zypper mr --disable #{repos}")
+    log $proxy.run("zypper mr --disable #{repos}")
   end
 end
 
@@ -165,14 +165,14 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   ['proxy.example.org', 'dns.google.com'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
+    log "#{output}"
   end
   # reverse name resolution
   client = net_prefix + '2'
   [client, '8.8.8.8'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    STDOUT.puts "#{output}"
+    log "#{output}"
   end
 end
 
@@ -199,7 +199,7 @@ When(/^I reboot the PXE boot minion$/) do
   mac = $pxeboot_mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  STDOUT.puts "Rebooting #{ipv6}..."
+  log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
@@ -239,7 +239,7 @@ When(/^I stop and disable avahi on the PXE boot minion$/) do
   mac = $pxeboot_mac.tr(':', '')
   hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
-  STDOUT.puts "Stoppping and disabling avahi on #{ipv6}..."
+  log "Stoppping and disabling avahi on #{ipv6}..."
   file = 'stop-avahi-pxeboot.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
@@ -322,7 +322,7 @@ When(/^I delete all the imported terminals$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
-    puts "Deleting terminal with name: #{terminal}"
+    log "Deleting terminal with name: #{terminal}"
     steps %(
       When I follow "#{terminal}" terminal
       And I follow "Delete System"
