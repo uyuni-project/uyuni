@@ -26468,6 +26468,14 @@ given channel.</source>
         </context-group>
       <target state="new" />
   </trans-unit>
+      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+        <source>Modular Data Cleanup</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
+        <source>Forward Registration</source>
+      <target state="new" />
+  </trans-unit>
       </body>
   </file>
 </xliff>
