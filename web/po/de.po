@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#. * Mimic the translation function `t()`, this doesn't match the full functionality but should suffice for tests
 #: ../html/src/components/input/Range.tsx:45
 #: ../html/src/components/input/Range.tsx:46
 #: ../html/src/components/input/Range.tsx:58
@@ -12,11 +13,13 @@
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
+#: ../html/src/utils/test-utils/setup/t.test.ts:7
+#: ../html/src/utils/test-utils/setup/t.ts:2
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-21 13:17+0200\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -35,6 +38,28 @@ msgstr ""
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:19
+msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:152
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
+msgid "Please input required fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:155
+#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
+#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
+msgid "Invalid format of fields: {0}"
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:205
+msgid ""
+"On this page you can configure Salt Formulas to automatically install and "
+"configure software."
 msgstr ""
 
 #: ../html/src/components/action-schedule.tsx:48
@@ -102,8 +127,8 @@ msgstr ""
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
 #: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
-#: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
+#: ../html/src/manager/images/image-view.tsx:798
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
@@ -173,16 +198,18 @@ msgstr ""
 msgid "Assign"
 msgstr ""
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:71
+#: ../html/src/components/dialog/ActionConfirm.tsx:72
 msgid "Are you sure you want to {0} {1} "
 msgstr ""
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:83
+#: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr ""
 
-#: ../html/src/components/dialog/DangerDialog.tsx:49
-#: ../html/src/components/dialog/DangerDialog.tsx:50
+#: ../html/src/components/dialog/DangerDialog.tsx:60
+#: ../html/src/components/dialog/DangerDialog.tsx:61
+#: ../html/src/components/dialog/LegacyDangerDialog.tsx:52
+#: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
@@ -199,19 +226,19 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: ../html/src/components/dialog/DeleteDialog.tsx:22
+#: ../html/src/components/dialog/DeleteDialog.tsx:28
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.js:98
 #: ../html/src/manager/content-management/project/project.js:99
-#: ../html/src/manager/images/image-profiles.tsx:137
-#: ../html/src/manager/images/image-profiles.tsx:212
+#: ../html/src/manager/images/image-profiles.tsx:140
+#: ../html/src/manager/images/image-profiles.tsx:215
 #: ../html/src/manager/images/image-stores.tsx:140
 #: ../html/src/manager/images/image-stores.tsx:209
-#: ../html/src/manager/images/image-view.tsx:353
-#: ../html/src/manager/images/image-view.tsx:363
-#: ../html/src/manager/images/image-view.tsx:684
+#: ../html/src/manager/images/image-view.tsx:355
+#: ../html/src/manager/images/image-view.tsx:365
+#: ../html/src/manager/images/image-view.tsx:686
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -226,43 +253,17 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:37
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:29
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:280
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:315
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:282
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:318
 msgid "Delete"
 msgstr ""
 
-#: ../html/src/components/dialog/dialog.stories.js:19
+#: ../html/src/components/dialog/dialog.stories.js:20
 msgid "Delete project"
 msgstr ""
 
-#: ../html/src/components/dialog/dialog.stories.js:22
+#: ../html/src/components/dialog/dialog.stories.js:23
 msgid "Are you sure you want to delete project "
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:19
-msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:152
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:52
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:65
-msgid "Please input required fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:155
-#: ../html/src/manager/clusters/cluster/cluster-config.tsx:55
-#: ../html/src/manager/clusters/shared/ui/formula-config.tsx:68
-msgid "Invalid format of fields: {0}"
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:205
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-
-#: ../html/src/components/formulas/EditGroup.tsx:320
-msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:145
@@ -288,9 +289,13 @@ msgid "Save"
 msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:310
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:59
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 msgid "Formulas"
+msgstr ""
+
+#: ../html/src/components/formulas/EditGroup.tsx:320
+msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
@@ -316,7 +321,6 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.js:132
 #: ../html/src/components/input/FormMultiInput.stories.js:181
 #: ../html/src/components/input/FormMultiInput.stories.js:262
-#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/components/input/Password.stories.js:36
 #: ../html/src/components/input/Radio.stories.js:39
 #: ../html/src/components/input/Radio.stories.js:69
@@ -325,6 +329,7 @@ msgstr ""
 #: ../html/src/components/input/Range.stories.js:50
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
+#: ../html/src/components/input/form.stories.js:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.js:46
 msgid "Submit"
 msgstr ""
@@ -341,8 +346,8 @@ msgid "Users"
 msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
+#: ../html/src/components/input/form.stories.js:26
 msgid "First Name"
 msgstr ""
 
@@ -351,12 +356,12 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.stories.js:120
 #: ../html/src/components/input/FormMultiInput.stories.js:236
 #: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/form.stories.js:28
 #: ../html/src/components/input/InputBase.test.tsx:42
 #: ../html/src/components/input/InputBase.test.tsx:68
 #: ../html/src/components/input/InputBase.test.tsx:96
 #: ../html/src/components/input/Text.stories.js:28
 #: ../html/src/components/input/Text.stories.js:37
+#: ../html/src/components/input/form.stories.js:28
 msgid "Minimum 2 characters"
 msgstr ""
 
@@ -538,7 +543,7 @@ msgid "Configuration Channel: {0}"
 msgstr ""
 
 #: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:206
+#: ../html/src/manager/images/image-profiles.tsx:209
 #: ../html/src/manager/images/image-stores.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
@@ -590,8 +595,8 @@ msgstr ""
 #: ../html/src/components/table/TableDataHandler.tsx:340
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:258
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
 #: ../html/src/manager/virtualization/nets/network-properties.js:502
 #: ../html/src/manager/virtualization/pools/pool-properties.js:597
 msgid "Loading..."
@@ -849,11 +854,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.tsx:142
+#: ../html/src/manager/images/image-profiles.tsx:145
 #: ../html/src/manager/images/image-stores.tsx:145
-#: ../html/src/manager/images/image-view.tsx:377
+#: ../html/src/manager/images/image-view.tsx:379
 #: ../html/src/manager/notifications/notification-messages.tsx:426
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:247
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
 msgid "Refresh"
 msgstr ""
 
@@ -872,7 +877,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-patches.tsx:92
-#: ../html/src/manager/images/image-view.tsx:675
+#: ../html/src/manager/images/image-view.tsx:677
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:126
@@ -1109,7 +1114,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:236
+#: ../html/src/manager/virtualization/ListTab.js:252
 msgid "Filter by name"
 msgstr ""
 
@@ -1192,7 +1197,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
-#: ../html/src/manager/images/image-view.tsx:629
+#: ../html/src/manager/images/image-view.tsx:631
 #: ../html/src/manager/salt/keys/key-management.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:136
@@ -1200,22 +1205,22 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/network-properties.js:229
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:341
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
 #: ../html/src/manager/virtualization/pools/pool-properties.js:237
 msgid "Name"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
-#: ../html/src/manager/images/image-profiles.tsx:192
+#: ../html/src/manager/images/image-profiles.tsx:195
 #: ../html/src/manager/images/image-stores.tsx:197
-#: ../html/src/manager/images/image-view.tsx:669
+#: ../html/src/manager/images/image-view.tsx:671
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
 #: ../html/src/manager/state/recurring-states-list.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:260
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
+#: ../html/src/manager/virtualization/ListTab.js:276
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:352
 msgid "Actions"
 msgstr ""
 
@@ -1472,31 +1477,6 @@ msgstr ""
 msgid "Your subscriptions"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
-msgid "Edit Virtual Host Managers"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
-msgid "Subscription Matching"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
-msgid "Subscriptions"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-msgid "Unmatched Products"
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
-msgid "Pins "
-msgstr ""
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
-msgid "Messages "
-msgstr ""
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:61
 msgid "Product name"
 msgstr ""
@@ -1512,6 +1492,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:94
 msgid "No unmatching products are found."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+msgid "Unmatched Products"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
@@ -1540,6 +1525,26 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:46
 msgid "Per-instance"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+msgid "Edit Virtual Host Managers"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+msgid "Subscription Matching"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+msgid "Subscriptions"
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+msgid "Pins "
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+msgid "Messages "
 msgstr ""
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.tsx:37
@@ -1653,9 +1658,9 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
-#: ../html/src/manager/images/image-build.tsx:270
+#: ../html/src/manager/images/image-build.tsx:268
 #: ../html/src/manager/images/image-profile-edit.tsx:526
-#: ../html/src/manager/images/image-profiles.tsx:179
+#: ../html/src/manager/images/image-profiles.tsx:182
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
@@ -1693,7 +1698,7 @@ msgid "Action has been "
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.tsx:223
+#: ../html/src/manager/images/image-build.tsx:221
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
@@ -1706,7 +1711,7 @@ msgid " successfully."
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.tsx:217
+#: ../html/src/manager/images/image-build.tsx:215
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
 msgid "Action has been successfully added to the Action Chain "
@@ -1739,7 +1744,7 @@ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
 msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.tsx:774
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:54
 msgid "Overview"
 msgstr ""
@@ -1805,7 +1810,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
 #: ../html/src/manager/images/image-stores.tsx:189
 #: ../html/src/manager/images/image-view-patches.tsx:84
-#: ../html/src/manager/images/image-view.tsx:628
+#: ../html/src/manager/images/image-view.tsx:630
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/state/highstate-summary.tsx:59
@@ -1859,8 +1864,8 @@ msgstr ""
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
 #: ../html/src/manager/images/image-profile-edit.tsx:501
-#: ../html/src/manager/images/image-profiles.tsx:148
-#: ../html/src/manager/images/image-profiles.tsx:149
+#: ../html/src/manager/images/image-profiles.tsx:151
+#: ../html/src/manager/images/image-profiles.tsx:152
 #: ../html/src/manager/images/image-store-edit.tsx:234
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:152
@@ -1995,8 +2000,8 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
-#: ../html/src/manager/images/image-build.tsx:386
-#: ../html/src/manager/images/image-view.tsx:630
+#: ../html/src/manager/images/image-build.tsx:384
+#: ../html/src/manager/images/image-view.tsx:632
 msgid "Version"
 msgstr ""
 
@@ -2068,9 +2073,9 @@ msgid "Select unused"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
-#: ../html/src/manager/images/image-profiles.tsx:138
+#: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:354
+#: ../html/src/manager/images/image-view.tsx:356
 msgid "Delete selected"
 msgstr ""
 
@@ -2271,11 +2276,11 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
 #: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
-#: ../html/src/manager/images/image-build.tsx:416
-#: ../html/src/manager/images/image-profiles.tsx:200
+#: ../html/src/manager/images/image-build.tsx:414
+#: ../html/src/manager/images/image-profiles.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:578
 #: ../html/src/manager/images/image-view-overview.tsx:675
-#: ../html/src/manager/images/image-view.tsx:657
+#: ../html/src/manager/images/image-view.tsx:659
 msgid "Build"
 msgstr ""
 
@@ -2346,13 +2351,13 @@ msgid "Generating repositories data"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
 #: ../html/src/manager/images/image-view-overview.tsx:79
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr ""
 
@@ -2363,6 +2368,18 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
 msgid "Built time"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+msgid "Loading global filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+msgid "Updating project filters..."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+msgid "Create New Filter"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
@@ -2396,18 +2413,6 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
 msgid ""
 "select from the full source even if you have excluded them before with deny"
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
-msgid "Loading global filters..."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
-msgid "Updating project filters..."
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
-msgid "Create New Filter"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
@@ -2512,7 +2517,7 @@ msgid "Sources edited successfully"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
-#: ../html/src/manager/images/image-build.tsx:299
+#: ../html/src/manager/images/image-build.tsx:297
 msgid "Software Channels"
 msgstr ""
 
@@ -2554,36 +2559,36 @@ msgid ""
 "this group"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid "Formula saved. Apply the "
+#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
+#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+msgid "Formula saved. Edit configuration options "
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
 #: ../html/src/manager/state/highstate.tsx:139
 msgid "Highstate"
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:16
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:16
 msgid " for the changes to take effect."
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:18
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:18
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
 msgstr ""
 
-#: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
-#: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
+#: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
+msgid "Formula saved. Apply the "
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:35
@@ -2601,48 +2606,48 @@ msgid ""
 "scheduler is running."
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:222
+#: ../html/src/manager/images/image-build.tsx:220
 msgid "Building the image has been "
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:253
+#: ../html/src/manager/images/image-build.tsx:251
 msgid "Profile Summary"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:263
+#: ../html/src/manager/images/image-build.tsx:261
 msgid "No profile selected"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:274
+#: ../html/src/manager/images/image-build.tsx:272
 #: ../html/src/manager/images/image-profile-edit.tsx:535
 msgid "Image Type"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:278
+#: ../html/src/manager/images/image-build.tsx:276
 #: ../html/src/manager/images/image-import.tsx:264
 msgid "Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:282
+#: ../html/src/manager/images/image-build.tsx:280
 #: ../html/src/manager/virtualization/pools/pool-properties.js:522
 msgid "Path"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:286
+#: ../html/src/manager/images/image-build.tsx:284
 #: ../html/src/manager/images/image-import.tsx:239
 #: ../html/src/manager/images/image-profile-edit.tsx:392
 msgid "Activation Key"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:355
+#: ../html/src/manager/images/image-build.tsx:353
 msgid "Build Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:371
+#: ../html/src/manager/images/image-build.tsx:369
 msgid "Image Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:392
+#: ../html/src/manager/images/image-build.tsx:390
 #: ../html/src/manager/images/image-import.tsx:302
 msgid "Build Host"
 msgstr ""
@@ -2685,7 +2690,7 @@ msgid "Image version is required."
 msgstr ""
 
 #: ../html/src/manager/images/image-import.tsx:318
-#: ../html/src/manager/images/image-view.tsx:372
+#: ../html/src/manager/images/image-view.tsx:374
 msgid "Import"
 msgstr ""
 
@@ -2769,32 +2774,32 @@ msgstr ""
 msgid "Image profiles have been deleted."
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:159
+#: ../html/src/manager/images/image-profiles.tsx:162
 msgid "Image Profiles"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:186
+#: ../html/src/manager/images/image-profiles.tsx:189
 msgid "Build Type"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:228
+#: ../html/src/manager/images/image-profiles.tsx:231
 #: ../html/src/manager/systems/delete-system-confirm.tsx:18
 msgid "Delete Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:231
+#: ../html/src/manager/images/image-profiles.tsx:234
 msgid "Are you sure you want to delete profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:241
+#: ../html/src/manager/images/image-profiles.tsx:244
 msgid "Delete Selected Profile(s)"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:245
+#: ../html/src/manager/images/image-profiles.tsx:248
 msgid "Are you sure you want to delete the selected profile?"
 msgstr ""
 
-#: ../html/src/manager/images/image-profiles.tsx:247
+#: ../html/src/manager/images/image-profiles.tsx:250
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr ""
@@ -2875,13 +2880,13 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:466
 #: ../html/src/manager/images/image-view-runtime.tsx:68
 #: ../html/src/manager/images/image-view-runtime.tsx:105
-#: ../html/src/manager/images/image-view.tsx:480
-#: ../html/src/manager/images/image-view.tsx:529
+#: ../html/src/manager/images/image-view.tsx:482
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "No information"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:43
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Queued"
 msgstr ""
 
@@ -2918,7 +2923,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:103
 #: ../html/src/manager/images/image-view-overview.tsx:104
-#: ../html/src/manager/images/image-view.tsx:499
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Built externally"
 msgstr ""
 
@@ -2931,37 +2936,37 @@ msgid "Picked Up"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:184
-#: ../html/src/manager/images/image-view.tsx:555
+#: ../html/src/manager/images/image-view.tsx:557
 msgid "Cluster"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:185
-#: ../html/src/manager/images/image-view.tsx:556
-#: ../html/src/manager/images/image-view.tsx:608
+#: ../html/src/manager/images/image-view.tsx:558
+#: ../html/src/manager/images/image-view.tsx:610
 msgid "Instances"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:195
 #: ../html/src/manager/images/image-view-overview.tsx:232
-#: ../html/src/manager/images/image-view.tsx:517
-#: ../html/src/manager/images/image-view.tsx:566
+#: ../html/src/manager/images/image-view.tsx:519
+#: ../html/src/manager/images/image-view.tsx:568
 msgid "Waiting for update ..."
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:212
-#: ../html/src/manager/images/image-view.tsx:583
+#: ../html/src/manager/images/image-view.tsx:585
 msgid "View cluster summary"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:243
 #: ../html/src/manager/images/image-view-overview.tsx:245
-#: ../html/src/manager/images/image-view.tsx:525
+#: ../html/src/manager/images/image-view.tsx:527
 msgid "All instances are consistent with SUSE Manager"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:258
 #: ../html/src/manager/images/image-view-overview.tsx:259
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view.tsx:533
 msgid "Outdated instances found"
 msgstr ""
 
@@ -2974,31 +2979,31 @@ msgid "Edit store"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:417
-#: ../html/src/manager/images/image-view.tsx:729
+#: ../html/src/manager/images/image-view.tsx:731
 msgid "Instance Details for '{0}'"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:472
 #: ../html/src/manager/images/image-view-overview.tsx:473
-#: ../html/src/manager/images/image-view.tsx:482
+#: ../html/src/manager/images/image-view.tsx:484
 msgid "Critical updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:479
 #: ../html/src/manager/images/image-view-overview.tsx:480
-#: ../html/src/manager/images/image-view.tsx:485
+#: ../html/src/manager/images/image-view.tsx:487
 msgid "Non-critical updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:486
 #: ../html/src/manager/images/image-view-overview.tsx:487
-#: ../html/src/manager/images/image-view.tsx:488
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Package updates available"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:493
 #: ../html/src/manager/images/image-view-overview.tsx:494
-#: ../html/src/manager/images/image-view.tsx:490
+#: ../html/src/manager/images/image-view.tsx:492
 msgid "Image is up to date"
 msgstr ""
 
@@ -3040,13 +3045,13 @@ msgid "Custom Image Information"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:630
-#: ../html/src/manager/images/image-view.tsx:364
-#: ../html/src/manager/images/image-view.tsx:698
+#: ../html/src/manager/images/image-view.tsx:366
+#: ../html/src/manager/images/image-view.tsx:700
 msgid "Delete Image"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:633
-#: ../html/src/manager/images/image-view.tsx:701
+#: ../html/src/manager/images/image-view.tsx:703
 msgid "Are you sure you want to delete image"
 msgstr ""
 
@@ -3147,69 +3152,69 @@ msgstr ""
 msgid "Namespace"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:307
+#: ../html/src/manager/images/image-view.tsx:309
 msgid "Deleted successfully."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:323
+#: ../html/src/manager/images/image-view.tsx:325
 msgid "Image inspect has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:339
+#: ../html/src/manager/images/image-view.tsx:341
 msgid "Image build has been scheduled."
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:387
+#: ../html/src/manager/images/image-view.tsx:389
 msgid "Images"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Building"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:509
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:236
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:305
+#: ../html/src/manager/images/image-view.tsx:511
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
 msgid "Unknown"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:603
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.tsx:605
+#: ../html/src/manager/images/image-view.tsx:774
 msgid "Runtime"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:633
+#: ../html/src/manager/images/image-view.tsx:635
 msgid "Revision"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:637
+#: ../html/src/manager/images/image-view.tsx:639
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:108
 msgid "Updates"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:640
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.tsx:642
+#: ../html/src/manager/images/image-view.tsx:774
 msgid "Patches"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:653
-#: ../html/src/manager/images/image-view.tsx:772
+#: ../html/src/manager/images/image-view.tsx:655
+#: ../html/src/manager/images/image-view.tsx:774
 msgid "Packages"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:661
+#: ../html/src/manager/images/image-view.tsx:663
 msgid "Last Modified"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:714
+#: ../html/src/manager/images/image-view.tsx:716
 msgid "Delete Selected Image(s)"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:718
+#: ../html/src/manager/images/image-view.tsx:720
 msgid "Are you sure you want to delete the selected image?"
 msgstr ""
 
-#: ../html/src/manager/images/image-view.tsx:720
+#: ../html/src/manager/images/image-view.tsx:722
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr ""
 
@@ -3650,8 +3655,8 @@ msgstr ""
 msgid "Applying the config channels has been "
 msgstr ""
 
-#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:59
+#: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
 msgid "Configuration"
 msgstr ""
 
@@ -3712,7 +3717,7 @@ msgstr ""
 #: ../html/src/manager/salt/keys/key-management.tsx:187
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:119
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:60
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:342
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
 msgid "State"
 msgstr "Bundesland"
 
@@ -4651,28 +4656,16 @@ msgstr ""
 msgid "Add a virtual host manager"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
-msgid "Disconnected"
+#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+msgid "Please install libvirt python module."
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
-msgid "Failed to connect"
+#: ../html/src/manager/virtualization/ListTab.js:157
+msgid "{0} selected"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
-msgid "Toggle full size"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
-msgid "Guest is not running"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
-msgid "Something went wrong, connection is closed"
-msgstr ""
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
-msgid "Create Virtual Machine"
+#: ../html/src/manager/virtualization/ListTab.js:259
+msgid "Action Status"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:138
@@ -4718,13 +4711,37 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Disconnected"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+msgid "Failed to connect"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
+msgid "Toggle full size"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
+msgid "Guest is not running"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
+msgid "Something went wrong, connection is closed"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+msgid "Create Virtual Machine"
+msgstr ""
+
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Start / Resume"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:26
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:266
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:268
 msgid "Stop"
 msgstr ""
 
@@ -4811,10 +4828,6 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
-msgid "Disks"
-msgstr ""
-
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
 msgid "Source storage pool"
 msgstr ""
@@ -4829,6 +4842,10 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
 msgid "Source template image URL"
+msgstr ""
+
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+msgid "Disks"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
@@ -4854,25 +4871,13 @@ msgstr ""
 msgid "Clear Fields"
 msgstr ""
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
-msgid "Please install libvirt python module."
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.js:144
-msgid "{0} selected"
-msgstr ""
-
-#: ../html/src/manager/virtualization/ListTab.js:243
-msgid "Action Status"
-msgstr ""
-
 #: ../html/src/manager/virtualization/nets/create/nets-create.js:34
 msgid "Create Virtual Network"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:23
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:97
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:256
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:258
 msgid "Start"
 msgstr ""
 
@@ -4892,12 +4897,12 @@ msgid ""
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:67
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:343
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
 msgid "Autostart"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:76
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:344
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
 msgid "Persistent"
 msgstr ""
 
@@ -5098,44 +5103,6 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
-msgid "Virtual network with no connection to other networks"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
-msgid "SR-IOV pool"
-msgstr ""
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr ""
-
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
 msgid "Network address"
 msgstr ""
@@ -5232,6 +5199,44 @@ msgstr ""
 msgid "Untagged"
 msgstr ""
 
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+msgid "Virtual network using the host IP routing stack and NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+msgid "Virtual network using the host IP routing stack, without NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+msgid ""
+"Virtual network using the host IP routing stack, without firewall rules and "
+"NAT"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+msgid "Virtual network with no connection to other networks"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
+msgid ""
+"Network based on macvtap driver to use a pool of physical interfaces. No "
+"possible communication between guest and host"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+msgid "SR-IOV pool"
+msgstr ""
+
+#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+msgstr ""
+
 #: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
 msgid "Could not get network devices from the server. Please try again."
 msgstr ""
@@ -5240,42 +5245,42 @@ msgstr ""
 msgid "Create Virtual Storage Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Delete the pool, including the contained volumes. "
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:140
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
 msgid "Cannot be undone"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:273
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:275
 msgid "Edit Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
 msgid "Location"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
 msgid "Usage"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:356
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:357
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:360
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:361
 msgid "Create Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:363
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:367
 msgid "Virtual Storage Pools and Volumes"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:364
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:374
+#: ../html/src/manager/virtualization/pools/list/pools-list.js:378
 msgid "Filter by pool or volume name"
 msgstr ""
 
@@ -5520,4 +5525,18 @@ msgstr ""
 
 #: ../html/src/utils/network.ts:81
 msgid "HTTP Error code "
+msgstr ""
+
+#: ../html/src/utils/test-utils/setup/t.test.ts:5
+msgid "foo"
+msgstr ""
+
+#: ../html/src/utils/test-utils/setup/t.test.ts:6
+msgid "undefined"
+msgstr ""
+
+#: ../html/src/utils/test-utils/setup/t.test.ts:11
+#: ../html/src/utils/test-utils/setup/t.test.ts:12
+#: ../html/src/utils/test-utils/setup/t.test.ts:13
+msgid "foo {0} tea {1}"
 msgstr ""
