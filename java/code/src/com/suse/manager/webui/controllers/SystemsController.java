@@ -22,6 +22,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -34,6 +35,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -120,6 +122,14 @@ public class SystemsController {
         post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(systemsController::getAccessibleChannelChildren));
+        get("/manager/api/systems/list/virtual", withUser(systemsController::virtualSystems));
+    }
+
+    private Object virtualSystems(Request request, Response response, User user) {
+        response.type("application/json");
+        DataResult<VirtualSystemOverview> systems = SystemManager.virtualSystemsList(user, null);
+        systems.elaborate();
+        return json(response, systems);
     }
 
     /**
