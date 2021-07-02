@@ -28,17 +28,23 @@ import java.util.Arrays;
  */
 public class SystemCommandThreadedExecutor implements Executor {
 
+    private String lastCommandOutput;
+    private String lastCommandError;
     private boolean logError;
 
     private class StreamThread extends Thread {
         private InputStream inputStream;
         private boolean logError;
         private Logger logger;
+        private String message;
+
         StreamThread(InputStream in, boolean err, Logger log) {
                 inputStream = in;
                 logError = err;
                 logger = log;
+                message = "";
         }
+        @Override
         public void run() {
             StringBuilder sb = new StringBuilder();
             try {
@@ -55,14 +61,19 @@ public class SystemCommandThreadedExecutor implements Executor {
                 logger.warn("Error reading from process ", e);
             }
             if (sb.length() > 0) {
+                message = sb.toString();
                 if (logError) {
-                    logger.error(sb.toString());
+                    logger.error(message);
                 }
                 else {
-                    logger.info(sb.toString());
+                    logger.info(message);
                 }
             }
-       }
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
     /**
@@ -93,6 +104,7 @@ public class SystemCommandThreadedExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int execute(String[] args) {
         if (logger.isDebugEnabled()) {
             logger.debug("execute(String[] args=" + Arrays.asList(args) + ") - start");
@@ -106,10 +118,8 @@ public class SystemCommandThreadedExecutor implements Executor {
             }
             Process p = r.exec(args);
 
-            Thread inStream  = new StreamThread(
-                                                p.getInputStream(), false, logger);
-            Thread errStream = new StreamThread(
-                                                p.getErrorStream(), logError, logger);
+            StreamThread inStream  = new StreamThread(p.getInputStream(), false, logger);
+            StreamThread errStream = new StreamThread(p.getErrorStream(), logError, logger);
 
             inStream.start();
             errStream.start();
@@ -126,6 +136,8 @@ public class SystemCommandThreadedExecutor implements Executor {
                 throw new RuntimeException(
                         "InterruptedException while trying to exec: " + e);
             }
+            lastCommandError = errStream.getMessage();
+            lastCommandOutput = inStream.getMessage();
         }
         catch (IOException ioe) {
             logger.error("execute(String[])", ioe);
@@ -145,15 +157,18 @@ public class SystemCommandThreadedExecutor implements Executor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandOutput() {
-        return "";
+        return lastCommandOutput;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLastCommandErrorMessage() {
-        return "";
+        return lastCommandError;
+
     }
 
 }

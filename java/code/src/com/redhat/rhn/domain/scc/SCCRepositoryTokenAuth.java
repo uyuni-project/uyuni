@@ -71,7 +71,7 @@ public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
     @Transient
     public String getUrl() {
         try {
-            URI url = new URI(getRepository().getUrl());
+            URI url = new URI(getRepo().getUrl());
             URI newURI = new URI(url.getScheme(), url.getUserInfo(), url.getHost(), url.getPort(),
                     url.getPath(), getAuth(), url.getFragment());
             return newURI.toString();
