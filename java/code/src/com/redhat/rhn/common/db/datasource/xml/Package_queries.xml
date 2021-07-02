@@ -833,7 +833,8 @@ SELECT P.id, P.summary, PP.name as provider
     pe.version AS version,
     pe.release AS release,
     pe.epoch AS epoch,
-    pa.label AS arch,
+    pe.type AS package_type,
+    pa.label AS arch
   FROM rhnActionPackage ap
     JOIN rhnLockedPackages lp
       ON ap.name_id = lp.name_id AND

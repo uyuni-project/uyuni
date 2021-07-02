@@ -1124,8 +1124,8 @@ public class SaltServerActionService {
             DataResult<PackageListItem> setLockPkg = PackageManager.systemSetLockedPackages(
                     m.getServerId(), action.getId(), null);
             List<List<String>> pkgs = setLockPkg.stream().map(d -> Arrays.asList(d.getName(), d.getArch(),
-                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), "rpm").toUniversalEvrString()
-                    )).collect(Collectors.toList());
+                    new PackageEvr(d.getEpoch(), d.getVersion(), d.getRelease(), d.getPackageType())
+                    .toUniversalEvrString())).collect(Collectors.toList());
             LocalCall<Map<String, ApplyResult>> localCall =
                     State.apply(Arrays.asList(PACKAGES_PKGLOCK), Optional.of(singletonMap(PARAM_PKGS, pkgs)));
             List<MinionSummary> mSums = ret.getOrDefault(localCall, new ArrayList<>());
