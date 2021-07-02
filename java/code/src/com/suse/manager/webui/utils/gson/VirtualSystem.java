@@ -14,10 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
-
-import java.util.List;
 
 /**
  * Data exposed by the API for a virtual system
@@ -40,6 +37,30 @@ public class VirtualSystem {
     private Long memory;
     private boolean accessible;
     private boolean subscribable;
+
+    /**
+     * Constructor using a virtual system data from query result and the list of known virtual hosts.
+     *
+     * @param guestData the virtual guest data as returned by the SystemManager query
+     */
+    public VirtualSystem(VirtualSystemOverview guestData) {
+        systemId = guestData.getSystemId();
+        name = guestData.getName();
+        serverName = guestData.getServerName();
+        statusType = guestData.getStatusType();
+        channelLabels = guestData.getChannelLabels();
+        channelId = guestData.getChannelId();
+        uuid = guestData.getUuid();
+        stateName = guestData.getStateName();
+        stateLabel = guestData.getStateLabel();
+        hostSystemId = guestData.getHostSystemId();
+        hostServerName = guestData.getHostServerName();
+        virtualSystemId = guestData.getVirtualSystemId();
+        vcpus = guestData.getVcpus();
+        memory = guestData.getMemory();
+        accessible = guestData.isAccessible();
+        subscribable = guestData.isSubscribable();
+    }
 
 
     /**
@@ -264,35 +285,5 @@ public class VirtualSystem {
      */
     public void setSubscribable(boolean subscribableIn) {
         subscribable = subscribableIn;
-    }
-
-    /**
-     * Constructor using a virtual system data from query result and the list of known virtual hosts.
-     *
-     * @param guestData the virtual guest data as returned by the SystemManager query
-     * @param virtualHosts the list of all known virtual hosts
-     */
-    public VirtualSystem(VirtualSystemOverview guestData, List<SystemOverview> virtualHosts) {
-        systemId = guestData.getSystemId();
-        name = guestData.getName();
-        serverName = guestData.getServerName();
-        statusType = guestData.getStatusType();
-        channelLabels = guestData.getChannelLabels();
-        channelId = guestData.getChannelId();
-        uuid = guestData.getUuid();
-        stateName = guestData.getStateName();
-        stateLabel = guestData.getStateLabel();
-        hostSystemId = guestData.getHostSystemId();
-        if (guestData.getHostSystemId() != null) {
-            virtualHosts.stream()
-                    .filter(host -> host.getId().equals(hostSystemId))
-                    .findFirst()
-                    .ifPresent(host -> hostServerName = host.getServerName());
-        }
-        virtualSystemId = guestData.getVirtualSystemId();
-        vcpus = guestData.getVcpus();
-        memory = guestData.getMemory();
-        accessible = guestData.isAccessible();
-        subscribable = guestData.isSubscribable();
     }
 }

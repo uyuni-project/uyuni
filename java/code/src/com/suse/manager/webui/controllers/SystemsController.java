@@ -52,6 +52,7 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
+import com.suse.manager.webui.utils.gson.VirtualSystem;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -127,8 +128,17 @@ public class SystemsController {
 
     private Object virtualSystems(Request request, Response response, User user) {
         response.type("application/json");
-        DataResult<VirtualSystemOverview> systems = SystemManager.virtualSystemsList(user, null);
-        systems.elaborate();
+        DataResult<VirtualSystemOverview> virtual = SystemManager.virtualSystemsListNew(user, null);
+        virtual.elaborate();
+        List<VirtualSystem> systems = virtual.stream()
+                .map(system -> {
+                    system.setSystemId(system.getVirtualSystemId());
+                if (system.getSystemId() != null) {
+                    system.updateStatusType(user);
+                }
+                return new VirtualSystem(system);
+              })
+              .collect(Collectors.toList());
         return json(response, systems);
     }
 
