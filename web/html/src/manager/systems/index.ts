@@ -7,4 +7,5 @@ export default {
   "systems/virtualhostmanager/virtualhostmanager": () => import("./virtualhostmanager/virtualhostmanager"),
   "systems/delete-system-confirm": () => import("./delete-system-confirm"),
   "systems/duplicate-systems-compare-delete": () => import("./duplicate-systems-compare-delete"),
+  "systems/list/virtual": () => import("./virtual-list"),
 };

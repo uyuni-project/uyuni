@@ -16,6 +16,8 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -74,8 +76,10 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the systems page.
@@ -103,8 +107,12 @@ public class SystemsController {
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      * @param systemsController instance to register.
+     * @param jade Jade template engine
      */
-    public static void initRoutes(SystemsController systemsController) {
+    public static void initRoutes(SystemsController systemsController, JadeTemplateEngine jade) {
+        get("/manager/systems/list/virtual",
+                withCsrfToken(withDocsLocale(withUser(systemsController::virtualListPage))), jade);
+
         post("/manager/api/systems/:sid/delete", withUser(systemsController::delete));
         get("/manager/api/systems/:sid/channels", withUser(systemsController::getChannels));
         get("/manager/api/systems/:sid/channels-available-base",
@@ -114,6 +122,18 @@ public class SystemsController {
                 withUser(systemsController::getAccessibleChannelChildren));
     }
 
+    /**
+     * Get the virtual systems list page
+     *
+     * @param requestIn the request
+     * @param responseIn the response
+     * @param userIn the user
+     * @return the jade rendered template
+     */
+    private ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "templates/systems/virtual-list.jade");
+    }
     /**
      * Deletes a system.
      * @param request the request
