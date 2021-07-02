@@ -39,6 +39,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -332,6 +334,10 @@ public class SystemDetailsEditAction extends RhnAction {
             String message =
                 LocalizationService.getInstance().getMessage("snapshots.entitlements");
             SystemManager.snapshotServer(s, message);
+        }
+        else {
+            // just regenerate the pillar data when nothing has changed
+            s.asMinionServer().ifPresent(m -> MinionPillarManager.INSTANCE.generatePillar(m));
         }
 
         return success;

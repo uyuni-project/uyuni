@@ -63,6 +63,10 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
 
         pillar.add("contact_method", minion.getContactMethod().getLabel());
         pillar.add("mgr_server", minion.getChannelHost());
+        if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
+            pillar.add("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
+        }
+
         pillar.add("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 

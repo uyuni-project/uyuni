@@ -14,6 +14,10 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
+import static java.util.Optional.of;
+
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.ContactMethod;
@@ -23,16 +27,18 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
+
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -44,9 +50,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.Optional.of;
-import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
 
 /**
  * Base for bootstrapping systems using salt-ssh.
@@ -238,6 +241,9 @@ public abstract class AbstractMinionBootstrapper {
                 .orElse(ConfigDefaults.get().getCobblerHost());
 
         pillarData.put("mgr_server", mgrServer);
+        if ("ssh-push-tunnel".equals(contactMethod)) {
+            pillarData.put("mgr_server_https_port", Config.get().getInt("ssh_push_port_https"));
+        }
         pillarData.put("mgr_origin_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);

@@ -1,3 +1,6 @@
+- when bootstrapping with ssh-push with tunnel use the port number
+  for fetching GPG keys from the server (bsc#1187441)
+
 -------------------------------------------------------------------
 Fri Jun 25 18:00:54 CEST 2021 - jgonzalez@suse.com
 
