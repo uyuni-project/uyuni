@@ -16,5 +16,3 @@ addParameters({
 configure(require.context('../components', true, /\.stories\.js$/), module);
 
 configure(loadStories, module);
-
-
