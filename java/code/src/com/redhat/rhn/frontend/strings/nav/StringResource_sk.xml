@@ -1129,7 +1129,7 @@
       </trans-unit>
       <trans-unit id="Channels Consumed" xml:space="preserve">
         <source>Channels Consumed</source>
-        <target>Spotrebované kanály</target>
+        <target>Použité kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
