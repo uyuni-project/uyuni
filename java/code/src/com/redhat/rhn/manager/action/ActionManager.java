@@ -1145,8 +1145,8 @@ public class ActionManager extends BaseManager {
      */
     public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server)
             throws TaskomaticApiException {
-	Date earliest = new Date();
-	return schedulePackageRefresh(schedulerOrg, server, earliest);
+        Date earliest = new Date();
+        return schedulePackageRefresh(schedulerOrg, server, earliest);
     }
 
     /**
