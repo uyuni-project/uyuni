@@ -25,6 +25,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -71,9 +72,12 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
+
+import org.apache.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.HttpStatus;
+
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -149,8 +153,8 @@ public class Router implements SparkApplication {
         minionsAPI.initRoutes();
 
         // Systems API
-        SystemsController.initRoutes(systemsController);
-
+        SystemsController.initRoutes(systemsController, jade);
+        
         // Activation Keys API
         ActivationKeysController.initRoutes();
 
