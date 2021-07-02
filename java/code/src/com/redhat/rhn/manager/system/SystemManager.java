@@ -1181,6 +1181,21 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Returns list of virtual host systems visible to user.
+     * @param user Currently logged in user.
+     * @param pc PageControl
+     * @return list of SystemOverviews.
+     */
+    public static DataResult<VirtualSystemOverview> virtualSystemsListNew(
+            User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers_new");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        return makeDataResult(params, elabParams, pc, m, VirtualSystemOverview.class);
+    }
+
+    /**
      * Returns list of virtual guest systems running 'under' the given system.
      * @param user Currently logged in user.
      * @param sid The id of the system we are looking at
