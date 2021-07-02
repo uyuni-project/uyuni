@@ -423,6 +423,7 @@ public enum SaltStateGeneratorService {
      */
     public void removeServer(MinionServer minion) {
         MinionPillarManager.INSTANCE.removePillar(minion.getMinionId());
+        StatesAPI.removePackageState(minion);
         removeConfigChannelAssignments(minion);
         removeActionChains(minion);
     }
