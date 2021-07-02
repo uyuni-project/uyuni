@@ -196,15 +196,15 @@ public class JobReturnEventMessageAction implements MessageAction {
 
         //For all jobs except when action chains are involved
         if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent, function, jobResult)) {
-        Date earliest = new Date();
-        if (actionId.isPresent()) {
-            Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
+            Date earliest = new Date();
+            if (actionId.isPresent()) {
+                Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
                 if (action.isPresent() && action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.SECOND, 30);
-            earliest = calendar.getTime();
+                    earliest = calendar.getTime();
                 }
-        }
+            }
             schedulePackageRefresh(jobReturnEvent.getMinionId(), earliest);
         }
 
