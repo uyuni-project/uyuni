@@ -49,6 +49,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +190,16 @@ public class JobReturnEventMessageAction implements MessageAction {
 
         //For all jobs except when action chains are involved
         if (!isActionChainInvolved && handlePackageChanges(jobReturnEvent, function, jobResult)) {
-            schedulePackageRefresh(jobReturnEvent.getMinionId());
+        Date earliest = new Date();
+        if (actionId.isPresent()) {
+            Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
+                if (action.isPresent() && action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.SECOND, 30);
+            earliest = calendar.getTime();
+                }
+        }
+            schedulePackageRefresh(jobReturnEvent.getMinionId(), earliest);
         }
 
         // Check if event was triggered in response to state scheduled at minion start-up event
@@ -373,9 +383,18 @@ public class JobReturnEventMessageAction implements MessageAction {
      * @param minionId ID of the minion for which package refresh should be scheduled
      */
     private void schedulePackageRefresh(String minionId) {
+        schedulePackageRefresh(minionId, new Date());
+    }
+
+    /**
+     * Schedule package refresh on the minion
+     * @param minionId ID of the minion for which package refresh should be scheduled
+     * @param earliest The earliest time this action should be run.
+     */
+    private void schedulePackageRefresh(String minionId, Date earliest) {
         MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
             try {
-                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer, earliest);
             }
             catch (TaskomaticApiException e) {
                 LOG.error(e);
