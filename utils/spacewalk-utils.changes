@@ -1,4 +1,5 @@
 - Bump version to 4.3.0
+- Updated cloneByDate.py formatting to allow pylint pass.
 
 -------------------------------------------------------------------
 Fri Jun 18 15:18:20 CEST 2021 - jgonzalez@suse.com
