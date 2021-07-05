@@ -28,7 +28,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Then I should see "sle_minion" via spacecmd
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 

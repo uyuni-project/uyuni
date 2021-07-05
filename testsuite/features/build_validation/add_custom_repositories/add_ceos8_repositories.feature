@@ -16,7 +16,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
   Scenario: Add a child channel for CentOS 8 DVD repositories
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    When I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
+    And I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
     And I enter "centos-8-iso" as "Channel Label"
     And I select "RHEL8-Pool for x86_64" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"

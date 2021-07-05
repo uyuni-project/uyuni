@@ -21,7 +21,7 @@ Feature: Bootstrap a CentOS minion and do some basic operations on it
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I am on the System Overview page
+    And I follow the left menu "Home > Overview"
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 

@@ -245,7 +245,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_client
   Scenario: Re-add Salt Minion via SSM
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
     And I am on System Set Manager Overview
@@ -258,7 +258,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Re-add Traditional Client via SSM
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I am on System Set Manager Overview

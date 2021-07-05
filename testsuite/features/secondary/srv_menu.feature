@@ -312,7 +312,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "No Custom Info Keys Found" text
 
   Scenario: Sidebar link destination for Systems => Autoinstallation
-    When I am on Autoinstallation Overview page
+    When I follow the left menu "Systems > Autoinstallation > Overview"
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Unprovisioned" link in the left menu

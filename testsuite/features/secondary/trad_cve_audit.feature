@@ -69,7 +69,7 @@ Feature: CVE Audit on traditional clients
     Then I should see a "Affected, at least one patch available in an assigned channel" text
     When I check the "sle_client" client
     Then I should see a "system selected" text
-    When I am on the System Manager System Overview page
+    When I follow the left menu "Systems > Overview"
     Then I should see "sle_client" as link
     And I follow "Clear"
 

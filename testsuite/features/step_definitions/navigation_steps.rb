@@ -532,10 +532,6 @@ Then(/^I am logged in$/) do
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
-Given(/^I am on the patches page$/) do
-  visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
-end
-
 Then(/^I should see an update in the list$/) do
   xpath_query = '//div[@class="table-responsive"]/table/tbody/tr/td/a'
   raise "xpath: #{xpath_query} not found" unless all(:xpath, xpath_query).any?
@@ -547,26 +543,6 @@ end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
-end
-
-When(/^I am on System Set Manager Overview$/) do
-  visit("https://#{$server.full_hostname}/rhn/ssm/index.do")
-end
-
-When(/^I am on Autoinstallation Overview page$/) do
-  visit("https://#{$server.full_hostname}/rhn/kickstart/KickstartOverview.do")
-end
-
-When(/^I am on the System Manager System Overview page$/) do
-  visit("https://#{$server.full_hostname}/rhn/systems/ssm/ListSystems.do")
-end
-
-When(/^I am on the Create Autoinstallation Profile page$/) do
-  visit("https://#{$server.full_hostname}/rhn/kickstart/AdvancedModeCreate.do")
-end
-
-When(/^I am on the System Overview page$/) do
-  visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
 Then(/^I should see something$/) do

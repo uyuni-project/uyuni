@@ -31,7 +31,8 @@ Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
 end
 
 Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
-  step %(I navigate to "os-images/#{org}/" page)
+  # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
+  visit("https://#{$server.full_hostname}/os-images/#{org}/")
 end
 
 Then(/^I should see the name of the image$/) do
