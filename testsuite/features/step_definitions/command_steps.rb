@@ -306,7 +306,7 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-# 7200 is the default value but it can be shortened by setting the TEST_REPOSYNC_TIMEOUT
+# 7200 is the default value but it can be shortened by setting the type_environment
 # environment variable.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
