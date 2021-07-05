@@ -34,12 +34,12 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I follow "Proxy" in the content area
     Then I should see "ssh_minion" hostname
 
-  Scenario: Migrate this SSH minion to SLE 15 SP2
+  Scenario: Migrate this SSH minion to SLE 15 SP3
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" text
     And I click on "Select Channels"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
@@ -55,7 +55,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait at most 600 seconds until event "Product Migration" is completed
     And I wait until event "Package List Refresh" is completed
     And I follow "Details" in the content area
-    Then I should see a "SUSE Linux Enterprise Server 15 SP2" text
+    Then I should see a "SUSE Linux Enterprise Server 15 SP3" text
     And vendor change should be enabled for product migration on "ssh_minion"
 
   Scenario: Install the latest Salt on this SSH minion
