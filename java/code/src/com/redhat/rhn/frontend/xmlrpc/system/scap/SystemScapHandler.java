@@ -143,6 +143,30 @@ public class SystemScapHandler extends BaseHandler {
      * @param serverIds The list of server ids,
      * @param xccdfPath The path to xccdf document.
      * @param oscapParams The additional params for oscap tool.
+     * @param date The date of earliest occurence.
+     * @return ID of new SCAP action.
+     *
+     * @xmlrpc.doc Schedule OpenSCAP scan.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "serverId")
+     * @xmlrpc.param #param("string", "Path to xccdf content on targeted systems.")
+     * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
+     * @xmlrpc.param #param_desc("dateTime.iso8601","date",
+     *                       "The date to schedule the action")
+     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
+     */
+    public int scheduleXccdfScan(User loggedInUser, List serverIds,
+            String xccdfPath, String oscapParams, Date date) {
+        return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath,
+                oscapParams, null, date);
+    }
+
+    /**
+     * Run OpenSCAP XCCDF Evaluation on a given list of servers
+     * @param loggedInUser The current user
+     * @param serverIds The list of server ids,
+     * @param xccdfPath The path to xccdf document.
+     * @param oscapParams The additional params for oscap tool.
      * @param ovalFiles Optional OVAL files for oscap tool.
      * @param date The date of earliest occurence.
      * @return ID of new SCAP action.
