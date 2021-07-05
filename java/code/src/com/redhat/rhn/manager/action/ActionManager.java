@@ -1144,7 +1144,23 @@ public class ActionManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
+        Date earliest = new Date();
+        return schedulePackageRefresh(schedulerOrg, server, earliest);
+    }
+
+    /**
+     * Schedule a package list refresh without a user.
+     *
+     * @param schedulerOrg the organization the server belongs to
+     * @param server the server
+     * @param earliest The earliest time this action should be run.
+     * @return the scheduled PackageRefreshListAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server,
+            Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
         Action action = ActionFactory.createAction(
@@ -1152,7 +1168,7 @@ public class ActionManager extends BaseManager {
         action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
         action.setOrg(schedulerOrg);
         action.setSchedulerUser(null);
-        action.setEarliestAction(new Date());
+        action.setEarliestAction(earliest);
 
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
