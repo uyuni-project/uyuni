@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
@@ -32,13 +33,18 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.salt.netapi.utils.Xor;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -104,8 +110,10 @@ public class ProductSyncManager {
                 ident -> ident,
                 ident -> {
                    try {
+                       Instant then = Instant.now();
                        addProduct(ident, user);
-                       return Optional.<Throwable>empty();
+                       logger.debug("Adding " + ident + " took " + Duration.between(then,Instant.now()));
+                       return Optional.empty();
                    }
                    catch (ProductSyncException e) {
                        return Optional.of(e);
@@ -121,7 +129,8 @@ public class ProductSyncManager {
      * @throws ProductSyncException if an error occurred
      */
     public void addProduct(String productIdent, User user) throws ProductSyncException {
-        SetupWizardProductDto product = findProductByIdent(productIdent);
+        SetupWizardProductDto product = findProductWithoutAutoFlush(productIdent);
+
         if (product != null) {
             try {
                 List<String> channelsToSync = new LinkedList<>();
@@ -154,6 +163,33 @@ public class ProductSyncManager {
         else {
             String msg = String.format("Product %s cannot be found.", productIdent);
             throw new ProductSyncException(msg);
+        }
+    }
+
+    /**
+     * Flush and find a product by identifier without hibernate auto-flushing.
+     * Return the found product or throw an exception in case of error.
+     *
+     * @param productIdent the product identifier
+     * @return Xor with the result on the left side, or with an exception on the right side
+     * @throws ProductSyncException in case of error
+     */
+    private SetupWizardProductDto findProductWithoutAutoFlush(String productIdent) throws ProductSyncException {
+        HibernateFactory.getSession().flush();
+        Xor<SetupWizardProductDto, ProductSyncException> result = HibernateFactory.doWithoutAutoFlushing(() -> {
+            try {
+                return Xor.left(findProductByIdent(productIdent));
+            }
+            catch (ProductSyncException e) {
+                return Xor.right(e);
+            }
+        });
+
+        if (result.isLeft()) {
+            return result.left().get();
+        }
+        else {
+            throw result.right().get();
         }
     }
 
