@@ -23,7 +23,7 @@ almarelease:
   cmd.run:
     - name: cat /etc/almalinux-release
     - onlyif: test -f /etc/almalinux-release
-rockylinux:
+rockyrelease:
   cmd.run:
     - name: cat /etc/rocky-release
     - onlyif: test -f /etc/rocky-release    
