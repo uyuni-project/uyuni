@@ -880,14 +880,6 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
 end
 
-# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
-When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
-  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
-  node.run("sed -i '#{script}' #{file}")
-end
-
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
   if host.include? 'ceos'
