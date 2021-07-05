@@ -56,6 +56,11 @@ public class ScapAction extends Action {
         retval.append(ls.getMessage("system.event.scapParams"));
         retval.append(scapActionDetails.getParameters() == null ? "" :
             StringEscapeUtils.escapeHtml4(scapActionDetails.getParametersContents()));
+        if (scapActionDetails.getOvalfiles() != null) {
+            retval.append("</br>");
+            retval.append(ls.getMessage("system.event.scapOvalFiles"));
+            retval.append(StringEscapeUtils.escapeHtml4(scapActionDetails.getOvalfiles()));
+	}
         return retval.toString();
     }
 

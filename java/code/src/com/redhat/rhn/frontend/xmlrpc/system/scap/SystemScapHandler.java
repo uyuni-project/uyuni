@@ -134,7 +134,7 @@ public class SystemScapHandler extends BaseHandler {
     public int scheduleXccdfScan(User loggedInUser, List serverIds,
             String xccdfPath, String oscapParams) {
         return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath,
-                oscapParams, new Date());
+                oscapParams, null, new Date());
     }
 
     /**
@@ -143,6 +143,7 @@ public class SystemScapHandler extends BaseHandler {
      * @param serverIds The list of server ids,
      * @param xccdfPath The path to xccdf document.
      * @param oscapParams The additional params for oscap tool.
+     * @param ovalFiles Optional OVAL files for oscap tool.
      * @param date The date of earliest occurence.
      * @return ID of new SCAP action.
      *
@@ -156,7 +157,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List serverIds,
-             String xccdfPath, String oscapParams, Date date) {
+             String xccdfPath, String oscapParams, String ovalFiles, Date date) {
         if (serverIds.isEmpty()) {
             throw new InvalidSystemException();
         }
@@ -168,7 +169,7 @@ public class SystemScapHandler extends BaseHandler {
 
         try {
             ScapAction action = ActionManager.scheduleXccdfEval(loggedInUser,
-                    longServerIds, xccdfPath, oscapParams, date);
+                    longServerIds, xccdfPath, oscapParams, ovalFiles, date);
             return action.getId().intValue();
         }
         catch (MissingEntitlementException e) {
@@ -226,6 +227,6 @@ public class SystemScapHandler extends BaseHandler {
             String xccdfPath, String oscapParams, Date date) {
         List serverIds = new ArrayList();
         serverIds.add(sid);
-        return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, date);
+        return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, null, date);
     }
 }

@@ -31,6 +31,14 @@
 </div>
 <div class="form-group">
     <label class="col-md-3 control-label">
+        <bean:message key="system.audit.schedulexccdf.jsp.ovalFiles"/>
+    </label>
+    <div class="col-md-6">
+        <html:text property="ovalfiles" size="60" styleId="ovalfiles" styleClass="form-control" readonly="${readonly}"/>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-md-3 control-label">
         <bean:message key="system.audit.schedulexccdf.jsp.nosoonerthan"/>:
     </label>
     <div class="col-md-6">
