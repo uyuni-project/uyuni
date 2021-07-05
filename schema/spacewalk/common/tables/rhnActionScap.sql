@@ -24,6 +24,7 @@ CREATE TABLE rhnActionScap
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
     path             VARCHAR(2048) NOT NULL,
+    ovalfiles        VARCHAR(8192) NOT NULL,
     parameters       BYTEA
 )
 
