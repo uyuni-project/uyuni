@@ -36,7 +36,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       spacewalk-base
+%if 0%{?suse_version}
 Requires:       sysvinit-tools
+%else
+Requires:       procps-ng
+%endif
 Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
