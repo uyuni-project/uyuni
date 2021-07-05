@@ -17,7 +17,7 @@ require 'multi_test'
 # SimpleCov.start
 
 server = ENV['SERVER']
-$type_environment = ENV['TYPE_ENVIRONMENT']
+$tests_type = ENV['TESTS_TYPE']
 $debug_mode = true if ENV['DEBUG']
 $long_tests_enabled = true if ENV['LONG_TESTS'] == 'true'
 puts "Executing long running tests" if $long_tests_enabled
