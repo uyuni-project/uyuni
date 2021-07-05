@@ -176,6 +176,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #param("string", "Path to xccdf content on targeted systems.")
      * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
+     * @xmlrpc.param #param("string", "Additional OVAL files for oscap tool.")
      * @xmlrpc.param #param_desc("dateTime.iso8601","date",
      *                       "The date to schedule the action")
      * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
