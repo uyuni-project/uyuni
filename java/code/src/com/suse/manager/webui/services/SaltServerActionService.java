@@ -1597,23 +1597,30 @@ public class SaltServerActionService {
             List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         Map<String, Object> pillar = new HashMap<>();
-        Matcher profile_matcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
-        Matcher rule_matcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
-        Matcher tailoring_file_matcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
-        Matcher tailoring_id_matcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)").matcher(scapActionDetails.getParametersContents());
+        Matcher profileMatcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher ruleMatcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
 
         pillar.put("xccdffile", scapActionDetails.getPath());
-        if (profile_matcher.find()) {
-            pillar.put("profile", profile_matcher.group(1));
+        if (scapActionDetails.getOvalfiles() != null) {
+            pillar.put("ovalfiles", Arrays.asList(scapActionDetails.getOvalfiles().split("\\s*,\\s*")));
         }
-        if (rule_matcher.find()) {
-            pillar.put("rule", rule_matcher.group(1));
+        if (profileMatcher.find()) {
+            pillar.put("profile", profileMatcher.group(1));
         }
-        if (tailoring_file_matcher.find()) {
-            pillar.put("tailoring_file", tailoring_file_matcher.group(1));
+        if (ruleMatcher.find()) {
+            pillar.put("rule", ruleMatcher.group(1));
         }
-        if (tailoring_id_matcher.find()) {
-            pillar.put("tailoring_id", tailoring_id_matcher.group(1));
+        if (tailoringFileMatcher.find()) {
+            pillar.put("tailoring_file", tailoringFileMatcher.group(1));
+        }
+        if (tailoringIdMatcher.find()) {
+            pillar.put("tailoring_id", tailoringIdMatcher.group(1));
         }
         if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
             pillar.put("fetch_remote_resources", true);
