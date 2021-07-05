@@ -1,1 +1,1 @@
-RedHat8.sls
+RedHat7.sls
