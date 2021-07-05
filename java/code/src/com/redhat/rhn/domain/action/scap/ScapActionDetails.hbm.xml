@@ -13,6 +13,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 </id>
 
                 <property name="path" type="string" column="path" />
+                <property name="ovalfiles" type="string" column="ovalfiles" />
                 <property name="parameters" type="binary" column="parameters" />
                 <many-to-one name="parentAction" column="action_id"
                         class="com.redhat.rhn.domain.action.Action" outer-join="true"
