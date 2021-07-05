@@ -37,6 +37,7 @@ public abstract class BaseSsmScheduleXccdfAction
     protected static final String DATE = "date";
     protected static final String PATH = "path";
     protected static final String PARAMS = "params";
+    protected static final String OVALFILES = "ovalfiles";
     protected static final String LOCALIZED_DATE = "localizedDate";
     protected static final String READONLY = "readonly";
     protected static final String TRUE = "true";
