@@ -526,6 +526,7 @@ public class MaintenanceManager {
      * @param operation get previous, current or future maintenance windows based on the operation
      * @param id the id of the calendar or schedule
      * @param date the date to start looking for maintenance windows
+     * @param startWithSunday whether to start the week on Sunday
      * @return the resulting list of maintenance windows
      */
     public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date,
@@ -545,6 +546,7 @@ public class MaintenanceManager {
      * @param operation get previous, current or future maintenance windows based on the operation
      * @param id the id of the calendar or schedule
      * @param date the date to start looking for maintenance windows
+     * @param startWithSunday whether to start the week on Sunday
      * @return the resulting list of maintenance windows
      */
     public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date,
@@ -566,6 +568,17 @@ public class MaintenanceManager {
         }
     }
 
+    /**
+     * Given a maintenance calendar return a list of maintenance windows based on the operation, the date and
+     * the start of the week. Only returns events for a specific event if the event name is provided.
+     *
+     * @param operation get previous, current or future maintenance windows based on the operation
+     * @param calendar the maintenance calendar
+     * @param eventName the optional event name
+     * @param date the date
+     * @param startWithSunday whether to start the week on Sunday
+     * @return the resulting list of maintenance windows
+     */
     public List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
                                                           Optional<String> eventName, Long date, Long startOfWeek) {
         if (operation.equals("skipBack")) {
@@ -590,6 +603,13 @@ public class MaintenanceManager {
         return icalUtils.getCalendarEvents(calendar, eventName, start, end);
     }
 
+    /**
+     * Given a date and the start of the week. Calculates the date range displayed by the calendar widget
+     *
+     * @param date the date
+     * @param startOfWeek the start of the week (0 for Sunday, 1 for Monday)
+     * @return the calendars displayed date range
+     */
     public Map<String, Long> getActiveRange(Long date, Long startOfWeek) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
