@@ -1606,6 +1606,10 @@ public class SaltServerActionService {
         Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
                 .matcher(scapActionDetails.getParametersContents());
 
+        String oldParameters = "eval " +
+                scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
+        pillar.put("old_parameters", oldParameters);
+
         pillar.put("xccdffile", scapActionDetails.getPath());
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.asList(scapActionDetails.getOvalfiles().split("\\s*,\\s*")));
