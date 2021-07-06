@@ -3,7 +3,6 @@ import _isEmpty from "lodash/isEmpty";
 
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
-import { objectDefaultValueHandler } from "core/utils/objects";
 import BuildVersion from "../build/build-version";
 
 type Props = {
@@ -19,16 +18,13 @@ type EnvironmentStatusEnumType = {
   };
 };
 
-const environmentStatusEnum: EnvironmentStatusEnumType = new Proxy(
-  {
-    new: { key: "new", text: t("New"), isBuilding: false },
-    building: { key: "building", text: t("Cloning channels"), isBuilding: true },
-    generating_repodata: { key: "generating_repodata", text: t("Generating repositories data"), isBuilding: true },
-    built: { key: "built", text: t("Built"), isBuilding: false },
-    failed: { key: "failed", text: t("Failed"), isBuilding: false },
-  },
-  objectDefaultValueHandler({ text: "", isBuilding: false })
-);
+const environmentStatusEnum: EnvironmentStatusEnumType = {
+  new: { key: "new", text: t("New"), isBuilding: false },
+  building: { key: "building", text: t("Cloning channels"), isBuilding: true },
+  generating_repodata: { key: "generating_repodata", text: t("Generating repositories data"), isBuilding: true },
+  built: { key: "built", text: t("Built"), isBuilding: false },
+  failed: { key: "failed", text: t("Failed"), isBuilding: false },
+};
 
 const EnvironmentView = React.memo((props: Props) => {
   return (
