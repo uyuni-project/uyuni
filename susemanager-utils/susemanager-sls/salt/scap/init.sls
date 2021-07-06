@@ -2,7 +2,7 @@ mgr_scap:
   mgrcompat.module_run:
 {%- if "openscap.xccdf_eval" not in salt %}
     - name: openscap.xccdf
-    - params: {{ pillar.get('mgr_scap_params') }}
+    - params: {{ pillar.get('mgr_scap_params')['old_parameters'] }}
 {%- else %}
     - name: openscap.xccdf_eval
     - xccdffile: {{ pillar['mgr_scap_params']['xccdffile'] }}
