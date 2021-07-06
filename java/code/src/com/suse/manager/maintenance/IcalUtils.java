@@ -153,6 +153,16 @@ public class IcalUtils {
         return sortedLimited;
     }
 
+    /**
+     * THIS IS ONLY PUBLIC FOR TESTING.
+     *
+     * Given a collection of events and the period. Returns the initial events if they are contained within
+     * the given period.
+     *
+     * @param events the events
+     * @param period the period
+     * @return initial events contained in the period
+     */
     public PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
         PeriodList periodList = new PeriodList();
         events.forEach(event -> {
@@ -317,6 +327,12 @@ public class IcalUtils {
         return getCalendarEvents(calendar, eventName, startDate, endDate).stream().reduce((first, last) -> last);
     }
 
+    /**
+     * Given a calendar returns the names of its events
+     *
+     * @param calendarIn the calendar
+     * @return the event names
+     */
     public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
