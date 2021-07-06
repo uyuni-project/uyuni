@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 11:37+0000\n"
+"POT-Creation-Date: 2021-07-06 12:11+0000\n"
 "PO-Revision-Date: 2021-05-20 18:57+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -1187,7 +1187,7 @@ msgstr "Uplynutý čas"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:60
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:56
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Status"
@@ -1511,7 +1511,7 @@ msgstr "Späť na výber systému"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:44
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:41
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:35
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:50
 msgid "Description"
@@ -1728,7 +1728,7 @@ msgstr "Upraviť vlastnosti"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
 #: ../html/src/manager/images/image-build.tsx:268
 #: ../html/src/manager/images/image-profile-edit.tsx:526
@@ -2075,7 +2075,7 @@ msgstr "Obdobie"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:384
@@ -2430,35 +2430,35 @@ msgid ""
 "autoinstallation distribution{1}."
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
 msgstr "Nový"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "Cloning channels"
 msgstr "Klonovanie kanálov"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
 msgid "Generating repositories data"
 msgstr "Generovanie údajov repozitárov"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:27
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
 #: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr "Zostavené"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
 #: ../html/src/manager/images/image-view-overview.tsx:79
 #: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr "Neúspešné"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:53
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:49
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:83
 msgid "not built"
 msgstr "nezostavené"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:72
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:68
 msgid "Built time"
 msgstr "Čas zostavenia"
 
