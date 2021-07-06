@@ -20,7 +20,7 @@ DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
 case ${DISTRIBUTION_ID} in
     sles|suse-manager-server) JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
     opensuse|opensuse-leap)   JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java';;
-    centos|rhel)              JVM='java-11-openjdk.x86_64';; 
+    centos|rhel|almalinux)    JVM='java-11-openjdk.x86_64';; 
     *)                        echo 'Unknown distribution!'
                               exit 1;;
 esac
