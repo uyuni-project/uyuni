@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 10:33+0000\n"
+"POT-Creation-Date: 2021-07-06 11:37+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -545,7 +545,7 @@ msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/components/table/TableDataHandler.tsx:336
 msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
@@ -603,7 +603,7 @@ msgstr "지우기"
 msgid "Select All"
 msgstr "모두 선택"
 
-#: ../html/src/components/table/TableDataHandler.tsx:340
+#: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:256
@@ -613,7 +613,7 @@ msgstr "모두 선택"
 msgid "Loading..."
 msgstr "로드하는 중..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:367
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
@@ -1194,14 +1194,14 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
@@ -1549,7 +1549,7 @@ msgid "No unmatching products are found."
 msgstr "일치하는 제품을 찾지 못했습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
 msgid "Unmatched Products"
 msgstr "일치하지 않는 제품"
 
@@ -1581,23 +1581,23 @@ msgstr "1-2 소켓 또는 1-2 가상 머신"
 msgid "Per-instance"
 msgstr "인스턴스별"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
 msgid "Edit Virtual Host Managers"
 msgstr "가상 호스트 관리자 편집"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
 msgid "Subscription Matching"
 msgstr "구독 일치"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
 msgid "Subscriptions"
 msgstr "구독"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
 msgid "Pins "
 msgstr "핀 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
 msgid "Messages "
 msgstr "메시지 "
 
