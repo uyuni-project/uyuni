@@ -54,14 +54,14 @@ Feature: Adding the CentOS 8 distribution custom repositories
   Scenario: Create CLM filters to remove AppStream metadata
     Given I am authorized for the "Admin" section
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click on "Create Filter"
+    And I follow "Create Filter"
     And I enter "ruby-2.7" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save"
     Then I should see a "ruby-2.7" text
-    When I click on "Create Filter"
+    When I follow "Create Filter"
     And I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
     And I enter "python36" as "moduleName"
