@@ -2,6 +2,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   root: true,
   extends: [
+    // This requires `eslint-plugin-flowtype` but we don't actually use it, see https://github.com/facebook/create-react-app/issues/6129
     "react-app",
   ],
 
