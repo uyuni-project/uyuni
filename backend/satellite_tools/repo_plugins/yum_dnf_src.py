@@ -151,6 +151,20 @@ class ContentSource(zypper_ContentSource):
             self.num_packages = 0
             self.num_excluded = 0
             self.groupsfile = None
+
+            # configure network connection
+            try:
+                # bytes per second
+                self.minrate = int(CFG.REPOSYNC_MINRATE)
+            except ValueError:
+                self.minrate = 1000
+            try:
+                # seconds
+                self.timeout = int(CFG.REPOSYNC_TIMEOUT)
+            except ValueError:
+                self.timeout = 300
+
+
             self.repo = self.dnfbase.repos[self.repoid]
             self.get_metadata_paths()
         finally:

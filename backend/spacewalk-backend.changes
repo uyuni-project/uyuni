@@ -1,3 +1,4 @@
+- Fixed minrate/timeout configuration for dnf plugin.
 - Check if batch needs to be imported even after failure (bsc#1183151)
 
 -------------------------------------------------------------------
