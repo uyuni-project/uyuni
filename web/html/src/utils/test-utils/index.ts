@@ -9,6 +9,7 @@ export * from "./timer";
 export * from "./forms";
 export * from "./server";
 export * from "./mock";
+export { screen } from "./screen";
 
 // @testing-library/user-event has messed up exports, just manually reexport everything
 export const {
