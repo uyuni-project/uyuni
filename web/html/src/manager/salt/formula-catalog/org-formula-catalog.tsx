@@ -37,7 +37,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     this.refreshServerData();
   }
 
-  sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
+  sortByText = (aRaw = "", bRaw = "", columnKey, sortDirection) => {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   };
 
@@ -45,8 +45,8 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (data, criteria) => {
-    return data.filter(row => row.toLowerCase().includes(criteria.toLowerCase()));
+  searchData = (row: string = "", criteria?: string) => {
+    return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 
   render() {
