@@ -2,6 +2,8 @@
 Author: bo@suse.de
 '''
 
+import json
+import pytest
 from mock import MagicMock, patch, mock_open
 from . import mockery
 mockery.setup_environment()
@@ -81,4 +83,22 @@ def test_cpusockets_lscpu():
                 assert type(out) == dict
                 assert 'cpusockets' in out
                 assert out['cpusockets'] == 1
+
+
+@pytest.mark.parametrize("arch", ["x86_64", "aarch64", "s390", "ppc64"])
+def test_cpusockets_cpu_data(arch):
+    '''
+    Test lscpu -J data extraction function.
+
+    :return:
+    '''
+    cpuinfo.log = MagicMock()
+    sample_data = mockery.get_test_data("lscpu-json.{}.sample".format(arch))
+    with patch.dict(cpuinfo.__salt__,
+                    {'cmd.run_all': MagicMock(return_value={'retcode': 0,
+                                                            'stdout': sample_data})}):
+        out = cpuinfo.cpu_data()
+        assert type(out) == dict
+        expected = json.loads(mockery.get_test_data("lscpu-json.{}.out".format(arch)))
+        assert out == expected
 

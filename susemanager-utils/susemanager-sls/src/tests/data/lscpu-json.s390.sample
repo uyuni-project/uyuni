@@ -1,0 +1,32 @@
+{
+   "lscpu": [
+      {"field":"Architecture:", "data":"s390x"},
+      {"field":"CPU op-mode(s):", "data":"32-bit, 64-bit"},
+      {"field":"Byte Order:", "data":"Big Endian"},
+      {"field":"CPU(s):", "data":"2"},
+      {"field":"On-line CPU(s) list:", "data":"0,1"},
+      {"field":"Thread(s) per core:", "data":"1"},
+      {"field":"Core(s) per socket:", "data":"1"},
+      {"field":"Socket(s) per book:", "data":"1"},
+      {"field":"Book(s) per drawer:", "data":"1"},
+      {"field":"Drawer(s):", "data":"2"},
+      {"field":"NUMA node(s):", "data":"1"},
+      {"field":"Vendor ID:", "data":"IBM/S390"},
+      {"field":"Machine type:", "data":"2964"},
+      {"field":"CPU dynamic MHz:", "data":"5000"},
+      {"field":"CPU static MHz:", "data":"5000"},
+      {"field":"BogoMIPS:", "data":"3033.00"},
+      {"field":"Hypervisor:", "data":"z/VM 6.4.0"},
+      {"field":"Hypervisor vendor:", "data":"IBM"},
+      {"field":"Virtualization type:", "data":"full"},
+      {"field":"Dispatching mode:", "data":"horizontal"},
+      {"field":"L1d cache:", "data":"128K"},
+      {"field":"L1i cache:", "data":"96K"},
+      {"field":"L2d cache:", "data":"2048K"},
+      {"field":"L2i cache:", "data":"2048K"},
+      {"field":"L3 cache:", "data":"65536K"},
+      {"field":"L4 cache:", "data":"491520K"},
+      {"field":"NUMA node0 CPU(s):", "data":"0,1"},
+      {"field":"Flags:", "data":"esan3 zarch stfle msa ldisp eimm dfp edat etf3eh highgprs te vx sie"}
+   ]
+}
