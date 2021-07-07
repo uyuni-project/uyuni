@@ -1,12 +1,16 @@
+import json
 import logging
 import salt.modules.cmdmod
 import salt.utils
 import os
 import re
+
 try:
     from salt.utils.path import which_bin as _which_bin
 except ImportError:
     from salt.utils import which_bin as _which_bin
+
+from salt.exceptions import CommandExecutionError
 
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
@@ -114,3 +118,30 @@ def total_num_cpus():
     sysdev = '/sys/devices/system/cpu/'
     return {'total_num_cpus': len([cpud for cpud in (os.path.exists(sysdev) and os.listdir(sysdev) or list())
                                    if re_cpu.match(cpud)])}
+
+
+def cpu_data():
+    """
+    Returns the cpu model, vendor ID and other data that may not be in the cpuinfo
+    """
+    lscpu = _which_bin(['lscpu'])
+    if lscpu is not None:
+        try:
+            log.debug("Trying lscpu to get CPU data")
+            ret = __salt__['cmd.run_all']('{0} -J'.format(lscpu), output_loglevel='quiet')
+            if ret['retcode'] == 0:
+                data = json.loads(ret["stdout"])
+                name_map = {
+                    "Model name": "cpu_model",
+                    "Vendor ID": "cpu_vendor",
+                    "NUMA node(s)": "cpu_numanodes",
+                    "Stepping": "cpu_stepping",
+                    "Core(s) per socket": "cpu_cores",
+                }
+                values = {name_map[entry["field"][:-1]]: entry["data"] for entry in data.get("lscpu") if entry["field"][:-1] in name_map.keys()}
+                log.debug(values)
+                return values
+            else:
+                log.warn("lscpu does not support -J option")
+        except (CommandExecutionError, ValueError) as error:
+            log.warn("lscpu: {0}".format(str(error)))
