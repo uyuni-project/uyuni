@@ -590,7 +590,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Long id = calendar.get().getId();
 
         Long date = ZonedDateTime.parse("2020-05-21T09:00:00+02:00").toInstant().toEpochMilli();
-        List<Triple<String, String, String>> events = mm.preprocessCalendarData(user, "next", id, date, 0L)
+        List<Triple<String, String, String>> events = mm.preprocessCalendarData(user, "next", id, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -623,7 +623,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertNotNull(scheduleSingle.orElse(null));
         Long singleId = scheduleSingle.get().getId();
 
-        List<Triple<String, String, String>> singleEvents = mm.preprocessScheduleData(user, "next", singleId, date, 0L)
+        List<Triple<String, String, String>> singleEvents = mm.preprocessScheduleData(user, "next", singleId, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -642,7 +642,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertNotNull(scheduleMulti.orElse(null));
         Long multiId = scheduleMulti.get().getId();
 
-        List<Triple<String, String, String>> multiEvents = mm.preprocessScheduleData(user, "next", multiId, date, 0L)
+        List<Triple<String, String, String>> multiEvents = mm.preprocessScheduleData(user, "next", multiId, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -670,7 +670,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Long nextDate = ZonedDateTime.parse("2020-11-30T00:00:00+02:00").toInstant().toEpochMilli();
 
         Optional<MaintenanceWindowData> nextEvent = mm.getCalendarEvents(
-                "skipNext", calendar.get(), Optional.empty(), nextDate, 0L
+                "skipNext", calendar.get(), Optional.empty(), nextDate, true
         ).stream().findFirst();
 
         assertNotNull(nextEvent.orElse(null));
@@ -679,7 +679,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Long lastDate = ZonedDateTime.parse("2020-11-01T00:00:00+02:00").toInstant().toEpochMilli();
 
         Optional<MaintenanceWindowData> lastEvent = mm.getCalendarEvents(
-                "skipBack", calendar.get(), Optional.empty(), lastDate, 0L
+                "skipBack", calendar.get(), Optional.empty(), lastDate, true
         ).stream().findFirst();
 
         assertNotNull(lastEvent.orElse(null));
@@ -692,7 +692,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         List<Pair<String, String>> activeRangesSunday = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), 0L);
+            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), true);
             activeRangesSunday.add(Pair.of(
                     Instant.ofEpochMilli(range.get("start")).toString(),
                     Instant.ofEpochMilli(range.get("end")).toString()));
@@ -715,7 +715,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         List<Pair<String, String>> activeRangesMonday = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), 1L);
+            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), false);
             activeRangesMonday.add(Pair.of(
                     Instant.ofEpochMilli(range.get("start")).toString(),
                     Instant.ofEpochMilli(range.get("end")).toString()));

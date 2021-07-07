@@ -129,15 +129,15 @@ public class MaintenanceController {
         Long date = Long.parseLong(request.params("date"));
         Long id = Long.parseLong(request.params("id"));
         String operation = request.params("operation");
-        Long startOfWeek = Long.parseLong(request.params("startOfWeek"));
+        boolean startWithSunday = "0".equals(request.params("startOfWeek"));
 
         List<MaintenanceWindowData> events = new ArrayList<>();
         try {
             if (type.equals("calendar")) {
-                events = MM.preprocessCalendarData(user, operation, id, date, startOfWeek);
+                events = MM.preprocessCalendarData(user, operation, id, date, startWithSunday);
             }
             else if (type.equals("schedule")) {
-                events = MM.preprocessScheduleData(user, operation, id, date, startOfWeek);
+                events = MM.preprocessScheduleData(user, operation, id, date, startWithSunday);
             }
             else {
                 throw new EntityNotExistsException(
