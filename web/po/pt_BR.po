@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 07:46+0000\n"
+"POT-Creation-Date: 2021-07-07 08:16+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -2599,7 +2599,9 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
 msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
@@ -3982,20 +3984,20 @@ msgstr ""
 msgid "No target systems found"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
 msgid "Not all minions responded on time."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "No minions matched the target expression."
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
 msgid "Server returned an error: {0}"
 msgstr ""
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
 msgid "Matching ssh-push minions..."
 msgstr ""
 
@@ -5253,7 +5255,9 @@ msgid "Untagged"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid "Use an existing and configured bridge device. "
+msgid ""
+"Use an existing and configured bridge device. No iptables rule, IP address "
+"or DHCP/DNS service are added"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
@@ -5481,11 +5485,11 @@ msgstr ""
 msgid "  product enhancement advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:195
+#: ../html/src/manager/visualization/data-tree.ts:184
 msgid "Add/remove system from SSM"
 msgstr ""
 
-#: ../html/src/manager/visualization/data-tree.ts:253
+#: ../html/src/manager/visualization/data-tree.ts:242
 msgid "Add children to SSM"
 msgstr ""
 
