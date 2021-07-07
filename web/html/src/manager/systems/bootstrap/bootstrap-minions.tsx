@@ -305,7 +305,8 @@ class BootstrapMinions extends React.Component<Props, State> {
     const productName = window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
 
     const authenticationData =
-      this.state.authMethod === AuthMethod.Password ? (
+      <>
+      {this.state.authMethod === AuthMethod.Password && (
         <div className="form-group">
           <label className="col-md-3 control-label">{t("Password")}:</label>
           <div className="col-md-6">
@@ -320,7 +321,8 @@ class BootstrapMinions extends React.Component<Props, State> {
             />
           </div>
         </div>
-      ) : (
+      )}
+      {this.state.authMethod === AuthMethod.SshKey && (
         <div>
           <div className="form-group">
             <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
@@ -348,8 +350,8 @@ class BootstrapMinions extends React.Component<Props, State> {
               />
             </div>
           </div>
-        </div>
-      );
+      </div>
+      )}</>;
 
     return (
       <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="reference/systems/bootstrapping.html">
@@ -413,48 +415,50 @@ class BootstrapMinions extends React.Component<Props, State> {
             </div>
           </div>
 
-          {this.props.ansibleInventoryId &&
-              <div className="form-group">
-                <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
-                <div className="col-md-6">
-                  Authentication via Ansible controller
-                </div>
-              </div>}
-          {!this.props.ansibleInventoryId &&
-            <>
-              <div className="form-group">
-                <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
-                <div className="col-md-6">
-                  <div className="radio col-md-3">
-                    <label>
-                      <input
-                        name="authMethod"
-                        type="radio"
-                        value="password"
-                        checked={this.state.authMethod === "password"}
-                        onChange={this.authMethodChanged}
-                      />
-                      <span>{t("Password")}</span>
-                    </label>
-                  </div>
-                  <div className="radio col-md-3">
-                    <label>
-                      <input
-                        name="authMethod"
-                        type="radio"
-                        value="ssh-key"
-                        checked={this.state.authMethod === "ssh-key"}
-                        onChange={this.authMethodChanged}
-                      />
-                      <span>{t("SSH Private Key")}</span>
-                    </label>
-                  </div>
-                </div>
+            <div className="col-md-6">
+              <div className="radio col-md-3">
+                <label>
+                  <input
+                    name="authMethod"
+                    type="radio"
+                    value={AuthMethod.Password}
+                    checked={this.state.authMethod === AuthMethod.Password}
+                    onChange={this.authMethodChanged}
+                  />
+                  <span>{t("Password")}</span>
+                </label>
               </div>
-              {authenticationData}
-            </>
-          }
+              <div className="radio col-md-3">
+                <label>
+                  <input
+                    name="authMethod"
+                    type="radio"
+                    value={AuthMethod.SshKey}
+                    checked={this.state.authMethod === AuthMethod.SshKey}
+                    onChange={this.authMethodChanged}
+                  />
+                  <span>{t("SSH Private Key")}</span>
+                </label>
+              </div>
+              {this.props.ansibleInventoryId &&
+                <div className="radio col-md-6">
+                  <label>
+                    <input
+                      name="authMethod"
+                      type="radio"
+                      value={AuthMethod.AnsiblePreauth}
+                      checked={this.state.authMethod === AuthMethod.AnsiblePreauth}
+                      onChange={this.authMethodChanged}
+                    />
+                    <span>{t("Ansible control node")}</span>
+                  </label>
+                </div>}
+            </div>
+          </div>
+          {authenticationData}
 
           <div className="form-group">
             <label className="col-md-3 control-label">{t("Activation Key")}:</label>
