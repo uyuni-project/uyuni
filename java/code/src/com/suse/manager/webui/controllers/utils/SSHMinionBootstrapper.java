@@ -119,7 +119,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     /**
-     * NO-OP: Ne don't want to delete the authorized ssh key from the minion
+     * NO-OP: We don't want to delete the authorized ssh key from the minion
      * @param params bootstrap params
      * @param user the user
      */
