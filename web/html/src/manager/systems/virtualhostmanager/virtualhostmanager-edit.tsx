@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
 import { SubmitButton, Button } from "components/buttons";
 import { Form } from "components/input/Form";
 import { FormGroup } from "components/input/FormGroup";
@@ -9,7 +8,6 @@ import { Text } from "components/input/Text";
 import { Select } from "components/input/Select";
 import Network from "utils/network";
 import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
 import { Utils } from "utils/functions";
 
 type Props = {
