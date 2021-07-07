@@ -1,6 +1,3 @@
-# todo maybe some better directory
-# todo the comma at the end is very important
-
 /tmp/mgr-ssh-pubkey-authorized.yml:
   file.managed:
     - source: 'salt://ansible/mgr-ssh-pubkey-authorized.yml'

@@ -1,5 +1,3 @@
-# todo maybe some better directory than tmp
-
 /tmp/mgr-ssh-pubkey-removed.yml:
   file.managed:
     - source: 'salt://ansible/mgr-ssh-pubkey-removed.yml'
