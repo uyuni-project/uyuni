@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 16:12+0000\n"
+"POT-Creation-Date: 2021-07-07 07:46+0000\n"
 "PO-Revision-Date: 2021-03-26 18:56+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -135,10 +135,10 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:123
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:122
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:184
 msgid "Back"
 msgstr "Indietro"
 
@@ -221,8 +221,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
-#: ../html/src/manager/systems/delete-system.tsx:80
-#: ../html/src/manager/systems/delete-system.tsx:81
+#: ../html/src/manager/systems/delete-system.tsx:77
+#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -246,10 +246,10 @@ msgstr "Annulla"
 #: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
-#: ../html/src/manager/state/recurring-states-list.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
+#: ../html/src/manager/state/recurring-states-list.tsx:141
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:141
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:143
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:64
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:36
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
@@ -495,7 +495,7 @@ msgstr ""
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:101
+#: ../html/src/manager/state/recurring-states-list.tsx:100
 msgid "Schedule Name"
 msgstr ""
 
@@ -553,10 +553,10 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:161
 #: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
+#: ../html/src/manager/state/recurring-states-list.tsx:133
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:136
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
@@ -880,8 +880,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:677
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:126
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
+#: ../html/src/manager/state/recurring-states-list.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr ""
 
@@ -1199,7 +1199,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
 #: ../html/src/manager/images/image-view.tsx:631
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:87
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
@@ -1217,8 +1217,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
+#: ../html/src/manager/state/recurring-states-list.tsx:120
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
 #: ../html/src/manager/virtualization/ListTab.tsx:261
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
@@ -1663,9 +1663,9 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:182
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:47
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:264
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr ""
 
@@ -1871,9 +1871,9 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.tsx:60
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
+#: ../html/src/manager/state/recurring-states-list.tsx:59
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
 #: ../html/src/manager/virtualization/guests/create/guests-create.tsx:81
 #: ../html/src/manager/virtualization/nets/create/nets-create.tsx:30
 #: ../html/src/manager/virtualization/pools/create/pools-create.tsx:28
@@ -2714,7 +2714,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:479
 #: ../html/src/manager/images/image-store-edit.tsx:211
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:193
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
 msgid "Clear fields"
 msgstr ""
 
@@ -2749,7 +2749,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profile-edit.tsx:490
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
 #: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
 #: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
@@ -2825,7 +2825,7 @@ msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:179
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
 msgid "Username"
 msgstr ""
@@ -3312,8 +3312,8 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:155
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:107
+#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr ""
 
@@ -4087,8 +4087,8 @@ msgstr "Sistema"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:191
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:64
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:190
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
 msgstr "Organizzazione"
 
@@ -4134,7 +4134,7 @@ msgid "State:"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:110
-#: ../html/src/manager/state/recurring-states-list.tsx:92
+#: ../html/src/manager/state/recurring-states-list.tsx:91
 msgid "Active"
 msgstr ""
 
@@ -4171,7 +4171,7 @@ msgid "Quartz format string"
 msgstr ""
 
 #: ../html/src/manager/state/recurring-states-details.tsx:183
-#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/state/recurring-states-list.tsx:153
 msgid "Delete Recurring State Schedule"
 msgstr ""
 
@@ -4195,19 +4195,19 @@ msgstr ""
 msgid "Schedule Recurring Highstate"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:70
+#: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid "Recurring States"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:87
+#: ../html/src/manager/state/recurring-states-list.tsx:86
 msgid "No schedules created."
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:108
+#: ../html/src/manager/state/recurring-states-list.tsx:107
 msgid "Frequency"
 msgstr ""
 
-#: ../html/src/manager/state/recurring-states-list.tsx:115
+#: ../html/src/manager/state/recurring-states-list.tsx:114
 msgid "Target Type"
 msgstr ""
 
@@ -4341,20 +4341,20 @@ msgid ""
 "when accessing the channels."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.tsx:13
+#: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.tsx:14
+#: ../html/src/manager/systems/delete-system.tsx:11
 msgid "No result found in state apply response."
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.tsx:72
-#: ../html/src/manager/systems/delete-system.tsx:73
+#: ../html/src/manager/systems/delete-system.tsx:69
+#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr ""
 
-#: ../html/src/manager/systems/delete-system.tsx:93
+#: ../html/src/manager/systems/delete-system.tsx:90
 msgid "An error occurred during cleanup"
 msgstr ""
 
@@ -4562,66 +4562,66 @@ msgstr ""
 msgid "Confirm Software Channel Change"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:59
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:58
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:74
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:73
 msgid "Properties"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:77
 msgid "Nodes"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:96
 msgid "OS"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:101
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:100
 msgid "CPU Arch"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:107
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:106
 msgid "CPU Sockets"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:112
 msgid "RAM (Mb)"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 msgid "Refresh Data"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:130
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:129
 msgid "Refresh data from this Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:150
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:105
 msgid "Delete Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:195
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:58
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:194
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:267
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:310
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:308
 msgid "Current Context"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:324
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
 msgid "Kubeconfig file"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:42
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:41
 msgid "No Virtual Host Managers."
 msgstr ""
 
@@ -4653,19 +4653,19 @@ msgstr ""
 msgid "Nutanix AHV"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:161
 msgid "Virtual Host Manager"
 msgstr "Gestore dell'host virtuale"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:161
 msgid "Add a {0}"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:164
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:163
 msgid "Virtual Host Managers"
 msgstr "Gestori di host virtuali"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:175
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:174
 msgid "Add a virtual host manager"
 msgstr ""
 
