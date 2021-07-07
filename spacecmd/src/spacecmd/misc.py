@@ -540,6 +540,7 @@ def generate_errata_cache(self, force=False):
                     {'id': erratum.get('id'),
                      'advisory_name': erratum.get('advisory_name'),
                      'advisory_type': erratum.get('advisory_type'),
+                     'advisory_status': erratum.get('advisory_status'),
                      'date': erratum.get('date'),
                      'advisory_synopsis': erratum.get('advisory_synopsis')}
 
