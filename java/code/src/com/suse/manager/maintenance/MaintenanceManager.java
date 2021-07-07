@@ -530,12 +530,12 @@ public class MaintenanceManager {
      * @return the resulting list of maintenance windows
      */
     public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date,
-                                                              Long startOfWeek) {
+                                                              boolean startWithSunday) {
         Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
         if (calendar.isEmpty()) {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
-        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startOfWeek);
+        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startWithSunday);
     }
 
     /**
@@ -550,7 +550,7 @@ public class MaintenanceManager {
      * @return the resulting list of maintenance windows
      */
     public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date,
-                                                              Long startOfWeek) {
+                                                              boolean startWithSunday) {
         Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
         if (schedule.isEmpty()) {
             throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
@@ -561,10 +561,10 @@ public class MaintenanceManager {
         }
         if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
             return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()),
-                    date, startOfWeek);
+                    date, startWithSunday);
         }
         else {
-            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startOfWeek);
+            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startWithSunday);
         }
     }
 
@@ -580,7 +580,8 @@ public class MaintenanceManager {
      * @return the resulting list of maintenance windows
      */
     public List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
-                                                          Optional<String> eventName, Long date, Long startOfWeek) {
+                                                         Optional<String> eventName, Long date,
+                                                         boolean startWithSunday) {
         if (operation.equals("skipBack")) {
             Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
             if (lastWindow.isEmpty()) {
@@ -596,7 +597,7 @@ public class MaintenanceManager {
             date = nextWindow.get().getFromMilliseconds();
         }
 
-        Map<String, Long> activeRange = getActiveRange(date, startOfWeek);
+        Map<String, Long> activeRange = getActiveRange(date, startWithSunday);
         Long start = activeRange.get("start");
         Long end = activeRange.get("end");
 
@@ -607,13 +608,13 @@ public class MaintenanceManager {
      * Given a date and the start of the week. Calculates the date range displayed by the calendar widget
      *
      * @param date the date
-     * @param startOfWeek the start of the week (0 for Sunday, 1 for Monday)
+     * @param startWithSunday whether to start the week on Sunday
      * @return the calendars displayed date range
      */
-    public Map<String, Long> getActiveRange(Long date, Long startOfWeek) {
+    public Map<String, Long> getActiveRange(Long date, boolean startWithSunday) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
-        if (startOfWeek == 0) {
+        if (startWithSunday) {
             rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
                     rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
         }
