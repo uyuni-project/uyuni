@@ -1,3 +1,4 @@
+- Compare lowercase CPU arch with libvirt domain capabilities
 - Add option to run Ansible playbooks in 'test' mode
 - Add support for Kiwi options
 - New filter template: Live patching based on a system
