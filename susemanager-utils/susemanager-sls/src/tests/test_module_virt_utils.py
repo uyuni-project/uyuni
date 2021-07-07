@@ -1,7 +1,7 @@
 """
 Unit tests for the virt_utils module
 """
-from mock import MagicMock, patch, mock_open
+from mock import Mock, MagicMock, patch, mock_open
 from xml.etree import ElementTree
 import pytest
 
@@ -65,6 +65,11 @@ CRM_MON_XML = b"""
 </pacemaker-result>
 """
 
+@pytest.fixture
+def libvirt():
+    if not hasattr(virt_utils, "libvirt"):
+        virt_utils.libvirt = Mock()
+    return virt_utils.libvirt
 
 @pytest.mark.parametrize(
     "path,expected",
@@ -183,11 +188,11 @@ def test_host_info():
             assert info["cluster_other_nodes"] == ["demo-kvm2", "demo-kvm3"]
 
 
-def test_vm_definition():
+def test_vm_definition(libvirt):
     """
     test the vm_definition() function with a regular VM
     """
-    with patch.object(virt_utils.libvirt, "open", MagicMock()) as mock_conn:
+    with patch.object(libvirt, "open", MagicMock()) as mock_conn:
         mock_conn.return_value.lookupByUUIDString.return_value.name.return_value = "vm01"
         vm_xml = """<domain type='kvm'>
   <name>vm01</name>
@@ -210,7 +215,7 @@ def test_vm_definition():
             assert actual["info"] == vm_info
 
 
-def test_vm_definition_cluster():
+def test_vm_definition_cluster(libvirt):
     """
     test the vm_definition() function with a stopped VM defined on a cluster
     """
@@ -227,8 +232,8 @@ def test_vm_definition_cluster():
   </devices>
 </domain>"""
 
-    with patch.object(virt_utils.libvirt, "open", MagicMock()) as mock_conn:
-        with patch.object(virt_utils.libvirt, "libvirtError", Exception) as mock_error:
+    with patch.object(libvirt, "open", MagicMock()) as mock_conn:
+        with patch.object(libvirt, "libvirtError", Exception) as mock_error:
             mock_conn.return_value.lookupByUUIDString.side_effect = mock_error
             with patch.object(virt_utils.subprocess, "Popen", MagicMock()) as popen_mock:
                 popen_mock.return_value.communicate.return_value = (CRM_CONFIG_XML, None)
