@@ -8,7 +8,8 @@ module.exports = {
 
   plugins: [
     "react-hooks",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "eslint-plugin-local-rules"
   ],
 
   env: {
@@ -26,6 +27,8 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
     "radix": ["error", "always"],
+    // TODO: Eventually this should be "error"
+    "local-rules/no-raw-date": "off",
     // TODO: Eventually we should enforce this as well
     // "no-eq-null": "error",
     // TODO: This needs to be reworked with Typescript support in mind
