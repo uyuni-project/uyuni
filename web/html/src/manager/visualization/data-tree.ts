@@ -172,6 +172,17 @@ function updateDetailBox(d) {
     .attr("colspan", 2)
     .text(data.name);
 
+  if (Utils.isSystemType(d)) {
+    table
+      .append("tr")
+      .append("td")
+      .attr("colspan", 2)
+      .append("a")
+      .attr("href", "/rhn/systems/details/Overview.do?sid=" + data.rawId)
+      .attr("target", "_blank")
+      .html('<i class="fa fa-link"></i>System details page');
+  }
+
   const typeRow = table.append("tr");
   typeRow.append("td").text("Type");
   typeRow
