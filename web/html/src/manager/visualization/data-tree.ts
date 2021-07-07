@@ -173,7 +173,7 @@ function updateDetailBox(d) {
     .text(data.name);
 
   if (Utils.isSystemType(d)) {
-    const cell = table
+    table
       .append("tr")
       .append("td")
       .attr("colspan", 2)

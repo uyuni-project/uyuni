@@ -3,7 +3,7 @@ import * as data from "utils/data";
 export const mapping = {
   bridge: {
     description: t(
-      "Use an existing and configured bridge device. " + "No iptables rule, IP address or DHCP/DNS service are added"
+      "Use an existing and configured bridge device. No iptables rule, IP address or DHCP/DNS service are added"
     ),
     bridge_name: true,
     interfaces: true,

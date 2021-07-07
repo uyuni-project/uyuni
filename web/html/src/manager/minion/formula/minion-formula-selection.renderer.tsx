@@ -10,7 +10,7 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
   const messageTexts = {
     formulas_saved: (
       <p>
-        {t("Formula saved. Edit configuration options " + "in the enabled formulas and apply the ")}
+        {t("Formula saved. Edit configuration options in the enabled formulas and apply the ")}
         <a href={"/rhn/manager/systems/details/highstate?sid=" + serverId}>{t("Highstate")}</a>
         {t(" for the changes to take effect.")}
       </p>
