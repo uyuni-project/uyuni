@@ -1,3 +1,4 @@
+- Get CPU data for AArch64
 - Handle virtual machines running on pacemaker cluster
 - Refresh virtual host pillar to clear the virtpoller beacon (bsc#1188393)
 - Add Beijing timezone to selectable timezones (bsc#1188193)
