@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-07 08:16+0000\n"
+"POT-Creation-Date: 2021-07-07 08:29+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -5486,11 +5486,11 @@ msgstr "  bug 修复建议"
 msgid "  product enhancement advisories"
 msgstr "  产品增强建议"
 
-#: ../html/src/manager/visualization/data-tree.ts:184
+#: ../html/src/manager/visualization/data-tree.ts:195
 msgid "Add/remove system from SSM"
 msgstr "在 SSM 中添加/去除系统"
 
-#: ../html/src/manager/visualization/data-tree.ts:242
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "将子项添加到 SSM"
 
