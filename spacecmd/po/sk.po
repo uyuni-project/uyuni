@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-05 17:44+0000\n"
+"PO-Revision-Date: 2021-07-08 18:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4012,48 +4012,48 @@ msgstr "Nenašli sa žiadne balíky na odstránenie"
 #: ../src/spacecmd/package.py:203 ../src/spacecmd/package.py:260
 #: ../src/spacecmd/softwarechannel.py:1579 ../src/spacecmd/system.py:945
 msgid "Remove these packages [y/N]:"
-msgstr ""
+msgstr "Odstrániť tieto balíky [a/N]:"
 
 #: ../src/spacecmd/package.py:204
 msgid "No packages has been removed"
-msgstr ""
+msgstr "Žiadne balíky neboli odstránené"
 
 #: ../src/spacecmd/package.py:216 ../src/spacecmd/package.py:272
 #, python-format
 msgid "Failed to remove package ID %i"
-msgstr ""
+msgstr "Nepodarilo sa odstrániť balík ID %i"
 
 #: ../src/spacecmd/package.py:227
 msgid "package_listorphans: List packages that are not in a channel"
-msgstr ""
+msgstr "package_listorphans: Vypísať zoznam balíkov, ktoré nie sú v kanáli"
 
 #: ../src/spacecmd/package.py:228
 msgid "usage: package_listorphans"
-msgstr ""
+msgstr "použitie: package_listorphans"
 
 #: ../src/spacecmd/package.py:247
 msgid "package_removeorphans: Remove packages that are not in a channel"
-msgstr ""
+msgstr "package_removeorphans: Odstrániť balíky, ktoré nie sú v kanáli"
 
 #: ../src/spacecmd/package.py:248
 msgid "usage: package_removeorphans"
-msgstr ""
+msgstr "použitie: package_removeorphans"
 
 #: ../src/spacecmd/package.py:256
 msgid "No orphaned packages has been found"
-msgstr ""
+msgstr "Neboli nájdené žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:257
 msgid "No orphaned packages"
-msgstr ""
+msgstr "Žiadne osirelé balíky"
 
 #: ../src/spacecmd/package.py:261
 msgid "No packages were removed"
-msgstr ""
+msgstr "Neboli odstránené žiadne balíky"
 
 #: ../src/spacecmd/package.py:282
 msgid "List the systems with a package installed"
-msgstr ""
+msgstr "Vypísať zoznam systémov s nainštalovaným balíkom"
 
 #: ../src/spacecmd/package.py:329
 msgid "List the errata that provide this package"
@@ -4061,87 +4061,88 @@ msgstr "Vypísať zoznam opráv chýb, ktoré poskytuje tento balík"
 
 #: ../src/spacecmd/package.py:375
 msgid "List the dependencies for a package"
-msgstr ""
+msgstr "Vypísať zoznam závislostí pre balík"
 
 #: ../src/spacecmd/package.py:406
 #, python-format
 msgid "Package Name: %s"
-msgstr ""
+msgstr "Názov balíka: %s"
 
 #: ../src/spacecmd/package.py:408
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
-msgstr ""
+msgstr "Závislosť: %s Typ: %s Modifikátor: %s"
 
 #: ../src/spacecmd/repo.py:48
 msgid "repo_list: List all available user repos"
 msgstr ""
+"repo_list: Vypísať zoznam všetkých dostupných používateľských repozitárov"
 
 #: ../src/spacecmd/repo.py:49
 msgid "usage: repo_list"
-msgstr ""
+msgstr "použitie: repo_list"
 
 #: ../src/spacecmd/repo.py:66
 msgid "repo_details: Show the details of a user repo"
-msgstr ""
+msgstr "repo_details: Zobraziť podrobnosti o používateľskom repozitári"
 
 #: ../src/spacecmd/repo.py:67
 msgid "usage: repo_details <repo ...>"
-msgstr ""
+msgstr "použitie: repo_details <repozitár ...>"
 
 #: ../src/spacecmd/repo.py:95
 #, python-format
 msgid "Repository Label:                  %s"
-msgstr ""
+msgstr "Označenie repozitára:                  %s"
 
 #: ../src/spacecmd/repo.py:96
 #, python-format
 msgid "Repository URL:                    %s"
-msgstr ""
+msgstr "URL repozitára:                    %s"
 
 #: ../src/spacecmd/repo.py:97
 #, python-format
 msgid "Repository Type:                   %s"
-msgstr ""
+msgstr "Typ repozitára:                   %s"
 
 #: ../src/spacecmd/repo.py:98
 #, python-format
 msgid "Repository SSL Ca Certificate:     %s"
-msgstr ""
+msgstr "Certifikát Ca SSL repozitára:     %s"
 
 #: ../src/spacecmd/repo.py:99
 #, python-format
 msgid "Repository SSL Client Certificate: %s"
-msgstr ""
+msgstr "Certifikát klienta SSL repozitára: %s"
 
 #: ../src/spacecmd/repo.py:100
 #, python-format
 msgid "Repository SSL Client Key:         %s"
-msgstr ""
+msgstr "Kľúč klienta SSL repozitára:         %s"
 
 #: ../src/spacecmd/repo.py:102
 msgid "No repositories found for '{}' query"
-msgstr ""
+msgstr "Pre dopyt '{}' neboli nájdené žiadne repozitáre"
 
 #: ../src/spacecmd/repo.py:111
 msgid "repo_listfilters: Show the filters for a user repo"
-msgstr ""
+msgstr "repo_listfilters: Zobraziť filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:112
 msgid "usage: repo_listfilters repo"
-msgstr ""
+msgstr "použitie: repo_listfilters repozitár"
 
 #: ../src/spacecmd/repo.py:133
 msgid "No filters found"
-msgstr ""
+msgstr "Nenašli sa žiadne filtre"
 
 #: ../src/spacecmd/repo.py:142
 msgid "repo_addfilters: Add filters for a user repo"
-msgstr ""
+msgstr "repo_addfilters: Pridať filtre pre používateľský repozitár"
 
 #: ../src/spacecmd/repo.py:143
 msgid "usage: repo_addfilters repo <filter ...>"
-msgstr ""
+msgstr "použitie: repo_addfilters repozitár <filter ...>"
 
 #: ../src/spacecmd/repo.py:167 ../src/spacecmd/repo.py:204
 #: ../src/spacecmd/repo.py:243
