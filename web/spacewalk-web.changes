@@ -1,3 +1,4 @@
+- Add support for Kiwi options
 - New filter template: Live patching based on a system
 - Refresh JWT virtual console token before it expires
 - Handle virtual machines running on pacemaker cluster

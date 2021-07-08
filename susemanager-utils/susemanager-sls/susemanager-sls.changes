@@ -1,3 +1,4 @@
+- Add support for Kiwi options
 - Fix Salt scap state to use new 'xccdf_eval' function
 - Fix deleting stopped virtual network (bsc#1186281)
 - Handle virtual machines running on pacemaker cluster
