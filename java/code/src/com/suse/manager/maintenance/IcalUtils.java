@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -141,8 +140,6 @@ public class IcalUtils {
                 .filter(l -> !l.isEmpty())
                 .collect(toList());
 
-        periodLists.add(getInitialEvents(filteredEvents, period));
-
         Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
                 .map(pl -> pl.stream())
                 .reduce(Stream.empty(), Stream::concat)
@@ -151,35 +148,6 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
-    }
-
-    /**
-     * THIS IS ONLY PUBLIC FOR TESTING.
-     *
-     * Given a collection of events and the period. Returns the initial events if they are contained within
-     * the given period.
-     *
-     * @param events the events
-     * @param period the period
-     * @return initial events contained in the period
-     */
-    public PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
-        PeriodList periodList = new PeriodList();
-        events.forEach(event -> {
-                    try {
-                        DateTime start = new DateTime(event.getProperty(Property.DTSTART).getValue());
-                        DateTime end = new DateTime(event.getProperty(Property.DTEND).getValue());
-                        // Check if event is contained in given period
-                        if (period.includes(start) && period.includes(end)) {
-                            periodList.add(new Period(start, end));
-                        }
-                    }
-                    catch (ParseException e) {
-                        log.error("Unable to get event range from: " + event.toString(), e);
-                    }
-                }
-        );
-        return periodList;
     }
 
     // given collection of events, filter out those with non-matching SUMMARY
@@ -284,7 +252,6 @@ public class IcalUtils {
         return filteredEvents.stream().map(
                 eventSet -> {
                     PeriodList pl = eventSet.calculateRecurrenceSet(period);
-                    pl = pl.add(getInitialEvents(List.of(eventSet), period));
                     return pl.stream()
                             .filter(l -> !l.isEmpty())
                             .map(event -> new MaintenanceWindowData(
