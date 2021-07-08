@@ -264,7 +264,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     public void testSchedulePlaybookBlankPath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
-            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), new Date(), Optional.empty(), user);
+            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, new Date(),
+                    Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
@@ -279,7 +280,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testSchedulePlaybookNonexistingMinion() throws Exception {
         try {
-            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, new Date(), Optional.empty(), user);
+            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, new Date(),
+                    Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {

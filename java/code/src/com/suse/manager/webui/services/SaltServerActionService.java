@@ -2333,7 +2333,8 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
-        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData));
+        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
+                Optional.of(details.isTestMode()));
     }
 
     /**
