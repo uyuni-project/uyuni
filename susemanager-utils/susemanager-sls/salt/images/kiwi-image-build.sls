@@ -43,9 +43,13 @@ mgr_buildimage_prepare_activation_key_in_source:
 {%- set kiwi = 'kiwi-ng' %}
 
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
+{%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
 
 {%- macro kiwi_params() -%}
-  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false --add-bootstrap-package rhn-org-trusted-ssl-cert-osimage {{ ' ' }}
+  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false
+{% for pkg in bootstrap_packages -%}
+  --add-bootstrap-package {{ pkg }}
+{% endfor -%}
 {%- for repo in pillar.get('kiwi_repositories') -%}
   --add-repo {{ repo }},rpm-md,key_repo{{ loop.index }},90,false,false {{ ' ' }}
 {%- endfor -%}
