@@ -88,7 +88,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         Date scheduleDate = new Date();
 
         Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", "/path/to/hosts",
-                controlNode.getId().intValue(), false, scheduleDate, null);
+                controlNode.getId().intValue(), scheduleDate, null);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -114,7 +114,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         Date scheduleDate = new Date();
 
         Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
-                true, scheduleDate, null);
+                scheduleDate, null, true);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
