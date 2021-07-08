@@ -123,7 +123,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
-                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction);
+                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false);
 
         // Look it up and verify
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
@@ -137,5 +137,31 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+    }
+
+    /**
+     * Schedule Ansible playbook application in TEST mode for a control node.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testScheduleAnsiblePlaybookTestMode() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        Date earliestAction = new Date();
+        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
+                "/path/to/myplaybook.yml", null, null, earliestAction, true);
+
+        // Look it up and verify
+        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        assertNotNull(savedAction);
+        assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
+        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertEquals(earliestAction, savedAction.getEarliestAction());
+
+        // Verify the details
+        PlaybookActionDetails details = savedAction.getDetails();
+        assertNotNull(details);
+        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertNull(details.getInventoryPath());
+        assertTrue(details.isTestMode());
     }
 }
