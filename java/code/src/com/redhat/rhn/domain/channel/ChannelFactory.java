@@ -1392,6 +1392,46 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Analyzes the rhnErrataPackage table, useful to update statistics after massive changes.
+     */
+    public static void analyzeErrataPackages() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_errata_packages");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Analyzes the rhnChannelErrata table, useful to update statistics after massive changes.
+     */
+    public static void analyzeChannelErrata() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_channel_errata");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Analyzes the rhnErrataCloned table, useful to update statistics after massive changes.
+     */
+    public static void analyzeErrataCloned() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_errata_cloned");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Analyzes the rhnErrata table, useful to update statistics after massive changes.
+     */
+    public static void analyzeErrata() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_errata");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Analyzes the rhnServerNeededCache table, useful to update statistics after massive changes.
+     */
+    public static void analyzeServerNeededCache() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_serverNeededCache");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
      * Sets channel modules data from given channel.
      *
      * @param from the source Channel

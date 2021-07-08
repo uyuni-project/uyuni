@@ -1,3 +1,5 @@
+- Run database table analyze in most used tables of CLM for better performance (bsc#1188113, bsc#1186704)
+
 -------------------------------------------------------------------
 Fri Jun 25 17:51:18 CEST 2021 - jgonzalez@suse.com
 
