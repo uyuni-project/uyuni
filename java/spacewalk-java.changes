@@ -6,6 +6,12 @@
 - Do not update Kickstart session when download after session is complete or failed (bsc#1187621)
 
 -------------------------------------------------------------------
+Thu Jul 08 15:07:07 CEST 2021 - jgonzalez@suse.com
+
+- version 4.1.38-1
+- Run database table analyze in most used tables of CLM for better performance (bsc#1188113, bsc#1186704)
+
+-------------------------------------------------------------------
 Fri Jun 25 17:51:18 CEST 2021 - jgonzalez@suse.com
 
 - version 4.1.37-1
