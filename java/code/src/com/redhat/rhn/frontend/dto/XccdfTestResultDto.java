@@ -33,6 +33,7 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
     private String profile;
     private Date completed;
     private String path;
+    private String ovalfiles;
 
     private Long comparableId = null;
     private String diffIcon = null;
@@ -157,6 +158,22 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
      */
     public void setPath(String pathIn) {
         this.path = pathIn;
+    }
+
+    /**
+     * Returns the ovalfiles of xccdf document
+     * @return the path
+     */
+    public String getOvalfiles() {
+        return this.ovalfiles;
+    }
+
+    /**
+     * Sets the ovalfiles of xccdf document
+     * @param ovalFilesIn to set
+     */
+    public void setOvalfiles(String ovalFilesIn) {
+        this.ovalfiles = ovalFilesIn;
     }
 
     /**

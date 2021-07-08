@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *   #prop_desc("int", "xid", "XCCDF TestResult ID")
  *   #prop_desc("string", "profile", "XCCDF Profile")
  *   #prop_desc("string", "path", "Path to XCCDF document")
+ *   #prop_desc("string", "ovalfiles", "Optional OVAL files")
  *   #prop_desc($date, "completed", "Scan completion time")
  * #struct_end()
  */
@@ -54,6 +55,7 @@ public class XccdfTestResultDtoSerializer extends RhnXmlRpcCustomSerializer {
         addToHelper(helper, "xid", dto.getXid());
         addToHelper(helper, "profile", dto.getProfile());
         addToHelper(helper, "path", dto.getPath());
+        addToHelper(helper, "ovalfiles", dto.getOvalfiles());
         addToHelper(helper, "completed", dto.getCompleted());
         helper.writeTo(output);
     }
