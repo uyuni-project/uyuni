@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 13:11+0000\n"
+"POT-Creation-Date: 2021-07-08 15:03+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -139,7 +139,7 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
@@ -1754,7 +1754,7 @@ msgstr "작업이 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:221
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:185
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -3541,7 +3541,7 @@ msgstr "계속 진행할지 여부를 확인하십시오."
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:440
@@ -3734,39 +3734,45 @@ msgstr "로드하는 중.."
 msgid "Nothing configured. Please add paths in the "
 msgstr "구성된 항목이 없습니다. 다음에 경로 추가: "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr "플레이북 컨텐츠를 로드하는 중..."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:101
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
+msgid "Test mode"
+msgstr "테스트 모드"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Back to playbook list"
 msgstr "플레이북 목록으로 돌아가기"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 msgid "Schedule playbook execution"
 msgstr "플레이북 실행 예약"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:115
 msgid "Playbook '{0}'"
 msgstr "'{0}' 플레이북"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Schedule Playbook Execution"
 msgstr "플레이북 실행 예약"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Inventory Path"
 msgstr "인벤토리 경로"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
 msgid "Playbook Content"
 msgstr "플레이북 컨텐트"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 msgid "Action has been successfully added to action chain"
 msgstr "작업이 작업 체인에 추가되었습니다."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:184
 msgid "Playbook execution has been"
 msgstr "플레이븍 실행이"
 
@@ -4207,11 +4213,6 @@ msgstr "highstate 적용이 "
 #: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
 msgstr "예약되었습니다."
-
-#: ../html/src/manager/state/highstate.tsx:118
-#: ../html/src/manager/state/recurring-states-edit.tsx:113
-msgid "Test mode"
-msgstr "테스트 모드"
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"

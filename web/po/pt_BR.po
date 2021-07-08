@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 13:11+0000\n"
+"POT-Creation-Date: 2021-07-08 15:03+0000\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -142,7 +142,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
@@ -1721,7 +1721,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:221
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:185
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -3483,7 +3483,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:440
@@ -3671,39 +3671,45 @@ msgstr ""
 msgid "Nothing configured. Please add paths in the "
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
-msgid "Back to playbook list"
-msgstr ""
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
-msgid "Schedule playbook execution"
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:101
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
+msgid "Test mode"
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+msgid "Back to playbook list"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
+msgid "Schedule playbook execution"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:115
 msgid "Playbook '{0}'"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Schedule Playbook Execution"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Inventory Path"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
 msgid "Playbook Content"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 msgid "Action has been successfully added to action chain"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:184
 msgid "Playbook execution has been"
 msgstr ""
 
@@ -4145,11 +4151,6 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
-msgstr ""
-
-#: ../html/src/manager/state/highstate.tsx:118
-#: ../html/src/manager/state/recurring-states-edit.tsx:113
-msgid "Test mode"
 msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:126
