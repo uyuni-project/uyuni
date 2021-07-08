@@ -2020,9 +2020,26 @@ public class ActionManager extends BaseManager {
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
             String parameters, Date earliestAction) throws TaskomaticApiException {
+        return scheduleXccdfEval(scheduler, srvr, path, parameters, null, earliestAction);
+    }
+
+    /**
+     * Schedules Xccdf evaluation.
+     * @param scheduler User scheduling the action.
+     * @param srvr Server for which the action affects.
+     * @param path Path for the Xccdf content.
+     * @param parameters Additional parameters for oscap tool.
+     * @param ovalFiles Optional OVAL files for oscap tool.
+     * @param earliestAction Date of earliest action to be executed.
+     * @return scheduled Scap Action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
+            String parameters, String ovalFiles, Date earliestAction) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(srvr.getId());
-        return scheduleXccdfEval(scheduler, serverIds, path, parameters, earliestAction);
+        return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction);
     }
 
     /**
@@ -2031,6 +2048,7 @@ public class ActionManager extends BaseManager {
      * @param serverIds Set of server identifiers for which the action affects.
      * @param path Path for the Xccdf content.
      * @param parameters Additional parameters for oscap tool.
+     * @param ovalFiles Optional OVAL files for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
      * @throws TaskomaticApiException if there was a Taskomatic error
@@ -2038,7 +2056,7 @@ public class ActionManager extends BaseManager {
      * @throws MissingCapabilityException if scripts cannot be run
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Set<Long> serverIds,
-            String path, String parameters, Date earliestAction)
+            String path, String parameters, String ovalFiles, Date earliestAction)
         throws TaskomaticApiException {
         if (serverIds.isEmpty()) {
             return null;
@@ -2061,7 +2079,7 @@ public class ActionManager extends BaseManager {
             }
         }
 
-        ScapActionDetails scapDetails = new ScapActionDetails(path, parameters);
+        ScapActionDetails scapDetails = new ScapActionDetails(path, parameters, ovalFiles);
         ScapAction action = (ScapAction) scheduleAction(scheduler,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL,
                 ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),

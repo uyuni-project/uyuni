@@ -340,7 +340,25 @@ public class ScapManager extends BaseManager {
             String parameters, Date earliest) throws TaskomaticApiException {
         HashSet<Long> systemIds = idsInDataResultToSet(scapCapableSystemsInSsm(scheduler));
         return ActionManager.scheduleXccdfEval(
-                scheduler, systemIds, path, parameters, earliest);
+                scheduler, systemIds, path, parameters, null, earliest);
+    }
+
+    /**
+     * Schedule scap.xccdf_eval action for systems in user's SSM.
+     * @param scheduler user which commits the schedule
+     * @param path path to xccdf document on systems file system
+     * @param parameters additional parameters for xccdf scan
+     * @param ovalFiles optional paths to OVAL files for xccdf scan
+     * @param earliest time of earliest action occurence
+     * @return the newly created ScapAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static ScapAction scheduleXccdfEvalInSsm(User scheduler, String path,
+            String parameters, String ovalFiles, Date earliest) throws TaskomaticApiException {
+        HashSet<Long> systemIds = idsInDataResultToSet(scapCapableSystemsInSsm(scheduler));
+        return ActionManager.scheduleXccdfEval(
+                scheduler, systemIds, path, parameters, ovalFiles, earliest);
     }
 
     /**

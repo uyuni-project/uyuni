@@ -1,0 +1,2 @@
+ALTER TABLE rhnActionScap ADD COLUMN IF NOT EXISTS
+    ovalfiles   VARCHAR(8192);
