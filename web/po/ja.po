@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 10:47+0000\n"
+"POT-Creation-Date: 2021-07-08 11:54+0000\n"
 "PO-Revision-Date: 2021-05-21 11:01+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -751,6 +751,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:205
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
@@ -2168,25 +2169,29 @@ msgstr "名前またはプロジェクトでフィルタ"
 msgid "Projects in use"
 msgstr "使用しているプロジェクト"
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
+msgid "Live patching based on a specific system"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 #, fuzzy
 msgid "Product"
 msgstr "製品"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 #, fuzzy
 msgid "Kernel"
 msgstr "カーネルオプション"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 #, fuzzy
 msgid "latest"
 msgstr "最新"
