@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 11:54+0000\n"
+"POT-Creation-Date: 2021-07-08 13:11+0000\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -1696,7 +1696,7 @@ msgstr "Editar propiedades"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
 #: ../html/src/manager/images/image-build.tsx:268
-#: ../html/src/manager/images/image-profile-edit.tsx:526
+#: ../html/src/manager/images/image-profile-edit.tsx:544
 #: ../html/src/manager/images/image-profiles.tsx:182
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
@@ -1907,7 +1907,7 @@ msgid "Create project"
 msgstr ""
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
-#: ../html/src/manager/images/image-profile-edit.tsx:501
+#: ../html/src/manager/images/image-profile-edit.tsx:519
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-profiles.tsx:152
 #: ../html/src/manager/images/image-store-edit.tsx:234
@@ -2699,7 +2699,7 @@ msgid "No profile selected"
 msgstr "No se seleccionó ningún perfil"
 
 #: ../html/src/manager/images/image-build.tsx:272
-#: ../html/src/manager/images/image-profile-edit.tsx:535
+#: ../html/src/manager/images/image-profile-edit.tsx:553
 msgid "Image Type"
 msgstr "Tipo de imagen"
 
@@ -2715,7 +2715,7 @@ msgstr "Ruta"
 
 #: ../html/src/manager/images/image-build.tsx:284
 #: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:392
+#: ../html/src/manager/images/image-profile-edit.tsx:410
 msgid "Activation Key"
 msgstr "Clave de activación"
 
@@ -2742,7 +2742,7 @@ msgid "The image import has been scheduled."
 msgstr ""
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:385
+#: ../html/src/manager/images/image-profile-edit.tsx:402
 msgid "There are no channels assigned to this key."
 msgstr "No hay ningún canal asignado a esta clave."
 
@@ -2776,42 +2776,46 @@ msgid "Import"
 msgstr "Importar"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:479
+#: ../html/src/manager/images/image-profile-edit.tsx:497
 #: ../html/src/manager/images/image-store-edit.tsx:211
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
 msgid "Clear fields"
 msgstr "Vaciar campos"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:293
+#: ../html/src/manager/images/image-profile-edit.tsx:294
 msgid "Target Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:317
+#: ../html/src/manager/images/image-profile-edit.tsx:318
 msgid "Dockerfile URL"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:343
+#: ../html/src/manager/images/image-profile-edit.tsx:344
 msgid "Config URL"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:393
+#: ../html/src/manager/images/image-profile-edit.tsx:367
+msgid "Kiwi options"
+msgstr ""
+
+#: ../html/src/manager/images/image-profile-edit.tsx:411
 msgid "Activation key is required for kiwi images."
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:433
+#: ../html/src/manager/images/image-profile-edit.tsx:451
 msgid "Remove entry"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:448
+#: ../html/src/manager/images/image-profile-edit.tsx:466
 msgid "Custom Info Values"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:462
+#: ../html/src/manager/images/image-profile-edit.tsx:480
 msgid "Create additional custom info keys"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:490
+#: ../html/src/manager/images/image-profile-edit.tsx:508
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
@@ -2821,15 +2825,15 @@ msgstr ""
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.tsx:531
 msgid "Edit Image Profile: '"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.tsx:531
 msgid "Create Image Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:529
+#: ../html/src/manager/images/image-profile-edit.tsx:547
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
