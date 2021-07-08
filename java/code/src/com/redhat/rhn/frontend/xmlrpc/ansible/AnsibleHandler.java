@@ -49,6 +49,7 @@ public class AnsibleHandler extends BaseHandler {
      * @param playbookPath the path to the playbook file
      * @param inventoryPath the path to the inventory file
      * @param controlNodeId the system ID of the control node
+     * @param testMode true if the playbook shall be executed in test mode
      * @param earliestOccurrence earliest occurrence of the execution command
      * @param actionChainLabel label af action chain to use
      * @return the execute playbook action id
@@ -58,16 +59,17 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
      * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
      * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
-            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel) {
+            Integer controlNodeId, boolean testMode, Date earliestOccurrence, String actionChainLabel) {
         try {
-            return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
-                    Optional.ofNullable(actionChainLabel), loggedInUser);
+            return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, testMode,
+                    earliestOccurrence, Optional.ofNullable(actionChainLabel), loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

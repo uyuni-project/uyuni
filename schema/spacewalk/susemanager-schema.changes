@@ -1,3 +1,5 @@
+- Add 'test' flag to Ansible playbook actions
+
 -------------------------------------------------------------------
 Fri Jun 18 15:20:08 CEST 2021 - jgonzalez@suse.com
 

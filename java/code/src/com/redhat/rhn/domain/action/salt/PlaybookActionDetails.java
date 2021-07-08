@@ -25,6 +25,7 @@ public class PlaybookActionDetails extends ActionChild {
     private long actionId;
     private String playbookPath;
     private String inventoryPath;
+    private boolean testMode;
 
     /**
      * @return the id
@@ -68,5 +69,13 @@ public class PlaybookActionDetails extends ActionChild {
 
     public void setInventoryPath(String inventoryPathIn) {
         this.inventoryPath = inventoryPathIn;
+    }
+
+    public boolean isTestMode() {
+        return testMode;
+    }
+
+    public void setTestMode(boolean testModeIn) {
+        this.testMode = testModeIn;
     }
 }

@@ -1,3 +1,4 @@
+- Add option to run Ansible playbooks in 'test' mode
 - New filter template: Live patching based on a system
 - Fix bugged search in formula catalog
 - Convert Virtualization modal dialogs to react-modal
