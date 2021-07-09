@@ -9,7 +9,6 @@ import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
 import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 
 type Props = {
   data: any;

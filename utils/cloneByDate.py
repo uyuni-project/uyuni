@@ -759,7 +759,7 @@ class ChannelCloner:
 
         # align modular metadata
         md_aligned = self.remote_api.align_modular_metadata(
-                self.from_label, self.to_label);
+            self.from_label, self.to_label)
         if md_aligned == 1:
             print("\nModular metadata aligned")
 
@@ -916,7 +916,7 @@ class RemoteApi:
 
     def align_modular_metadata(self, from_label, to_label):
         return self.client.channel.software.alignMetadata(
-                self.auth_token, from_label, to_label, 'modules')
+            self.auth_token, from_label, to_label, 'modules')
 
     def get_details(self, label):
         self.auth_check()

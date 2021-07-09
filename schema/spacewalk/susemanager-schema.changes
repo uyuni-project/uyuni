@@ -1,3 +1,6 @@
+- Add 'test' flag to Ansible playbook actions
+- Add Kiwi commandline options to Kiwi profile
+- Handle virtual machines running on pacemaker cluster
 - Bump version to 4.3.0
 
 -------------------------------------------------------------------

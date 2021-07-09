@@ -9,17 +9,17 @@
 #: ../html/src/components/input/Range.tsx:58
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:75
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:76
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:89
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.js:90
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:77
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:78
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:89
+#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:90
 #: ../html/src/utils/test-utils/setup/t.test.ts:7
 #: ../html/src/utils/test-utils/setup/t.ts:2
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:20+0000\n"
+"POT-Creation-Date: 2021-07-08 15:03+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -135,13 +135,13 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:123
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:122
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:184
 msgid "Back"
 msgstr "上一步"
 
@@ -154,8 +154,8 @@ msgid "Confirm"
 msgstr "确认"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:180
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:185
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:184
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:189
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -201,11 +201,11 @@ msgstr "频道标签"
 msgid "Assign"
 msgstr "指派"
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:72
+#: ../html/src/components/dialog/ActionConfirm.tsx:71
 msgid "Are you sure you want to {0} {1} "
 msgstr "您确定要 {0} {1} 吗 "
 
-#: ../html/src/components/dialog/ActionConfirm.tsx:84
+#: ../html/src/components/dialog/ActionConfirm.tsx:83
 msgid "Are you sure you want to {0} the selected {1}s? ({2} {1}s selected)"
 msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 
@@ -216,16 +216,16 @@ msgstr "您确定要 {0} 选定的 {1} 吗？（已选择 {2} 个 {1}）"
 #: ../html/src/components/panels/CreatorPanel.tsx:112
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:182
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:124
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:102
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:103
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:102
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:103
 #: ../html/src/manager/images/image-view-overview.tsx:691
 #: ../html/src/manager/images/image-view-overview.tsx:692
 #: ../html/src/manager/images/image-view-overview.tsx:762
 #: ../html/src/manager/images/image-view-overview.tsx:763
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:25
-#: ../html/src/manager/systems/delete-system.tsx:80
-#: ../html/src/manager/systems/delete-system.tsx:81
+#: ../html/src/manager/systems/delete-system.tsx:77
+#: ../html/src/manager/systems/delete-system.tsx:78
 msgid "Cancel"
 msgstr "取消"
 
@@ -233,8 +233,7 @@ msgstr "取消"
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
-#: ../html/src/manager/content-management/project/project.js:98
-#: ../html/src/manager/content-management/project/project.js:99
+#: ../html/src/manager/content-management/project/project.tsx:92
 #: ../html/src/manager/images/image-profiles.tsx:140
 #: ../html/src/manager/images/image-profiles.tsx:215
 #: ../html/src/manager/images/image-stores.tsx:140
@@ -250,14 +249,15 @@ msgstr "取消"
 #: ../html/src/manager/salt/keys/key-management.tsx:51
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
-#: ../html/src/manager/state/recurring-states-list.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:144
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:93
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:37
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:29
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:282
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:318
+#: ../html/src/manager/state/recurring-states-list.tsx:141
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:141
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:143
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:64
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:36
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "删除"
 
@@ -304,7 +304,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:142
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:53
 msgid "Reset"
 msgstr "重设置"
 
@@ -335,7 +335,7 @@ msgstr "切换部分可见性"
 #: ../html/src/components/input/Select.stories.js:36
 #: ../html/src/components/input/Text.stories.js:44
 #: ../html/src/components/input/form.stories.js:36
-#: ../html/src/manager/virtualization/nets/network-properties.test.js:46
+#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "提交"
 
@@ -501,7 +501,7 @@ msgstr "第 {0} 页，共 {1} 页"
 #: ../html/src/components/picker/recurring-event-picker.tsx:309
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:95
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
-#: ../html/src/manager/state/recurring-states-list.tsx:101
+#: ../html/src/manager/state/recurring-states-list.tsx:100
 msgid "Schedule Name"
 msgstr "日程安排名称"
 
@@ -540,7 +540,7 @@ msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:38
-#: ../html/src/components/table/TableDataHandler.tsx:339
+#: ../html/src/components/table/TableDataHandler.tsx:336
 msgid "There are no entries to show."
 msgstr "没有可显示的项。"
 
@@ -559,12 +559,12 @@ msgstr "配置频道：{0}"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:63
 #: ../html/src/manager/state/recurring-states-details.tsx:161
 #: ../html/src/manager/state/recurring-states-details.tsx:163
-#: ../html/src/manager/state/recurring-states-list.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:137
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:183
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:106
+#: ../html/src/manager/state/recurring-states-list.tsx:133
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:136
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "编辑"
 
@@ -598,17 +598,17 @@ msgstr "清除"
 msgid "Select All"
 msgstr "全选"
 
-#: ../html/src/components/table/TableDataHandler.tsx:340
+#: ../html/src/components/table/TableDataHandler.tsx:337
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:258
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:98
-#: ../html/src/manager/virtualization/nets/network-properties.js:502
-#: ../html/src/manager/virtualization/pools/pool-properties.js:597
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:286
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:463
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:588
 msgid "Loading..."
 msgstr "正在装载..."
 
-#: ../html/src/components/table/TableDataHandler.tsx:370
+#: ../html/src/components/table/TableDataHandler.tsx:367
 msgid "items per page"
 msgstr "项每页"
 
@@ -725,11 +725,12 @@ msgstr "发生了错误。监视状态未知。请刷新页面。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:201
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:205
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:92
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:122
 msgid "System"
 msgstr "系统"
 
@@ -810,10 +811,10 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "设置 SUSE Manager 服务器监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:336
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:131
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:54
-#: ../html/src/manager/virtualization/nets/network-properties.js:224
-#: ../html/src/manager/virtualization/pools/pool-properties.js:232
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:123
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:52
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:217
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:239
 msgid "General"
 msgstr "常规"
 
@@ -826,7 +827,7 @@ msgid "Organizations"
 msgstr "组织"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:31
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:48
 msgid "Restart"
 msgstr "重启动"
 
@@ -864,7 +865,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-stores.tsx:145
 #: ../html/src/manager/images/image-view.tsx:379
 #: ../html/src/manager/notifications/notification-messages.tsx:426
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:249
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "刷新"
 
@@ -886,8 +887,8 @@ msgstr "操作不成功：服务器返回了空答复"
 #: ../html/src/manager/images/image-view.tsx:677
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
-#: ../html/src/manager/state/recurring-states-list.tsx:126
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
+#: ../html/src/manager/state/recurring-states-list.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:76
 msgid "Details"
 msgstr "细节"
 
@@ -971,7 +972,7 @@ msgstr "产品说明"
 #: ../html/src/manager/admin/setup/products/products.tsx:1003
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:191
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:182
 msgid "Architecture"
 msgstr "体系结构"
 
@@ -1008,7 +1009,7 @@ msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:888
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:69
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:56
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
@@ -1016,7 +1017,7 @@ msgid "recommended"
 msgstr "建议"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:906
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.js:85
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:74
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
@@ -1125,7 +1126,7 @@ msgstr " 秒刷新"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-#: ../html/src/manager/virtualization/ListTab.js:252
+#: ../html/src/manager/virtualization/ListTab.tsx:238
 msgid "Filter by name"
 msgstr "按名称过滤"
 
@@ -1152,7 +1153,7 @@ msgstr "已用时间"
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:62
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:56
 #: ../html/src/manager/images/image-view-runtime.tsx:129
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
 msgid "Status"
@@ -1168,13 +1169,13 @@ msgid "There are no tasks running on the server at the moment."
 msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:107
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
 #: ../html/src/manager/notifications/notification-messages.tsx:551
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
 #: ../html/src/manager/notifications/notification-messages.tsx:553
 #: ../html/src/utils/network.ts:79
 msgid "Server error, please check log files."
@@ -1205,19 +1206,19 @@ msgstr "审计映像"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:94
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:99
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:31
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:27
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:45
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
 #: ../html/src/manager/images/image-view.tsx:631
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:88
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:136
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:54
-#: ../html/src/manager/virtualization/nets/network-properties.js:229
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:226
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:345
-#: ../html/src/manager/virtualization/pools/pool-properties.js:237
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:87
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:221
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:217
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:243
 msgid "Name"
 msgstr "名称"
 
@@ -1228,10 +1229,10 @@ msgstr "名称"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
-#: ../html/src/manager/state/recurring-states-list.tsx:121
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
-#: ../html/src/manager/virtualization/ListTab.js:276
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:352
+#: ../html/src/manager/state/recurring-states-list.tsx:120
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
+#: ../html/src/manager/virtualization/ListTab.tsx:261
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "操作"
 
@@ -1455,10 +1456,10 @@ msgstr "返回系统选择页"
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:152
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:272
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:104
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:50
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:43
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:45
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:53
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:44
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:37
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:35
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:50
 msgid "Description"
 msgstr "说明"
 
@@ -1510,7 +1511,7 @@ msgid "No unmatching products are found."
 msgstr "找不到不匹配的产品。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:99
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:168
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:149
 msgid "Unmatched Products"
 msgstr "不匹配的产品"
 
@@ -1542,23 +1543,23 @@ msgstr "1-2 个插槽或 1-2 台虚拟机"
 msgid "Per-instance"
 msgstr "每个实例"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:82
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:81
 msgid "Edit Virtual Host Managers"
 msgstr "编辑虚拟主机管理器"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:86
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:85
 msgid "Subscription Matching"
 msgstr "订阅匹配"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:167
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:148
 msgid "Subscriptions"
 msgstr "订阅"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:170
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:151
 msgid "Pins "
 msgstr "关联 "
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:174
+#: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
 msgid "Messages "
 msgstr "消息 "
 
@@ -1598,7 +1599,7 @@ msgid "Name:"
 msgstr "名称："
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.tsx:92
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:46
 msgid "Label:"
 msgstr "标签："
 
@@ -1615,19 +1616,19 @@ msgid "Settings saved successfully"
 msgstr "已成功保存设置"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.js:179
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:186
 msgid "Yes"
 msgstr "是"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:34
-#: ../html/src/manager/virtualization/pools/pool-properties.js:179
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "No"
 msgstr "否"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:144
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "(none)"
 msgstr "（无）"
 
@@ -1670,17 +1671,17 @@ msgid "Edit properties"
 msgstr "编辑属性"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:264
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:41
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:39
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.js:36
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
 #: ../html/src/manager/images/image-build.tsx:268
-#: ../html/src/manager/images/image-profile-edit.tsx:526
+#: ../html/src/manager/images/image-profile-edit.tsx:544
 #: ../html/src/manager/images/image-profiles.tsx:182
 #: ../html/src/manager/images/image-store-edit.tsx:268
 #: ../html/src/manager/images/image-stores.tsx:182
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:266
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:47
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:264
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr "标签"
 
@@ -1714,7 +1715,7 @@ msgstr "操作 "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
 #: ../html/src/manager/images/image-build.tsx:221
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:185
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
@@ -1760,7 +1761,7 @@ msgstr "这不会销毁该群集，而只会将它从 Uyuni 中去除"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
 #: ../html/src/manager/images/image-view.tsx:774
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:54
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "概览"
 
@@ -1822,14 +1823,14 @@ msgid "Clusters"
 msgstr "群集"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:29
 #: ../html/src/manager/images/image-stores.tsx:189
 #: ../html/src/manager/images/image-view-patches.tsx:84
 #: ../html/src/manager/images/image-view.tsx:630
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
 #: ../html/src/manager/notifications/notification-messages.tsx:489
 #: ../html/src/manager/state/highstate-summary.tsx:59
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:241
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Type"
 msgstr "类型"
 
@@ -1865,20 +1866,20 @@ msgstr "安排升级群集"
 msgid "Upgrade"
 msgstr "升级"
 
-#: ../html/src/manager/content-management/create-project/create-project.js:30
+#: ../html/src/manager/content-management/create-project/create-project.tsx:28
 msgid "You do not have permissions to perform this action"
 msgstr "您无权执行此操作"
 
-#: ../html/src/manager/content-management/create-project/create-project.js:35
+#: ../html/src/manager/content-management/create-project/create-project.tsx:33
 msgid "Create a new Content Lifecycle Project"
 msgstr "创建新的内容生命周期项目"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:16
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:14
 msgid "Create project"
 msgstr "创建项目"
 
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.js:17
-#: ../html/src/manager/images/image-profile-edit.tsx:501
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
+#: ../html/src/manager/images/image-profile-edit.tsx:519
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-profiles.tsx:152
 #: ../html/src/manager/images/image-store-edit.tsx:234
@@ -1886,48 +1887,48 @@ msgstr "创建项目"
 #: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
-#: ../html/src/manager/state/recurring-states-list.tsx:60
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:214
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:90
-#: ../html/src/manager/virtualization/nets/create/nets-create.js:38
-#: ../html/src/manager/virtualization/pools/create/pools-create.js:35
+#: ../html/src/manager/state/recurring-states-list.tsx:59
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:81
+#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:30
+#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:28
 msgid "Create"
 msgstr "创建"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:27
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
 msgid "Module"
 msgstr "模块"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:32
 msgid "Select a module..."
 msgstr "选择模块..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:34
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
 msgid "No modules available"
 msgstr "无可用模块"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:18
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:41
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:8
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:159
 msgid "Stream"
 msgstr "流"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:46
 msgid "Select a stream..."
 msgstr "选择流..."
 
-#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:48
+#: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "No streams available"
 msgstr "无可用流"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:32
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:34
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:32
 msgid "Channel"
 msgstr "频道"
 
-#: ../html/src/manager/content-management/list-filters/appstreams/text-input.js:11
+#: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
 msgid "Module Name"
 msgstr "模块名称"
 
@@ -2012,10 +2013,10 @@ msgstr "纪元"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:95
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:51
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:81
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.js:5
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:384
 #: ../html/src/manager/images/image-view.tsx:632
 msgid "Version"
@@ -2066,12 +2067,12 @@ msgid "Advisory Keywords"
 msgstr "建议关键字"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:250
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "Deny"
 msgstr "拒绝"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:177
 msgid "Allow"
 msgstr "允许"
 
@@ -2107,25 +2108,29 @@ msgstr "按名称或项目过滤"
 msgid "Projects in use"
 msgstr "使用中的项目"
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:31
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:26
+msgid "Live patching based on a specific system"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:30
 msgid "Live patching based on a SUSE product"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/index.tsx:38
+#: ../html/src/manager/content-management/list-filters/templates/index.tsx:37
 msgid "Template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:89
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 #, fuzzy
 msgid "Product"
 msgstr "产品"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:102
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:129
 #, fuzzy
 msgid "Kernel"
 msgstr "内核选项"
 
-#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:109
+#: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:136
 #, fuzzy
 msgid "latest"
 msgstr "最新"
@@ -2143,31 +2148,31 @@ msgid "Content Lifecycle Projects"
 msgstr "内容生命周期项目"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:109
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:42
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
 msgid "Environment Lifecycle"
 msgstr "环境生命周期"
 
-#: ../html/src/manager/content-management/project/project.js:54
+#: ../html/src/manager/content-management/project/project.tsx:53
 msgid "The project you are looking for does not exist or has been deleted"
 msgstr "您要查找的项目不存在或已删除"
 
-#: ../html/src/manager/content-management/project/project.js:90
+#: ../html/src/manager/content-management/project/project.tsx:87
 msgid "Content Lifecycle Project - {0}"
 msgstr "内容生命周期项目 - {0}"
 
-#: ../html/src/manager/content-management/project/project.js:105
+#: ../html/src/manager/content-management/project/project.tsx:99
 msgid "Delete Project"
 msgstr "删除项目"
 
-#: ../html/src/manager/content-management/project/project.js:106
+#: ../html/src/manager/content-management/project/project.tsx:102
 msgid "Are you sure you want to delete project"
 msgstr "您确定要删除项目吗"
 
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.js:39
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.js:35
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
 #: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
 msgid ""
@@ -2289,12 +2294,12 @@ msgstr "包含软件包"
 msgid "enable module"
 msgstr "启用模块"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:58
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
 msgid "Build ({0})"
 msgstr "构建 ({0})"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:61
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:130
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:414
 #: ../html/src/manager/images/image-profiles.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:578
@@ -2303,239 +2308,256 @@ msgstr "构建 ({0})"
 msgid "Build"
 msgstr "构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:71
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
 msgid "Build Project"
 msgstr "构建项目"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:79
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
 msgid "Building project.."
 msgstr "正在构建项目..."
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:85
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
 msgid ""
 "The project contains channels with unsynchronized patches. They will be "
 "synchronized depending on your Organization settings."
 msgstr "该项目包含的频道具有未同步的补丁。将根据您的组织设置同步这些补丁。"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:104
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
 msgid "Version Message"
 msgstr "版本消息"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:109
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:111
 msgid "Version {0} history"
 msgstr "版本 {0} 历史记录"
 
-#: ../html/src/manager/content-management/shared/components/panels/build/build.js:139
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:147
 msgid "Version {0} successfully built into {1}"
 msgstr "已成功在 {1} 中构建版本 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.js:59
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:50
 msgid "Insert before"
 msgstr "在前面插入"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:43
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:41
 msgid "Add Environment"
 msgstr "添加环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:54
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:52
 msgid "Environment created successfully"
 msgstr "已成功创建环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:71
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:68
 msgid "Creating the environment..."
 msgstr "正在创建环境..."
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:89
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:84
 msgid "No environments created"
 msgstr "未创建环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:108
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:101
 msgid "Environment updated successfully"
 msgstr "已成功更新环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.js:124
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
 msgid "Environment {0} deleted successfully"
 msgstr "已成功删除环境 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:25
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:140
+msgid ""
+"This environment cannot be deleted since it is being used in an {0}"
+"autoinstallation distribution{1}."
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:22
 msgid "New"
 msgstr "新建"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:26
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "Cloning channels"
 msgstr "克隆频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:27
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
 msgid "Generating repositories data"
 msgstr "生成储存库数据"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:28
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
 #: ../html/src/manager/images/image-view.tsx:507
 msgid "Built"
 msgstr "已构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:29
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
 #: ../html/src/manager/images/image-view-overview.tsx:79
 #: ../html/src/manager/images/image-view.tsx:509
 msgid "Failed"
 msgstr "失败"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:55
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:85
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:49
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:83
 msgid "not built"
 msgstr "未构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.js:77
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:68
 msgid "Built time"
 msgstr "构建时间"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:38
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:33
 msgid "Loading global filters..."
 msgstr "正在装载全局过滤器..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:44
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:37
 msgid "Updating project filters..."
 msgstr "正在更新项目过滤器..."
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.js:73
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:63
 msgid "Create New Filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:31
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:30
 msgid "Edit Filter {0}"
 msgstr "编辑过滤器 {0}"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:90
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:89
 msgid "Filters"
 msgstr "过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:90
 msgid "Attach/Detach Filters"
 msgstr "挂接/分离过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:108
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:107
 msgid "Filter edited successfully"
 msgstr "已成功编辑过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
 msgid "AppStreams"
 msgstr "AppStreams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:138
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:135
 msgid "enabled module streams"
 msgstr "已启用模块流"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:156
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:157
 msgid "filter out"
 msgstr "过滤掉"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.js:171
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:178
 msgid ""
 "select from the full source even if you have excluded them before with deny"
 msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:52
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:51
 msgid "No version to promote or colliding environment build in progress"
 msgstr "没有可升级的版本，或者正在进行有冲突的环境构建"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:59
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:110
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:57
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:110
 msgid "Promote"
 msgstr "升级"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:77
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:73
 msgid "Promoting project.."
 msgstr "正在升级项目..."
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:91
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:90
 msgid "Target environment"
 msgstr "目标环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:96
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:96
 msgid "Promote version {0} into {1}"
 msgstr "将版本 {0} 升级到 {1}"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:111
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:111
 msgid "Promote environment"
 msgstr "升级环境"
 
-#: ../html/src/manager/content-management/shared/components/panels/promote/promote.js:119
+#: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:125
 msgid "Version {0} successfully promoted into {1}"
 msgstr "已成功将版本 {0} 升级到 {1}"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.js:18
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:54
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:15
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:53
 msgid "Project Properties"
 msgstr "项目属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:36
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:35
 msgid "(draft - not built) - Check the changes below"
 msgstr "（草稿 - 未构建）- 请检查下面的更改"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:50
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:49
 msgid "Edit Properties"
 msgstr "编辑属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:68
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:66
 msgid "Project properties updated successfully"
 msgstr "已成功更新项目属性"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.js:87
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:83
 msgid "Editing properties.."
 msgstr "正在编辑属性..."
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:57
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:54
 msgid "Versions history:"
 msgstr "版本历史记录："
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:68
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:65
 msgid "show more"
 msgstr "显示更多"
 
-#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:78
+#: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:71
 msgid "Versions history"
 msgstr "版本历史记录"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:80
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:84
 msgid "New Base Channel"
 msgstr "新建基础频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:114
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "选择要用作新基础频道的频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:123
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:121
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "Child Channels"
 msgstr "子频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.js:137
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:136
 msgid "Clear Search"
 msgstr "清除搜索"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:23
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:20
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:96
 msgid "no child channels"
 msgstr "无子频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.js:68
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:55
 msgid "This channel is recommended"
 msgstr "建议使用此频道"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:53
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:60
+#, fuzzy
+msgid "This channel is mandatory"
+msgstr "建议使用此频道"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
+msgid "mandatory"
+msgstr "必需"
+
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:49
 msgid "has unsynchronized patches"
 msgstr "具有未同步的补丁"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:96
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:92
 msgid "Sources"
 msgstr "源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:114
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:110
 msgid "Sources edited successfully"
 msgstr "已成功编辑源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:139
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:132
 #: ../html/src/manager/images/image-build.tsx:297
 msgid "Software Channels"
 msgstr "软件频道"
@@ -2580,7 +2602,10 @@ msgstr "已为此组中的每个受控端服务器安排了配置频道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
-msgid "Formula saved. Edit configuration options "
+#, fuzzy
+msgid ""
+"Formula saved. Edit configuration options in the enabled formulas and apply "
+"the "
 msgstr "已保存公式。请编辑配置选项 "
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:14
@@ -2638,7 +2663,7 @@ msgid "No profile selected"
 msgstr "未选择配置文件"
 
 #: ../html/src/manager/images/image-build.tsx:272
-#: ../html/src/manager/images/image-profile-edit.tsx:535
+#: ../html/src/manager/images/image-profile-edit.tsx:553
 msgid "Image Type"
 msgstr "映像类型"
 
@@ -2648,13 +2673,13 @@ msgid "Image Store"
 msgstr "映像储存"
 
 #: ../html/src/manager/images/image-build.tsx:280
-#: ../html/src/manager/virtualization/pools/pool-properties.js:522
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:529
 msgid "Path"
 msgstr "路径"
 
 #: ../html/src/manager/images/image-build.tsx:284
 #: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:392
+#: ../html/src/manager/images/image-profile-edit.tsx:410
 msgid "Activation Key"
 msgstr "激活密钥"
 
@@ -2680,7 +2705,7 @@ msgid "The image import has been scheduled."
 msgstr "已安排映像导入。"
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:385
+#: ../html/src/manager/images/image-profile-edit.tsx:402
 msgid "There are no channels assigned to this key."
 msgstr "未将任何频道指派到此密钥。"
 
@@ -2714,60 +2739,65 @@ msgid "Import"
 msgstr "导入"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:479
+#: ../html/src/manager/images/image-profile-edit.tsx:497
 #: ../html/src/manager/images/image-store-edit.tsx:211
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:193
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
 msgid "Clear fields"
 msgstr "清除字段"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:293
+#: ../html/src/manager/images/image-profile-edit.tsx:294
 msgid "Target Image Store"
 msgstr "目标映像储存"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:317
+#: ../html/src/manager/images/image-profile-edit.tsx:318
 msgid "Dockerfile URL"
 msgstr "Dockerfile URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:343
+#: ../html/src/manager/images/image-profile-edit.tsx:344
 msgid "Config URL"
 msgstr "配置 URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:393
+#: ../html/src/manager/images/image-profile-edit.tsx:367
+#, fuzzy
+msgid "Kiwi options"
+msgstr "内核选项"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:411
 msgid "Activation key is required for kiwi images."
 msgstr "kiwi 映像需要激活密钥。"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:433
+#: ../html/src/manager/images/image-profile-edit.tsx:451
 msgid "Remove entry"
 msgstr "去除项"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:448
+#: ../html/src/manager/images/image-profile-edit.tsx:466
 msgid "Custom Info Values"
 msgstr "自定义信息值"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:462
+#: ../html/src/manager/images/image-profile-edit.tsx:480
 msgid "Create additional custom info keys"
 msgstr "创建更多自定义信息键"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:490
+#: ../html/src/manager/images/image-profile-edit.tsx:508
 #: ../html/src/manager/images/image-store-edit.tsx:223
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:204
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.js:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.js:53
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.js:51
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
+#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
+#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:39
+#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:37
 msgid "Update"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.tsx:531
 msgid "Edit Image Profile: '"
 msgstr "编辑映像配置文件：'"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:513
+#: ../html/src/manager/images/image-profile-edit.tsx:531
 msgid "Create Image Profile"
 msgstr "创建映像配置文件"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:529
+#: ../html/src/manager/images/image-profile-edit.tsx:547
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2828,8 +2858,8 @@ msgid "Use credentials"
 msgstr "使用身份凭证"
 
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:180
-#: ../html/src/manager/virtualization/pools/pool-properties.js:499
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:179
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
 msgid "Username"
 msgstr "用户名"
 
@@ -3192,8 +3222,8 @@ msgid "Building"
 msgstr "正在构建"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:238
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:308
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "未知"
 
@@ -3207,7 +3237,7 @@ msgid "Revision"
 msgstr "修订版"
 
 #: ../html/src/manager/images/image-view.tsx:639
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:108
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:138
 msgid "Updates"
 msgstr "更新"
 
@@ -3279,31 +3309,31 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:40
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:66
 msgid "Skip to the last maintenance window"
 msgstr "跳到最后一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:42
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:68
 msgid "Skip to the next maintenance window"
 msgstr "跳到下一个维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:103
 msgid "There are no more past maintenance windows"
 msgstr "没有更多过去的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:104
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:133
 msgid "There are no more future maintenance windows"
 msgstr "没有更多将来的维护时段"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:223
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:286
 msgid "Today"
 msgstr "今天"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:233
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:296
 msgid "Month"
 msgstr "月"
 
-#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:237
+#: ../html/src/manager/maintenance/calendar/web-calendar.tsx:300
 msgid "Day"
 msgstr "日"
 
@@ -3313,16 +3343,16 @@ msgid "Delete maintenance calendar"
 msgstr "删除维护日历"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:42
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:46
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:102
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:87
-#: ../html/src/manager/state/recurring-states-list.tsx:155
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:107
+#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Are you sure you want to delete the selected item?"
 msgstr "您确定要删除选定项吗？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:43
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:47
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:48
 msgid ""
 "This will remove the current schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
@@ -3352,48 +3382,48 @@ msgstr "URL"
 msgid "Calendar Details"
 msgstr "日历细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:43
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:44
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
 msgstr "删除维护日程安排"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:57
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:168
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:58
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
 msgid "Assigned Systems"
 msgstr "指派的系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:92
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:95
 msgid "Schedule name"
 msgstr "日程安排名称"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:93
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:96
 msgid "Assigned calendar"
 msgstr "指派的日历"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
 msgid "Schedule type"
 msgstr "日程安排类型"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:108
 msgid "Single"
 msgstr "单个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:94
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:97
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Multi"
 msgstr "多个"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:99
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:102
 #: ../html/src/manager/state/recurring-states-details.tsx:104
 msgid "Schedule Details"
 msgstr "日程安排细节"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:153
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:157
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "已将维护日程安排指派到 {0} 个系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3401,11 +3431,11 @@ msgstr "已将维护日程安排指派到 {0} 个系统"
 msgid "Cancel affected actions"
 msgstr "取消受影响的操作"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:192
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:196
 msgid "Search systems"
 msgstr "搜索系统"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:211
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:215
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
@@ -3448,11 +3478,11 @@ msgstr "请确认是否继续。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:105
-#: ../html/src/manager/virtualization/nets/network-properties.js:471
-#: ../html/src/manager/virtualization/pools/pool-properties.js:566
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:565
 msgid "Schedule"
 msgstr "日程安排"
 
@@ -3637,39 +3667,45 @@ msgstr "正在装载..."
 msgid "Nothing configured. Please add paths in the "
 msgstr "未配置任何设置。请在以下位置添加路径 "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:90
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
 msgid "Loading playbook contents.."
 msgstr "正在装载剧本内容..."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:97
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:101
+#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/state/recurring-states-edit.tsx:113
+msgid "Test mode"
+msgstr "测试模式"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
 msgid "Back to playbook list"
 msgstr "返回剧本列表"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:98
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
 msgid "Schedule playbook execution"
 msgstr "安排剧本执行"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:115
 msgid "Playbook '{0}'"
 msgstr "剧本 \"{0}\""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
 msgid "Schedule Playbook Execution"
 msgstr "安排剧本的执行"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:130
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Inventory Path"
 msgstr "库存路径"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
 msgid "Playbook Content"
 msgstr "剧本内容"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
 msgid "Action has been successfully added to action chain"
 msgstr "操作已成功添加到操作链"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:175
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:184
 msgid "Playbook execution has been"
 msgstr "剧本的执行已"
 
@@ -3737,9 +3773,9 @@ msgstr "软件包状态"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/salt/keys/key-management.tsx:187
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:119
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:60
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:346
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:149
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "州/省"
 
@@ -3867,13 +3903,13 @@ msgstr "删除通知"
 
 #: ../html/src/manager/notifications/notifications.tsx:39
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:340
-#: ../html/src/manager/virtualization/useVirtNotification.js:48
+#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
 #: ../html/src/manager/notifications/notifications.tsx:52
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:360
-#: ../html/src/manager/virtualization/useVirtNotification.js:54
+#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "连接到服务器时出错。请刷新页面以重试。"
 
@@ -3957,20 +3993,20 @@ msgstr "未预览目标系统"
 msgid "No target systems found"
 msgstr "未找到目标系统"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:462
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:464
 msgid "Not all minions responded on time."
 msgstr "并非所有受控端都按时做出了响应。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:488
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
 msgid "No minions matched the target expression."
 msgstr "没有任何受控端与目标表达式匹配。"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:490
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:492
 msgid "Server returned an error: {0}"
 msgstr "服务器返回了错误：{0}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:557
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:566
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:559
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:568
 msgid "Matching ssh-push minions..."
 msgstr "正在匹配 ssh-push 受控端..."
 
@@ -4091,8 +4127,8 @@ msgstr "系统组"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:191
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:64
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:190
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
 msgstr "组织"
 
@@ -4107,11 +4143,6 @@ msgstr "应用 highstate "
 #: ../html/src/manager/state/highstate.tsx:70
 msgid "scheduled."
 msgstr "已安排。"
-
-#: ../html/src/manager/state/highstate.tsx:118
-#: ../html/src/manager/state/recurring-states-edit.tsx:113
-msgid "Test mode"
-msgstr "测试模式"
 
 #: ../html/src/manager/state/highstate.tsx:126
 msgid "Apply Highstate"
@@ -4138,7 +4169,7 @@ msgid "State:"
 msgstr "状态："
 
 #: ../html/src/manager/state/recurring-states-details.tsx:110
-#: ../html/src/manager/state/recurring-states-list.tsx:92
+#: ../html/src/manager/state/recurring-states-list.tsx:91
 msgid "Active"
 msgstr "活动"
 
@@ -4175,7 +4206,7 @@ msgid "Quartz format string"
 msgstr "Quartz 格式字符串"
 
 #: ../html/src/manager/state/recurring-states-details.tsx:183
-#: ../html/src/manager/state/recurring-states-list.tsx:154
+#: ../html/src/manager/state/recurring-states-list.tsx:153
 msgid "Delete Recurring State Schedule"
 msgstr "删除重复性状态日程安排"
 
@@ -4199,19 +4230,19 @@ msgstr "返回列表"
 msgid "Schedule Recurring Highstate"
 msgstr "安排重复 Highstate"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:70
+#: ../html/src/manager/state/recurring-states-list.tsx:69
 msgid "Recurring States"
 msgstr "重复性状态"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:87
+#: ../html/src/manager/state/recurring-states-list.tsx:86
 msgid "No schedules created."
 msgstr "未创建日程安排。"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:108
+#: ../html/src/manager/state/recurring-states-list.tsx:107
 msgid "Frequency"
 msgstr "频率"
 
-#: ../html/src/manager/state/recurring-states-list.tsx:115
+#: ../html/src/manager/state/recurring-states-list.tsx:114
 msgid "Target Type"
 msgstr "目标类型"
 
@@ -4250,11 +4281,6 @@ msgid ""
 "Any system registered using this activation key will be subscribed to the "
 "selected child channels."
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子频道。"
-
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
-msgid "mandatory"
-msgstr "必需"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
 msgid ""
@@ -4355,20 +4381,20 @@ msgid ""
 "when accessing the channels."
 msgstr "代理的主机名不是完全限定的。这可能导致在访问频道时出现问题。"
 
-#: ../html/src/manager/systems/delete-system.tsx:13
+#: ../html/src/manager/systems/delete-system.tsx:10
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "清理操作超时。请检查计算机是否可访问。"
 
-#: ../html/src/manager/systems/delete-system.tsx:14
+#: ../html/src/manager/systems/delete-system.tsx:11
 msgid "No result found in state apply response."
 msgstr "在状态应用响应中未找到结果。"
 
-#: ../html/src/manager/systems/delete-system.tsx:72
-#: ../html/src/manager/systems/delete-system.tsx:73
+#: ../html/src/manager/systems/delete-system.tsx:69
+#: ../html/src/manager/systems/delete-system.tsx:70
 msgid "Delete Profile Without Cleanup"
 msgstr "删除配置文件但不清理"
 
-#: ../html/src/manager/systems/delete-system.tsx:93
+#: ../html/src/manager/systems/delete-system.tsx:90
 msgid "An error occurred during cleanup"
 msgstr "清理期间出错"
 
@@ -4583,66 +4609,66 @@ msgstr "无可用子频道。"
 msgid "Confirm Software Channel Change"
 msgstr "确认软件频道更改"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:59
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:58
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr "已触发此虚拟主机管理器的数据刷新。"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:74
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:73
 msgid "Properties"
 msgstr "属性"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:77
 msgid "Nodes"
 msgstr "节点"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:96
 msgid "OS"
 msgstr "操作系统"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:101
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:100
 msgid "CPU Arch"
 msgstr "CPU 体系结构"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:107
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:106
 msgid "CPU Sockets"
 msgstr "CPU 插槽数"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:112
 msgid "RAM (Mb)"
 msgstr "RAM (Mb)"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 msgid "Refresh Data"
 msgstr "刷新数据"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:130
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:129
 msgid "Refresh data from this Virtual Host Manager"
 msgstr "刷新此虚拟主机管理器中的数据"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:150
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:105
 msgid "Delete Virtual Host Manager"
 msgstr "删除虚拟主机管理器"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "您确定要删除此虚拟主机管理器吗？"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:195
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:269
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:58
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:194
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:267
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr "收集器模块"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:310
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:308
 msgid "Current Context"
 msgstr "当前上下文"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:324
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:322
 msgid "Kubeconfig file"
 msgstr "Kubeconfig 文件"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:42
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:41
 msgid "No Virtual Host Managers."
 msgstr "无虚拟主机管理器。"
 
@@ -4674,874 +4700,887 @@ msgstr "Azure"
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:161
 msgid "Virtual Host Manager"
 msgstr "虚拟主机管理器"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:162
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:161
 msgid "Add a {0}"
 msgstr "添加 {0}"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:164
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:163
 msgid "Virtual Host Managers"
 msgstr "虚拟主机管理器"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:175
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:174
 msgid "Add a virtual host manager"
 msgstr "添加虚拟主机管理器"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.js:19
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
 msgid "Please install libvirt python module."
 msgstr "请安装 libvirt Python 模块。"
 
-#: ../html/src/manager/virtualization/ListTab.js:157
+#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
+msgid ""
+"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+"modules are loaded."
+msgstr ""
+
+#: ../html/src/manager/virtualization/ListTab.tsx:164
 msgid "{0} selected"
 msgstr "已选择 {0}"
 
-#: ../html/src/manager/virtualization/ListTab.js:259
+#: ../html/src/manager/virtualization/ListTab.tsx:243
 msgid "Action Status"
 msgstr "操作状态"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:138
-#: ../html/src/manager/virtualization/nets/network-properties.js:231
-#: ../html/src/manager/virtualization/pools/pool-properties.js:239
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:245
 msgid "Can not contain the following characters: /\\"
 msgstr "不能包含以下字符：/\\"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:149
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:139
 msgid "Hypervisor"
 msgstr "超级管理程序"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:161
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:150
 msgid "Virtual Machine Type"
 msgstr "虚拟机类型"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:170
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:57
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:162
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:55
 msgid "Maximum Memory (MiB)"
 msgstr "最大内存 (MiB)"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:172
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:181
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:59
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:68
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:57
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:66
 msgid "A positive integer is required"
 msgstr "必须指定正整数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:179
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:171
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:64
 msgid "Virtual CPU Count"
 msgstr "虚拟 CPU 计数"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:208
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:196
 msgid "Auto-installation Profile"
 msgstr "自动安装配置文件"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:221
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:212
 msgid "Kernel options"
 msgstr "内核选项"
 
-#: ../html/src/manager/virtualization/guests/GuestProperties.js:237
+#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:255
 msgid "Graphics"
 msgstr "显卡"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
 msgid "Disconnected"
 msgstr "已断开连接"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:152
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:173
 msgid "Failed to connect"
 msgstr "无法连接"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:276
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:329
 msgid "Toggle full size"
 msgstr "切换完整大小"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.js:298
-msgid "Guest is not running"
-msgstr "Guest 未运行"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.js:17
+#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:13
 msgid "Something went wrong, connection is closed"
 msgstr "出现了问题，已关闭连接"
 
-#: ../html/src/manager/virtualization/guests/create/guests-create.js:85
+#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:78
 msgid "Create Virtual Machine"
 msgstr "创建虚拟机"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:25
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:32
 msgid "Start / Resume"
 msgstr "开始/恢复"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:26
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:268
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:39
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:29
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
 msgid "Stop"
 msgstr "停止"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:28
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:44
 msgid "Force off"
 msgstr "强制关闭"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:34
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:57
 msgid "Suspend"
 msgstr "挂起"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:47
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:77
 msgid "Synchronize Guests List"
 msgstr "同步 Guest 列表"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:48
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
 msgid "Synchronize"
 msgstr "同步"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:68
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:99
 msgid "Hosted Virtual Systems"
 msgstr "托管虚拟系统"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:69
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:100
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "这是配置为在此主机上运行的虚拟 Guest 列表。"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:85
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:115
 msgid "Guest"
 msgstr "Guest"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:95
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "Unregistered System"
 msgstr "未注册的系统"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:127
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:157
 msgid "Current Memory"
 msgstr "当前内存"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:134
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:164
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:141
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:171
 msgid "Base Software Channel"
 msgstr "基础软件频道"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:166
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:195
 msgid "paused"
 msgstr "已暂停"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.js:175
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:205
 msgid "Graphical Console"
 msgstr "图形控制台"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:56
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:53
 msgid "Device type"
 msgstr "设备类型"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:63
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:60
 msgid "Disk"
 msgstr "磁盘"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:64
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:61
 msgid "CDROM"
 msgstr "CDROM"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:65
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
 msgid "Floppy"
 msgstr "软盘"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.js:79
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:73
 msgid "Bus"
 msgstr "总线"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:28
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:25
 msgid "File"
 msgstr "文件"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.js:37
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:114
-#: ../html/src/manager/virtualization/pools/pool-properties.js:488
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:34
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:112
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:499
 msgid "Format"
 msgstr "格式"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:71
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:69
 msgid "Source storage pool"
 msgstr "源储存池"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:83
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:81
 msgid "Source Volume"
 msgstr "源卷"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:96
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:94
 msgid "Disk size (GiB)"
 msgstr "磁盘大小 (GiB)"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.js:104
+#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:102
 msgid "Source template image URL"
 msgstr "源模板映像 URL"
 
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.js:74
+#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:77
 msgid "Disks"
 msgstr "磁盘"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:38
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
 msgid "Network"
 msgstr "网络"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:51
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:90
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:87
 msgid "MAC address"
 msgstr "MAC 地址"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:52
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
 msgid "Leave blank to generate a MAC address"
 msgstr "保留空白会生成 MAC 地址"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:84
+#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
 msgid "Networks"
 msgstr "网络"
 
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
-#: ../html/src/manager/virtualization/nets/network-properties.js:495
-#: ../html/src/manager/virtualization/pools/pool-properties.js:590
+#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:120
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:456
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:581
 msgid "Clear Fields"
 msgstr "清除字段"
 
-#: ../html/src/manager/virtualization/nets/create/nets-create.js:34
+#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:27
 msgid "Create Virtual Network"
 msgstr "创建虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:97
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:258
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:22
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
 msgid "Start"
 msgstr "开始"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:40
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
 msgid "Virtual Networks"
 msgstr "虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:41
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "这是配置为在此主机上运行的虚拟网络列表。"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:45
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr "此系统上的 Salt 版本不支持创建和编辑虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:67
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:347
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
 msgid "Autostart"
 msgstr "自动启动"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:76
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:348
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
 msgid "Persistent"
 msgstr "持久"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.js:86
-#: ../html/src/manager/virtualization/nets/network-properties.js:274
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:262
 msgid "Bridge"
 msgstr "网桥"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:221
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:214
 msgid "network properties"
 msgstr "网络属性"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:239
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:231
 msgid "Network type"
 msgstr "网络类型"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:251
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:243
 msgid "Macvtap mode"
 msgstr "Macvtap 模式"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:260
-#: ../html/src/manager/virtualization/pools/pool-properties.js:259
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:252
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:265
 msgid "Start during virtual host boot"
 msgstr "在虚拟主机引导期间启动"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:268
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:258
 msgid "Connectivity"
 msgstr "连接"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:283
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:271
 msgid "Maximum Transmission Unit (MTU)"
 msgstr "最大传输单位 (MTU)"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:287
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:184
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:193
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:202
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:275
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:176
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:185
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:194
 msgid "The value has to be a positive integer"
 msgstr "值必须为正整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:295
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:283
 msgid "Virtual Port Type"
 msgstr "虚拟端口类型"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:315
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:299
 msgid "Select interfaces"
 msgstr "选择接口"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:321
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:305
 msgid "By physical function"
 msgstr "按物理功能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:322
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:308
 msgid "By virtual functions"
 msgstr "按虚拟功能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:322
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:309
 msgid "By interfaces"
 msgstr "按接口"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:332
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:320
 msgid "Interfaces"
 msgstr "接口"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:354
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:340
 msgid "Physical Function"
 msgstr "物理功能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:369
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:355
 msgid "Virtual Functions"
 msgstr "虚拟功能"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:393
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:377
 msgid "VLAN tag"
 msgstr "VLAN 标记"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:397
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:59
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:381
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:56
 msgid "Integer between 0 and 4095"
 msgstr "0 到 4095 之间的整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:404
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:386
 msgid "VLAN tags trunking"
 msgstr "VLAN 标记中继"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:414
-#: ../html/src/manager/virtualization/nets/network-properties.js:415
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:394
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:395
 msgid "NAT IPv4 range"
 msgstr "NAT IPv4 范围"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:424
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:405
 msgid "Both values has to be IPv4 addresses"
 msgstr "两个值都必须为 IPv4 地址"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:428
-#: ../html/src/manager/virtualization/nets/network-properties.js:429
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:409
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:410
 msgid "NAT port range"
 msgstr "NAT 端口范围"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:439
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:423
 msgid "Both values has to be positive integers"
 msgstr "两个值都必须为正整数"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:449
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:431
 msgid "Addressing"
 msgstr "寻址"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:455
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:433
 msgid "Enable IPv6"
 msgstr "启用 IPv6"
 
-#: ../html/src/manager/virtualization/nets/network-properties.js:461
+#: ../html/src/manager/virtualization/nets/network-properties.tsx:435
 msgid "Domain name"
 msgstr "域名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:19
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:17
 msgid "DNS"
 msgstr "DNS"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:24
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:22
 msgid "Forwarders"
 msgstr "转发器"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:37
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:35
 msgid "Domain"
 msgstr "域"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:38
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:36
 msgid "DNS server address"
 msgstr "DNS 服务器地址"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:52
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:170
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:247
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:49
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:162
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:237
 msgid "Has to be a valid qualified host name"
 msgstr "必须为有效的限定主机名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:60
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:103
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:57
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:98
 msgid "Has to be an IP address"
 msgstr "必须为 IP 地址"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:68
-#: ../html/src/manager/virtualization/pools/pool-properties.js:283
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:64
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:281
 msgid "Hosts"
 msgstr "主机"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:82
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:78
 msgid "Address"
 msgstr "地址"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:86
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:82
 msgid "hostnames (comma-separated)"
 msgstr "主机名（以逗号分隔）"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:115
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:109
 msgid "Has to be a comma-separated list of host names"
 msgstr "必须为主机名逗号分隔列表"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:123
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:116
 msgid "SRV records"
 msgstr "SRV 记录"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:144
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:136
 msgid "Service name"
 msgstr "服务名称"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:152
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:144
 msgid "Protocol"
 msgstr "协议"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:164
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:156
 msgid "Service domain name"
 msgstr "服务域名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:173
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
 msgid "Target hostname"
 msgstr "目标主机名"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:180
-#: ../html/src/manager/virtualization/pools/pool-properties.js:214
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:172
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:221
 msgid "Port"
 msgstr "端口"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:189
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:181
 msgid "Target priority"
 msgstr "目标优先级"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:198
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:190
 msgid "Target weight"
 msgstr "目标权重"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:212
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:203
 msgid "TXT records"
 msgstr "TXT 记录"
 
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.js:230
+#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:221
 msgid "Value"
 msgstr "值"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:28
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:27
 msgid "Network address"
 msgstr "网络地址"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:39
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:55
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:106
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:136
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:38
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:53
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:69
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:102
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:132
 msgid "v6"
 msgstr "v6"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:85
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:82
 msgid "IP address"
 msgstr "IP 地址"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:94
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:91
 msgid "DHCP Unique Identifier (DUID)"
 msgstr "DHCP 唯一标识符 (DUID)"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:120
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:116
 msgid "Needs to be a MAC address"
 msgstr "必须为 MAC 地址"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:148
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:141
 msgid "BOOTP image file"
 msgstr "BOOTP 映像文件"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:154
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:142
 msgid "BOOTP server"
 msgstr "BOOTP 服务器"
 
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.js:160
+#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:143
 msgid "TFTP root path"
 msgstr "TFTP 根路径"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:23
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:21
 msgid "Parameters"
 msgstr "参数"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:29
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:27
 msgid "By profile id"
 msgstr "按配置文件 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:30
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:28
 msgid "Virtual Station Interface (VSI) parameters"
 msgstr "虚拟站接口 (VSI) 参数"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:37
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:36
 msgid "Profile id"
 msgstr "配置文件 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:47
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:46
 msgid "Interface id"
 msgstr "接口 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:57
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:54
 msgid "VSI manager id"
 msgstr "VSI 管理器 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:63
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:55
 msgid "VSI type id"
 msgstr "VSI 类型 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:69
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:58
 msgid "VSI type id version"
 msgstr "VSI 类型 ID 版本"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:75
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:64
 msgid "VSI instance id"
 msgstr "VSI 实例 ID"
 
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.js:79
+#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:68
 msgid "Value needs to be a valid UUID"
 msgstr "值必须为有效的 UUID"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:20
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:18
 msgid "VLANs"
 msgstr "VLAN"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:41
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:39
 msgid "Tag"
 msgstr "标记"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:44
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:42
 msgid "Native mode"
 msgstr "本机模式"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:67
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:62
 msgid "Tagged"
 msgstr "已标记"
 
-#: ../html/src/manager/virtualization/nets/properties/Vlans.js:68
+#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
 msgid "Untagged"
 msgstr "未标记"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:5
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
+#, fuzzy
 msgid ""
 "Use an existing and configured bridge device. No iptables rule, IP address "
 "or DHCP/DNS service are added"
 msgstr ""
 "使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:13
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
 msgid "Virtual network using the host IP routing stack and NAT"
 msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:18
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
 msgid "Virtual network using the host IP routing stack, without NAT"
 msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:23
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
 msgid ""
 "Virtual network using the host IP routing stack, without firewall rules and "
 "NAT"
 msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:28
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
 msgid "Virtual network with no connection to other networks"
 msgstr "不连接其他网络的虚拟网络"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:33
-msgid ""
-"Network based on macvtap driver to use a pool of physical interfaces. No "
-"possible communication between guest and host"
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
+#, fuzzy
+msgid "Network based on macvtap driver to use a pool of physical interfaces. "
 msgstr "网络基于 macvtap 驱动程序使用物理接口池。Guest 与主机之间无法通讯"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:43
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
 msgid "SR-IOV pool"
 msgstr "SR-IOV 池"
 
-#: ../html/src/manager/virtualization/nets/properties/fields-data.js:44
+#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
 
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.js:26
+#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:28
 msgid "Could not get network devices from the server. Please try again."
 msgstr "无法从服务器获取网络设备。请重试。"
 
-#: ../html/src/manager/virtualization/pools/create/pools-create.js:31
+#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:25
 msgid "Create Virtual Storage Pool"
 msgstr "创建虚拟储存池"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
+#, fuzzy
+msgid "Virtual Storage Pool"
+msgstr "创建虚拟储存池"
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
+#, fuzzy
+msgid "Virtual Storage Volume"
+msgstr "虚拟储存池和卷"
+
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
 msgstr "删除池，包括其中包含的卷。 "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:141
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
 msgid "Cannot be undone"
 msgstr "无法撤销"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:275
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
 msgid "Edit Pool"
 msgstr "编辑池"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
 msgid "Location"
 msgstr "位置"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:350
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
 msgid "Usage"
 msgstr "用法"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:360
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:361
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
 msgid "Create Pool"
 msgstr "创建池"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:367
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
 msgid "Virtual Storage Pools and Volumes"
 msgstr "虚拟储存池和卷"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:368
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr "这是在此主机上定义的包含虚拟 Guest 磁盘的储存池列表。"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.js:378
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:383
 msgid "Filter by pool or volume name"
 msgstr "按池或卷名称过滤"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:175
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:181
 msgid "Partition separator"
 msgstr "分区分隔符"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:205
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:212
 msgid "Host name"
 msgstr "主机名"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:248
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:254
 msgid "Pool Type"
 msgstr "池类型"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:267
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:271
 msgid "Source"
 msgstr "源"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:315
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:313
 msgid "Devices"
 msgstr "设备"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:348
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:354
 msgid "Initiator IQN"
 msgstr "发起端 IQN"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:359
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:364
 msgid "Adapter type"
 msgstr "适配器类型"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:379
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:388
 msgid "Adapter name"
 msgstr "适配器名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:388
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:397
 msgid "Adapter parent PCI address"
 msgstr "适配器父项 PCI 地址"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:392
-#: ../html/src/manager/virtualization/pools/pool-properties.js:403
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:401
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:414
 msgid "PCI address formatted like 0000:00:00.0"
 msgstr "类似于 0000:00:00.0 格式的 PCI 地址"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:399
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:410
 msgid "Adapter parent address unique ID"
 msgstr "适配器父项地址唯一 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:410
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:421
 msgid "Adapter parent name"
 msgstr "适配器父项名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:418
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:429
 msgid "Adapter parent wwnn"
 msgstr "适配器父项 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:421
-#: ../html/src/manager/virtualization/pools/pool-properties.js:431
-#: ../html/src/manager/virtualization/pools/pool-properties.js:441
-#: ../html/src/manager/virtualization/pools/pool-properties.js:452
-#: ../html/src/manager/virtualization/pools/pool-properties.js:463
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:432
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:442
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:452
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:463
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:474
 msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
 msgstr "长度为 16 个字符的十六进制值。示例：500277a4100c4e21"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:428
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:439
 msgid "Adapter parent wwpn"
 msgstr "适配器父项 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:438
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:449
 msgid "Adapter parent fabric wwn"
 msgstr "适配器父项结构 wwn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:448
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:459
 msgid "Adapter wwnn"
 msgstr "适配器 wwnn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:459
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:470
 msgid "Adapter wwpn"
 msgstr "适配器 wwpn"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:470
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:481
 msgid "Manage vHBA deletion"
 msgstr "管理 vHBA 删除操作"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:479
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:490
 msgid "Source name"
 msgstr "源名称"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:505
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:516
 msgid "Passphrase"
 msgstr "通行口令"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:517
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:526
 msgid "Target"
 msgstr "目标"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:530
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:537
 msgid "Owner UID"
 msgstr "拥有者 UID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:534
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:541
 msgid "UID is a numeric value"
 msgstr "UID 是一个数字值"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:538
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:545
 msgid "Group ID"
 msgstr "组 ID"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:542
-#: ../html/src/manager/virtualization/pools/pool-properties.js:551
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:549
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:558
 msgid "GID is a numeric value"
 msgstr "GID 是一个数字值"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:546
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:553
 msgid "Permission mode"
 msgstr "权限模式"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:547
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
 msgid "target directory permissions in octal form, like 0775"
 msgstr "八进制格式（例如 0775）的目标目录权限"
 
-#: ../html/src/manager/virtualization/pools/pool-properties.js:556
+#. TODO Add Link to the UI Reference
+#: ../html/src/manager/virtualization/pools/pool-properties.tsx:561
 msgid "SELinux label"
 msgstr "SELinux 标签"
 
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.js:26
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:28
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr "无法从服务器获取储存池功能。请重试。"
 
-#: ../html/src/manager/visualization/data-tree.js:167
-msgid "Add/remove system from SSM"
-msgstr "在 SSM 中添加/去除系统"
-
-#: ../html/src/manager/visualization/data-tree.js:201
+#: ../html/src/manager/visualization/data-tree.ts:133
 msgid "  security advisories"
 msgstr "  安全建议"
 
-#: ../html/src/manager/visualization/data-tree.js:207
+#: ../html/src/manager/visualization/data-tree.ts:139
 msgid "  bug fix advisories"
 msgstr "  bug 修复建议"
 
-#: ../html/src/manager/visualization/data-tree.js:214
+#: ../html/src/manager/visualization/data-tree.ts:149
 msgid "  product enhancement advisories"
 msgstr "  产品增强建议"
 
-#: ../html/src/manager/visualization/data-tree.js:254
+#: ../html/src/manager/visualization/data-tree.ts:195
+msgid "Add/remove system from SSM"
+msgstr "在 SSM 中添加/去除系统"
+
+#: ../html/src/manager/visualization/data-tree.ts:253
 msgid "Add children to SSM"
 msgstr "将子项添加到 SSM"
 
-#: ../html/src/manager/visualization/hierarchy.js:54
+#: ../html/src/manager/visualization/hierarchy.tsx:62
 msgid "Filtering"
 msgstr "过滤"
 
-#: ../html/src/manager/visualization/hierarchy.js:63
+#: ../html/src/manager/visualization/hierarchy.tsx:71
 msgid "Partitioning"
 msgstr "分区"
 
-#: ../html/src/manager/visualization/hierarchy.js:84
+#: ../html/src/manager/visualization/hierarchy.tsx:94
 msgid "Show systems with:"
 msgstr "显示具有以下资源的系统："
 
-#: ../html/src/manager/visualization/hierarchy.js:109
+#: ../html/src/manager/visualization/hierarchy.tsx:123
 msgid "security advisories"
 msgstr "安全建议"
 
-#: ../html/src/manager/visualization/hierarchy.js:110
+#: ../html/src/manager/visualization/hierarchy.tsx:128
 msgid "bug fix advisories"
 msgstr "bug 修复建议"
 
-#: ../html/src/manager/visualization/hierarchy.js:111
+#: ../html/src/manager/visualization/hierarchy.tsx:131
 msgid "product enhancement advisories"
 msgstr "产品增强建议"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.js:115
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "Filter by system name"
 msgstr "按系统名称过滤"
 
-#: ../html/src/manager/visualization/hierarchy.js:115
+#: ../html/src/manager/visualization/hierarchy.tsx:141
 msgid "e.g., client.nue.sles"
 msgstr "例如 client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.js:121
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "Filter by system base channel"
 msgstr "按系统基础频道过滤"
 
-#: ../html/src/manager/visualization/hierarchy.js:121
+#: ../html/src/manager/visualization/hierarchy.tsx:147
 msgid "e.g., SLE12"
 msgstr "例如 SLE12"
 
 #. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.js:127
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "Filter by system installed products"
 msgstr "按系统安装的产品过滤"
 
-#: ../html/src/manager/visualization/hierarchy.js:127
+#: ../html/src/manager/visualization/hierarchy.tsx:153
 msgid "e.g., SLES"
 msgstr "例如 SLES"
 
-#: ../html/src/manager/visualization/hierarchy.js:165
+#: ../html/src/manager/visualization/hierarchy.tsx:198
 msgid "Partition systems based on whether there are patches for them:"
 msgstr "根据系统是否有适用的补丁将系统分区："
 
-#: ../html/src/manager/visualization/hierarchy.js:204
+#: ../html/src/manager/visualization/hierarchy.tsx:240
 msgid "There was an error fetching data from the server."
 msgstr "从服务器提取数据时出错。"
 
-#: ../html/src/manager/visualization/hierarchy.js:240
+#: ../html/src/manager/visualization/hierarchy.tsx:283
 msgid " filters"
 msgstr " 过滤器"
 
-#: ../html/src/manager/visualization/ui/components.js:42
+#: ../html/src/manager/visualization/ui/components.ts:42
 msgid "Partition systems by given check-in time:"
 msgstr "按给定的签入时间将系统分区："
 
-#: ../html/src/manager/visualization/ui/components.js:142
+#: ../html/src/manager/visualization/ui/components.ts:149
 msgid "Add a grouping level"
 msgstr "添加分组级别"
 
-#: ../html/src/manager/visualization/ui/components.js:187
+#: ../html/src/manager/visualization/ui/components.ts:193
 msgid "Select a system group"
 msgstr "选择系统组"
 
-#: ../html/src/manager/visualization/ui/components.js:241
+#: ../html/src/manager/visualization/ui/components.ts:245
 msgid "Split into groups"
 msgstr "分割成组"
 
@@ -5576,6 +5615,9 @@ msgstr ""
 #, fuzzy
 msgid "foo {0} tea {1}"
 msgstr "第 {0} 页，共 {1} 页"
+
+#~ msgid "Guest is not running"
+#~ msgstr "Guest 未运行"
 
 #~ msgid "Apply"
 #~ msgstr "应用"

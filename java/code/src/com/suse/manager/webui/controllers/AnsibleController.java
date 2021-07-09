@@ -302,6 +302,7 @@ public class AnsibleController {
                     params.getPlaybookPath(),
                     params.getInventoryPath().orElse(null),
                     params.getControlNodeId(),
+                    params.isTestMode(),
                     params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);

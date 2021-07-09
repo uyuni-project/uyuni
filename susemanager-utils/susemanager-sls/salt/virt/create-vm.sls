@@ -121,3 +121,37 @@ domain_define:
     - require:
       - virt: domain_first_boot_define
 {%- endif %}
+
+{%- if pillar.get("cluster_definitions") %}
+
+{{ pillar['cluster_definitions'] }}/{{ pillar['name'] }}.xml:
+  mgrutils.cmd_dump:
+    - cmd: 'virsh dumpxml --inactive {{ pillar['name'] }}'
+    - require:
+      - virt: {{ "domain_define" if cdrom_boot or ks_boot else "domain_first_boot_define" }}
+
+/tmp/{{ pillar['name'] }}-primitive.conf:
+  file.managed:
+    - source: salt://virt/cluster-vm-primitive.conf
+    - template: jinja
+    - context:
+        name: "{{ pillar['name'] }}"
+        path: "{{ pillar['cluster_definitions'] }}"
+        cluster_fs: {{ salt.virt_utils.get_cluster_filesystem(pillar["cluster_definitions"]) }}
+    - require:
+      - mgrutils: {{ pillar['cluster_definitions'] }}/{{ pillar['name'] }}.xml
+
+define_primitive:
+  cmd.run:
+    - name: 'crm configure load update /tmp/{{ pillar['name'] }}-primitive.conf'
+    - require:
+      - file: /tmp/{{ pillar['name'] }}-primitive.conf
+
+make_transient:
+    mgrcompat.module_run:
+        - name: virt.undefine
+        - vm_: {{ pillar['name'] }}
+        - require:
+          - cmd: define_primitive
+
+{%- endif %}

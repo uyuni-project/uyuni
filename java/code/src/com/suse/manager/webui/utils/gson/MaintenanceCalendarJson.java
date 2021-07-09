@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.gson;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * JSON representation of the Maintenance Window scheduling
@@ -54,6 +55,9 @@ public class MaintenanceCalendarJson {
 
     /** List of schedule names used by a calendar */
     private List<Map<String, String>> scheduleNames;
+
+    /** List of event names used by the calendar */
+    private Set<String> eventNames;
 
     /** The reschedule strategy */
     private String strategy;
@@ -146,6 +150,24 @@ public class MaintenanceCalendarJson {
      */
     public void setScheduleNames(List<Map<String, String>> scheduleNamesIn) {
         this.scheduleNames = scheduleNamesIn;
+    }
+
+    /**
+     * Gets a list of event names used by a calendar object
+     *
+     * @return the list of eventNames
+     */
+    public Set<String> getEventNames() {
+        return eventNames;
+    }
+
+    /**
+     * Sets a list of event names used by a calendar object
+     *
+     * @param eventNamesIn the list of eventNames
+     */
+    public void setEventNames(Set<String> eventNamesIn) {
+        this.eventNames = eventNamesIn;
     }
 
     /**

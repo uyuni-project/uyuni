@@ -41,7 +41,7 @@ export const Example = () => {
           value => Object.values(value).every(item =>
             typeof item === "string" && (item === "" || item.match(/^[0-9]+$/))),
           ({port_start, port_end}) => (port_start === "" && port_end === "") ||
-            parseInt(port_start) <= parseInt(port_end),
+            parseInt(port_start, 10) <= parseInt(port_end, 10),
         ]}
       />
       <SubmitButton

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:20+0000\n"
+"POT-Creation-Date: 2021-07-07 10:17+0000\n"
 "PO-Revision-Date: 2021-05-14 10:57+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
@@ -334,8 +334,8 @@ msgstr "权利"
 msgid "System Groups"
 msgstr "系统组"
 
-#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:207
-#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1358
+#: ../src/spacecmd/activationkey.py:977 ../src/spacecmd/package.py:209
+#: ../src/spacecmd/package.py:266 ../src/spacecmd/softwarechannel.py:1358
 #: ../src/spacecmd/softwarechannel.py:1460
 #: ../src/spacecmd/softwarechannel.py:1542
 #: ../src/spacecmd/softwarechannel.py:1788
@@ -1734,12 +1734,12 @@ msgstr "distribution_details：显示 Kickstart 树的细节"
 msgid "usage: distribution_details LABEL"
 msgstr "用法：distribution_details LABEL"
 
-#: ../src/spacecmd/distribution.py:249 ../src/spacecmd/package.py:92
+#: ../src/spacecmd/distribution.py:249
 #, python-format
 msgid "Name:    %s"
 msgstr "名称：%s"
 
-#: ../src/spacecmd/distribution.py:250 ../src/spacecmd/package.py:99
+#: ../src/spacecmd/distribution.py:250
 #, python-format
 msgid "Path:    %s"
 msgstr "路径：%s"
@@ -1913,97 +1913,102 @@ msgid "Type:       %s"
 msgstr "类型：%s"
 
 #: ../src/spacecmd/errata.py:400
+#, fuzzy, python-format
+msgid "Status:     %s"
+msgstr "OSA 状态：%s"
+
+#: ../src/spacecmd/errata.py:401
 #, python-format
 msgid "Issue Date: %s"
 msgstr "颁发日期：%s"
 
-#: ../src/spacecmd/errata.py:402
+#: ../src/spacecmd/errata.py:403
 msgid "Topic"
 msgstr "主题"
 
-#: ../src/spacecmd/errata.py:406 ../src/spacecmd/package.py:106
+#: ../src/spacecmd/errata.py:407 ../src/spacecmd/package.py:108
 #: ../src/spacecmd/softwarechannel.py:559
 msgid "Description"
 msgstr "说明"
 
-#: ../src/spacecmd/errata.py:412
+#: ../src/spacecmd/errata.py:413
 msgid "Notes"
 msgstr "笔记"
 
-#: ../src/spacecmd/errata.py:417
+#: ../src/spacecmd/errata.py:418
 msgid "CVEs"
 msgstr "CVE"
 
-#: ../src/spacecmd/errata.py:421
+#: ../src/spacecmd/errata.py:422
 msgid "Solution"
 msgstr "解决方案"
 
-#: ../src/spacecmd/errata.py:425
+#: ../src/spacecmd/errata.py:426
 msgid "References"
 msgstr "参考"
 
-#: ../src/spacecmd/errata.py:429
+#: ../src/spacecmd/errata.py:430
 msgid "Affected Channels"
 msgstr "受影响的频道"
 
-#: ../src/spacecmd/errata.py:433 ../src/spacecmd/org.py:279
+#: ../src/spacecmd/errata.py:434 ../src/spacecmd/org.py:279
 msgid "Affected Systems"
 msgstr "受影响的系统"
 
-#: ../src/spacecmd/errata.py:437
+#: ../src/spacecmd/errata.py:438
 msgid "Affected Packages"
 msgstr "受影响的软件包"
 
-#: ../src/spacecmd/errata.py:447
+#: ../src/spacecmd/errata.py:448
 msgid "errata_delete: Delete an patch"
 msgstr "errata_delete：删除补丁"
 
-#: ../src/spacecmd/errata.py:448
+#: ../src/spacecmd/errata.py:449
 msgid "usage: errata_delete ERRATA|search:XXX ..."
 msgstr "用法：errata_delete ERRATA|search:XXX ..."
 
-#: ../src/spacecmd/errata.py:468
+#: ../src/spacecmd/errata.py:469
 msgid "No patches to delete"
 msgstr "没有可删除的补丁"
 
-#: ../src/spacecmd/errata.py:471
+#: ../src/spacecmd/errata.py:472
 msgid "Erratum            Channels"
 msgstr "勘误            频道"
 
-#: ../src/spacecmd/errata.py:479
+#: ../src/spacecmd/errata.py:480
 msgid "Delete these patches [y/N]:"
 msgstr "删除这些补丁 [y/N]："
 
-#: ../src/spacecmd/errata.py:485
+#: ../src/spacecmd/errata.py:486
 #, python-format
 msgid "Deleted %i patches"
 msgstr "已删除 %i 个补丁"
 
-#: ../src/spacecmd/errata.py:495
+#: ../src/spacecmd/errata.py:496
 msgid "errata_publish: Publish an patch to a channel"
 msgstr "errata_publish：将补丁发布到频道"
 
-#: ../src/spacecmd/errata.py:496
+#: ../src/spacecmd/errata.py:497
 msgid "usage: errata_publish ERRATA|search:XXX <CHANNEL ...>"
 msgstr "用法：errata_publish ERRATA|search:XXX <频道 ...>"
 
-#: ../src/spacecmd/errata.py:523
+#: ../src/spacecmd/errata.py:524
 msgid "No patches to publish"
 msgstr "没有可发布的补丁"
 
-#: ../src/spacecmd/errata.py:528
+#: ../src/spacecmd/errata.py:529
 msgid "Publish these patches [y/N]:"
 msgstr "发布这些补丁 [y/N]："
 
-#: ../src/spacecmd/errata.py:540
+#: ../src/spacecmd/errata.py:541
 msgid "errata_search: List patches that meet the given criteria"
 msgstr "errata_search：列出符合给定准则的补丁"
 
-#: ../src/spacecmd/errata.py:541
+#: ../src/spacecmd/errata.py:542
 msgid "usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 msgstr "用法：errata_search CVE|RHSA|RHBA|RHEA|CLA ..."
 
-#: ../src/spacecmd/errata.py:543 ../src/spacecmd/scap.py:180
+#: ../src/spacecmd/errata.py:544 ../src/spacecmd/scap.py:180
 msgid "Example:"
 msgstr "示例："
 
@@ -3435,7 +3440,7 @@ msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) 太旧（必须指定 >= %s）"
 
 #: ../src/spacecmd/misc.py:340 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:561
+#: ../src/spacecmd/utils.py:562
 #, python-format
 msgid "Could not read %s"
 msgstr "无法读取 %s"
@@ -3509,48 +3514,48 @@ msgid "** Generating errata cache **"
 msgstr "** 正在生成勘误缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:574
+#: ../src/spacecmd/misc.py:575
 msgid "** Generating package cache **"
 msgstr "** 正在生成软件包缓存 **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:681
+#: ../src/spacecmd/misc.py:682
 msgid "** Generating system cache **"
 msgstr "** 正在生成系统缓存 **"
 
-#: ../src/spacecmd/misc.py:716
+#: ../src/spacecmd/misc.py:717
 #, python-format
 msgid "Could not create directory %s"
 msgstr "无法创建目录 %s"
 
-#: ../src/spacecmd/misc.py:788
+#: ../src/spacecmd/misc.py:789
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "找不到 %s 的系统 ID"
 
-#: ../src/spacecmd/misc.py:793
+#: ../src/spacecmd/misc.py:794
 msgid "Duplicate system profile names found!"
 msgstr "找到了重复的系统配置文件名称！"
 
-#: ../src/spacecmd/misc.py:794
+#: ../src/spacecmd/misc.py:795
 msgid "Please reference systems by ID or resolve the"
 msgstr "请按 ID 引用系统，或者解决"
 
-#: ../src/spacecmd/misc.py:795
+#: ../src/spacecmd/misc.py:796
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 或 'system_rename' 的根本性问题"
 
-#: ../src/spacecmd/misc.py:861
+#: ../src/spacecmd/misc.py:862
 #, python-format
 msgid "No systems in group %s"
 msgstr "组 %s 中没有系统"
 
-#: ../src/spacecmd/misc.py:875
+#: ../src/spacecmd/misc.py:876
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "没有系统订阅 %s"
 
-#: ../src/spacecmd/misc.py:935
+#: ../src/spacecmd/misc.py:936
 msgid "Is this ok [y/N]:"
 msgstr "是否正常 [y/N]："
 
@@ -3841,150 +3846,174 @@ msgstr "配置频道：%i"
 msgid "Show the details of a software package"
 msgstr "显示软件包细节"
 
-#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:301
-#: ../src/spacecmd/package.py:348 ../src/spacecmd/package.py:390
+#: ../src/spacecmd/package.py:67 ../src/spacecmd/package.py:303
+#: ../src/spacecmd/package.py:350 ../src/spacecmd/package.py:392
 msgid "No packages found"
 msgstr "未找到软件包"
 
-#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:401
+#: ../src/spacecmd/package.py:80 ../src/spacecmd/package.py:403
 #, python-format
 msgid "%s is not a valid package"
 msgstr "%s 不是有效软件包"
 
+#: ../src/spacecmd/package.py:92
+#, fuzzy, python-format
+msgid "Name:      %s"
+msgstr "名称：%s"
+
 #: ../src/spacecmd/package.py:93
-#, python-format
-msgid "Version: %s"
+#, fuzzy, python-format
+msgid "Version:   %s"
 msgstr "版本：%s"
 
 #: ../src/spacecmd/package.py:94
-#, python-format
-msgid "Release: %s"
+#, fuzzy, python-format
+msgid "Release:   %s"
 msgstr "发行版：%s"
 
 #: ../src/spacecmd/package.py:95
-#, python-format
-msgid "Epoch:   %s"
+#, fuzzy, python-format
+msgid "Epoch:     %s"
 msgstr "纪元：%s"
 
 #: ../src/spacecmd/package.py:96
-#, python-format
-msgid "Arch:    %s"
+#, fuzzy, python-format
+msgid "Arch:      %s"
 msgstr "体系结构：%s"
 
 #: ../src/spacecmd/package.py:98
-#, python-format
-msgid "File:    %s"
+#, fuzzy, python-format
+msgid "File:      %s"
 msgstr "文件：%s"
 
+#: ../src/spacecmd/package.py:99
+#, fuzzy, python-format
+msgid "Path:      %s"
+msgstr "路径：%s"
+
 #: ../src/spacecmd/package.py:100
-#, python-format
-msgid "Size:    %s"
+#, fuzzy, python-format
+msgid "Size:      %s"
 msgstr "大小：%s"
 
-#: ../src/spacecmd/package.py:104
+#: ../src/spacecmd/package.py:101
+msgid "Yes"
+msgstr ""
+
+#: ../src/spacecmd/package.py:102
+#, fuzzy
+msgid "No"
+msgstr "无"
+
+#: ../src/spacecmd/package.py:101
+#, fuzzy, python-format
+msgid "Retracted: %s"
+msgstr "创建时间：%s"
+
+#: ../src/spacecmd/package.py:106
 #, python-format
 msgid "Installed Systems: %i"
 msgstr "已安装系统：%i"
 
-#: ../src/spacecmd/package.py:110
+#: ../src/spacecmd/package.py:112
 msgid "Available From Channels"
 msgstr "从频道提供"
 
-#: ../src/spacecmd/package.py:124
+#: ../src/spacecmd/package.py:126
 #, python-format
 msgid "usage: %s NAME|QUERY"
 msgstr "用法：%s NAME|QUERY"
 
-#: ../src/spacecmd/package.py:126
+#: ../src/spacecmd/package.py:128
 #, python-format
 msgid "Example: %s kernel"
 msgstr "示例：%s kernel"
 
-#: ../src/spacecmd/package.py:128
+#: ../src/spacecmd/package.py:130
 msgid "Advanced Search:"
 msgstr "高级搜索："
 
-#: ../src/spacecmd/package.py:129
+#: ../src/spacecmd/package.py:131
 msgid ""
 "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr "可用字段：name、epoch、version、release、arch、description、summary"
 
-#: ../src/spacecmd/package.py:130
+#: ../src/spacecmd/package.py:132
 msgid "Example: name:kernel AND version:2.6.18 AND -description:devel"
 msgstr "示例：name:kernel AND version:2.6.18 AND -description:devel"
 
-#: ../src/spacecmd/package.py:179
+#: ../src/spacecmd/package.py:181
 msgid "package_remove: Remove a package from Spacewalk"
 msgstr "package_remove：从 Spacewalk 中去除软件包"
 
-#: ../src/spacecmd/package.py:180
+#: ../src/spacecmd/package.py:182
 msgid "usage: package_remove PACKAGE ..."
 msgstr "用法：package_remove PACKAGE ..."
 
-#: ../src/spacecmd/package.py:200
+#: ../src/spacecmd/package.py:202
 msgid "No packages found to remove"
 msgstr "未找到要去除的软件包"
 
-#: ../src/spacecmd/package.py:203 ../src/spacecmd/package.py:260
+#: ../src/spacecmd/package.py:205 ../src/spacecmd/package.py:262
 #: ../src/spacecmd/softwarechannel.py:1546 ../src/spacecmd/system.py:945
 msgid "Remove these packages [y/N]:"
 msgstr "去除这些软件包 [y/N]："
 
-#: ../src/spacecmd/package.py:204
+#: ../src/spacecmd/package.py:206
 msgid "No packages has been removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:216 ../src/spacecmd/package.py:272
+#: ../src/spacecmd/package.py:218 ../src/spacecmd/package.py:274
 #, python-format
 msgid "Failed to remove package ID %i"
 msgstr "无法去除软件包 ID %i"
 
-#: ../src/spacecmd/package.py:227
+#: ../src/spacecmd/package.py:229
 msgid "package_listorphans: List packages that are not in a channel"
 msgstr "package_listorphans：列出不在频道中的软件包"
 
-#: ../src/spacecmd/package.py:228
+#: ../src/spacecmd/package.py:230
 msgid "usage: package_listorphans"
 msgstr "用法：package_listorphans"
 
-#: ../src/spacecmd/package.py:247
+#: ../src/spacecmd/package.py:249
 msgid "package_removeorphans: Remove packages that are not in a channel"
 msgstr "package_removeorphans：去除不在频道中的软件包"
 
-#: ../src/spacecmd/package.py:248
+#: ../src/spacecmd/package.py:250
 msgid "usage: package_removeorphans"
 msgstr "用法：package_removeorphans"
 
-#: ../src/spacecmd/package.py:256
+#: ../src/spacecmd/package.py:258
 msgid "No orphaned packages has been found"
 msgstr "未找到孤立的软件包"
 
-#: ../src/spacecmd/package.py:257
+#: ../src/spacecmd/package.py:259
 msgid "No orphaned packages"
 msgstr "无孤立软件包"
 
-#: ../src/spacecmd/package.py:261
+#: ../src/spacecmd/package.py:263
 msgid "No packages were removed"
 msgstr "未去除任何软件包"
 
-#: ../src/spacecmd/package.py:282
+#: ../src/spacecmd/package.py:284
 msgid "List the systems with a package installed"
 msgstr "列出装有某个软件包的系统"
 
-#: ../src/spacecmd/package.py:329
+#: ../src/spacecmd/package.py:331
 msgid "List the errata that provide this package"
 msgstr "列出提供此软件包的勘误"
 
-#: ../src/spacecmd/package.py:375
+#: ../src/spacecmd/package.py:377
 msgid "List the dependencies for a package"
 msgstr "列出软件包的依赖项"
 
-#: ../src/spacecmd/package.py:406
+#: ../src/spacecmd/package.py:408
 #, python-format
 msgid "Package Name: %s"
 msgstr "软件包名称：%s"
 
-#: ../src/spacecmd/package.py:408
+#: ../src/spacecmd/package.py:410
 #, python-format
 msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "依赖项：%s，类型：%s，修饰符：%s"
@@ -8019,90 +8048,93 @@ msgstr "未找到编辑器"
 msgid "Invalid time provided"
 msgstr "提供了无效时间"
 
-#: ../src/spacecmd/utils.py:456
+#: ../src/spacecmd/utils.py:457
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s 是未知勘误类型"
 
-#: ../src/spacecmd/utils.py:464
+#: ../src/spacecmd/utils.py:465
 msgid "Security Errata"
 msgstr "安全勘误"
 
-#: ../src/spacecmd/utils.py:473
+#: ../src/spacecmd/utils.py:474
 msgid "Bug Fix Errata"
 msgstr "Bug 修复勘误"
 
-#: ../src/spacecmd/utils.py:482
+#: ../src/spacecmd/utils.py:483
 msgid "Enhancement Errata"
 msgstr "增强勘误"
 
-#: ../src/spacecmd/utils.py:492
+#: ../src/spacecmd/utils.py:493
 msgid "Current Selections"
 msgstr "当前选择内容"
 
-#: ../src/spacecmd/utils.py:502
+#: ../src/spacecmd/utils.py:503
 msgid "Available Configuration Channels"
 msgstr "可用配置频道"
 
-#: ../src/spacecmd/utils.py:508 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:509 ../src/spacecmd/utils.py:529
 msgid "Channel:"
 msgstr "频道："
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:512 ../src/spacecmd/utils.py:532
 msgid "Invalid channel"
 msgstr "无效频道"
 
-#: ../src/spacecmd/utils.py:515
+#: ../src/spacecmd/utils.py:516
 msgid "New Rank:"
 msgstr "新排名："
 
-#: ../src/spacecmd/utils.py:522 ../src/spacecmd/utils.py:525
+#: ../src/spacecmd/utils.py:523 ../src/spacecmd/utils.py:526
 msgid "Invalid rank"
 msgstr "无效排名"
 
-#: ../src/spacecmd/utils.py:536
+#: ../src/spacecmd/utils.py:537
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:692
+#: ../src/spacecmd/utils.py:693
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:699
+#: ../src/spacecmd/utils.py:700
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:710
+#: ../src/spacecmd/utils.py:711
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:712
+#: ../src/spacecmd/utils.py:713
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
-#: ../src/spacecmd/utils.py:714
+#: ../src/spacecmd/utils.py:715
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:742
+#: ../src/spacecmd/utils.py:743
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:759
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:844
+#: ../src/spacecmd/utils.py:845
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
 #: ../src/bin/spacecmd:75
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "获取 FQDN 时发生未经处理的异常："
+
+#~ msgid "Arch:    %s"
+#~ msgstr "体系结构：%s"
 
 #~ msgid "package_search: Find packages that meet the given criteria"
 #~ msgstr "package_search：查找符合给定准则的软件包"

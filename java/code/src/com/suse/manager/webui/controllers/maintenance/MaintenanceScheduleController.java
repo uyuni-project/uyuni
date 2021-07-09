@@ -183,6 +183,9 @@ public class MaintenanceScheduleController {
         json.setType(schedule.getScheduleType().toString());
 
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
+            if (schedule.getScheduleType().equals(MaintenanceSchedule.ScheduleType.SINGLE)) {
+                json.setEventNames(new IcalUtils().getEventNames(maintenanceCalendar));
+            }
             json.setCalendarName(maintenanceCalendar.getLabel());
         });
         return json(response, json);

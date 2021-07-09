@@ -1,3 +1,9 @@
+- Add option to run Ansible playbooks in 'test' mode
+- Add support for Kiwi options
+- New filter template: Live patching based on a system
+- Adapt generated pillar data to run the new Salt scap state
+- Handle virtual machines running on pacemaker cluster
+- SP migration: wait some seconds before scheduling "package refresh" action after migration is completed (bsc#1187963)
 - cleanup and regenerate system state files when machine id has changed (bsc#1187660)
 - manually disable repositories on redhat like systems
 - Do not update Kickstart session when download after session is complete or failed (bsc#1187621)

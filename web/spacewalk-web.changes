@@ -1,3 +1,9 @@
+- Add option to run Ansible playbooks in 'test' mode
+- Add support for Kiwi options
+- New filter template: Live patching based on a system
+- Refresh JWT virtual console token before it expires
+- Handle virtual machines running on pacemaker cluster
+- Fix bugged search in formula catalog
 - Convert Virtualization modal dialogs to react-modal
 
 -------------------------------------------------------------------

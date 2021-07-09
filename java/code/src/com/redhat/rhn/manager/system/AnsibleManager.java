@@ -36,16 +36,14 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.utils.Xor;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Date;
@@ -56,7 +54,6 @@ import java.util.Optional;
 public class AnsibleManager extends BaseManager {
 
     private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
-    private static final Gson GSON = new Gson();
 
     /**
      * Lookup ansible path by id
@@ -254,20 +251,15 @@ public class AnsibleManager extends BaseManager {
         }
 
         Path localPath = path.getPath().resolve(playbookRelPath);
-        LocalCall<String> call = new LocalCall<>(
+        LocalCall<Xor<Boolean, String>> call = new LocalCall<>(
                 "cp.get_file_str",
                 of(List.of(localPath.toString())),
                 empty(),
                 new TypeToken<>() { }
         );
 
-        Optional<JsonElement> rawResult = saltApi.rawJsonCall(call, path.getMinionServer().getMinionId());
-        return rawResult.map(r -> {
-            if (r.isJsonPrimitive() && r.getAsJsonPrimitive().isBoolean() && !r.getAsJsonPrimitive().getAsBoolean()) {
-                throw new IllegalStateException("no result");
-            }
-            return GSON.fromJson(r, new TypeToken<String>() { }.getType());
-        });
+        Optional<Xor<Boolean, String>> result = saltApi.callSync(call, path.getMinionServer().getMinionId());
+        return result.map(r -> r.right().orElseThrow(() -> new IllegalStateException("no result")));
     }
 
     /**
@@ -276,6 +268,7 @@ public class AnsibleManager extends BaseManager {
      * @param playbookPath playbook path
      * @param inventoryPath inventory path
      * @param controlNodeId control node id
+     * @param testMode true if the playbook should be executed as test mode
      * @param earliestOccurrence earliestOccurrence
      * @param actionChainLabel the action chain label
      * @param user the user
@@ -283,7 +276,7 @@ public class AnsibleManager extends BaseManager {
      * @throws TaskomaticApiException if taskomatic is down
      * @throws IllegalArgumentException if playbook path is empty
      */
-    public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId,
+    public static Long schedulePlaybook(String playbookPath, String inventoryPath, long controlNodeId, boolean testMode,
             Date earliestOccurrence, Optional<String> actionChainLabel, User user) throws TaskomaticApiException {
         if (StringUtils.isBlank(playbookPath)) {
             throw new IllegalArgumentException("Playbook path cannot be empty.");
@@ -296,7 +289,7 @@ public class AnsibleManager extends BaseManager {
                 .orElse(null);
 
         return ActionChainManager.scheduleExecutePlaybook(user, controlNode.getId(), playbookPath,
-                inventoryPath, actionChain, earliestOccurrence).getId();
+                inventoryPath, actionChain, earliestOccurrence, testMode).getId();
     }
 
     /**
@@ -322,14 +315,18 @@ public class AnsibleManager extends BaseManager {
             throw new IllegalArgumentException(String.format("Path id %d not a Playbook path", path.getId()));
         }
 
-        TypeToken<Map<String, Map<String, AnsiblePlaybookSlsResult>>> type = new TypeToken<>() { };
-        LocalCall<Map<String, Map<String, AnsiblePlaybookSlsResult>>> discoverCall = new LocalCall<>(
+        LocalCall<Xor<String, Map<String, Map<String, AnsiblePlaybookSlsResult>>>> discoverCall = new LocalCall<>(
                 "ansible.discover_playbooks",
                 of(List.of(path.getPath().toString())),
                 empty(),
-                type);
-        Optional<JsonElement> jsonResult = saltApi.rawJsonCall(discoverCall, path.getMinionServer().getMinionId());
-        return jsonResult.map(j -> parseJsonResponse(j, type.getType()));
+                new TypeToken<>() { });
+
+        return saltApi.callSync(discoverCall, path.getMinionServer().getMinionId())
+                .map(res -> res.fold(
+                        error -> {
+                            throw new IllegalStateException(error);
+                        },
+                        success -> success));
     }
 
     /**
@@ -352,14 +349,18 @@ public class AnsibleManager extends BaseManager {
             throw new IllegalArgumentException(String.format("Path %d not an Inventory path", path.getId()));
         }
 
-        TypeToken<Map<String, Map<String, Object>>> type = new TypeToken<>() { };
-        LocalCall<Map<String, Map<String, Object>>> call = new LocalCall<>(
+        LocalCall<Xor<String, Map<String, Map<String, Object>>>> call = new LocalCall<>(
                 "ansible.targets",
                 empty(),
                 of(Map.of("inventory", path.getPath().toString())),
-                type);
-        Optional<JsonElement> jsonResult = saltApi.rawJsonCall(call, path.getMinionServer().getMinionId());
-        return jsonResult.map(j -> parseJsonResponse(j, type.getType()));
+                new TypeToken<>() { });
+
+        return saltApi.callSync(call, path.getMinionServer().getMinionId())
+                .map(res -> res.fold(
+                        error -> {
+                            throw new IllegalStateException(error);
+                        },
+                        success -> success));
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
@@ -372,24 +373,6 @@ public class AnsibleManager extends BaseManager {
         }
 
         return controlNode.asMinionServer().orElseThrow(() -> new LookupException(controlNode + " is not a minion"));
-    }
-
-    private static <T> T parseJsonResponse(JsonElement j, Type type) {
-        // this method assumes the returned string describes an error
-        // only use it for parsing non-string (success) values
-        if (type.getClass().isAssignableFrom(String.class)) {
-            throw new RuntimeException("Can't parse into string");
-        }
-
-        if (j.isJsonPrimitive() && j.getAsJsonPrimitive().isString()) {
-            throw new IllegalStateException(j.getAsString());
-        }
-        else {
-            if (j.isJsonObject()) {
-                j.getAsJsonObject().remove("retcode");
-            }
-            return GSON.fromJson(j, type);
-        }
     }
 
     /**

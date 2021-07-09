@@ -32,6 +32,25 @@ import javax.persistence.Table;
 public class KiwiProfile extends ImageProfile {
 
     private String path;
+    private String kiwiOptions;
+
+    /**
+     * @return the Kiwi options
+     */
+    @Column(name = "kiwi_options")
+    public String getKiwiOptions() {
+        if (kiwiOptions == null) {
+            return "";
+        }
+        return kiwiOptions;
+    }
+
+    /**
+     * @param kiwiOptionsIn the kiwi options to set
+     */
+    public void setKiwiOptions(String kiwiOptionsIn) {
+        this.kiwiOptions = kiwiOptionsIn;
+    }
 
     /**
      * @return the path
@@ -59,6 +78,7 @@ public class KiwiProfile extends ImageProfile {
         return new EqualsBuilder()
                 .appendSuper(super.equals(castOther))
                 .append(path, castOther.path)
+                .append(kiwiOptions, castOther.kiwiOptions)
                 .isEquals();
     }
 
@@ -69,6 +89,7 @@ public class KiwiProfile extends ImageProfile {
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())
                 .append(path)
+                .append(kiwiOptions)
                 .toHashCode();
     }
 

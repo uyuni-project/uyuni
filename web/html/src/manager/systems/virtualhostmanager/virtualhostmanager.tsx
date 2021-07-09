@@ -70,7 +70,6 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 
   updateView(action, id) {
-    let async;
     if ((action === "edit" || action === "details") && id)
       this.getVhmDetails(id, action).then(data => this.setState({ selected: data.data, action: action }));
     else if (!action) {

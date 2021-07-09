@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import useMandatoryChannelsApi, { UseMandatoryChannelsApiReturnType } from "./use-mandatory-channels-api";
 
 type Props = {

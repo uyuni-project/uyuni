@@ -306,15 +306,11 @@ end
 #
 # This function is written as a state machine. It bails out if no process is seen during
 # 30 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-# 7200 is the default value but it can be shortened by setting the type_environment
-# environment variable.
 When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
   do_not_kill = compute_list_to_leave_running
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
-  reposync_timeout = 7200
-  reposync_timeout = 600 if $type_environment && $type_environment == 'PULL_REQUEST_TESTING'
-  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= reposync_timeout
+  while reposync_not_running_streak <= 30 && reposync_left_running_streak <= 7200
     command_output, _code = $server.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', false)
     if command_output.empty?
       reposync_not_running_streak += 1
@@ -355,9 +351,7 @@ end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
-    reposync_timeout = 7200
-    reposync_timeout = 600 if $type_environment && $type_environment='PULL_REQUEST_TESTING'
-    repeat_until_timeout(timeout: reposync_timeout, message: 'Channel not fully synced') do
+    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
       _result, code = $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml", false)
       break if code.zero?
       sleep 10
@@ -1617,4 +1611,10 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
+end
+
+When(/^I copy unset package file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
+  return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise 'File injection failed' unless return_code.zero?
 end

@@ -6,7 +6,6 @@ import { SearchPanel } from "./SearchPanel";
 import { SearchField } from "./SearchField";
 import { PageControl, SimpleDataProvider, AsyncDataProvider } from "utils/data-providers";
 import { Utils } from "utils/functions";
-import { StatePersistedContext } from "../utils/StatePersistedContext";
 
 import { PagedData, Comparator } from "utils/data-providers";
 
@@ -103,8 +102,6 @@ export class TableDataHandler extends React.Component<Props, State> {
     deletable: false,
     columns: [],
   };
-
-  static contextType = StatePersistedContext;
 
   constructor(props: Props) {
     super(props);

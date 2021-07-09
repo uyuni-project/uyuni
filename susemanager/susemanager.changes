@@ -1,4 +1,5 @@
 - allow installation on AlmaLinux.
+- Fix a typo so mgr-create-bootstrap-script can exit gracefully when interrupted (bsc#1188073)
 - porting the package to python3 with proper placement
   compiled python files
 

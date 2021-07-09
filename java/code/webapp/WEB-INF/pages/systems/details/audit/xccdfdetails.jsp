@@ -45,7 +45,7 @@
     </a>
   </c:if>
 
-  <a href="/rhn/systems/details/audit/ScheduleXccdf.do?sid=${param.sid}&path=${testResult.scapActionDetails.path}&params=${testResult.scapActionDetails.parametersContents}">
+  <a href="/rhn/systems/details/audit/ScheduleXccdf.do?sid=${param.sid}&path=${testResult.scapActionDetails.path}&params=${testResult.scapActionDetails.parametersContents}&ovalfiles=${testResult.scapActionDetails.ovalfiles}">
     <rhn:icon type="header-refresh" title="system.audit.xccdfdetails.jsp.reschedule" />
     <bean:message key="system.audit.xccdfdetails.jsp.reschedule"/>
   </a>
@@ -62,6 +62,10 @@
   <tr>
     <th><bean:message key="system.audit.xccdfdetails.jsp.path"/>:</th>
     <td><c:out value="${testResult.scapActionDetails.path}"/></td>
+  </tr>
+  <tr>
+    <th><bean:message key="system.audit.xccdfdetails.jsp.ovalfiles"/>:</th>
+    <td><c:out value="${testResult.scapActionDetails.ovalfiles}"/></td>
   </tr>
   <tr>
     <th><bean:message key="system.audit.schedulexccdf.jsp.arguments"/>:</th>

@@ -15,7 +15,7 @@ interface TreeLikeModel<T = any> {
  *     So {a: [{b: 12, c: 34}, {b: 56, c: 78}]} will be converted into:
  *     {a0_b: 12, a0_c: 34, a1_b: 56, a1_c: 78}
  */
-export function flattenModel<T>(treeModel: TreeLikeModel<T>): Record<string, T> {
+export function flattenModel<T = any>(treeModel: TreeLikeModel<T>): Record<string, T> {
   return Object.entries(treeModel).reduce((result, entry) => {
     const name = entry[0];
     const value = entry[1];
@@ -46,7 +46,7 @@ export function flattenModel<T>(treeModel: TreeLikeModel<T>): Record<string, T> 
 /**
  * Remove the empty string and null values from the model.
  */
-export function stripBlankValues<T>(flatModel: Record<string, T>): Record<string, T> {
+export function stripBlankValues<T = any>(flatModel: Record<string, T>): Record<string, T> {
   return Object.fromEntries(Object.entries(flatModel).filter(entry => {
     if (typeof entry[1] === "string") {
       return entry[1] !== "";
