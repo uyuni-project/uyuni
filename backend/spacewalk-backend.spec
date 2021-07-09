@@ -318,7 +318,7 @@ install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/sate
 
 %find_lang %{name}-server
 
-%if 0%{?is_opensuse}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
 sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 %endif
 %if 0%{?fedora} || 0%{?rhel} > 6
