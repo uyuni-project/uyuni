@@ -166,7 +166,7 @@ public class RhelUtils {
         if (matcher.matches()) {
             String name =
                     matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
-            if (name.startsWith("Alma") || name.startsWith("Amazon")) {
+            if (name.startsWith("Alma") || name.startsWith("Amazon") || name.startsWith("Rocky")) {
                 name = matcher.group(1).replaceAll(" ", "");
             }
             String majorVersion = StringUtils.substringBefore(matcher.group(2), ".");
@@ -284,7 +284,7 @@ public class RhelUtils {
 
         // next check if Rocky Linux
         if (rockyReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
-            return rockyReleaseFile.map(v -> detectPlainRHEL(v, arch, "RockyLinux"));
+            return rockyReleaseFile.map(v -> detectPlainRHEL(v, arch, "Rocky"));
         }
 
         // next check if Centos
