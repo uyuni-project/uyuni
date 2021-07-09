@@ -29,9 +29,9 @@ def test_total_num_cpus():
             assert cpus['total_num_cpus'] == 4
 
 
-def test_cpusockets_dmidecode():
+def test_cpusockets_dmidecode_count_sockets():
     '''
-    Test dmidecode sub in cpusockets function.
+    Test _dmidecode_count_sockets sub in cpusockets function.
 
     :return:
     '''
@@ -39,15 +39,15 @@ def test_cpusockets_dmidecode():
     sample = mockery.get_test_data('dmidecode.sample')
     cpuinfo.log = MagicMock()
     with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
-        out = cpuinfo._dmidecode([])
+        out = cpuinfo._dmidecode_count_sockets([])
         assert type(out) == dict
         assert 'cpusockets' in out
         assert out['cpusockets'] == 1
 
 
-def test_cpusockets_parse_cpuinfo():
+def test_cpusockets_cpuinfo_count_sockets():
     '''
-    Test parse_cpuinfo sub in cpusockets function.
+    Test _cpuinfo_count_sockets sub in cpusockets function.
 
     :return:
     '''
@@ -56,20 +56,20 @@ def test_cpusockets_parse_cpuinfo():
     for sample_name in ['cpuinfo.s390.sample', 'cpuinfo.ppc64le.sample']:
         with patch('os.access', MagicMock(return_value=True)):
             with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data(sample_name)), create=True):
-                assert cpuinfo._parse_cpuinfo([]) is None
+                assert cpuinfo._cpuinfo_count_sockets([]) is None
 
     with patch('os.access', MagicMock(return_value=True)):
         with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data('cpuinfo.sample')), create=True):
-            out = cpuinfo._parse_cpuinfo([])
+            out = cpuinfo._cpuinfo_count_sockets([])
             assert type(out) == dict
             assert 'cpusockets' in out
             assert out['cpusockets'] == 1
 
 
 @pytest.mark.parametrize("arch", ["ppc64le", "s390", "x86_64"])
-def test_cpusockets_lscpu(arch):
+def test_cpusockets_lscpu_count_sockets(arch):
     '''
-    Test lscpu sub in cpusockets function.
+    Test _lscpu_count_sockets sub in cpusockets function.
 
     :return:
     '''
@@ -78,7 +78,7 @@ def test_cpusockets_lscpu(arch):
     with patch.dict(cpuinfo.__salt__,
                     {'cmd.run_all': MagicMock(return_value={'retcode': 0,
                                                             'stdout': mockery.get_test_data(fn_smpl)})}):
-        out = cpuinfo._lscpu([])
+        out = cpuinfo._lscpu_count_sockets([])
         assert type(out) == dict
         assert 'cpusockets' in out
         assert out['cpusockets'] == 1

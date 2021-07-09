@@ -19,7 +19,7 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def _lscpu(feedback):
+def _lscpu_count_sockets(feedback):
     '''
     Use lscpu method
 
@@ -45,7 +45,7 @@ def _lscpu(feedback):
             log.debug(str(error))
 
 
-def _parse_cpuinfo(feedback):
+def _cpuinfo_count_sockets(feedback):
     '''
     Use parsing /proc/cpuinfo method.
 
@@ -71,7 +71,7 @@ def _parse_cpuinfo(feedback):
             feedback.append('/proc/cpuinfo: format is not applicable')
 
 
-def _dmidecode(feedback):
+def _dmidecode_count_sockets(feedback):
     '''
     Use dmidecode method.
 
@@ -101,7 +101,7 @@ def cpusockets():
     Returns the number of CPU sockets.
     """
     feedback = list()
-    grains = _lscpu(feedback) or _parse_cpuinfo(feedback) or _dmidecode(feedback)
+    grains = _lscpu_count_sockets(feedback) or _cpuinfo_count_sockets(feedback) or _dmidecode_count_sockets(feedback)
     if not grains:
         log.warn("Could not determine CPU socket count: {0}".format(' '.join(feedback)))
 
