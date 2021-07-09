@@ -146,7 +146,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testParseReleaseFileRocky() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ROCKY_RELEASE);
         assertTrue(os.isPresent());
-        assertEquals("Rocky", os.get().getName());
+        assertEquals("RockyLinux", os.get().getName());
         assertEquals("8", os.get().getMajorVersion());
         assertEquals("4", os.get().getMinorVersion());
         assertEquals("Green Obsidian", os.get().getRelease());
@@ -308,7 +308,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 null,
                 prod -> {
                     assertFalse(prod.get().getSuseProduct().isPresent());
-                    assertEquals("Rocky", prod.get().getName());
+                    assertEquals("RockyLinux", prod.get().getName());
                     assertEquals("Green Obsidian", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
                 });
