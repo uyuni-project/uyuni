@@ -38,12 +38,11 @@ def test_cpusockets_dmidecode():
 
     sample = mockery.get_test_data('dmidecode.sample')
     cpuinfo.log = MagicMock()
-    with patch('src.modules.udevdb._which_bin', MagicMock(return_value="/bogus/path")):
-        with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
-            out = cpuinfo._dmidecode([])
-            assert type(out) == dict
-            assert 'cpusockets' in out
-            assert out['cpusockets'] == 1
+    with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
+        out = cpuinfo._dmidecode([])
+        assert type(out) == dict
+        assert 'cpusockets' in out
+        assert out['cpusockets'] == 1
 
 
 def test_cpusockets_parse_cpuinfo():
@@ -67,22 +66,22 @@ def test_cpusockets_parse_cpuinfo():
             assert out['cpusockets'] == 1
 
 
-def test_cpusockets_lscpu():
+@pytest.mark.parametrize("arch", ["ppc64le", "s390", "x86_64"])
+def test_cpusockets_lscpu(arch):
     '''
     Test lscpu sub in cpusockets function.
 
     :return:
     '''
-    for fn_smpl in ['lscpu.ppc64le.sample', 'lscpu.s390.sample', 'lscpu.sample']:
-        cpuinfo.log = MagicMock()
-        with patch('src.modules.udevdb._which_bin', MagicMock(return_value="/bogus/path")):
-            with patch.dict(cpuinfo.__salt__,
-                            {'cmd.run_all': MagicMock(return_value={'retcode': 0,
-                                                                    'stdout': mockery.get_test_data(fn_smpl)})}):
-                out = cpuinfo._lscpu([])
-                assert type(out) == dict
-                assert 'cpusockets' in out
-                assert out['cpusockets'] == 1
+    fn_smpl = 'lscpu.{}.sample'.format(arch)
+    cpuinfo.log = MagicMock()
+    with patch.dict(cpuinfo.__salt__,
+                    {'cmd.run_all': MagicMock(return_value={'retcode': 0,
+                                                            'stdout': mockery.get_test_data(fn_smpl)})}):
+        out = cpuinfo._lscpu([])
+        assert type(out) == dict
+        assert 'cpusockets' in out
+        assert out['cpusockets'] == 1
 
 
 @pytest.mark.parametrize("arch", ["x86_64", "aarch64", "s390", "ppc64"])
