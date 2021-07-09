@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-08 15:03+0000\n"
+"POT-Creation-Date: 2021-07-09 10:38+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "new action chain"
 msgstr "nový akční řetězec"
 
-#: ../html/src/components/action-schedule.tsx:192
+#: ../html/src/components/action-schedule.tsx:191
 msgid ""
 "There are multiple maintenance schedules for selected systems. Make sure "
 "that systems in the set use at most 1 maintenance schedule if you want to "
@@ -80,23 +80,23 @@ msgstr ""
 "data nebo okna údržby, ujistěte se, že systémy v sadě používají maximálně 1 "
 "plán údržby."
 
-#: ../html/src/components/action-schedule.tsx:199
+#: ../html/src/components/action-schedule.tsx:198
 msgid "No upcoming maintenance windows"
 msgstr "Žádná nadcházející okna údržby"
 
-#: ../html/src/components/action-schedule.tsx:246
+#: ../html/src/components/action-schedule.tsx:245
 msgid "Earliest:"
 msgstr "Nejdříve:"
 
-#: ../html/src/components/action-schedule.tsx:246
+#: ../html/src/components/action-schedule.tsx:245
 msgid "Maintenance Window:"
 msgstr "Okno údržby:"
 
-#: ../html/src/components/action-schedule.tsx:276
+#: ../html/src/components/action-schedule.tsx:275
 msgid "Add to:"
 msgstr "Přidat k:"
 
-#: ../html/src/components/action-schedule.tsx:294
+#: ../html/src/components/action-schedule.tsx:293
 msgid "Loading the scheduler..."
 msgstr "Načítání plánovače..."
 
@@ -134,16 +134,16 @@ msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďt
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:143
 #: ../html/src/manager/clusters/shared/ui/schedule-cluster-action.tsx:52
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:103
+#: ../html/src/manager/images/image-view.tsx:794
 #: ../html/src/manager/images/image-view.tsx:796
-#: ../html/src/manager/images/image-view.tsx:798
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:51
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
 #: ../html/src/manager/state/recurring-states-details.tsx:154
 #: ../html/src/manager/state/recurring-states-details.tsx:156
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:120
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:122
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:119
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:183
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:184
 msgid "Back"
@@ -152,14 +152,14 @@ msgstr "Zpět"
 #: ../html/src/components/config-channels.tsx:297
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1133
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:669
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1131
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:667
 msgid "Confirm"
 msgstr "Potvrdit"
 
 #: ../html/src/components/config-channels.tsx:305
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:184
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:189
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:182
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "Uložit změny"
 
@@ -238,13 +238,13 @@ msgstr "Zrušit"
 #: ../html/src/components/table/Table.tsx:111
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:161
 #: ../html/src/manager/content-management/project/project.tsx:92
-#: ../html/src/manager/images/image-profiles.tsx:140
-#: ../html/src/manager/images/image-profiles.tsx:215
-#: ../html/src/manager/images/image-stores.tsx:140
-#: ../html/src/manager/images/image-stores.tsx:209
-#: ../html/src/manager/images/image-view.tsx:355
-#: ../html/src/manager/images/image-view.tsx:365
-#: ../html/src/manager/images/image-view.tsx:686
+#: ../html/src/manager/images/image-profiles.tsx:139
+#: ../html/src/manager/images/image-profiles.tsx:214
+#: ../html/src/manager/images/image-stores.tsx:139
+#: ../html/src/manager/images/image-stores.tsx:208
+#: ../html/src/manager/images/image-view.tsx:353
+#: ../html/src/manager/images/image-view.tsx:363
+#: ../html/src/manager/images/image-view.tsx:684
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:87
@@ -254,8 +254,8 @@ msgstr "Zrušit"
 #: ../html/src/manager/state/recurring-states-details.tsx:168
 #: ../html/src/manager/state/recurring-states-details.tsx:170
 #: ../html/src/manager/state/recurring-states-list.tsx:141
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:141
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:143
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:140
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:142
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:64
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:36
@@ -397,9 +397,9 @@ msgid "required"
 msgstr "Nutný restart systému"
 
 #: ../html/src/components/input/Password.stories.js:26
-#: ../html/src/manager/images/image-store-edit.tsx:189
+#: ../html/src/manager/images/image-store-edit.tsx:187
 #: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:411
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
 msgid "Password"
 msgstr "Heslo"
 
@@ -467,23 +467,23 @@ msgid "First"
 msgstr "První"
 
 #: ../html/src/components/pagination.tsx:23
-#: ../html/src/manager/admin/setup/products/products.tsx:392
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1099
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:662
+#: ../html/src/manager/admin/setup/products/products.tsx:391
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1097
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1128
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:660
 msgid "Prev"
 msgstr "Předchozí"
 
 #: ../html/src/components/pagination.tsx:28
-#: ../html/src/manager/admin/setup/products/products.tsx:398
+#: ../html/src/manager/admin/setup/products/products.tsx:397
 #: ../html/src/manager/clusters/add-cluster/select-provider.tsx:26
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:102
 #: ../html/src/manager/clusters/shared/ui/formula-config.tsx:152
 #: ../html/src/manager/clusters/shared/ui/select-server.tsx:112
 #: ../html/src/manager/clusters/upgrade-cluster/upgrade-cluster-plan.tsx:45
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1080
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1106
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:557
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1078
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1104
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:555
 msgid "Next"
 msgstr "Další"
 
@@ -496,8 +496,8 @@ msgid "Page"
 msgstr "Strana"
 
 #: ../html/src/components/pagination.tsx:103
-#: ../html/src/manager/admin/setup/products/products.tsx:403
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:869
+#: ../html/src/manager/admin/setup/products/products.tsx:402
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "z"
 
@@ -558,8 +558,8 @@ msgid "Configuration Channel: {0}"
 msgstr "Konfigurační kanál: {0}"
 
 #: ../html/src/components/salt-state-popup.tsx:59
-#: ../html/src/manager/images/image-profiles.tsx:209
-#: ../html/src/manager/images/image-stores.tsx:203
+#: ../html/src/manager/images/image-profiles.tsx:208
+#: ../html/src/manager/images/image-stores.tsx:202
 #: ../html/src/manager/images/image-view-overview.tsx:322
 #: ../html/src/manager/images/image-view-overview.tsx:347
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:35
@@ -569,8 +569,8 @@ msgstr "Konfigurační kanál: {0}"
 #: ../html/src/manager/state/recurring-states-details.tsx:161
 #: ../html/src/manager/state/recurring-states-details.tsx:163
 #: ../html/src/manager/state/recurring-states-list.tsx:133
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:136
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:133
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
@@ -599,7 +599,7 @@ msgid "({0} selected)"
 msgstr "(Vybráno: {0})"
 
 #: ../html/src/components/table/SearchPanel.tsx:57
-#: ../html/src/manager/admin/setup/products/products.tsx:320
+#: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -608,8 +608,8 @@ msgid "Select All"
 msgstr "Vybrat vše"
 
 #: ../html/src/components/table/TableDataHandler.tsx:337
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:624
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:625
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:622
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:623
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:286
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:89
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:463
@@ -746,10 +746,10 @@ msgstr "Nastala chyba. Stav monitorování neznámý. Obnovte stránku."
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:284
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:328
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:119
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:205
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:80
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:773
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:79
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:772
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:122
 msgid "System"
 msgstr "Systém"
@@ -881,10 +881,10 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:176
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:218
-#: ../html/src/manager/images/image-profiles.tsx:145
-#: ../html/src/manager/images/image-stores.tsx:145
-#: ../html/src/manager/images/image-view.tsx:379
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/images/image-profiles.tsx:144
+#: ../html/src/manager/images/image-stores.tsx:144
+#: ../html/src/manager/images/image-view.tsx:377
+#: ../html/src/manager/notifications/notification-messages.tsx:425
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -904,7 +904,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:190
 #: ../html/src/manager/images/image-view-patches.tsx:92
-#: ../html/src/manager/images/image-view.tsx:677
+#: ../html/src/manager/images/image-view.tsx:675
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:69
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/state/recurring-states-list.tsx:125
@@ -924,11 +924,11 @@ msgstr ""
 msgid "The product catalog refresh is running..."
 msgstr "Probíhá aktualizace katalogu produktů..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:251
+#: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Setup Wizard"
 msgstr "Průvodce nastavením"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:276
+#: ../html/src/manager/admin/setup/products/products.tsx:275
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -936,28 +936,28 @@ msgstr ""
 "Aktualizace údajů o produktu aktuálně běží na pozadí. Zkuste to znovu "
 "později."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:281
+#: ../html/src/manager/admin/setup/products/products.tsx:280
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalog produktů se stále aktualizuje, vyčkejte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:283
+#: ../html/src/manager/admin/setup/products/products.tsx:282
 msgid "Select some product first."
 msgstr "Nejprve vyberte nějaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:292
-#: ../html/src/manager/admin/setup/products/products.tsx:300
+#: ../html/src/manager/admin/setup/products/products.tsx:291
+#: ../html/src/manager/admin/setup/products/products.tsx:299
 msgid "Add products"
 msgstr "Přidat produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:319
+#: ../html/src/manager/admin/setup/products/products.tsx:318
 msgid "Clear products selection"
 msgstr "Vymazat výběr produktů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:359
+#: ../html/src/manager/admin/setup/products/products.tsx:358
 msgid "Why aren't all products displayed in the list?"
 msgstr "Proč se v seznamu nezobrazují všechny produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:362
+#: ../html/src/manager/admin/setup/products/products.tsx:361
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -965,7 +965,7 @@ msgstr ""
 "Produkty zobrazené v tomto seznamu jsou přímo propojeny s přihlašovacími "
 "údaji Vaší organizace (zrcadlená pověření) a Vašimi předplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:367
+#: ../html/src/manager/admin/setup/products/products.tsx:366
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -973,7 +973,7 @@ msgstr ""
 "Domníváte-li se, že nějaké produkty chybí, ujistěte se, že jste v předchozím "
 "kroku průvodce přidali správná pověření organizace."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:376
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -981,120 +981,120 @@ msgstr ""
 "Tento server je konfigurován jako podřízený synchronizace mezi servery "
 "(ISS). Produkty lze spravovat pouze na ISS master."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:453
+#: ../html/src/manager/admin/setup/products/products.tsx:452
 msgid "Filter by architecture"
 msgstr "Filtrovat podle architektury"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:549
+#: ../html/src/manager/admin/setup/products/products.tsx:548
 msgid "Filter by product Description"
 msgstr "Filtrovat podle popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:619
+#: ../html/src/manager/admin/setup/products/products.tsx:618
 msgid "Product Description"
 msgstr "Popis výrobku"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:625
-#: ../html/src/manager/admin/setup/products/products.tsx:1003
+#: ../html/src/manager/admin/setup/products/products.tsx:624
+#: ../html/src/manager/admin/setup/products/products.tsx:1002
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:182
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:627
+#: ../html/src/manager/admin/setup/products/products.tsx:626
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:634
+#: ../html/src/manager/admin/setup/products/products.tsx:633
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:805
+#: ../html/src/manager/admin/setup/products/products.tsx:804
 msgid " channels sync failed"
 msgstr " synchronizace kanálů selhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:813
+#: ../html/src/manager/admin/setup/products/products.tsx:812
 msgid " channels sync in progress"
 msgstr " probíhá synchronizace kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:821
+#: ../html/src/manager/admin/setup/products/products.tsx:820
 msgid " channels synced"
 msgstr " kanály synchronizovány"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:846
+#: ../html/src/manager/admin/setup/products/products.tsx:845
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Chcete-li povolit tento produkt, je třeba nejprve vybrat nadřazený produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:846
 msgid "Select this product"
 msgstr "Zvolit tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:859
+#: ../html/src/manager/admin/setup/products/products.tsx:858
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrcadlen."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:888
+#: ../html/src/manager/admin/setup/products/products.tsx:887
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:56
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:140
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:537
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:491
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:535
 msgid "recommended"
 msgstr "doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:906
+#: ../html/src/manager/admin/setup/products/products.tsx:905
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/group-channels.tsx:74
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:169
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:428
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:582
 msgid "include recommended"
 msgstr "zahrnout, co je doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:948
+#: ../html/src/manager/admin/setup/products/products.tsx:947
 msgid "SCC product catalog refresh in progress"
 msgstr "Probíhá aktualizace katalogu produktů SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:951
+#: ../html/src/manager/admin/setup/products/products.tsx:950
 msgid "Scheduling channels product resync"
 msgstr "Plánování resynchronizace produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:954
+#: ../html/src/manager/admin/setup/products/products.tsx:953
 msgid "Channels product resync scheduled"
 msgstr "Je naplánována resynchronizace produktu kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:957
+#: ../html/src/manager/admin/setup/products/products.tsx:956
 msgid "Schedule channels product resync"
 msgstr "Naplánovat resynchronizaci produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1018
+#: ../html/src/manager/admin/setup/products/products.tsx:1017
 msgid "Show product's channels"
 msgstr "Zobrazit kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1050
+#: ../html/src/manager/admin/setup/products/products.tsx:1049
 msgid "Product Channels - "
 msgstr "Kanály produktů - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1055
+#: ../html/src/manager/admin/setup/products/products.tsx:1054
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1062
+#: ../html/src/manager/admin/setup/products/products.tsx:1061
 msgid "Optional Channels"
 msgstr "Volitelné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1077
+#: ../html/src/manager/admin/setup/products/products.tsx:1076
 msgid "not synced"
 msgstr "nesynchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1080
+#: ../html/src/manager/admin/setup/products/products.tsx:1079
 msgid "sync in progress"
 msgstr "probíhá synchronizace"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1083
+#: ../html/src/manager/admin/setup/products/products.tsx:1082
 msgid "synced"
 msgstr "synchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1086
+#: ../html/src/manager/admin/setup/products/products.tsx:1085
 msgid "sync failed"
 msgstr "synchronizace selhala"
 
@@ -1150,7 +1150,7 @@ msgid " seconds"
 msgstr " sekund"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:194
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:253
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:249
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:279
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 #: ../html/src/manager/virtualization/ListTab.tsx:238
@@ -1178,11 +1178,11 @@ msgid "Elapsed Time"
 msgstr "Spotřebovaný čas"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:224
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:259
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:255
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:148
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:56
 #: ../html/src/manager/images/image-view-runtime.tsx:129
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:783
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:782
 msgid "Status"
 msgstr "Stav"
 
@@ -1197,7 +1197,7 @@ msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:106
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:550
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
@@ -1205,29 +1205,29 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:108
-#: ../html/src/manager/notifications/notification-messages.tsx:553
-#: ../html/src/utils/network.ts:79
+#: ../html/src/manager/notifications/notification-messages.tsx:552
+#: ../html/src/utils/network.ts:84
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:171
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:167
 msgid "CVE Audit"
 msgstr "Audit CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:178
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:174
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:233
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:229
 msgid "Audit Servers"
 msgstr "Auditovat servery"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:240
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:236
 msgid "Audit Images"
 msgstr "Auditovat obrazy"
 
 #. ref={nameInputRef}
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:273
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:269
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:151
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:268
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:92
@@ -1238,9 +1238,9 @@ msgstr "Auditovat obrazy"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:27
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:22
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:42
-#: ../html/src/manager/images/image-view.tsx:631
+#: ../html/src/manager/images/image-view.tsx:629
 #: ../html/src/manager/salt/keys/key-management.tsx:159
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:87
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:127
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:221
@@ -1251,10 +1251,10 @@ msgstr "Auditovat obrazy"
 msgid "Name"
 msgstr "Název"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:290
-#: ../html/src/manager/images/image-profiles.tsx:195
-#: ../html/src/manager/images/image-stores.tsx:197
-#: ../html/src/manager/images/image-view.tsx:671
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:286
+#: ../html/src/manager/images/image-profiles.tsx:194
+#: ../html/src/manager/images/image-stores.tsx:196
+#: ../html/src/manager/images/image-view.tsx:669
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:64
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:49
 #: ../html/src/manager/salt/keys/key-management.tsx:194
@@ -1670,7 +1670,7 @@ msgstr "Ne"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:39
 #: ../html/src/manager/clusters/cluster/cluster-overview.tsx:330
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:458
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "(none)"
 msgstr "(žádný)"
@@ -1717,11 +1717,11 @@ msgstr "Upravit vlastnosti"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:37
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:33
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:28
-#: ../html/src/manager/images/image-build.tsx:268
-#: ../html/src/manager/images/image-profile-edit.tsx:544
-#: ../html/src/manager/images/image-profiles.tsx:182
-#: ../html/src/manager/images/image-store-edit.tsx:268
-#: ../html/src/manager/images/image-stores.tsx:182
+#: ../html/src/manager/images/image-build.tsx:267
+#: ../html/src/manager/images/image-profile-edit.tsx:542
+#: ../html/src/manager/images/image-profiles.tsx:181
+#: ../html/src/manager/images/image-store-edit.tsx:266
+#: ../html/src/manager/images/image-stores.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:264
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
@@ -1757,11 +1757,11 @@ msgid "Action has been "
 msgstr "Akce byla "
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:26
-#: ../html/src/manager/images/image-build.tsx:221
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:185
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:32
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:58
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:374
+#: ../html/src/manager/images/image-build.tsx:220
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:56
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:372
 msgid "scheduled"
 msgstr "naplánována"
 
@@ -1770,9 +1770,9 @@ msgid " successfully."
 msgstr " úspěšně."
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:32
-#: ../html/src/manager/images/image-build.tsx:215
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:365
+#: ../html/src/manager/images/image-build.tsx:214
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1044
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:363
 msgid "Action has been successfully added to the Action Chain "
 msgstr "Akce byla úspěšně přidána do Řetězce akcí "
 
@@ -1803,7 +1803,7 @@ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
 msgstr "Tímto se klastr nezničí. Bude pouze odebrán z Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.tsx:121
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:772
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
 msgid "Overview"
 msgstr "Přehled"
@@ -1869,11 +1869,11 @@ msgstr "Klastry"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.tsx:102
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:29
-#: ../html/src/manager/images/image-stores.tsx:189
+#: ../html/src/manager/images/image-stores.tsx:188
 #: ../html/src/manager/images/image-view-patches.tsx:84
-#: ../html/src/manager/images/image-view.tsx:630
+#: ../html/src/manager/images/image-view.tsx:628
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:104
-#: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 #: ../html/src/manager/state/highstate-summary.tsx:59
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:259
 msgid "Type"
@@ -1924,12 +1924,12 @@ msgid "Create project"
 msgstr "Vytvořit projekt"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
-#: ../html/src/manager/images/image-profile-edit.tsx:519
+#: ../html/src/manager/images/image-profile-edit.tsx:517
+#: ../html/src/manager/images/image-profiles.tsx:150
 #: ../html/src/manager/images/image-profiles.tsx:151
-#: ../html/src/manager/images/image-profiles.tsx:152
-#: ../html/src/manager/images/image-store-edit.tsx:234
+#: ../html/src/manager/images/image-store-edit.tsx:232
+#: ../html/src/manager/images/image-stores.tsx:150
 #: ../html/src/manager/images/image-stores.tsx:151
-#: ../html/src/manager/images/image-stores.tsx:152
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:27
 #: ../html/src/manager/state/recurring-states-list.tsx:59
@@ -2064,8 +2064,8 @@ msgstr "Epocha"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:77
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
-#: ../html/src/manager/images/image-build.tsx:384
-#: ../html/src/manager/images/image-view.tsx:632
+#: ../html/src/manager/images/image-build.tsx:383
+#: ../html/src/manager/images/image-view.tsx:630
 msgid "Version"
 msgstr "Verze"
 
@@ -2138,9 +2138,9 @@ msgid "Select unused"
 msgstr "Vybrat nepoužité"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:124
-#: ../html/src/manager/images/image-profiles.tsx:141
-#: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:356
+#: ../html/src/manager/images/image-profiles.tsx:140
+#: ../html/src/manager/images/image-stores.tsx:140
+#: ../html/src/manager/images/image-view.tsx:354
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
@@ -2219,10 +2219,10 @@ msgstr "Opravdu chcete odstranit projekt"
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:58
 #: ../html/src/manager/virtualization/ActionApi.tsx:51
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:35
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:35
+#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:42
+#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:38
+#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:34
+#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:34
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -2349,11 +2349,11 @@ msgstr "Sestavení ({0})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
-#: ../html/src/manager/images/image-build.tsx:414
-#: ../html/src/manager/images/image-profiles.tsx:203
+#: ../html/src/manager/images/image-build.tsx:413
+#: ../html/src/manager/images/image-profiles.tsx:202
 #: ../html/src/manager/images/image-view-overview.tsx:578
 #: ../html/src/manager/images/image-view-overview.tsx:675
-#: ../html/src/manager/images/image-view.tsx:659
+#: ../html/src/manager/images/image-view.tsx:657
 msgid "Build"
 msgstr "Sestavení"
 
@@ -2432,13 +2432,13 @@ msgid "Generating repositories data"
 msgstr "Generování dat úložiště"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
-#: ../html/src/manager/images/image-view.tsx:507
+#: ../html/src/manager/images/image-view.tsx:505
 msgid "Built"
 msgstr "Sestaveno"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:26
 #: ../html/src/manager/images/image-view-overview.tsx:79
-#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/images/image-view.tsx:507
 msgid "Failed"
 msgstr "Selhalo"
 
@@ -2567,8 +2567,8 @@ msgid "Choose the channel to be elected as the new base channel"
 msgstr "Vyberte kanál, který má být zvolen jako nový základní kanál"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:121
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:541
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:540
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:593
 msgid "Child Channels"
 msgstr "Podřízené kanály"
 
@@ -2592,7 +2592,7 @@ msgstr "Tento kanál je doporučen"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channels.tsx:61
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:542
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:540
 msgid "mandatory"
 msgstr "povinné"
 
@@ -2609,7 +2609,7 @@ msgid "Sources edited successfully"
 msgstr "Zdroje upraveny úspěšně"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:132
-#: ../html/src/manager/images/image-build.tsx:297
+#: ../html/src/manager/images/image-build.tsx:296
 msgid "Software Channels"
 msgstr "Softwarové kanály"
 
@@ -2652,7 +2652,7 @@ msgstr ""
 "Myslíte-li si, že jste na této stránce omylem, kontaktujte nás laskavě s "
 "podrobnostmi, jak jste se sem dostali "
 
-#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:30
+#: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this group"
@@ -2672,7 +2672,7 @@ msgstr "Vzorec uložen. Upravte možnosti konfigurace "
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:15
-#: ../html/src/manager/state/highstate.tsx:139
+#: ../html/src/manager/state/highstate.tsx:138
 msgid "Highstate"
 msgstr "Highstate"
 
@@ -2711,48 +2711,48 @@ msgid ""
 msgstr ""
 "Při plánování úkolu došlo k chybě. Ujistěte se, že je spuštěn plánovač úloh."
 
-#: ../html/src/manager/images/image-build.tsx:220
+#: ../html/src/manager/images/image-build.tsx:219
 msgid "Building the image has been "
 msgstr "Sestavení obrazu bylo "
 
-#: ../html/src/manager/images/image-build.tsx:251
+#: ../html/src/manager/images/image-build.tsx:250
 msgid "Profile Summary"
 msgstr "Souhrn profilu"
 
-#: ../html/src/manager/images/image-build.tsx:261
+#: ../html/src/manager/images/image-build.tsx:260
 msgid "No profile selected"
 msgstr "Není vybrán žádný profil"
 
-#: ../html/src/manager/images/image-build.tsx:272
-#: ../html/src/manager/images/image-profile-edit.tsx:553
+#: ../html/src/manager/images/image-build.tsx:271
+#: ../html/src/manager/images/image-profile-edit.tsx:551
 msgid "Image Type"
 msgstr "Typ obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:276
+#: ../html/src/manager/images/image-build.tsx:275
 #: ../html/src/manager/images/image-import.tsx:264
 msgid "Image Store"
 msgstr "Úložiště obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:280
+#: ../html/src/manager/images/image-build.tsx:279
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:529
 msgid "Path"
 msgstr "Cesta"
 
-#: ../html/src/manager/images/image-build.tsx:284
+#: ../html/src/manager/images/image-build.tsx:283
 #: ../html/src/manager/images/image-import.tsx:239
-#: ../html/src/manager/images/image-profile-edit.tsx:410
+#: ../html/src/manager/images/image-profile-edit.tsx:408
 msgid "Activation Key"
 msgstr "Aktivační klíč"
 
-#: ../html/src/manager/images/image-build.tsx:353
+#: ../html/src/manager/images/image-build.tsx:352
 msgid "Build Image"
 msgstr "Sestavit obraz"
 
-#: ../html/src/manager/images/image-build.tsx:369
+#: ../html/src/manager/images/image-build.tsx:368
 msgid "Image Profile"
 msgstr "Profil obrazu"
 
-#: ../html/src/manager/images/image-build.tsx:390
+#: ../html/src/manager/images/image-build.tsx:389
 #: ../html/src/manager/images/image-import.tsx:302
 msgid "Build Host"
 msgstr "Sestavení hostitele"
@@ -2766,7 +2766,7 @@ msgid "The image import has been scheduled."
 msgstr "Import obrazu byl naplánován."
 
 #: ../html/src/manager/images/image-import.tsx:232
-#: ../html/src/manager/images/image-profile-edit.tsx:402
+#: ../html/src/manager/images/image-profile-edit.tsx:400
 msgid "There are no channels assigned to this key."
 msgstr "Této klávese nejsou přiřazeny žádné kanály."
 
@@ -2795,53 +2795,53 @@ msgid "Image version is required."
 msgstr "Verze obrazu je povinná."
 
 #: ../html/src/manager/images/image-import.tsx:318
-#: ../html/src/manager/images/image-view.tsx:374
+#: ../html/src/manager/images/image-view.tsx:372
 msgid "Import"
 msgstr "Import"
 
 #: ../html/src/manager/images/image-import.tsx:325
-#: ../html/src/manager/images/image-profile-edit.tsx:497
-#: ../html/src/manager/images/image-store-edit.tsx:211
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:282
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:209
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:281
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:191
 msgid "Clear fields"
 msgstr "Vymazat pole"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:294
+#: ../html/src/manager/images/image-profile-edit.tsx:292
 msgid "Target Image Store"
 msgstr "Cílové úložiště obrazu"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:318
+#: ../html/src/manager/images/image-profile-edit.tsx:316
 msgid "Dockerfile URL"
 msgstr "URL souboru Dockerfile"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:344
+#: ../html/src/manager/images/image-profile-edit.tsx:342
 msgid "Config URL"
 msgstr "Konfigurace URL"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:367
+#: ../html/src/manager/images/image-profile-edit.tsx:365
 #, fuzzy
 msgid "Kiwi options"
 msgstr "Volby jádra"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:411
+#: ../html/src/manager/images/image-profile-edit.tsx:409
 msgid "Activation key is required for kiwi images."
 msgstr "U obrazů kiwi je vyžadován aktivační klíč."
 
-#: ../html/src/manager/images/image-profile-edit.tsx:451
+#: ../html/src/manager/images/image-profile-edit.tsx:449
 msgid "Remove entry"
 msgstr "Odebrat položku"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:466
+#: ../html/src/manager/images/image-profile-edit.tsx:464
 msgid "Custom Info Values"
 msgstr "Hodnoty zákaznických informací"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:480
+#: ../html/src/manager/images/image-profile-edit.tsx:478
 msgid "Create additional custom info keys"
 msgstr "Vytvořit další zákaznické informační klíče"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:508
-#: ../html/src/manager/images/image-store-edit.tsx:223
+#: ../html/src/manager/images/image-profile-edit.tsx:506
+#: ../html/src/manager/images/image-store-edit.tsx:221
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:202
 #: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:105
@@ -2850,15 +2850,15 @@ msgstr "Vytvořit další zákaznické informační klíče"
 msgid "Update"
 msgstr "Aktualizace"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:531
+#: ../html/src/manager/images/image-profile-edit.tsx:529
 msgid "Edit Image Profile: '"
 msgstr "Upravit profil obrazu: '"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:531
+#: ../html/src/manager/images/image-profile-edit.tsx:529
 msgid "Create Image Profile"
 msgstr "Vytvořit profil obrazu"
 
-#: ../html/src/manager/images/image-profile-edit.tsx:547
+#: ../html/src/manager/images/image-profile-edit.tsx:545
 msgid ""
 "Label is required and must be a unique string and it cannot include any "
 "colons (:)."
@@ -2886,63 +2886,63 @@ msgstr "Profil obrazu byl smazán."
 msgid "Image profiles have been deleted."
 msgstr "Profily obrazů byly odstraněny."
 
-#: ../html/src/manager/images/image-profiles.tsx:162
+#: ../html/src/manager/images/image-profiles.tsx:161
 msgid "Image Profiles"
 msgstr "Profily obrazů"
 
-#: ../html/src/manager/images/image-profiles.tsx:189
+#: ../html/src/manager/images/image-profiles.tsx:188
 msgid "Build Type"
 msgstr "Typ sestavení"
 
-#: ../html/src/manager/images/image-profiles.tsx:231
+#: ../html/src/manager/images/image-profiles.tsx:230
 #: ../html/src/manager/systems/delete-system-confirm.tsx:18
 msgid "Delete Profile"
 msgstr "Odstranit profil"
 
-#: ../html/src/manager/images/image-profiles.tsx:234
+#: ../html/src/manager/images/image-profiles.tsx:233
 msgid "Are you sure you want to delete profile"
 msgstr "Opravdu chcete smazat profil"
 
-#: ../html/src/manager/images/image-profiles.tsx:244
+#: ../html/src/manager/images/image-profiles.tsx:243
 msgid "Delete Selected Profile(s)"
 msgstr "Odstranit vybraný/-é profil/-y"
 
-#: ../html/src/manager/images/image-profiles.tsx:248
+#: ../html/src/manager/images/image-profiles.tsx:247
 msgid "Are you sure you want to delete the selected profile?"
 msgstr "Opravdu chcete odstranit vybraný profil?"
 
-#: ../html/src/manager/images/image-profiles.tsx:250
+#: ../html/src/manager/images/image-profiles.tsx:249
 msgid ""
 "Are you sure you want to delete selected profiles? ({0} profiles selected)"
 msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
 
-#: ../html/src/manager/images/image-store-edit.tsx:174
+#: ../html/src/manager/images/image-store-edit.tsx:172
 msgid "Use credentials"
 msgstr "Použít pověření"
 
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:179
+#: ../html/src/manager/images/image-store-edit.tsx:178
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:178
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:510
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: ../html/src/manager/images/image-store-edit.tsx:246
+#: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
 msgstr "Upravit úložiště obrazů: '"
 
-#: ../html/src/manager/images/image-store-edit.tsx:246
+#: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Create Image Store"
 msgstr "Vytvořit úložiště obrazů"
 
-#: ../html/src/manager/images/image-store-edit.tsx:260
+#: ../html/src/manager/images/image-store-edit.tsx:258
 msgid "Store Type"
 msgstr "Typ úložiště"
 
-#: ../html/src/manager/images/image-store-edit.tsx:271
+#: ../html/src/manager/images/image-store-edit.tsx:269
 msgid "Label is required and must be unique."
 msgstr "Označení je povinné a musí být jedinečné."
 
-#: ../html/src/manager/images/image-store-edit.tsx:277
+#: ../html/src/manager/images/image-store-edit.tsx:275
 msgid "Store URI"
 msgstr "URI úložiště"
 
@@ -2958,27 +2958,27 @@ msgstr "Úložiště obrazů bylo odstraněno."
 msgid "Image stores have been deleted."
 msgstr "Úložiště obrazů byla odstraněna."
 
-#: ../html/src/manager/images/image-stores.tsx:162
+#: ../html/src/manager/images/image-stores.tsx:161
 msgid "Image Stores"
 msgstr "Úložiště obrazů"
 
-#: ../html/src/manager/images/image-stores.tsx:224
+#: ../html/src/manager/images/image-stores.tsx:223
 msgid "Delete Store"
 msgstr "Odstranit úložiště"
 
-#: ../html/src/manager/images/image-stores.tsx:227
+#: ../html/src/manager/images/image-stores.tsx:226
 msgid "Are you sure you want to delete store"
 msgstr "Opravdu chcete smazat úložiště"
 
-#: ../html/src/manager/images/image-stores.tsx:237
+#: ../html/src/manager/images/image-stores.tsx:236
 msgid "Delete Selected Store(s)"
 msgstr "Odstranit vybrané(-á) úložiště"
 
-#: ../html/src/manager/images/image-stores.tsx:241
+#: ../html/src/manager/images/image-stores.tsx:240
 msgid "Are you sure you want to delete the selected store?"
 msgstr "Opravdu chcete smazat vybrané úložiště?"
 
-#: ../html/src/manager/images/image-stores.tsx:243
+#: ../html/src/manager/images/image-stores.tsx:242
 msgid "Are you sure you want to delete selected stores? ({0} stores selected)"
 msgstr "Opravdu chcete smazat zvolená úložiště? (Vybráno {0} úložišť)"
 
@@ -2992,13 +2992,13 @@ msgstr "Opravdu chcete smazat zvolená úložiště? (Vybráno {0} úložišť)"
 #: ../html/src/manager/images/image-view-overview.tsx:466
 #: ../html/src/manager/images/image-view-runtime.tsx:68
 #: ../html/src/manager/images/image-view-runtime.tsx:105
-#: ../html/src/manager/images/image-view.tsx:482
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view.tsx:480
+#: ../html/src/manager/images/image-view.tsx:529
 msgid "No information"
 msgstr "Žádné údaje"
 
 #: ../html/src/manager/images/image-view-overview.tsx:43
-#: ../html/src/manager/images/image-view.tsx:503
+#: ../html/src/manager/images/image-view.tsx:501
 msgid "Queued"
 msgstr "Ve frontě"
 
@@ -3035,7 +3035,7 @@ msgstr " selhalo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:103
 #: ../html/src/manager/images/image-view-overview.tsx:104
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:499
 msgid "Built externally"
 msgstr "Sestaveno externě"
 
@@ -3048,37 +3048,37 @@ msgid "Picked Up"
 msgstr "Zachyceno"
 
 #: ../html/src/manager/images/image-view-overview.tsx:184
-#: ../html/src/manager/images/image-view.tsx:557
+#: ../html/src/manager/images/image-view.tsx:555
 msgid "Cluster"
 msgstr "Klastr"
 
 #: ../html/src/manager/images/image-view-overview.tsx:185
-#: ../html/src/manager/images/image-view.tsx:558
-#: ../html/src/manager/images/image-view.tsx:610
+#: ../html/src/manager/images/image-view.tsx:556
+#: ../html/src/manager/images/image-view.tsx:608
 msgid "Instances"
 msgstr "Instance"
 
 #: ../html/src/manager/images/image-view-overview.tsx:195
 #: ../html/src/manager/images/image-view-overview.tsx:232
-#: ../html/src/manager/images/image-view.tsx:519
-#: ../html/src/manager/images/image-view.tsx:568
+#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:566
 msgid "Waiting for update ..."
 msgstr "Čeká se na aktualizaci ..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:212
-#: ../html/src/manager/images/image-view.tsx:585
+#: ../html/src/manager/images/image-view.tsx:583
 msgid "View cluster summary"
 msgstr "Zobrazit souhrn klastru"
 
 #: ../html/src/manager/images/image-view-overview.tsx:243
 #: ../html/src/manager/images/image-view-overview.tsx:245
-#: ../html/src/manager/images/image-view.tsx:527
+#: ../html/src/manager/images/image-view.tsx:525
 msgid "All instances are consistent with SUSE Manager"
 msgstr "Všechny instance jsou v souladu se Správcem SUSE"
 
 #: ../html/src/manager/images/image-view-overview.tsx:258
 #: ../html/src/manager/images/image-view-overview.tsx:259
-#: ../html/src/manager/images/image-view.tsx:533
+#: ../html/src/manager/images/image-view.tsx:531
 msgid "Outdated instances found"
 msgstr "Byly nalezeny zastaralé instance"
 
@@ -3091,31 +3091,31 @@ msgid "Edit store"
 msgstr "Upravit úložiště"
 
 #: ../html/src/manager/images/image-view-overview.tsx:417
-#: ../html/src/manager/images/image-view.tsx:731
+#: ../html/src/manager/images/image-view.tsx:729
 msgid "Instance Details for '{0}'"
 msgstr "Podrobnosti instance pro '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:472
 #: ../html/src/manager/images/image-view-overview.tsx:473
-#: ../html/src/manager/images/image-view.tsx:484
+#: ../html/src/manager/images/image-view.tsx:482
 msgid "Critical updates available"
 msgstr "Jsou dostupné zásadní aktualizace"
 
 #: ../html/src/manager/images/image-view-overview.tsx:479
 #: ../html/src/manager/images/image-view-overview.tsx:480
-#: ../html/src/manager/images/image-view.tsx:487
+#: ../html/src/manager/images/image-view.tsx:485
 msgid "Non-critical updates available"
 msgstr "Jsou dostupné běžné aktualizace"
 
 #: ../html/src/manager/images/image-view-overview.tsx:486
 #: ../html/src/manager/images/image-view-overview.tsx:487
-#: ../html/src/manager/images/image-view.tsx:490
+#: ../html/src/manager/images/image-view.tsx:488
 msgid "Package updates available"
 msgstr "Jsou dostupné aktualizace balíčků"
 
 #: ../html/src/manager/images/image-view-overview.tsx:493
 #: ../html/src/manager/images/image-view-overview.tsx:494
-#: ../html/src/manager/images/image-view.tsx:492
+#: ../html/src/manager/images/image-view.tsx:490
 msgid "Image is up to date"
 msgstr "Obraz je aktuální"
 
@@ -3157,13 +3157,13 @@ msgid "Custom Image Information"
 msgstr "Údaje o zákaznickém obrazu"
 
 #: ../html/src/manager/images/image-view-overview.tsx:630
-#: ../html/src/manager/images/image-view.tsx:366
-#: ../html/src/manager/images/image-view.tsx:700
+#: ../html/src/manager/images/image-view.tsx:364
+#: ../html/src/manager/images/image-view.tsx:698
 msgid "Delete Image"
 msgstr "Odstranit obraz"
 
 #: ../html/src/manager/images/image-view-overview.tsx:633
-#: ../html/src/manager/images/image-view.tsx:703
+#: ../html/src/manager/images/image-view.tsx:701
 msgid "Are you sure you want to delete image"
 msgstr "Opravdu chcete odstranit obraz"
 
@@ -3268,65 +3268,65 @@ msgstr "Prostor názvů"
 msgid "Deleted successfully."
 msgstr "Úspěšně odstraněno."
 
-#: ../html/src/manager/images/image-view.tsx:325
+#: ../html/src/manager/images/image-view.tsx:324
 msgid "Image inspect has been scheduled."
 msgstr "Byla naplánována kontrola obrazu."
 
-#: ../html/src/manager/images/image-view.tsx:341
+#: ../html/src/manager/images/image-view.tsx:339
 msgid "Image build has been scheduled."
 msgstr "Je naplánováno vytvoření obrazu."
 
-#: ../html/src/manager/images/image-view.tsx:389
+#: ../html/src/manager/images/image-view.tsx:387
 msgid "Images"
 msgstr "Obrazy"
 
-#: ../html/src/manager/images/image-view.tsx:505
+#: ../html/src/manager/images/image-view.tsx:503
 msgid "Building"
 msgstr "Sestavuje se"
 
-#: ../html/src/manager/images/image-view.tsx:511
+#: ../html/src/manager/images/image-view.tsx:509
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: ../html/src/manager/images/image-view.tsx:605
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:603
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Runtime"
 msgstr "Runtime"
 
-#: ../html/src/manager/images/image-view.tsx:635
+#: ../html/src/manager/images/image-view.tsx:633
 msgid "Revision"
 msgstr "Revize"
 
-#: ../html/src/manager/images/image-view.tsx:639
+#: ../html/src/manager/images/image-view.tsx:637
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:138
 msgid "Updates"
 msgstr "Aktualizace"
 
-#: ../html/src/manager/images/image-view.tsx:642
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:640
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Patches"
 msgstr "Záplaty"
 
-#: ../html/src/manager/images/image-view.tsx:655
-#: ../html/src/manager/images/image-view.tsx:774
+#: ../html/src/manager/images/image-view.tsx:653
+#: ../html/src/manager/images/image-view.tsx:772
 msgid "Packages"
 msgstr "Balíčky"
 
-#: ../html/src/manager/images/image-view.tsx:663
+#: ../html/src/manager/images/image-view.tsx:661
 msgid "Last Modified"
 msgstr "Naposledy upraveno"
 
-#: ../html/src/manager/images/image-view.tsx:716
+#: ../html/src/manager/images/image-view.tsx:714
 msgid "Delete Selected Image(s)"
 msgstr "Odstranit vybrané obrazy"
 
-#: ../html/src/manager/images/image-view.tsx:720
+#: ../html/src/manager/images/image-view.tsx:718
 msgid "Are you sure you want to delete the selected image?"
 msgstr "Opravdu chcete odstranit vybraný obraz?"
 
-#: ../html/src/manager/images/image-view.tsx:722
+#: ../html/src/manager/images/image-view.tsx:720
 msgid "Are you sure you want to delete selected images? ({0} images selected)"
 msgstr "Opravdu chcete odstranit vybrané obrazy? (Vybráno {0} obrazů)"
 
@@ -3455,7 +3455,7 @@ msgid "Delete maintenance schedule"
 msgstr "Smazat plán údržby"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:58
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:172
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:170
 msgid "Assigned Systems"
 msgstr "Přiřazené systémy"
 
@@ -3486,11 +3486,11 @@ msgstr "Násobný"
 msgid "Schedule Details"
 msgstr "Podrobnosti plánu"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:157
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:155
 msgid "Maintenance schedule has been assigned to {0} system(s)"
 msgstr "Plán údržby byl přiřazen {0} systémům"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:176
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:130
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:113
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -3498,11 +3498,11 @@ msgstr "Plán údržby byl přiřazen {0} systémům"
 msgid "Cancel affected actions"
 msgstr "Zrušit ovlivněné akce"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:196
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:194
 msgid "Search systems"
 msgstr "Vyhledávat systémy"
 
-#: ../html/src/manager/maintenance/details/schedule-details.tsx:215
+#: ../html/src/manager/maintenance/details/schedule-details.tsx:213
 msgid "Current Schedule"
 msgstr "Aktuální plán"
 
@@ -3545,7 +3545,7 @@ msgstr "Chcete-li pokračovat, potvrďte."
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:59
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:127
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:105
 #: ../html/src/manager/state/recurring-states-edit.tsx:121
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:99
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:440
@@ -3698,7 +3698,7 @@ msgstr "Načítání obsahu..."
 msgid "An error occurred while loading data. Please check server logs."
 msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:153
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:150
 msgid ""
 "Ansible Control Node Configuration: add paths for Playbook discovery and "
 "Inventory files introspection."
@@ -3706,27 +3706,27 @@ msgstr ""
 "Konfigurace řídicího uzlu Ansible: Přidejte cesty pro zobrazení přehrávání a "
 "inventárních souborů introspekce."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:163
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:160
 msgid "Playbook Directories"
 msgstr "Adresáře scénáře"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:182
 msgid "Add a Playbook directory"
 msgstr "Přidat adresář scénáře"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:188
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:185
 msgid "e.g., /srv/playbooks"
 msgstr "např. /srv/playbooks"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:194
 msgid "Inventory Files"
 msgstr "Soubory inventáře"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:216
 msgid "Add an Inventory file"
 msgstr "Přidat soubor inventáře"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:222
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:219
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "např. /etc/ansible/testing/hosts"
 
@@ -3739,49 +3739,49 @@ msgstr "Zavádění..."
 msgid "Nothing configured. Please add paths in the "
 msgstr "Nic není konfigurováno. Přidejte cesty do "
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:93
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:91
 msgid "Loading playbook contents.."
 msgstr "Načítání obsahu scénářů..."
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:101
-#: ../html/src/manager/state/highstate.tsx:118
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
+#: ../html/src/manager/state/highstate.tsx:117
 #: ../html/src/manager/state/recurring-states-edit.tsx:113
 msgid "Test mode"
 msgstr "Testový režim"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:106
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:104
 msgid "Back to playbook list"
 msgstr "Zpět do seznamu scénářů"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:105
 msgid "Schedule playbook execution"
 msgstr "Naplánovat provedení scénáře"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:115
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:113
 msgid "Playbook '{0}'"
 msgstr "Scénář '{0}'"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:122
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:120
 msgid "Schedule Playbook Execution"
 msgstr "Naplánovat provedení scénáře"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:137
 msgid "Inventory Path"
 msgstr "Cesta inventáře"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:154
 msgid "Playbook Content"
 msgstr "Obsah scénáře"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:176
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:174
 msgid "Action has been successfully added to action chain"
 msgstr "Akce byla úspěšně přidána do řetězce akcí"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:184
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:182
 msgid "Playbook execution has been"
 msgstr "Provedení scénáře bylo"
 
-#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:31
+#: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:30
 msgid "Applying the config channels has been "
 msgstr "Použití konfiguračních kanálů bylo "
 
@@ -3851,11 +3851,11 @@ msgstr "Stavy balíčku"
 msgid "State"
 msgstr "Stát"
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:40
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:39
 msgid "Package states have been saved."
 msgstr "Stavy balíčku byly uloženy."
 
-#: ../html/src/manager/minion/packages/use-package-states.api.tsx:56
+#: ../html/src/manager/minion/packages/use-package-states.api.tsx:54
 msgid "Applying the packages states has been "
 msgstr "Použití stavů balíčků bylo "
 
@@ -3883,93 +3883,93 @@ msgstr "Aplikace stavu selhala"
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:232
 #: ../html/src/manager/notifications/notification-messages.tsx:233
-#: ../html/src/manager/notifications/notification-messages.tsx:234
 msgid "Info"
 msgstr "Informace"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:240
 #: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
 msgid "Warning"
 msgstr "Výstraha"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:248
 #: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:316
+#: ../html/src/manager/notifications/notification-messages.tsx:315
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:365
+#: ../html/src/manager/notifications/notification-messages.tsx:364
 msgid "Retry onboarding"
 msgstr "Zkuste se registrovat znovu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:375
+#: ../html/src/manager/notifications/notification-messages.tsx:374
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:393
+#: ../html/src/manager/notifications/notification-messages.tsx:392
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:398
+#: ../html/src/manager/notifications/notification-messages.tsx:397
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:429
 #: ../html/src/manager/notifications/notification-messages.tsx:430
-#: ../html/src/manager/notifications/notification-messages.tsx:431
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
+#: ../html/src/manager/notifications/notification-messages.tsx:437
 #: ../html/src/manager/notifications/notification-messages.tsx:438
-#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:456
-#: ../html/src/manager/notifications/notification-messages.tsx:539
+#: ../html/src/manager/notifications/notification-messages.tsx:455
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:461
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:477
+#: ../html/src/manager/notifications/notification-messages.tsx:476
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:483
+#: ../html/src/manager/notifications/notification-messages.tsx:482
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:495
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Summary"
 msgstr "Souhrn"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:506
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Action"
 msgstr "Akce"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:512
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:520
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:520
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:526
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -3985,7 +3985,7 @@ msgstr "Připojení Websocket uzavřeno. Obnovte stránku a zkuste to znovu."
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Chyba připojení k serveru. Obnovte stránku a zkuste to znovu."
 
-#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:31
+#: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:30
 msgid ""
 "Applying the config channels has been scheduled for each minion server in "
 "this organization"
@@ -4201,28 +4201,28 @@ msgstr "Systémová skupina"
 
 #: ../html/src/manager/state/highstate-summary.tsx:141
 #: ../html/src/manager/state/recurring-states-details.tsx:18
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:190
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:189
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
 msgstr "Organizace"
 
-#: ../html/src/manager/state/highstate.tsx:64
+#: ../html/src/manager/state/highstate.tsx:63
 msgid "Action has been successfully added to the "
 msgstr "Akce byla úspěšně přidána k "
 
-#: ../html/src/manager/state/highstate.tsx:69
+#: ../html/src/manager/state/highstate.tsx:68
 msgid "Applying the highstate has been "
 msgstr "Použití highstate bylo "
 
-#: ../html/src/manager/state/highstate.tsx:70
+#: ../html/src/manager/state/highstate.tsx:69
 msgid "scheduled."
 msgstr "naplánováno."
 
-#: ../html/src/manager/state/highstate.tsx:126
+#: ../html/src/manager/state/highstate.tsx:125
 msgid "Apply Highstate"
 msgstr "Použít Highstate"
 
-#: ../html/src/manager/state/highstate.tsx:135
+#: ../html/src/manager/state/highstate.tsx:134
 msgid "Create Recurring"
 msgstr "Vytvořit opakování"
 
@@ -4360,7 +4360,7 @@ msgstr ""
 "Každý systém registrovaný tímto aktivačním klíčem bude předplacen vybraným "
 "podřízeným kanálům."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:211
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:210
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
 "check if your minion was bootstrapped correctly."
@@ -4368,40 +4368,40 @@ msgstr ""
 "Žádost přerušena nebo ze serveru přijata neplatná odpověď. Zkontrolujte, zda "
 "byl váš sledující klient správně zaveden."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:240
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:239
 msgid "Successfully bootstrapped host! Your system should appear in"
 msgstr "Hostitel byl úspěšně spuštěn! Váš systém by se měl objevit v"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:242
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:241
 msgid "systems"
 msgstr "systémy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:244
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:243
 msgid "shortly"
 msgstr "krátce"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:262
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:261
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "Váš systém se zavádí: čekám na odpověď.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:266
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:265
 msgid "Loading SSH Private Key.."
 msgstr "Načítání privátního klíče SSH.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:274
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:273
 msgid "Bootstrap"
 msgstr "Zavést systém"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:299
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:298
 msgid "e.g., ••••••••••••"
 msgstr "např. ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:308
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:423
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:307
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:422
 msgid "SSH Private Key"
 msgstr "Privátní klíč SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:314
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:313
 msgid ""
 "The file will be stored in a temporary file on the server and will be "
 "deleted after the bootstrapping procedure"
@@ -4409,19 +4409,19 @@ msgstr ""
 "Soubor bude uložen v dočasném souboru na serveru a bude odstraněn po "
 "proceduře zavedení systému"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:320
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:319
 msgid "SSH Private Key Passphrase"
 msgstr "Heslo privátního klíče SSH"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:327
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:326
 msgid "Leave empty for no passphrase"
 msgstr "Není-li heslo, ponechte prázdné"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:337
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:336
 msgid "Bootstrap Minions"
 msgstr "Zavádění systémů u sledujících (minion) klientů"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:339
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. {0} "
 "will prepare the system remotely and will perform the registration."
@@ -4429,15 +4429,15 @@ msgstr ""
 "Můžete přidat systémy do správy pouze poskytnutím přihlašovacích údajů SSH. "
 "{0} připraví systém na dálku a registroje ho."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:353
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:352
 msgid "e.g., host.domain.com"
 msgstr "např. host.doman.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:372
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:371
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portů: 1 - 65535"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -4449,16 +4449,16 @@ msgstr ""
 "'ssh_push_sudo_user' je 'root'. Tento uživatel je nastaven, až je během "
 "bootstrapu umístěn SSH klíč {0}."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:439
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:438
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:455
 msgid "None"
 msgstr "Žádný"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:452
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:451
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:474
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:473
 msgid ""
 "The hostname of the proxy is not fully qualified. This may cause problems "
 "when accessing the channels."
@@ -4487,51 +4487,51 @@ msgstr "Během mazání došlo k chybě"
 msgid "Confirm Deletion"
 msgstr "Potvrdit odstranění"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:29
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:23
 msgid "Error scheduling job in Taskomatic. Please check the logs."
 msgstr "Chyba plánování úlohy v Taskomatic. Zkontrolujte záznamy."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:31
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 msgid "Could not determine system default channel."
 msgstr "Nelze určit výchozí kanál systému."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:31
 msgid "Channel change is invalid."
 msgstr "Změna kanálu je neplatná."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 msgid "Selected base is not compatible with system."
 msgstr "Vybraná základna není kompatibilní se systémem."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:34
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "No base channel change found."
 msgstr "Nenalezena žádná změna základního kanálu."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:217
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:37
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:216
 msgid "No Change"
 msgstr "Beze změny"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:518
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:517
 msgid "Subscribe"
 msgstr "Předplatit"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:40
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
 msgid "Unsubsribe"
 msgstr "Odhlásit odběr"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:141
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:140
 msgid "System Default Base Channel"
 msgstr "Výchozí základní kanál systému"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:569
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:144
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
 msgid "Base Channel"
 msgstr "Základní kanál"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:150
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:149
 msgid ""
 "As a Channel Administrator, you may change the base channels your systems "
 "are subscribed to. Valid channels are either channels created by your "
@@ -4545,7 +4545,7 @@ msgstr ""
 "procesoru. Systémy budou odhlášeny ze všech kanálů a budou přihlášeny k "
 "odběru svých nových základních kanálů. "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:155
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:154
 msgid ""
 "This operation can have a dramatic effect on the packages and patches "
 "available to the systems, and should be used with caution."
@@ -4553,66 +4553,66 @@ msgstr ""
 "Tato operace může mít dramatický účinek na balíčky a opravy dostupné "
 "systémům a měla by být používána opatrně."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:172
 msgid "Current base Channel"
 msgstr "Aktuální základní kanál"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:182
 msgid "Systems"
 msgstr "Systémy"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:198
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:197
 msgid "Desired base Channel"
 msgstr "Požadovaný základní kanál"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:219
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:453
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:218
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:451
 msgid "SUSE Channels"
 msgstr "Kanály SUSE"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:224
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:481
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:223
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:479
 msgid "Custom Channels"
 msgstr "Zákaznické kanály"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:235
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:234
 msgid "Systems subscribed to"
 msgstr "Systémy přihlášené k"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:423
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:638
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:658
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:422
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:637
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:657
 msgid "(Couldn't determine new base channel)"
 msgstr "(Nový základní kanál se nepodařilo určit)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:448
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:673
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:447
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:672
 msgid "system(s) to subscribe"
 msgstr "systém(y) k odběru"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:465
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:684
 msgid "system(s) incompatible"
 msgstr "nekompatibilní systém(y)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:507
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:506
 msgid "No change"
 msgstr "Beze změny"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:529
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:528
 msgid "Unsubscribe"
 msgstr "Odhlásit odběr"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:545
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:544
 msgid "Below is a list of channels in your organization. "
 msgstr "Dále je uveden seznam kanálů ve vaší organizaci. "
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 "Nechcete-li u kanálu provádět změny, zaškrtněte U tohoto kanálu nic nedělat."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
 msgid ""
 "To subscribe selected systems to a channel, check Subscribed for that "
 "channel."
@@ -4620,7 +4620,7 @@ msgstr ""
 "Chcete-li se přihlásit k odběru vybraných systémů kanálu, zaškrtněte "
 "Přihlášeno pro daný kanál."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:548
 msgid ""
 "To unsubscribe selected systems from a channel, check Unsubscribed for that "
 "channel."
@@ -4628,53 +4628,53 @@ msgstr ""
 "Chcete-li odhlásit odběr vybraných systémů z kanálu, zaškrtněte Odhlásit "
 "odběr daného kanálu."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:559
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:730
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:558
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:729
 msgid "Systems to subscribe to"
 msgstr "Systémy k odběru"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:650
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:649
 msgid "(None)"
 msgstr "(Žádný)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:659
 msgid " (system default)"
 msgstr " (výchozí systém)"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:709
 msgid "Channel Changes Overview"
 msgstr "Přehled změn kanálu"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:759
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:758
 msgid "Channel Changes Actions"
 msgstr "Akce změn kanálu"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:789
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:788
 msgid "Scheduled"
 msgstr "Plánováno"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:795
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
 msgid "Unknown error. Could not schedule channel change"
 msgstr "Neznámá chyba. Nelze naplánovat změnu kanálu"
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:916
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:915
 msgid "Some changes scheduled successfully."
 msgstr "Některé změny byly úspěšně naplánovány."
 
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1053
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1051
 msgid "Channel changes scheduled."
 msgstr "Změny kanálu naplánovány."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:228
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:442
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:227
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:440
 msgid "(none, disable service)"
 msgstr "(žádný, deaktivovat službu)"
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:373
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:371
 msgid "Changing the channels has been "
 msgstr "Změna kanálů byla "
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:574
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:572
 msgid ""
 "You can change the base software channel your system is subscribed to. The "
 "system will be unsubscribed from all software channels, and subscribed to "
@@ -4684,7 +4684,7 @@ msgstr ""
 "Systém bude odhlášen ze všech softwarových kanálů a bude přihlášen k odběru "
 "nového základního softwarového kanálu."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:600
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:598
 msgid ""
 "This system is subscribed to the checked channels beneath, if any. Disabled "
 "checkboxes indicate channels that can't be manually subscribed or "
@@ -4694,64 +4694,64 @@ msgstr ""
 "Neaktivní zaškrtávací políčka označují kanály, které nelze ručně přihlásit "
 "nebo odhlásit."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:619
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:620
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:700
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:701
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:617
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:698
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:699
 msgid "No child channels available."
 msgstr "Nejsou dostupné žádné podřízené kanály."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:654
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:652
 msgid "Confirm Software Channel Change"
 msgstr "Potvrďte změnu softwarového kanálu"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:58
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:57
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
 msgstr ""
 "Pro tohoto Správce virtuálního hostitele byla spuštěna aktualizace dat."
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:73
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:72
 msgid "Properties"
 msgstr "Vlastnosti"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:77
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:76
 msgid "Nodes"
 msgstr "Uzly"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:96
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:95
 msgid "OS"
 msgstr "OS"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:100
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:99
 msgid "CPU Arch"
 msgstr "Arch. CPU"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:106
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:105
 msgid "CPU Sockets"
 msgstr "Patice CPU"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:112
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 msgid "RAM (Mb)"
 msgstr "RAM (MB)"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:126
 msgid "Refresh Data"
 msgstr "Aktualizovat data"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:129
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:128
 msgid "Refresh data from this Virtual Host Manager"
 msgstr "Aktualizovat data z tohoto Správce virtuálního hostitele"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:150
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:149
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:105
 msgid "Delete Virtual Host Manager"
 msgstr "Odstranit Správce virtuálního hostitele"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:151
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:150
 msgid "Are you sure you want to delete this virtual host manager?"
 msgstr "Opravdu chcete tohoto správce virtuálního hostitele odstranit?"
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:194
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:193
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:267
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
@@ -4882,7 +4882,7 @@ msgstr "Odpojeno"
 msgid "Failed to connect"
 msgstr "Spojení selhalo"
 
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:329
+#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:327
 msgid "Toggle full size"
 msgstr "Přepnout plnou velikost"
 
@@ -5408,7 +5408,7 @@ msgstr "fond SR-IOV"
 msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
 msgstr "Projít jedním zařízením fondu virtuálních funkcí SR-IOV"
 
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:28
+#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
 msgid "Could not get network devices from the server. Please try again."
 msgstr "Nelze získat síťová zařízení serveru. Prosím zkuste to znovu."
 
@@ -5590,7 +5590,7 @@ msgstr "oprávnění cílového adresáře v osmičkovém tvaru, například 077
 msgid "SELinux label"
 msgstr "Jmenovka SELinux"
 
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:28
+#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
 msgid ""
 "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
@@ -5696,22 +5696,22 @@ msgstr "Vyberte systémovou skupinu"
 msgid "Split into groups"
 msgstr "Rozdělit do skupin"
 
-#: ../html/src/utils/network.ts:73
+#: ../html/src/utils/network.ts:78
 msgid "Session expired, please reload the page."
 msgstr "Doba relace vypršela. Načtěte stránku znovu."
 
-#: ../html/src/utils/network.ts:75
+#: ../html/src/utils/network.ts:80
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 "Chyba autorizace, znovu načtěte stránku nebo se pokuste znovu odhlásit/"
 "přihlásit."
 
-#: ../html/src/utils/network.ts:77
+#: ../html/src/utils/network.ts:82
 msgid "Resource not found."
 msgstr "Zdroj nebyl nalezen."
 
-#: ../html/src/utils/network.ts:81
+#: ../html/src/utils/network.ts:86
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
 
