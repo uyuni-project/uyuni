@@ -1,3 +1,5 @@
+- Readable error when "mgr-sync add channel" is called with a no-existing label (bsc#1173143)
+
 -------------------------------------------------------------------
 Fri Jul 16 14:25:16 CEST 2021 - jgonzalez@suse.com
 
