@@ -250,8 +250,7 @@ class GuestsConsole extends React.Component<Props, State> {
   };
 
   updateGuestData = () => {
-    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.state.hostId}/guest/${this.props.guestUuid}`,
-      'application/json').promise
+    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.state.hostId}/guest/${this.props.guestUuid}`)
       .then((response) => {
         this.setState({
           graphicsType: response.graphics?.type,
