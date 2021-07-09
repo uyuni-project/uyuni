@@ -23,7 +23,7 @@ Feature: Register a salt-ssh system via XML-RPC
     And I logout from XML-RPC system namespace
 
   Scenario: Check new XML-RPC bootstrapped salt-ssh system in System Overview page
-     And I am on the System Overview page
+     And I follow the left menu "Home > Overview"
      And I wait until I see the name of "ssh_minion", refreshing the page
      And I wait until onboarding is completed for "ssh_minion"
 

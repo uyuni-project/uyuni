@@ -3,6 +3,12 @@ import * as React from "react";
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & {
   getTime: () => any;
+  getFullYear: () => any;
+  getMonth: () => any;
+  getDate: () => any;
+  getHours: () => any;
+  getMinutes: () => any;
+  getSeconds: () => any;
 };
 type StaticProperties = { dates: any; };
 type Picker = ((...args: any[]) => Instance) & StaticProperties;

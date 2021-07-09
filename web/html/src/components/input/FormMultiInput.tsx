@@ -60,7 +60,7 @@ export function getOrderedItemsFromModel(model: any, prefix: string): Array<numb
     .map(property => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));
       if (result != null) {
-        return Number.parseInt(result[1]);
+        return Number.parseInt(result[1], 10);
       }
       return -1;
     }) // only return one of each matching properties

@@ -254,7 +254,7 @@ ERROR: a CA private key already exists:
 """ % ca_key)
         sys.exit(errnoGeneralError)
 
-    args = ("/usr/bin/openssl genrsa -passout pass:%s %s -out %s 2048"
+    args = ("/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:2048"
             % ('%s', CRYPTO, repr(cleanupAbsPath(ca_key))))
 
     if verbosity >= 0:

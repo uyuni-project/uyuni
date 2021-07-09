@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-cfg
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -69,19 +69,19 @@
 %endif
 
 Name:           mgr-cfg
-Version:        4.2.2
+Version:        4.3.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
-Release:        1%{?dist}
 Summary:        Spacewalk Configuration Client Libraries
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
-Group:      admin
-Packager:   Uyuni Project <uyuni-devel@opensuse.org>
+Group:          admin
+Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
 Group:          Applications/System
 %endif
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -106,13 +106,12 @@ Requires:       libselinux-python
 
 %if "%{_vendor}" == "debbuild"
 %if 0%{?build_py2}
-Requires: python-selinux
+Requires:       python-selinux
 %endif
 %if 0%{?build_py3}
-Requires: python3-selinux
+Requires:       python3-selinux
 %endif
 %endif
-
 
 %description
 The base libraries and functions needed by all mgr-cfg-* packages.
@@ -127,8 +126,8 @@ Provides:       python2-%{oldname} = %{oldversion}
 Obsoletes:      python2-%{oldname} < %{oldversion}
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools >= 2.8.4
-Requires:       rhnlib >= 2.8.3
 Requires:       python2-uyuni-common-libs
+Requires:       rhnlib >= 2.8.3
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires:       python-hashlib
 %endif
@@ -435,11 +434,11 @@ py3clean -p python3-%{name}-actions
 %endif
 %endif
 
-
 %files
 %defattr(-,root,root,-)
 %dir %{_localstatedir}/spool/rhn
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 
 %if 0%{?build_py2}
 %files -n python2-%{name}

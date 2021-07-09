@@ -22,11 +22,14 @@ help() {
   echo "  -n  If used, update PROJECT instead of the projects specified with -d,"
   echo "      for example, if you want to package only the changes from a PR on"
   echo "      a separate project"
-  echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links" 
+  echo "  -e  If used, when checking out projects from obs, links will be expanded. Useful for comparing packages that are links"
+  echo "  -x  Enable parallel builds"
   echo ""
 }
 
-while getopts ":d:c:p:n:vthe" opts; do
+PARALLEL_BUILD="FALSE"
+
+while getopts ":d:c:p:n:vthex" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES=${OPTARG};;
@@ -35,6 +38,7 @@ while getopts ":d:c:p:n:vthe" opts; do
     t) TEST="-t";;
     n) OBS_TEST_PROJECT="-n ${OPTARG}";;
     e) EXTRA_OPTS="-e";;
+    x) PARALLEL_BUILD="TRUE";;
     h) help
        exit 0;;
     *) echo "Invalid syntax. Use ${SCRIPT} -h"
@@ -59,8 +63,22 @@ if [ ! -f ${CREDENTIALS} ]; then
 fi
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${PACKAGES}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
-
 docker pull $REGISTRY/$PUSH2OBS_CONTAINER
-docker run --rm=true -v "$GITROOT:/manager" -v "/srv/mirror:/srv/mirror" --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+
+test -n "$PACKAGES" || {
+    PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
+}
+echo "Starting building and submission at $(date)"
+date
+[ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
+for p in ${PACKAGES};do
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    if [ "$PARALLEL_BUILD" == "TRUE" ];then
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log &
+    else
+        docker run --rm=true -v $GITROOT:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc $REGISTRY/$PUSH2OBS_CONTAINER /bin/bash -c "trap \"${CHOWN_CMD};exit -1\" SIGHUP SIGINT SIGTERM EXIT;${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+    fi
+done
+echo "End of task at ($(date). Logs for each package at ${GITROOT}/logs/"
+wait

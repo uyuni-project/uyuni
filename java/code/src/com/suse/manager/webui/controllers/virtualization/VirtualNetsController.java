@@ -17,7 +17,7 @@ package com.suse.manager.webui.controllers.virtualization;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;
@@ -45,6 +46,7 @@ import org.apache.http.HttpStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -74,28 +76,28 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      */
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/nets/:sid",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::show)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::show)))), jade);
         get("/manager/systems/details/virtualization/nets/:sid/new",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::createDialog)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::createDialog)))), jade);
         get("/manager/systems/details/virtualization/nets/:sid/edit/:name",
-                withUserPreferences(withCsrfToken(withDocsLocale(withUser(this::editDialog)))), jade);
+                withUserPreferences(withCsrfToken(withDocsLocale(withUserAndServer(this::editDialog)))), jade);
 
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
-                withUser(this::data));
+                withUserAndServer(this::data));
         get("/manager/api/systems/details/virtualization/nets/:sid/devices",
-                withUser(this::devices));
+                withUserAndServer(this::devices));
         post("/manager/api/systems/details/virtualization/nets/:sid/start",
-                withUser(this::start));
+                withUserAndServer(this::start));
         post("/manager/api/systems/details/virtualization/nets/:sid/stop",
-                withUser(this::stop));
+                withUserAndServer(this::stop));
         post("/manager/api/systems/details/virtualization/nets/:sid/delete",
-                withUser(this::delete));
+                withUserAndServer(this::delete));
         post("/manager/api/systems/details/virtualization/nets/:sid/create",
-                withUser(this::create));
+                withUserAndServer(this::create));
         post("/manager/api/systems/details/virtualization/nets/:sid/edit",
-                withUser(this::edit));
+                withUserAndServer(this::edit));
         get("/manager/api/systems/details/virtualization/nets/:sid/net/:name",
-                withUser(this::getNetwork));
+                withUserAndServer(this::getNetwork));
     }
 
     /**
@@ -104,17 +106,17 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView show(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public ModelAndView show(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
         Map<String, Boolean> features = virtManager.getFeatures(minionId).orElse(new HashMap<>());
-        return renderPage(request, response, user, "show", () -> {
+        return renderPage("show", () -> {
             Map<String, Object> extra = new HashMap<>();
-            extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
-                    virtManager.getHypervisor(host.getMinionId()).orElse("") :
-                    "");
+            Optional<HostInfo> hostInfo = virtManager.getHostInfo(host.getMinionId());
+            String hypervisor = hostInfo.isPresent() ? hostInfo.get().getHypervisor() : "";
+            extra.put("hypervisor", host.hasVirtualizationEntitlement() ? hypervisor : "");
             extra.put("support_enhanced_network", features.getOrDefault("enhanced_network", false));
             return extra;
         });
@@ -126,11 +128,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView createDialog(Request request, Response response, User user) {
-        Server host = getServer(request, user);
-        return renderPage(request, response, user, "create", () -> {
+    public ModelAndView createDialog(Request request, Response response, User user, Server host) {
+        return renderPage("create", () -> {
             Map<String, Object> data = new HashMap<>();
             MinionController.addActionChains(user, data);
             return data;
@@ -143,13 +145,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView editDialog(Request request, Response response, User user) {
-        Server host = getServer(request, user);
-        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
-
-        return renderPage(request, response, user, "edit", () -> {
+    public ModelAndView editDialog(Request request, Response response, User user, Server host) {
+        return renderPage("edit", () -> {
             Map<String, Object> data = new HashMap<>();
             data.put("netName", request.params("name"));
             MinionController.addActionChains(user, data);
@@ -163,10 +163,10 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON result of the API call
      */
-    public String data(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String data(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
@@ -183,10 +183,10 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON result of the API call
      */
-    public String devices(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String devices(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         List<JsonObject> allDevices = virtManager.getHostDevices(minionId);
@@ -223,10 +223,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String start(Request request, Response response, User user) {
-        return netStateChangeAction(request, response, user, "start");
+    public String start(Request request, Response response, User user, Server host) {
+        return netStateChangeAction(request, response, user, host, "start");
     }
 
     /**
@@ -235,10 +236,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String stop(Request request, Response response, User user) {
-        return netStateChangeAction(request, response, user, "stop");
+    public String stop(Request request, Response response, User user, Server host) {
+        return netStateChangeAction(request, response, user, host, "stop");
     }
 
     /**
@@ -247,10 +249,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String delete(Request request, Response response, User user) {
-        return netStateChangeAction(request, response, user, "delete");
+    public String delete(Request request, Response response, User user, Server host) {
+        return netStateChangeAction(request, response, user, host, "delete");
     }
 
     /**
@@ -259,10 +262,11 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String create(Request request, Response response, User user) {
-        return createOrUpdate(request, response, user, null);
+    public String create(Request request, Response response, User user, Server host) {
+        return createOrUpdate(request, response, user, host, null);
     }
 
     /**
@@ -271,15 +275,16 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON list of created action IDs
      */
-    public String edit(Request request, Response response, User user) {
+    public String edit(Request request, Response response, User user, Server host) {
         String actionName = LocalizationService.getInstance().getMessage("virt.network_update");
-        return createOrUpdate(request, response, user, actionName);
+        return createOrUpdate(request, response, user, host, actionName);
     }
 
-    private String createOrUpdate(Request request, Response response, User user, String actionName) {
-        return netAction(request, response, user, (data) -> {
+    private String createOrUpdate(Request request, Response response, User user, Server host, String actionName) {
+        return netAction(request, response, user, host, (data) -> {
             VirtualizationNetworkCreateAction action = (VirtualizationNetworkCreateAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_CREATE);
             String displayName = actionName != null ? actionName : action.getActionType().getName();
@@ -302,10 +307,10 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param request the request
      * @param response the response
      * @param user the user
+     * @param host the server
      * @return JSON-formatted capabilities
      */
-    public String getNetwork(Request request, Response response, User user) {
-        Server host = getServer(request, user);
+    public String getNetwork(Request request, Response response, User user, Server host) {
         String minionId = host.asMinionServer().orElseThrow(() ->
                 Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get network definition of Salt system")).getMinionId();
 
@@ -317,8 +322,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         return GSON.toJson(definition);
     }
 
-    private String netStateChangeAction(Request request, Response response, User user, String state) {
-        return netAction(request, response, user, (data) -> {
+    private String netStateChangeAction(Request request, Response response, User user, Server server, String state) {
+        return netAction(request, response, user, server, (data) -> {
             VirtualizationNetworkStateChangeAction action = (VirtualizationNetworkStateChangeAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE);
             action.setState(state);
@@ -329,15 +334,16 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         });
     }
 
-    private String netAction(Request request, Response response, User user,
+    private String netAction(Request request, Response response, User user, Server server,
                               Function<VirtualNetworkBaseActionJson, BaseVirtualizationNetworkAction> actionCreator) {
-        return netAction(request, response, user, actionCreator, VirtualNetworkBaseActionJson.class);
+        return netAction(request, response, user, server, actionCreator, VirtualNetworkBaseActionJson.class);
     }
 
     private <T extends VirtualNetworkBaseActionJson> String netAction(Request request, Response response, User user,
+                              Server server,
                               Function<T, BaseVirtualizationNetworkAction> actionCreator,
                               Class<T> jsonClass) {
-        return action(request, response, user,
+        return action(request, response, user, server,
                 (data, key) -> {
                     BaseVirtualizationNetworkAction action = actionCreator.apply(data);
                     action.setNetworkName(key);

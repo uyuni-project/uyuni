@@ -1,7 +1,7 @@
 #
 # spec file for package perl-Satcon
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -23,9 +23,9 @@ Name:           perl-Satcon
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.2.2
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -37,8 +37,8 @@ Requires:       policycoreutils
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
-BuildRequires:  perl-interpreter
 BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
 # Run-time:
 # bytes not used at tests
 # Data::Dumper not used at tests
@@ -75,7 +75,9 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 make test
 
 %files
-%doc README LICENSE
+%doc README
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{perl_vendorlib}/*
 %{_bindir}/*
 

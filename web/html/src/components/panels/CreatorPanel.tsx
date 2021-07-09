@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Panel } from "./Panel";
 import { ModalLink } from "../dialog/ModalLink";
-import { closeDialog, Dialog } from "../dialog/Dialog";
+import { closeDialog, Dialog } from "../dialog/LegacyDialog";
 import { Button } from "../buttons";
 
 type Props = {

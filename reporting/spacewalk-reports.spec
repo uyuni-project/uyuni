@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-reports
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,15 +27,15 @@ Name:           spacewalk-reports
 Summary:        Script based reporting
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.2.4
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       %{pythonX}
-Requires:       spacewalk-branding
 Requires:       salt
+Requires:       spacewalk-branding
 BuildRequires:  /usr/bin/docbook2man
 
 %description

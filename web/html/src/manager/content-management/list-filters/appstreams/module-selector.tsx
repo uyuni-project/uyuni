@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { Select } from "components/input/Select";
-import { FormContext } from "components/input/Form";
+import { Select, FormContext } from "components/input";
 
 type ModuleSelectorProps = {
   modules: {

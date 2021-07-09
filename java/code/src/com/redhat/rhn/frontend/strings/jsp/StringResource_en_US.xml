@@ -12456,6 +12456,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles">
+        <source>Optional OVAL Files (comma separated)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.audit.schedulexccdf.jsp.xccdfEval">
           <source>/usr/bin/oscap xccdf eval</source>
         <context-group name="ctx">
@@ -13408,6 +13414,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.event.scapPath">
           <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt; </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.scapOvalFiles">
+          <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -24105,6 +24117,12 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.uuid-cleanup" xml:space="preserve">
         <source>UUID cleanup</source>
+      </trans-unit>
+      <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
+        <source>Modular Data Cleanup</source>
+      </trans-unit>
+      <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
+        <source>Forward Registration</source>
       </trans-unit>
       <trans-unit id="task.status.message" xml:space="preserve">
         <source>The following is a status report for the various tasks run by the @@PRODUCT_NAME@@ task engine:</source>

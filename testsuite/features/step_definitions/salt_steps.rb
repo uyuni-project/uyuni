@@ -389,9 +389,7 @@ end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
   node = get_target(host)
-  output, _code = node.run("ip address show dev eth0")
-  ip = output.split("\n")[2].split[1].split('/')[0]
-  fill_in FIELD_IDS[field], with: ip
+  fill_in FIELD_IDS[field], with: node.public_ip
 end
 
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -650,13 +648,11 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Salt on this "([^"]*)"$/) do |host|
-  repo = $product == 'Uyuni' ? 'salt3002_repo_repo' : 'tools_additional_repo'
-  step %(I enable repository "#{repo}" on this "#{host}" without error control)
+  step %(I enable repository "tools_additional_repo" on this "#{host}" without error control)
 end
 
 When(/^I disable repositories after installing Salt on this "([^"]*)"$/) do |host|
-  repo = $product == 'Uyuni' ? 'salt3002_repo_repo' : 'tools_additional_repo'
-  step %(I disable repository "#{repo}" on this "#{host}" without error control)
+  step %(I disable repository "tools_additional_repo" on this "#{host}" without error control)
 end
 
 # minion bootstrap steps

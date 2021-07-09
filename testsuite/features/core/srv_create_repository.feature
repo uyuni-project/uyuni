@@ -63,7 +63,7 @@ Feature: Add a repository to a channel
 
   Scenario: Synchronize the repository in the i586 channel
     When I disable source package syncing
-    When I follow the left menu "Software > Manage > Channels"
+    And I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"

@@ -29,7 +29,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I enable client tools repositories on "ceos_client"
     And I install the traditional stack utils on "ceos_client"
     And I install OpenSCAP dependencies on "ceos_client"
-    And I fix CentOS 7 OpenSCAP files on "ceos_client"
     And I register "ceos_client" as traditional client
     And I run "rhn-actions-control --enable-all" on "ceos_client"
 
@@ -66,7 +65,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml" as "path"
+    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
@@ -114,7 +113,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I am on the System Overview page
+    And I follow the left menu "Home > Overview"
     And I wait until I see the name of "ceos_minion", refreshing the page
     And I wait until onboarding is completed for "ceos_minion"
 

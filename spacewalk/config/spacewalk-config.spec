@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-config
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -31,9 +31,9 @@ Name:           spacewalk-config
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
 Group:          Applications/System
-Version:        4.2.4
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -128,7 +128,7 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 %dir %{_prefix}/share/rhn
 %attr(0755,root,root) %{_prefix}/share/rhn/startup.pl
-%doc LICENSE
+%license LICENSE
 %doc %{_mandir}/man5/rhn.conf.5*
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/pki

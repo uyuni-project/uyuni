@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
-import { Select } from "components/input/Select";
-import { showErrorToastr } from "components/toastr/toastr";
+import { Select } from "components/input";
+import { showErrorToastr } from "components/toastr";
 import useLifecycleActionsApi from "../../shared/api/use-lifecycle-actions-api";
 import ModuleSelector from "./module-selector";
 
 type SelectInputProps = {
-  channels: Array<{ id: string; name: string }>;
+  channels: { id: string; name: string }[];
 };
 
 export default function SelectInput(props: SelectInputProps) {

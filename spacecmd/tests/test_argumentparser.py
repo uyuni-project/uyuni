@@ -4,6 +4,7 @@ Test argument parser.
 """
 import pytest
 import spacecmd.argumentparser
+from helpers import exc2str
 
 
 class TestSCArgumentParser:
@@ -18,4 +19,4 @@ class TestSCArgumentParser:
         argparse = spacecmd.argumentparser.SpacecmdArgumentParser()
         with pytest.raises(Exception) as exc:
             argparse.error(msg)
-        assert msg in str(exc)
+        assert msg in exc2str(exc)

@@ -1,3 +1,7 @@
+- Removed Python 2 build.
+- Updated source URL reference.
+- generate SSL private keys FIPS 140-2 compatible (bsc#1187593)
+
 -------------------------------------------------------------------
 Thu Jun 10 13:45:38 CEST 2021 - jgonzalez@suse.com
 

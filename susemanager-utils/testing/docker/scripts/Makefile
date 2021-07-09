@@ -1,4 +1,4 @@
-DOCKER_CONTAINER = registry.mgr.suse.de/uyuni-master-cobbler
+DOCKER_CONTAINER = registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-cobbler
 
 all :: cobbler_tests
 

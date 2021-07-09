@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-cluster-provider-caasp
 #
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %if 0%{?sle_version} >= 15000 || 0%{?rhel}
 # SLE15 builds on Python 3
 %global build_py3   1
@@ -23,24 +24,24 @@
 %define fname caasp
 %define fdir %{_datadir}/susemanager/cluster-providers
 Name:           uyuni-cluster-provider-caasp
-Version:        4.2.3
-Release:        1
+Version:        4.3.0
+Release:        0
 Summary:        SUSE CaaS Platform cluster provider for SUSE Manager
 License:        GPL-2.0-only
 Group:          Applications/System
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
-Requires:       susemanager
-Requires:       susemanager-build-keys-web >= 12.0.1
 Requires:       caasp-management-node-formula
 Requires:       caasp-management-settings-formula
+Requires:       susemanager
+Requires:       susemanager-build-keys-web >= 12.0.1
 %if 0%{?build_py3}
-BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
+BuildRequires:  python3-pytest
 BuildRequires:  python3-salt
 %else
-BuildRequires:  python-pytest
 BuildRequires:  python-mock
+BuildRequires:  python-pytest
 BuildRequires:  python-salt
 %endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build

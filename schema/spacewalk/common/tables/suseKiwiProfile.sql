@@ -19,7 +19,8 @@ CREATE TABLE suseKiwiProfile
                   CONSTRAINT suse_kiwi_prid_fk
                      REFERENCES suseImageProfile (profile_id)
                      ON DELETE CASCADE,
-    path        VARCHAR(1024) NOT NULL
+    path        VARCHAR(1024) NOT NULL,
+    kiwi_options VARCHAR(1024)
 )
 
 ;

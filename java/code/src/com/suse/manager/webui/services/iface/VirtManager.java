@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
@@ -126,13 +127,13 @@ public interface VirtManager {
     void updateLibvirtEngine(MinionServer minion);
 
     /**
-     * Get the name of the running hypervisor on a minion.
+     * Get virtualization host informations like cluster node names, hypervisor...
      *
      * @param minionId the minion to ask about
      *
-     * @return either "kvm" or "xen"
+     * @return virtualization host information
      */
-    Optional<String> getHypervisor(String minionId);
+    Optional<HostInfo> getHostInfo(String minionId);
 
     /**
      * Get the plan to use to update the guests infos in the database
@@ -151,4 +152,12 @@ public interface VirtManager {
      * @return the map of features.
      */
     Optional<Map<String, Boolean>> getFeatures(String minionId);
+
+    /**
+     * Get informations from all the virtual machines of a minion
+     *
+     * @param minionId the minion id to look VMs on
+     * @return the infos
+     */
+    Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId);
 }

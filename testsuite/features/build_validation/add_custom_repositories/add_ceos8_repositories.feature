@@ -16,7 +16,7 @@ Feature: Adding the CentOS 8 distribution custom repositories
   Scenario: Add a child channel for CentOS 8 DVD repositories
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    When I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
+    And I enter "Custom Channel for CentOS 8 DVD" as "Channel Name"
     And I enter "centos-8-iso" as "Channel Label"
     And I select "RHEL8-Pool for x86_64" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
@@ -62,12 +62,12 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I click on "Save"
     Then I should see a "ruby-2.7" text
     When I click on "Create Filter"
-    And I enter "python-3.8" as "filter_name"
+    And I enter "python-3.6" as "filter_name"
     And I select "Module (Stream)" from "type"
-    And I enter "python38" as "moduleName"
-    And I enter "3.8" as "moduleStream"
+    And I enter "python36" as "moduleName"
+    And I enter "3.6" as "moduleStream"
     And I click on "Save"
-    Then I should see a "python-3.8" text
+    Then I should see a "python-3.6" text
 
   Scenario: Create a CLM project to remove AppStream metadata
     When I follow the left menu "Content Lifecycle > Projects"
@@ -83,10 +83,10 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I click on "Save"
     Then I should see a "Custom Channel for CentOS 8 DVD" text
     When I click on "Attach/Detach Filters"
-    And I check "python-3.8: enable module python38:3.8"
+    And I check "python-3.6: enable module python36:3.6"
     And I check "ruby-2.7: enable module ruby:2.7"
     And I click on "Save"
-    Then I should see a "python-3.8: enable module python38:3.8" text
+    Then I should see a "python-3.6: enable module python36:3.6" text
     When I click on "Add Environment"
     And I enter "result" as "name"
     And I enter "result" as "label"

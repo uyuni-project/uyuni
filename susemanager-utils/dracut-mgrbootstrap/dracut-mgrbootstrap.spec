@@ -1,7 +1,7 @@
 #
 # spec file for package dracut-mgrbootstrap
 #
-# Copyright (c) 2020 SUSE LLC.
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,13 +15,14 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           dracut-mgrbootstrap
-Version:        4.2.1
-Release:        1
+Version:        4.3.0
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source:         dracut-mgrbootstrap-%{version}.tar.bz2
 Summary:        PXE network boot dracut module
-License:        GPL-2.0
+License:        GPL-2.0-only
 Group:          System/Packages
 BuildArch:      noarch
 BuildRequires:  dracut

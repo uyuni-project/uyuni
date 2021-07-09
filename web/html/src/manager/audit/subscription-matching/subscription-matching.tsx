@@ -11,7 +11,6 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils as MessagesUtils } from "components/messages";
 import Network from "utils/network";
 import SpaRenderer from "core/spa/spa-renderer";
-import { StatePersistedContext } from "components/utils/StatePersistedContext";
 import { Cancelable } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -143,24 +142,6 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
 
     const messageLabelIcon = data.messages.length > 0 ? <WarningIcon iconOnRight={true} /> : null;
 
-    const subscriptionContextValues = [
-      "subscriptionTableState",
-      "unmatchedProductTableState",
-      "pinnedMatchesState",
-      "messageTableState",
-    ].reduce((res, stateName) => {
-      return Object.assign({}, res, {
-        [stateName]: {
-          loadState: () => this.state[stateName],
-          saveState: state => {
-            this.setState({
-              [stateName]: state
-            });
-          },
-        },
-      });
-    }, {});
-
     return (
       <TabContainer
         labels={[
@@ -177,28 +158,20 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         ]}
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
-          <StatePersistedContext.Provider value={subscriptionContextValues["subscriptionTableState"]}>
-            <Subscriptions subscriptions={data.subscriptions} />
-          </StatePersistedContext.Provider>,
-          <StatePersistedContext.Provider value={subscriptionContextValues["unmatchedProductTableState"]}>
-            <UnmatchedProducts
-              products={data.products}
-              unmatchedProductIds={data.unmatchedProductIds}
-              systems={data.systems}
-            />
-          </StatePersistedContext.Provider>,
-          <StatePersistedContext.Provider value={subscriptionContextValues["pinnedMatchesState"]}>
-            <Pins
-              pinnedMatches={data.pinnedMatches}
-              products={data.products}
-              systems={data.systems}
-              subscriptions={data.subscriptions}
-              onPinChanged={this.props.onPinChanged}
-            />
-          </StatePersistedContext.Provider>,
-          <StatePersistedContext.Provider value={subscriptionContextValues["messageTableState"]}>
-            <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />
-          </StatePersistedContext.Provider>,
+          <Subscriptions subscriptions={data.subscriptions} />,
+          <UnmatchedProducts
+            products={data.products}
+            unmatchedProductIds={data.unmatchedProductIds}
+            systems={data.systems}
+          />,
+          <Pins
+            pinnedMatches={data.pinnedMatches}
+            products={data.products}
+            systems={data.systems}
+            subscriptions={data.subscriptions}
+            onPinChanged={this.props.onPinChanged}
+          />,
+          <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />,
         ]}
         initialActiveTabHash={this.state.activeTabHash}
         onTabHashChange={this.onTabHashChange}

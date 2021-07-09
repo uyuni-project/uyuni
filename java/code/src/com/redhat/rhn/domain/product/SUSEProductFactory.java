@@ -668,6 +668,10 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Get all root SUSE products that support live patching
+     *
+     * The query selects all the root products that has a live patching extension product.
+     * It selects only installed products by checking if they have a channel present.
+     *
      * @return the stream of products
      */
     public static Stream<SUSEProduct> getLivePatchSupportedProducts() {
@@ -682,18 +686,21 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Get all 'kernel-default' versions contained in a product tree
+     * Get all kernel versions contained in a product tree
+     *
+     * The query selects the EVRs of every kernel package that is included in any channel of the product tree.
+     *
      * @param product the root product
      * @return the stream of EVRs
      */
     public static Stream<PackageEvr> getKernelVersionsInProduct(SUSEProduct product) {
         return HibernateFactory.getSession().createQuery(
-                "SELECT pkg.packageEvr " +
+                "SELECT DISTINCT pkg.packageEvr " +
                 "FROM SUSEProductExtension x " +
                 "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
                 "JOIN SUSEProductChannel pc ON pc.product = ext " +
                 "JOIN pc.channel.packages pkg " +
-                "WHERE pkg.packageName.name = 'kernel-default' " +
+                "WHERE pkg.packageName.name LIKE 'kernel-default%' " +
                 "AND x.rootProduct = :product", PackageEvr.class)
                 .setParameter("product", product)
                 .getResultStream();

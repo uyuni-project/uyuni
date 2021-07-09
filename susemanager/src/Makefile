@@ -26,10 +26,14 @@ SCRIPTS  = mgr-clean-old-patchnames \
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 
-PYSUMA_DATA_FILES       = $(addsuffix .py,$(SUMA_DATA_FILES))
-PYCSUMA_DATA_FILES      = $(addsuffix .pyc,$(SUMA_DATA_FILES))
+PYSUMA_DATA_FILES  = $(addsuffix .py,$(SUMA_DATA_FILES))
+ifeq ($(PYTHON_BIN), python3)
+PYCSUMA_DATA_FILES = $(addsuffix *,$(addprefix __pycache__/,$(SUMA_DATA_FILES)))
+else
+PYCSUMA_DATA_FILES = $(addsuffix .pyc,$(SUMA_DATA_FILES)) $(addsuffix .pyo,$(SUMA_DATA_FILES))
+endif
 
-SUMA_INSTALL_DATA_FILES += $(PYSUMA_DATA_FILES) $(PYCSUMA_DATA_FILES)
+SUMA_INSTALL_DATA_FILES += $(PYSUMA_DATA_FILES)
 
 
 # check if we can build man pages
@@ -51,7 +55,11 @@ all :: $(SCRIPTS)
 install :: $(SCRIPTS) $(PREFIX)/$(SBINDIR) $(SUMA_INSTALL_DATA_FILES)
 	$(INSTALL_BIN) $(SCRIPTS) $(PREFIX)/$(SBINDIR)
 	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager
-	$(INSTALL_DIR) $(PREFIX)/$(SPACEWALK_DEST)/mgr_sync
+ifeq ($(PYTHON_BIN), python3)
+	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager/__pycache__
+endif
+	@$(foreach f,$(wildcard $(PYCSUMA_DATA_FILES)), \
+		$(INSTALL_DATA) $(f) $(PREFIX)/usr/share/susemanager/$(f) ; )
 	$(INSTALL_DATA) $(SUMA_INSTALL_DATA_FILES) $(PREFIX)/usr/share/susemanager
 
 ifneq ($(DOCBOOK),)

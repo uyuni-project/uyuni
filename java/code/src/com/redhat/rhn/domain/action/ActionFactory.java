@@ -55,6 +55,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeActio
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
@@ -434,6 +435,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_VCPUS)) {
             retval = new VirtualizationSetVcpusGuestAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_MIGRATE)) {
+            retval = new VirtualizationMigrateGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SCHEDULE_POLLER)) {
             retval = new VirtualizationSchedulePollerAction();
@@ -964,6 +968,7 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
+                actionType.equals(TYPE_VIRTUALIZATION_GUEST_MIGRATE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_CREATE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
@@ -1390,5 +1395,11 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing "Execute an Ansible playbook" [ID:521]
      */
     public static final ActionType TYPE_PLAYBOOK = lookupActionTypeByLabel("ansible.playbook");
+
+    /**
+     * The constant representing "Migrate a virtual domain" [ID:522]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_GUEST_MIGRATE =
+            lookupActionTypeByLabel("virt.guest_migrate");
 }
 

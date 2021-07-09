@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-daemon
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 # Macros that aren't defined in debbuild
 %if "%{_vendor}" == "debbuild"
@@ -31,8 +32,8 @@
 %define rhnsd		 mgr-daemon
 #
 Name:           mgr-daemon
-Version:        4.2.7
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Spacewalk query daemon
 License:        GPL-2.0-only
 %if "%{_vendor}" == "debbuild"
@@ -43,11 +44,11 @@ Group:          System Environment/Base
 %endif
 Source0:        spacewalksd-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
-BuildArch: noarch
+BuildArch:      noarch
 %endif
 
 %if "%{_vendor}" != "debbuild"
@@ -88,9 +89,9 @@ Requires(postun): initscripts
 %endif
 
 %if "%{_vendor}" == "debbuild"
-BuildRequires: init-system-helpers
+BuildRequires:  init-system-helpers
 %if 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504
-BuildRequires: systemd
+BuildRequires:  systemd
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
@@ -211,7 +212,6 @@ if [ -f %{_unitdir}/rhnsd.service ] && [ "$1" == "configure" ]; then
 fi
 %endif
 
-
 %preun
 %if "%{_vendor}" != "debbuild"
 %if 0%{?suse_version}
@@ -286,7 +286,6 @@ elif [ -f /etc/init.d/rhnsd ]; then
     /sbin/chkconfig --add rhnsd 2>&1 ||:
 fi
 
-
 %if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?mageia} || 0%{?ubuntu} >= 1504 || 0%{?debian} >= 8 || 0%{?rhel} >= 7
 %files
 %defattr(-,root,root)
@@ -305,7 +304,8 @@ fi
 %{_sbindir}/rcrhnsd
 %endif
 %{_mandir}/man8/rhnsd.8*
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %if "%{_vendor}" == "debbuild"
 %{_datadir}/locale/
 %endif

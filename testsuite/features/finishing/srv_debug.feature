@@ -6,9 +6,6 @@ Feature: Debug the server after the testsuite has run
   Scenario: Call spacewalk-debug on server
     When I execute spacewalk-debug on the server
 
-  Scenario: Check spacewalk upd2date logs on client
-    Then the up2date logs on client should contain no Traceback error
-
   Scenario: Check the tomcat logs on server
     Then the tomcat logs should not contain errors
 

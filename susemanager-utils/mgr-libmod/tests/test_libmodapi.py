@@ -15,6 +15,7 @@ except ImportError:
     gi = None
 
 @pytest.mark.skipif(gi is None, reason="libmodulemd Python bindings is missing")
+@pytest.mark.timeout(3)
 class TestLibmodProc:
     """
 
@@ -118,6 +119,18 @@ class TestLibmodProc:
         selected = {(s['name'], s['stream'], s['version'], s['context']) for s in result['selected']}
         assert 2 == len(selected)
         assert expected == selected
+
+    def test_self_dependencies(self):
+        '''
+        Test resolution with module streams that 'require' themselves (e.g. CentOS PowerTools)
+        '''
+        self.libmodapi.set_repodata(open("tests/data/module_packages_powertools.json", "r").read()).run()
+        result = self.libmodapi._result['module_packages']
+
+        selected = result['selected']
+        assert 1 == len(selected)
+        assert 'virt-devel' == selected[0]['name']
+        assert 'rhel' == selected[0]['stream']
 
     def test_conflicting_streams(self):
         try:

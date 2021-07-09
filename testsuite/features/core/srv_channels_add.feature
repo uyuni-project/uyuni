@@ -24,7 +24,7 @@ Feature: Adding channels
   Scenario: Add a child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    When I enter "Test Child Channel" as "Channel Name"
+    And I enter "Test Child Channel" as "Channel Name"
     And I enter "test_child_channel" as "Channel Label"
     And I select "Test Base Channel" from "Parent Channel"
     And I select "x86_64" from "Architecture:"

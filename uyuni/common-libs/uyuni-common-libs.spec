@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-common-libs
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -14,6 +14,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %global debug_package %{nil} 
 
@@ -46,9 +47,9 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        4.2.4
-Release:        1%{?dist}
-Url:            https://github.com/uyuni-project/uyuni
+Version:        4.3.0
+Release:        0
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -83,8 +84,8 @@ Requires:       python3-base
 Requires:       python3-libs
 %endif
 
-Obsoletes:      python3-spacewalk-usix
 Obsoletes:      python3-spacewalk-backend-libs
+Obsoletes:      python3-spacewalk-usix
 
 %description -n python3-%{name}
 Python 3 libraries required by both Uyuni server and client tools.
@@ -95,7 +96,6 @@ Python 3 libraries required by both Uyuni server and client tools.
 
 %build
 make -f Makefile.common-libs all PYTHON_BIN=%{pythonX}
-
 
 %install
 make -f Makefile.common-libs install PREFIX=$RPM_BUILD_ROOT \
@@ -127,14 +127,15 @@ rm -Rf $RPM_BUILD_ROOT%{python2root}
 %if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root)
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %{python2root}
 %endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root)
-%doc LICENSE
+%license LICENSE
 %{python3root}
 %endif
 

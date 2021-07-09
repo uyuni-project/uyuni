@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-libmod
 #
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,17 +15,18 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 Name:           mgr-libmod
-Version:        4.2.5
-Release:        1
+Version:        4.3.0
+Release:        0
 Summary:        libmod app
 License:        MIT
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
 Requires:       python3-libmodulemd
-BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
+BuildRequires:  python3-pytest
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 URL:            https://github.com/uyuni-project/uyuni
@@ -49,3 +50,5 @@ cp -R scripts/* %{buildroot}/usr/bin
 %{python3_sitelib}/*
 /usr/bin/mgr-libmod
 %license LICENSE
+
+%changelog

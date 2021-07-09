@@ -17,5 +17,5 @@ module.exports = {
   },
   modulePaths: ["<rootDir>"],
   moduleDirectories: ["node_modules"],
-  setupFiles: ["./utils/test-utils/setup.ts"],
+  setupFiles: ["./utils/test-utils/setup/index.ts"],
 };

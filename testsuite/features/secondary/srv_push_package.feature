@@ -10,7 +10,8 @@ Feature: Push a package with unset vendor
     Given I am authorized for the "Admin" section
 
   Scenario: Push a package with unset vendor
-    When I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel
+    When I copy unset package file on server
+    And I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel
     Then I should see package "subscription-tools-1.0-0.noarch" in channel "Test Base Channel"
 
   Scenario: Check vendor of package displayed in web UI

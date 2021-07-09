@@ -9,10 +9,18 @@ require 'nokogiri'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run('hostname -f')
+  result, return_code = node.run('hostname -f', false)
   result.delete!("\n")
   raise 'cannot determine hostname' unless return_code.zero?
   raise 'hostname is not fully qualified' unless result == node.full_hostname
+end
+
+Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("getent hosts #{node.ip}", false)
+  result.delete!("\n")
+  raise 'cannot do reverse resolution' unless return_code.zero?
+  raise "reverse resolution returned #{result}, expected to see #{node.full_hostname}" unless result.include? node.full_hostname
 end
 
 Then(/^"([^"]*)" should communicate with the server$/) do |host|
@@ -326,6 +334,11 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
     $server.run("kill #{pid}", false)
     STDOUT.puts "Reposync of channel #{channel} killed"
   end
+end
+
+Then(/^the reposync logs should not report errors$/) do
+  result, code = $server.run('grep "ERROR:" /var/log/rhn/reposync/*.log', false)
+  raise "Errors during reposync:\n#{result}" if code.zero?
 end
 
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
@@ -866,14 +879,6 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   end
   pkgs += ' spacewalk-oscap' if host.include? 'client'
   step %(I #{action} packages "#{pkgs}" #{where} this "#{host}")
-end
-
-# On CentOS 7, OpenSCAP files are for RedHat and need a small adaptation for CentOS
-When(/^I fix CentOS 7 OpenSCAP files on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  script = '/<\/rear-matter>/a  <platform idref="cpe:/o:centos:centos:7"/>'
-  file = "/usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml"
-  node.run("sed -i '#{script}' #{file}")
 end
 
 When(/^I install package(?:s)? "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
@@ -1606,4 +1611,10 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/initrd', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
+end
+
+When(/^I copy unset package file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
+  return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise 'File injection failed' unless return_code.zero?
 end

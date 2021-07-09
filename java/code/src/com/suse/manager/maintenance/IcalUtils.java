@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -40,9 +39,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -138,8 +140,6 @@ public class IcalUtils {
                 .filter(l -> !l.isEmpty())
                 .collect(toList());
 
-        periodLists.add(getInitialEvents(filteredEvents, period));
-
         Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
                 .map(pl -> pl.stream())
                 .reduce(Stream.empty(), Stream::concat)
@@ -148,25 +148,6 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
-    }
-
-    private PeriodList getInitialEvents(Collection<CalendarComponent> events, Period period) {
-        PeriodList periodList = new PeriodList();
-        events.forEach(event -> {
-                    try {
-                        DateTime start = new DateTime(event.getProperty(Property.DTSTART).getValue());
-                        DateTime end = new DateTime(event.getProperty(Property.DTEND).getValue());
-                        // Check if event is contained in given period
-                        if (period.includes(start) && period.includes(end)) {
-                            periodList.add(new Period(start, end));
-                        }
-                    }
-                    catch (ParseException e) {
-                        log.error("Unable to get event range from: " + event.toString(), e);
-                    }
-                }
-        );
-        return periodList;
     }
 
     // given collection of events, filter out those with non-matching SUMMARY
@@ -271,7 +252,6 @@ public class IcalUtils {
         return filteredEvents.stream().map(
                 eventSet -> {
                     PeriodList pl = eventSet.calculateRecurrenceSet(period);
-                    pl = pl.add(getInitialEvents(List.of(eventSet), period));
                     return pl.stream()
                             .filter(l -> !l.isEmpty())
                             .map(event -> new MaintenanceWindowData(
@@ -312,5 +292,22 @@ public class IcalUtils {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(endDate), ZoneOffset.UTC);
         Long startDate = t.minusYears(1).minusMonths(1).toInstant().toEpochMilli();
         return getCalendarEvents(calendar, eventName, startDate, endDate).stream().reduce((first, last) -> last);
+    }
+
+    /**
+     * Given a calendar returns the names of its events
+     *
+     * @param calendarIn the calendar
+     * @return the event names
+     */
+    public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
+        Optional<Calendar> calendar = parseCalendar(calendarIn);
+        if (calendar.isEmpty()) {
+            log.error("Could not parse calendar: " + calendarIn.getLabel());
+            return new HashSet<>();
+        }
+        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+        return events.stream().map(event ->
+                event.getProperty("SUMMARY").getValue()).collect(Collectors.toSet());
     }
 }

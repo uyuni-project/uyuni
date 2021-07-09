@@ -19,12 +19,12 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.gson.ResultJson.error;
 import static com.suse.manager.webui.utils.gson.ResultJson.success;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.google.gson.Gson;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -36,12 +36,20 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
 import com.suse.manager.webui.utils.gson.AnsiblePathJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookExecutionJson;
 import com.suse.manager.webui.utils.gson.AnsiblePlaybookIdJson;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
+
+import com.google.gson.Gson;
+
+import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -52,9 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -81,10 +87,10 @@ public class AnsibleController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/ansible/control-node",
-                withCsrfToken(withDocsLocale(withUser(AnsibleController::view))), jade);
+                withCsrfToken(withDocsLocale(withUserAndServer(AnsibleController::view))), jade);
 
         get("/manager/systems/details/ansible/playbooks",
-                withCsrfToken(withDocsLocale(withUser(AnsibleController::playbooks))), jade);
+                withCsrfToken(withDocsLocale(withUserAndServer(AnsibleController::playbooks))), jade);
 
         get("/manager/systems/details/ansible/inventories",
                 withCsrfToken(withDocsLocale(withUser(AnsibleController::inventories))), jade);
@@ -120,14 +126,11 @@ public class AnsibleController {
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
+     * @param server the server
      * @return the model and view
      */
-    public static ModelAndView view(Request req, Response res, User user) {
-        String serverId = req.queryParams("sid");
-        Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
-        return new ModelAndView(data, "templates/minion/ansible-control-node.jade");
+    public static ModelAndView view(Request req, Response res, User user, Server server) {
+        return new ModelAndView(new HashMap<String, Object>(), "templates/minion/ansible-control-node.jade");
     }
 
     /**
@@ -136,13 +139,11 @@ public class AnsibleController {
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
+     * @param server the server
      * @return the model and view
      */
-    public static ModelAndView playbooks(Request req, Response res, User user) {
-        String serverId = req.queryParams("sid");
+    public static ModelAndView playbooks(Request req, Response res, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        data.put("server", server);
         data.put("pathContentType", AnsiblePath.Type.PLAYBOOK.getLabel());
         MinionController.addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/ansible-path-content.jade");
@@ -301,6 +302,7 @@ public class AnsibleController {
                     params.getPlaybookPath(),
                     params.getInventoryPath().orElse(null),
                     params.getControlNodeId(),
+                    params.isTestMode(),
                     params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);

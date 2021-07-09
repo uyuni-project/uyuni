@@ -1,7 +1,7 @@
 #
 # spec file for package caasp-management-node-formula
 #
-# Copyright (c) 2020 SUSE LLC
+# Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,8 +19,8 @@
 %define fname caasp-management-node
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           caasp-management-node-formula
-Version:        4.2.1
-Release:        1
+Version:        4.3.0
+Release:        0
 Summary:        Salt formula for configuring a CaaSP management node
 License:        GPL-2.0-only
 Group:          Applications/System

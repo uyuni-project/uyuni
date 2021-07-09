@@ -24,6 +24,7 @@ import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string; // Name of the maintenance schedule
+  eventNames: Array<string>;
   type: "SINGLE" | "MULTI";
   calendarName: string | undefined;
   onDelete: (item: { name: string }) => Promise<any>;
@@ -63,6 +64,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
         <MaintenanceScheduleOverview
           id={props.id}
           name={props.name}
+          eventNames={props.eventNames}
           calendarName={props.calendarName}
           type={props.type}
           onMessage={props.onMessage}
@@ -80,6 +82,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 type OverviewProps = {
   id: number,
   name: string; // Name of the maintenance schedule
+  eventNames: Array<string>;
   calendarName: string | undefined;
   type: "SINGLE" | "MULTI";
   onMessage: (messages: MessageType[]) => void;
@@ -113,6 +116,7 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
             <WebCalendar
               id={props.id}
               type={"schedule"}
+              eventNames={props.eventNames}
               messages={props.onMessage}
               clearMessages={props.clearMessages}
               responseError={props.responseError}
