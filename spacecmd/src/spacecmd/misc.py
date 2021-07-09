@@ -174,7 +174,7 @@ def help_list_proxies(self):
 
 
 def do_list_proxies(self, args):
-    proxies = self.client.satellite.listProxies(self.session)
+    proxies = self.client.proxy.listProxies(self.session)
     print(proxies)
     return 0
 
