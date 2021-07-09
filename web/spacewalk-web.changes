@@ -1,3 +1,5 @@
+- Fix timezone offset shifted by JS Date Object (bsc#1187150)
+
 -------------------------------------------------------------------
 Mon Aug 02 10:22:55 CEST 2021 - jmassaguerpla@suse.de
 

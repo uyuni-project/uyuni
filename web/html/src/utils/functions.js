@@ -29,28 +29,52 @@ function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Canc
     };
 }
 
-function dateWithTimezone(dateString: string): Date {
-    const offsetNum = dateString[dateString.length - 1].toUpperCase() === "Z"
-      ? 0
-      : parseInt(dateString.substring(dateString.length - 6).replace(':', ''), 10);
-    const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
-    const orig = new Date(dateString);
-    const clientOffset = -orig.getTimezoneOffset();
+/**
+ * HACK
+ *
+ * Due to the broken JS `Date` object we need to workaround the timezones to reset the proper offset.
+ * We want to pass the UTC time to the backend, but we need to present and manager the SUSE Manager Localized user preference.
+ * The broken complexity starts when using `new Date()` converting a string to a Date object or just creating a new one, it will not
+ * be created in the user timezone nor in the server one nor in the UTC one, but in the browser/client timezone setting.
+ * This leads us to have a user time in a string format, we convert it to a Date object which is handled keeping the same time but
+ * the timezone will change to the browser one. Eventually we have the user time marked to be in the browser timezone so we need to add
+ * to the time the diff from the browser time to the user time to have the real user time. Returning the `Date.getTime()` will provide
+ * the UTC value in milliseconds.
+ *
+ * @param browserTime the Date object create in the browser/client context
+ * @param userTime the userTime provided by the backend in the SUSE Manager user locale setting
+ * @returns the UTC value in milliseconds
+ */
+function brokenUserButBrowserTimeToUTC(browserTime: Date, userTime: string): Date {
+  const browserOffsetMinutes = -(new Date().getTimezoneOffset());
+  const userOffsetMinutes = getMinutesOffsetFromUTC(userTime);
+  return new Date(browserTime.getTime() + (browserOffsetMinutes - userOffsetMinutes) * 60000);
+}
 
-    const final = new Date(orig.getTime() + (serverOffset - clientOffset) * 60000);
-    return final;
+function getMinutesOffsetFromUTC(dateString: string): number {
+  const offsetNum =
+    dateString[dateString.length - 1].toUpperCase() === "Z"
+      ? 0
+      : parseInt(dateString.substring(dateString.length - 6).replace(":", ""), 10);
+  return Math.trunc(offsetNum / 100) * 60 + (offsetNum % 100);
+}
+
+function dateWithTimezone(dateString: string): Date {
+  const UTCMinutesOffset: number = getMinutesOffsetFromUTC(dateString);
+  const localDate = new Date(dateString);
+  const clientOffset = -localDate.getTimezoneOffset();
+
+  const final = new Date(localDate.getTime() + (UTCMinutesOffset - clientOffset) * 60000);
+  return final;
 }
 
 // it does the opposite of dateWithTimezone: transforms its result on the original date
 function dateWithoutTimezone(dateStringToTransform: string, originalDateString: string): Date {
-  const offsetNum = originalDateString[originalDateString.length - 1].toUpperCase() === "Z"
-    ? 0
-    : parseInt(originalDateString.substring(originalDateString.length - 6).replace(':', ''), 10);
-  const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
+  const UTCMinutesOffset: number = getMinutesOffsetFromUTC(originalDateString);
   const dateToTransform = new Date(dateStringToTransform);
   const clientOffset = -dateToTransform.getTimezoneOffset();
 
-  const final = new Date(dateToTransform.getTime() - (serverOffset - clientOffset) * 60000);
+  const final = new Date(dateToTransform.getTime() - (UTCMinutesOffset - clientOffset) * 60000);
   return final;
 }
 
@@ -204,6 +228,7 @@ const Utils = {
     cancelable: cancelable,
     sortById: sortById,
     sortByText: sortByText,
+    brokenUserButBrowserTimeToUTC: brokenUserButBrowserTimeToUTC,
     dateWithTimezone: dateWithTimezone,
     dateWithoutTimezone: dateWithoutTimezone,
     sortByNumber: sortByNumber,

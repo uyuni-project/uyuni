@@ -36,7 +36,7 @@ class BuildImage extends React.Component {
     this.state = {
       model: {
         version: version || "",
-        earliest: Utils.dateWithTimezone(localTime)
+        earliest: Utils.dateWithTimezone(userTime)
       },
       profile: {},
       profiles: [],
@@ -166,8 +166,17 @@ class BuildImage extends React.Component {
   }
 
   onBuild(model) {
+    const dataModelToPOST: string = JSON.stringify(
+      {
+        "version": model.version,
+        "earliest": Utils.brokenUserButBrowserTimeToUTC(model.earliest, window.userTime),
+        "profileId": model.profileId,
+        "buildHostId": model.buildHostId,
+        "actionChain": model.actionChain
+      });
+
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId,
-      JSON.stringify(model),
+      dataModelToPOST,
       "application/json"
     ).promise.then(data => {
       if (data.success) {

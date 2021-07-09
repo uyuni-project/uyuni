@@ -142,6 +142,32 @@ public enum ViewHelper {
     }
 
     /**
+     * Render a date time configured on a UTC timezone
+     *
+     * @return UTC's time
+     */
+    public String utcDateTime() {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getTimeZone("UTC");
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(new Date());
+    }
+
+    /**
+     * Render a date time configured on the server default timezone
+     *
+     * @return server's default time
+     */
+    public String serverDateTime() {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(new Date());
+    }
+
+    /**
      * Render a given time in the current user's configured timezone
      * @param instant the instant
      * @return user's local time

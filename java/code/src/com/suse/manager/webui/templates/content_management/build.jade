@@ -10,6 +10,9 @@ script(type='text/javascript').
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
+    window.UTCTime = "#{h.utcDateTime()}";
+    window.serverTime = "#{h.serverDateTime()}";
+    window.userTime = "#{h.renderLocalTime()}";
 
 script(type='text/javascript').
     spaImportReactPage('images/image-build')
