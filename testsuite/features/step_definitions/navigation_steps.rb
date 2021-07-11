@@ -550,6 +550,10 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
 
+When(/^I am on System Set Manager Overview$/) do
+  visit("https://#{$server.full_hostname}/rhn/ssm/index.do")
+end
+
 Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
