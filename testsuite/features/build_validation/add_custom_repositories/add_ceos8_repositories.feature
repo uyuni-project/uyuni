@@ -23,24 +23,34 @@ Feature: Adding the CentOS 8 distribution custom repositories
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for CentOS 8 DVD created" text
 
-  Scenario: Add the CentOS 8 DVD repositories
+  Scenario: Add the CentOS 8 Appstream DVD repository
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
-    And I enter "centos-8-iso" as "label"
-    And I enter "http://127.0.0.1/centos-8-iso" as "url"
+    And I enter "centos-8-iso-appstream" as "label"
+    And I enter "http://127.0.0.1/centos-8-iso/AppStream" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add the repository to the custom channel for CentOS 8 DVD
+  Scenario: Add the CentOS 8 BaseOS DVD repository
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "Create Repository"
+    And I enter "centos-8-iso-baseos" as "label"
+    And I enter "http://127.0.0.1/centos-8-iso/BaseOS" as "url"
+    And I uncheck "metadataSigned"
+    And I click on "Create Repository"
+    Then I should see a "Repository created successfully" text
+
+  Scenario: Add both repositories to the custom channel for CentOS 8 DVD
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 8 DVD"
     And I follow "Repositories" in the content area
-    And I select the "centos-8-iso" repo
+    And I select the "centos-8-iso-appstream" repo
+    And I select the "centos-8-iso-baseos" repo
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Synchronize the repository in the custom channel for CentOS 8 DVD
+  Scenario: Synchronize the repositories in the custom channel for CentOS 8 DVD
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for CentOS 8 DVD"
     And I follow "Repositories" in the content area
