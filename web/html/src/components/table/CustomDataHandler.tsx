@@ -1,6 +1,7 @@
 import * as React from "react";
 import { TableDataHandler } from "./TableDataHandler";
 import { SearchField } from "./SearchField";
+import { cloneReactElement } from "components/utils";
 
 type Props = {
   /** any type of data in an array, where each element is a row data */
@@ -47,11 +48,9 @@ export function CustomDataHandler(props: Props) {
   const { ...allProps } = props;
   return (
     <TableDataHandler {...allProps}>
-      {({ currItems, headers, handleSelect, selectable, selectedItems, criteria }) => {
-        return React.Children.toArray(props.children).map(child =>
-          React.isValidElement(child) ? React.cloneElement(child, { data: currItems, criteria }) : child
-        );
-      }}
+      {({ currItems, headers, handleSelect, selectable, selectedItems, criteria }) =>
+        React.Children.toArray(props.children).map(child => cloneReactElement(child, { data: currItems, criteria }))
+      }
     </TableDataHandler>
   );
 }
