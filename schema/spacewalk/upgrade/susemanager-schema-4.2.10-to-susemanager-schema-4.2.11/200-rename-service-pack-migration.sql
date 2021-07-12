@@ -9,4 +9,4 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-UPDATE rhnActionType SET name='Product Migration' WHERE label='distupgrade.upgrade';
+UPDATE rhnActionType SET name='Product Migration' WHERE label='distupgrade.upgrade' AND name!='Product Migration';
