@@ -62,7 +62,7 @@ const npmDependencies = [
   { name: "react-select", license: "MIT",  version: "4.3.0" }, 
   { name: "react-toastify", license: "MIT",  version: "6.0.5" }, 
   { name: "react-transition-group", license: "BSD-3-Clause",  version: "4.4.1" }, 
-  { name: "regenerator-runtime", license: "MIT",  version: "0.12.1" }, 
+  { name: "regenerator-runtime", license: "MIT",  version: "0.13.7" }, 
   { name: "scheduler", license: "MIT",  version: "0.20.1" }, 
   { name: "senna", license: "BSD-3-Clause",  version: "2.7.9" }, 
   { name: "setimmediate", license: "MIT",  version: "1.0.5" }, 

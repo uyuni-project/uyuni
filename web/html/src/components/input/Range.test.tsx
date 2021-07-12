@@ -71,7 +71,7 @@ describe("Range", () => {
         validators={[
           value => Object.values(value).every(item => item != null),
           value => Object.values(value).every(item => typeof item === "string" && item.match(/^[0-9]+$/)),
-          ({ port_start, port_end }) => parseInt(port_start) <= parseInt(port_end),
+          ({ port_start, port_end }) => parseInt(port_start, 10) <= parseInt(port_end, 10),
         ]}
       />
     );

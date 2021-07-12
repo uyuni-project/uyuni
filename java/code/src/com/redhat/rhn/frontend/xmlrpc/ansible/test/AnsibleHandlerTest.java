@@ -42,10 +42,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -106,6 +105,33 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+        assertFalse(details.isTestMode());
+    }
+
+    public void testSchedulePlaybookTestMode() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
+                scheduleDate, null, true);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_PLAYBOOK, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        PlaybookActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertNull(details.getInventoryPath());
+        assertTrue(details.isTestMode());
     }
 
     public void testCreateAndGetAnsiblePath() throws Exception {
@@ -259,8 +285,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(Optional.of(new Gson().fromJson("playbook-content", JsonElement.class))));
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.right("playbook-content"))));
         }});
         AnsibleManager.setSaltApi(saltApi);
         assertEquals(

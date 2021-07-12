@@ -1,292 +1,301 @@
+url: http://download.suse.de/ibs
+group: manager-42
+
 repositories:
-  Leap:
-    project: openSUSE:Leap:15.3
+  15_GA:
+    project: SUSE:SLE-15:GA
     repository: standard
-  Uyuni_Other:
-    project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.3
-  Uyuni:
-    project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.3
+  15_SP2_GA:
+    project: SUSE:SLE-15-SP2:GA
+    repository: standard
+  15_SP2_Update:
+    project: SUSE:SLE-15-SP2:Update
+    repository: standard
+  15_SP3_GA:
+    project: SUSE:SLE-15-SP3:GA
+    repository: standard
+  4.2:
+    project: SUSE:SLE-15-SP3:Update:Products:Manager42
+    repository: standard
 artifacts:
   - artifact: asm
     package: asm3
     jar: asm3-all
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: antlr
     package: antlr-java
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: bcel
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: byte-buddy
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: c3p0
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: cglib
     jar: cglib.jar
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: classmate
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: classpathx-mail-1.3.1-monolithic
     package: classpathx-mail
-    repository: Leap
+    repository: 15_GA
   - artifact: commons-beanutils
     package: apache-commons-beanutils
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-cli
     package: apache-commons-cli
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-codec
     package: apache-commons-codec
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-collections
     package: apache-commons-collections
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-digester
     package: jakarta-commons-digester
     jar: jakarta-commons-digester-[0-9.]+\.jar
-    repository: Leap
+    repository: 15_GA
   - artifact: commons-discovery
     package: jakarta-commons-discovery
-    repository: Leap
+    repository: 15_GA
   - artifact: commons-el
     package: apache-commons-el
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: commons-fileupload
     package: jakarta-commons-fileupload
-    repository: Leap
+    repository: 15_GA
   - artifact: commons-io
     package: apache-commons-io
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: commons-jexl
     package: apache-commons-jexl
     jar: commons-jexl\.jar
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: commons-validator
-    package: apache-commons-validator
-    repository: Leap
+    package: jakarta-commons-validator
+    repository: 4.2
   - artifact: concurrent
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: concurrentlinkedhashmap-lru
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: dom4j
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: dwr
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: ehcache-core
     package: ehcache
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: geronimo-jta-1.1-api
     package: geronimo-jta-1_1-api
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: google-gson
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: hibernate-c3p0
     package: hibernate5
     jar: hibernate-c3p0
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: hibernate-commons-annotations
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: hibernate-core
     package: hibernate5
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: hibernate-ehcache
     package: hibernate5
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: httpclient
     package: httpcomponents-client
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: httpcore
     package: httpcomponents-core
     jar: httpcore.jar
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: httpcore-nio
     package: httpcomponents-core
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: jade4j
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: jaf
     package: gnu-jaf
-    repository: Leap
+    repository: 15_GA
   - artifact: jakarta-persistence-api
     package: jpa-api
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: java-saml
     jar: java-saml-[0-9.]+
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: java-saml-core
     package: java-saml
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: javassist
-    repository: Uyuni_Other
+    repository: 15_SP2_GA
   - artifact: jboss-logging
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: jcommon
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: jdom
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: joda-time
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: jose4j
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: log4j
     package: log4j12
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: jsch
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-buffer
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-codec
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-common
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-handler
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-resolver
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-transport
     package: netty
     jar: netty-transport-[0-9]
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: netty-transport-native-unix-common
     package: netty
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: oro
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: pgjdbc-ng
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: postgresql-jdbc
-    repository: Leap
+    repository: 15_SP3_GA
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: redstone-xmlrpc-client
     package: redstone-xmlrpc
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: salt-netapi-client
-    repository: Uyuni
+    repository: 4.2
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: simpleclient_common
     package: prometheus-client-java
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: simpleclient_httpserver
     package: prometheus-client-java
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: simpleclient_servlet
     package: prometheus-client-java
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: simple-xml
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: sitemesh
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: slf4j-api
     package: slf4j
     jar: api
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: slf4j-log4j12
     jar: log4j12
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: snakeyaml
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: spark-core
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: spark-template-jade
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: spy
     package: pgjdbc-ng
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: statistics
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: stax-api
     package: woodstox
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: stax2-api
     package: woodstox
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: stringtree-json
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: struts
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: taglibs-standard-impl
     package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: taglibs-standard-jstlel
     package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: taglibs-standard-spec
     package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: woodstox-core-asl
     package: woodstox
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: xalan-j2
     jar: xalan-j2-[0-9.]+
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: xalan-j2-serializer
     package: xalan-j2
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: xerces-j2
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: xmlsec
-    repository: Uyuni_Other
+    repository: 4.2
   - artifact: commons-lang
     package: apache-commons-lang
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: velocity
-    repository: Leap
+    repository: 15_SP2_Update
 
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: jasper-el
     package: tomcat-lib
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: tomcat-el-3.0-api
     package: tomcat-el-3_0-api
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: tomcat-jsp-2.3-api
     package: tomcat-jsp-2_3-api
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: tomcat-juli
     package: tomcat-lib
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: tomcat-servlet-4.0-api
     package: tomcat-servlet-4_0-api
-    repository: Leap
+    repository: 15_SP2_Update
 
   - artifact: hamcrest-core
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: hamcrest-library
     package: hamcrest
     jar: hamcrest/library
-    repository: Leap
+    repository: 15_SP2_Update
   - artifact: junit
-    repository: Leap
+    repository: 15_SP2_GA
   - artifact: ical4j
-    repository: Uyuni_Other
+    repository: 4.2

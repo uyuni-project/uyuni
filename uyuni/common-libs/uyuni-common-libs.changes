@@ -1,5 +1,6 @@
 - Handle broken RPM packages to prevent exceptions
   causing fails on repository synchronization (bsc#1186650)
+- Adapt the tests to the new images
 
 -------------------------------------------------------------------
 Fri May 28 09:11:32 CEST 2021 - jgonzalez@suse.com

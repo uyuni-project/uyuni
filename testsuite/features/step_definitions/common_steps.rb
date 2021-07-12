@@ -168,10 +168,6 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
 
-When(/^I navigate to "([^"]*)" page$/) do |page|
-  visit("https://#{$server.full_hostname}/#{page}")
-end
-
 # systemspage and clobber
 Given(/^I am on the Systems page$/) do
   steps %(
@@ -255,10 +251,6 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, canonical_path)
 end
 
-When(/^I view system with id "([^"]*)"$/) do |arg1|
-  visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
-end
-
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   _os_version, os_family = get_os_version(node)
@@ -335,10 +327,6 @@ end
 # package steps
 Then(/^I should see package "([^"]*)"$/) do |package|
   step %(I should see a "#{package}" text)
-end
-
-Given(/^I am on the manage software channels page$/) do
-  visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
@@ -531,17 +519,11 @@ Then(/^the SLE12 SP5 product should be added$/) do
   raise unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp5]'
 end
 
-Then(/^the SLE15 SP2 product should be added$/) do
+Then(/^the SLE15 (SP2|SP3) product should be added$/) do |sp_version|
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP2-Pool for x86_64 SUSE Linux Enterprise Server 15 SP2 x86_64 [sle-product-sles15-sp2-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP2-Updates for x86_64 Basesystem Module 15 SP2 x86_64 [sle-module-basesystem15-sp2-updates-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Server-Applications15-SP2-Pool for x86_64 Server Applications Module 15 SP2 x86_64 [sle-module-server-applications15-sp2-pool-x86_64]'
-end
-
-Then(/^the SLE15 SP1 products should be added$/) do
-  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  raise unless output[:stdout].include? '[I] SLE-Product-SLES15-SP1-Pool for x86_64 SUSE Linux Enterprise Server 15 SP1 x86_64 [sle-product-sles15-sp1-pool-x86_64]'
-  raise unless output[:stdout].include? '[I] SLE-Module-Basesystem15-SP1-Updates for x86_64 Basesystem Module 15 SP1 x86_64 [sle-module-basesystem15-sp1-updates-x86_64]'
+  raise unless output[:stdout].include? "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
+  raise unless output[:stdout].include? "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
+  raise unless output[:stdout].include? "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
@@ -696,9 +678,7 @@ end
 Then(/^I add proxy record into hosts file on "([^"]*)" if avahi is used$/) do |host|
   node = get_target(host)
   if node.full_hostname.include? 'tf.local'
-    output, _code = $proxy.run("ip address show dev eth0")
-    ip = output.split("\n")[2].split[1].split('/')[0]
-    node.run("echo '#{ip} #{$proxy.full_hostname} #{$proxy.hostname}' >> /etc/hosts")
+    node.run("echo '#{$proxy.public_ip} #{$proxy.full_hostname} #{$proxy.hostname}' >> /etc/hosts")
   else
     puts 'Record not added - avahi domain is not detected'
   end
@@ -1150,7 +1130,7 @@ When(/^I check for failed events on history event page$/) do
   event_table_xpath = "//div[@class='table-responsive']/table/tbody"
   rows = find(:xpath, event_table_xpath)
   rows.all('tr').each do |tr|
-    if tr.has_css?('.fa.fa-times-circle-o.fa-1-5x.text-danger')
+    if tr.all(:css, '.fa.fa-times-circle-o.fa-1-5x.text-danger').any?
       failings << "#{tr.text}\n"
     end
   end

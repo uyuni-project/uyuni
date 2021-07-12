@@ -65,7 +65,7 @@ type SchedulePickerFormProps = {
 export function SchedulePickerForm(props: SchedulePickerFormProps) {
   const [model, setModel] = useState<any>({});
   const [isValid, setValid] = useState(false);
-  const onSubmit = () => props.onAssign(parseInt(model.scheduleId), model.cancelActions);
+  const onSubmit = () => props.onAssign(parseInt(model.scheduleId, 10), model.cancelActions);
   const onChange = model => setModel(Object.assign({}, model));
 
   return (

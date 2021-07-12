@@ -44,6 +44,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
@@ -53,15 +54,18 @@ import com.suse.scc.model.UpgradePathJson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -369,6 +373,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
         InputStreamReader inputStreamReader6 = new InputStreamReader(ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_repositories.json"));
         List<SCCRepositoryJson> add_repos = gson.fromJson(inputStreamReader6, new TypeToken<List<SCCRepositoryJson>>() {}.getType());
+        InputStream pres = ContentSyncManager.class.getResourceAsStream(testDataPath + "additional_products.json");
+        if (pres != null) {
+            InputStreamReader inputStreamReader7 = new InputStreamReader(pres);
+            List<SCCProductJson> add_products = gson.fromJson(inputStreamReader7, new TypeToken<List<SCCProductJson>>() {}.getType());
+            products.addAll(add_products);
+            add_repos.addAll(ContentSyncManager.collectRepos(ContentSyncManager.flattenProducts(add_products).collect(Collectors.toList())));
+        }
+        repositories.addAll(add_repos);
 
         ContentSyncManager csm = new ContentSyncManager();
         Credentials credentials = null;

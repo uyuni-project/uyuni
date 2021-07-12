@@ -94,11 +94,12 @@ public class ScheduleXccdfAction extends ScapSetupAction {
     private ActionMessages processForm(User user, Server server, DynaActionForm f) {
         String params = (String) f.get("params");
         String path = (String) f.get("path");
+        String ovalfiles = (String) f.get("ovalfiles");
         Date earliest = getStrutsDelegate().readScheduleDate(f, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
         try {
             ScapAction action = ActionManager.scheduleXccdfEval(user, server,
-                path, params, earliest);
+                path, params, ovalfiles, earliest);
 
             ActionMessages msgs = new ActionMessages();
             msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.xccdfeval",
@@ -119,6 +120,7 @@ public class ScheduleXccdfAction extends ScapSetupAction {
             HttpServletRequest request) {
         request.setAttribute("path", form.get("path"));
         request.setAttribute("params", form.get("params"));
+        request.setAttribute("ovalfiles", form.get("ovalfiles"));
         Date earliest = strutsDelegate.readScheduleDate(form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
         DatePicker datePicker = strutsDelegate.prepopulateDatePicker(request,

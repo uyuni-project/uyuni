@@ -38,6 +38,7 @@ import com.google.gson.JsonElement;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -213,6 +214,49 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests fetching playbook contents
+     */
+    public void testFetchPlaybook() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.right("suchplaybookwow"))));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+
+        assertEquals(
+                Optional.of("suchplaybookwow"),
+                AnsibleManager.fetchPlaybookContents(path.getId(), "site.yml", user));
+    }
+
+    /**
+     * Tests fetching playbook contents
+     */
+    public void testFetchPlaybookSaltNoResult() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.left(false))));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+        try {
+            AnsibleManager.fetchPlaybookContents(path.getId(), "site.yml", user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalStateException e) {
+            assertEquals("no result", e.getMessage());
+        }
+    }
+
+    /**
      * Test scheduling playbook with an empty path
      *
      * @throws Exception
@@ -220,7 +264,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     public void testSchedulePlaybookBlankPath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
-            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), new Date(), Optional.empty(), user);
+            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, new Date(),
+                    Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
         catch (IllegalArgumentException e) {
@@ -235,7 +280,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     public void testSchedulePlaybookNonexistingMinion() throws Exception {
         try {
-            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, new Date(), Optional.empty(), user);
+            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, new Date(),
+                    Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -252,19 +298,43 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
 
-        Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> expected = Optional.of(Map.of("/tmp/test", Map.of("site.yml",
-                new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts"))));
+        Map<String, Map<String, AnsiblePlaybookSlsResult>> expected = Map.of("/tmp/test", Map.of("site.yml",
+                new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts")));
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(Optional.of(new Gson().fromJson(
-                    "{'/tmp/test': {'site.yml': {'fullpath': '/tmp/test/site.yml', 'custom_inventory': '/tmp/test/hosts'}}}", JsonElement.class))));
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.right(expected))));
         }});
         AnsibleManager.setSaltApi(saltApi);
 
         Optional<Map<String, Map<String, AnsiblePlaybookSlsResult>>> result = AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
-        assertEquals(expected, result);
+        assertEquals(Optional.of(expected), result);
+    }
+
+    /**
+     * Test discover playbooks
+     *
+     * @throws Exception
+     */
+    public void testDiscoverPlaybooksSaltError() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.left("error"))));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+        try {
+            AnsibleManager.discoverPlaybooks(playbookPath.getId(), user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalStateException e) {
+            assertEquals("error", e.getMessage());
+        }
     }
 
     /**
@@ -306,19 +376,41 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer controlNode = createAnsibleControlNode(user);
         AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
-        Optional<Map<String, Map<String, Object>>> expected =
-                Optional.of(Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2")))));
+        Map<String, Map<String, Map<String, List<String>>>> expected =
+                Map.of("minion",  Map.of("all", Map.of("children", List.of("host1", "host2"))));
 
         SaltApi saltApi = CONTEXT.mock(SaltApi.class);
         CONTEXT.checking(new Expectations() {{
-            allowing(saltApi).rawJsonCall(with(any(LocalCall.class)), with(controlNode.getMinionId()));
-            will(returnValue(Optional.of(new Gson().fromJson(
-                    "{'minion': {'all': {'children': ['host1', 'host2']}}}", JsonElement.class))));
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.right(expected))));
         }});
         AnsibleManager.setSaltApi(saltApi);
 
         Optional<Map<String, Map<String, Object>>> result = AnsibleManager.introspectInventory(inventoryPath.getId(), user);
-        assertEquals(expected, result);
+        assertEquals(Optional.of(expected), result);
+    }
+
+    /**
+     * Test introspect inventory
+     */
+    public void testIntrospectInventorySaltError() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(user);
+        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath("inventory", controlNode.getId(), "/tmp/test/hosts", user);
+
+        SaltApi saltApi = CONTEXT.mock(SaltApi.class);
+        CONTEXT.checking(new Expectations() {{
+            allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
+            will(returnValue(Optional.of(Xor.left("error desc"))));
+        }});
+        AnsibleManager.setSaltApi(saltApi);
+
+        try {
+            AnsibleManager.introspectInventory(inventoryPath.getId(), user);
+            fail("An exception should have been thrown.");
+        }
+        catch (IllegalStateException e) {
+            assertEquals("error desc", e.getMessage());
+        }
     }
 
     /**

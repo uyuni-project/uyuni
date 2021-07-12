@@ -1,3 +1,5 @@
+- Fix Salt scap state to use new 'xccdf_eval' function
+- fix product detection for native RHEL products (bsc#1187397)
 - when bootstrapping with ssh-push with tunnel use the port number
   for fetching GPG keys from the server (bsc#1187441)
 

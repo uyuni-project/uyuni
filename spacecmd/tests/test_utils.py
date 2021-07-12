@@ -386,7 +386,7 @@ class TestSCUtils:
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(mprint.call_args_list,
-                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes  2019.01.15')
+                      'CVE-12345-678   Sometimes synopsis has a long text here.                      2019.01.15')
 
     def test_print_errata_summary_no_date_no_issue_date_key(self):
         """
@@ -401,7 +401,7 @@ class TestSCUtils:
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(mprint.call_args_list,
-                      'CVE-12345-678   Sometimes synopsis has a long text here. Sometimes       N/A')
+                      'CVE-12345-678   Sometimes synopsis has a long text here.                           N/A')
 
     def test_print_errata_list_no_errata(self):
         """
@@ -440,11 +440,11 @@ class TestSCUtils:
                                 ['Security Errata',
                                  '---------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15', '', 'Bug Fix Errata', '--------------',
+                                 'text here             2019.01.15', '', 'Bug Fix Errata', '--------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15', '', 'Enhancement Errata', '------------------',
+                                 'text here             2019.01.15', '', 'Enhancement Errata', '------------------',
                                  'CVE-123-4567    text here text here text here text here '
-                                 'text here   2019.01.15']
+                                 'text here             2019.01.15']
                                 )
 
     def test_max_length(self):

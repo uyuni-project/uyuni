@@ -32,6 +32,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.maintenance.IcalUtils;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
@@ -168,6 +169,7 @@ public class MaintenanceCalendarController {
                         "name", schedule.getName()
                 )
         ).collect(Collectors.toList()));
+        json.setEventNames(new IcalUtils().getEventNames(calendar));
 
         return json(response, json);
     }
