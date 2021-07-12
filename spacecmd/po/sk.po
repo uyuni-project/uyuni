@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-12 18:10+0000\n"
+"PO-Revision-Date: 2021-07-12 22:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4271,19 +4271,19 @@ msgstr "použitie: repo_rename STARÝ_NÁZOV NOVÝ_NÁZOV"
 #: ../src/spacecmd/repo.py:405
 #, python-format
 msgid "Could not find repo %s"
-msgstr ""
+msgstr "Nepodarilo sa nájsť repozitár %s"
 
 #: ../src/spacecmd/repo.py:418
 msgid "repo_updateurl: Change the URL of a user repository"
-msgstr ""
+msgstr "repo_updateurl: Zmeniť URL používateľského repozitára"
 
 #: ../src/spacecmd/repo.py:419
 msgid "usage: repo_updateurl <repo> <url>"
-msgstr ""
+msgstr "použitie: repo_updateurl <repozitár> <url>"
 
 #: ../src/spacecmd/repo.py:444
 msgid "repo_updatessl: Change the SSL certificates of a user repository"
-msgstr ""
+msgstr "repo_updatessl: Zmeniť certifikáty SSL používateľského repozitára"
 
 #: ../src/spacecmd/repo.py:445
 msgid ""
@@ -4293,6 +4293,11 @@ msgid ""
 "  --cert       SSL Client certificate (not required)\n"
 "  --key        SSL Client key (not required)"
 msgstr ""
+"použitie: repo_updatessl <voľby>)\n"
+"voľby:\n"
+"  --ca         Certifikát CA SSL (nevyžaduje sa)\n"
+"  --cert       Certifikát klienta SSL (nevyžaduje sa)\n"
+"  --key        Kľúč klienta SSL (nevyžaduje sa)"
 
 #: ../src/spacecmd/report.py:44
 msgid "report_inactivesystems: List all inactive systems"
