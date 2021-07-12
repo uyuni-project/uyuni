@@ -1,14 +1,16 @@
-# Copyright 2011-2018 SUSE LLC
+# Copyright 2011-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'xmlrpc_test'
 
-# system class
+# System API Namespace
 class XMLRPCSystemTest < XMLRPCBaseTest
+  # List all systems
   def list_systems
     @connection.call('system.list_systems', @sid)
   end
 
+  # Search a system by name
   def search_by_name(name)
     @connection.call('system.search_by_name', @sid, name)
   end
@@ -46,7 +48,8 @@ class XMLRPCSystemTest < XMLRPCBaseTest
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, salt_ssh)
     else
       proxy = @connection.call('system.search_by_name', @sid, $proxy.ip)
-      proxy_id = proxy.map { |s| s['id'] }.first
+      proxy_id = proxy.map { |s| s['id'] }
+                      .first
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, proxy_id, salt_ssh)
     end
   end
@@ -61,6 +64,7 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     @connection.call('system.config.remove_channels', @sid, servers, channels)
   end
 
+  # Create a system record
   def create_system_record(name, kslabel, koptions, comment, netdevices)
     @connection.call('system.createSystemRecord', @sid, name, kslabel, koptions, comment, netdevices)
   end
@@ -89,5 +93,10 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   #
   def list_empty_system_profiles
     @connection.call('system.listEmptySystemProfiles', @sid)
+  end
+
+  # Create custom information in the system
+  def create_custom_key(value, desc)
+    @connection.call('system.custominfo.create_key', @sid, value, desc)
   end
 end
