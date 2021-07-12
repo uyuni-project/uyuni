@@ -1,7 +1,6 @@
 # Copyright 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# rubocop:disable Style/GlobalVars
 When(/^I prepare configuration for "([^"]*)" terminal deployment$/) do |environment|
   environment = environment.downcase.gsub(' ', '')
   path = "ext-tools/semi-xmlrpc-tester/assets/#{environment}"
@@ -13,7 +12,7 @@ When(/^I prepare configuration for "([^"]*)" terminal deployment$/) do |environm
   }
   config_items = {
     SERVER_URL: $server.full_hostname,
-    BUILDHOST: buildhosts[environment.to_sym].full_hostname,
+    BUILDHOST: buildhosts[environment].full_hostname,
     RBS: $proxy.full_hostname
   }
   config_items.each do |key, value|
@@ -21,7 +20,6 @@ When(/^I prepare configuration for "([^"]*)" terminal deployment$/) do |environm
   end
 end
 
-# rubocop:disable Style/AndOr
 When(/^I execute "([^"]*)" for "([^"]*)" via semi-xmlrpc-tester$/) do |scenario, environment|
   environment = environment.downcase.gsub(' ', '')
   path = 'ext-tools/semi-xmlrpc-tester'
@@ -34,5 +32,3 @@ When(/^I prepare kiwi profile for SLE11 SP4 buildhost$/) do
   system("scp -o StrictHostKeyChecking=no -r /root/manager-build-profiles/ root@#{$sle11sp4_buildhost.full_hostname}:/manager-build-profiles") or raise StandardError, 'Cannot push kiwi profiles to SLE11 SP4 buildhost!'
   system('rm -rf /root/manager-build-profiles')
 end
-# rubocop:enable Style/AndOr
-# rubocop:enable Style/GlobalVars

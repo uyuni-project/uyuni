@@ -2,4 +2,103 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   EnabledByDefault: true
+  SuggestExtensions: false
 
+Bundler/GemComment:
+  Exclude:
+    - 'Gemfile'
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/RedundantLineBreak:
+  Exclude:
+    - 'features/step_definitions/*.rb'
+
+Lint/ConstantResolution:
+  Enabled: false
+
+Lint/NumberConversion:
+    Enabled: false
+
+Lint/OrAssignmentToConstant:
+  Enabled: false
+
+Lint/SymbolConversion:
+  EnforcedStyle: consistent
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/MethodLength:
+  Max: 18
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'features/support/env.rb'
+    - 'features/support/cucumber_hooks.rb'
+    - 'features/support/twopence_init.rb'
+    - 'features/support/common_lib.rb'
+
+Metrics/ParameterLists:
+  Max: 7
+  MaxOptionalParameters: 4
+
+Metrics/PerceivedComplexity:
+  Max: 9
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/InclusiveLanguage:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/MissingElse:
+  Enabled: false
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/IpAddresses:
+  Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+Style/StringHashKeys:
+  Enabled: false
+
+Style/TopLevelMethodDefinition:
+  Enabled: false
+
+Style/Copyright:
+  Enabled: true
+  AutocorrectNotice: '.*Copyright.*SUSE LLC.*'
+  Notice: '.*Copyright.*SUSE LLC.*'
+
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: false

@@ -97,7 +97,7 @@ When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do 
   puts $server.run("ls -la / | /usr/bin/grep #{bkp_dir}", check_errors: false)[0]
 end
 
-Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
+Then(%r{^I should see error message that asks "(.*?)" belong to the same UID/GID as "(.*?)" directory$}) do |bkp_dir, data_dir|
   assert_includes($output,
                   "The \"#{bkp_dir}\" directory must belong to the same user and group as \"#{data_dir}\" directory.")
 end
