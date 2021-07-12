@@ -1,3 +1,4 @@
+- Parameterised apache document root.
 - Use lscpu to provide more CPU grains for all architectures
 - Add findutils to Kiwi bootstrap packages
 - Add support for Kiwi options

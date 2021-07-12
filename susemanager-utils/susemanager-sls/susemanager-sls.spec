@@ -21,6 +21,13 @@
 %global build_py3   1
 %endif
 
+%if 0%{?suse_version}
+%global wwwdocroot /srv/www/htdocs
+%else
+%global wwwdocroot %{_var}/www/html
+%endif
+
+
 Name:           susemanager-sls
 Version:        4.3.0
 Release:        0
@@ -116,7 +123,7 @@ py.test%{?rhel:-3}
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
-ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
 # Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
 USERLAND="/srv/salt"
