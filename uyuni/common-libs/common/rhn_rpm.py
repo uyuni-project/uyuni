@@ -252,13 +252,16 @@ class RPM_Package(A_Package):
         Compute the size in bytes of the rpm header struct starting at the current
         position in package_file.
         """
-        # Read the number of index entries
-        header_index = struct_lead[8:12]
-        (header_index_value, ) = struct.unpack('>I', header_index)
+        try:
+            # Read the number of index entries
+            header_index = struct_lead[8:12]
+            (header_index_value, ) = struct.unpack('>I', header_index)
 
-        # Read the the size of the header data store
-        header_store = struct_lead[12:16]
-        (header_store_value, ) = struct.unpack('>I', header_store)
+            # Read the the size of the header data store
+            header_store = struct_lead[12:16]
+            (header_store_value, ) = struct.unpack('>I', header_store)
+        except:
+            raise InvalidPackageError from None
 
         # The total size of the header. Each index entry is 16 bytes long.
         header_size = 8 + 4 + 4 + header_index_value * 16 + header_store_value
@@ -319,13 +322,16 @@ def get_header_struct_size(package_file):
     # Move past the header preamble
     package_file.seek(8, 1)
 
-    # Read the number of index entries
-    header_index = package_file.read(4)
-    (header_index_value, ) = struct.unpack('>I', header_index)
+    try:
+        # Read the number of index entries
+        header_index = package_file.read(4)
+        (header_index_value, ) = struct.unpack('>I', header_index)
 
-    # Read the the size of the header data store
-    header_store = package_file.read(4)
-    (header_store_value, ) = struct.unpack('>I', header_store)
+        # Read the the size of the header data store
+        header_store = package_file.read(4)
+        (header_store_value, ) = struct.unpack('>I', header_store)
+    except:
+        raise InvalidPackageError from None
 
     # The total size of the header. Each index entry is 16 bytes long.
     header_size = 8 + 4 + 4 + header_index_value * 16 + header_store_value
