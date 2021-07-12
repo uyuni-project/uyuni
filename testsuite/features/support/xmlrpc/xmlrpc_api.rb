@@ -1,47 +1,49 @@
-# Copyright (c) 2011-2017 SUSE LLC.
+# Copyright (c) 2011-2021 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require_relative 'xmlrpctest'
+require_relative 'xmlrpc_test'
 
-# api namespace class
+# API Namespace base
 class XMLRPCApiTest < XMLRPCBaseTest
-  def get_version
+  # Get API version
+  def version
     @connection.call('api.getVersion')
   end
 
+  # Get System version
   def system_version
     @connection.call('api.systemVersion')
   end
 
-  def get_count_of_api_namespaces
+  # Get amount of API namespaces
+  def count_of_api_namespaces
     namespaces = @connection.call('api.getApiNamespaces', @sid)
     count = 0
     count = namespaces.length unless namespaces.nil?
     count
   end
 
-  #
   # Test lists all available api calls grouped by namespace.
-  #
-  def get_count_of_api_call_list_groups
+  def count_of_api_call_list_groups
     call_list = @connection.call('api.getApiCallList', @sid)
     count = 0
     count = call_list.length unless call_list.nil?
     count
   end
 
-  def get_count_of_api_namespace_call_list
+  # Get amount of API endpoints
+  def count_of_api_namespace_call_list
     count = 0
     namespaces = @connection.call('api.getApiNamespaces', @sid)
-    puts '    Spaces found: ' + namespaces.length.to_s
+    puts("    Spaces found: #{namespaces.length}")
     namespaces.each do |ns|
-      print '      Analyzing ' + ns[0] + '... '
+      print("      Analyzing #{ns[0]}... ")
       call_list = @connection.call('api.getApiNamespaceCallList', @sid, ns[0])
-      if !call_list.nil?
-        count += call_list.length
-        puts 'Done'
+      if call_list.nil?
+        puts('Failed')
       else
-        puts 'Failed'
+        count += call_list.length
+        puts('Done')
       end
     end
     count

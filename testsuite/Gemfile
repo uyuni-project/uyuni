@@ -1,22 +1,25 @@
+# Copyright (c) 2014-2021 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 source 'https://rubygems.org'
 
-gem 'cucumber', '2.0.0'
-gem 'rack', '>= 2.0.8'
-gem 'rack-test', '1.1.0'
 gem 'capybara', '2.18.0'
+gem 'cucumber', '2.0.0'
 gem 'jwt', '2.2.1'
 gem 'mime-types', '3.2.2'
+gem 'minitest', ' 5.11.3'
 gem 'nokogiri', '1.10.8'
+gem 'parallel_tests', '2.29.1'
+gem 'rack', '>= 2.0.8'
+gem 'rack-test', '1.1.0'
 gem 'rake', '12.3.3'
 gem 'selenium-webdriver', '3.141.0'
-#gem 'simplecov', '0.17.0'
+# gem 'simplecov', '0.17.0'
+gem 'syntax', '1.2.2'
 # Pre-requisite:
-# Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro> and install twopence RPMs
-# or build and install from https://github.com/openSUSE/twopence
-gem 'twopence'
-gem 'xmlrpc', '0.3.0'
-gem 'minitest', ' 5.11.3'
+# Add repository https://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/<your_distro>
+# and install twopence RPMs or build and install from https://github.com/openSUSE/twopence
+gem 'twopence', '0.4.2'
 gem 'websocket', '1.2.8'
 gem 'websocket-driver', '0.7.1'
-gem 'syntax', '1.2.2'
-gem 'parallel_tests' , '2.29.1'
+gem 'xmlrpc', '0.3.0'
