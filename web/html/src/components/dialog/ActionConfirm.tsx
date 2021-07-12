@@ -59,7 +59,6 @@ export class ActionConfirm extends React.Component<Props, State> {
                 <input
                   type="checkbox"
                   id="force"
-                  defaultChecked={false}
                   checked={this.state.force}
                   onChange={event => this.setState({ force: event.target.checked })}
                 />

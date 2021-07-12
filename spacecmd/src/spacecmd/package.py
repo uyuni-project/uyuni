@@ -89,16 +89,18 @@ def do_package_details(self, args):
             installed_systems = \
                 self.client.system.listSystemsWithPackage(self.session, package_id)
 
-            print(_('Name:    %s' % details.get('name')))
-            print(_('Version: %s' % details.get('version')))
-            print(_('Release: %s' % details.get('release')))
-            print(_('Epoch:   %s' % details.get('epoch')))
-            print(_('Arch:    %s' % details.get('arch_label')))
+            print(_('Name:      %s' % details.get('name')))
+            print(_('Version:   %s' % details.get('version')))
+            print(_('Release:   %s' % details.get('release')))
+            print(_('Epoch:     %s' % details.get('epoch')))
+            print(_('Arch:      %s' % details.get('arch_label')))
             print('')
-            print(_('File:    %s' % details.get('file')))
-            print(_('Path:    %s' % details.get('path')))
-            print(_('Size:    %s' % details.get('size')))
-            print('%s%s' % ((details.get('checksum_type').upper() + ":").ljust(9),
+            print(_('File:      %s' % details.get('file')))
+            print(_('Path:      %s' % details.get('path')))
+            print(_('Size:      %s' % details.get('size')))
+            print(_('Retracted: %s' % (_('Yes') if details.get('part_of_retracted_patch')
+                else _('No'))))
+            print('%s%s' % ((details.get('checksum_type').upper() + ":").ljust(11),
                              details.get('checksum')))
             print('')
             print(_('Installed Systems: %i') % len(installed_systems))

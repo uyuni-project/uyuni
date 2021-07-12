@@ -1,3 +1,10 @@
+- Use lscpu to provide more CPU grains for all architectures
+- Add findutils to Kiwi bootstrap packages
+- Add support for Kiwi options
+- Fix Salt scap state to use new 'xccdf_eval' function
+- Fix deleting stopped virtual network (bsc#1186281)
+- Handle virtual machines running on pacemaker cluster
+- fix product detection for native RHEL products (bsc#1187397)
 - when bootstrapping with ssh-push with tunnel use the port number
   for fetching GPG keys from the server (bsc#1187441)
 

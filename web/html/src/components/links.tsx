@@ -7,6 +7,7 @@ type LinkProps = {
   className?: string;
   title?: string;
 };
+
 const ChannelAnchorLink = (props: LinkProps) => (
   <a
     className="channel-anchor-link"

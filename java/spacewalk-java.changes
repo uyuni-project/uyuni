@@ -1,3 +1,13 @@
+- Get CPU data for AArch64
+- Add option to run Ansible playbooks in 'test' mode
+- Add support for Kiwi options
+- New filter template: Live patching based on a system
+- Adapt generated pillar data to run the new Salt scap state
+- Handle virtual machines running on pacemaker cluster
+- SP migration: wait some seconds before scheduling "package refresh" action after migration is completed (bsc#1187963)
+- cleanup and regenerate system state files when machine id has changed (bsc#1187660)
+- manually disable repositories on redhat like systems
+- Do not update Kickstart session when download after session is complete or failed (bsc#1187621)
 - define a pillar for the https port when connection as ssh-push with tunnel (bsc#1187441)
 - Fix the unit test coverage reports
 - Fix random NullPointerException when rendering page tabs (bsc#1182769)
@@ -10,6 +20,11 @@ Fri Jun 18 12:41:30 CEST 2021 - jgonzalez@suse.com
 - Show the full state return message for VM actions
 - show reposync errors in user notification details
 - do not check accessibility of free product repositories (bsc#1182817)
+
+-------------------------------------------------------------------
+Thu Jun 17 10:38:51 UTC 2021 - Julio González Gil <jgonzalez@suse.com>
+
+- Use the correct product tag
 
 -------------------------------------------------------------------
 Thu Jun 10 13:46:09 CEST 2021 - jgonzalez@suse.com

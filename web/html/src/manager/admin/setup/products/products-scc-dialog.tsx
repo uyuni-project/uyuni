@@ -108,8 +108,8 @@ class SCCDialog extends React.Component<Props> {
         steps: stepList,
       });
 
-      Network.post(currentStep.url, undefined, "application/json")
-        .promise.then(data => {
+      Network.post(currentStep.url)
+        .then(data => {
           // set the result for the i-step
           currentStep.success = data;
           currentStep.inProgress = false;

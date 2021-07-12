@@ -40,6 +40,14 @@ public class CpuArchUtil {
     }
 
     /**
+     * @param cpuarch the cpu arch
+     * @return true if the given cpuarch is AArch64.
+     */
+    public static boolean isAarch64(String cpuarch) {
+        return "aarch64".equals(cpuarch) || "arm64".equals(cpuarch);
+    }
+
+    /**
      *
      * @param cpuarch the cpu arch
      * @return Check if the given cpuarch is X86 (32 or 64 bit)

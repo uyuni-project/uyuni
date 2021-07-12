@@ -49,15 +49,14 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   applyHighstate = () => {
     const request = Network.post(
       "/rhn/manager/api/states/applyall",
-      JSON.stringify({
+      {
         ids: window.minions?.map(m => m.id),
         earliest: Formats.LocalDateTime(this.state.earliest),
         actionChain: this.state.actionChain ? this.state.actionChain.text : null,
         test: this.state.test,
-      }),
-      "application/json"
+      }
     )
-      .promise.then(data => {
+      .then(data => {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>

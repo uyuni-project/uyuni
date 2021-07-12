@@ -81,7 +81,7 @@ def compute_list_to_leave_running
     next unless node
     os_version, os_family = get_os_version(node)
     next unless os_family == 'sles'
-    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP1', '15-SP2', '15-SP3'].include? os_version
+    raise "Can't build list of reposyncs to leave running" unless ['12-SP4', '12-SP5', '15-SP2', '15-SP3'].include? os_version
     do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
   end
   do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[MIGRATE_SSH_MINION_FROM]

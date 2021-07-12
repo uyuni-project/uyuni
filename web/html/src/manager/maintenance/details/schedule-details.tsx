@@ -24,6 +24,7 @@ import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string; // Name of the maintenance schedule
+  eventNames: Array<string>;
   type: "SINGLE" | "MULTI";
   calendarName: string | undefined;
   onDelete: (item: { name: string }) => Promise<any>;
@@ -63,6 +64,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
         <MaintenanceScheduleOverview
           id={props.id}
           name={props.name}
+          eventNames={props.eventNames}
           calendarName={props.calendarName}
           type={props.type}
           onMessage={props.onMessage}
@@ -80,6 +82,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 type OverviewProps = {
   id: number,
   name: string; // Name of the maintenance schedule
+  eventNames: Array<string>;
   calendarName: string | undefined;
   type: "SINGLE" | "MULTI";
   onMessage: (messages: MessageType[]) => void;
@@ -113,6 +116,7 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
             <WebCalendar
               id={props.id}
               type={"schedule"}
+              eventNames={props.eventNames}
               messages={props.onMessage}
               clearMessages={props.clearMessages}
               responseError={props.responseError}
@@ -137,18 +141,16 @@ const SystemPicker = (props: SystemPickerProps) => {
 
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
-      .promise.then(setSelectedSystems)
+      .then(setSelectedSystems)
       .catch(xhr => props.onMessage(Network.responseErrorMessage(xhr)));
   }, [props.scheduleId]);
 
   const onAssign = () => {
     return Network.post(
       `/rhn/manager/api/maintenance/schedule/${props.scheduleId}/setsystems`,
-      JSON.stringify({ systemIds: selectedSystems, cancelActions: isCancelActions }),
-      "application/json",
-      false
+      { systemIds: selectedSystems, cancelActions: isCancelActions }
     )
-      .promise.then(() =>
+      .then(() =>
         props.onMessage(
           MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))
         )

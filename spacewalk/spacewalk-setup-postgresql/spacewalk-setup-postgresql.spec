@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup-postgresql
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,12 +18,12 @@
 
 
 Name:           spacewalk-setup-postgresql
-Version:        4.2.2
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -61,7 +61,7 @@ sed -i '/^checkpoint_segments/d' %{buildroot}/%{_datadir}/spacewalk/setup/postgr
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE
+%license LICENSE
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
 %dir %{_datadir}/spacewalk/setup/defaults.d

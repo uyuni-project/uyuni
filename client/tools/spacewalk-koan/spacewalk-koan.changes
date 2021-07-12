@@ -1,3 +1,7 @@
+- Bump version to 4.3.0
+- Fix for spacewalk-koan tests after switching to the new
+  Docker images
+
 -------------------------------------------------------------------
 Wed Nov 25 12:22:45 CET 2020 - jgonzalez@suse.com
 

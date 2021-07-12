@@ -1,4 +1,6 @@
 #
+# spec file for package susemanager-nodejs-sdk-devel
+#
 # Copyright (c) 2021 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
@@ -13,8 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 # Disable automatic requirement generation on build.
-AutoReqProv: no
+AutoReqProv:    no
 
 # Define macros if they are not defined.
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
@@ -24,14 +27,13 @@ AutoReqProv: no
 %global debug_package %{nil}
 
 Name:           susemanager-nodejs-sdk-devel
-Version:        4.2.12
-Release:        1%{?dist}
-
-License:        Apache-2.0 and 0BSD and BSD-2-Clause and BSD-3-Clause and MIT and CC-BY-3.0 and ISC and SUSE-Public-Domain and WTFPL and MPL-2.0
+Version:        4.3.0
+Release:        0
 
 Summary:        Node.js software used by SUSE Manager at build time
-Url:            https://www.suse.com/products/suse-manager
+License:        Apache-2.0 AND 0BSD AND BSD-2-Clause AND BSD-3-Clause AND MIT AND CC-BY-3.0 AND ISC AND SUSE-Public-Domain AND WTFPL AND MPL-2.0
 Group:          Development/Languages/Other
+URL:            https://www.suse.com/products/suse-manager
 
 Source0:        susemanager-nodejs-sdk-devel.tar.gz
 Source1:        susemanager-nodejs-modules.tar.gz

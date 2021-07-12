@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -23,20 +23,49 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/configFilesHandler.py:129
-#: ../server/handlers/xmlrpc/registration.py:217
-#: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "미완료 프록시 인증 토큰: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "거부된 프록시 인증"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Null 조직에서 패키지를 관리할 권한 없음"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "%s 조직에서 패키지를 관리할 권한 없음"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "관리 작업을 수행할 권한 없음"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "%s 채널을 관리할 권한이 없거나 해당 채널이 없음"
+
+#: ../server/importlib/userAuth.py:204
 #, python-format
 msgid ""
 "\n"
-"                   %s Account has been deactivated on this server.\n"
-"                   Please contact your Org administrator for more help."
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s 계정이 이 서버에서 비활성화되었습니다.\n"
-"                   조직 관리자에게 문의하여 추가적인 지원을 요청하십시오."
+"               %s 계정이 이 서버에서 비활성화되었습니다.\n"
+"               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
 
 #: ../server/rhnChannel.py:1999
 #, python-format
@@ -166,87 +195,62 @@ msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
 msgid "Cannot register usernames ending with %s"
 msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
 
-#: ../server/apacheRequest.py:59
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this server."
+msgstr "이 서버에서 ISS가 비활성화되었습니다."
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid request received (%s)."
-msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
 
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"중요 메시지:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"'%s' 실행 중: 다음이 catch됨:\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "유효하지 않은 URI %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Null 조직에서 패키지를 관리할 권한 없음"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "%s 조직에서 패키지를 관리할 권한 없음"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "관리 작업을 수행할 권한 없음"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "%s 채널을 관리할 권한이 없거나 해당 채널이 없음"
-
-#: ../server/importlib/userAuth.py:204
+#: ../server/handlers/app/packages.py:192
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
+"                   %s Account has been deactivated on this server.\n"
+"                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"               %s 계정이 이 서버에서 비활성화되었습니다.\n"
-"               조직의 관리자에게 문의하여 추가 지원을 요청하십시오."
+"                   %s 계정이 이 서버에서 비활성화되었습니다.\n"
+"                   조직 관리자에게 문의하여 추가적인 지원을 요청하십시오."
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/handlers/applet/applet.py:78
+#, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "{PRODUCT_NAME} 데이터베이스에서 시스템을 찾을 수 없음"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr ""
+"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
 
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "패키지를 찾을 수 없음"
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "유효하지 않은 세션 키"
 
-#: ../server/apacheAuth.py:66
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "이 서버 ID는 더 이상 존재하지 않음"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "유효하지 않은 system_id/action_id 쌍입니다."
+
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "미완료 프록시 인증 토큰: %s"
+msgid "Invalid action value type %s (%s)"
+msgstr "유효하지 않은 작업 값 유형 %s(%s)"
 
-#: ../server/apacheAuth.py:84
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "전송된 프록시 서명 %s이(가) 시스템의 %s와(과) 일치하지 않습니다."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "거부된 프록시 인증"
+msgid "Action %s does not belong to server %s"
+msgstr "%s 작업은 %s 서버에 속하지 않음"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -289,24 +293,6 @@ msgstr "제품 인수로 딕셔너리가 필요함"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "%s(%s)에 유효하지 않은 값 '%s'"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"SUSE Manager Proxy 서비스가 다음 서버 프로파일에 대해 활성화되지 않음: \"%s\""
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "유효하지 않은 세션 키"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "이 서버 ID는 더 이상 존재하지 않음"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "유효하지 않은 system_id/action_id 쌍입니다."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -317,34 +303,62 @@ msgstr "다음이 아닌 패키지 이름이 필요: %s"
 msgid "Expected a package, not: %s"
 msgstr "다음이 아닌 패키지 필요: %s"
 
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "유효하지 않은 작업 값 유형 %s(%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "%s 작업은 %s 서버에 속하지 않음"
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "유효하지 않은 값 %s(%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "{PRODUCT_NAME} 데이터베이스에서 시스템을 찾을 수 없음"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this server."
-msgstr "이 서버에서 ISS가 비활성화되었습니다."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "\"%s\" 서버가 ISS용으로 활성화되지 않았습니다."
+msgid "Invalid RPM package %s requested"
+msgstr "유효하지 않은 RPM 패키지 %s 요청됨"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "패키지를 찾을 수 없음"
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "유효하지 않은 요청이 수신되었습니다(%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"중요 메시지:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"'%s' 실행 중: 다음이 catch됨:\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "유효하지 않은 URI %s"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "'%s' 아키텍처는 지원되지 않습니다."
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -389,20 +403,6 @@ msgstr "킥스타트 세션 불일치"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "재등록 토큰 스택은 지원되지 않습니다."
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "'%s' 아키텍처는 지원되지 않습니다."
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "이 클라이언트에서 root로 rhn_register를 실행하십시오."
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "시스템 프로파일에 대해 서비스가 허용되지 않음: \"%s\""
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -1057,47 +1057,6 @@ msgstr "오류 클래스 정보: %s\n"
 msgid "Explanation: %s"
 msgstr "설명: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ 로그를 이메일로 전송 +++"
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s의 %s 동기화 보고서"
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\"(명령줄에 지정됨)\n"
-"열거나 읽을 수 없음:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\"을(를) 열거나\n"
-"쓸 수 없는 대상:\n"
-"%s"
-
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1287,6 +1246,28 @@ msgstr "킥스타트 가능 트리 가져오기(%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "가져온 킥스타트 가능 트리(%d)"
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\"(명령줄에 지정됨)\n"
+"열거나 읽을 수 없음:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"\"%s\"을(를) 열거나\n"
+"쓸 수 없는 대상:\n"
+"%s"
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1351,10 +1332,18 @@ msgstr "SUSE Manager는 조직 데이터 동기화를 지원하지 않습니다.
 msgid "Skipping..."
 msgstr "건너뛰는 중..."
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr "+++ 로그를 이메일로 전송 +++"
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
 msgstr "%s의 SUSE Manager 내부 서버 동기화 보고서"
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
 #: ../satellite_tools/satsync.py:520
 msgid " - file-system synchronization"
@@ -2047,3 +2036,14 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr "%s의 형식은 YYYYMMDD여야 합니다.\n"
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s의 %s 동기화 보고서"

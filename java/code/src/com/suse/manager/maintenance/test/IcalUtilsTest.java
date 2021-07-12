@@ -21,7 +21,6 @@ import static java.util.Optional.of;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.maintenance.IcalUtils;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;

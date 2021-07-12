@@ -1043,8 +1043,8 @@ SELECT PI.server_id ID, S.name,
    WHERE EXISTS (SELECT 1
                    FROM rhnUserServerPerms USP
                   WHERE USP.user_id = :user_id
-                    AND USP.server_id = VI.host_system_id)
-     AND VI.host_system_id = :sid
+                    AND (USP.server_id = VI.host_system_id OR VI.host_system_id IS NULL))
+     AND (VI.host_system_id = CAST(:sid AS NUMERIC) OR (CAST(:sid AS NUMERIC) IS NULL AND VI.host_system_id IS NULL))
      AND VI.uuid IS NOT NULL
 ORDER BY NAME, VI.virtual_system_id, VI.uuid DESC
   </query>

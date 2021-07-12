@@ -792,10 +792,12 @@ public class ActionChainManager {
      * @param inventoryPath path to the inventory file in the control node
      * @param actionChain the action chain to add to or null
      * @param earliest action will not be executed before this date
+     * @param testMode true if the playbook shall be executed in test mode
      * @return the action object
      */
     public static PlaybookAction scheduleExecutePlaybook(User scheduler, Long controlNodeId, String playbookPath,
-            String inventoryPath, ActionChain actionChain, Date earliest) throws TaskomaticApiException {
+            String inventoryPath, ActionChain actionChain, Date earliest, boolean testMode)
+            throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
         PlaybookAction action = (PlaybookAction) scheduleActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
@@ -806,6 +808,7 @@ public class ActionChainManager {
         PlaybookActionDetails details = new PlaybookActionDetails();
         details.setPlaybookPath(playbookPath);
         details.setInventoryPath(inventoryPath);
+        details.setTestMode(testMode);
         action.setDetails(details);
         ActionFactory.save(action);
 

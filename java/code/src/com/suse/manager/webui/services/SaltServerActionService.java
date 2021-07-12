@@ -74,6 +74,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDis
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
@@ -125,10 +126,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -137,8 +134,10 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.DnsHostDef;
 import com.suse.manager.virtualization.DnsTxtDef;
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.virtualization.VirtStatesHelper;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -159,6 +158,11 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -202,9 +206,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
 import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -409,6 +416,11 @@ public class SaltServerActionService {
             VirtualizationCreateGuestAction createAction =
                     (VirtualizationCreateGuestAction)actionIn;
             return virtCreateAction(minions, createAction);
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE.equals(actionType)) {
+            VirtualizationMigrateGuestAction migrationAction =
+                    (VirtualizationMigrateGuestAction)actionIn;
+            return virtGuestMigrateAction(minions, migrationAction);
         }
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
             KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
@@ -1513,6 +1525,7 @@ public class SaltServerActionService {
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
                         pillar.put("source", kiwiProfile.getPath());
                         pillar.put("build_id", "build" + actionId);
+                        pillar.put("kiwi_options", kiwiProfile.getKiwiOptions());
                         List<String> repos = new ArrayList<>();
                         final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
                         Set<Channel> channels = activationKey.getChannels();
@@ -1593,10 +1606,45 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionSummary>> scapXccdfEvalAction(
             List<MinionSummary> minionSummaries, ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        String parameters = "eval " +
-            scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
+        Map<String, Object> pillar = new HashMap<>();
+        Matcher profileMatcher = Pattern.compile("--profile ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher ruleMatcher = Pattern.compile("--rule ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+        Matcher tailoringIdMatcher = Pattern.compile("--tailoring-id ((\\w|\\.|_|-)+)")
+                .matcher(scapActionDetails.getParametersContents());
+
+        String oldParameters = "eval " +
+                scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
+        pillar.put("old_parameters", oldParameters);
+
+        pillar.put("xccdffile", scapActionDetails.getPath());
+        if (scapActionDetails.getOvalfiles() != null) {
+            pillar.put("ovalfiles", Arrays.asList(scapActionDetails.getOvalfiles().split("\\s*,\\s*")));
+        }
+        if (profileMatcher.find()) {
+            pillar.put("profile", profileMatcher.group(1));
+        }
+        if (ruleMatcher.find()) {
+            pillar.put("rule", ruleMatcher.group(1));
+        }
+        if (tailoringFileMatcher.find()) {
+            pillar.put("tailoring_file", tailoringFileMatcher.group(1));
+        }
+        if (tailoringIdMatcher.find()) {
+            pillar.put("tailoring_id", tailoringIdMatcher.group(1));
+        }
+        if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
+            pillar.put("fetch_remote_resources", true);
+        }
+        if (scapActionDetails.getParametersContents().matches(".*--remediate.*")) {
+            pillar.put("remediate", true);
+        }
+
         ret.put(State.apply(singletonList("scap"),
-                Optional.of(singletonMap("mgr_scap_params", (Object)parameters))),
+                Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
                 minionSummaries);
         return ret;
     }
@@ -1607,6 +1655,23 @@ public class SaltServerActionService {
                 .lookupVirtualInstanceByHostIdAndUuid(minionSummary.getServerId(), uuid);
         if (domain != null) {
             domainName = domain.getName();
+        }
+        else {
+            // We may have a stopped VM from a cluster that is not defined anywhere in our DB
+            // Check if the VM is listed in the cluster VMs
+            VirtManager virtManager = new VirtManagerSalt(saltApi);
+            domainName = virtManager.getVmInfos(minionSummary.getMinionId())
+                    .flatMap(infos -> infos.entrySet().stream()
+                            .filter(entry -> {
+                            JsonElement vmUuid = entry.getValue().get("uuid");
+                            if (vmUuid == null) {
+                                return false;
+                            }
+                            return vmUuid.getAsString().replaceAll("-", "").equals(uuid);
+                        })
+                        .map(Map.Entry::getKey)
+                        .findFirst())
+                    .orElse(null);
         }
         return domainName;
     }
@@ -1688,6 +1753,23 @@ public class SaltServerActionService {
         return ret;
     }
 
+    private Map<LocalCall<?>, List<MinionSummary>> virtGuestMigrateAction(List<MinionSummary> minions,
+                                                                           VirtualizationMigrateGuestAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("primitive", action.getPrimitive());
+                    pillar.put("target", action.getTarget());
+
+                    return State.apply(
+                            Collections.singletonList("virt.guest-migrate"),
+                            Optional.of(pillar));
+                }, Collections::singletonList));
+
+        ret.remove(null);
+        return ret;
+    }
+
     private Map<LocalCall<?>, List<MinionSummary>> virtCreateAction(List<MinionSummary> minions,
             VirtualizationCreateGuestAction action) {
         String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
@@ -1708,6 +1790,7 @@ public class SaltServerActionService {
                     pillar.put("vm_type", action.getType());
                     pillar.put("os_type", action.getOsType());
                     pillar.put("arch", action.getArch());
+                    pillar.put("cluster_definitions", action.getClusterDefinitions());
 
                     // No need to handle copying the image to the minion, salt does it for us
                     if (!action.getDisks().isEmpty() || action.isRemoveDisks()) {
@@ -2250,7 +2333,8 @@ public class SaltServerActionService {
         pillarData.put("playbook_path", playbookPath);
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
-        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData));
+        return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
+                Optional.of(details.isTestMode()));
     }
 
     /**

@@ -526,14 +526,16 @@ public class MaintenanceManager {
      * @param operation get previous, current or future maintenance windows based on the operation
      * @param id the id of the calendar or schedule
      * @param date the date to start looking for maintenance windows
+     * @param startWithSunday whether to start the week on Sunday
      * @return the resulting list of maintenance windows
      */
-    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date) {
+    public List<MaintenanceWindowData> preprocessCalendarData(User user, String operation, Long id, Long date,
+                                                              boolean startWithSunday) {
         Optional<MaintenanceCalendar> calendar = lookupCalendarByUserAndId(user, id);
         if (calendar.isEmpty()) {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
-        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+        return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startWithSunday);
     }
 
     /**
@@ -544,9 +546,11 @@ public class MaintenanceManager {
      * @param operation get previous, current or future maintenance windows based on the operation
      * @param id the id of the calendar or schedule
      * @param date the date to start looking for maintenance windows
+     * @param startWithSunday whether to start the week on Sunday
      * @return the resulting list of maintenance windows
      */
-    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date) {
+    public List<MaintenanceWindowData> preprocessScheduleData(User user, String operation, Long id, Long date,
+                                                              boolean startWithSunday) {
         Optional<MaintenanceSchedule> schedule = lookupScheduleByUserAndId(user, id);
         if (schedule.isEmpty()) {
             throw new EntityNotExistsException("Schedule with id: " + id + " does not exist!");
@@ -556,15 +560,28 @@ public class MaintenanceManager {
             throw new EntityNotExistsException("Calendar with id: " + id + " does not exist!");
         }
         if (schedule.get().getScheduleType() == ScheduleType.MULTI) {
-            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()), date);
+            return getCalendarEvents(operation, calendar.get(), ofNullable(schedule.get().getName()),
+                    date, startWithSunday);
         }
         else {
-            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date);
+            return getCalendarEvents(operation, calendar.get(), Optional.empty(), date, startWithSunday);
         }
     }
 
-    private List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
-                                                          Optional<String> eventName, Long date) {
+    /**
+     * Given a maintenance calendar return a list of maintenance windows based on the operation, the date and
+     * the start of the week. Only returns events for a specific event if the event name is provided.
+     *
+     * @param operation get previous, current or future maintenance windows based on the operation
+     * @param calendar the maintenance calendar
+     * @param eventName the optional event name
+     * @param date the date
+     * @param startWithSunday whether to start the week on Sunday
+     * @return the resulting list of maintenance windows
+     */
+    public List<MaintenanceWindowData> getCalendarEvents(String operation, MaintenanceCalendar calendar,
+                                                         Optional<String> eventName, Long date,
+                                                         boolean startWithSunday) {
         if (operation.equals("skipBack")) {
             Optional<MaintenanceWindowData> lastWindow = icalUtils.getLastEvent(calendar, eventName, date);
             if (lastWindow.isEmpty()) {
@@ -580,18 +597,31 @@ public class MaintenanceManager {
             date = nextWindow.get().getFromMilliseconds();
         }
 
-        Map<String, Long> activeRange = getActiveRange(date);
+        Map<String, Long> activeRange = getActiveRange(date, startWithSunday);
         Long start = activeRange.get("start");
         Long end = activeRange.get("end");
 
         return icalUtils.getCalendarEvents(calendar, eventName, start, end);
     }
 
-    private Map<String, Long> getActiveRange(Long date) {
+    /**
+     * Given a date and the start of the week. Calculates the date range displayed by the calendar widget
+     *
+     * @param date the date
+     * @param startWithSunday whether to start the week on Sunday
+     * @return the calendars displayed date range
+     */
+    public Map<String, Long> getActiveRange(Long date, boolean startWithSunday) {
         ZonedDateTime t = ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneOffset.UTC);
         ZonedDateTime rangeStart = t.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
-        rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
-                rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+        if (startWithSunday) {
+            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart :
+                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue());
+        }
+        else {
+            rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart.minusDays(6) :
+                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue() - 1);
+        }
 
         ZonedDateTime rangeEnd = rangeStart.plusDays(42);
 

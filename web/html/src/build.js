@@ -1,4 +1,5 @@
 const shell = require('shelljs');
+const path = require('path');
 const { fillSpecFile } = require("./build/fill-spec-file");
 
 const { code: codeBuild } = shell.exec("webpack --config build/webpack.config.js --mode production");
@@ -19,7 +20,10 @@ fillSpecFile()
   .then(() => {
     if(shouldValidateBuild) {
       // let's make a sanity check if the generated specfile with the right  licenses is commited on git
-      const {code: gitCheckCode, stdout} = shell.exec("(cd ../../;git ls-files -m)");
+      const webDir = path.resolve(__dirname, '../../');
+      const {code: gitCheckCode, stdout} = shell.exec("git ls-files -m", {
+        cwd: webDir,
+      });
       if (gitCheckCode !== 0) {
         shell.exit(gitCheckCode);
       }
@@ -31,7 +35,8 @@ fillSpecFile()
         shell.exit(1);
       }
 
-      const {stdout: auditStdout} = shell.exec("yarn audit");
+      // TODO: This should be simply `yarn audit` once Storybook issues are resolved
+      const {stdout: auditStdout} = shell.exec("yarn audit --groups dependencies,devDependencies");
 
       if (auditStdout && !auditStdout.includes("0 vulnerabilities found")) {
         shell.echo(`

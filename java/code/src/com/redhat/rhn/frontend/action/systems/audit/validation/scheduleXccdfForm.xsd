@@ -14,4 +14,9 @@
 			<maxLength value="2048"/>
 		</simpleType>
 	</attribute>
+	<attribute name="ovalfiles">
+		<simpleType baseType="string">
+			<maxLength value="8192"/>
+		</simpleType>
+	</attribute>
 </schema>

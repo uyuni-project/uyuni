@@ -47,7 +47,7 @@ module.exports = (env, argv) => {
 
   return [{
     entry: {
-      'javascript/manager/main': './manager/index.js'
+      'javascript/manager/main': './manager/index.ts'
     },
     output: {
       filename: `[name].bundle.js`,

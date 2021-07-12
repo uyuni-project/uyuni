@@ -16,7 +16,7 @@ Feature: PXE boot a SLES 12 SP4 retail terminal
     When I run "reboot" on "sle12sp4_terminal"
     And I wait at most 180 seconds until Salt master sees "sle12sp4_terminal" as "unaccepted"
     And I accept "sle12sp4_terminal" key in the Salt master
-    And I am on the System Overview page
+    And I follow the left menu "Home > Overview"
     And I wait until I see the name of "sle12sp4_terminal", refreshing the page
     And I follow this "sle12sp4_terminal" link
     And I wait until event "Apply states [util.syncstates, saltboot] scheduled" is completed

@@ -69,7 +69,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
       if (this.state.content === null) {
         this.setState({ loading: true });
         Network.get(getURL(path))
-        .promise.then(blob => {
+        .then(blob => {
           if (blob.success) {
             this.setState({ content:
               isPlaybook(path) ?

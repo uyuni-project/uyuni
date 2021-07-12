@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -147,6 +148,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     private void doTestDetectRhelProduct(String json, SetupMinionConsumer setupMinion, Consumer<Optional<RhelUtils.RhelProduct>> response)
             throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/suse/manager/reactor/utils/test/productdata", false, false);
         Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
                 TestUtils.readAll(TestUtils.findTestData(json)));
         String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
@@ -171,6 +173,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 .getChanges(CmdResult.class)
                 .getStdout();
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         if (setupMinion != null) {
             setupMinion.accept(minionServer);
         }
@@ -223,7 +226,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found",prod.get().getSuseProduct().isPresent());
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
@@ -234,7 +237,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Core", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
@@ -245,7 +248,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_oracle.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("OracleLinux", prod.get().getName());
                     assertEquals("", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
@@ -267,7 +270,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_almalinux.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("AlmaLinux", prod.get().getName());
                     assertEquals("Purple Manul", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
@@ -278,7 +281,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_amazon.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertTrue("SUSE Product not found", prod.get().getSuseProduct().isPresent());
                     assertEquals("AmazonLinux", prod.get().getName());
                     assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());

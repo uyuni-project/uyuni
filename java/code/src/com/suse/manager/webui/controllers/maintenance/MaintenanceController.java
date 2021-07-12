@@ -44,6 +44,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,7 +80,7 @@ public class MaintenanceController {
         // upcoming maintenance windows for systems
         post("/manager/api/maintenance/upcoming-windows",
                 withUser(MaintenanceController::getUpcomingMaintenanceWindows));
-        get("/manager/api/maintenance/events/:operation/:type/:date/:id",
+        get("/manager/api/maintenance/events/:operation/:type/:startOfWeek/:date/:id",
                 withUser(MaintenanceController::getEvents));
     }
 
@@ -128,14 +129,15 @@ public class MaintenanceController {
         Long date = Long.parseLong(request.params("date"));
         Long id = Long.parseLong(request.params("id"));
         String operation = request.params("operation");
+        boolean startWithSunday = "0".equals(request.params("startOfWeek"));
 
         List<MaintenanceWindowData> events = new ArrayList<>();
         try {
             if (type.equals("calendar")) {
-                events = MM.preprocessCalendarData(user, operation, id, date);
+                events = MM.preprocessCalendarData(user, operation, id, date, startWithSunday);
             }
             else if (type.equals("schedule")) {
-                events = MM.preprocessScheduleData(user, operation, id, date);
+                events = MM.preprocessScheduleData(user, operation, id, date, startWithSunday);
             }
             else {
                 throw new EntityNotExistsException(
@@ -173,10 +175,8 @@ public class MaintenanceController {
      */
     private static String applyTimezoneShift(User user, Long date) {
         ZoneId zoneId = ZoneId.of(user.getTimeZone().getOlsonName());
-        return ZonedDateTime
-                .ofInstant(Instant.ofEpochMilli(date), zoneId)
-                .toString()
-                .split("\\[")[0];
+       return ZonedDateTime.ofInstant(Instant.ofEpochMilli(date), zoneId)
+               .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm z"));
     }
 
     private static List<MaintenanceWindowDataJson> eventsToJson(User user, List<MaintenanceWindowData> events) {

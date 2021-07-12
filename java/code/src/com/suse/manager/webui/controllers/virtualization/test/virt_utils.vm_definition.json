@@ -1,0 +1,66 @@
+{
+  "definition": "<domain type='kvm' id='4'>\n  <name>sles12sp2</name>\n  <uuid>b99a8176-4f40-498d-8e61-2f6ade654fe2</uuid>\n  <memory unit='KiB'>1048576</memory>\n  <currentMemory unit='KiB'>1048576</currentMemory>\n  <vcpu placement='static'>2</vcpu>\n  <resource>\n    <partition>/machine</partition>\n  </resource>\n  <os>\n    <type arch='x86_64' machine='pc-i440fx-2.6'>hvm</type>\n    <boot dev='hd'/>\n  </os>\n  <features>\n    <acpi/>\n    <apic/>\n    <vmport state='off'/>\n  </features>\n  <cpu mode='custom' match='exact'>\n    <model fallback='allow'>Nehalem</model>\n  </cpu>\n  <clock offset='utc'>\n    <timer name='rtc' tickpolicy='catchup'/>\n    <timer name='pit' tickpolicy='delay'/>\n    <timer name='hpet' present='no'/>\n  </clock>\n  <on_poweroff>destroy</on_poweroff>\n  <on_reboot>restart</on_reboot>\n  <on_crash>restart</on_crash>\n  <pm>\n    <suspend-to-mem enabled='no'/>\n    <suspend-to-disk enabled='no'/>\n  </pm>\n  <devices>\n    <emulator>/usr/bin/qemu-kvm</emulator>\n    <disk type='file' device='disk'>\n      <driver name='qemu' type='qcow2'/>\n      <source file='/srv/vms/sles12sp2.qcow2'/>\n      <backingStore/>\n      <target dev='vda' bus='virtio'/>\n      <alias name='virtio-disk0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>\n    </disk>\n    <disk type='file' device='cdrom'>\n      <driver name='qemu' type='raw'/>\n      <backingStore/>\n      <target dev='hda' bus='ide'/>\n      <readonly/>\n      <alias name='ide0-0-0'/>\n      <address type='drive' controller='0' bus='0' target='0' unit='0'/>\n    </disk>\n    <disk type='network' device='disk'>\n      <driver name='qemu' type='raw' cache='none' io='native'/>\n      <source protocol='rbd' name='libvirt-pool/test-vol'>\n        <host name='ses1.tf.local'/>\n        <host name='ses2.tf.local'/>\n        <auth username='libvirt'>\n          <secret type='ceph' usage='pool_test-ses'/>\n        </auth>\n      </source>\n      <target dev='vdb' bus='virtio'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>\n    </disk>\n    <disk type='block' device='disk'>\n      <driver name='qemu' type='raw'/>\n      <source dev='/dev/disk/by-path/ip-iscsi-target.tf.local:3260-iscsi-iqn.2020-09.iscsi-target.tf.local:lun1-lun-1'/>\n      <target dev='vdc' bus='virtio'/>\n    </disk>\n    <disk type='block' device='disk'>\n      <driver name='qemu' type='raw'/>\n      <source dev='/dev/disk/by-path/pci-0000:00:0b.0-scsi-0:0:0:0'/>\n      <target dev='vdd' bus='virtio'/>\n    </disk>\n    <controller type='usb' index='0' model='ich9-ehci1'>\n      <alias name='usb'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x7'/>\n    </controller>\n    <controller type='usb' index='0' model='ich9-uhci1'>\n      <alias name='usb'/>\n      <master startport='0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0' multifunction='on'/>\n    </controller>\n    <controller type='usb' index='0' model='ich9-uhci2'>\n      <alias name='usb'/>\n      <master startport='2'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x1'/>\n    </controller>\n    <controller type='usb' index='0' model='ich9-uhci3'>\n      <alias name='usb'/>\n      <master startport='4'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x2'/>\n    </controller>\n    <controller type='pci' index='0' model='pci-root'>\n      <alias name='pci.0'/>\n    </controller>\n    <controller type='ide' index='0'>\n      <alias name='ide'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>\n    </controller>\n    <controller type='virtio-serial' index='0'>\n      <alias name='virtio-serial0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>\n    </controller>\n    <interface type='network'>\n      <mac address='52:54:00:b3:0e:ea'/>\n      <source network='default' bridge='br0'/>\n      <target dev='vnet4'/>\n      <model type='rtl8139'/>\n      <alias name='net0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>\n    </interface>\n    <serial type='pty'>\n      <source path='/dev/pts/2'/>\n      <target port='0'/>\n      <alias name='serial0'/>\n    </serial>\n    <console type='pty' tty='/dev/pts/2'>\n      <source path='/dev/pts/2'/>\n      <target type='serial' port='0'/>\n      <alias name='serial0'/>\n    </console>\n    <channel type='unix'>\n      <source mode='bind' path='/var/lib/libvirt/qemu/channel/target/domain-4-sles12sp2/org.qemu.guest_agent.0'/>\n      <target type='virtio' name='org.qemu.guest_agent.0' state='disconnected'/>\n      <alias name='channel0'/>\n      <address type='virtio-serial' controller='0' bus='0' port='1'/>\n    </channel>\n    <channel type='spicevmc'>\n      <target type='virtio' name='com.redhat.spice.0' state='disconnected'/>\n      <alias name='channel1'/>\n      <address type='virtio-serial' controller='0' bus='0' port='2'/>\n    </channel>\n    <input type='mouse' bus='usb'>\n      <alias name='input0'/>\n    </input>\n    <input type='mouse' bus='ps2'>\n      <alias name='input1'/>\n    </input>\n    <input type='keyboard' bus='ps2'>\n      <alias name='input2'/>\n    </input>\n    <graphics type='spice' port='5903' autoport='yes' listen='127.0.0.1'>\n      <listen type='address' address='127.0.0.1'/>\n    </graphics>\n    <sound model='ich6'>\n      <alias name='sound0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>\n    </sound>\n    <video>\n      <model type='qxl' ram='65536' vram='65536' vgamem='16384' heads='1' primary='yes'/>\n      <alias name='video0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>\n    </video>\n    <redirdev bus='usb' type='spicevmc'>\n      <alias name='redir0'/>\n    </redirdev>\n    <redirdev bus='usb' type='spicevmc'>\n      <alias name='redir1'/>\n    </redirdev>\n    <memballoon model='virtio'>\n      <alias name='balloon0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>\n    </memballoon>\n    <rng model='virtio'>\n      <backend model='random'>/dev/random</backend>\n      <alias name='rng0'/>\n      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>\n    </rng>\n  </devices>\n</domain>",
+  "info": {
+    "cpu": 2,
+    "cputime": 0,
+    "disks": {
+      "vda": {
+        "file": "/srv/vms/sles12sp2.qcow2",
+        "type": "disk",
+        "file format": "qcow2",
+        "disk size": 350658560,
+        "virtual size": 214748364800,
+        "cluster size": 65536
+      },
+      "vdb": {
+        "file": "ses-pool/test-vol",
+        "type": "disk",
+        "file format": "raw"
+      },
+      "vdc": {
+        "file": "iscsi-pool/unit:0:0:1",
+        "type": "disk",
+        "file format": "raw"
+      },
+      "vdd": {
+        "file": "/dev/disk/by-path/pci-0000:00:0b.0-scsi-0:0:0:0",
+        "type": "disk",
+        "file format": "raw"
+      }
+    },
+    "graphics": {
+      "autoport": "yes",
+      "keymap": "None",
+      "listen": "127.0.0.1",
+      "port": "None",
+      "type": "spice"
+    },
+    "nics": {
+      "52:54:00:b3:0e:ea": {
+        "type": "network",
+        "mac": "52:54:00:b3:0e:ea",
+        "source": {
+          "network": "default"
+        },
+        "model": "rtl8139",
+        "address": {
+          "type": "pci",
+          "domain": "0x0000",
+          "bus": "0x00",
+          "slot": "0x03",
+          "function": "0x0"
+        }
+      }
+    },
+    "uuid": "b99a8176-4f40-498d-8e61-2f6ade654fe2",
+    "loader": {
+      "path": "None"
+    },
+    "on_crash": "restart",
+    "on_reboot": "restart",
+    "on_poweroff": "destroy",
+    "maxMem": 1048576,
+    "mem": 1048576,
+    "state": "shutdown"
+  }
+}

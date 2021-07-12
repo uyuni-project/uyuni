@@ -46,8 +46,8 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    And I am on the System Overview page
-    When I follow "Clear"
+    When I follow the left menu "Home > Overview"
+    And I follow "Clear"
     And I check the "sle_minion" client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area

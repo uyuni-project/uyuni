@@ -47,6 +47,10 @@ public class SaltConstants {
 
     public static final String ORG_STATES_DIRECTORY_PREFIX = "manager_org_";
 
+    public static final String SALT_SERVER_PACKAGES_STATE_FILE_PREFIX = "packages_";
+
+    public static final String SALT_PACKAGES_STATES_DIR = "packages";
+
     public static final String LEGACY_STATES_BACKUP = "/srv/susemanager/legacy_states";
 
     public static final String SCRIPTS_DIR = "scripts";

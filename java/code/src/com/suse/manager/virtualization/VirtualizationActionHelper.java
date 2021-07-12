@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -38,6 +39,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestMigrateActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.utils.MinionActionUtils;
@@ -51,6 +53,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -142,27 +145,24 @@ public class VirtualizationActionHelper {
     ) {
         BiFunction<T, Optional<String>,
                 BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
-            if (name.isEmpty()) {
-                // Should never happen since this is for actions on an existing domain, but better log it!
-                LOG.error("This action should always be passed a name");
-                return null;
-            }
-            String uuid = guestNames.entrySet().stream()
-                    .filter(e -> e.getValue().equals(name.get()))
-                    .map(Map.Entry::getKey)
-                    .findFirst()
-                    .orElse(null);
-            List<VirtualInstance> instances = VirtualInstanceFactory.getInstance()
-                    .lookupVirtualInstanceByUuid(uuid);
-            BaseVirtualizationGuestAction action = (BaseVirtualizationGuestAction)
-                    ActionFactory.createAction(actionType);
-            if (instances.size() == 1 && actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_START) &&
-                    instances.get(0).getState().getLabel().equals("paused")) {
-                action = (BaseVirtualizationGuestAction) ActionFactory
-                        .createAction(ActionFactory.TYPE_VIRTUALIZATION_RESUME);
-            }
-            action.setName(actionType.getName());
-            return action;
+            AtomicReference<BaseVirtualizationGuestAction> action =
+                    new AtomicReference<>((BaseVirtualizationGuestAction) ActionFactory.createAction(actionType));
+            name.ifPresent(vmName -> {
+                String uuid = guestNames.entrySet().stream()
+                        .filter(e -> e.getValue().equals(name.get()))
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElse(null);
+                List<VirtualInstance> instances = VirtualInstanceFactory.getInstance()
+                        .lookupVirtualInstanceByUuid(uuid);
+                if (instances.size() == 1 && actionType.equals(ActionFactory.TYPE_VIRTUALIZATION_START) &&
+                        instances.get(0).getState().getLabel().equals("paused")) {
+                    action.set((BaseVirtualizationGuestAction) ActionFactory
+                            .createAction(ActionFactory.TYPE_VIRTUALIZATION_RESUME));
+                }
+            });
+            action.get().setName(actionType.getName());
+            return action.get();
         };
 
         return getGuestBaseActionCreator(actionCreator, guestNames);
@@ -235,6 +235,7 @@ public class VirtualizationActionHelper {
             action.setArch(data.getArch());
             action.setGraphicsType(data.getGraphicsType());
             action.setKernelOptions(data.getKernelOptions());
+            action.setClusterDefinitions(data.getClusterDefinitions());
 
             if (name.isEmpty() && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
                 // Create cobbler profile
@@ -282,6 +283,30 @@ public class VirtualizationActionHelper {
             action.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
 
             action.setRemoveInterfaces(data.getInterfaces() != null && data.getInterfaces().isEmpty());
+            return action;
+        };
+
+        return getGuestBaseActionCreator(actionCreator, guestNames);
+    }
+
+    /**
+     * Get action creator for guest migration actions
+     *
+     * @param guestNames the guests names mapped to their UUID
+     *
+     * @return the action creator
+     */
+    public static BiFunction<VirtualGuestMigrateActionJson, String, Action> getGuestMigrateActionCreator(
+            Map<String, String> guestNames
+    ) {
+        BiFunction<VirtualGuestMigrateActionJson, Optional<String>,
+                BaseVirtualizationGuestAction> actionCreator = (data, name) -> {
+            VirtualizationMigrateGuestAction action = (VirtualizationMigrateGuestAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE);
+            action.setName(ActionFactory.TYPE_VIRTUALIZATION_GUEST_MIGRATE.getName());
+            action.setUuid(data.getUuids().get(0));
+            action.setPrimitive(data.getPrimitive());
+            action.setTarget(data.getTarget());
             return action;
         };
 

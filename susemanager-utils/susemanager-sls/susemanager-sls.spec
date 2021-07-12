@@ -22,8 +22,8 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.2.14
-Release:        1
+Version:        4.3.0
+Release:        0
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
 Group:          Applications/Internet
@@ -92,16 +92,8 @@ cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
 cp src/grains/*.py %{buildroot}/usr/share/susemanager/salt/_grains/
 rm %{buildroot}/usr/share/susemanager/salt/_grains/__init__.py
-cp src/modules/sumautil.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/mainframesysinfo.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/*.py %{buildroot}/usr/share/susemanager/salt/_modules
+rm %{buildroot}/usr/share/susemanager/salt/_modules/__init__.py
 cp src/states/*.py %{buildroot}/usr/share/susemanager/salt/_states
 rm %{buildroot}/usr/share/susemanager/salt/_states/__init__.py
 

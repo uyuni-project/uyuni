@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.virtualization.NetworkDefinition;
+import com.suse.manager.virtualization.HostInfo;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkCreateActionJson;
@@ -45,6 +46,7 @@ import org.apache.http.HttpStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -112,9 +114,9 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         Map<String, Boolean> features = virtManager.getFeatures(minionId).orElse(new HashMap<>());
         return renderPage("show", () -> {
             Map<String, Object> extra = new HashMap<>();
-            extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
-                    virtManager.getHypervisor(host.getMinionId()).orElse("") :
-                    "");
+            Optional<HostInfo> hostInfo = virtManager.getHostInfo(host.getMinionId());
+            String hypervisor = hostInfo.isPresent() ? hostInfo.get().getHypervisor() : "";
+            extra.put("hypervisor", host.hasVirtualizationEntitlement() ? hypervisor : "");
             extra.put("support_enhanced_network", features.getOrDefault("enhanced_network", false));
             return extra;
         });

@@ -12,7 +12,7 @@
     "imports.d.ts",
     "lib.es5.d.ts"
   ],
-  "exclude": ["**/node_modules", "**/\\.*/", "flow-typed/**"],
+  "exclude": ["**/node_modules", "**/\\.*/"],
   "compilerOptions": {
     // See: https://github.com/microsoft/TypeScript/issues/25430
     "baseUrl": "./",
