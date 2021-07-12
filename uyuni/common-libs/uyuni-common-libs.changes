@@ -1,3 +1,6 @@
+- Handle broken RPM packages to prevent exceptions
+  causing fails on repository synchronization (bsc#1186650)
+
 -------------------------------------------------------------------
 Fri May 28 09:12:32 CEST 2021 - jgonzalez@suse.com
 

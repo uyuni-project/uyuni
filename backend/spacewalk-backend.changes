@@ -1,3 +1,4 @@
+- Fix rpm handling of empty package group and devicefiles tag (bsc#1186650)
 - show better error message when reposync failed
 
 -------------------------------------------------------------------
