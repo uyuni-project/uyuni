@@ -24,18 +24,18 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
-    And I enter the hostname of "ceos_ssh_minion" as "hostname"
+    And I enter the hostname of "ceos_minion" as "hostname"
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I follow the left menu "Home > Overview"
-    And I wait until I see the name of "ceos_ssh_minion", refreshing the page
-    And I wait until onboarding is completed for "ceos_ssh_minion"
+    And I wait until I see the name of "ceos_minion", refreshing the page
+    And I wait until onboarding is completed for "ceos_minion"
 
 @proxy
   Scenario: Check connection from SSH-managed CentOS minion to proxy
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
@@ -45,10 +45,10 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ceos_ssh_minion" hostname
+    Then I should see "ceos_minion" hostname
 
   Scenario: Subscribe the SSH-managed CentOS minion to a base channel
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -61,7 +61,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Check events history for failures on SSH-managed CentOS minion
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     Then I check for failed events on history event page
 
   Scenario: Run a remote command on the SSH-managed CentOS minion
@@ -71,23 +71,23 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I enter target "*centos*"
     And I click on preview
     And I click on run
-    Then I should see "ceos_ssh_minion" hostname
+    Then I should see "ceos_minion" hostname
     When I wait for "15" seconds
-    And I expand the results for "ceos_ssh_minion"
+    And I expand the results for "ceos_minion"
     Then I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
   Scenario: Check events history for failures on SSH-managed CentOS minion
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     Then I check for failed events on history event page
 
   Scenario: Cleanup: delete the SSH-managed CentOS minion
-    When I am on the Systems overview page of this "ceos_ssh_minion"
+    When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "ceos_ssh_minion" should not be registered
+    Then "ceos_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a CentOS minion after SSH minion tests
     When I follow the left menu "Systems > Bootstrapping"

@@ -32,6 +32,7 @@ public class ServerConstants {
     public static final String ALIBABA = "Alibaba Cloud Linux (Aliyun Linux)";
     public static final String ALMA = "AlmaLinux";
     public static final String AMAZON = "Amazon Linux";
+    public static final String ROCKY = "Rocky";
 
     private ServerConstants() {
 

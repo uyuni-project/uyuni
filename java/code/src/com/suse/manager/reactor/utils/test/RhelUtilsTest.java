@@ -65,6 +65,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
             "AlmaLinux release 8.3 (Purple Manul)";
     private static String AMAZON_RELEASE =
             "Amazon Linux release 2 (Karoo)";
+    private static String ROCKY_RELEASE =
+            "Rocky Linux release 8.4 (Green Obsidian)";
 
     @FunctionalInterface
     private interface SetupMinionConsumer {
@@ -141,6 +143,15 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Karoo", os.get().getRelease());
     }
 
+    public void testParseReleaseFileRocky() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ROCKY_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("RockyLinux", os.get().getName());
+        assertEquals("8", os.get().getMajorVersion());
+        assertEquals("4", os.get().getMinorVersion());
+        assertEquals("Green Obsidian", os.get().getRelease());
+    }
+
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -166,6 +177,9 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         String amazonReleaseContent = map.get("cmd_|-amazonrelease_|-cat /etc/system-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
+        String rockyReleaseContent = map.get("cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
         String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
@@ -184,7 +198,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                 Optional.ofNullable(oracleReleaseContent),
                 Optional.ofNullable(alibabaReleaseContent),
                 Optional.ofNullable(almaReleaseContent),
-                Optional.ofNullable(amazonReleaseContent));
+                Optional.ofNullable(amazonReleaseContent),
+                Optional.ofNullable(rockyReleaseContent));
         assertTrue(prod.isPresent());
         response.accept(prod);
 
@@ -285,6 +300,17 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("AmazonLinux", prod.get().getName());
                     assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
+                });
+    }
+
+    public void testDetectRhelProductRocky() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rockylinux.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("RockyLinux", prod.get().getName());
+                    assertEquals("Green Obsidian", prod.get().getRelease());
+                    assertEquals("8", prod.get().getVersion());
                 });
     }
 

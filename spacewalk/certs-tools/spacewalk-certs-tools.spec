@@ -103,9 +103,8 @@ make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
 
-%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
-ln -s rhn-ssl-tool%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
-ln -s rhn-bootstrap%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
+ln -s rhn-ssl-tool-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
+ln -s rhn-bootstrap-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
 ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 

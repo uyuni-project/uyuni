@@ -19,6 +19,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </class>
 
         <query name="CPUArch.findByName">
-        <![CDATA[from com.redhat.rhn.domain.server.CPUArch as t where t.name = :name]]>
+        <![CDATA[from com.redhat.rhn.domain.server.CPUArch as t where LOWER(t.name) = LOWER(:name)]]>
     </query>
 </hibernate-mapping>

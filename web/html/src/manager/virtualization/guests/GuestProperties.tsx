@@ -101,7 +101,7 @@ export function GuestProperties(props: Props) {
                               .filter((vmType, idx, array) => array.indexOf(vmType) === idx);
                             const vmType =
                               model.vmType || initialModel.vmType || (vmTypes.includes("kvm") ? "kvm" : vmTypes[0]);
-                            const arch = initialModel.arch || props.host.cpu.arch;
+                            const arch = initialModel.arch || props.host.cpu.arch.toLowerCase();
                             const caps = domainsCaps.find(cap => cap.arch === arch && cap.domain === vmType);
 
                             const onChangeProfile = (name, value) => {
@@ -182,7 +182,7 @@ export function GuestProperties(props: Props) {
                                     label={t("Architecture")}
                                     name="arch"
                                     required
-                                    defaultValue={props.host.cpu.arch}
+                                    defaultValue={arch}
                                     options={domainsCaps
                                       .map(cap => cap.arch)
                                       .filter((item, index, array) => array.indexOf(item) === index)}

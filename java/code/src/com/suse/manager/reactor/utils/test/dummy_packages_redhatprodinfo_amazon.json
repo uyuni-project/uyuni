@@ -72,5 +72,15 @@
       "stderr": "",
       "stdout": "Amazon Linux release 2 (Karoo)"
     }
+  },
+  "cmd_|-rockyrelease_|-cat /etc/rocky-release_|-run": {
+    "comment": "Command \"cat /etc/rocky-release\" run",
+    "name": "cat /etc/rocky-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
   }
 }
