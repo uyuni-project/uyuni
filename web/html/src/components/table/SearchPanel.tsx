@@ -1,3 +1,4 @@
+import { cloneReactElement } from "components/utils";
 import * as React from "react";
 
 type SearchPanelProps = {
@@ -36,18 +37,9 @@ type SearchPanelProps = {
 export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className="spacewalk-list-filter table-search-wrapper">
-      {React.Children.toArray(props.children).map(child => {
-        return React.isValidElement(child)
-          ? React.cloneElement(
-              child,
-              /**
-               * The child might be either a component that accepts these props or a regular DOM node such as
-               * span etc. For the latter case, it isn't valid to pass these props through.
-               */
-              typeof child.type === "string" ? undefined : { criteria: props.criteria, onSearch: props.onSearch }
-            )
-          : child;
-      })}
+      {React.Children.toArray(props.children).map(child =>
+        cloneReactElement(child, { criteria: props.criteria, onSearch: props.onSearch })
+      )}
       <div className="d-inline-block">
         <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
         {props.selectable && props.selectedCount > 0 && (
