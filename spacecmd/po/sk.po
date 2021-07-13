@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-12 22:10+0000\n"
+"PO-Revision-Date: 2021-07-13 19:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4301,27 +4301,27 @@ msgstr ""
 
 #: ../src/spacecmd/report.py:44
 msgid "report_inactivesystems: List all inactive systems"
-msgstr ""
+msgstr "report_inactivesystems: Vypísať zoznam všetkých neaktívnych systémov"
 
 #: ../src/spacecmd/report.py:45
 msgid "usage: report_inactivesystems [DAYS]"
-msgstr ""
+msgstr "použitie: report_inactivesystems [DNI]"
 
 #: ../src/spacecmd/report.py:85
 msgid "report_outofdatesystems: List all out-of-date systems"
-msgstr ""
+msgstr "report_outofdatesystems: Vypísať zoznam všetkých zastaraných systémov"
 
 #: ../src/spacecmd/report.py:86
 msgid "usage: report_outofdatesystems"
-msgstr ""
+msgstr "použitie: report_outofdatesystems"
 
 #: ../src/spacecmd/report.py:113
 msgid "report_ungroupedsystems: List all ungrouped systems"
-msgstr ""
+msgstr "report_ungroupedsystems: Vypísať zoznam všetkých neskupinových systémov"
 
 #: ../src/spacecmd/report.py:114
 msgid "usage: report_ungroupedsystems"
-msgstr ""
+msgstr "použitie: report_ungroupedsystems"
 
 #: ../src/spacecmd/report.py:131
 msgid "report_errata: List all errata and how many systems they affect"
@@ -4342,7 +4342,7 @@ msgstr ""
 #: ../src/spacecmd/report.py:167
 #, python-format
 msgid "%s  # Systems"
-msgstr ""
+msgstr "%s  # Systémy"
 
 #: ../src/spacecmd/report.py:174
 msgid "No errata found for '{}'"
@@ -4351,10 +4351,11 @@ msgstr "Nenašli sa žiadne opravy chýb pre '{}'"
 #: ../src/spacecmd/report.py:181
 msgid "report_ipaddresses: List the hostname and IP of each system"
 msgstr ""
+"report_ipaddresses: Vypísať zoznam názvov hostiteľov a IP každého systému"
 
 #: ../src/spacecmd/report.py:182
 msgid "usage: report_ipaddresses [<SYSTEMS>]"
-msgstr ""
+msgstr "použitie: report_ipaddresses [<SYSTÉMY>]"
 
 #: ../src/spacecmd/report.py:202 ../src/spacecmd/report.py:266
 #: ../src/spacecmd/scap.py:68 ../src/spacecmd/scap.py:208
@@ -4380,20 +4381,20 @@ msgstr ""
 #: ../src/spacecmd/system.py:4126 ../src/spacecmd/system.py:4184
 #: ../src/spacecmd/system.py:4242
 msgid "No systems selected"
-msgstr ""
+msgstr "Žiadne vybrané systémy"
 
 #: ../src/spacecmd/report.py:245
 msgid "report_kernels: List the running kernel of each system"
-msgstr ""
+msgstr "report_kernels: Vypísať zoznam bežiacich jadier každého systému"
 
 #: ../src/spacecmd/report.py:246
 msgid "usage: report_kernels [<SYSTEMS>]"
-msgstr ""
+msgstr "použitie: report_kernels [<SYSTÉMY>]"
 
 #: ../src/spacecmd/report.py:283
 #, python-format
 msgid "%s  Kernel"
-msgstr ""
+msgstr "%s  Jadro"
 
 #: ../src/spacecmd/report.py:283
 msgid "System"
@@ -4401,11 +4402,11 @@ msgstr "Systém"
 
 #: ../src/spacecmd/report.py:297
 msgid "report_duplicates: List duplicate system profiles"
-msgstr ""
+msgstr "report_duplicates: Vypísať zoznam duplicitných systémových profilov"
 
 #: ../src/spacecmd/report.py:298
 msgid "usage: report_duplicates"
-msgstr ""
+msgstr "použitie: report_duplicates"
 
 #: ../src/spacecmd/report.py:320 ../src/spacecmd/report.py:342
 #: ../src/spacecmd/report.py:360 ../src/spacecmd/report.py:378
