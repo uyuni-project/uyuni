@@ -31,6 +31,7 @@ type Props = {
 
 const Project = (props: Props) => {
   const [project, setProject] = useState(props.project);
+  const [cleanTargets, setCleanTargets] = useState(false);
   const { onAction, cancelAction: cancelRefreshAction } = useLifecycleActionsApi({ resource: "projects" });
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
@@ -82,6 +83,20 @@ const Project = (props: Props) => {
     hasErrors;
 
   const hasChannelsWithUnsyncedPatches = project.softwareSources.filter(s => s.hasUnsyncedPatches).length > 0;
+  const deleteDialogContents = (
+    <div className="form-horizontal">
+      <div>
+        {t("Are you sure you want to delete project")} <strong>{projectId}</strong>?
+      </div>
+      <div>
+        <input
+          type="checkbox"
+          id="force"
+          checked={cleanTargets}
+          onChange={event => setCleanTargets(event.target.checked)} />
+        {t("Cleanup project targets (e.g. software channels)?")}
+      </div>
+    </div>);
   return (
     <TopPanel
       title={t("Content Lifecycle Project - {0}", project.properties.name)}
@@ -97,13 +112,9 @@ const Project = (props: Props) => {
       <DeleteDialog
         id="delete-project-modal"
         title={t("Delete Project")}
-        content={
-          <span>
-            {t("Are you sure you want to delete project")} <strong>{projectId}</strong>?
-          </span>
-        }
+        content={deleteDialogContents}
         onConfirm={() =>
-          onAction(project, "delete", project.properties.label)
+          onAction(Object.assign(project, {"cleanTargets": cleanTargets}), "delete", project.properties.label)
             .then(() => {
               window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/contentmanagement/projects`);
             })

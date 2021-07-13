@@ -37,6 +37,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import org.apache.http.HttpStatus;
 
+import java.util.Map;
 import java.util.Optional;
 
 import spark.Request;
@@ -117,8 +118,9 @@ public class ProjectApiController {
      */
     public static String removeContentProject(Request req, Response res, User user) {
         String projectLabel = req.params("projectId");
+        boolean cleanTargets = (boolean) GSON.fromJson(req.body(), Map.class).get("cleanTargets");
 
-        int removingResult = CONTENT_MGR.removeProject(projectLabel, user);
+        int removingResult = CONTENT_MGR.removeProject(projectLabel, cleanTargets, user);
 
         if (removingResult == 1) {
             String successMessage = LOC.getMessage("contentmanagement.project_deleted", projectLabel);
