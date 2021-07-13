@@ -14,10 +14,9 @@ export function VirtualizationListRefreshApi(props: Props) {
 
   const refreshServerData = React.useCallback(() => {
     Network.get(
-      `/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`,
-      "application/json"
+      `/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`
     )
-      .promise.then(data => {
+      .then(data => {
         setData(data);
         setError(undefined);
       })

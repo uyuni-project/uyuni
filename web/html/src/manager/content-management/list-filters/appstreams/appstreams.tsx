@@ -12,8 +12,8 @@ export default function AppStreams() {
 
   const enableBrowse = () => {
     setLoading(true);
-    Network.get("/rhn/manager/api/channels/modular", "application/json")
-      .promise.then(channels => {
+    Network.get("/rhn/manager/api/channels/modular")
+      .then(channels => {
         setChannels(channels.data);
         setLoading(false);
         setBrowse(true);

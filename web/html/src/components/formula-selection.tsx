@@ -55,7 +55,7 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   init() {
-    Network.get(this.props.dataUrl).promise.then(data => {
+    Network.get(this.props.dataUrl).then(data => {
       const groupDict = { groupless: [] };
       const formulaDict: any = {};
       data.formulas.forEach(function(e) {

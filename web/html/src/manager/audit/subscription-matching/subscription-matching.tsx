@@ -36,8 +36,8 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   }
 
   refreshServerData = () => {
-    this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data", "application/json");
-    this.refreshRequest.promise
+    this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data");
+    this.refreshRequest
       .then(data => {
         this.setState({
           serverData: data,

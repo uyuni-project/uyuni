@@ -25,9 +25,8 @@ class VirtualizationGuestDefinitionApi extends React.Component<Props, State> {
 
   componentDidMount() {
     Network.get(
-      `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostid}/guest/${this.props.guestUuid}`,
-      "application/json"
-    ).promise.then(
+      `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostid}/guest/${this.props.guestUuid}`
+    ).then(
       response => {
         this.setState({ definition: response });
       },

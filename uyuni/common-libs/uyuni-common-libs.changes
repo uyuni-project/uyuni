@@ -1,3 +1,5 @@
+- Handle broken RPM packages to prevent exceptions
+  causing fails on repository synchronization (bsc#1186650)
 - Bump version to 4.3.0
 
 -------------------------------------------------------------------

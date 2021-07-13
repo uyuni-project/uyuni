@@ -69,7 +69,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     this.setState({ loading: true });
 
     future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
-      .promise.then(data => {
+      .then(data => {
         this.setState({
           availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
           loading: false,
@@ -85,7 +85,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       this.setState({ loading: true });
 
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
-        .promise.then(data => {
+        .then(data => {
           const currentSelectedBaseId = data.data.base ? data.data.base.id : this.props.defaultBaseId;
           const currentChildSelectedIds = data.data.children ? data.data.children.map(c => c.id) : [];
           this.props.onNewBaseChannel({ currentSelectedBaseId, currentChildSelectedIds });
@@ -117,7 +117,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
     } else {
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
-        .promise.then(data => {
+        .then(data => {
           this.setState({
             availableChannels: data.data,
             fetchedData: this.state.fetchedData.set(baseId, data.data),

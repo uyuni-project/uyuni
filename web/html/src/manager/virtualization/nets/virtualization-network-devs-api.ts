@@ -14,9 +14,8 @@ export function VirtualizationNetworkDevsApi(props: Props) {
   React.useEffect(() => {
     let subscribded = true;
     Network.get(
-      `/rhn/manager/api/systems/details/virtualization/nets/${props.hostId}/devices`,
-      "application/json"
-    ).promise.then(
+      `/rhn/manager/api/systems/details/virtualization/nets/${props.hostId}/devices`
+    ).then(
       response => {
         if (subscribded) {
           setNetDevices(response);

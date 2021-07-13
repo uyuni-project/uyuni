@@ -2,6 +2,8 @@
 Author: bo@suse.de
 '''
 
+import json
+import pytest
 from mock import MagicMock, patch, mock_open
 from . import mockery
 mockery.setup_environment()
@@ -27,26 +29,25 @@ def test_total_num_cpus():
             assert cpus['total_num_cpus'] == 4
 
 
-def test_cpusockets_dmidecode():
+def test_cpusockets_dmidecode_count_sockets():
     '''
-    Test dmidecode sub in cpusockets function.
+    Test _dmidecode_count_sockets sub in cpusockets function.
 
     :return:
     '''
 
     sample = mockery.get_test_data('dmidecode.sample')
     cpuinfo.log = MagicMock()
-    with patch('src.modules.udevdb._which_bin', MagicMock(return_value="/bogus/path")):
-        with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
-            out = cpuinfo._dmidecode([])
-            assert type(out) == dict
-            assert 'cpusockets' in out
-            assert out['cpusockets'] == 1
+    with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
+        out = cpuinfo._dmidecode_count_sockets([])
+        assert type(out) == dict
+        assert 'cpusockets' in out
+        assert out['cpusockets'] == 1
 
 
-def test_cpusockets_parse_cpuinfo():
+def test_cpusockets_cpuinfo_count_sockets():
     '''
-    Test parse_cpuinfo sub in cpusockets function.
+    Test _cpuinfo_count_sockets sub in cpusockets function.
 
     :return:
     '''
@@ -55,30 +56,48 @@ def test_cpusockets_parse_cpuinfo():
     for sample_name in ['cpuinfo.s390.sample', 'cpuinfo.ppc64le.sample']:
         with patch('os.access', MagicMock(return_value=True)):
             with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data(sample_name)), create=True):
-                assert cpuinfo._parse_cpuinfo([]) is None
+                assert cpuinfo._cpuinfo_count_sockets([]) is None
 
     with patch('os.access', MagicMock(return_value=True)):
         with patch.object(cpuinfo, 'open', mock_open(read_data=mockery.get_test_data('cpuinfo.sample')), create=True):
-            out = cpuinfo._parse_cpuinfo([])
+            out = cpuinfo._cpuinfo_count_sockets([])
             assert type(out) == dict
             assert 'cpusockets' in out
             assert out['cpusockets'] == 1
 
 
-def test_cpusockets_lscpu():
+@pytest.mark.parametrize("arch", ["ppc64le", "s390", "x86_64"])
+def test_cpusockets_lscpu_count_sockets(arch):
     '''
-    Test lscpu sub in cpusockets function.
+    Test _lscpu_count_sockets sub in cpusockets function.
 
     :return:
     '''
-    for fn_smpl in ['lscpu.ppc64le.sample', 'lscpu.s390.sample', 'lscpu.sample']:
-        cpuinfo.log = MagicMock()
-        with patch('src.modules.udevdb._which_bin', MagicMock(return_value="/bogus/path")):
-            with patch.dict(cpuinfo.__salt__,
-                            {'cmd.run_all': MagicMock(return_value={'retcode': 0,
-                                                                    'stdout': mockery.get_test_data(fn_smpl)})}):
-                out = cpuinfo._lscpu([])
-                assert type(out) == dict
-                assert 'cpusockets' in out
-                assert out['cpusockets'] == 1
+    fn_smpl = 'lscpu.{}.sample'.format(arch)
+    cpuinfo.log = MagicMock()
+    with patch.dict(cpuinfo.__salt__,
+                    {'cmd.run_all': MagicMock(return_value={'retcode': 0,
+                                                            'stdout': mockery.get_test_data(fn_smpl)})}):
+        out = cpuinfo._lscpu_count_sockets([])
+        assert type(out) == dict
+        assert 'cpusockets' in out
+        assert out['cpusockets'] == 1
+
+
+@pytest.mark.parametrize("arch", ["x86_64", "aarch64", "s390", "ppc64"])
+def test_cpusockets_cpu_data(arch):
+    '''
+    Test lscpu -J data extraction function.
+
+    :return:
+    '''
+    cpuinfo.log = MagicMock()
+    sample_data = mockery.get_test_data("lscpu-json.{}.sample".format(arch))
+    with patch.dict(cpuinfo.__salt__,
+                    {'cmd.run_all': MagicMock(return_value={'retcode': 0,
+                                                            'stdout': sample_data})}):
+        out = cpuinfo.cpu_data()
+        assert type(out) == dict
+        expected = json.loads(mockery.get_test_data("lscpu-json.{}.out".format(arch)))
+        assert out == expected
 

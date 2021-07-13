@@ -24,6 +24,7 @@ public class ScapActionDetails extends ActionChild {
 
     private Long id;
     private String path;
+    private String ovalfiles;
     private byte[] parameters;
 
     /**
@@ -37,11 +38,13 @@ public class ScapActionDetails extends ActionChild {
      * ScapActionDetails constructor.
      * @param pathIn New setting for the path.
      * @param parametersIn New setting for the parameters.
+     * @param ovalFilesIn New setting for the OVAL files.
      */
-    public ScapActionDetails(String pathIn, String parametersIn) {
+    public ScapActionDetails(String pathIn, String parametersIn, String ovalFilesIn) {
         super();
         this.setPath(pathIn);
         this.setParameters(parametersIn);
+        this.setOvalfiles(ovalFilesIn);
     }
 
     /**
@@ -58,6 +61,22 @@ public class ScapActionDetails extends ActionChild {
      */
     public String getPath() {
         return path;
+    }
+
+    /**
+     * Set the paths to OVAL files.
+     * @param ovalFilesIn New setting for the ovalFiles.
+     */
+    public void setOvalfiles(String ovalFilesIn) {
+        ovalfiles = ovalFilesIn;
+    }
+
+    /**
+     * Get the paths to OVAL files.
+     * @return The ovalFiles settings.
+     */
+    public String getOvalfiles() {
+        return ovalfiles;
     }
 
     /**

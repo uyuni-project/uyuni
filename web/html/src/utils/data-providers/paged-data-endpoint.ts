@@ -48,9 +48,8 @@ export default class PagedDataEndpoint {
             this.curReq.cancel("The request is cancelled due to subsequent calls");
         }
         this.curReq = Network.get(this.uri.toString());
-        const promise = this.curReq.promise;
-        promise.finally(() => (this.curReq = null));
-        callback(promise);
+        this.curReq.finally(() => (this.curReq = null));
+        callback(this.curReq);
     }
 
     /**

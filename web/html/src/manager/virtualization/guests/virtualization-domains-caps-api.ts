@@ -26,9 +26,8 @@ class VirtualizationDomainsCapsApi extends React.Component<Props, State> {
 
   componentDidMount() {
     Network.get(
-      `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostId}/domains_capabilities`,
-      "application/json"
-    ).promise.then(
+      `/rhn/manager/api/systems/details/virtualization/guests/${this.props.hostId}/domains_capabilities`
+    ).then(
       response => {
         this.setState({
           osTypes: response.osTypes,

@@ -105,6 +105,33 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+        assertFalse(details.isTestMode());
+    }
+
+    public void testSchedulePlaybookTestMode() throws Exception {
+        MinionServer controlNode = createAnsibleControlNode(admin);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
+                scheduleDate, null, true);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_PLAYBOOK, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        PlaybookActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertNull(details.getInventoryPath());
+        assertTrue(details.isTestMode());
     }
 
     public void testCreateAndGetAnsiblePath() throws Exception {

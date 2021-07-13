@@ -76,7 +76,12 @@ def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size
     f.seek(0, 0)
     m = getHashlibInstance(hashtype, used_for_security)
     while 1:
-        buf = f.read(buffer_size)
+        try:
+            buf = f.read(buffer_size)
+        except:  # pylint: disable=W0702,W0703
+            # No need to know exact root cause of the exception.
+            # Will produce checksum other than expected for such case.
+            break
         if not buf:
             break
         m.update(buf)
