@@ -35,13 +35,13 @@ Possible values are currently:
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
 | SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
 | SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` or ```"sle_ssh_tunnel_client"```| ```"client"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` or ```"sle_migrated_minion"``` or ```"sle_ssh_tunnel_minion"``` | ```"minion"``` |
+| SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
+| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
 | SLES Salt SSH minion | ```$ssh_minion``` | ```$SSHMINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
-| Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` or ```"ubuntu_ssh_minion"``` | ```"minion"``` |
-| PXE-Boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
+| CentOS Salt minion | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"``` | ```"minion"``` |
+| Ubuntu Salt minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` | ```"minion"``` |
+| PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
 | KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
 | Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
 
