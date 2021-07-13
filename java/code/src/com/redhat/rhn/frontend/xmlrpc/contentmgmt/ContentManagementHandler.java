@@ -179,7 +179,7 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Remove Content Project
+     * Remove Content Project. Do not purge the underlying environment targets (e.g. sw channels).
      *
      * @param loggedInUser the logged in user
      * @param label the label
@@ -194,7 +194,33 @@ public class ContentManagementHandler extends BaseHandler {
     public int removeProject(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.removeProject(label, loggedInUser);
+            return contentManager.removeProject(label, false, loggedInUser);
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e);
+        }
+    }
+
+    /**
+     * Remove Content Project
+     *
+     * @param loggedInUser the logged in user
+     * @param label the label
+     * @param cleanTargets true if the underlying targets (e.g. sw channels) should be removed
+     * @throws EntityNotExistsFaultException when Project does not exist
+     * @return the number of removed objects
+     *
+     * @xmlrpc.doc Remove Content Project
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "label", "Content Project label")
+     * @xmlrpc.param #param_desc("boolean", "cleanTargets", "Whether the underlying targets (e.g. sw channels)
+     * should be removed too")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int removeProject(User loggedInUser, boolean cleanTargets, String label) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            return contentManager.removeProject(label, cleanTargets, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
