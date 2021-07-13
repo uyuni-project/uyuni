@@ -1,3 +1,4 @@
+- Simplify the VM creation action in DB
 - Refresh virtual host pillar to clear the virtpoller beacon (bsc#1188393)
 - Fix updating primary net interface on hardware refresh (bsc#1188400)
 - Fix issues when removing archived actions using XMLRPC api (bsc#1181223)
