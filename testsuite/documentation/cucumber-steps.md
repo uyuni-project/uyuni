@@ -178,7 +178,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
 * Go to Systems => System Set Manager => Overview
 
 ```cucumber
-  When I am on System Set Manager Overview
+  When I follow the left menu "Systems > System Set Manager > Overview"
 ```
 
 * Go to Users => Users list => Active

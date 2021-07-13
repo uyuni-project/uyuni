@@ -277,7 +277,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Your organization has no system groups." text
 
   Scenario: Sidebar link destination for Systems => System Set Manager
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
