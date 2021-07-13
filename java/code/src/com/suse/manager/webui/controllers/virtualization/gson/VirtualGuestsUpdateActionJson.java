@@ -40,6 +40,7 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private String kernelOptions;
     @SerializedName("cluster_definitions")
     private String clusterDefinitions;
+    private String template;
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -207,6 +208,20 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      */
     public void setClusterDefinitions(String clusterDefinitionsIn) {
         clusterDefinitions = clusterDefinitionsIn;
+    }
+
+    /**
+     * @return value of template
+     */
+    public String getTemplate() {
+        return template;
+    }
+
+    /**
+     * @param templateIn value of template
+     */
+    public void setTemplate(String templateIn) {
+        template = templateIn;
     }
 
     /**

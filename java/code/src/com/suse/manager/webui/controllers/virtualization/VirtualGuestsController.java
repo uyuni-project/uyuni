@@ -77,6 +77,7 @@ import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -383,6 +384,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
 
         String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
         Map<String, Boolean> features = virtManager.getFeatures(minionId).orElse(new HashMap<>());
+        List<String> templates = virtManager.getTuningTemplates(minionId).orElse(new ArrayList<>());
 
         /* For the rest of the template */
         MinionController.addActionChains(user, data);
@@ -391,6 +393,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("inCluster", features.getOrDefault("cluster", false));
         data.put("raCanStartResources",
                 features.getOrDefault("resource_agent_start_resources", false));
+        data.put("templates", GSON.toJson(templates));
 
         KickstartScheduleCommand cmd = new ProvisionVirtualInstanceCommand(host.getId(), user);
         DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();

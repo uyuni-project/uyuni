@@ -66,7 +66,7 @@ class GuestsEdit extends React.Component<Props> {
         {}
       ),
       {
-        memory: model.memory * 1024,
+        memory: model.memory,
       },
       nicsParams,
       disksParams,

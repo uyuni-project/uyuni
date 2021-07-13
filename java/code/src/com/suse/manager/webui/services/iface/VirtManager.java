@@ -160,4 +160,12 @@ public interface VirtManager {
      * @return the infos
      */
     Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId);
+
+    /**
+     * Get the virt-tuner templates that are available on the minion
+     *
+     * @param minionId the minion id
+     * @return the list of the virt-tuner template names
+     */
+    Optional<List<String>> getTuningTemplates(String minionId);
 }

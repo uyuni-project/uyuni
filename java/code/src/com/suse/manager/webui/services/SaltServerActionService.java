@@ -1789,6 +1789,7 @@ public class SaltServerActionService {
                     pillar.put("os_type", action.getDetails().getOsType());
                     pillar.put("arch", action.getDetails().getArch());
                     pillar.put("cluster_definitions", action.getDetails().getClusterDefinitions());
+                    pillar.put("template", action.getDetails().getTemplate());
 
                     // No need to handle copying the image to the minion, salt does it for us
                     if (!action.getDetails().getDisks().isEmpty() || action.getDetails().isRemoveDisks()) {
@@ -1802,7 +1803,7 @@ public class SaltServerActionService {
                             diskData.put("name", diskName);
                             diskData.put("format", disk.getFormat());
                             if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
-                                diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
+                                diskData.put("source_file", disk.getSourceFile());
                             }
                             diskData.put("pool", disk.getPool());
                             diskData.put("image", disk.getTemplate());
@@ -1825,9 +1826,7 @@ public class SaltServerActionService {
                             ifaceData.put("name", String.format("eth%d", i));
                             ifaceData.put("type", iface.getType());
                             ifaceData.put("source", iface.getSource());
-                            if (iface.getMac() != null) {
-                                ifaceData.put("mac", iface.getMac());
-                            }
+                            ifaceData.put("mac", iface.getMac());
                             return ifaceData;
                         }).collect(Collectors.toList()));
                     }
