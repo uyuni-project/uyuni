@@ -1,3 +1,4 @@
+- Add Rocky Linux 8 support
 - Use lscpu to provide more CPU grains for all architectures
 - Add findutils to Kiwi bootstrap packages
 - Add support for Kiwi options
