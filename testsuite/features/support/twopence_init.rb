@@ -223,16 +223,11 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'server'                    => $server,
                   'proxy'                     => $proxy,
                   'sle_client'                => $client,
-                  'sle_migrated_minion'       => $client,
-                  'sle_ssh_tunnel_client'     => $client,
                   'sle_minion'                => $minion,
-                  'sle_ssh_tunnel_minion'     => $minion,
                   'ssh_minion'                => $ssh_minion,
                   'ceos_client'               => $ceos_minion,
                   'ceos_minion'               => $ceos_minion,
-                  'ceos_ssh_minion'           => $ceos_minion,
                   'ubuntu_minion'             => $ubuntu_minion,
-                  'ubuntu_ssh_minion'         => $ubuntu_minion,
                   'build_host'                => $build_host,
                   'kvm_server'                => $kvm_server,
                   'xen_server'                => $xen_server,
@@ -278,8 +273,6 @@ $node_by_host = { 'localhost'                 => $localhost,
                   'sle15sp3_terminal'         => $sle15sp3_terminal }
 
 # This is the inverse of `node_by_host`.
-# For each node we choose as key the canonical host, i.e. we drop aliases.
-# For instance, we use 'sle_minion` and ignore the alias 'sle_migrated_minion`.
 $host_by_node = {}
 $node_by_host.each do |host, node|
   next if node.nil?
@@ -287,11 +280,6 @@ $node_by_host.each do |host, node|
   [host, node].each do |it|
     raise ">>> Either host '#{host}' of node '#{node}' is empty.  Please check" if it == ''
   end
-
-  ignored_hosts = %w[sle_ssh_tunnel_client sle_migrated_minion
-                     sle_ssh_tunnel_minion
-                     ceos_ssh_minion ubuntu_ssh_minion]
-  next if ignored_hosts.include? host
 
   $host_by_node[node] = host
 end
