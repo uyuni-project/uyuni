@@ -1,3 +1,4 @@
+- Add virt-tuner templates to VM creation
 - Fix cleanup always being executed on delete system (bsc#1189011)
 - Warning in Overview page for SLE Micro system (bsc#1188551)
 - Add support for Kiwi options

@@ -243,3 +243,33 @@ def test_vm_definition_cluster(libvirt):
                     actual = virt_utils.vm_definition("15c09f1f-6ac7-43b5-83e9-96a63c40fb14")
                     assert actual["definition"] == vm_xml
                     assert actual.get("info") is None
+
+
+@pytest.mark.parametrize("has_virt_tuner", (True, False))
+def test_virt_tuner_templates(has_virt_tuner):
+    """
+    Test the virt_tuner_templates() function
+    """
+    templates = ["template1", "template2"] if has_virt_tuner else []
+    tuner_mock= MagicMock()
+    tuner_mock.templates.keys.return_value = templates
+    virt_utils.virt_tuner = tuner_mock if has_virt_tuner else None
+
+    assert virt_utils.virt_tuner_templates() == templates
+
+
+@pytest.mark.parametrize("has_virt_tuner", (True, False))
+def test_domain_parameters(has_virt_tuner):
+    """
+    Test the domain_parameters() function
+    """
+    template_params = {"cpu": 22, "mem": 512, "foo": "bar"} if has_virt_tuner else {}
+    template_mock = MagicMock()
+    template_mock.function.return_value = template_params
+    tuner_mock= MagicMock()
+    tuner_mock.templates = {"template1": template_mock}
+    virt_utils.virt_tuner = tuner_mock if has_virt_tuner else None
+
+    assert virt_utils.domain_parameters(1, 1234, "template1") == (
+        template_params if has_virt_tuner else {"cpu": 1, "mem": 1234}
+    )

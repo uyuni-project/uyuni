@@ -1,3 +1,4 @@
+- Add virt-tuner templates to VM creation
 - Fix cleanup always being executed on delete system (bsc#1189011)
 - Add support for Kiwi options
 - Fix virtualization guests to handle null HostInfo
