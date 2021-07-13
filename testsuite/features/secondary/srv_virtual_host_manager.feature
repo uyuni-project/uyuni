@@ -24,6 +24,7 @@ Feature: Virtual host manager web UI
 
   Scenario: Create Virtual Host
     When I follow the left menu "Systems > Virtual Host Managers"
+    And I copy vcenter configuration file on server
     And I click on "Create"
     When I follow "File-based"
     Then I should see a "Add a File-based Virtual Host Manager" text
