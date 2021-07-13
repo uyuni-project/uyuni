@@ -1620,3 +1620,9 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject($server, base_dir + 'sles15sp2/linux', source_dir + 'SLES15-SP2-x86_64/DVD1/boot/x86_64/loader/linux')
   raise 'File injection failed' unless return_codes.all?(&:zero?)
 end
+
+When(/^I copy unset package file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/unset_package/"
+  return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
+  raise 'File injection failed' unless return_code.zero?
+end
