@@ -53,7 +53,7 @@ Feature: IPMI Power management
     When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
     Then I should see "sle_client" as link
     And I should see a "Change Power Management Configuration" text
@@ -73,7 +73,7 @@ Feature: IPMI Power management
     And the cobbler report should contain "Power Management Type          : ipmitool" for "sle_client"
 
   Scenario: Check power management SSM operation
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     When I follow "power management operations" in the content area
     Then I should see "sle_client" as link
     And I should see a "Power On" button
