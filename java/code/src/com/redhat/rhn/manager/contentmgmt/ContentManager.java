@@ -195,16 +195,21 @@ public class ContentManager {
      * Remove Content Project
      *
      * @param label the label
+     * @param cleanTargets true if the linked environment targets (e.g. sw channels) should be removed
      * @param user the user
      * @throws PermissionException if given user does not have required role
      * @throws EntityNotExistsException if Content Project with given label is not found
      * @return the number of objects affected
      */
-    public int removeProject(String label, User user) {
+    public int removeProject(String label, boolean cleanTargets, User user) {
         ensureOrgAdmin(user);
-        return lookupProject(label, user)
-                .map(cp -> ContentProjectFactory.remove(cp))
-                .orElseThrow(() -> new EntityNotExistsException(label));
+        ContentProject project = lookupProject(label, user).orElseThrow(() -> new EntityNotExistsException(label));
+
+        if (cleanTargets) {
+            listProjectEnvironments(label, user).forEach(e -> removeEnvironment(e.getLabel(), label, user));
+        }
+
+        return ContentProjectFactory.remove(project);
     }
 
     /**

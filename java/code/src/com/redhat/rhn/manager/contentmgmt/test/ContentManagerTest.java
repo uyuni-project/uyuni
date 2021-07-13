@@ -151,10 +151,29 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testRemoveContentProject() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
-        int entitiesAffected = contentManager.removeProject(cp.getLabel(), user);
+        int entitiesAffected = contentManager.removeProject(cp.getLabel(), false, user);
         assertEquals(1, entitiesAffected);
         Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
         assertFalse(fromDb.isPresent());
+    }
+
+    /**
+     * Test removing Content Project
+     */
+    public void testRemoveContentProjectWithTargets() throws Exception {
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        Channel channel = createChannelInEnvironment(env, empty());
+        SoftwareEnvironmentTarget tgt = new SoftwareEnvironmentTarget(env, channel);
+        ContentProjectFactory.save(tgt);
+        env.addTarget(tgt);
+
+        int entitiesAffected = contentManager.removeProject(cp.getLabel(), true, user);
+        assertEquals(1, entitiesAffected);
+        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
+        assertFalse(fromDb.isPresent());
+        assertTrue(ContentProjectFactory.lookupSwEnvironmentTargetById(tgt.getId()).isEmpty());
+        assertNull(ChannelFactory.lookupById(channel.getId()));
     }
 
     /**
@@ -178,7 +197,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         try {
-            contentManager.removeProject(cp.getLabel(), anotherUser);
+            contentManager.removeProject(cp.getLabel(), false, anotherUser);
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -207,7 +226,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
             // expected
         }
         try {
-            contentManager.removeProject("cplabel", guy);
+            contentManager.removeProject("cplabel", false, guy);
             fail("An exception should have been thrown");
         }
         catch (PermissionException e) {
@@ -566,7 +585,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
-        contentManager.removeProject("cplabel", user);
+        contentManager.removeProject("cplabel", false, user);
         // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
                 .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
