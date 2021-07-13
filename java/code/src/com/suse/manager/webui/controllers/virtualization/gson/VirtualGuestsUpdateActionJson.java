@@ -112,14 +112,14 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     }
 
     /**
-     * @return amount of memory in KiB to set
+     * @return amount of memory in MiB to set
      */
     public Long getMemory() {
         return memory;
     }
 
     /**
-     * @param memoryIn amount of memory in MB to set
+     * @param memoryIn amount of memory in MiB to set
      */
     public void setMemory(Long memoryIn) {
         memory = memoryIn;

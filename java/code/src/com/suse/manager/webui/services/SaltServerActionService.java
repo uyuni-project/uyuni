@@ -70,8 +70,6 @@ import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationMigrateGuestAction;
@@ -136,6 +134,7 @@ import com.suse.manager.virtualization.DnsTxtDef;
 import com.suse.manager.virtualization.NetworkDefinition;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.virtualization.VirtStatesHelper;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -206,8 +205,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -1774,27 +1773,27 @@ public class SaltServerActionService {
         String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
 
         // Prepare the salt FS with kernel / initrd and pass params to kernel
-        String cobblerSystemName = action.getCobblerSystem();
+        String cobblerSystemName = action.getDetails().getCobblerSystem();
         Map<String, String> bootParams = cobblerSystemName != null ?
-                prepareCobblerBoot(action.getKickstartHost(), cobblerSystemName) :
+                prepareCobblerBoot(action.getDetails().getKickstartHost(), cobblerSystemName) :
                 null;
 
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(
                 Collectors.toMap(minion -> {
                     // Some of these pillar data will be useless for update-vm, but they will just be ignored.
                     Map<String, Object> pillar = new HashMap<>();
-                    pillar.put("name", action.getGuestName());
-                    pillar.put("vcpus", action.getVcpus());
-                    pillar.put("mem", action.getMemory());
-                    pillar.put("vm_type", action.getType());
-                    pillar.put("os_type", action.getOsType());
-                    pillar.put("arch", action.getArch());
-                    pillar.put("cluster_definitions", action.getClusterDefinitions());
+                    pillar.put("name", action.getDetails().getName());
+                    pillar.put("vcpus", action.getDetails().getVcpu());
+                    pillar.put("mem", action.getDetails().getMemory());
+                    pillar.put("vm_type", action.getDetails().getType());
+                    pillar.put("os_type", action.getDetails().getOsType());
+                    pillar.put("arch", action.getDetails().getArch());
+                    pillar.put("cluster_definitions", action.getDetails().getClusterDefinitions());
 
                     // No need to handle copying the image to the minion, salt does it for us
-                    if (!action.getDisks().isEmpty() || action.isRemoveDisks()) {
-                        pillar.put("disks", IntStream.range(0, action.getDisks().size()).mapToObj(i -> {
-                            VirtualizationCreateActionDiskDetails disk = action.getDisks().get(i);
+                    if (!action.getDetails().getDisks().isEmpty() || action.getDetails().isRemoveDisks()) {
+                        pillar.put("disks", IntStream.range(0, action.getDetails().getDisks().size()).mapToObj(i -> {
+                            VirtualGuestsUpdateActionJson.DiskData disk = action.getDetails().getDisks().get(i);
                             Map<String, Object> diskData = new HashMap<>();
                             String diskName = "system";
                             if (i > 0) {
@@ -1817,10 +1816,11 @@ public class SaltServerActionService {
                         }).collect(Collectors.toList()));
                     }
 
-                    if (!action.getInterfaces().isEmpty() || action.isRemoveInterfaces()) {
+                    if (!action.getDetails().getInterfaces().isEmpty() || action.getDetails().isRemoveInterfaces()) {
                         pillar.put("interfaces",
-                                   IntStream.range(0, action.getInterfaces().size()).mapToObj(i -> {
-                            VirtualizationCreateActionInterfaceDetails iface = action.getInterfaces().get(i);
+                                   IntStream.range(0, action.getDetails().getInterfaces().size()).mapToObj(i -> {
+                            VirtualGuestsUpdateActionJson.InterfaceData iface = action.getDetails()
+                                    .getInterfaces().get(i);
                             Map<String, Object> ifaceData = new HashMap<>();
                             ifaceData.put("name", String.format("eth%d", i));
                             ifaceData.put("type", iface.getType());
@@ -1833,7 +1833,7 @@ public class SaltServerActionService {
                     }
 
                     Map<String, Object> graphicsData = new HashMap<>();
-                    graphicsData.put("type", action.getGraphicsType());
+                    graphicsData.put("type", action.getDetails().getGraphicsType());
                     pillar.put("graphics", graphicsData);
 
                     if (bootParams != null) {
@@ -1842,7 +1842,7 @@ public class SaltServerActionService {
 
                     // If we have a DVD image and we are creating a VM, set "cdrom hd" boot devices
                     // otherwise set "network hd"
-                    boolean hasCdromIso = action.getDisks().stream()
+                    boolean hasCdromIso = action.getDetails().getDisks().stream()
                             .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
                                     !disk.getSourceFile().isEmpty());
                     pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : "network hd");
