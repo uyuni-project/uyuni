@@ -236,6 +236,7 @@ public class VirtualizationActionHelper {
             details.setGraphicsType(data.getGraphicsType());
             details.setKernelOptions(data.getKernelOptions());
             details.setClusterDefinitions(data.getClusterDefinitions());
+            details.setTemplate(data.getTemplate());
 
             if (name.isEmpty() && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
                 // Create cobbler profile

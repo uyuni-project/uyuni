@@ -17,6 +17,7 @@ import { GuestPropertiesTraditional } from "./properties/guest-properties-tradit
 import { VirtualizationDomainsCapsApi } from "./virtualization-domains-caps-api";
 import { VirtualizationListRefreshApi } from "../virtualization-list-refresh-api";
 import { VirtualizationPoolCapsApi } from "../pools/virtualization-pools-capabilities-api";
+import { TemplatesMessages } from "./properties/templates";
 
 type Props = {
   host: any;
@@ -242,6 +243,25 @@ export function GuestProperties(props: Props) {
                                         required={model["in_cluster"]}
                                       />
                                     </>
+                                  )
+                                }
+                                { initialModel.name === undefined && props.host.templates && (
+                                    <Select
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                      name="template"
+                                      label={t("Template")}
+                                      options={props.host.templates}
+                                      formatOptionLabel={
+                                        ({value}) => {
+                                          const description = TemplatesMessages[value];
+                                           if (description != null) {
+                                             return `${value} - ${description}`;
+                                           }
+                                           return value;
+                                        }
+                                      }
+                                    />
                                   )
                                 }
                               </Panel>,

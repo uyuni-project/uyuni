@@ -34,8 +34,7 @@ pools-{{ pillar['name'] }}:
 
 {% macro domain_params() -%}
     - name: {{ pillar['name'] }}
-    - cpu: {{ pillar['vcpus'] }}
-    - mem: {{ pillar['mem'] // 1024 }}
+    - {{ salt.virt_utils.domain_parameters(pillar["vcpus"], pillar["mem"], pillar.get("template")) }}
     - os_type: {{ pillar['os_type'] }}
     - arch: {{ pillar['arch'] }}
     - vm_type: {{ pillar['vm_type'] }}
