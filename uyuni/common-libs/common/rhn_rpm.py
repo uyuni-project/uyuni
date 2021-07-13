@@ -261,7 +261,7 @@ class RPM_Package(A_Package):
             header_store = struct_lead[12:16]
             (header_store_value, ) = struct.unpack('>I', header_store)
         except:
-            raise InvalidPackageError from None
+            raise InvalidPackageError
 
         # The total size of the header. Each index entry is 16 bytes long.
         header_size = 8 + 4 + 4 + header_index_value * 16 + header_store_value
@@ -331,7 +331,7 @@ def get_header_struct_size(package_file):
         header_store = package_file.read(4)
         (header_store_value, ) = struct.unpack('>I', header_store)
     except:
-        raise InvalidPackageError from None
+        raise InvalidPackageError
 
     # The total size of the header. Each index entry is 16 bytes long.
     header_size = 8 + 4 + 4 + header_index_value * 16 + header_store_value
