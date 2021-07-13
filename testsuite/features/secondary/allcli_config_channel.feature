@@ -248,7 +248,7 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "config channel subscriptions" in the content area
     And I check "Mixed Channel" in the list
     And I click on "Continue"
@@ -261,7 +261,7 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "config channel subscriptions" in the content area
     And I check "Mixed Channel" in the list
     And I click on "Continue"
