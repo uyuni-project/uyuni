@@ -104,7 +104,7 @@ Feature: Retracted patches
     When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client 
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages" in the content area
     And I follow "Install"
     And I follow "Test-Channel-x86_64"
