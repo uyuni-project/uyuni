@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:17+0200\n"
-"PO-Revision-Date: 2021-05-21 18:57+0000\n"
+"PO-Revision-Date: 2021-07-14 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
 msgid "remaining"
@@ -3828,7 +3828,7 @@ msgstr "Stavy balíkov"
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:60
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:342
 msgid "State"
-msgstr "Stav"
+msgstr "Štát"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:40
 msgid "Package states have been saved."
