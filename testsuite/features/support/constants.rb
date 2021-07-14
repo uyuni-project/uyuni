@@ -106,9 +106,7 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'ssh_minion' => 'bison',
                       'ceos_client' => 'autoconf',
                       'ceos_minion' => 'autoconf',
-                      'ceos_ssh_minion' => 'autoconf',
                       'ubuntu_minion' => 'bison',
-                      'ubuntu_ssh_minion' => 'bison',
                       'sle11sp4_client' => 'bison',
                       'sle11sp4_minion' => 'bison',
                       'sle11sp4_ssh_minion' => 'bison',
@@ -236,7 +234,6 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle_client' => 'x86_64',
                       'sle_minion' => 'x86_64',
                       'ssh_minion' => 'x86_64',
-                      'sle_migrated_minion' => 'x86_64',
                       'ceos_minion' => 'x86_64',
                       'ubuntu_minion' => 'amd64',
                       'sle11sp4_client' => 'x86_64',
@@ -344,5 +341,5 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
   ]
 }.freeze
 
-MIGRATE_SSH_MINION_FROM = '15-SP1'.freeze
-MIGRATE_SSH_MINION_TO = '15-SP2'.freeze
+MIGRATE_SSH_MINION_FROM = '15-SP2'.freeze
+MIGRATE_SSH_MINION_TO = '15-SP3'.freeze

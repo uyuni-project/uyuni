@@ -37,6 +37,8 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private String cobblerId;
     @SerializedName("kernel_options")
     private String kernelOptions;
+    @SerializedName("cluster_definitions")
+    private String clusterDefinitions;
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -190,6 +192,20 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      */
     public void setKernelOptions(String kernelOptionsIn) {
         kernelOptions = kernelOptionsIn;
+    }
+
+    /**
+     * @return value of clusterDefinitions
+     */
+    public String getClusterDefinitions() {
+        return clusterDefinitions;
+    }
+
+    /**
+     * @param clusterDefinitionsIn value of clusterDefinitions
+     */
+    public void setClusterDefinitions(String clusterDefinitionsIn) {
+        clusterDefinitions = clusterDefinitionsIn;
     }
 
     /**

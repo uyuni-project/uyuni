@@ -1,13 +1,10 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
 import { AsyncButton, Button } from "components/buttons";
 import Network from "utils/network";
 import { Messages } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { Utils } from "utils/functions";
-import { Dialog } from "components/dialog/Dialog";
+import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
 
 const msgMap = {
   minion_unreachable: t("Cleanup timed out. Please check if the machine is reachable."),
@@ -38,7 +35,7 @@ class DeleteSystem extends React.Component<Props, State> {
   handleDelete = cleanupErr => {
     const nocleanupParam = cleanupErr ? { nocleanup: "true" } : {};
     return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, $.param(nocleanupParam))
-      .promise.then(data => {
+      .then(data => {
         if (data.success && this.props.onDeleteSuccess) {
           this.props.onDeleteSuccess();
         } else {

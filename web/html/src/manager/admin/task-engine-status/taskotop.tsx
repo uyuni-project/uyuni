@@ -31,8 +31,8 @@ class TaskoTop extends React.Component<Props> {
 
   refreshServerData = () => {
     var currentObject = this;
-    Network.get("/rhn/manager/api/admin/runtime-status/data", "application/json")
-      .promise.then(data => {
+    Network.get("/rhn/manager/api/admin/runtime-status/data")
+      .then(data => {
         currentObject.setState({
           serverData: data,
           error: null,

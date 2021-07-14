@@ -15,6 +15,7 @@
 package com.suse.manager.maintenance.test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.MULTI;
 import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
 import static java.util.Optional.of;
 
@@ -36,18 +37,23 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.MaintenanceWindowData;
+import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.io.File;
 import java.io.StringReader;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
@@ -69,6 +76,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     private static final String EXCHANGE_ICS = "maintenance-windows-exchange.ics";
     private static final String EXCHANGE_MULTI1_ICS = "maintenance-windows-multi-exchange-1.ics";
     private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
+    private static final String EXCHANGE_MULTI3_ICS = "maintenance-windows-multi-exchange-3.ics";
 
     @Override
     public void setUp() throws Exception {
@@ -194,7 +202,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(user.getOrg(), dbSchedule.getOrg());
         assertEquals("test server", dbSchedule.getName());
-        assertEquals(ScheduleType.MULTI, dbSchedule.getScheduleType());
+        assertEquals(MULTI, dbSchedule.getScheduleType());
         assertEquals(dbCal, dbSchedule.getCalendarOpt().orElse(null));
     }
 
@@ -384,8 +392,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
 
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
@@ -452,8 +460,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
 
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
@@ -568,6 +576,165 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 Set.of(schedule),
                 mm.listSchedulesBySystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
         );
+    }
+
+    public void testPreprocessCalendarData() throws Exception {
+        File ical = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
+
+        MaintenanceManager mm = new MaintenanceManager();
+        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+
+        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar");
+        assertNotNull(calendar.orElse(null));
+        Long id = calendar.get().getId();
+
+        Long date = ZonedDateTime.parse("2020-05-21T09:00:00+02:00").toInstant().toEpochMilli();
+        List<Triple<String, String, String>> events = mm.preprocessCalendarData(user, "next", id, date, true)
+                .stream().limit(4).map(event -> Triple.of(
+                        event.getName(),
+                        Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
+                        Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
+                .collect(Collectors.toList());
+
+        assertEquals(List.of(
+                Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),
+                Triple.of("Core Server Window", "2020-04-30T07:00:00Z", "2020-04-30T10:00:00Z"),
+                Triple.of("SAP Maintenance Window", "2020-05-04T06:00:00Z", "2020-05-04T08:00:00Z"),
+                Triple.of("Core Server Window", "2020-05-07T07:00:00Z", "2020-05-07T10:00:00Z")
+        ), events);
+    }
+
+    public void testPreprocessScheduleData() throws Exception {
+        File ical = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
+
+        MaintenanceManager mm = new MaintenanceManager();
+        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createSchedule(user, "single-test-schedule", SINGLE,
+                mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar"));
+        mm.createSchedule(user, "SAP Maintenance Window", MULTI,
+                mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar"));
+
+        Long date = ZonedDateTime.parse("2020-05-21T09:00:00+02:00").toInstant().toEpochMilli();
+
+        // Test schedule of type single
+        Optional<MaintenanceSchedule> scheduleSingle = mm.lookupScheduleByUserAndName(user, "single-test-schedule");
+        assertNotNull(scheduleSingle.orElse(null));
+        Long singleId = scheduleSingle.get().getId();
+
+        List<Triple<String, String, String>> singleEvents = mm.preprocessScheduleData(user, "next", singleId, date, true)
+                .stream().limit(4).map(event -> Triple.of(
+                        event.getName(),
+                        Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
+                        Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
+                .collect(Collectors.toList());
+
+        assertEquals(List.of(
+                Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),
+                Triple.of("Core Server Window", "2020-04-30T07:00:00Z", "2020-04-30T10:00:00Z"),
+                Triple.of("SAP Maintenance Window", "2020-05-04T06:00:00Z", "2020-05-04T08:00:00Z"),
+                Triple.of("Core Server Window", "2020-05-07T07:00:00Z", "2020-05-07T10:00:00Z")
+        ), singleEvents);
+
+        // Test schedule of type multi
+        Optional<MaintenanceSchedule> scheduleMulti = mm.lookupScheduleByUserAndName(user, "SAP Maintenance Window");
+        assertNotNull(scheduleMulti.orElse(null));
+        Long multiId = scheduleMulti.get().getId();
+
+        List<Triple<String, String, String>> multiEvents = mm.preprocessScheduleData(user, "next", multiId, date, true)
+                .stream().limit(4).map(event -> Triple.of(
+                        event.getName(),
+                        Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
+                        Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
+                .collect(Collectors.toList());
+
+        assertEquals(List.of(
+                Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),
+                Triple.of("SAP Maintenance Window", "2020-05-04T06:00:00Z", "2020-05-04T08:00:00Z"),
+                Triple.of("SAP Maintenance Window", "2020-05-11T06:00:00Z", "2020-05-11T08:00:00Z"),
+                Triple.of("SAP Maintenance Window", "2020-05-18T06:00:00Z", "2020-05-18T08:00:00Z")
+        ), multiEvents);
+    }
+
+    public void testGetCalendarEvents() throws Exception {
+        File ical = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI3_ICS).getAbsolutePath()).getPath());
+
+        MaintenanceManager mm = new MaintenanceManager();
+        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+
+        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar");
+        assertNotNull(calendar.orElse(null));
+
+        Long nextDate = ZonedDateTime.parse("2020-11-30T00:00:00+02:00").toInstant().toEpochMilli();
+
+        Optional<MaintenanceWindowData> nextEvent = mm.getCalendarEvents(
+                "skipNext", calendar.get(), Optional.empty(), nextDate, true
+        ).stream().findFirst();
+
+        assertNotNull(nextEvent.orElse(null));
+        assertEquals("2021-01-03T07:00:00Z", Instant.ofEpochMilli(nextEvent.get().getFromMilliseconds()).toString());
+
+        Long lastDate = ZonedDateTime.parse("2020-11-01T00:00:00+02:00").toInstant().toEpochMilli();
+
+        Optional<MaintenanceWindowData> lastEvent = mm.getCalendarEvents(
+                "skipBack", calendar.get(), Optional.empty(), lastDate, true
+        ).stream().findFirst();
+
+        assertNotNull(lastEvent.orElse(null));
+        assertEquals("2020-09-13T06:00:00Z", Instant.ofEpochMilli(lastEvent.get().getFromMilliseconds()).toString());
+    }
+
+    public void testGetActiveRange() {
+        MaintenanceManager mm = new MaintenanceManager();
+        ZonedDateTime date = ZonedDateTime.parse("2020-01-20T00:00:00+02:00");
+
+        List<Pair<String, String>> activeRangesSunday = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), true);
+            activeRangesSunday.add(Pair.of(
+                    Instant.ofEpochMilli(range.get("start")).toString(),
+                    Instant.ofEpochMilli(range.get("end")).toString()));
+        }
+
+        assertEquals(List.of(
+                Pair.of("2019-12-28T00:00:00Z", "2020-02-10T00:00:00Z"),
+                Pair.of("2020-01-25T00:00:00Z", "2020-03-09T00:00:00Z"),
+                Pair.of("2020-02-29T00:00:00Z", "2020-04-13T00:00:00Z"),
+                Pair.of("2020-03-28T00:00:00Z", "2020-05-11T00:00:00Z"),
+                Pair.of("2020-04-25T00:00:00Z", "2020-06-08T00:00:00Z"),
+                Pair.of("2020-05-30T00:00:00Z", "2020-07-13T00:00:00Z"),
+                Pair.of("2020-06-27T00:00:00Z", "2020-08-10T00:00:00Z"),
+                Pair.of("2020-07-25T00:00:00Z", "2020-09-07T00:00:00Z"),
+                Pair.of("2020-08-29T00:00:00Z", "2020-10-12T00:00:00Z"),
+                Pair.of("2020-09-26T00:00:00Z", "2020-11-09T00:00:00Z"),
+                Pair.of("2020-10-31T00:00:00Z", "2020-12-14T00:00:00Z"),
+                Pair.of("2020-11-28T00:00:00Z", "2021-01-11T00:00:00Z")
+        ), activeRangesSunday);
+
+        List<Pair<String, String>> activeRangesMonday = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            Map<String, Long> range = mm.getActiveRange(date.plusMonths(i).toInstant().toEpochMilli(), false);
+            activeRangesMonday.add(Pair.of(
+                    Instant.ofEpochMilli(range.get("start")).toString(),
+                    Instant.ofEpochMilli(range.get("end")).toString()));
+        }
+
+        assertEquals(List.of(
+                Pair.of("2019-12-29T00:00:00Z", "2020-02-11T00:00:00Z"),
+                Pair.of("2020-01-26T00:00:00Z", "2020-03-10T00:00:00Z"),
+                Pair.of("2020-02-23T00:00:00Z", "2020-04-07T00:00:00Z"),
+                Pair.of("2020-03-29T00:00:00Z", "2020-05-12T00:00:00Z"),
+                Pair.of("2020-04-26T00:00:00Z", "2020-06-09T00:00:00Z"),
+                Pair.of("2020-05-31T00:00:00Z", "2020-07-14T00:00:00Z"),
+                Pair.of("2020-06-28T00:00:00Z", "2020-08-11T00:00:00Z"),
+                Pair.of("2020-07-26T00:00:00Z", "2020-09-08T00:00:00Z"),
+                Pair.of("2020-08-30T00:00:00Z", "2020-10-13T00:00:00Z"),
+                Pair.of("2020-09-27T00:00:00Z", "2020-11-10T00:00:00Z"),
+                Pair.of("2020-10-25T00:00:00Z", "2020-12-08T00:00:00Z"),
+                Pair.of("2020-11-29T00:00:00Z", "2021-01-12T00:00:00Z")
+        ), activeRangesMonday);
     }
 
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {

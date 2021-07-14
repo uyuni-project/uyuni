@@ -29,14 +29,18 @@ License:        GPL-2.0-only
 Group:          Applications/Internet
 Name:           spacewalk-admin
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.2.7
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       %{pythonX}
 Requires:       lsof
 Requires:       spacewalk-base
+%if 0%{?suse_version}
 Requires:       sysvinit-tools
+%else
+Requires:       procps-ng
+%endif
 Requires:       perl(MIME::Base64)
 BuildRequires:  /usr/bin/pod2man
 %if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210

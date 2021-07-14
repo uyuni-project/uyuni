@@ -4,7 +4,7 @@ Test suite for custominfo source
 """
 from mock import MagicMock, patch, mock_open
 from spacecmd import custominfo
-from helpers import shell
+from helpers import shell, exc2str
 import pytest
 
 
@@ -23,7 +23,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_createkey(shell, "")
 
-        assert "Empty key" in str(exc)
+        assert "Empty key" in exc2str(exc)
 
 
     def test_do_custominfo_createkey_no_descr(self, shell):
@@ -89,7 +89,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_deletekey(shell, "")
 
-        assert errmsg in str(exc)
+        assert errmsg in exc2str(exc)
 
     @patch("spacecmd.custominfo.print", MagicMock())
     def test_do_custominfo_deletekey_args(self, shell):
@@ -165,7 +165,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_details(shell, "")
 
-        assert "Help info" in str(exc)
+        assert "Help info" in exc2str(exc)
         assert not logger.debug.called
         assert not logger.error.called
         assert not shell.client.system.custominfo.listAllKeys.called
@@ -285,7 +285,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "")
 
-        assert "interactive mode" in str(exc)
+        assert "interactive mode" in exc2str(exc)
 
     def test_custominfo_updatekey_noarg_descr(self, shell):
         """
@@ -297,7 +297,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "")
 
-        assert "interactive mode for descr" in str(exc)
+        assert "interactive mode for descr" in exc2str(exc)
 
     def test_custominfo_updatekey_keyonly_arg(self, shell):
         """
@@ -309,7 +309,7 @@ class TestSCCusomInfo:
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "keyname")
 
-        assert "interactive mode for descr" in str(exc)
+        assert "interactive mode for descr" in exc2str(exc)
 
     def test_custominfo_updatekey_all_args(self, shell):
         """

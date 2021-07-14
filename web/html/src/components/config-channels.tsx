@@ -72,7 +72,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   init() {
-    Network.get(this.props.matchUrl()).promise.then(data => {
+    Network.get(this.props.matchUrl()).then(data => {
       this.setState({
         channels: data,
         search: {
@@ -102,7 +102,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
 
   save() {
     const channels = this.state.assigned;
-    const request = this.props.saveRequest(channels).promise.then(
+    const request = this.props.saveRequest(channels).then(
       (data, textStatus, jqXHR) => {
         const newSearchResults = this.state.search.results.map(channel => {
           const changed = this.state.changed.get(channelKey(channel));
@@ -143,7 +143,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   search() {
     return Promise.resolve().then( () => {
       if (this.state.filter !== this.state.search.filter) {
-        Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
+        Network.get(this.props.matchUrl(this.state.filter)).then(data => {
           this.setState({
             search: {
               filter: this.state.filter,
@@ -249,7 +249,7 @@ class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannels
   }
 
   showPopUp(channel) {
-    Network.get("/rhn/manager/api/states/" + channel.id + "/content").promise.then(data => {
+    Network.get("/rhn/manager/api/states/" + channel.id + "/content").then(data => {
       this.setState({
         showSaltState: Object.assign({}, channel, { content: data }),
       });

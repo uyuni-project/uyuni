@@ -23,7 +23,7 @@ Feature: Bootstrap a SLES 12 SP4 Salt build host via the GUI
   Scenario: Check the new bootstrapped SLES 12 SP4 build host in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I wait until I see the name of "sle12sp4_buildhost", refreshing the page
     And I wait until onboarding is completed for "sle12sp4_buildhost"
     Then the Salt master can reach "sle12sp4_buildhost"

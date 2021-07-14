@@ -1,3 +1,11 @@
+- Fix rpm handling of empty package group and devicefiles tag (bsc#1186650)
+- Fixed minrate/timeout configuration for dnf plugin.
+- Check if batch needs to be imported even after failure (bsc#1183151)
+
+-------------------------------------------------------------------
+Fri Jun 18 15:18:58 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.14-1
 - show better error message when reposync failed
 
 -------------------------------------------------------------------

@@ -9,11 +9,11 @@ Feature: Chanel subscription via SSM
 
 @sle_minion
   Scenario: Change child channels for SLES Minion subscribed to a base channel
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
@@ -35,11 +35,11 @@ Feature: Chanel subscription via SSM
 
 @sle_client
   Scenario: Change child channels for SLES Client subscribed to a base channel
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
     And I should see "1" systems selected for SSM
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
@@ -139,11 +139,11 @@ Feature: Chanel subscription via SSM
 
 @centos_minion
   Scenario: System default channel can't be determined on the CentOS minion
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "ceos_minion" client
     Then I should see "1" systems selected for SSM
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     And I select "System Default Base Channel" from drop-down in table line with "Test Base Channel"
     And I click on "Next"
@@ -169,11 +169,11 @@ Feature: Chanel subscription via SSM
 
 @ubuntu_minion
   Scenario: System default channel can't be determined on the Ubuntu minion
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I follow "Clear"
     And I check the "ubuntu_minion" client
     Then I should see "1" systems selected for SSM
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     And I select "System Default Base Channel" from drop-down in table line with "Test-Channel-Deb-AMD64"
     And I click on "Next"

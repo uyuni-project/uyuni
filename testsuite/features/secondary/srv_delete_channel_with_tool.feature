@@ -10,8 +10,8 @@ Feature: Deleting channels with children or clones is not allowed
     Given I am authorized for the "Admin" section
 
   Scenario: Clone the first channel before deletion from tool test
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Test-Channel-x86_64" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
@@ -20,8 +20,8 @@ Feature: Deleting channels with children or clones is not allowed
     Then I should see a "Clone of Test-Channel-x86_64" text
 
   Scenario: Clone a second channel using first channel as base
-    Given I am on the manage software channels page
-    When I follow "Clone Channel"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone Channel"
     And I select "Clone of Test-Channel-x86_64" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text

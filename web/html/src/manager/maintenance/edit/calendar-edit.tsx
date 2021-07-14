@@ -6,7 +6,7 @@ import { Form } from "components/input/Form";
 import { Text } from "components/input/Text";
 import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
-import { DangerDialog } from "components/dialog/DangerDialog";
+import { DangerDialog } from "components/dialog/LegacyDangerDialog";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages";
 

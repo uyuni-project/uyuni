@@ -11,6 +11,7 @@ import { AceEditor } from "components/ace-editor";
 import { PlaybookDetails } from "./accordion-path-content";
 import { Formats, Utils } from "utils/functions";
 import { ActionChainLink, ActionLink } from "components/links";
+import { Toggler } from "components/toggler";
 import { Loading } from "components/utils/Loading";
 
 interface SchedulePlaybookProps {
@@ -21,6 +22,7 @@ interface SchedulePlaybookProps {
 export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
+  const [isTestMode, setTestMode] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
@@ -33,7 +35,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
   useEffect(() => {
     const getInventoryPaths = () => {
-      return Network.get(`/rhn/manager/api/systems/details/ansible/paths/inventory/${playbook.path.minionServerId}`).promise
+      return Network.get(`/rhn/manager/api/systems/details/ansible/paths/inventory/${playbook.path.minionServerId}`)
         .then((res: JsonResult<AnsiblePath[]>) => res.success ? res.data : Promise.reject(res))
         .then(inv => inv.map(i => i.path))
         .then(inv => {
@@ -47,12 +49,11 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
     const getPlaybookContents = () => {
       return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents",
-        JSON.stringify({
+        {
           pathId: playbook.path.id,
           playbookRelPathStr: playbook.name
-        }),
-        "application/json"
-      ).promise
+        },
+      )
         .then((res: JsonResult<string>) => res.success ? res.data : Promise.reject(res))
         .then(setPlaybookContent)
         .catch(res =>
@@ -69,15 +70,15 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
   const schedule = () => {
     return Network.post("/rhn/manager/api/systems/details/ansible/schedule-playbook",
-      JSON.stringify({
+      {
         playbookPath: playbook.fullPath,
         inventoryPath: inventoryPath?.text,
         controlNodeId: playbook.path.minionServerId,
+        testMode: isTestMode,
         actionChainLabel: actionChain?.text || null,
         earliest: Formats.LocalDateTime(datetime)
-      }),
-      "application/json"
-    ).promise
+      },
+    )
       .then((res: JsonResult<number>) => res.success ? res.data : Promise.reject(res))
       .then(actionId =>
         setMessages(MsgUtils.info(<ScheduleMessage id={actionId} actionChain={actionChain?.text}/>)))
@@ -94,6 +95,12 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
 
   const buttons = [
     <div className="btn-group pull-right">
+      <Toggler
+        text={t("Test mode")}
+        value={isTestMode}
+        className="btn"
+        handler={() => setTestMode(!isTestMode)}
+      />
       <Button icon="fa-angle-left" className="btn-default" text={t("Back")} title={t("Back to playbook list")} handler={onBack} />
       <AsyncButton defaultType="btn-success" action={schedule} title={t("Schedule playbook execution")} text={t("Schedule")} />
     </div>,

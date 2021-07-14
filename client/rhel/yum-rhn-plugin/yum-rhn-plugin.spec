@@ -1,7 +1,7 @@
 #
 # spec file for package yum-rhn-plugin
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+
 %define __python /usr/bin/python2
 
 # package renaming fun :(
@@ -28,10 +29,10 @@ Summary:        Spacewalk support for yum
 License:        GPL-2.0-only
 Group:          System Environment/Base
 Name:           yum-rhn-plugin
-Version:        4.2.8
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-Url:            https://github.com/uyuni-project/uyuni
+URL:            https://github.com/uyuni-project/uyuni
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
 BuildArch:      noarch
@@ -111,7 +112,8 @@ fi
 %{_mandir}/man*/*
 %{_datadir}/yum-plugins/*
 %{python_sitelib}/rhn/actions/*
-%doc LICENSE
+%{!?_licensedir:%global license %doc}
+%license LICENSE
 %dir /etc/yum
 %dir /etc/yum/pluginconf.d
 %dir /usr/share/yum-plugins

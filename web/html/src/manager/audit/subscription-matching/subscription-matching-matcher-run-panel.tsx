@@ -127,7 +127,7 @@ type MatcherScheduleButtonProps = {
 
 class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> {
   onClick = () => {
-    Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run").promise.catch(() =>
+    Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run").catch(() =>
       this.props.onError()
     );
     this.props.onScheduled();

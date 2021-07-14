@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { DangerDialog } from "components/dialog/DangerDialog";
+import { DangerDialog } from "components/dialog/LegacyDangerDialog";
 
 type Props = {
   id: string;

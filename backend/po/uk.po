@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-04 13:34+0000\n"
+"POT-Creation-Date: 2021-07-01 13:20+0000\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,16 +25,47 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/configFilesHandler.py:129
-#: ../server/handlers/xmlrpc/registration.py:217
-#: ../server/handlers/xmlrpc/registration.py:1170
-#: ../server/handlers/xmlrpc/registration.py:1309
-#: ../server/handlers/app/packages.py:192
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "неповний ключ розпізнавання на проксі: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "у розпізнаванні на проксі-сервері відмовлено"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr ""
+"У вас немає уповноважень на керування пакунками у організації із порожньою "
+"назвою"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "У вас немає прав на керування пакунками у організації %s"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Ви не маєте права виконувати завдання з адміністрування"
+
+#: ../server/importlib/userAuth.py:144
 #, python-format
 msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "У вас немає права керувати каналом %s або цього каналу не існує"
+
+#: ../server/importlib/userAuth.py:204
+#, fuzzy, python-format
+msgid ""
 "\n"
-"                   %s Account has been deactivated on this server.\n"
-"                   Please contact your Org administrator for more help."
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
 "                   На цьому сервері вимкнено обліковий запис %s.\n"
@@ -175,90 +206,63 @@ msgstr "ім’я користувача має складатися прина�
 msgid "Cannot register usernames ending with %s"
 msgstr "Не можна реєструвати ім’я користувача, що завершується на %s"
 
-#: ../server/apacheRequest.py:59
+#: ../server/handlers/sat/auth.py:45
+#, fuzzy
+msgid "ISS is disabled on this server."
+msgstr "ISS вимкнено для цього satellite."
+
+#: ../server/handlers/sat/auth.py:50
 #, python-format
-msgid "Invalid request received (%s)."
-msgstr "Отримано неприпустимий запит (%s)."
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Сервер «%s» не увімкнено для ISS."
 
-#: ../server/apacheRequest.py:120
+#: ../server/handlers/app/packages.py:192
+#: ../server/handlers/xmlrpc/registration.py:217
+#: ../server/handlers/xmlrpc/registration.py:1170
+#: ../server/handlers/xmlrpc/registration.py:1309
+#: ../server/configFilesHandler.py:129
 #, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Під час роботи «%s» отримано\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Некоректна адреса %s"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr ""
-"У вас немає уповноважень на керування пакунками у організації із порожньою "
-"назвою"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "У вас немає прав на керування пакунками у організації %s"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Ви не маєте права виконувати завдання з адміністрування"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "У вас немає права керувати каналом %s або цього каналу не існує"
-
-#: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
 msgid ""
 "\n"
-"               %s Account has been deactivated on this server.\n"
-"               Please contact your Org administrator for more help."
+"                   %s Account has been deactivated on this server.\n"
+"                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
 "                   На цьому сервері вимкнено обліковий запис %s.\n"
 "                   Щоб дізнатися більше, будь ласка, зверніться до "
 "адміністратора вашої організації."
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/handlers/applet/applet.py:78
+#, fuzzy, python-brace-format
+msgid "Your system was not found in the {PRODUCT_NAME} database"
+msgstr "Вашої системи не знайдено у базі даних RHN"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, fuzzy, python-format
+msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Проксі-сервіс Spacewalk не включений для профілю сервера: «%s»"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Неприпустимий ключ сеансу"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Цього ідентифікатора сервера більше не існує"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
+
+#: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
+msgid "Invalid action value type %s (%s)"
+msgstr "Неприпустиме значення дії типу %s (%s)"
 
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Пакунок не знайдено"
-
-#: ../server/apacheAuth.py:66
+#: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "неповний ключ розпізнавання на проксі: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "у розпізнаванні на проксі-сервері відмовлено"
+msgid "Action %s does not belong to server %s"
+msgstr "Дія %s не належить до сервера %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
@@ -300,23 +304,6 @@ msgstr "Мало бути вказано словник як аргумент п
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Некоректне значення «%s» для %s (%s)"
 
-#: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
-msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Проксі-сервіс Spacewalk не включений для профілю сервера: «%s»"
-
-#: ../server/handlers/xmlrpc/proxy.py:85
-msgid "Invalid session key"
-msgstr "Неприпустимий ключ сеансу"
-
-#: ../server/handlers/xmlrpc/proxy.py:93
-msgid "This server ID no longer exists"
-msgstr "Цього ідентифікатора сервера більше не існує"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
-
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
@@ -327,35 +314,64 @@ msgstr "Мало бути вказано назву пакунка, а не: %s"
 msgid "Expected a package, not: %s"
 msgstr "Мало бути вказано пакунок, а не: %s"
 
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Неприпустиме значення дії типу %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:462
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Дія %s не належить до сервера %s"
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
 msgstr "Некоректне значення %s (%s)"
 
-#: ../server/handlers/applet/applet.py:78
-#, fuzzy, python-brace-format
-msgid "Your system was not found in the {PRODUCT_NAME} database"
-msgstr "Вашої системи не знайдено у базі даних RHN"
-
-#: ../server/handlers/sat/auth.py:45
-#, fuzzy
-msgid "ISS is disabled on this server."
-msgstr "ISS вимкнено для цього satellite."
-
-#: ../server/handlers/sat/auth.py:50
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Сервер «%s» не увімкнено для ISS."
+msgid "Invalid RPM package %s requested"
+msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Пакунок не знайдено"
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr ""
+"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
+"адміністратора (root)"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Службу не увімкнено для профілю системи: «%s»"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Отримано неприпустимий запит (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Під час роботи «%s» отримано\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Некоректна адреса %s"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Підтримки архітектури «%s» не передбачено"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
@@ -402,22 +418,6 @@ msgstr "Невідповідність сеансів kickstart"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Підтримки архітектури «%s» не передбачено"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr ""
-"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
-"адміністратора (root)"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Службу не увімкнено для профілю системи: «%s»"
 
 #: ../common/rhnTB.py:205
 #, python-format
@@ -1104,41 +1104,6 @@ msgstr "Дані помилкового класу: %s\n"
 msgid "Explanation: %s"
 msgstr "Пояснення: %s"
 
-#: ../satellite_tools/reposync.py:118 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:121
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:131 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
-#: ../satellite_tools/disk_dumper/iss.py:1294
-#: ../satellite_tools/disk_dumper/iss.py:1298
-#, python-format
-msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1301,6 +1266,22 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -1358,9 +1339,17 @@ msgstr ""
 msgid "Skipping..."
 msgstr ""
 
+#: ../satellite_tools/satsync.py:439 ../satellite_tools/reposync.py:118
+msgid "+++ sending log as an email +++"
+msgstr ""
+
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/satsync.py:449 ../satellite_tools/reposync.py:131
+msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:520
@@ -2037,6 +2026,17 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2523
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
+msgstr ""
+
+#: ../satellite_tools/disk_dumper/iss.py:1294
+#: ../satellite_tools/disk_dumper/iss.py:1298
+#, python-format
+msgid "format of %s should be at least YYYYMMDD.\n"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:121
+#, python-format
+msgid "%s sync. report from %s"
 msgstr ""
 
 #~ msgid "Crash information is invalid or incomplete"

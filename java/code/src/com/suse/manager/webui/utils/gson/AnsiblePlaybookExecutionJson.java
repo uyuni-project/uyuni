@@ -28,6 +28,7 @@ public class AnsiblePlaybookExecutionJson {
     private String playbookPath;
     private Optional<String> inventoryPath = Optional.empty();
     private long controlNodeId;
+    private boolean testMode;
     private Optional<LocalDateTime> earliest = Optional.empty();
     private Optional<String> actionChainLabel = Optional.empty();
 
@@ -56,6 +57,15 @@ public class AnsiblePlaybookExecutionJson {
      */
     public long getControlNodeId() {
         return controlNodeId;
+    }
+
+    /**
+     * True if the execution should be in test mode.
+     *
+     * @return testMode
+     */
+    public boolean isTestMode() {
+        return testMode;
     }
 
     /**

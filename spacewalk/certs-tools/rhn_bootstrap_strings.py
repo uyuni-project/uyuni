@@ -417,7 +417,10 @@ if [ "$INSTALLER" == yum ]; then
             VERSION=6
         elif [ -f /etc/almalinux-release ]; then
             grep -v '^#' /etc/almalinux-release | grep -q '\(AlmaLinux\)' && BASE="almalinux"
-            VERSION=`grep -v '^#' /etc/almalinux-release | grep -Po '(?<=release )\d+'`
+            VERSION=`grep -v '^#' /etc/almalinux-release | grep -Po '(?<=release )\d+'`	    
+        elif [ -f /etc/rocky-release ]; then
+            grep -v '^#' /etc/rocky-release | grep -q '\(Rocky Linux\)' && BASE="rockylinux"
+            VERSION=`grep -v '^#' /etc/rocky-release | grep -Po '(?<=release )\d+'`	    
         elif [ -f /etc/oracle-release ]; then
             grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
             VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`

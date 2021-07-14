@@ -2,8 +2,8 @@
 #
 
 # Docker tests variables
-DOCKER_CONTAINER_BASE = uyuni-master
-DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
+DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 DOCKER_PG_PORTS       = -p 5432:5432
 DOCKER_COMMON_OPTS    = --interactive --tty --rm

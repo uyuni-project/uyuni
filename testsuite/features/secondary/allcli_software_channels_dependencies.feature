@@ -31,11 +31,11 @@ Feature: Chanel subscription with recommended/required dependencies
     Then I should see the child channel "SLE-Module-Server-Applications15-SP2-Pool for x86_64" "selected"
 
   Scenario: Play with recommended and required child channels selection in SSM
-    When I am on the System Overview page
+    When I follow the left menu "Home > Overview"
     And I check the "sle_minion" client
     And I check the "sle_client" client
     Then I should see "2" systems selected for SSM
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text

@@ -57,7 +57,7 @@ function computeReverseDependencies(dependencyMap: Map<number, Set<number>>): Ma
 function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
   const requiredChannels: Map<number, Set<number>> = new Map(
     Object.entries(requiredChannelsRaw).map(entry => {
-      const channelId = parseInt(entry[0]);
+      const channelId = parseInt(entry[0], 10);
       // TODO: Specify types
       const requiredChannelList: any = entry[1];
       return [channelId, new Set(requiredChannelList.filter(requiredId => requiredId !== channelId))];

@@ -108,15 +108,31 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             }
 
             @Override
-            public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
-                Optional<Map<String, VmInfoJson>> vmInfo = SaltTestUtils.<Map<String, VmInfoJson>>getSaltResponse(
-                        "/com/suse/manager/webui/controllers/virtualization/test/virt.vm.info.json",
+            public Optional<GuestDefinition> getGuestDefinition(String minionId, String uuidIn) {
+                Optional<Map<String, JsonElement>> vm = SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm_definition.json",
                         Collections.emptyMap(),
-                        new TypeToken<Map<String, VmInfoJson>>() { });
-                return SaltTestUtils.<String>getSaltResponse(
-                        "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
-                        .map(xml -> GuestDefinition.parse(xml,
-                                vmInfo.map(data -> data.get(domainName))));
+                        new TypeToken<Map<String, JsonElement>>() { });
+                return vm.map(data -> {
+                    Optional<VmInfoJson> info = Optional.empty();
+                    if (data.containsKey("info")) {
+                        info = Optional.ofNullable(new GsonBuilder().create()
+                                .fromJson(data.get("info"), new TypeToken<VmInfoJson>() { }.getType()));
+                    }
+                    if (data.containsKey("definition")) {
+                        String xml = data.get("definition").getAsString();
+                        return GuestDefinition.parse(xml, info);
+                    }
+                    return null;
+                });
+            }
+
+            @Override
+            public Optional<Map<String, Map<String, JsonElement>>> getVmInfos(String minionId) {
+                return SaltTestUtils.<Map<String, Map<String, JsonElement>>>getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt_utils.vm.info.json",
+                        Collections.emptyMap(),
+                        new TypeToken<Map<String, Map<String, JsonElement>>>() { });
             }
         };
 
@@ -157,7 +173,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         String json = virtualGuestsController.data(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/data", sid),
-                response, user);
+                response, user, host);
         List<Map<String, Object>> model = GSON.fromJson(json, List.class);
 
         // Sort both actual and expected arrays to ease assertions
@@ -186,7 +202,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/shutdown",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
                                               sid),
-                response, user);
+                response, user, host);
 
         // Make sure the shutdown action was queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -217,7 +233,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
-                response, user);
+                response, user, host);
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
@@ -247,7 +263,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
-                    response, user);
+                    response, user, host);
             fail();
         }
         catch (HaltException e) {
@@ -274,7 +290,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                                                        "\"" + guests[1].getUuid() + "\"], " +
                                                       "value: " + mem + "}",
                                               sid, "setMemory"),
-                response, user);
+                response, user, host);
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> scheduledActions = ActionManager.pendingActions(user, null);
@@ -310,7 +326,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
-                response, user);
+                response, user, host);
         GuestDefinition def = GSON.fromJson(json, new TypeToken<GuestDefinition>() {}.getType());
         assertEquals(uuid, def.getUuid());
         assertEquals("sles12sp2", def.getName());
@@ -373,7 +389,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         String json = virtualGuestsController.getDomainsCapabilities(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
-                        host.getId()), response, user);
+                        host.getId()), response, user, host);
 
         DomainsCapsJson caps = GSON.fromJson(json, new TypeToken<DomainsCapsJson>() {}.getType());
         assertTrue(caps.osTypes.contains("hvm"));

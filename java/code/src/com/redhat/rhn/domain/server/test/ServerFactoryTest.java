@@ -87,6 +87,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -1544,5 +1545,79 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(schedule, HibernateFactory.reload(sys1).getMaintenanceScheduleOpt().get());
         assertEquals(schedule, HibernateFactory.reload(sys2).getMaintenanceScheduleOpt().get());
+    }
+
+    public void testQuerySlesSystems() {
+        Server s1 = createTestServer(user, true);
+        s1.setName("first-system");
+        s1.setOs("SLES");
+        Server s2 = createTestServer(user, false);
+        s2.setName("second-system");
+        s2.setOs("SLES");
+        Server s3 = createTestServer(user, true);
+        s3.setName("third-system");
+        s3.setOs("not-SLES");
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<Server> result = ServerFactory.querySlesSystems("", 20, user).collect(Collectors.toList());
+
+        assertEquals(1, result.size());
+        assertEquals("first-system", result.get(0).getName());
+    }
+
+    public void testQuerySlesSystemsWithQueryString() {
+        Server s1 = createTestServer(user, true);
+        s1.setName("my-foo-system-1");
+        s1.setOs("SLES");
+        Server s2 = createTestServer(user, true);
+        s2.setName("my-foo-system-2");
+        s2.setOs("SLES");
+        Server s3 = createTestServer(user, true);
+        s3.setName("my-bar-system");
+        s3.setOs("SLES");
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).collect(Collectors.toList());
+
+        assertEquals(2, result.size());
+        assertTrue(result.stream().anyMatch(s -> "my-foo-system-1".equals(s.getName())));
+        assertTrue(result.stream().anyMatch(s -> "my-foo-system-2".equals(s.getName())));
+    }
+
+    public void testGetInstalledKernelVersions() throws Exception {
+        Server server = createTestServer(user);
+        PackageArch pkgArch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+
+        Package pkg1 = PackageTest.createTestPackage(null);
+        PackageEvr pkgEvr1 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.1.0", "1", PackageType.RPM);
+        PackageName pkgName1 = PackageNameTest.createTestPackageName("kernel-default");
+        PackageTest.populateTestPackage(pkg1, null, pkgName1, pkgEvr1, pkgArch);
+
+        Package pkg2 = PackageTest.createTestPackage(null);
+        PackageEvr pkgEvr2 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "1", PackageType.RPM);
+        PackageName pkgName2 = PackageNameTest.createTestPackageName("not-a-kernel");
+        PackageTest.populateTestPackage(pkg2, null, pkgName2, pkgEvr2, pkgArch);
+
+        Package pkg3 = PackageTest.createTestPackage(null);
+        PackageEvr pkgEvr3 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.1.2", "1", PackageType.RPM);
+        PackageName pkgName3 = PackageNameTest.createTestPackageName("kernel-default");
+        PackageTest.populateTestPackage(pkg3, null, pkgName3, pkgEvr3, pkgArch);
+
+        PackageTestUtils.installPackageOnServer(pkg1, server);
+        PackageTestUtils.installPackageOnServer(pkg2, server);
+        PackageTestUtils.installPackageOnServer(pkg3, server);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(server).collect(Collectors.toList());
+
+        assertEquals(2, result.size());
+        assertTrue(result.stream().anyMatch(pkgEvr1::equals));
+        assertTrue(result.stream().anyMatch(pkgEvr3::equals));
     }
 }

@@ -81,10 +81,10 @@ Feature: Bare metal discovery
     Given I am on the Systems page
     When I check the "sle_client" client
     And I wait for "30" seconds
-    Then I am on System Set Manager Overview
+    Then I follow the left menu "Systems > System Set Manager > Overview"
 
   Scenario: Check SSM page for bare metal system
-    Given I am on System Set Manager Overview
+    Given I follow the left menu "Systems > System Set Manager > Overview"
     Then I should see a "List the systems" link in the content area
     And I should see a "Autoinstall" link in the content area
     And I should see a "Configure power management" link in the content area

@@ -18,13 +18,12 @@ function matchUrl(target?: string) {
 function applyRequest(component) {
   return Network.post(
     "/rhn/manager/api/states/apply",
-    JSON.stringify({
+    {
       id: window.serverId,
       type: "SERVER",
       states: ["custom"],
-    }),
-    "application/json"
-  ).promise.then(data => {
+    }
+  ).then(data => {
     component.setState({
       messages: MessagesUtils.info(
         <span>
@@ -39,12 +38,11 @@ function applyRequest(component) {
 function saveRequest(states) {
   return Network.post(
     "/rhn/manager/api/states/save",
-    JSON.stringify({
+    {
       id: window.serverId,
       type: "SERVER",
       channels: states,
-    }),
-    "application/json"
+    }
   );
 }
 

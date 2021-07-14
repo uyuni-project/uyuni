@@ -115,3 +115,20 @@ def assert_args_expect(calls, expectations):
         assert kw == _kw, "{} is not as expected {}".format(str(kw), str(_kw))
         expectations.pop(0)
     assert not expectations
+
+
+def exc2str(exc):
+    """
+    Get string from the exception.
+
+    :param exc:
+    :return:
+    """
+    if hasattr(exc, "value"):
+        errmsg = str(exc.value)
+    elif hasattr(exc, "message"):
+        errmsg = exc.message
+    else:
+        errmsg = str(exc)
+
+    return errmsg

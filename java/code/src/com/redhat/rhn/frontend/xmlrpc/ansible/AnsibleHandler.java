@@ -63,11 +63,40 @@ public class AnsibleHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
      */
+    public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+            Date earliestOccurrence, String actionChainLabel) {
+        return schedulePlaybook(loggedInUser, playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
+                actionChainLabel, false);
+    }
+
+    /**
+     * Schedule a playbook execution with test mode option
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence earliest occurrence of the execution command
+     * @param actionChainLabel label af action chain to use
+     * @param testMode true if the playbook shall be executed in test mode
+     * @return the execute playbook action id
+     *
+     * @xmlrpc.doc Schedule a playbook execution
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "playbookPath", "path to the playbook file in the control node")
+     * @xmlrpc.param #param_desc("string", "inventoryPath", "path to Ansible inventory or empty")
+     * @xmlrpc.param #param_desc("int", "controlNodeId", "system ID of the control node")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * "earliest the execution command can be sent to the control node. ignored when actionChainLabel is used")
+     * @xmlrpc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
+     * @xmlrpc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
+     */
     public Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath,
-            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel) {
+            Integer controlNodeId, Date earliestOccurrence, String actionChainLabel, boolean testMode) {
         try {
-            return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, earliestOccurrence,
-                    Optional.ofNullable(actionChainLabel), loggedInUser);
+            return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, testMode,
+                    earliestOccurrence, Optional.ofNullable(actionChainLabel), loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

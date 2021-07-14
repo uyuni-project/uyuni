@@ -31,7 +31,8 @@ Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
 end
 
 Then(/^I am on the image store of the kiwi image for organization "([^"]*)"$/) do |org|
-  step %(I navigate to "os-images/#{org}/" page)
+  # It doesn't exist any navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
+  visit("https://#{$server.full_hostname}/os-images/#{org}/")
 end
 
 Then(/^I should see the name of the image$/) do
@@ -41,6 +42,7 @@ end
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|
   cont_op.login('admin', 'admin')
   images_list = cont_op.list_images
+  puts "List of images: #{images_list}"
   image_id = 0
   images_list.each do |element|
     if element['name'] == name
@@ -52,6 +54,7 @@ When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfu
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     idetails = cont_op.get_image_details(image_id)
+    puts "Image Details: #{idetails}"
     break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
     raise 'image build failed.' if idetails['buildStatus'] == 'failed'
     raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'

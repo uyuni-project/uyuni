@@ -326,6 +326,7 @@ public class ImageProfileController {
             else if (p instanceof KiwiProfile) {
                 KiwiProfile kp = (KiwiProfile) p;
                 kp.setPath(reqData.getPath());
+                kp.setKiwiOptions(reqData.getKiwiOptions());
             }
 
             if (!ImageProfileFactory.getStoreTypeForProfile(p).equals(store.getStoreType())) {
@@ -376,6 +377,7 @@ public class ImageProfileController {
         else if (ImageProfile.TYPE_KIWI.equals(reqData.getImageType())) {
             KiwiProfile kiwiProfile = new KiwiProfile();
             kiwiProfile.setPath(reqData.getPath());
+            kiwiProfile.setKiwiOptions(reqData.getKiwiOptions());
             profile = kiwiProfile;
         }
         else {

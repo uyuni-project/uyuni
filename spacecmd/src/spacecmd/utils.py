@@ -434,9 +434,10 @@ def print_errata_summary(erratum):
     if len(date_parts) > 1:
         erratum['date'] = date_parts[0]
 
-    print('%s  %s  %s' % (
+    print('%s  %s  %s  %s' % (
         erratum.get('advisory_name').ljust(14),
-        wrap(erratum.get('advisory_synopsis'), 50)[0].ljust(50),
+        wrap(erratum.get('advisory_synopsis'), 49)[0].ljust(49),
+        (erratum.get('advisory_status') or '').ljust(9),
         erratum.get('date').rjust(8)))
 
 

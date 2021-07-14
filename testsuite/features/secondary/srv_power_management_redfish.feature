@@ -46,10 +46,10 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    And I am on the System Overview page
-    When I follow "Clear"
+    When I follow the left menu "Home > Overview"
+    And I follow "Clear"
     And I check the "sle_minion" client
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
     Then I should see "sle_minion" as link
     And I should see a "Change Power Management Configuration" text
@@ -69,7 +69,7 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : redfish" for "sle_minion"
 
   Scenario: Check power management SSM operation for Redfish
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     When I follow "power management operations" in the content area
     Then I should see "sle_minion" as link
     And I should see a "Power On" button

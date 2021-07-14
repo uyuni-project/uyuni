@@ -1,0 +1,7 @@
+{
+    "cpu_model": "Cortex-A72",
+    "cpu_vendor": "ARM",
+    "cpu_numanodes": "4",
+    "cpu_stepping": "r0p2",
+    "cpu_cores": "4"
+}

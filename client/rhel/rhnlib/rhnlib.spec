@@ -1,8 +1,7 @@
 #
-
 # spec file for package rhnlib
 #
-# Copyright (c) 2019 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2021 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
@@ -37,20 +37,19 @@
 %global is_deb 1
 %endif
 
-
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        4.2.3
-Release:        1%{?dist}
+Version:        4.3.0
+Release:        0
 %if "%{_vendor}" == "debbuild"
-Group:      python
-Packager:   Uyuni Project <uyuni-devel@opensuse.org>
+Group:          python
+Packager:       Uyuni Project <uyuni-devel@opensuse.org>
 %else
-Group:      Development/Libraries
+Group:          Development/Libraries
 %endif
-Url:            https://github.com/uyuni-project/uyuni
-Source0: %{name}-%{version}.tar.gz
+URL:            https://github.com/uyuni-project/uyuni
+Source0:        %{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -75,8 +74,8 @@ BuildRequires:  python-devel
 %if 0%{?suse_version} > 1200
 Requires:       python-pyOpenSSL
 %else
-Requires:       python-openssl
 Requires:       python-backports.ssl_match_hostname
+Requires:       python-openssl
 %endif # 0{?suse_version} > 1200
 %else
 Requires:       pyOpenSSL
@@ -85,13 +84,13 @@ Requires:       pyOpenSSL
 %endif # {_vendor} != "debbuild"
 
 %if "%{_vendor}" == "debbuild"
-BuildRequires: python-dev
-BuildRequires: rpm
+BuildRequires:  python-dev
+BuildRequires:  rpm
 Requires(preun): python-minimal
 Requires(post): python-minimal
-Requires: python-openssl
-Obsoletes: python-rhn
-Conflicts: python-rhn
+Requires:       python-openssl
+Obsoletes:      python-rhn
+Conflicts:      python-rhn
 %endif
 
 Conflicts:      rhncfg < 5.10.45
@@ -112,6 +111,7 @@ rhnlib is a collection of python modules used by the Spacewalk software.
 %if 0%{?build_py3}
 %package -n python3-rhnlib
 Summary:        Python libraries for the Spacewalk project
+Group:          python
 
 %if "%{_vendor}" != "debbuild"
 BuildRequires:  python3-devel
@@ -122,11 +122,11 @@ BuildRequires:  python-rpm-macros
 Requires:       python3-pyOpenSSL
 
 %if "%{_vendor}" == "debbuild"
-BuildRequires: python3-dev
-BuildRequires: rpm
+BuildRequires:  python3-dev
+BuildRequires:  rpm
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
-Requires: python3-openssl
+Requires:       python3-openssl
 %endif
 
 Conflicts:      rhncfg < 5.10.45
@@ -151,13 +151,11 @@ if [ ! -e setup.cfg ]; then
     sed 's/@RELEASE@/%{release}/' setup.cfg.in > setup.cfg
 fi
 
-
 %build
 make -f Makefile.rhnlib PYTHON=%{__python2}
 %if 0%{?build_py3}
 make -f Makefile.rhnlib PYTHON=%{__python3}
 %endif
-
 
 %install
 %{__python2} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root $RPM_BUILD_ROOT %{?is_deb:--install-layout=deb} --prefix=%{_prefix}

@@ -37,6 +37,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *   #prop_desc("int", "sid", "serverId")
  *   #prop_desc("int", "action_id", "Id of the parent action.")
  *   #prop_desc("string", "path", "Path to XCCDF document")
+ *   #prop_desc("string", "ovalfiles", "Optional OVAL Files")
  *   #prop_desc("string", "oscap_parameters", "oscap command-line arguments.")
  *   #prop_desc("string", "test_result", "Identifier of XCCDF TestResult.")
  *   #prop_desc("string", "benchmark", "Identifier of XCCDF Benchmark.")
@@ -73,6 +74,7 @@ public class XccdfTestResultSerializer extends RhnXmlRpcCustomSerializer {
         addToHelper(helper, "xid", testResult.getId());
         addToHelper(helper, "sid", testResult.getServer().getId());
         addToHelper(helper, "path", actionDetails.getPath());
+        addToHelper(helper, "ovalfiles", actionDetails.getOvalfiles());
         addToHelper(helper, "oscap_parameters", actionDetails.getParametersContents());
         addToHelper(helper, "test_result", testResult.getIdentifier());
         addToHelper(helper, "benchmark", benchmark.getIdentifier());

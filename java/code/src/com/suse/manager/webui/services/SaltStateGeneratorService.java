@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
@@ -76,9 +77,17 @@ public enum SaltStateGeneratorService {
     private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
 
     private Path suseManagerStatesFilesRoot;
+    private boolean skipSetOwner = false;
 
     SaltStateGeneratorService() {
         suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
+    }
+
+    /**
+     * @param skip set skip set owner - used for testsuite
+     */
+    public void setSkipSetOwber(boolean skip) {
+        skipSetOwner = skip;
     }
 
     /**
@@ -126,8 +135,10 @@ public enum SaltStateGeneratorService {
 
             SaltStateGenerator saltStateGenerator = new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
-            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
-                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            if (!skipSetOwner) {
+                FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            }
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -387,14 +398,18 @@ public enum SaltStateGeneratorService {
                 states.stream().map(confChannelSaltManager::getChannelStateName).collect(Collectors.toList());
         try {
             Files.createDirectories(baseDir);
-            FileUtils.setAttributes(baseDir, "tomcat", "susemanager",
-                    Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
+            if (!skipSetOwner) {
+                FileUtils.setAttributes(baseDir, "tomcat", "susemanager",
+                        Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
+            }
             Path filePath = baseDir.resolve(defaultExtension(fileName));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltConfigChannelState(stateNames));
-            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
-                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            if (!skipSetOwner) {
+                FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            }
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -408,6 +423,7 @@ public enum SaltStateGeneratorService {
      */
     public void removeServer(MinionServer minion) {
         MinionPillarManager.INSTANCE.removePillar(minion.getMinionId());
+        StatesAPI.removePackageState(minion);
         removeConfigChannelAssignments(minion);
         removeActionChains(minion);
     }
@@ -531,8 +547,10 @@ public enum SaltStateGeneratorService {
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
-            FileUtils.setAttributes(filePath, "tomcat", "susemanager",
-                    Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            if (!skipSetOwner) {
+                FileUtils.setAttributes(filePath, "tomcat", "susemanager",
+                        Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
+            }
         }
         catch (IOException e) {
             LOG.error("Failed to generate pillar data into " + filePath, e);

@@ -62,10 +62,10 @@ Feature: Maintenance Windows
         Then I should see a "System properties changed" text
 
     Scenario: Assign systems to a multi Schedule using SSM
-        When I am on the System Overview page
+        When I follow the left menu "Home > Overview"
         And I follow "Clear"
         And I check the "sle_client" client
-        And I am on System Set Manager Overview
+        And I follow the left menu "Systems > System Set Manager > Overview"
         And I follow "Assign" in the content area
         And I select "SAP Maintenance Window" from "scheduleId"
         And I check "cancelActions"
@@ -100,11 +100,11 @@ Feature: Maintenance Windows
         Then I should see a "1 package install has been scheduled for" text
 
     Scenario: Detach systems from Schedules
-        When I am on the System Overview page
+        When I follow the left menu "Home > Overview"
         And I follow "Clear"
         And I check the "sle_client" client
         And I check the "sle_minion" client
-        And I am on System Set Manager Overview
+        And I follow the left menu "Systems > System Set Manager > Overview"
         And I follow "Assign" in the content area
         And I select "None - clear schedule" from "scheduleId"
         And I click on "Clear All"

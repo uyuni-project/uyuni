@@ -16,6 +16,7 @@ run_ansible_playbook:
   ansible.playbooks:
     - name: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
+    - test: {{ pillar["test"] }}
 {%- if "inventory_path" in pillar %}
     - ansible_kwargs:
         inventory: {{ pillar["inventory_path"] }}

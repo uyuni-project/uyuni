@@ -2,7 +2,6 @@ import * as React from "react";
 import { Utils } from "utils/functions";
 import { Table } from "components/table/Table";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
 import { DeleteDialog } from "components/dialog/DeleteDialog";

@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
@@ -34,6 +36,7 @@ import com.redhat.rhn.manager.formula.FormulaUtil;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -108,13 +111,13 @@ public class FormulaController {
                 withCsrfToken(withUser(this::serverGroupFormulas)),
                 jade);
         get("/manager/systems/details/formulas",
-                withCsrfToken(withDocsLocale(withUser(this::minionFormulas))),
+                withCsrfToken(withDocsLocale(withUserAndServer(this::minionFormulas))),
                 jade);
         get("/manager/groups/details/formula/:formula_id",
                 withCsrfToken(withUser(this::serverGroupFormula)),
                 jade);
         get("/manager/systems/details/formula/:formula_id",
-                withCsrfToken(withDocsLocale(this::minionFormula)),
+                withCsrfToken(withDocsLocale(withUserAndServer(this::minionFormula))),
                 jade);
 
         // Formula API
@@ -145,6 +148,8 @@ public class FormulaController {
                 ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         data.put("formula_id", request.params("formula_id"));
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         return new ModelAndView(data, "templates/groups/formula.jade");
     }
 
@@ -301,6 +306,8 @@ public class FormulaController {
                 ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         data.put("warning", FormulaFactory.getWarningMessageAccessFormulaFolders());
+        data.put("tabs",
+                ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         return new ModelAndView(data, "templates/groups/formulas.jade");
     }
 
@@ -400,11 +407,12 @@ public class FormulaController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
+     * @param server the current server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView minionFormula(Request request, Response response) {
+    public ModelAndView minionFormula(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "templates/minion/formula.jade");
     }
@@ -415,12 +423,12 @@ public class FormulaController {
     * @param request the request object
     * @param response the response object
     * @param user the current user
+     * @param server the current server
     * @return the ModelAndView object to render the page
     */
    public ModelAndView minionFormulas(Request request, Response response,
-           User user) {
+           User user, Server server) {
        Map<String, Object> data = new HashMap<>();
-       data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
        data.put("warning", FormulaFactory.getWarningMessageAccessFormulaFolders());
        return new ModelAndView(data, "templates/minion/formulas.jade");
    }
