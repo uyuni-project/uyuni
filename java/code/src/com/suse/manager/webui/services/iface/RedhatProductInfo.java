@@ -21,6 +21,7 @@ import java.util.Optional;
  */
 public class RedhatProductInfo {
 
+    private final Optional<String> rockyReleaseContent;
     private final Optional<String> amazonReleaseContent;
     private final Optional<String> almaReleaseContent;
     private final Optional<String> alibabaReleaseContent;
@@ -36,12 +37,14 @@ public class RedhatProductInfo {
      * @param alibabaReleaseContentIn alibaba release content
      * @param almaReleaseContentIn alma release content
      * @param amazonReleaseContentIn amazon release content
+     * @param rockyReleaseContentIn rocky release content
      * @param whatProvidesResIn what provides res result
      */
     public RedhatProductInfo(Optional<String> centosReleaseContentIn, Optional<String> rhelReleaseContentIn,
             Optional<String> oracleReleaseContentIn, Optional<String> alibabaReleaseContentIn,
             Optional<String> almaReleaseContentIn, Optional<String> amazonReleaseContentIn,
-            Optional<String> whatProvidesResIn) {
+            Optional<String> rockyReleaseContentIn, Optional<String> whatProvidesResIn) {
+        this.rockyReleaseContent = rockyReleaseContentIn;
         this.amazonReleaseContent = amazonReleaseContentIn;
         this.almaReleaseContent = almaReleaseContentIn;
         this.alibabaReleaseContent = alibabaReleaseContentIn;
@@ -49,6 +52,13 @@ public class RedhatProductInfo {
         this.centosReleaseContent = centosReleaseContentIn;
         this.rhelReleaseContent = rhelReleaseContentIn;
         this.whatProvidesRes = whatProvidesResIn;
+    }
+
+    /**
+     * @return rockylinux release content
+     */
+    public Optional<String> getRockyReleaseContent() {
+        return rockyReleaseContent;
     }
 
     /**

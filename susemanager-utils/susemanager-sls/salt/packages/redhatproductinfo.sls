@@ -23,6 +23,10 @@ almarelease:
   cmd.run:
     - name: cat /etc/almalinux-release
     - onlyif: test -f /etc/almalinux-release
+rockyrelease:
+  cmd.run:
+    - name: cat /etc/rocky-release
+    - onlyif: test -f /etc/rocky-release    
 respkgquery:
   cmd.run:
     - name: rpm -q --whatprovides 'sles_es-release-server'
