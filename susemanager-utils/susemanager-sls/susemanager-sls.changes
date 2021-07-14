@@ -1,3 +1,5 @@
+- Add support for bootstrapping Raspbian 9 and 10
+- Add support for bootstrapping with salt bundle
 - Add Rocky Linux 8 support
 - Use lscpu to provide more CPU grains for all architectures
 - Add findutils to Kiwi bootstrap packages
