@@ -1,3 +1,4 @@
+- Add Beijing timezone to selectable timezones (bsc#1188193)
 - Java enablement for Rocky Linux 8
 - Get CPU data for AArch64
 - Add option to run Ansible playbooks in 'test' mode
