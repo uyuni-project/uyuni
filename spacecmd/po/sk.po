@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-13 19:10+0000\n"
+"PO-Revision-Date: 2021-07-14 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.6.2\n"
+"X-Generator: Weblate 4.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -3609,7 +3609,7 @@ msgstr "Nepodarilo sa vytvoriť adresár %s"
 #: ../src/spacecmd/misc.py:788
 #, python-format
 msgid "Can't find system ID for %s"
-msgstr "Nie je možné nájsť systémové ID pre %s"
+msgstr "Nie je možné nájsť ID systému pre %s"
 
 #: ../src/spacecmd/misc.py:793
 msgid "Duplicate system profile names found!"
@@ -4411,17 +4411,19 @@ msgstr "použitie: report_duplicates"
 #: ../src/spacecmd/report.py:320 ../src/spacecmd/report.py:342
 #: ../src/spacecmd/report.py:360 ../src/spacecmd/report.py:378
 msgid "System ID   Last Checkin"
-msgstr ""
+msgstr "ID systému   Posledné prihlásenie"
 
 #: ../src/spacecmd/scap.py:44
 msgid ""
 "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
 "systems"
 msgstr ""
+"scap_listxccdfscans: Vrátiť zoznam dokončených skenovaní OpenSCAP pre dané "
+"systémy"
 
 #: ../src/spacecmd/scap.py:45
 msgid "usage: scap_listxccdfscans <SYSTEMS>"
-msgstr ""
+msgstr "použitie: scap_listxccdfscans <SYSTÉMY>"
 
 #: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:609
 #: ../src/spacecmd/system.py:1221 ../src/spacecmd/system.py:1273
@@ -4432,22 +4434,24 @@ msgstr ""
 #: ../src/spacecmd/system.py:3313
 #, python-format
 msgid "System: %s"
-msgstr ""
+msgstr "Systém: %s"
 
 #: ../src/spacecmd/scap.py:89
 #, python-format
 msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
-msgstr ""
+msgstr "XID: %d Profil: %s Cesta: (%s) Dokončené: %s"
 
 #: ../src/spacecmd/scap.py:97
 msgid ""
 "scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
 "OpenSCAP XCCDF scan"
 msgstr ""
+"scap_getxccdfscanruleresults: Vrátiť úplný zoznam RuleResults pre dané "
+"skenovanie OpenSCAP XCCDF"
 
 #: ../src/spacecmd/scap.py:98
 msgid "usage: scap_getxccdfscanruleresults <XID>"
-msgstr ""
+msgstr "použitie: scap_getxccdfscanruleresults <XID>"
 
 #: ../src/spacecmd/scap.py:118 ../src/spacecmd/scap.py:154
 #, python-format
@@ -4457,15 +4461,16 @@ msgstr "XID: %s"
 #: ../src/spacecmd/scap.py:125
 #, python-format
 msgid "IDref: %s Result: %s Idents: (%s)"
-msgstr ""
+msgstr "IDref: %s Výsledok: %s Identifikátory: (%s)"
 
 #: ../src/spacecmd/scap.py:133
 msgid "scap_getxccdfscandetails: Get details of given OpenSCAP XCCDF scan"
 msgstr ""
+"scap_getxccdfscandetails: Získať podrobnosti o danom skenovaní OpenSCAP XCCDF"
 
 #: ../src/spacecmd/scap.py:134
 msgid "usage: scap_getxccdfscandetails <XID>"
-msgstr ""
+msgstr "použitie: scap_getxccdfscandetails <XID>"
 
 #: ../src/spacecmd/scap.py:160
 msgid "XID:"
