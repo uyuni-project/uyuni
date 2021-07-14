@@ -1,14 +1,24 @@
 #!/bin/bash
 if [ "$(readlink /proc/1/exe)" = "/sbin/init" ]; then
    # SysV, use pid ctime as service start time
-   T0=$(stat -c '%Z' /var/run/salt-minion.pid)
-   RESTART_MINION="/usr/sbin/rcsalt-minion restart"
+   SALT_MINION_NAME="salt-minion"
+   SALT_MINION_PID="/var/run/salt-minion.pid"
+   if [ -f /var/run/venv-salt-minion.pid ]; then
+       SALT_MINION_NAME="venv-salt-minion"
+       SALT_MINION_PID="/var/run/venv-salt-minion.pid"
+   fi
+   T0=$(stat -c '%Z' "$SALT_MINION_PID")
+   RESTART_MINION="/usr/sbin/rc$SALT_MINION_NAME restart"
 else
    # systemd
-   TIME=$(systemctl show salt-minion --property=ActiveEnterTimestamp)
+   SALT_MINION_NAME="salt-minion"
+   if systemctl status venv-salt-minion > /dev/null 2>&1; then
+       SALT_MINION_NAME="venv-salt-minion"
+   fi
+   TIME=$(systemctl show "$SALT_MINION_NAME" --property=ActiveEnterTimestamp)
    TIME="${TIME//ActiveEnterTimestamp=/}"
    T0=$(date -d "$TIME" '+%s')
-   RESTART_MINION="systemctl restart salt-minion"
+   RESTART_MINION="systemctl restart $SALT_MINION_NAME"
 fi
 
 T1=$(date '+%s')

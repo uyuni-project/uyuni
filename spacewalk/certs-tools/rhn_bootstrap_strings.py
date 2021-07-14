@@ -162,11 +162,17 @@ DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE=1
 # are used.
 CLIENT_REPOS_ROOT=
 
+# Avoid installing venv-salt-minion instead salt-minion
+# even if it available in the bootstrap repo
+AVOID_VENV_SALT_MINION={avoid_venv}
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
 # -----------------------------------------------------------------------------
 #
+
+VENV_ENABLED=0
 
 #
 # do not try to register a SUSE Manager server at itself
@@ -188,18 +194,18 @@ fi
 # machine supports the insecure mode and format
 # command accordingly.
 
-if [ -x /usr/bin/wget ] ; then
+if [ -x /usr/bin/wget ]; then
     output=`LANG=en_US /usr/bin/wget --no-check-certificate 2>&1`
     error=`echo $output | grep "unrecognized option"`
-    if [ -z "$error" ] ; then
+    if [ -z "$error" ]; then
         FETCH="/usr/bin/wget -nv -r -nd --no-check-certificate"
     else
         FETCH="/usr/bin/wget -nv -r -nd"
     fi
-elif [ -x /usr/bin/curl ] ; then
+elif [ -x /usr/bin/curl ]; then
     output=`LANG=en_US /usr/bin/curl -k 2>&1`
     error=`echo $output | grep "is unknown"`
-    if [ -z "$error" ] ; then
+    if [ -z "$error" ]; then
         FETCH="/usr/bin/curl -ksSOf"
     else
         FETCH="/usr/bin/curl -sSOf"
@@ -211,23 +217,23 @@ fi
 
 HTTP_PUB_DIRECTORY=http://${{HOSTNAME}}/{pubname}
 HTTPS_PUB_DIRECTORY=https://${{HOSTNAME}}/{pubname}
-if [ $USING_SSL -eq 0 ] ; then
+if [ $USING_SSL -eq 0 ]; then
     HTTPS_PUB_DIRECTORY=${{HTTP_PUB_DIRECTORY}}
 fi
 
 INSTALLER=up2date
 
-if [ -x /usr/bin/dnf ] ; then
+if [ -x /usr/bin/dnf ]; then
     INSTALLER=yum
-elif [ -x /usr/bin/zypper ] ; then
+elif [ -x /usr/bin/zypper ]; then
     INSTALLER=zypper
-elif [ -x /usr/bin/yum ] ; then
+elif [ -x /usr/bin/yum ]; then
     INSTALLER=yum
-elif [ -x /usr/bin/apt ] ; then
+elif [ -x /usr/bin/apt ]; then
     INSTALLER=apt
 fi
 
-if [ ! -w . ] ; then
+if [ ! -w . ]; then
     echo ""
     echo "*** ERROR: $(pwd):"
     echo "    No permission to write to the current directory."
@@ -259,6 +265,7 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
+                          avoid_venv=1 if bool(options.no_bundle) else 0,
                           using_ssl=1,
                           using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
@@ -275,12 +282,19 @@ def getRegistrationStackSh(saltEnabled):
                                                            'spacewalk-client-tools', 'zypp-plugin-spacewalk']
     PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
                                                                'spacewalk-client-tools', 'yum-rhn-plugin']
+    PKG_NAME_VENV = saltEnabled and ['venv-salt-minion'] or []
 
     PKG_NAME_UPDATE = list(PKG_NAME)
     PKG_NAME_UPDATE.extend(['zypper', 'openssl'])
 
+    PKG_NAME_VENV_UPDATE = list(PKG_NAME_VENV)
+    PKG_NAME_VENV_UPDATE.extend(['zypper', 'openssl'])
+
     PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
     PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'openssl'] or ['yum-rhn-plugin', 'yum', 'openssl'])
+
+    PKG_NAME_VENV_UPDATE_YUM = list(PKG_NAME_VENV)
+    PKG_NAME_VENV_UPDATE_YUM.extend(['yum', 'openssl'])
 
     return """\
 echo
@@ -288,35 +302,35 @@ echo "CLEANING UP OLD SUSE MANAGER REPOSITORIES"
 echo "-------------------------------------------------"
 
 function clean_up_old_trad_repos() {{
-  local trad_client_repo_prefix="spacewalk:"
-  if [ -f /usr/bin/realpath ]; then
-    GET_PATH="/usr/bin/realpath"
-  else
-    GET_PATH="/usr/bin/readlink -f --"
-  fi
-
-  for file in $1/$trad_client_repo_prefix*.repo; do
-    if [ -f "$file" ] ; then
-      echo "Removing $($GET_PATH "$file")"
-      rm -f $($GET_PATH "$file")
+    local trad_client_repo_prefix="spacewalk:"
+    if [ -f /usr/bin/realpath ]; then
+        GET_PATH="/usr/bin/realpath"
+    else
+        GET_PATH="/usr/bin/readlink -f --"
     fi
-  done
+
+    for file in $1/$trad_client_repo_prefix*.repo; do
+        if [ -f "$file" ]; then
+            echo "Removing $($GET_PATH "$file")"
+            rm -f $($GET_PATH "$file")
+        fi
+    done
 }}
 
 function clean_up_old_salt_repos() {{
-  if [ -f "$1" ] ; then
-    echo "Removing $1"
-    rm -f "$1"
-  fi
+    if [ -f "$1" ]; then
+        echo "Removing $1"
+        rm -f "$1"
+    fi
 }}
 
 function clean_up_old_repos() {{
-  clean_up_old_salt_repos "/etc/zypp/repos.d/susemanager:channels.repo"
-  clean_up_old_salt_repos "/etc/yum.repos.d/susemanager:channels.repo"
-  clean_up_old_salt_repos "/etc/apt/sources.list.d/susemanager:channels.list"
+    clean_up_old_salt_repos "/etc/zypp/repos.d/susemanager:channels.repo"
+    clean_up_old_salt_repos "/etc/yum.repos.d/susemanager:channels.repo"
+    clean_up_old_salt_repos "/etc/apt/sources.list.d/susemanager:channels.list"
 
-  clean_up_old_trad_repos "/etc/zypp/repos.d"
-  clean_up_old_trad_repos "/etc/yum.repos.d"
+    clean_up_old_trad_repos "/etc/zypp/repos.d"
+    clean_up_old_trad_repos "/etc/yum.repos.d"
 }}
 
 clean_up_old_repos
@@ -325,41 +339,60 @@ echo "CHECKING THE REGISTRATION STACK"
 echo "-------------------------------------------------"
 
 function test_repo_exists() {{
-  local repourl="$CLIENT_REPO_URL"
+    local repourl="$CLIENT_REPO_URL"
 
-  $FETCH $repourl/repodata/repomd.xml
-  if [ ! -f "repomd.xml" ] ; then
-    echo "Bootstrap repo '$repourl' does not exist."
-    repourl=""
-    CLIENT_REPO_URL=""
-  fi
-  rm -f repomd.xml
+    $FETCH $repourl/repodata/repomd.xml
+    if [ ! -f "repomd.xml" ]; then
+        echo "Bootstrap repo '$repourl' does not exist."
+        repourl=""
+        CLIENT_REPO_URL=""
+    fi
+    rm -f repomd.xml
+}}
+
+function test_venv_enabled() {{
+    if [ $AVOID_VENV_SALT_MINION -ne 1 ]; then
+        local repourl="$CLIENT_REPO_URL"
+        if [ "$INSTALLER" == "zypper" ] || [ "$INSTALLER" == "yum" ]; then
+            ARCH=$(rpm --eval "%{{_host_cpu}}")
+        else
+            ARCH=$(dpkg --print-architecture)
+        fi
+        VENV_FILE="venv-enabled-$ARCH.txt"
+        $FETCH $repourl/$VENV_FILE
+        if [ -f "$VENV_FILE" ]; then
+            echo "Bootstrap repo '$repourl' contains salt bundle."
+            repourl=""
+            VENV_ENABLED=1
+        fi
+        rm -f "$VENV_FILE"
+    fi
 }}
 
 function get_rhnlib_pkgs() {{
-  # Gets all installed rhnlib packages for update
-  RHNLIB_PKG=""
-  if rpm -q python3-rhnlib > /dev/null; then
-    RHNLIB_PKG+="python3-rhnlib "
-  fi
-  if rpm -q python2-rhnlib > /dev/null; then
-    RHNLIB_PKG+="python2-rhnlib "
-  fi
-  if rpm -q rhnlib > /dev/null; then
-    RHNLIB_PKG+="rhnlib "
-  fi
+    # Gets all installed rhnlib packages for update
+    RHNLIB_PKG=""
+    if rpm -q python3-rhnlib > /dev/null; then
+        RHNLIB_PKG+="python3-rhnlib "
+    fi
+    if rpm -q python2-rhnlib > /dev/null; then
+        RHNLIB_PKG+="python2-rhnlib "
+    fi
+    if rpm -q rhnlib > /dev/null; then
+        RHNLIB_PKG+="rhnlib "
+    fi
 }}
 
 function setup_bootstrap_repo() {{
-  local repopath="$CLIENT_REPO_FILE"
-  local reponame="$CLIENT_REPO_NAME"
-  local repourl="$CLIENT_REPO_URL"
+    local repopath="$CLIENT_REPO_FILE"
+    local reponame="$CLIENT_REPO_NAME"
+    local repourl="$CLIENT_REPO_URL"
 
-  test_repo_exists
+    test_repo_exists
 
-  if [ -n "$CLIENT_REPO_URL" ]; then
-    echo " adding client software repository at $repourl"
-    cat <<EOF >"$repopath"
+    if [ -n "$CLIENT_REPO_URL" ]; then
+        echo " adding client software repository at $repourl"
+        cat <<EOF >"$repopath"
 [$reponame]
 name=$reponame
 baseurl=$repourl
@@ -368,19 +401,19 @@ autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-  fi
+    fi
 
-  # Avoid modularity failsafe mechanism in dnf 4.2.7 or greater
-  if [ -n "$Y_CLIENT_CODE_VERSION" ] && [ $Y_CLIENT_CODE_VERSION -ge 8 ]; then
-    echo " adding 'module_hotfixes' flag to the repository config"
-    echo "module_hotfixes=1" >> "$repopath"
-  fi
+    # Avoid modularity failsafe mechanism in dnf 4.2.7 or greater
+    if [ -n "$Y_CLIENT_CODE_VERSION" ] && [ $Y_CLIENT_CODE_VERSION -ge 8 ]; then
+        echo " adding 'module_hotfixes' flag to the repository config"
+        echo "module_hotfixes=1" >> "$repopath"
+    fi
 }}
 
 function remove_bootstrap_repo() {{
-  local repopath="$CLIENT_REPO_FILE"
+    local repopath="$CLIENT_REPO_FILE"
 
-  rm -f $repopath
+    rm -f $repopath
 }}
 
 if [ "$INSTALLER" == yum ]; then
@@ -425,6 +458,9 @@ if [ "$INSTALLER" == yum ]; then
 
     function getY_MISSING() {{
         local NEEDED="{PKG_NAME_YUM}"
+        if [ $VENV_ENABLED -eq 1 ]; then
+            NEEDED="{PKG_NAME_VENV}"
+        fi
         Y_MISSING=""
         for P in $NEEDED; do
             rpm -q "$P" || Y_MISSING="$Y_MISSING $P"
@@ -434,7 +470,6 @@ if [ "$INSTALLER" == yum ]; then
     echo "* check for necessary packages being installed..."
     getY_CLIENT_CODE_BASE
     echo "* client codebase is ${{Y_CLIENT_CODE_BASE}}-${{Y_CLIENT_CODE_VERSION}}"
-    getY_MISSING
 
     CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-https://${{HOSTNAME}}/pub/repositories}}"
     CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Y_CLIENT_CODE_BASE}}/${{Y_CLIENT_CODE_VERSION}}/bootstrap"
@@ -452,6 +487,10 @@ if [ "$INSTALLER" == yum ]; then
 
     setup_bootstrap_repo
 
+    test_venv_enabled
+
+    getY_MISSING
+
     if [ -z "$Y_MISSING" ]; then
         echo "  no packages missing."
     else
@@ -468,155 +507,166 @@ if [ "$INSTALLER" == yum ]; then
     fi
     # try update main packages for registration from any repo which is available
     get_rhnlib_pkgs
-    yum -y upgrade {PKG_NAME_UPDATE_YUM} $RHNLIB_PKG ||:
+    if [ $VENV_ENABLED -eq 1 ]; then
+        yum -y upgrade {PKG_NAME_VENV_UPDATE_YUM} ||:
+    else
+        yum -y upgrade {PKG_NAME_UPDATE_YUM} $RHNLIB_PKG ||:
+    fi
 
 elif [ "$INSTALLER" == zypper ]; then
-  function getZ_CLIENT_CODE_BASE() {{
-    local BASE=""
-    local VERSION=""
-    local PATCHLEVEL=""
-    if [ -r /etc/SuSE-release ]; then
-      grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
-      eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
-      if [ "$BASE" != "sle" ]; then
-         grep -q 'openSUSE' /etc/SuSE-release && BASE='opensuse'
-         VERSION="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*=\([[:digit:]]\+\).*/\\1/p')"
-         PATCHLEVEL="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
-      fi
-    elif [ -r /etc/os-release ]; then
-      grep -q 'Enterprise' /etc/os-release && BASE='sle'
-      if [ "$BASE" != "sle" ]; then
-         grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
-      fi
-      VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
-      PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
-    fi
-    Z_CLIENT_CODE_BASE="${{BASE:-unknown}}"
-    Z_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
-    Z_CLIENT_CODE_PATCHLEVEL="${{PATCHLEVEL:-0}}"
-  }}
+    function getZ_CLIENT_CODE_BASE() {{
+        local BASE=""
+        local VERSION=""
+        local PATCHLEVEL=""
+        if [ -r /etc/SuSE-release ]; then
+            grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
+            eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
+            if [ "$BASE" != "sle" ]; then
+                grep -q 'openSUSE' /etc/SuSE-release && BASE='opensuse'
+                VERSION="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*=\([[:digit:]]\+\).*/\\1/p')"
+                PATCHLEVEL="$(grep '^\(VERSION\)' /etc/SuSE-release | tr -d '[:blank:]' | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+            fi
+        elif [ -r /etc/os-release ]; then
+            grep -q 'Enterprise' /etc/os-release && BASE='sle'
+            if [ "$BASE" != "sle" ]; then
+                grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
+            fi
+            VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
+            PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+        fi
+        Z_CLIENT_CODE_BASE="${{BASE:-unknown}}"
+        Z_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
+        Z_CLIENT_CODE_PATCHLEVEL="${{PATCHLEVEL:-0}}"
+    }}
 
-  function getZ_MISSING() {{
-    local NEEDED="{PKG_NAME}"
-    if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
-      # (bnc#789373) Code 10 product migration requires 'xsltproc' being installed
-      which 'xsltproc' || NEEDED="$NEEDED libxslt"
-    fi
-    Z_MISSING=""
-    for P in $NEEDED; do
-      rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
-    done
-  }}
+    function getZ_MISSING() {{
+        local NEEDED="{PKG_NAME}"
+        if [ $VENV_ENABLED -eq 1 ]; then
+            NEEDED="{PKG_NAME_VENV}"
+        fi
+        if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
+            # (bnc#789373) Code 10 product migration requires 'xsltproc' being installed
+            which 'xsltproc' || NEEDED="$NEEDED libxslt"
+        fi
+        Z_MISSING=""
+        for P in $NEEDED; do
+            rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
+        done
+    }}
 
-  function getZ_ZMD_TODEL() {{
-    local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
-    if rpm -q suseRegister --qf '%{{VERSION}}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
-      # we need the new suseRegister >= 1.4, so wipe an old one too
-      ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
-    fi
-    Z_ZMD_TODEL=""
-    for P in $ZMD_STACK; do
-      rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
-    done
-  }}
+    function getZ_ZMD_TODEL() {{
+        local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
+        if rpm -q suseRegister --qf '%{{VERSION}}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
+            # we need the new suseRegister >= 1.4, so wipe an old one too
+            ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
+        fi
+        Z_ZMD_TODEL=""
+        for P in $ZMD_STACK; do
+            rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
+        done
+    }}
 
-  echo "* check for necessary packages being installed..."
-  # client codebase determines repo url to use and whether additional
-  # preparations are needed before installing the missing packages.
-  getZ_CLIENT_CODE_BASE
-  echo "* client codebase is ${{Z_CLIENT_CODE_BASE}}-${{Z_CLIENT_CODE_VERSION}}-sp${{Z_CLIENT_CODE_PATCHLEVEL}}"
+    echo "* check for necessary packages being installed..."
+    # client codebase determines repo url to use and whether additional
+    # preparations are needed before installing the missing packages.
+    getZ_CLIENT_CODE_BASE
+    echo "* client codebase is ${{Z_CLIENT_CODE_BASE}}-${{Z_CLIENT_CODE_VERSION}}-sp${{Z_CLIENT_CODE_PATCHLEVEL}}"
 
-  getZ_MISSING
+    CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
+    CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
+    CLIENT_REPO_NAME="susemanager:bootstrap"
+    CLIENT_REPO_FILE="/etc/zypp/repos.d/$CLIENT_REPO_NAME.repo"
 
-  CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
-  CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
-  CLIENT_REPO_NAME="susemanager:bootstrap"
-  CLIENT_REPO_FILE="/etc/zypp/repos.d/$CLIENT_REPO_NAME.repo"
+    test_venv_enabled
 
-  test_repo_exists
+    getZ_MISSING
 
-  if [ -z "$Z_MISSING" ]; then
-    echo "  no packages missing."
-    setup_bootstrap_repo
-  else
-    echo "* going to install missing packages..."
-
-    # code10 requires removal of the ZMD stack first
-    if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
-      if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
-	echo "* check whether to remove the ZMD stack first..."
-	getZ_ZMD_TODEL
-	if [ -z "$Z_ZMD_TODEL" ]; then
-	  echo "  ZMD stack is not installed. No need to remove it."
-	else
-	  echo "  Disable and remove the ZMD stack..."
-	  # stop any running zmd
-	  if [ -x /usr/sbin/rczmd ]; then
-	    /usr/sbin/rczmd stop
-	  fi
-	  rpm -e --nodeps $Z_ZMD_TODEL || {{
-	    echo "ERROR: Failed remove the ZMD stack."
-	    exit 1
-	  }}
-	fi
-      fi
-    fi
-
-    # way to add the client software repository depends on the zypp version actually
-    # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
-    #
-    # Note: We try to install the missing packages even if adding the repo fails.
-    # Might be some other system repo provides them instead.
-    if rpm -q zypper --qf '%{{VERSION}}' | grep -q '^0\(\..*\)\?$'; then
-
-      # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
-      if [ -n "$CLIENT_REPO_URL" ]; then
-        echo "  adding client software repository at $CLIENT_REPO_URL"
-        zypper --non-interactive --no-gpg-checks sd $CLIENT_REPO_NAME
-        zypper --non-interactive --no-gpg-checks sa $CLIENT_REPO_URL $CLIENT_REPO_NAME
-        zypper --non-interactive --no-gpg-checks refresh "$CLIENT_REPO_NAME"
-      fi
-      zypper --non-interactive --no-gpg-checks in $Z_MISSING
-      for P in $Z_MISSING; do
-	rpm -q --whatprovides "$P" || {{
-	  echo "ERROR: Failed to install all missing packages."
-	  exit 1
-	}}
-      done
-      setup_bootstrap_repo
+    if [ -z "$Z_MISSING" ]; then
+        echo "    no packages missing."
+        setup_bootstrap_repo
     else
+        echo "* going to install missing packages..."
 
-      setup_bootstrap_repo
+        # code10 requires removal of the ZMD stack first
+        if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+            if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+                echo "* check whether to remove the ZMD stack first..."
+                getZ_ZMD_TODEL
+                if [ -z "$Z_ZMD_TODEL" ]; then
+                    echo "  ZMD stack is not installed. No need to remove it."
+            else
+                echo "  Disable and remove the ZMD stack..."
+                # stop any running zmd
+                if [ -x /usr/sbin/rczmd ]; then
+                    /usr/sbin/rczmd stop
+                fi
+                    rpm -e --nodeps $Z_ZMD_TODEL || {{
+                        echo "ERROR: Failed remove the ZMD stack."
+                        exit 1
+                    }}
+                fi
+            fi
+        fi
 
-      zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
-      # install missing packages
-      zypper --non-interactive in $Z_MISSING
-      for P in $Z_MISSING; do
-	rpm -q --whatprovides "$P" || {{
-	  echo "ERROR: Failed to install all missing packages."
-	  exit 1
-	}}
-      done
+        # way to add the client software repository depends on the zypp version actually
+        # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
+        #
+        # Note: We try to install the missing packages even if adding the repo fails.
+        # Might be some other system repo provides them instead.
+        if rpm -q zypper --qf '%{{VERSION}}' | grep -q '^0\(\..*\)\?$'; then
 
+            # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
+            if [ -n "$CLIENT_REPO_URL" ]; then
+                echo "  adding client software repository at $CLIENT_REPO_URL"
+                zypper --non-interactive --no-gpg-checks sd $CLIENT_REPO_NAME
+                zypper --non-interactive --no-gpg-checks sa $CLIENT_REPO_URL $CLIENT_REPO_NAME
+                zypper --non-interactive --no-gpg-checks refresh "$CLIENT_REPO_NAME"
+            fi
+            zypper --non-interactive --no-gpg-checks in $Z_MISSING
+            for P in $Z_MISSING; do
+                rpm -q --whatprovides "$P" || {{
+                    echo "ERROR: Failed to install all missing packages."
+                    exit 1
+                }}
+            done
+            setup_bootstrap_repo
+        else
+
+            setup_bootstrap_repo
+
+            zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
+            # install missing packages
+            zypper --non-interactive in $Z_MISSING
+            for P in $Z_MISSING; do
+                rpm -q --whatprovides "$P" || {{
+                    echo "ERROR: Failed to install all missing packages."
+                    exit 1
+                }}
+            done
+
+        fi
     fi
-  fi
 
-  # on code10 we need to convert metadata of installed products
-  if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
-    if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
-      test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {{
-	echo "* check whether we have to to migrate metadata..."
-	sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {{
-	  echo "ERROR: Failed to migrate product metadata."
-	  exit 1
-	}}
-      }}
+    # on code10 we need to convert metadata of installed products
+    if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+        if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+            test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {{
+                echo "* check whether we have to to migrate metadata..."
+                sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {{
+                    echo "ERROR: Failed to migrate product metadata."
+                    exit 1
+                }}
+            }}
+        fi
     fi
-  fi
 
-  get_rhnlib_pkgs
-  # try update main packages for registration from any repo which is available
-  zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+    get_rhnlib_pkgs
+    # try update main packages for registration from any repo which is available
+    if [ $VENV_ENABLED -eq 1 ]; then
+        zypper --non-interactive up {PKG_NAME_VENV_UPDATE} ||:
+    else
+        zypper --non-interactive up {PKG_NAME_UPDATE} $RHNLIB_PKG ||:
+    fi
 
 elif [ "$INSTALLER" == apt ]; then
     function check_deb_pkg_installed {{
@@ -628,13 +678,13 @@ elif [ "$INSTALLER" == apt ]; then
         local VERSION=""
         local VARIANT_ID=""
 
-	if [ -f /etc/os-release ]; then
+        if [ -f /etc/os-release ]; then
             BASE=$(source /etc/os-release; echo $ID)
             VERSION=$(source /etc/os-release; echo $VERSION_ID)
             VARIANT_ID=$(source /etc/os-release; echo $VARIANT_ID)
         fi
         A_CLIENT_CODE_BASE="${{BASE:-unknown}}"
-	local VERCOMPS=(${{VERSION/\./ }}) # split into an array 18.04 -> (18 04)
+        local VERCOMPS=(${{VERSION/\./ }}) # split into an array 18.04 -> (18 04)
         A_CLIENT_CODE_MAJOR_VERSION=${{VERCOMPS[0]}}
         # Ubuntu only
         if [ "${{BASE}}" == "ubuntu" ]; then
@@ -645,6 +695,9 @@ elif [ "$INSTALLER" == apt ]; then
 
     function getA_MISSING() {{
         local NEEDED="salt-common salt-minion"
+        if [ $VENV_ENABLED -eq 1 ]; then
+            NEEDED="venv-salt-minion"
+        fi
         A_MISSING=""
         for P in $NEEDED; do
             check_deb_pkg_installed "$P" || A_MISSING="$A_MISSING $P"
@@ -652,51 +705,54 @@ elif [ "$INSTALLER" == apt ]; then
     }}
 
     function test_deb_repo_exists() {{
-      local repourl="$CLIENT_REPO_URL"
+        local repourl="$CLIENT_REPO_URL"
 
-      $FETCH $repourl/dists/bootstrap/Release
-      if [ ! -f "Release" ] ; then
-        echo "Bootstrap repo '$repourl' does not exist."
-        repourl=""
-        CLIENT_REPO_URL=""
-      fi
-      rm -f Release
+        $FETCH $repourl/dists/bootstrap/Release
+        if [ ! -f "Release" ]; then
+            echo "Bootstrap repo '$repourl' does not exist."
+            repourl=""
+            CLIENT_REPO_URL=""
+        fi
+        rm -f Release
     }}
 
     function setup_deb_bootstrap_repo() {{
-      local repopath="$CLIENT_REPO_FILE"
-      local repourl="$CLIENT_REPO_URL"
+        local repopath="$CLIENT_REPO_FILE"
+        local repourl="$CLIENT_REPO_URL"
 
-      test_deb_repo_exists
+        test_deb_repo_exists
 
-      if [ -n "$CLIENT_REPO_URL" ]; then
-        echo " adding client software repository at $repourl"
-        echo "deb [trusted=yes] $repourl bootstrap main" >"$repopath"
-      fi
+        if [ -n "$CLIENT_REPO_URL" ]; then
+            echo " adding client software repository at $repourl"
+            echo "deb [trusted=yes] $repourl bootstrap main" >"$repopath"
+        fi
     }}
 
     echo "* check for necessary packages being installed..."
     getA_CLIENT_CODE_BASE
     if [ "${{A_CLIENT_CODE_BASE}}" == "astra" ]; then
-      echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_VARIANT_ID}}"
+        echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_VARIANT_ID}}"
     else
-      echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_CODE_MAJOR_VERSION}}.${{A_CLIENT_CODE_MINOR_VERSION}}"
+        echo "* client codebase is ${{A_CLIENT_CODE_BASE}}-${{A_CLIENT_CODE_MAJOR_VERSION}}.${{A_CLIENT_CODE_MINOR_VERSION}}"
     fi
-    getA_MISSING
 
     CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
     # Debian does not need minor version in the bootstrap repo URL
-    if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
-      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
+    if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ] || [ "${{A_CLIENT_CODE_BASE}}" == "raspbian" ]; then
+        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
     elif [ "${{A_CLIENT_CODE_BASE}}" == "astra" ]; then
-      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_VARIANT_ID}}/bootstrap"
+        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_VARIANT_ID}}/bootstrap"
     else
-      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
+        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
     fi
     CLIENT_REPO_NAME="susemanager_bootstrap"
     CLIENT_REPO_FILE="/etc/apt/sources.list.d/$CLIENT_REPO_NAME.list"
 
     setup_deb_bootstrap_repo
+
+    test_venv_enabled
+
+    getA_MISSING
 
     apt-get --yes update
 
@@ -704,12 +760,21 @@ elif [ "$INSTALLER" == apt ]; then
         echo "  no packages missing."
     else
         echo "* going to install missing packages..."
-	    # check if there are any leftovers from previous salt-minion installs and purge them
-        if [ dpkg-query -W -f='${{Status}}' salt-minion 2>/dev/null | grep -q "deinstall ok config-files" ]; then
+        # check if there are any leftovers from previous salt-minion installs and purge them
+        SALT_MINION_PKG="salt-minion"
+        if [ $VENV_ENABLED -eq 1 ]; then
+            SALT_MINION_PKG="venv-salt-minion"
+        fi
+        dpkg-query -W -f='${{Status}}' "$SALT_MINION_PKG" 2>/dev/null | grep -q "deinstall ok config-files"
+        if [ "$?" -eq 0 ]; then
             echo "* purging previous Salt config files"
-	        apt-get purge salt-minion
-	        apt-get purge salt-common
-	        rm -rf /etc/salt/minion.d/
+            apt-get --yes purge "$SALT_MINION_PKG"
+            if [ $VENV_ENABLED -eq 1 ]; then
+                rm -rf /etc/venv-salt-minion/
+            else
+                apt-get purge salt-common
+                rm -rf /etc/salt/minion.d/
+            fi
         fi
         apt-get --yes install --no-install-recommends $A_MISSING
 
@@ -721,7 +786,11 @@ elif [ "$INSTALLER" == apt ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    apt-get --yes install --no-install-recommends --only-upgrade salt-common salt-minion ||:
+    if [ $VENV_ENABLED -eq 1 ]; then
+        apt-get --yes install --no-install-recommends --only-upgrade venv-salt-minion ||:
+    else
+        apt-get --yes install --no-install-recommends --only-upgrade salt-common salt-minion ||:
+    fi
 
     # remove bootstrap repo
     rm -f $CLIENT_REPO_FILE
@@ -732,7 +801,10 @@ remove_bootstrap_repo
 
 """.format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM),
            PKG_NAME_UPDATE=' '.join(PKG_NAME_UPDATE),
-           PKG_NAME_UPDATE_YUM=' '.join(PKG_NAME_UPDATE_YUM))
+           PKG_NAME_UPDATE_YUM=' '.join(PKG_NAME_UPDATE_YUM),
+           PKG_NAME_VENV=' '.join(PKG_NAME_VENV),
+           PKG_NAME_VENV_UPDATE=' '.join(PKG_NAME_VENV_UPDATE),
+           PKG_NAME_VENV_UPDATE_YUM=' '.join(PKG_NAME_VENV_UPDATE_YUM))
 
 def getConfigFilesSh():
     return """\
@@ -747,11 +819,11 @@ echo "  ${CLIENT_OVERRIDES}..."
 rm -f ${CLIENT_OVERRIDES}
 $FETCH ${HTTPS_PUB_DIRECTORY}/bootstrap/${CLIENT_OVERRIDES}
 
-if [ ! -f "client_config_update.py" ] ; then
+if [ ! -f "client_config_update.py" ]; then
     echo "ERROR: client_config_update.py was not downloaded"
     exit 1
 fi
-if [ ! -f "${CLIENT_OVERRIDES}" ] ; then
+if [ ! -f "${CLIENT_OVERRIDES}" ]; then
     echo "ERROR: ${CLIENT_OVERRIDES} was not downloaded"
     exit 1
 fi
@@ -761,7 +833,7 @@ fi
 def getUp2dateScriptsSh():
     return """\
 echo "* running the update scripts"
-if [ -x "/usr/bin/python" ] ; then
+if [ -x "/usr/bin/python" ]; then
     PYTHON=/usr/bin/python
 elif [ -x /usr/bin/python3 ]; then
     PYTHON=/usr/bin/python3
@@ -769,13 +841,13 @@ else
    echo "No python found"
    exit 1
 fi
-if [ -f "/etc/sysconfig/rhn/rhn_register" ] ; then
+if [ -f "/etc/sysconfig/rhn/rhn_register" ]; then
     echo "  . rhn_register config file"
     $PYTHON -u client_config_update.py /etc/sysconfig/rhn/rhn_register ${CLIENT_OVERRIDES}
 fi
-if [ -f "/etc/sysconfig/rhn/up2date" ] ; then
-  echo "  . up2date config file"
-  $PYTHON -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
+if [ -f "/etc/sysconfig/rhn/up2date" ]; then
+    echo "  . up2date config file"
+    $PYTHON -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
 fi
 
 """
@@ -786,7 +858,7 @@ def getGPGKeyImportSh():
 echo
 echo "PREPARE GPG KEYS AND CORPORATE PUBLIC CA CERT"
 echo "-------------------------------------------------"
-if [ ! -z "$ORG_GPG_KEY" ] ; then
+if [ ! -z "$ORG_GPG_KEY" ]; then
     echo
     echo "* importing organizational GPG keys"
     for GPG_KEY in $(echo "$ORG_GPG_KEY" | tr "," " "); do
@@ -810,91 +882,91 @@ fi
 def getCorpCACertSh():
     return """\
 echo
-  if [ "$INSTALLER" == "apt" ]; then
-    CERT_DIR=/usr/local/share/ca-certificates/susemanager
-    TRUST_DIR=/usr/local/share/ca-certificates/susemanager
-    UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-    ORG_CA_CERT_IS_RPM_YN=0
-    ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
-  else
-    CERT_DIR=/usr/share/rhn
-    TRUST_DIR=/etc/pki/ca-trust/source/anchors
-    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
-  fi
+    if [ "$INSTALLER" == "apt" ]; then
+        CERT_DIR=/usr/local/share/ca-certificates/susemanager
+        TRUST_DIR=/usr/local/share/ca-certificates/susemanager
+        UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+        ORG_CA_CERT_IS_RPM_YN=0
+        ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
+    else
+        CERT_DIR=/usr/share/rhn
+        TRUST_DIR=/etc/pki/ca-trust/source/anchors
+        UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+    fi
 
-  if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-    # get name from config
-    CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
-  elif [ "$INSTALLER" == "apt" ]; then
-    CERT_FILE="${ORG_CA_CERT}.crt"
-  else
-    CERT_FILE=${ORG_CA_CERT}
-  fi
+    if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ]; then
+        # get name from config
+        CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+    elif [ "$INSTALLER" == "apt" ]; then
+        CERT_FILE="${ORG_CA_CERT}.crt"
+    else
+        CERT_FILE=${ORG_CA_CERT}
+    fi
 
-  function updateCertificates() {
-      if [ -d /etc/pki/ca-trust/source/anchors  -a -x /usr/bin/update-ca-trust ]; then
-          TRUST_DIR=/etc/pki/ca-trust/source/anchors
-      elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
-          # SLE 12
-          TRUST_DIR=/etc/pki/trust/anchors
-          UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-      elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash -a "$INSTALLER" == "zypper" ]; then
-          # SLE 11
-          TRUST_DIR=/etc/ssl/certs
-          UPDATE_TRUST_CMD="/usr/bin/c_rehash"
-          rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
-          rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
-          if [ -f $CERT_DIR/$CERT_FILE ]; then
-              ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
-              if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
-                  csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
-              fi
-          fi
-          $UPDATE_TRUST_CMD >/dev/null
-          return
-      fi
+    function updateCertificates() {
+        if [ -d /etc/pki/ca-trust/source/anchors  -a -x /usr/bin/update-ca-trust ]; then
+            TRUST_DIR=/etc/pki/ca-trust/source/anchors
+        elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
+            # SLE 12
+            TRUST_DIR=/etc/pki/trust/anchors
+            UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+        elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash -a "$INSTALLER" == "zypper" ]; then
+            # SLE 11
+            TRUST_DIR=/etc/ssl/certs
+            UPDATE_TRUST_CMD="/usr/bin/c_rehash"
+            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
+            if [ -f $CERT_DIR/$CERT_FILE ]; then
+                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+                if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
+                    csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
+                fi
+            fi
+            $UPDATE_TRUST_CMD >/dev/null
+            return
+        fi
 
-      if [ ! -d $TRUST_DIR ]; then
-          return
-      fi
-      if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
-          if [ -f $CERT_DIR/$CERT_FILE ]; then
-              ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
-          else
-              rm -f $TRUST_DIR/$CERT_FILE
-          fi
-      fi
-      $UPDATE_TRUST_CMD
-  }
+        if [ ! -d $TRUST_DIR ]; then
+            return
+        fi
+        if [ "$CERT_DIR" != "$TRUST_DIR" ]; then
+            if [ -f $CERT_DIR/$CERT_FILE ]; then
+                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+            else
+                rm -f $TRUST_DIR/$CERT_FILE
+            fi
+        fi
+        $UPDATE_TRUST_CMD
+    }
 
-  echo "* attempting to install corporate public CA cert"
+    echo "* attempting to install corporate public CA cert"
 
-  ### Check for Dynamic CA-Trust Updates - applies to RedHat and SLE-ES systems ###
-  if [ -x /usr/bin/update-ca-trust ] ; then
-      if [ "$(/usr/bin/update-ca-trust check | grep 'PEM/JAVA Status: DISABLED')" != "" ]; then
-          echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'"
-          echo "Finally, restart the onboarding sequence."
-          exit 1
-      fi
-  fi
+    ### Check for Dynamic CA-Trust Updates - applies to RedHat and SLE-ES systems ###
+    if [ -x /usr/bin/update-ca-trust ]; then
+        if [ "$(/usr/bin/update-ca-trust check | grep 'PEM/JAVA Status: DISABLED')" != "" ]; then
+            echo "ERROR: Dynamic CA-Trust > Updates are disabled. Enable Dynamic CA-Trust Updates with '/usr/bin/update-ca-trust force-enable'"
+            echo "Finally, restart the onboarding sequence."
+            exit 1
+        fi
+    fi
 
-  test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
-  rm -f ${ORG_CA_CERT}
-  $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
+    test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
+    rm -f ${ORG_CA_CERT}
+    $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
-  if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-      rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
-      rm -f ${ORG_CA_CERT}
-  else
-      mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
-  fi
+    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ]; then
+        rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
+        rm -f ${ORG_CA_CERT}
+    else
+        mv ${ORG_CA_CERT} ${CERT_DIR}/${CERT_FILE}
+    fi
 
-  if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ] ; then
-      # symlink & update certificates is already done in rpm post-install script
-      # no need to be done again if we have installed rpm
-      echo "* update certificates"
-      updateCertificates
-  fi
+    if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ]; then
+        # symlink & update certificates is already done in rpm post-install script
+        # no need to be done again if we have installed rpm
+        echo "* update certificates"
+        updateCertificates
+    fi
 
 """
 
@@ -902,30 +974,30 @@ echo
 #5/16/05 wregglej 159437 - changed script to use rhn-actions-control
 def getAllowConfigManagement():
     return """\
-if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
+if [ $ALLOW_CONFIG_ACTIONS -eq 1 ]; then
     echo
     echo "* setting permissions to allow configuration management"
     echo "  NOTE: use an activation key to subscribe to the tools"
-    if [ "$INSTALLER" == zypper ] ; then
+    if [ "$INSTALLER" == zypper ]; then
         echo "        channel and zypper install/update rhncfg-actions"
         echo "        or zypper install/update mgr-cfg-actions starting with 4.0"
-    elif [ "$INSTALLER" == yum ] ; then
+    elif [ "$INSTALLER" == yum ]; then
         echo "        channel and yum upgrade rhncfg-actions"
         echo "        or yum upgrade mgr-cfg-actions starting with 4.0"
     else
         echo "        channel and up2date rhncfg-actions"
         echo "        or up2date mgr-cfg-actions starting with 4.0"
     fi
-    if [ -x "/usr/bin/rhn-actions-control" ] ; then
+    if [ -x "/usr/bin/rhn-actions-control" ]; then
         rhn-actions-control --enable-all
         rhn-actions-control --disable-run
     else
         echo "Error setting permissions for configuration management."
         echo "    Please ensure that the activation key subscribes the"
-        if [ "$INSTALLER" == zypper ] ; then
+        if [ "$INSTALLER" == zypper ]; then
             echo "    system to the tools channel and zypper install/update rhncfg-actions"
             echo "    or zypper install/update mgr-cfg-actions starting with 4.0."
-        elif [ "$INSTALLER" == yum ] ; then
+        elif [ "$INSTALLER" == yum ]; then
             echo "    system to the tools channel and yum updates rhncfg-actions"
             echo "    or yum update mgr-cfg-actions starting with 4.0."
         else
@@ -942,29 +1014,29 @@ fi
 #5/16/05 wregglej 158437 - changed script to use rhn-actions-control
 def getAllowRemoteCommands():
     return """\
-if [ $ALLOW_REMOTE_COMMANDS -eq 1 ] ; then
+if [ $ALLOW_REMOTE_COMMANDS -eq 1 ]; then
     echo
     echo "* setting permissions to allow remote commands"
     echo "  NOTE: use an activation key to subscribe to the tools"
-    if [ "$INSTALLER" == zypper ] ; then
+    if [ "$INSTALLER" == zypper ]; then
         echo "        channel and zypper update rhncfg-actions"
         echo "        or zypper update mgr-cfg-actions starting with 4.0"
-    elif [ "$INSTALLER" == yum ] ; then
+    elif [ "$INSTALLER" == yum ]; then
         echo "        channel and yum upgrade rhncfg-actions"
         echo "        or yum upgrade mgr-cfg-actions starting with 4.0"
     else
         echo "        channel and up2date rhncfg-actions"
         echo "        or up2date mgr-cfg-actions starting with 4.0"
     fi
-    if [ -x "/usr/bin/rhn-actions-control" ] ; then
+    if [ -x "/usr/bin/rhn-actions-control" ]; then
         rhn-actions-control --enable-run
     else
         echo "Error setting permissions for remote commands."
         echo "    Please ensure that the activation key subscribes the"
-        if [ "$INSTALLER" == zypper ] ; then
+        if [ "$INSTALLER" == zypper ]; then
             echo "    system to the tools channel and zypper update rhncfg-actions"
             echo "    or zypper update mgr-cfg-actions starting with 4.0."
-        elif [ "$INSTALLER" == yum ] ; then
+        elif [ "$INSTALLER" == yum ]; then
             echo "    system to the tools channel and yum updates rhncfg-actions"
             echo "    or yum update mgr-cfg-actions starting with 4.0."
         else
@@ -989,7 +1061,7 @@ echo "------------"
 # If you require use of several different activation keys, copy this file and
 # change the string as needed.
 #
-if [ -z "$ACTIVATION_KEYS" ] ; then
+if [ -z "$ACTIVATION_KEYS" ]; then
     echo "*** ERROR: in order to bootstrap {productName} clients, an activation key or keys"
     echo "           must be created in the {productName} web user interface, and the"
     echo "           corresponding key or keys string (XKEY,YKEY,...) must be mapped to"
@@ -997,22 +1069,22 @@ if [ -z "$ACTIVATION_KEYS" ] ; then
     exit 1
 fi
 
-if [ -n "$REACTIVATION_KEY" ] ; then
+if [ -n "$REACTIVATION_KEY" ]; then
     ACTIVATION_KEYS="$REACTIVATION_KEY,$ACTIVATION_KEYS"
 fi
 
-if [ $REGISTER_THIS_BOX -eq 1 ] ; then
+if [ $REGISTER_THIS_BOX -eq 1 ]; then
     echo "* registering"
     files=""
     directories=""
-    if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
+    if [ $ALLOW_CONFIG_ACTIONS -eq 1 ]; then
         for i in "/etc/sysconfig/rhn/allowed-actions /etc/sysconfig/rhn/allowed-actions/configfiles"; do
             [ -d "$i" ] || (mkdir -p $i && directories="$i $directories")
         done
         [ -f /etc/sysconfig/rhn/allowed-actions/configfiles/all ] || files="$files /etc/sysconfig/rhn/allowed-actions/configfiles/all"
         [ -n "$files" ] && touch  $files
     fi
-    if [ -z "$PROFILENAME" ] ; then
+    if [ -z "$PROFILENAME" ]; then
         profilename_opt=""
     else
         profilename_opt="--profilename=$PROFILENAME"
@@ -1022,14 +1094,14 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     [ -n "$files" ] && rm -f $files
     [ -n "$directories" ] && rmdir $directories
     if [ $RET -eq 0 ]; then
-      echo
-      echo "*** this system should now be registered, please verify ***"
-      echo
+        echo
+        echo "*** this system should now be registered, please verify ***"
+        echo
     else
-      echo
-      echo "*** Error: Registering the system failed."
-      echo
-      exit 1
+        echo
+        echo "*** Error: Registering the system failed."
+        echo
+        exit 1
     fi
 else
     echo "* explicitly not registering"
@@ -1049,15 +1121,22 @@ echo "------------"
 # change the string as needed.
 #
 
-if [[ $ACTIVATION_KEYS =~ , ]] ; then
+if [[ $ACTIVATION_KEYS =~ , ]]; then
     echo "*** ERROR: Multiple activation keys are not supported with salt!"
     exit 1
 fi
 
 MINION_ID_FILE="/etc/salt/minion_id"
 SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
+MINION_SERVICE="salt-minion"
 
-if [ $REGISTER_THIS_BOX -eq 1 ] ; then
+if [ $VENV_ENABLED -eq 1 ]; then
+    MINION_ID_FILE="/etc/venv-salt-minion/minion_id"
+    SUSEMANAGER_MASTER_FILE="/etc/venv-salt-minion/minion.d/susemanager.conf"
+    MINION_SERVICE="venv-salt-minion"
+fi
+
+if [ $REGISTER_THIS_BOX -eq 1 ]; then
     echo "* registering"
 
     echo "$MYNAME" > "$MINION_ID_FILE"
@@ -1080,7 +1159,7 @@ EOF
 grains:
     susemanager:
 EOF
-    if [ -n "$ACTIVATION_KEYS" ] ; then
+    if [ -n "$ACTIVATION_KEYS" ]; then
         echo "Using activation key: \"$ACTIVATION_KEYS\""
         cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
         activation_key: "$(echo $ACTIVATION_KEYS | cut -d, -f1)"
@@ -1109,12 +1188,12 @@ removeTLSCertificate
 
 echo "* starting salt daemon and enabling it during boot"
 
-if [ -f /usr/lib/systemd/system/salt-minion.service ] || [ -f /lib/systemd/system/salt-minion.service ] ; then
-    systemctl enable salt-minion
-    systemctl restart salt-minion
+if [ -f /usr/lib/systemd/system/$MINION_SERVICE.service ] || [ -f /lib/systemd/system/$MINION_SERVICE.service ]; then
+    systemctl enable $MINION_SERVICE
+    systemctl restart $MINION_SERVICE
 else
-    /etc/init.d/salt-minion restart
-    /sbin/chkconfig --add salt-minion
+    /etc/init.d/$MINION_SERVICE restart
+    /sbin/chkconfig --add $MINION_SERVICE
 fi
 echo "-bootstrap complete-"
 """.format(productName=productName)
@@ -1132,39 +1211,41 @@ def removeTLSCertificate():
     return """\
 function removeTLSCertificate() {
     if [ "$INSTALLER" == "apt" ]; then
-      CERT_DIR=/usr/local/share/ca-certificates/susemanager
-      TRUST_DIR=/usr/local/share/ca-certificates/susemanager
-      UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
-      ORG_CA_CERT_IS_RPM_YN=0
-      ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
+        CERT_DIR=/usr/local/share/ca-certificates/susemanager
+        TRUST_DIR=/usr/local/share/ca-certificates/susemanager
+        UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+        ORG_CA_CERT_IS_RPM_YN=0
+        ORG_CA_CERT=RHN-ORG-TRUSTED-SSL-CERT
     else
-       CERT_DIR=/usr/share/rhn
-       TRUST_DIR=/etc/pki/ca-trust/source/anchors
-       UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+        CERT_DIR=/usr/share/rhn
+        TRUST_DIR=/etc/pki/ca-trust/source/anchors
+        UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
     fi
 
-    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ]; then
         CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
         rpm -e `basename ${ORG_CA_CERT} .rpm`
     else
         if [ -f /usr/share/rhn/${ORG_CA_CERT} ]; then
-                CERT_FILE=${ORG_CA_CERT}
-                rm -f /usr/share/rhn/${ORG_CA_CERT}
+            CERT_FILE=${ORG_CA_CERT}
+            rm -f /usr/share/rhn/${ORG_CA_CERT}
         elif [ -f /usr/local/share/ca-certificates/susemanager/${ORG_CA_CERT}.crt ]; then
-                CERT_FILE=${ORG_CA_CERT}.crt
-                rm -f /usr/local/share/ca-certificates/susemanager/${CERT_FILE}
+            CERT_FILE=${ORG_CA_CERT}.crt
+            rm -f /usr/local/share/ca-certificates/susemanager/${CERT_FILE}
         fi
     fi
     updateCertificates
 }
 
-    """
+"""
 
 
 def getUp2dateTheBoxSh(productName, saltEnabled):
     if saltEnabled:
         PKG_NAME_ZYPPER = PKG_NAME_ZYPPER_SYNC = \
         PKG_NAME_YUM = PKG_NAME_YUM_SYNC = "salt salt-minion"
+        PKG_NAME_VENV_ZYPPER = PKG_NAME_VENV_ZYPPER_SYNC = \
+        PKG_NAME_VENV_YUM = PKG_NAME_VENV_YUM_SYNC = "venv-salt-minion"
     else:
         PKG_NAME_ZYPPER = "zypp-plugin-spacewalk"
         PKG_NAME_YUM = "yum-rhn-plugin"
@@ -1179,102 +1260,126 @@ SALT_ENABLED={saltEnabled}
 if [ $DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE -eq 1 ]; then
     YAOU_SYSCFGFILE="/etc/sysconfig/automatic_online_update"
     if [ -f "$YAOU_SYSCFGFILE" ]; then
-      echo "* Disable YAST automatic online update."
-      sed -i 's/^ *AOU_ENABLE_CRONJOB.*/AOU_ENABLE_CRONJOB="false"/' "$YAOU_SYSCFGFILE"
-      for D in /etc/cron.*; do
-	test -L $D/opensuse.org-online_update && rm $D/opensuse.org-online_update
-      done
+        echo "* Disable YAST automatic online update."
+        sed -i 's/^ *AOU_ENABLE_CRONJOB.*/AOU_ENABLE_CRONJOB="false"/' "$YAOU_SYSCFGFILE"
+        for D in /etc/cron.*; do
+            test -L $D/opensuse.org-online_update && rm $D/opensuse.org-online_update
+        done
     fi
 fi
-if [ "$INSTALLER" == zypper ] ; then
-  test -d /var/lib/suseRegister && touch /var/lib/suseRegister/neverRegisterOnBoot
+if [ "$INSTALLER" == zypper ]; then
+    test -d /var/lib/suseRegister && touch /var/lib/suseRegister/neverRegisterOnBoot
 fi
-if [ $DISABLE_LOCAL_REPOS -eq 1 ] && [ $SALT_ENABLED -eq 0 ] ; then
-    if [ "$INSTALLER" == zypper ] ; then
-	echo "* Disable all repos not provided by SUSE Manager Server."
-	zypper ms -d --all
-	zypper ms -e --medium-type plugin
-	zypper mr -d --all
-	zypper mr -e --medium-type plugin
-	zypper mr -e "$CLIENT_REPO_NAME"
-    elif [ "$INSTALLER" == yum ] ; then
+if [ $DISABLE_LOCAL_REPOS -eq 1 ] && [ $SALT_ENABLED -eq 0 ]; then
+    if [ "$INSTALLER" == zypper ]; then
+        echo "* Disable all repos not provided by SUSE Manager Server."
+        zypper ms -d --all
+        zypper ms -e --medium-type plugin
+        zypper mr -d --all
+        zypper mr -e --medium-type plugin
+        zypper mr -e "$CLIENT_REPO_NAME"
+    elif [ "$INSTALLER" == yum ]; then
         echo "* Disable all repos not provided by SUSE Manager Server.";
-	for F in /etc/yum.repos.d/*.repo; do
-	  test -f "$F" || continue
-	  # parse throught the file and make sure each repo section contains 'enabled=0'
-	  awk '
-	    BEGIN           {{ saw=0 }}
-	    /^ *[[]/        {{ if ( saw==1 ) print "enabled=0"; else saw=1 }}
-	    /^ *enabled *=/ {{ print "enabled=0"; saw=2; next }}
-			    {{ print }}
-	    END             {{ if ( saw==1 ) print "enabled=0" }}
-	  ' "$F" > "$F.bootstrap.tmp" && mv "$F.bootstrap.tmp" "$F"
-	  test -f  "$F.bootstrap.tmp" && {{
-	    echo "*** Error: Failed to process '$F'; check manually if all repos inside are disabled."
-	    rm "$F.bootstrap.tmp"
-	  }}
-	done
+        for F in /etc/yum.repos.d/*.repo; do
+            test -f "$F" || continue
+            # parse throught the file and make sure each repo section contains 'enabled=0'
+            awk '
+                BEGIN           {{ saw=0 }}
+                /^ *[[]/        {{ if ( saw==1 ) print "enabled=0"; else saw=1 }}
+                /^ *enabled *=/ {{ print "enabled=0"; saw=2; next }}
+                                {{ print }}
+                END             {{ if ( saw==1 ) print "enabled=0" }}
+            ' "$F" > "$F.bootstrap.tmp" && mv "$F.bootstrap.tmp" "$F"
+            test -f  "$F.bootstrap.tmp" && {{
+                echo "*** Error: Failed to process '$F'; check manually if all repos inside are disabled."
+                rm "$F.bootstrap.tmp"
+            }}
+        done
     fi
 fi
-if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
-    if [ "$INSTALLER" == zypper ] ; then
-        echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}; zypper --non-interactive up (conditional)"
-    elif [ "$INSTALLER" == yum ] ; then
-        echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}; yum upgrade (conditional)"
+if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
+    if [ "$INSTALLER" == zypper ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
+            echo "zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER_SYNC}; zypper --non-interactive up (conditional)"
+        else
+            echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}; zypper --non-interactive up (conditional)"
+        fi
+    elif [ "$INSTALLER" == yum ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
+            echo "yum -y upgrade yum {PKG_NAME_VENV_YUM_SYNC}; yum upgrade (conditional)"
+        else
+            echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}; yum upgrade (conditional)"
+        fi
     else
         echo "up2date up2date; up2date -p; up2date -uf (conditional)"
     fi
 else
-    if [ "$INSTALLER" == zypper ] ; then
-        echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}"
-    elif [ "$INSTALLER" == yum ] ; then
-        echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}"
+    if [ "$INSTALLER" == zypper ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
+            echo "zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER_SYNC}"
+        else
+            echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}"
+        fi
+    elif [ "$INSTALLER" == yum ]; then
+        if [ $VENV_ENABLED -eq 1 ]; then
+            echo "yum -y upgrade yum {PKG_NAME_VENV_YUM_SYNC}"
+        else
+            echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}"
+        fi
     else
         echo "up2date up2date; up2date -p"
     fi
 fi
 echo "but any post configuration action can be added here.  "
 echo "------------------------------------------------------"
-if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
+if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
     echo "* completely updating the box"
 else
     echo "* ensuring $INSTALLER itself is updated"
 fi
-if [ "$INSTALLER" == zypper ] ; then
+if [ "$INSTALLER" == zypper ]; then
     zypper lr -u
-    if [ $SALT_ENABLED -eq 0 ] ; then
+    if [ $SALT_ENABLED -eq 0 ]; then
         zypper --non-interactive ref -s
     fi
-    zypper --non-interactive up zypper {PKG_NAME_ZYPPER}
-    if [ $SALT_ENABLED -eq 0 ] ; then
-        if [ -x /usr/sbin/rhn-profile-sync ] ; then
+    if [ $VENV_ENABLED -eq 1 ]; then
+        zypper --non-interactive up zypper {PKG_NAME_VENV_ZYPPER}
+    else
+        zypper --non-interactive up zypper {PKG_NAME_ZYPPER}
+    fi
+    if [ $SALT_ENABLED -eq 0 ]; then
+        if [ -x /usr/sbin/rhn-profile-sync ]; then
             /usr/sbin/rhn-profile-sync
         else
             echo "Error updating system info in {productName}."
-            echo "    Please ensure that rhn-profile-sync in installed and rerun it."
+            echo "    Please ensure that rhn-profile-sync is installed and rerun it."
         fi
     fi
-    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
+    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
         zypper --non-interactive up
     fi
-elif [ "$INSTALLER" == yum ] ; then
+elif [ "$INSTALLER" == yum ]; then
     yum repolist
-    /usr/bin/yum -y upgrade yum {PKG_NAME_YUM}
-    if [ $SALT_ENABLED -eq 0 ] ; then
-        if [ -x /usr/sbin/rhn-profile-sync ] ; then
+    if [ $VENV_ENABLED -eq 1 ]; then
+        /usr/bin/yum -y upgrade yum {PKG_NAME_VENV_YUM}
+    else
+        /usr/bin/yum -y upgrade yum {PKG_NAME_YUM}
+    fi
+    if [ $SALT_ENABLED -eq 0 ]; then
+        if [ -x /usr/sbin/rhn-profile-sync ]; then
             /usr/sbin/rhn-profile-sync
         else
             echo "Error updating system info in {productName}."
-            echo "    Please ensure that rhn-profile-sync in installed and rerun it."
+            echo "    Please ensure that rhn-profile-sync is installed and rerun it."
         fi
     fi
-    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
+    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
         /usr/bin/yum -y upgrade
     fi
 else
     /usr/sbin/up2date up2date
     /usr/sbin/up2date -p
-    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
+    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ]; then
         /usr/sbin/up2date -uf
     fi
 fi
@@ -1284,4 +1389,8 @@ echo "-bootstrap complete-"
            PKG_NAME_YUM_SYNC=PKG_NAME_YUM_SYNC,
            PKG_NAME_ZYPPER=PKG_NAME_ZYPPER,
            PKG_NAME_YUM=PKG_NAME_YUM,
+           PKG_NAME_VENV_ZYPPER_SYNC=PKG_NAME_VENV_ZYPPER_SYNC,
+           PKG_NAME_VENV_YUM_SYNC=PKG_NAME_VENV_YUM_SYNC,
+           PKG_NAME_VENV_ZYPPER=PKG_NAME_VENV_ZYPPER,
+           PKG_NAME_VENV_YUM=PKG_NAME_VENV_YUM,
            productName=productName)

@@ -559,7 +559,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             "Description: $desc\n")
             codename="bootstrap"
             reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
-                    label="mgr", codename=codename, arches="amd64 i386", comps="main", desc="Bootstrap repo")
+                    label="mgr", codename=codename, arches="amd64 i386 armhf", comps="main", desc="Bootstrap repo")
             reprepro_conf_dir = os.path.join(destdirtmp, "conf")
             if not os.path.exists(reprepro_conf_dir):
                 os.makedirs(reprepro_conf_dir)
@@ -577,6 +577,18 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 return 1
         else:
             os.system("createrepo -s sha %s" % destdirtmp)
+        # ensure venv-enabled-{ARCH}.txt doesn't exist in repo with no salt bundle package
+        # create venv-enabled-{ARCH}.txt for repos with salt bundle package
+        for file_path in glob.glob(os.path.join(destdirtmp, 'venv-enabled-*.txt')):
+            os.remove(file_path)
+        for file_path in glob.glob(os.path.join(destdirtmp, '**/venv-salt-minion*.*'), recursive=True):
+            rel_path = os.path.relpath(file_path, start=destdirtmp)
+            (l_path, ext) = rel_path.rsplit('.', 1)
+            if ext:
+                (l_path, arch) = l_path.rsplit('.' if ext == 'rpm' else '_', 1)
+                with open(os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)), "w") as venv_enabled_file:
+                    venv_enabled_file.write("{}\n".format(rel_path))
+                    venv_enabled_file.close()
         # move tmp dir to final location
         if os.path.exists(destdir):
             os.rename(destdir, destdirold)
