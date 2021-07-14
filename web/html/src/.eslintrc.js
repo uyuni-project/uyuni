@@ -25,7 +25,7 @@ module.exports = {
   },
 
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "jsx-a11y/anchor-is-valid": "error",
     "react-hooks/rules-of-hooks": "error",
     "eqeqeq": "error",
