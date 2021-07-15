@@ -53,7 +53,7 @@ Feature: Action chains on several systems at once
     And I cancel all scheduled actions
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
-    When I follow the left menu "Home > Overview"
+    When I follow the left menu "Systems > Overview"
     And I check the "sle_minion" client
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"

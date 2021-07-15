@@ -50,7 +50,7 @@ Feature: IPMI Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration
-    When I follow the left menu "Home > Overview"
+    When I follow the left menu "Systems > Overview"
     And I follow "Clear"
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"
