@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -281,13 +282,20 @@ public enum SaltStateGeneratorService {
         }
     }
 
-
     /**
      * Remove the config channel assignments for minion server.
      * @param minion the minion server
      */
     public void removeConfigChannelAssignments(MinionServer minion) {
         removeConfigChannelAssignments(getServerStateFileName(minion.getMachineId()));
+    }
+
+    /**
+     * Remove the config channel assignments for minion server.
+     * @param machineId the minion machine id
+     */
+    public void removeConfigChannelAssignmentsByMachineId(String machineId) {
+        removeConfigChannelAssignments(getServerStateFileName(machineId));
     }
 
     /**
@@ -298,8 +306,8 @@ public enum SaltStateGeneratorService {
         removeConfigChannelAssignments(getGroupStateFileName(group.getId()));
     }
 
-    private void removeActionChains(MinionServer minion) {
-        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, Optional.empty());
+    private void removeActionChains(String machineId) {
+        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(machineId, Optional.empty());
     }
 
     /**
@@ -419,13 +427,13 @@ public enum SaltStateGeneratorService {
 
     /**
      * Remove pillars and config channels assignments of a server.
-     * @param minion the minion
+     * @param cleanupData the cleanup data of the minion
      */
-    public void removeServer(MinionServer minion) {
-        MinionPillarManager.INSTANCE.removePillar(minion.getMinionId());
-        StatesAPI.removePackageState(minion);
-        removeConfigChannelAssignments(minion);
-        removeActionChains(minion);
+    public void removeServer(SystemManager.MinionCleanupData cleanupData) {
+        MinionPillarManager.INSTANCE.removePillar(cleanupData.getMinionId());
+        StatesAPI.removePackageState(cleanupData);
+        removeConfigChannelAssignmentsByMachineId(cleanupData.getMachineId());
+        removeActionChains(cleanupData.getMachineId());
     }
 
     /**
@@ -441,7 +449,9 @@ public enum SaltStateGeneratorService {
      * @param org the org
      */
     public void removeOrg(Org org) {
-        MinionServerFactory.lookupByOrg(org.getId()).forEach(this::removeServer);
+        MinionServerFactory.lookupByOrg(org.getId()).stream()
+                .map(m -> new SystemManager.MinionCleanupData(m))
+                .forEach(this::removeServer);
         removeConfigChannelAssignments(org);
     }
 
