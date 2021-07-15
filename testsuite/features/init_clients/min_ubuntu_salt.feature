@@ -21,7 +21,7 @@ Feature: Bootstrap an Ubuntu minion and do some basic operations on it
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Home > Overview"
+    And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "ubuntu_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu_minion"
     And I query latest Salt changes on ubuntu system "ubuntu_minion"
