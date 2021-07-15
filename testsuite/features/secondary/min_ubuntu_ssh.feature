@@ -30,7 +30,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Home > Overview"
+    And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "ubuntu_ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu_ssh_minion"
 
@@ -99,7 +99,7 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
-    And I follow the left menu "Home > Overview"
+    And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "ubuntu_minion", refreshing the page
     And I wait until onboarding is completed for "ubuntu_minion"
 

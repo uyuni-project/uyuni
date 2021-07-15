@@ -62,7 +62,7 @@ Feature: Maintenance Windows
         Then I should see a "System properties changed" text
 
     Scenario: Assign systems to a multi Schedule using SSM
-        When I follow the left menu "Home > Overview"
+        When I follow the left menu "Systems > Overview"
         And I follow "Clear"
         And I check the "sle_client" client
         And I follow the left menu "Systems > System Set Manager > Overview"
@@ -100,7 +100,7 @@ Feature: Maintenance Windows
         Then I should see a "1 package install has been scheduled for" text
 
     Scenario: Detach systems from Schedules
-        When I follow the left menu "Home > Overview"
+        When I follow the left menu "Systems > Overview"
         And I follow "Clear"
         And I check the "sle_client" client
         And I check the "sle_minion" client
