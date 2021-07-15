@@ -417,10 +417,10 @@ if [ "$INSTALLER" == yum ]; then
             VERSION=6
         elif [ -f /etc/almalinux-release ]; then
             grep -v '^#' /etc/almalinux-release | grep -q '\(AlmaLinux\)' && BASE="almalinux"
-            VERSION=`grep -v '^#' /etc/almalinux-release | grep -Po '(?<=release )\d+'`	    
+            VERSION=`grep -v '^#' /etc/almalinux-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/rocky-release ]; then
             grep -v '^#' /etc/rocky-release | grep -q '\(Rocky Linux\)' && BASE="rockylinux"
-            VERSION=`grep -v '^#' /etc/rocky-release | grep -Po '(?<=release )\d+'`	    
+            VERSION=`grep -v '^#' /etc/rocky-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/oracle-release ]; then
             grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
             VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`
@@ -1238,6 +1238,8 @@ def getUp2dateTheBoxSh(productName, saltEnabled):
         PKG_NAME_YUM = "yum-rhn-plugin"
         PKG_NAME_ZYPPER_SYNC = PKG_NAME_ZYPPER + "; rhn-profile-sync"
         PKG_NAME_YUM_SYNC = PKG_NAME_YUM + "; rhn-profile-sync"
+        PKG_NAME_VENV_ZYPPER = PKG_NAME_VENV_ZYPPER_SYNC = \
+        PKG_NAME_VENV_YUM = PKG_NAME_VENV_YUM_SYNC = ""
 
     return """\
 echo
