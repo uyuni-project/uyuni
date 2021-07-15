@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-14 20:10+0000\n"
+"PO-Revision-Date: 2021-07-15 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4482,43 +4482,43 @@ msgstr "SID:"
 
 #: ../src/spacecmd/scap.py:160
 msgid "Action_ID:"
-msgstr ""
+msgstr "ID_Akcie:"
 
 #: ../src/spacecmd/scap.py:162
 msgid "OSCAP_Parameters:"
-msgstr ""
+msgstr "Parametre_OSCAP:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Test_Result:"
-msgstr ""
+msgstr "Výsledok_Testu:"
 
 #: ../src/spacecmd/scap.py:163
 msgid "Benchmark:"
-msgstr ""
+msgstr "Porovnávací_Test:"
 
 #: ../src/spacecmd/scap.py:164
 msgid "Benchmark_Version:"
-msgstr ""
+msgstr "Verzia_Porovnávacieho_Testu:"
 
 #: ../src/spacecmd/scap.py:165
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Profile_Title:"
-msgstr ""
+msgstr "Názov_Profilu:"
 
 #: ../src/spacecmd/scap.py:166
 msgid "Start_Time:"
-msgstr ""
+msgstr "Čas_Spustenia:"
 
 #: ../src/spacecmd/scap.py:167
 msgid "End_Time:"
-msgstr ""
+msgstr "Čas_Skončenia:"
 
 #: ../src/spacecmd/scap.py:168
 msgid "Errors:"
-msgstr ""
+msgstr "Chyby:"
 
 #: ../src/spacecmd/scap.py:176
 msgid "scap_schedulexccdfscan: Schedule Scap XCCDF scan"
