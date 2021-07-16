@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.PackageState;
@@ -644,8 +643,7 @@ public class StatesAPI {
             Path baseDir = Paths.get(
                     SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
             Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(
-                    getPackagesSlsName(new MinionSummary(server)));
+            Path filePath = baseDir.resolve(getPackagesSlsName(server.getMachineId()));
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltInclude(ApplyStatesEventMessage.CHANNELS),
@@ -659,12 +657,12 @@ public class StatesAPI {
     /**
      * Remove package state file for the given minion
      *
-     * @param minion the minion
+     * @param machineId the salt machineId
      */
-    public static void removePackageState(MinionServer minion) {
+    public static void removePackageState(String machineId) {
         Path baseDir = Paths.get(
                 SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
-        Path filePath = baseDir.resolve(getPackagesSlsName(new MinionSummary(minion)));
+        Path filePath = baseDir.resolve(getPackagesSlsName(machineId));
 
         try {
             Files.deleteIfExists(filePath);
@@ -676,11 +674,11 @@ public class StatesAPI {
 
     /**
      * Get the name of the package sls file.
-     * @param server the minion server
+     * @param machineId the salt machineId
      * @return the name of the package sls file
      */
-    public static String getPackagesSlsName(MinionSummary server) {
-        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + server.getMachineId() + ".sls";
+    public static String getPackagesSlsName(String machineId) {
+        return SaltConstants.SALT_SERVER_PACKAGES_STATE_FILE_PREFIX + machineId + ".sls";
     }
 
     /**
