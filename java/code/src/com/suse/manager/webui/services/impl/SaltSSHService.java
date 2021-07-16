@@ -888,7 +888,7 @@ public class SaltSSHService {
         // add packages/package_<minion_machine_id>
         Set<String> pkgRefs = statesPerMinion.entrySet().stream()
                 .map(entry -> SALT_FS_PREFIX + SaltConstants.SALT_PACKAGES_STATES_DIR + "/" +
-                        StatesAPI.getPackagesSlsName(entry.getKey()))
+                        StatesAPI.getPackagesSlsName(entry.getKey().getMachineId()))
                 .collect(Collectors.toSet());
 
 
