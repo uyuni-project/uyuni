@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jul 16 14:33:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.20-1
 - Add option to run Ansible playbooks in 'test' mode
 - New filter template: Live patching based on a system
 - Fix bugged search in formula catalog
