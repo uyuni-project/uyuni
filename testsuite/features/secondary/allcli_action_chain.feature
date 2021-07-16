@@ -53,10 +53,10 @@ Feature: Action chains on several systems at once
     And I cancel all scheduled actions
 
   Scenario: Add an action chain using system set manager for traditional client and Salt minion
-    When I follow the left menu "Home > Overview"
+    When I follow the left menu "Systems > Overview"
     And I check the "sle_minion" client
     And I check the "sle_client" client
-    And I am on System Set Manager Overview
+    And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Install" in the content area
     And I follow "Test-Channel-x86_64" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -68,7 +68,7 @@ Feature: Action chains on several systems at once
     When I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled" text
-    When I am on System Set Manager Overview
+    When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "remote commands" in the content area
     And I enter as remote command this script in
       """

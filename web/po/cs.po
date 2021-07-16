@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-09 10:38+0000\n"
+"POT-Creation-Date: 2021-07-13 13:24+0000\n"
 "PO-Revision-Date: 2021-05-17 20:59+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -590,20 +590,20 @@ msgstr "Bezpečnostní poradenství"
 msgid "System Locked"
 msgstr "Systém uzamčen"
 
-#: ../html/src/components/table/SearchPanel.tsx:52
+#: ../html/src/components/table/SearchPanel.tsx:44
 msgid "Items {0} - {1} of {2}"
 msgstr "Položky {0} - {1} z {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:55
+#: ../html/src/components/table/SearchPanel.tsx:47
 msgid "({0} selected)"
 msgstr "(Vybráno: {0})"
 
-#: ../html/src/components/table/SearchPanel.tsx:57
+#: ../html/src/components/table/SearchPanel.tsx:49
 #: ../html/src/manager/admin/setup/products/products.tsx:319
 msgid "Clear"
 msgstr "Vyčistit"
 
-#: ../html/src/components/table/SearchPanel.tsx:64
+#: ../html/src/components/table/SearchPanel.tsx:56
 msgid "Select All"
 msgstr "Vybrat vše"
 

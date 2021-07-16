@@ -21,7 +21,7 @@ Feature: Bootstrap a Salt build host via the GUI
   Scenario: Check the new bootstrapped build host in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    When I follow the left menu "Home > Overview"
+    When I follow the left menu "Systems > Overview"
     And I wait until I see the name of "build_host", refreshing the page
     And I wait until onboarding is completed for "build_host"
     Then the Salt master can reach "build_host"

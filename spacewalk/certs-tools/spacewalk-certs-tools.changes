@@ -1,3 +1,6 @@
+- added support of bootstrapping Raspbian 10 and 9
+  with bootstrap script
+- added support of bootstrapping with salt bundle
 - Prepare the bootstrap script generator for Rocky Linux 8
 - Removed Python 2 build.
 - Updated source URL reference.

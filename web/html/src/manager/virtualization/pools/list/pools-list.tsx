@@ -18,6 +18,7 @@ import { useVirtNotification } from "../../useVirtNotification";
 import { HypervisorCheck } from "../../HypervisorCheck";
 
 import { MessageType } from "components/messages";
+import { cloneReactElement } from "components/utils";
 
 type Props = {
   serverId: string;
@@ -98,8 +99,7 @@ function FilteredTree(props: FilteredTreeProps) {
   };
 
   return (
-    // TODO: The `any` cast is incorrect here and should be removed, please see https://github.com/SUSE/spacewalk/issues/14887
-    <>{React.Children.toArray(props.children).map(item => React.cloneElement(item as any, { data: filteredTreeData }))}</>
+    <>{React.Children.toArray(props.children).map(child => cloneReactElement(child, { data: filteredTreeData }))}</>
   );
 }
 

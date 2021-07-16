@@ -1,3 +1,4 @@
+- Add the salt bundle support to mgr-create-bootstrap-repo
 - Add bootstrap repository definitions for Rocky Linux 8
 - Add sanity checks in database migration and infere options from system
 - allow installation on AlmaLinux.
@@ -28,7 +29,7 @@ Wed Jun 16 10:59:25 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.16-1
 - Fix database corruption after migrating the server to PostgreSQL 13 (bsc#1187217)
- 
+
 -------------------------------------------------------------------
 Mon Jun 14 17:33:40 CEST 2021 - jgonzalez@suse.com
 
