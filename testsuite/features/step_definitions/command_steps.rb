@@ -603,9 +603,59 @@ Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, ho
   raise "Not found:\n#{output}" unless output.include?(text)
 end
 
+When(/^I start tftp on the proxy$/) do
+  node = get_target('proxy')
+  case $product
+  # TODO: Should we handle this in Sumaform?
+  when 'Uyuni'
+    step %(I enable repositories before installing branch server)
+    cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
+          'zypper --non-interactive install tftp && ' \
+          'systemctl enable tftp.socket && ' \
+          'systemctl start tftp.socket'
+    node.run(cmd)
+    step %(I disable repositories after installing branch server)
+  else
+    cmd = "systemctl enable tftp.socket && systemctl start tftp.socket"
+    node.run(cmd)
+  end
+end
+
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output = sshcmd("cobbler system report --name #{name}", ignore_err: true)[:stdout]
   raise "Not found:\n#{output}" unless output.include?(text)
+end
+
+When(/^I configure tftp on the "([^"]*)"$/) do |host|
+  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+
+  case host
+  when 'server'
+    $server.run("configure-tftpsync.sh #{ENV['PROXY']}")
+  when 'proxy'
+    cmd = "configure-tftpsync.sh --tftpbootdir=/srv/tftpboot \
+--server-fqdn=#{ENV['PROXY']} --server-ip=#{$server.public_ip} \
+--proxy-fqdn=#{ENV['SERVER']} --proxy-ip=#{$proxy.public_ip}"
+    $proxy.run(cmd)
+  end
+end
+
+When(/^I synchronize the tftp configuration on the proxy with the server$/) do
+  $server.run('cobbler sync')
+end
+
+When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
+  raise "This step doesn't support #{host}" unless ['server', 'proxy'].include? host
+
+  node = get_target(host)
+  target = '/srv/tftpboot/pxelinux.cfg/default'
+  case entry
+  when 'local boot'
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT local/'"
+  when 'target profile'
+    script = "-e 's/^TIMEOUT .*/TIMEOUT 1/' -e 's/ONTIMEOUT .*/ONTIMEOUT 15-sp2-cobbler:1:SUSETest/'"
+  end
+  node.run("sed -i #{script} #{target}")
 end
 
 When(/^I clean the search index on the server$/) do
