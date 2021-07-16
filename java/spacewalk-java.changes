@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 16 14:25:16 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.25-1
+- Bugfix: Prevent "no session" hibernate error on deleting server
+
+-------------------------------------------------------------------
 Fri Jul 16 14:22:30 CEST 2021 - jgonzalez@suse.com
 
 - version 4.2.24-1
