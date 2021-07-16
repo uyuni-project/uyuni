@@ -16,14 +16,18 @@ package com.redhat.rhn.manager.org;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.SystemMigrationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.token.Token;
@@ -35,6 +39,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.ArrayList;
@@ -42,6 +47,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * MigrationManager
@@ -67,15 +73,12 @@ public class MigrationManager extends BaseManager {
         for (Server server : servers) {
 
             Org fromOrg = server.getOrg();
-
-            // Update the server to ignore entitlement checking... This is needed to ensure
-            // that things such as configuration files are moved with the system, even if
-            // the system currently has provisioning entitlements removed.
-            server.setIgnoreEntitlementsForMigration(Boolean.TRUE);
+            Set<Entitlement> entitlements = server.getEntitlements();
 
             MigrationManager.removeOrgRelationships(user, server);
             MigrationManager.updateAdminRelationships(fromOrg, toOrg, server);
             MigrationManager.moveServerToOrg(toOrg, server);
+            MigrationManager.updateServerEntitlements(toOrg, server, entitlements);
             serversMigrated.add(server.getId());
             OrgFactory.save(toOrg);
             OrgFactory.save(fromOrg);
@@ -88,7 +91,6 @@ public class MigrationManager extends BaseManager {
             else {
                 server.setCreator(UserFactory.findRandomOrgAdmin(toOrg));
             }
-
 
             // update server history to record the migration.
             ServerHistoryEvent event = new ServerHistoryEvent();
@@ -125,6 +127,11 @@ public class MigrationManager extends BaseManager {
             throw new PermissionException(RoleFactory.ORG_ADMIN);
         }
 
+        // Update the server to ignore entitlement checking... This is needed to ensure
+        // that things such as configuration files are moved with the system, even if
+        // the system currently has provisioning entitlements removed.
+        server.setIgnoreEntitlementsForMigration(Boolean.TRUE);
+
         // Unsubscribe from all channels to change channel entitlements
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
                 new ArrayList());
@@ -136,6 +143,11 @@ public class MigrationManager extends BaseManager {
             List<Server> tempList = new LinkedList<Server>();
             tempList.add(server);
             SERVER_GROUP_MANAGER.removeServers(group, tempList);
+        }
+
+        // Remove from entitlement groups
+        for (EntitlementServerGroup oldEnt : server.getEntitledGroups()) {
+            ServerFactory.removeServerFromGroup(server, oldEnt);
         }
 
         // Remove custom data values (aka System->CustomInfo)
@@ -189,6 +201,20 @@ public class MigrationManager extends BaseManager {
             admin.addServer(server);
             UserFactory.save(admin);
         }
+    }
+
+    /**
+     * Updates Entitlements for system migration
+     *
+     * @param server the server to migrate
+     * @param toOrg the organization to migrate to
+     * @param entitlements the set of server entitlements
+     */
+    public static void updateServerEntitlements(Org toOrg, Server server, Set<Entitlement> entitlements) {
+        entitlements.forEach(ent -> {
+            ServerGroup newEnt = ServerGroupFactory.lookupEntitled(ent, toOrg);
+            ServerFactory.addServerToGroup(server, newEnt);
+        });
     }
 
     /**
