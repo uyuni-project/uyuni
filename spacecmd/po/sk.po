@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-15 19:11+0000\n"
+"PO-Revision-Date: 2021-07-16 18:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4522,46 +4522,50 @@ msgstr "Chyby:"
 
 #: ../src/spacecmd/scap.py:176
 msgid "scap_schedulexccdfscan: Schedule Scap XCCDF scan"
-msgstr ""
+msgstr "scap_schedulexccdfscan: Naplánovať skenovanie Scap XCCDF"
 
 #: ../src/spacecmd/scap.py:177
 msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 msgstr ""
+"použitie: scap_schedulexccdfscan CESTA K_SÚBORU_XCCDF VOĽBY_XCCDF SYSTÉMY"
 
 #: ../src/spacecmd/scap.py:178
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
-msgstr ""
+msgstr "       scap_schedulexccdfscan ssm CESTA K_SÚBORU_XCCDF VOĽBY_XCCDF"
 
 #: ../src/spacecmd/scap.py:183
 msgid ""
 "\n"
 "To use systems in the ssm, pass the \"ssm\" keyword in front. Example:"
 msgstr ""
+"\n"
+"Ak chcete použiť systémy v ssm, zadajte dopredu kľúčové slovo \"ssm\". "
+"Príklad:"
 
 #: ../src/spacecmd/schedule.py:89
 msgid "ID      Date                 C    F    P     Action"
-msgstr ""
+msgstr "ID      Dátum                 C    F    P     Akcia"
 
 #: ../src/spacecmd/schedule.py:135
 msgid "schedule_cancel: Cancel scheduled actions"
-msgstr ""
+msgstr "schedule_cancel: Zrušiť naplánované akcie"
 
 #: ../src/spacecmd/schedule.py:136
 msgid "usage: schedule_cancel ID|* ..."
-msgstr ""
+msgstr "použitie: schedule_cancel ID|* ..."
 
 #: ../src/spacecmd/schedule.py:158
 msgid "Cancel all pending actions [y/N]:"
-msgstr ""
+msgstr "Zrušiť všetky čakajúce akcie [a/N]:"
 
 #: ../src/spacecmd/schedule.py:159
 msgid "All pending actions left untouched"
-msgstr ""
+msgstr "Všetky čakajúce akcie zostali nedotknuté"
 
 #: ../src/spacecmd/schedule.py:174 ../src/spacecmd/schedule.py:235
 #, python-format
 msgid "\"%s\" is not a valid ID"
-msgstr ""
+msgstr "\"%s\" nie je platné ID"
 
 #: ../src/spacecmd/schedule.py:180
 #, python-format
