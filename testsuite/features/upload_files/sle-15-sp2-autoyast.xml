@@ -1,0 +1,93 @@
+<profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
+  <add-on>
+    <add_on_products config:type="list">
+      <listentry>
+        <ask_on_error config:type="boolean">true</ask_on_error>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-product-sles15-sp2-updates-x86_64/$distrotree</media_url>
+        <name>sle-product-sles15-updates-x86_64</name>
+        <product>SLES15</product>
+        <product_dir>/</product_dir>
+      </listentry>
+      <listentry>
+        <ask_on_error config:type="boolean">true</ask_on_error>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp2-pool-x86_64/$distrotree</media_url>
+        <name>basesystem pool</name>
+        <product>Basesystem Module</product>
+        <product_dir>/</product_dir>
+      </listentry>
+      <listentry>
+        <ask_on_error config:type="boolean">true</ask_on_error>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp2-updates-x86_64/$distrotree</media_url>
+        <name>basesystem updates</name>
+        <product>Basesystem Module</product>
+        <product_dir>/</product_dir>
+      </listentry>
+    </add_on_products>
+  </add-on>
+  <general>
+$SNIPPET('spacewalk/sles_no_signature_checks')
+<mode><confirm config:type="boolean">false</confirm></mode>
+<storage><partition_alignment config:type="symbol">align_optimal</partition_alignment><start_multipath config:type="boolean">false</start_multipath></storage>
+</general>
+  <partitioning config:type="list">
+    <drive>
+      <use>all</use>
+      <partitions config:type="list">
+        <partition>
+          <mount>/</mount>
+          <size>max</size>
+        </partition>
+        <partition>
+          <mount>swap</mount>
+          <size>auto</size>
+        </partition>
+      </partitions>
+    </drive>
+  </partitioning>
+  <networking>
+    <keep_install_network config:type="boolean">true</keep_install_network>
+    <dns>
+      <hostname>test-vm2</hostname>
+    </dns>
+  </networking>
+  <software>
+    <image/>
+    <install_recommended config:type="boolean">true</install_recommended>
+    <instsource/>
+    <packages config:type="list">
+      <package>salt-minion</package>
+    </packages>
+    <patterns config:type="list">
+      <pattern>base</pattern>
+      <pattern>minimal_base</pattern>
+    </patterns>
+    <products config:type="list">
+      <listentry>SLES</listentry>
+    </products>
+  </software>
+  <users config:type="list">
+    <user>
+      <encrypted config:type="boolean">false</encrypted>
+      <fullname>root</fullname>
+      <gid>0</gid>
+      <home>/root</home>
+      <password_settings>
+        <expire/>
+        <flag/>
+        <inact/>
+        <max/>
+        <min/>
+        <warn/>
+      </password_settings>
+      <shell>/bin/bash</shell>
+      <uid>0</uid>
+      <user_password>linux</user_password>
+      <username>root</username>
+    </user>
+  </users>
+  <scripts>
+    <init-scripts config:type="list">
+          $SNIPPET('spacewalk/minion_script')
+    </init-scripts>
+  </scripts>
+</profile>

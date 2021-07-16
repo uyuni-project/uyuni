@@ -220,6 +220,10 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
   fill_in arg2, with: arg1
 end
 
+When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
+  execute_script("document.getElementsByName('#{arg2}')[0].value = '#{arg1}'")
+end
+
 When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   within(:xpath, '//section') do
     fill_in arg2, with: arg1

@@ -55,5 +55,6 @@
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
 - features/secondary/min_retracted_patches.feature
+- features/secondary/proxy_cobbler_pxeboot.feature
 
 ## Secondary features END ##
