@@ -838,8 +838,9 @@ public class SaltServerActionService {
                                         Optional<String> message) {
         failedActionId.ifPresent(last ->
                 failDependentServerActions(last, minionId, message));
-        MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> SaltActionChainGeneratorService.INSTANCE.
-                removeActionChainSLSFilesForMinion(minion.getMachineId(), actionChainId));
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, actionChainId);
+        });
     }
 
     /**

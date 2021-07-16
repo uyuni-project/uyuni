@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.manager.system.SystemManager;
-
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.utils.Opt;
 
@@ -43,16 +41,6 @@ public class MinionSummary {
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(), minion.getMachineId(),
                 minion.getContactMethodLabel());
-    }
-
-    /**
-     * Convenience constructor from minion cleanup data.
-     *
-     * @param cleanupData the cleanup data of the minion
-     */
-    public MinionSummary(SystemManager.MinionCleanupData cleanupData) {
-        this(cleanupData.getEntityId(), cleanupData.getMinionId(), cleanupData.getDigitalServerId(),
-                cleanupData.getMachineId(), cleanupData.getContactMethodLabel());
     }
 
     /**

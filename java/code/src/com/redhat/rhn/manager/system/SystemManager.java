@@ -748,81 +748,15 @@ public class SystemManager extends BaseManager {
             removeSaltSSHKnownHosts(server);
         }
 
-        // let's store the data needed for salt cleanup after the server entity is deleted and evicted
-        Optional<MinionCleanupData> cleanupData = server.asMinionServer().map(s -> new MinionCleanupData(s));
-
         // remove server itself
         ServerFactory.delete(server);
 
-        cleanupData.ifPresent(data -> {
-            SaltStateGeneratorService.INSTANCE.removeServer(data);
+        server.asMinionServer().ifPresent(minion -> {
+            SaltStateGeneratorService.INSTANCE.removeServer(minion);
             if (deleteSaltKey) {
-                saltApi.deleteKey(data.getMinionId());
+                saltApi.deleteKey(minion.getMinionId());
             }
         });
-    }
-
-    /**
-     * DTO with data needed for cleanup minion
-     */
-    public static class MinionCleanupData {
-        private long entityId;
-        private String minionId;
-        private String machineId;
-        private String digitalServerId;
-        private Optional<String> contactMethodLabel;
-
-        /**
-         * Constructor
-         * @param minion
-         */
-        public MinionCleanupData(MinionServer minion) {
-            this.entityId = minion.getId();
-            this.minionId = minion.getMinionId();
-            this.machineId = minion.getMachineId();
-            this.digitalServerId = minion.getDigitalServerId();
-            this.contactMethodLabel = minion.getContactMethodLabel();
-        }
-
-        /**
-         * Gets the entityId.
-         *
-         * @return entityId
-         */
-        public long getEntityId() {
-            return entityId;
-        }
-
-        /**
-         * Gets the minionId.
-         *
-         * @return minionId
-         */
-        public String getMinionId() {
-            return minionId;
-        }
-
-        /**
-         * Gets the machineId.
-         *
-         * @return machineId
-         */
-        public String getMachineId() {
-            return machineId;
-        }
-
-        /**
-         * Gets the digitalServerId.
-         *
-         * @return digitalServerId
-         */
-        public String getDigitalServerId() {
-            return digitalServerId;
-        }
-
-        public Optional<String> getContactMethodLabel() {
-            return contactMethodLabel;
-        }
     }
 
     private static void removeSaltSSHKnownHosts(Server server) {

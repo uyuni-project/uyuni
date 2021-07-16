@@ -24,6 +24,7 @@ import static com.suse.manager.webui.services.impl.SaltSSHService.ACTION_STATES_
 import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 
@@ -395,10 +396,10 @@ public class SaltActionChainGeneratorService {
 
     /**
      * Remove all action chains files for the given minion and action chain.
-     * @param machineId the minion machine id
+     * @param minion the minion
      * @param actionChainId optionally, the id of the action chain
      */
-    public void removeActionChainSLSFilesForMinion(String machineId, Optional<Long> actionChainId) {
+    public void removeActionChainSLSFilesForMinion(MinionServer minion, Optional<Long> actionChainId) {
         Path targetDir = getTargetDir();
         if (!Files.exists(targetDir)) {
             return;
@@ -406,7 +407,7 @@ public class SaltActionChainGeneratorService {
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir,
                 ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId.map(id -> Long.toString(id)).orElse("*") +
-                        "_" + machineId + "_*.sls")) {
+                        "_" + minion.getMachineId() + "_*.sls")) {
             stream.forEach(slsFile -> {
                 deleteSlsAndRefs(targetDir,  slsFile);
             });

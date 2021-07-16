@@ -659,12 +659,12 @@ public class StatesAPI {
     /**
      * Remove package state file for the given minion
      *
-     * @param cleanupData the cleanup data of the minion
+     * @param minion the minion
      */
-    public static void removePackageState(SystemManager.MinionCleanupData cleanupData) {
+    public static void removePackageState(MinionServer minion) {
         Path baseDir = Paths.get(
                 SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SaltConstants.SALT_PACKAGES_STATES_DIR);
-        Path filePath = baseDir.resolve(getPackagesSlsName(new MinionSummary(cleanupData)));
+        Path filePath = baseDir.resolve(getPackagesSlsName(new MinionSummary(minion)));
 
         try {
             Files.deleteIfExists(filePath);
