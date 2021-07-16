@@ -974,7 +974,12 @@ public class ContentSyncManager {
                 }
                 channelParts.add(prdArch);
 
-                SUSEProductFactory.findAllRootProductsOf(product).forEach(root -> {
+                List<SUSEProduct> rootProducts = SUSEProductFactory.findAllRootProductsOf(product);
+                if (rootProducts.isEmpty()) {
+                    // when no root product was found, we are the root product
+                    rootProducts.add(product);
+                }
+                rootProducts.forEach(root -> {
                     SUSEProductSCCRepository prodRepoLink = new SUSEProductSCCRepository();
                     prodRepoLink.setProduct(product);
                     prodRepoLink.setRepository(repo);
