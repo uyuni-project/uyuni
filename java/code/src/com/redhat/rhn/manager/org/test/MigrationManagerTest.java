@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.SystemMigrationFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -30,10 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.org.MigrationManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -110,7 +108,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
-        assertTrue(server.getEntitlements().size() > 0);
+        assertTrue(server.getEntitlements().size() == 0);
     }
 
     public void testRemoveSystemGroups() throws Exception {
@@ -175,6 +173,18 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertEquals(server.getOrg(), origOrg);
         assertEquals(server2.getOrg(), origOrg);
 
+        List<EntitlementServerGroup> entGroups = server.getEntitledGroups();
+        List<EntitlementServerGroup> entGroups2 = server2.getEntitledGroups();
+
+        assertNotNull(entGroups);
+        entGroups.forEach(ent -> {
+            assertEquals(origOrg.getId(), ent.getOrg().getId());
+        });
+        assertNotNull(entGroups2);
+        entGroups2.forEach(ent -> {
+            assertEquals(origOrg.getId(), ent.getOrg().getId());
+        });
+
         List<Server> servers = new ArrayList<Server>();
         servers.add(server);
         servers.add(server2);
@@ -183,6 +193,15 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(server.getOrg(), destOrg);
         assertEquals(server2.getOrg(), destOrg);
+
+        assertEquals(server.getEntitledGroups().size(), entGroups.size());
+        server.getEntitledGroups().forEach(ent -> {
+            assertEquals(destOrg.getId(), ent.getOrg().getId());
+        });
+        assertEquals(server2.getEntitledGroups().size(), entGroups2.size());
+        server2.getEntitledGroups().forEach(ent -> {
+            assertEquals(destOrg.getId(), ent.getOrg().getId());
+        });
 
         assertNotNull(server.getHistory());
         assertTrue(server.getHistory().size() > 0);
