@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.image.DeployImageAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestToolsChannelSubscriptionAction;
@@ -369,7 +370,9 @@ public class ActionFactory extends HibernateFactory {
     public static Action createAction(ActionType typeIn, Date earliest) {
         Action retval;
         if (typeIn.equals(TYPE_ERRATA)) {
-            retval = new ErrataAction();
+            ErrataAction ea = new ErrataAction();
+            ea.setDetails(new ActionPackageDetails(ea, false));
+            retval = ea;
         }
         else if (typeIn.equals(TYPE_SCRIPT_RUN)) {
             retval = new ScriptRunAction();
