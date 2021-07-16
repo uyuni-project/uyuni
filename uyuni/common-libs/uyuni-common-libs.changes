@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jul 16 14:37:02 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.5-1
 - Handle broken RPM packages to prevent exceptions
   causing fails on repository synchronization (bsc#1186650)
 - Adapt the tests to the new images
