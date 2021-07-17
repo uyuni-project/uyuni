@@ -931,7 +931,7 @@ public class ContentSyncManager {
         for (SCCRepositoryJson jrepo : repositories) {
             try {
                 URI uri = new URI(jrepo.getUrl());
-                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test][_debug]
+                // Format: /PTF/Release/<ACCOUNT>/<Product Identifier>/<Version>/<Architecture>/[ptf|test]
                 String[] parts = uri.getPath().split("/");
                 if (!(parts[1].equals("PTF") && parts[2].equals("Release"))) {
                     continue;
@@ -955,16 +955,8 @@ public class ContentSyncManager {
                 case "ptf":
                     channelParts.add("PTFs");
                     break;
-                case "ptf_debug":
-                    channelParts.add("PTFs");
-                    channelParts.add("Debuginfo");
-                    break;
                 case "test":
                     channelParts.add("TEST");
-                    break;
-                case "test_debug":
-                    channelParts.add("TEST");
-                    channelParts.add("Debuginfo");
                     break;
                 default:
                     log.warn("Unknown repo type: " + parts[7] + ". Skipping");
@@ -1000,9 +992,9 @@ public class ContentSyncManager {
                             }
                             List<String> cList = Stream.concat(channelParts.stream(), suffix.stream())
                                 .filter(e -> !e.isBlank())
-                                .map(String::toLowerCase)
                                 .collect(Collectors.toList());
-                            prodRepoLink.setChannelLabel(String.join("-", cList));
+                            prodRepoLink.setChannelLabel(String.join("-", cList)
+                                    .toLowerCase().replace(" for ", " ").replace(" ", "-"));
                             prodRepoLink.setChannelName(String.join(" ", cList));
 
                         });
