@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-16 18:11+0000\n"
+"PO-Revision-Date: 2021-07-17 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4570,47 +4570,47 @@ msgstr "\"%s\" nie je platné ID"
 #: ../src/spacecmd/schedule.py:180
 #, python-format
 msgid "Canceled action: %i"
-msgstr ""
+msgstr "Zrušená akcia: %i"
 
 #: ../src/spacecmd/schedule.py:183
 #, python-format
 msgid "Failed action: %s"
-msgstr ""
+msgstr "Neúspešná akcia: %s"
 
 #: ../src/spacecmd/schedule.py:185
 #, python-format
 msgid "Canceled %i action(s)"
-msgstr ""
+msgstr "Zrušená %i akcia(e)"
 
 #: ../src/spacecmd/schedule.py:193
 msgid "schedule_reschedule: Reschedule failed actions"
-msgstr ""
+msgstr "schedule_reschedule: Znova naplánovať neúspešné akcie"
 
 #: ../src/spacecmd/schedule.py:194
 msgid "usage: schedule_reschedule ID|* ..."
-msgstr ""
+msgstr "použitie: schedule_reschedule ID|* ..."
 
 #: ../src/spacecmd/schedule.py:221
 msgid "Reschedule all failed actions [y/N]:"
-msgstr ""
+msgstr "Znova naplánovať všetky neúspešné akcie [a/N]:"
 
 #: ../src/spacecmd/schedule.py:233
 #, python-format
 msgid "\"%i\" is not a failed action"
-msgstr ""
+msgstr "\"%i\" nie je neúspešná akcia"
 
 #: ../src/spacecmd/schedule.py:239
 msgid "No failed actions to reschedule"
-msgstr ""
+msgstr "Žiadne neúspešné akcie na opätovné naplánovanie"
 
 #: ../src/spacecmd/schedule.py:243
 #, python-format
 msgid "Rescheduled %i action(s)"
-msgstr ""
+msgstr "Znova naplánovaná %i akcia(e)"
 
 #: ../src/spacecmd/schedule.py:251
 msgid "schedule_details: Show the details of a scheduled action"
-msgstr ""
+msgstr "schedule_details: Zobraziť podrobnosti o naplánovanej akcii"
 
 #: ../src/spacecmd/schedule.py:252
 msgid "usage: schedule_details ID"
