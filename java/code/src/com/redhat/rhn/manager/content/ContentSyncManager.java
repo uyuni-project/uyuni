@@ -474,9 +474,7 @@ public class ContentSyncManager {
 
 
                 Set<MgrSyncChannelDto> extChildChannels = e.getValue().stream().map(c -> new MgrSyncChannelDto(
-                        c.getA().getRepository().getName() +
-                        (c.getA().getRootProduct().getArch() != null ?
-                                " for " + c.getA().getRootProduct().getArch().getLabel() : ""),
+                        c.getA().getChannelName(),
                         c.getA().getChannelLabel(),
                         c.getA().getProduct().getFriendlyName(),
                         c.getA().getRepository().getDescription(),
