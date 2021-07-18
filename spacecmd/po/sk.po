@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-17 19:11+0000\n"
+"PO-Revision-Date: 2021-07-18 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4614,12 +4614,12 @@ msgstr "schedule_details: Zobraziť podrobnosti o naplánovanej akcii"
 
 #: ../src/spacecmd/schedule.py:252
 msgid "usage: schedule_details ID"
-msgstr ""
+msgstr "použitie: schedule_details ID"
 
 #: ../src/spacecmd/schedule.py:269
 #, python-format
 msgid "The ID \"%s\" is invalid"
-msgstr ""
+msgstr "ID \"%s\" je neplatné"
 
 #: ../src/spacecmd/schedule.py:278
 #, python-format
@@ -4629,28 +4629,28 @@ msgstr "ID:        %i"
 #: ../src/spacecmd/schedule.py:279
 #, python-format
 msgid "Action:    %s"
-msgstr ""
+msgstr "Akcia:    %s"
 
 #: ../src/spacecmd/schedule.py:280
 #, python-format
 msgid "User:      %s"
-msgstr ""
+msgstr "Používateľ:      %s"
 
 #: ../src/spacecmd/schedule.py:281
 #, python-format
 msgid "Date:      %s"
-msgstr ""
+msgstr "Dátum:      %s"
 
 #: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
 #: ../src/spacecmd/system.py:3263
 #, python-format
 msgid "Completed: %s"
-msgstr ""
+msgstr "Dokončené: %s"
 
 #: ../src/spacecmd/schedule.py:284
 #, python-format
 msgid "Failed:    %s"
-msgstr ""
+msgstr "Neúspešné:    %s"
 
 #: ../src/spacecmd/schedule.py:285
 #, python-format
@@ -4659,7 +4659,7 @@ msgstr ""
 
 #: ../src/spacecmd/schedule.py:289
 msgid "Completed Systems"
-msgstr ""
+msgstr "Dokončené systémy"
 
 #: ../src/spacecmd/schedule.py:296
 msgid "Failed Systems"
@@ -4726,11 +4726,11 @@ msgstr ""
 
 #: ../src/spacecmd/schedule.py:408
 msgid "schedule_listcompleted: List completed actions"
-msgstr ""
+msgstr "schedule_listcompleted: Vypísať zoznam dokončených akcií"
 
 #: ../src/spacecmd/schedule.py:409
 msgid "usage: schedule_listcompleted [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "usage: schedule_listcompleted [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:421
 msgid "schedule_listfailed: List failed actions"
