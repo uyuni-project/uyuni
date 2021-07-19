@@ -18,7 +18,7 @@
 @pxeboot_minion
 @scope_retail
 Feature: PXE boot a Retail terminal
-  In order to use SUSE Manager for Retail solution
+  In order to use Uyuni for Retail solution
   As the system administrator
   I PXE boot one of the terminals
   I perform a mass import of several virtual terminals and one real minion

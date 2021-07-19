@@ -1,8 +1,8 @@
-# Copyright (c) 2015-2020 SUSE LLC
+# Copyright (c) 2015-2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: SMBDA database helper tool
-  In order to protect the data in SUSE Manager
+  In order to protect the data in Uyuni
   As a database administrator
   I want to easily take backups and snapshots
 

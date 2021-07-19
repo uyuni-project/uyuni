@@ -32,7 +32,7 @@ Feature: Main landing page options and preferences
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
     Then I should see a "SUSE Manager License Agreement" text
 
-  Scenario: Log into SUSE Manager
+  Scenario: Log into Uyuni
     Given I am not authorized
     When I go to the home page
     And I enter "testing" as "username"
@@ -40,7 +40,7 @@ Feature: Main landing page options and preferences
     And I click on "Sign In"
     Then I should be logged in
 
-  Scenario: Log out of SUSE Manager
+  Scenario: Log out of Uyuni
     Given I am authorized
     When I sign out
     Then I should not be authorized

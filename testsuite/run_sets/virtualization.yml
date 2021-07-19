@@ -10,7 +10,7 @@
 
 - features/core/allcli_sanity.feature
 - features/core/first_settings.feature
-# initialize SUSE Manager server
+# initialize Uyuni server
 - features/core/srv_channels_add.feature
 - features/core/srv_create_repository.feature
 - features/core/srv_create_activationkey.feature

@@ -3,7 +3,7 @@
 #
 # This feature relies on having properly configured
 #   /etc/rhn/rhn.conf
-# file on your SUSE Manager server.
+# file on your Uyuni server.
 #
 # For the scope of these tests, we configure it as follows:
 #   java.salt_content_staging_window = 0.033 (2 minutes)

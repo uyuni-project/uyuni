@@ -8,7 +8,7 @@
 #   (thus making changes in the behaviour of the system after the reboot)
 
 @scope_onboarding
-Feature: Reboot systems managed by SUSE Manager
+Feature: Reboot systems managed by Uyuni
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
