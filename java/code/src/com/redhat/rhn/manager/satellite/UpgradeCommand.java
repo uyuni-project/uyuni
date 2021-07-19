@@ -14,26 +14,33 @@
  */
 package com.redhat.rhn.manager.satellite;
 
+import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
+
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
-import com.redhat.rhn.domain.task.Task;
-import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -47,8 +54,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -67,6 +72,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "custom_states";
     public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
             UPGRADE_TASK_NAME + "refresh_custom_sls_files";
+    public static final String REFRESH_VIRTHOST_PILLARS =
+            UPGRADE_TASK_NAME + "virthost_pillar_refresh";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -132,6 +139,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
                         refreshCustomSlsFiles();
+                        break;
+                    case REFRESH_VIRTHOST_PILLARS:
+                        refreshVirtHostPillar();
                         break;
                     default:
                 }
@@ -319,6 +329,24 @@ public class UpgradeCommand extends BaseTransactionCommand {
         }
         catch (Exception e) {
             log.error("Error refreshing custom SLS files. Ignoring.", e);
+        }
+    }
+
+    /**
+     * Regenerate pillar data for every virtualization host.
+     */
+    private void refreshVirtHostPillar() {
+        try {
+            List<MinionServer> virtHosts = MinionServerFactory.listMinions().stream()
+                    .filter(Server::hasVirtualizationEntitlement)
+                    .collect(Collectors.toList());
+            virtHosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
+            List<String> minionIds = virtHosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
+            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
+            log.warn("Refreshed virtualization hosts pillar");
+        }
+        catch (Exception e) {
+            log.error("Error refreshing virtualization host pillar. Ignoring.", e);
         }
     }
 }
