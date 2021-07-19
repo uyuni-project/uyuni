@@ -911,6 +911,13 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Map<String, Object> disableMonitoring(Map<String, Object> formData) {
         Map<String, Object> exporters = (Map<String, Object>) formData.get("exporters");
+        // If we cannot extract the exporters from the form data the form data file might
+        // come from an older version of the prometheus-exporters formula package and we will
+        // use the example file instead
+        if (exporters == null) {
+            formData = FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS);
+            exporters = (Map<String, Object>) formData.get("exporters");
+        }
         for (Object exporter : exporters.values()) {
             Map<String, Object> exporterMap = (Map<String, Object>) exporter;
             exporterMap.put("enabled", false);
@@ -943,6 +950,12 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
         Map<String, Object> exporters = (Map<String, Object>) formData.get("exporters");
+        // If we cannot extract the exporters from the form data the form data file might
+        // come from an older version of the prometheus-exporters formula package and we will
+        // use the example file instead
+        if (exporters == null) {
+            exporters = (Map<String, Object>) FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS).get("exporters");
+        }
         return exporters.values().stream()
                 .map(exporter -> (Map<String, Object>) exporter)
                 .anyMatch(exporter -> (boolean) exporter.get("enabled"));

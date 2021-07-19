@@ -1,3 +1,4 @@
+- Fix disabling monitoring if exporters could not be extracted from file (bsc#1188136)
 - Fix NPE error when scheduling ErrataAction from relevant errata page (bsc#1188289)
 - Add Beijing timezone to selectable timezones (bsc#1188193)
 - Java enablement for Rocky Linux 8
