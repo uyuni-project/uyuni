@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-18 20:10+0000\n"
+"PO-Revision-Date: 2021-07-19 19:51+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4655,7 +4655,7 @@ msgstr "Neúspešné:    %s"
 #: ../src/spacecmd/schedule.py:285
 #, python-format
 msgid "Pending:   %s"
-msgstr ""
+msgstr "Čakajúce:   %s"
 
 #: ../src/spacecmd/schedule.py:289
 msgid "Completed Systems"
@@ -4663,44 +4663,44 @@ msgstr "Dokončené systémy"
 
 #: ../src/spacecmd/schedule.py:296
 msgid "Failed Systems"
-msgstr ""
+msgstr "Neúspešné systémy"
 
 #: ../src/spacecmd/schedule.py:303
 msgid "Pending Systems"
-msgstr ""
+msgstr "Čakajúce systémy"
 
 #: ../src/spacecmd/schedule.py:308
 #, python-format
 msgid "No action found with the ID \"%s\""
-msgstr ""
+msgstr "Nenájdená žiadna akcia s ID \"%s\""
 
 #: ../src/spacecmd/schedule.py:317
 msgid "schedule_getoutput: Show the output from an action"
-msgstr ""
+msgstr "schedule_getoutput: Ukázať výstup z akcie"
 
 #: ../src/spacecmd/schedule.py:318
 msgid "usage: schedule_getoutput ID"
-msgstr ""
+msgstr "použitie: schedule_getoutput ID"
 
 #: ../src/spacecmd/schedule.py:333
 #, python-format
 msgid "\"%s\" is not a valid action ID"
-msgstr ""
+msgstr "\"%s\" nie je platné ID akcie"
 
 #: ../src/spacecmd/schedule.py:355
 #, python-format
 msgid "System:      %s"
-msgstr ""
+msgstr "Systém:      %s"
 
 #: ../src/spacecmd/schedule.py:356
 #, python-format
 msgid "Start Time:  %s"
-msgstr ""
+msgstr "Čas spustenia:  %s"
 
 #: ../src/spacecmd/schedule.py:357
 #, python-format
 msgid "Stop Time:   %s"
-msgstr ""
+msgstr "Čas zastavenia:   %s"
 
 #: ../src/spacecmd/schedule.py:358
 #, python-format
