@@ -378,6 +378,12 @@
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
+       <trans-unit id="Asia/Beijing" xml:space="preserve">
+        <source>(GMT+0800) China</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
       <trans-unit id="MAIL_MX" xml:space="preserve">
         <source>Local mail exchanger</source>
