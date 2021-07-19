@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -152,6 +153,7 @@ public class SystemsController {
      */
     private ModelAndView virtualListPage(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
+        data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(data, "templates/systems/virtual-list.jade");
     }
     /**
