@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 20 10:30:41 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.21-1
 - Improve the error management for the PostgreSQL migration script (bsc#1188297)
 
 -------------------------------------------------------------------
