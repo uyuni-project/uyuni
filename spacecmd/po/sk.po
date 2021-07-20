@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-19 19:51+0000\n"
+"PO-Revision-Date: 2021-07-20 20:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4705,24 +4705,24 @@ msgstr "Čas zastavenia:   %s"
 #: ../src/spacecmd/schedule.py:358
 #, python-format
 msgid "Return Code: %i"
-msgstr ""
+msgstr "Návratový kód: %i"
 
 #: ../src/spacecmd/schedule.py:360 ../src/spacecmd/schedule.py:382
 msgid "Output"
-msgstr ""
+msgstr "Výstup"
 
 #: ../src/spacecmd/schedule.py:379
 #, python-format
 msgid "System:    %s"
-msgstr ""
+msgstr "Systém:    %s"
 
 #: ../src/spacecmd/schedule.py:395
 msgid "schedule_listpending: List pending actions"
-msgstr ""
+msgstr "schedule_listpending: Vypísať zoznam čakajúcich akcií"
 
 #: ../src/spacecmd/schedule.py:396
 msgid "usage: schedule_listpending [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listpending [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:408
 msgid "schedule_listcompleted: List completed actions"
@@ -4730,27 +4730,27 @@ msgstr "schedule_listcompleted: Vypísať zoznam dokončených akcií"
 
 #: ../src/spacecmd/schedule.py:409
 msgid "usage: schedule_listcompleted [BEGINDATE] [ENDDATE]"
-msgstr "usage: schedule_listcompleted [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
+msgstr "použitie: schedule_listcompleted [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:421
 msgid "schedule_listfailed: List failed actions"
-msgstr ""
+msgstr "schedule_listfailed: Vypísať zoznam neúspešných akcií"
 
 #: ../src/spacecmd/schedule.py:422
 msgid "usage: schedule_listfailed [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listfailed [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:434
 msgid "schedule_listarchived: List archived actions"
-msgstr ""
+msgstr "schedule_listarchived: Vypísať zoznam archivovaných akcií"
 
 #: ../src/spacecmd/schedule.py:435
 msgid "usage: schedule_listarchived [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_listarchived [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/schedule.py:447
 msgid "schedule_list: List all actions"
-msgstr ""
+msgstr "schedule_list: Vypísať zoznam všetkých akcií"
 
 #: ../src/spacecmd/schedule.py:448
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
