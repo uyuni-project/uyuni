@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jul 20 13:55:18 CEST 2021 - jgonzalez@suse.com
+
+- version 4.2.26-1
 - Fix NPE error when scheduling ErrataAction from relevant errata page (bsc#1188289)
 
 -------------------------------------------------------------------
