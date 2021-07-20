@@ -7,7 +7,7 @@
 @sle_minion
 @scope_monitoring
 Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
-  In order to monitor SUSE Manager server
+  In order to monitor Uyuni server
   As an authorized user
   I want to enable Prometheus exporters
 

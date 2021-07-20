@@ -10,7 +10,7 @@
 @pxeboot_minion
 @scope_cobbler
 Feature: PXE boot a terminal with Cobbler
-  In order to automate client system installations in SUSE Manager
+  In order to automate client system installations in Uyuni
   As the system administrator
   I want to PXE boot one host with Cobbler
 

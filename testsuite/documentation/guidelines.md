@@ -6,7 +6,7 @@
 * `testsuite/features/step_definition`: definition of real code executed, in Ruby
 * `testsuite/features/support`: general support functions
 * `testsuite/features/upload_files`: various data files uploaded into test machines by the testsuite
-* `testsuite/features/profiles`: Docker and Kiwi profiles picked up from this git repository directly by SUSE Manager
+* `testsuite/features/profiles`: Docker and Kiwi profiles picked up from this git repository directly by Uyuni
 * `testsuite/config`: contains the Cucumber profiles
 
 
@@ -55,7 +55,7 @@ Keep features, scenarios and steps in fluent English.
 
 Avoid "computing style" (abbreviations, snake case and camel case.
 
-Avoid the obvious like "Check", "Test", "SUSE Manager", "Spacewalk", etc.
+Avoid the obvious like "Check", "Test", "Uyuni", "Spacewalk", etc.
 
 Please use the correct capitalization for products (SLES, SUSE, Salt, zypper, Docker, etc.)
 

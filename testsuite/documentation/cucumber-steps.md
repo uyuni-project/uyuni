@@ -10,7 +10,7 @@
     1. [Buttons](#b5)
     1. [Text input](#b6)
     1. [Operating system](#b7)
-    1. [SUSE Manager utilities](#b8)
+    1. [Uyuni utilities](#b8)
     1. [Registration and channels](#b9)
     1. [Events](#b10)
     1. [Salt](#b11)
@@ -33,8 +33,8 @@ Possible values are currently:
 
 | Test host | Ruby target |  Bash environment variable | Step host name | Sumaform module |
 | --------- | ----------- | -------------------------- | -------------- | --------------- |
-| SUSE Manager server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
-| SUSE Manager proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
+| Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
+| Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
 | SLES traditional client | ```$client``` | ```$CLIENT``` | ```"sle_client"``` | ```"client"``` |
 | SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
 | SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
@@ -484,7 +484,7 @@ Note that the text area variant handles the new lines characters while the other
 
 <a name="b8" />
 
-#### SUSE Manager utilities
+#### Uyuni utilities
 
 * Execute mgr-sync
 
@@ -671,7 +671,7 @@ For example:
 
 * Create a test virtual machine on a given host
 
-The virtual machine is created without SUSE Manager, directly on the virtual host
+The virtual machine is created without Uyuni, directly on the virtual host
 using `qemu-img` and `virt-install`
 
 ```cucumber

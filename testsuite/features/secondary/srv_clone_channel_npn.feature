@@ -91,7 +91,6 @@ Feature: Clone a channel
 
   Scenario: Compare channel packages
     When I follow the left menu "Software > Manage > Channels"
-    # bsc#904690 - After migration from SUSE Manager 1.7 to 2.1 attempting to perform a channel package compare returns internal server error
     And I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Packages" in the content area
     And I follow "Compare"

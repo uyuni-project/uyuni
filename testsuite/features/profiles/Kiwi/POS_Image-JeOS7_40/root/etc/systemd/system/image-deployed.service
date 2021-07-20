@@ -1,5 +1,5 @@
 [Unit]
-Description=Notify SUSE Manager about newly deployed image
+Description=Notify Uyuni about newly deployed image
 Requires=salt-minion.service
 After=salt-minion.service
 

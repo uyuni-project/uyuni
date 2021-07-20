@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional client
-  In order to register a traditional client to the SUSE Manager server
+  In order to register a traditional client to the Uyuni server
   I want to create, parametrize and run boostrap script from proxy
 
   Scenario: Log in as admin user
