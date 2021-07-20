@@ -41,6 +41,7 @@
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
   <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
+  <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
 
   <!-- Taskdefs -->
   <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
@@ -186,7 +187,7 @@
   <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --delete --rsh 'ssh ${ssh.socket.option}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+      <arg line="-a --delete --rsh '${rsync.arg.rsh}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
 
     <echo message="Linking the branding jar..." />
@@ -238,19 +239,19 @@
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
     <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${js.vendors.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/vendors/" />
     </exec>
   </target>
 
@@ -266,31 +267,31 @@
 
     <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/salt/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/salt/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/" />
     </exec>
     <echo message="Copying Salt grains, beacons, modules and pillars to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_grains/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_grains/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_beacons/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_beacons/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/pillar/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/pillar/" />
     </exec>
     <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
     </exec>
     <echo message="Copying CaasP cluster provider files to remote host...${salt.cluster.provider}"/>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/caasp/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/states/caasp/" />
+      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/caasp/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/states/caasp/" />
     </exec>
   </target>
 
