@@ -1,3 +1,5 @@
+- Add schedule_deletearchived to bulk delete archived actions (bsc#1181223)
+
 -------------------------------------------------------------------
 Fri Jul 16 14:09:21 CEST 2021 - jgonzalez@suse.com
 
