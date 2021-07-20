@@ -128,7 +128,7 @@ public class MinionPillarManager {
 
     /**
      * Removes the corresponding pillar files for the passed minion
-     * @param minionId the minion Id
+     * @param minionId the salt minion Id
      */
     public void removePillar(String minionId) {
         generalPillarFileManager.removePillarFile(minionId);

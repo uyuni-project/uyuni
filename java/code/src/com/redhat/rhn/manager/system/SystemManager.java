@@ -752,7 +752,7 @@ public class SystemManager extends BaseManager {
         ServerFactory.delete(server);
 
         server.asMinionServer().ifPresent(minion -> {
-            SaltStateGeneratorService.INSTANCE.removeServer(minion);
+            SaltStateGeneratorService.INSTANCE.removeServer(minion.getMinionId(), minion.getMachineId());
             if (deleteSaltKey) {
                 saltApi.deleteKey(minion.getMinionId());
             }

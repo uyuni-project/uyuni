@@ -291,6 +291,14 @@ public enum SaltStateGeneratorService {
     }
 
     /**
+     * Remove the config channel assignments for minion server.
+     * @param machineId the salt machineId
+     */
+    public void removeConfigChannelAssignmentsByMachineId(String machineId) {
+        removeConfigChannelAssignments(getServerStateFileName(machineId));
+    }
+
+    /**
      * Remove the config channel assignments for server group.
      * @param group the server group
      */
@@ -298,8 +306,8 @@ public enum SaltStateGeneratorService {
         removeConfigChannelAssignments(getGroupStateFileName(group.getId()));
     }
 
-    private void removeActionChains(MinionServer minion) {
-        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, Optional.empty());
+    private void removeActionChains(String machineId) {
+        SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(machineId, Optional.empty());
     }
 
     /**
@@ -419,13 +427,14 @@ public enum SaltStateGeneratorService {
 
     /**
      * Remove pillars and config channels assignments of a server.
-     * @param minion the minion
+     * @param minionId the salt minionId
+     * @param machineId the salt machineId
      */
-    public void removeServer(MinionServer minion) {
-        MinionPillarManager.INSTANCE.removePillar(minion.getMinionId());
-        StatesAPI.removePackageState(minion);
-        removeConfigChannelAssignments(minion);
-        removeActionChains(minion);
+    public void removeServer(String minionId, String machineId) {
+        MinionPillarManager.INSTANCE.removePillar(minionId);
+        StatesAPI.removePackageState(machineId);
+        removeConfigChannelAssignmentsByMachineId(machineId);
+        removeActionChains(machineId);
     }
 
     /**
@@ -441,7 +450,8 @@ public enum SaltStateGeneratorService {
      * @param org the org
      */
     public void removeOrg(Org org) {
-        MinionServerFactory.lookupByOrg(org.getId()).forEach(this::removeServer);
+        MinionServerFactory.lookupByOrg(org.getId())
+                .forEach(m -> removeServer(m.getMinionId(), m.getMachineId()));
         removeConfigChannelAssignments(org);
     }
 
