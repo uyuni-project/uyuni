@@ -851,11 +851,9 @@ public class HardwareMapper {
                     .findFirst());
         }
 
-        primaryNetIf.ifPresent(netIf -> {
-            // we found an interface with the same addr as the
-            // primary IPv4/v6 addr, make it primary
-            netIf.setPrimary("Y");
-        });
+        // we found an interface with the same addr as the
+        // primary IPv4/v6 addr, make it primary
+        primaryNetIf.ifPresent(server::setPrimaryInterface);
 
     }
 
