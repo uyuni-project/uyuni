@@ -438,7 +438,7 @@ public class ActionManager extends BaseManager {
         }
         // now, delete them
         for (Action action : actions) {
-            ActionFactory.remove(action);
+            deleteActionsByIdAndType(action.getId(), action.getActionType().getId());
         }
     }
 

@@ -452,3 +452,50 @@ def help_schedule_list(self):
 
 def do_schedule_list(self, args):
     return self.print_schedule_summary('all', args)
+
+####################
+
+def help_schedule_deletearchived(self):
+    print(_('schedule_deletearchived: Delete all archived actions'))
+    print(_('usage: schedule_deletearchived'))
+
+def do_schedule_deletearchived(self, args):
+    """
+    This method removes all of the archived actions.
+    """
+    user_already_prompted = False
+    while True:
+        # Needs to happen in a loop, since we can only fetch in batches. 10k is the default.
+        actions = self.client.schedule.listArchivedActions(self.session)
+        logging.debug("actions: {}".format(actions))
+        if actions:
+            if not user_already_prompted:
+                if len(actions) >= 10000:
+                    action_length = ">10000"
+                else:
+                    action_length = len(actions)
+                user_answer = prompt_user(_("Do you want to delete all ({}) archived actions? [y/N]").format(action_length))
+                if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
+                    break
+                else:
+                    user_already_prompted = True
+
+            # Collect IDs of actions that should be deleted
+            action_ids = [action.get('id') for action in actions]
+
+            # Remove duplicates if any
+            # set needs to be cast to list, since set cannot be marshalled
+            action_ids = list(set(action_ids))
+
+            if action_ids:
+                # Process deletion in batches
+                BATCH_SIZE = 50
+                for i in range(0, len(action_ids), BATCH_SIZE):
+                    # Pass list of actions that should be deleted
+                    self.client.schedule.deleteActions(self.session, action_ids[i:i + BATCH_SIZE])
+                    processed = i + BATCH_SIZE if i + BATCH_SIZE <= len(action_ids) else len(action_ids)
+                    print("Deleted {} actions of {}".format(processed, len(action_ids)))
+        else:
+            if not user_already_prompted:
+                print(_("No archived actions found."))
+            break

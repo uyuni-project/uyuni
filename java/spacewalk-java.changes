@@ -1,3 +1,4 @@
+- Fix issues when removing archived actions using XMLRPC api (bsc#1181223)
 - Readable error when "mgr-sync add channel" is called with a non-existing label (bsc#1173143)
 - Fix NPE error when scheduling ErrataAction from relevant errata page (bsc#1188289)
 - Add Beijing timezone to selectable timezones (bsc#1188193)
