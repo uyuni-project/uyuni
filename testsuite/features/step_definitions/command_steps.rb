@@ -640,7 +640,8 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 end
 
 When(/^I synchronize the tftp configuration on the proxy with the server$/) do
-  $server.run('cobbler sync')
+  out, _code = $server.run('cobbler sync')
+  raise 'cobbler sync failt' if out.include? 'Push failed'
 end
 
 When(/^I set the default PXE menu entry to the "([^"]*)" on the "([^"]*)"$/) do |entry, host|
