@@ -15,15 +15,6 @@
 
 package com.redhat.rhn.manager.user.test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -63,6 +54,15 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** JUnit test case for the User
  *  class.
@@ -598,8 +598,8 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         assertEquals(UserManager.getTimeZone("GMT"), lst.get(0));
         assertEquals("GMT", lst.get(0).getOlsonName());
-        assertEquals("America/Sao_Paulo", lst.get(5).getOlsonName());
-        assertEquals(UserManager.getTimeZone("America/Sao_Paulo"), lst.get(5));
+        assertEquals("Atlantic/South_Georgia", lst.get(5).getOlsonName());
+        assertEquals(UserManager.getTimeZone("Atlantic/South_Georgia"), lst.get(5));
 
         assertEquals("Europe/Paris", lst.get(lst.size() - 1).getOlsonName());
         assertEquals(UserManager.getTimeZone("Europe/Paris"), lst.get(lst.size() - 1));
