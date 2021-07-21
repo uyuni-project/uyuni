@@ -1,3 +1,4 @@
+- Add ip-regex for improved IP validation
 - Remove Flow
 - Bump version to 4.3.0
 
