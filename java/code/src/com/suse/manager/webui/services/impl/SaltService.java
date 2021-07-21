@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
@@ -24,6 +22,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -40,8 +39,8 @@ import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
+import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
@@ -81,6 +80,10 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -722,6 +725,11 @@ public class SaltService implements SystemQuery, SaltApi {
             LocalCall<Boolean> call = SaltUtil.refreshPillar(Optional.empty(),
                     Optional.empty());
             callAsync(call, minionList);
+
+            // Salt pillar refresh doesn't reload the modules with the new pillar
+            LocalCall<Boolean> modulesRefreshCall = new LocalCall<>("saltutil.refresh_modules",
+                    Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { });
+            callAsync(modulesRefreshCall, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
