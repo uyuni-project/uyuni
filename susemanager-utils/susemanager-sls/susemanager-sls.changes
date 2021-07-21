@@ -1,3 +1,4 @@
+- Skip 'update-ca-certificates' run if the certs are updated automatically
 - Fix parameters for 'runplaybook' state (bsc#1188395)
 - Parameterised apache document root.
 - Add support for bootstrapping Raspbian 9 and 10
