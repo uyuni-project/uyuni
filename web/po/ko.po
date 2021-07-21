@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-13 13:24+0000\n"
+"POT-Creation-Date: 2021-07-21 09:41+0000\n"
 "PO-Revision-Date: 2021-05-21 09:57+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -265,11 +265,11 @@ msgstr "취소"
 msgid "Delete"
 msgstr "삭제"
 
-#: ../html/src/components/dialog/dialog.stories.js:20
+#: ../html/src/components/dialog/dialog.stories.tsx:20
 msgid "Delete project"
 msgstr "프로젝트 삭제"
 
-#: ../html/src/components/dialog/dialog.stories.js:23
+#: ../html/src/components/dialog/dialog.stories.tsx:23
 msgid "Are you sure you want to delete project "
 msgstr "프로젝트를 삭제하시겠습니까 "
 
@@ -325,134 +325,55 @@ msgstr "비밀번호 표시/숨기기"
 msgid "Toggle section visibility"
 msgstr "섹션 표시 여부 전환"
 
-#: ../html/src/components/input/Check.stories.js:31
-#: ../html/src/components/input/DateTime.stories.js:35
-#: ../html/src/components/input/FormMultiInput.stories.js:75
-#: ../html/src/components/input/FormMultiInput.stories.js:132
-#: ../html/src/components/input/FormMultiInput.stories.js:181
-#: ../html/src/components/input/FormMultiInput.stories.js:262
-#: ../html/src/components/input/Password.stories.js:36
-#: ../html/src/components/input/Radio.stories.js:39
-#: ../html/src/components/input/Radio.stories.js:69
-#: ../html/src/components/input/Radio.stories.js:99
-#: ../html/src/components/input/Radio.stories.js:130
-#: ../html/src/components/input/Range.stories.js:50
-#: ../html/src/components/input/Select.stories.js:36
-#: ../html/src/components/input/Text.stories.js:44
-#: ../html/src/components/input/form.stories.js:36
+#: ../html/src/components/input/Check.stories.tsx:31
+#: ../html/src/components/input/DateTime.stories.tsx:35
+#: ../html/src/components/input/FormMultiInput.stories.tsx:77
+#: ../html/src/components/input/FormMultiInput.stories.tsx:134
+#: ../html/src/components/input/FormMultiInput.stories.tsx:183
+#: ../html/src/components/input/FormMultiInput.stories.tsx:264
+#: ../html/src/components/input/Password.stories.tsx:36
+#: ../html/src/components/input/Radio.stories.tsx:39
+#: ../html/src/components/input/Radio.stories.tsx:69
+#: ../html/src/components/input/Radio.stories.tsx:99
+#: ../html/src/components/input/Radio.stories.tsx:130
+#: ../html/src/components/input/Range.stories.tsx:50
+#: ../html/src/components/input/Select.stories.tsx:36
+#: ../html/src/components/input/Text.stories.tsx:44
+#: ../html/src/components/input/form.stories.tsx:36
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:43
 msgid "Submit"
 msgstr "제출"
-
-#: ../html/src/components/input/DateTime.stories.js:27
-msgid "Time"
-msgstr "시간"
-
-#: ../html/src/components/input/FormMultiInput.stories.js:26
-#: ../html/src/components/input/FormMultiInput.stories.js:94
-#: ../html/src/components/input/FormMultiInput.stories.js:151
-#: ../html/src/components/input/FormMultiInput.stories.js:207
-msgid "Users"
-msgstr "사용자"
-
-#: ../html/src/components/input/FormMultiInput.stories.js:52
-#: ../html/src/components/input/Text.stories.js:26
-#: ../html/src/components/input/form.stories.js:26
-msgid "First Name"
-msgstr "이름"
-
-#: ../html/src/components/input/FormMultiInput.stories.js:54
-#: ../html/src/components/input/FormMultiInput.stories.js:63
-#: ../html/src/components/input/FormMultiInput.stories.js:120
-#: ../html/src/components/input/FormMultiInput.stories.js:236
-#: ../html/src/components/input/FormMultiInput.stories.js:244
-#: ../html/src/components/input/InputBase.test.tsx:42
-#: ../html/src/components/input/InputBase.test.tsx:68
-#: ../html/src/components/input/InputBase.test.tsx:96
-#: ../html/src/components/input/Text.stories.js:28
-#: ../html/src/components/input/Text.stories.js:37
-#: ../html/src/components/input/form.stories.js:28
-msgid "Minimum 2 characters"
-msgstr "2자 이상"
-
-#: ../html/src/components/input/FormMultiInput.stories.js:61
-msgid "Last Name"
-msgstr "성"
-
-#: ../html/src/components/input/FormMultiInput.stories.js:118
-#: ../html/src/manager/login/login.tsx:126
-msgid "Login"
-msgstr "로그인"
 
 #: ../html/src/components/input/FormMultiInput.tsx:146
 #: ../html/src/manager/clusters/remove-node/remove-node.tsx:92
 msgid "Remove"
 msgstr "제거"
 
+#: ../html/src/components/input/InputBase.test.tsx:42
+#: ../html/src/components/input/InputBase.test.tsx:68
+#: ../html/src/components/input/InputBase.test.tsx:96
+msgid "Minimum 2 characters"
+msgstr "2자 이상"
+
 #: ../html/src/components/input/InputBase.tsx:276
 #, fuzzy
 msgid "required"
 msgstr "재부팅 필요"
 
-#: ../html/src/components/input/Password.stories.js:26
-#: ../html/src/manager/images/image-store-edit.tsx:187
-#: ../html/src/manager/login/login.tsx:137
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
-msgid "Password"
-msgstr "비밀번호"
-
-#: ../html/src/components/input/Password.stories.js:28
-msgid "Minimum 4 characters"
-msgstr "4자 이상"
-
-#: ../html/src/components/input/Radio.stories.js:26
-#: ../html/src/components/input/Radio.stories.js:55
-#: ../html/src/components/input/Radio.stories.js:86
-#: ../html/src/components/input/Radio.stories.js:116
-#: ../html/src/components/input/Select.stories.js:27
-msgid "Level"
-msgstr "레벨"
-
-#: ../html/src/components/input/Radio.stories.js:31
-#: ../html/src/components/input/Radio.stories.js:61
-#: ../html/src/components/input/Radio.stories.js:91
-#: ../html/src/components/input/Radio.stories.js:122
-msgid "Beginner"
-msgstr "초급자"
-
-#: ../html/src/components/input/Radio.stories.js:32
-#: ../html/src/components/input/Radio.stories.js:62
-#: ../html/src/components/input/Radio.stories.js:92
-#: ../html/src/components/input/Radio.stories.js:123
-msgid "Normal"
-msgstr "일반"
-
-#: ../html/src/components/input/Radio.stories.js:33
-#: ../html/src/components/input/Radio.stories.js:63
-#: ../html/src/components/input/Radio.stories.js:93
-#: ../html/src/components/input/Radio.stories.js:124
-msgid "Expert"
-msgstr "전문가"
-
-#: ../html/src/components/input/Range.stories.js:34
-msgid "Port range"
-msgstr "포트 범위"
-
-#: ../html/src/components/input/Range.stories.js:36
 #: ../html/src/components/input/Range.test.tsx:70
 msgid "Both values need to be positive integers"
 msgstr "두 값 모두 양의 정수여야 합니다."
 
-#: ../html/src/components/input/Select.stories.js:62
+#: ../html/src/components/input/Select.stories.tsx:62
 msgid "Flavor"
 msgstr "특징"
 
-#: ../html/src/components/input/Select.stories.js:64
+#: ../html/src/components/input/Select.stories.tsx:64
 #: ../html/src/components/input/Select.test.tsx:57
 msgid "Start typing..."
 msgstr "입력 시작..."
 
-#: ../html/src/components/input/Select.stories.js:65
+#: ../html/src/components/input/Select.stories.tsx:65
 msgid "No flavors"
 msgstr "특징 없음"
 
@@ -2921,6 +2842,12 @@ msgstr "자격 증명 사용"
 msgid "Username"
 msgstr "사용자 이름"
 
+#: ../html/src/manager/images/image-store-edit.tsx:187
+#: ../html/src/manager/login/login.tsx:137
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+msgid "Password"
+msgstr "비밀번호"
+
 #: ../html/src/manager/images/image-store-edit.tsx:244
 msgid "Edit Image Store: '"
 msgstr "이미지 저장소 편집: '"
@@ -3352,6 +3279,10 @@ msgstr "자세히 알아보기"
 #: ../html/src/manager/login/login.tsx:118
 #: ../html/src/manager/login/login.tsx:145
 msgid "Sign In"
+msgstr "로그인"
+
+#: ../html/src/manager/login/login.tsx:126
+msgid "Login"
 msgstr "로그인"
 
 #: ../html/src/manager/login/use-login-api.ts:12
@@ -5706,6 +5637,36 @@ msgstr ""
 #, fuzzy
 msgid "foo {0} tea {1}"
 msgstr "{0} / {1}페이지"
+
+#~ msgid "Time"
+#~ msgstr "시간"
+
+#~ msgid "Users"
+#~ msgstr "사용자"
+
+#~ msgid "First Name"
+#~ msgstr "이름"
+
+#~ msgid "Last Name"
+#~ msgstr "성"
+
+#~ msgid "Minimum 4 characters"
+#~ msgstr "4자 이상"
+
+#~ msgid "Level"
+#~ msgstr "레벨"
+
+#~ msgid "Beginner"
+#~ msgstr "초급자"
+
+#~ msgid "Normal"
+#~ msgstr "일반"
+
+#~ msgid "Expert"
+#~ msgstr "전문가"
+
+#~ msgid "Port range"
+#~ msgstr "포트 범위"
 
 #~ msgid "Guest is not running"
 #~ msgstr "게스트가 실행 중이 아님"
