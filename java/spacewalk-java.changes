@@ -1,3 +1,4 @@
+- Add Beijing timezone to selectable timezones (bsc#1188193)
 - Fix updating primary net interface on hardware refresh (bsc#1188400)
 - Fix issues when removing archived actions using XMLRPC api (bsc#1181223)
 - Readable error when "mgr-sync add channel" is called with a no-existing label (bsc#1173143)
