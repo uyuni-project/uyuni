@@ -10,8 +10,10 @@ export default {
   title: 'Forms/FormMultiInput'
 };
 
+type Model = Record<string, any>;
+
 export const MultipleFields = () => {
-  const [model, setModel] = React.useState({user0_firstname: 'John', user0_lastname: 'Doe'});
+  const [model, setModel] = React.useState<Model>({user0_firstname: 'John', user0_lastname: 'Doe'});
   return (
     <Form
       model={model}
@@ -45,7 +47,7 @@ export const MultipleFields = () => {
         panelTitle={index => model[`user${index}_lastname`] || 'New user'}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_firstname`}
@@ -79,7 +81,7 @@ export const MultipleFields = () => {
 };
 
 export const SingleField = () => {
-  const [model, setModel] = React.useState({user0_login: "jdoe"});
+  const [model, setModel] = React.useState<Model>({user0_login: "jdoe"});
   return (
     <Form
       model={model}
@@ -111,7 +113,7 @@ export const SingleField = () => {
         disabled={false}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_login`}
@@ -136,7 +138,7 @@ export const SingleField = () => {
 };
 
 export const CustomFieldsWithModal = () => {
-  const [model, setModel] = React.useState({user0_login: "jdoe"});
+  const [model, setModel] = React.useState<Model>({user0_login: "jdoe"});
   return (
     <Form
       model={model}
@@ -168,7 +170,7 @@ export const CustomFieldsWithModal = () => {
         disabled={false}
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <div>{ model[`user${index}_login`]}</div>
             </>
@@ -185,7 +187,7 @@ export const CustomFieldsWithModal = () => {
 };
 
 export const TableFields = () => {
-  const [model, setModel] = React.useState({user0_firstname: 'John', user0_lastname: 'Doe', user0_age: 42});
+  const [model, setModel] = React.useState<Model>({user0_firstname: 'John', user0_lastname: 'Doe', user0_age: 42});
   const header = (
     <div className="row multi-input-table-row">
       <div className="column-title col-md-4">Firstname</div>
@@ -228,7 +230,7 @@ export const TableFields = () => {
         rowClass="multi-input-table-row"
       >
         {
-          (index: number) => (
+          (index) => (
             <>
               <Text
                 name={`user${index}_firstname`}
