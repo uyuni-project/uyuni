@@ -297,7 +297,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         divClass="col-md-6"
         hint={this.state.storeUri}
         invalidHint={
-          <span>
+          <span key="invalidHint">
             Target Image Store is required.&nbsp;
             <a href={"/rhn/manager/cm/imagestores/create?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.
           </span>
@@ -316,7 +316,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label={t("Dockerfile URL")}
             required
             hint={
-              <span>
+              <span key="hint">
                 Git URL pointing to the directory containing the Dockerfile
                 <br />
                 Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>
@@ -342,7 +342,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label={t("Config URL")}
             required
             hint={
-              <span>
+              <span key="hint">
                 Git URL pointing to the directory containing the Kiwi config files
                 <br />
                 Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>
@@ -364,7 +364,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             name="kiwiOptions"
             label={t("Kiwi options")}
             hint={
-              <span>
+              <span key="hint">
                 Kiwi command line options
                 <br />
                 Example: <em>--profile jeos</em>
@@ -424,7 +424,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
       return (
         key && (
-          <FormGroup>
+          <FormGroup key={key.label}>
             <Label className="col-md-3" name={key.label} />
             <div className="col-md-6">
               <div className="input-group">
@@ -460,7 +460,7 @@ class CreateImageProfile extends React.Component<Props, State> {
     });
 
     const select = (
-      <FormGroup>
+      <FormGroup key="custom-info-values-formgroup">
         <Label className="col-md-3" name={t("Custom Info Values")} />
         <div className="col-md-6">
           <ReactSelect
