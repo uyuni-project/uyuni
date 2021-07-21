@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-20 20:11+0000\n"
+"PO-Revision-Date: 2021-07-21 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4754,47 +4754,47 @@ msgstr "schedule_list: Vypísať zoznam všetkých akcií"
 
 #: ../src/spacecmd/schedule.py:448
 msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
-msgstr ""
+msgstr "použitie: schedule_list [DÁTUM_ZAČIATKU] [DÁTUM_UKONČENIA]"
 
 #: ../src/spacecmd/shell.py:121
 msgid "Could not read history file"
-msgstr ""
+msgstr "Nebolo možné prečítať súbor histórie"
 
 #. pylint: disable=W0702
 #: ../src/spacecmd/shell.py:125
 msgid "Exception occurred: {}"
-msgstr ""
+msgstr "Vyskytla sa výnimka: {}"
 
 #: ../src/spacecmd/shell.py:189 ../src/spacecmd/shell.py:228
 #, python-format
 msgid "%s: event not found"
-msgstr ""
+msgstr "%s: udalosť sa nenašla"
 
 #: ../src/spacecmd/snippet.py:43
 msgid "snippet_list: List the available Kickstart snippets"
-msgstr ""
+msgstr "snippet_list: Vypísať yoznam dostupných úryvkov Kickstart"
 
 #: ../src/spacecmd/snippet.py:44
 msgid "usage: snippet_list"
-msgstr ""
+msgstr "použitie: snippet_list"
 
 #: ../src/spacecmd/snippet.py:61
 msgid "snippet_details: Show the contents of a snippet"
-msgstr ""
+msgstr "snippet_details: Zobraziť obsah úryvku"
 
 #: ../src/spacecmd/snippet.py:62
 msgid "usage: snippet_details SNIPPET ..."
-msgstr ""
+msgstr "použitie: snippet_details ÚRYVOK ..."
 
 #: ../src/spacecmd/snippet.py:91
 #, python-format
 msgid "%s is not a valid snippet"
-msgstr ""
+msgstr "%s nie je platný úryvok"
 
 #: ../src/spacecmd/snippet.py:98
 #, python-format
 msgid "Name:   %s"
-msgstr ""
+msgstr "Názov:   %s"
 
 #: ../src/spacecmd/snippet.py:99
 #, python-format
