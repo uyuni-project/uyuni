@@ -77,7 +77,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     if (operation === "initial" || needsUpdate(date)) {
       const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
       const endpoint = `/rhn/manager/api/maintenance/events/${operation}/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
-      return Network.get(endpoint, "application/json").promise
+      return Network.get(endpoint)
         .then(events => {
           setEvents(processEvents(events));
           navigateTo(operation);
@@ -97,7 +97,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     }
     const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
     const endpoint = `/rhn/manager/api/maintenance/events/skipBack/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
-    return Network.get(endpoint, "application/json").promise
+    return Network.get(endpoint)
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more past maintenance windows")));
@@ -127,7 +127,7 @@ const WebCalendar = (props: WebCalendarProps) => {
     }
     const startOfWeek = getApi().currentDataManager.data.dateEnv.weekDow;
     const endpoint = `/rhn/manager/api/maintenance/events/skipNext/${props.type}/${startOfWeek}/${date.valueOf()}/${props.id}`;
-    return Network.get(endpoint, "application/json").promise
+    return Network.get(endpoint)
       .then(events => {
         if (events.length === 0) {
           props.messages(MessagesUtils.info(t("There are no more future maintenance windows")));

@@ -235,7 +235,7 @@ class Hierarchy extends React.Component {
 
   componentDidMount() {
     // Get data & put everything together in the graph!
-    Network.get(window.endpoint, "application/json").promise.then(
+    Network.get(window.endpoint).then(
       data => jQuery(document).ready(() => displayHierarchy(data)),
       xhr => d3.select("#svg-wrapper").text(t("There was an error fetching data from the server."))
     );

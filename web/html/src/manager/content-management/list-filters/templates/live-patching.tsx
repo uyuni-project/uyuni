@@ -30,17 +30,17 @@ function handleResponseErrors(res) {
 }
 
 function getProducts(): Promise<Product[]> {
-  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products").promise
+  return Network.get("/rhn/manager/api/contentmanagement/livepatching/products")
     .then((res: JsonResult<Product[]>) => res.success ? res.data : Promise.reject(res));
 }
 
 function getSystems(query: string): Promise<System[]> {
-  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/systems?q=${query}`).promise
+  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/systems?q=${query}`)
     .then((res: JsonResult<System[]>) => res.success ? res.data : Promise.reject(res));
 }
 
 function getKernels(id: number, type: string): Promise<Kernel[]> {
-  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${type}/${id}`).promise
+  return Network.get(`/rhn/manager/api/contentmanagement/livepatching/kernels/${type}/${id}`)
     .then((res: JsonResult<Kernel[]>) => res.success ? res.data : Promise.reject(res))
     .then(res => {
       if (res.length > 0)

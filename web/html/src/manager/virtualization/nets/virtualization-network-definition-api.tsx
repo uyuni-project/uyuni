@@ -23,8 +23,7 @@ export function VirtualizationNetworkDefinitionApi(props: Props) {
   React.useEffect(() => {
     Network.get(
       `/rhn/manager/api/systems/details/virtualization/nets/${props.hostid}/net/${props.networkName}`,
-      "application/json"
-    ).promise.then(
+    ).then(
       response => {
         setDefinition(response);
       },
