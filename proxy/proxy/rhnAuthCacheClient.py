@@ -18,7 +18,9 @@
 # in this software or its documentation.
 #-------------------------------------------------------------------------------
 
-## language imports
+# Module new has been removed in future Python versions. This needs to be adapted.
+import new # pylint: disable=import-error
+
 import socket
 import sys
 try:
@@ -167,7 +169,6 @@ class Shelf:
                 raise
 
             # Instantiate the exception object
-            import new
             _dict = {'args': args}
             # pylint: disable=bad-option-value,nonstandard-exception
             raise_with_tb(new.instance(getattr(__builtins__, name), _dict), sys.exc_info()[2])
