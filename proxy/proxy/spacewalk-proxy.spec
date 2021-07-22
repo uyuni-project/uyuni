@@ -95,11 +95,12 @@ Requires:       spacewalk-ssl-cert-check
 %if 0%{?suse_version}
 Requires:       apache2-prefork
 Requires:       http_proxy
+Requires:       apache2-mod_wsgi-python3
 %else
 Requires:       mod_ssl
 Requires:       squid
+Requires:       python3-mod_wsgi
 %endif
-Requires:       apache2-mod_wsgi-python3
 Requires(post): %{name}-common
 Conflicts:      %{name}-redirect < %{version}-%{release}
 Conflicts:      %{name}-redirect > %{version}-%{release}
@@ -137,11 +138,13 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  apache2
+Requires:       apache2-mod_wsgi-python3
 %else
+BuildRequires:  httpd
 Requires:       mod_ssl
+Requires:       python3-mod_wsgi
 %endif
 Requires:       %{name}-broker >= %{version}
-Requires:       apache2-mod_wsgi-python3
 Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
@@ -220,7 +223,11 @@ touch $RPM_BUILD_ROOT/%{httpdconf}/cobbler-proxy.conf
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
 pushd %{buildroot}
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}
+%else
+%py_byte_compile %{python3} %{buildroot}
+%endif
 popd
 
 install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
