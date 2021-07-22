@@ -9,3 +9,7 @@ update-ca-certificates:
     - runas: root
     - onchanges:
       - file: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+    - unless:
+      - fun: service.status
+        args:
+          - ca-certificates.path
