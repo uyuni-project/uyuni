@@ -12,5 +12,17 @@
 -- in this software or its documentation.
 --
 
-ALTER TABLE rhnActionVirtCreate
-    ADD COLUMN IF NOT EXISTS cluster_definitions VARCHAR(2048);
+DO $$
+    BEGIN
+        IF EXISTS
+            (
+                SELECT 1
+                FROM information_schema.columns
+                WHERE table_name='rhnactionvirtcreate' AND column_name='vm_type'
+            )
+        THEN
+            ALTER TABLE rhnActionVirtCreate
+                ADD COLUMN IF NOT EXISTS cluster_definitions VARCHAR(2048);
+        END IF;
+    END
+$$ LANGUAGE plpgsql;
