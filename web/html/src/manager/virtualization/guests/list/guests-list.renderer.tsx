@@ -9,7 +9,7 @@ type RendererProps = {
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
-  hostInfo: HostInfo;
+  hostInfo?: HostInfo;
 };
 
 export const renderer = (id: string, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps) => {
