@@ -1,3 +1,4 @@
+- Skip 'update-ca-certificates' run if the certs are updated automatically
 - Use lscpu to provide more CPU grains for all architectures
 - Fix deleting stopped virtual network (bsc#1186281)
 - Handle virtual machines running on pacemaker cluster
