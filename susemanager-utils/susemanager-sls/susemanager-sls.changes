@@ -1,3 +1,4 @@
+- Skip 'update-ca-certificates' run if the certs are updated automatically
 - when bootstrapping with ssh-push with tunnel use the port number
   for fetching GPG keys from the server (bsc#1187441)
 
