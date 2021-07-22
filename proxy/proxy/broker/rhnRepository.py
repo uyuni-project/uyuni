@@ -145,7 +145,7 @@ class Repository(rhnRepository.Repository):
                 pkgFilename, self.channelName, self.clientInfo)
         except xmlrpclib.Fault as e:
             raise_with_tb(rhnFault(1000,
-                           _("Error retrieving source package: %s") % str(e)), sys.exc_info()[2])
+                                   _("Error retrieving source package: %s") % str(e)), sys.exc_info()[2])
 
         if not retval:
             raise rhnFault(17, _("Invalid SRPM package requested: %s")
@@ -239,7 +239,7 @@ class Repository(rhnRepository.Repository):
         except xmlrpclib.ProtocolError as e:
             errcode, errmsg = rpclib.reportError(e.headers)
             raise_with_tb(rhnFault(1000, "SpacewalkProxy error (xmlrpclib.ProtocolError): "
-                           "errode=%s; errmsg=%s" % (errcode, errmsg)), sys.exc_info()[2])
+                                   "errode=%s; errmsg=%s" % (errcode, errmsg)), sys.exc_info()[2])
 
         # Hash the list
         _hash = {}
