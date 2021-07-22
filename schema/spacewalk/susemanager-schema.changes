@@ -1,3 +1,4 @@
+- Upgrade scripts idempotency fixes
 - Simplify the VM creation action in DB
 - Handle virtual machines running on pacemaker cluster
 - Refresh virtual host pillar to clear the virtpoller beacon (bsc#1188393)
