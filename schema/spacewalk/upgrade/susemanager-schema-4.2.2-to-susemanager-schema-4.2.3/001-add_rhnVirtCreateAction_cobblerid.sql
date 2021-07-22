@@ -9,7 +9,19 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-ALTER TABLE rhnActionVirtCreate
-    ADD COLUMN IF NOT EXISTS cobbler_system VARCHAR(256),
-    ADD COLUMN IF NOT EXISTS kickstart_host VARCHAR(256),
-    ADD COLUMN IF NOT EXISTS kernel_options VARCHAR(256);
+DO $$
+    BEGIN
+        IF EXISTS
+            (
+                SELECT 1
+                FROM information_schema.columns
+                WHERE table_name='rhnactionvirtcreate' AND column_name='vm_type'
+            )
+        THEN
+            ALTER TABLE rhnActionVirtCreate
+                ADD COLUMN IF NOT EXISTS cobbler_system VARCHAR(256),
+                ADD COLUMN IF NOT EXISTS kickstart_host VARCHAR(256),
+                ADD COLUMN IF NOT EXISTS kernel_options VARCHAR(256);
+        END IF;
+    END
+$$ LANGUAGE plpgsql;
