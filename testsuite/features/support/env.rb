@@ -23,7 +23,7 @@ puts "Executing long running tests" if $long_tests_enabled
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-$stdout.sync = true
+STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = 10
 DEFAULT_TIMEOUT = 250

@@ -562,12 +562,12 @@ Then(/^I should get the test channel$/) do
             else
               'test-channel-x86_64'
             end
-  $stderr.puts "result: #{@result}"
+  STDERR.puts "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
-  $stderr.puts "result: #{@result}"
+  STDERR.puts "result: #{@result}"
   assert(@result['errata_advisories'].include?(patch))
 end
 
