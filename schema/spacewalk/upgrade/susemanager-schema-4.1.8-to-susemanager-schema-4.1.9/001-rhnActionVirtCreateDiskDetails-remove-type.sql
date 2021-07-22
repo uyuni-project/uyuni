@@ -12,5 +12,5 @@
 -- in this software or its documentation.
 --
 
-ALTER TABLE rhnActionVirtCreateDiskDetails
+ALTER TABLE IF EXISTS rhnActionVirtCreateDiskDetails
 DROP COLUMN IF EXISTS type;
