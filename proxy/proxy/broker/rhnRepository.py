@@ -28,7 +28,6 @@ except ImportError:
     # python 2
     import cPickle
 import sys
-import types
 from operator import truth
 try:
     #  python 2
@@ -37,17 +36,17 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 
+## local imports
+from rhn import rpclib
 ## common imports
-from uyuni.common.rhnLib import parseRPMName
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import rhnRepository
 from spacewalk.common.rhnTranslate import _
+from uyuni.common.rhnLib import parseRPMName
 from uyuni.common.usix import raise_with_tb
 
-## local imports
-from rhn import rpclib
 
 
 PKG_LIST_DIR = os.path.join(CFG.PKG_DIR, 'list')
@@ -81,7 +80,7 @@ class Repository(rhnRepository.Repository):
         self.httpProxyPassword = httpProxyPassword
         self.caChain = caChain
 
-    def getPackagePath(self, pkgFilename, redirect=0):
+    def getPackagePath(self, pkgFilename, redirect=0): # pylint: disable=unused-argument
         """ OVERLOADS getPackagePath in common/rhnRepository.
             Returns complete path to an RPM file.
         """

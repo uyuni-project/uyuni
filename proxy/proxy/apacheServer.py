@@ -20,6 +20,8 @@ from spacewalk.common.rhnLog import initLOG, log_setreq, log_debug
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common import apache
 
+from .apacheHandler import apacheHandler
+from .apacheHandler import getComponentType
 
 class HandlerWrap:
 
@@ -38,7 +40,6 @@ class HandlerWrap:
         #       req object.
 
         if self.__init:
-            from .apacheHandler import getComponentType
             # We cannot trust the config files to tell us if we are in the
             # broker or in the redirect because we try to always pass
             # upstream all requests
@@ -73,7 +74,6 @@ class HandlerWrap:
     @staticmethod
     def get_handler_factory(_req):
         """ Handler factory. Redefine in your subclasses if so choose """
-        from .apacheHandler import apacheHandler
         return apacheHandler
 
 
