@@ -21,7 +21,7 @@ type Props = {
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
-  hostInfo: HostInfo;
+  hostInfo?: HostInfo;
 };
 
 export function GuestsList(props: Props) {
@@ -89,7 +89,7 @@ export function GuestsList(props: Props) {
 
   return (
     <>
-      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hostInfo.hypervisor}/>
+      <HypervisorCheck saltVirtHost={!props.foreignEntitled && props.saltEntitled} hypervisor={props.hostInfo?.hypervisor || ""}/>
 
       <ListTab
         serverId={props.serverId}
@@ -248,7 +248,7 @@ export function GuestsList(props: Props) {
               });
             }}
             onClose={() => setMigrateVm(undefined)}
-            clusterNodes={props.hostInfo.cluster_other_nodes}
+            clusterNodes={props.hostInfo?.cluster_other_nodes}
           />
         )
       }
