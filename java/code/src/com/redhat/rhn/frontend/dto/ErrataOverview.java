@@ -274,7 +274,7 @@ public class ErrataOverview extends BaseDto {
      * @throws ParseException when issueDateIn can't be parsed
      */
     public void setIssueDate(String issueDateIn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         issueDate = sdf.parse(issueDateIn);
     }
     /**
