@@ -1,3 +1,4 @@
+- Upgrade scripts idempotency fixes
 - Add Beijing timezone to selectable timezones (bsc#1188193)
 
 -------------------------------------------------------------------
