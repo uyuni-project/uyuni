@@ -89,8 +89,8 @@ class ProxyAuth:
         if not os.access(ProxyAuth.__systemid_filename, os.R_OK):
             log_error("unable to access %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator."))
+                           _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                             "Please contact your system administrator."))
 
         mtime = None
         try:
@@ -98,8 +98,8 @@ class ProxyAuth:
         except IOError as e:
             log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         if not self.__systemid_mtime:
             ProxyAuth.__systemid_mtime = mtime
@@ -115,8 +115,8 @@ class ProxyAuth:
         except IOError as e:
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         # get serverid
         sysid, _cruft = xmlrpclib.loads(ProxyAuth.__systemid)
@@ -175,8 +175,8 @@ problems, isn't running, or the token is somehow corrupt.
 """) % self.__serverid
             Traceback("ProxyAuth.set_cached_token", extra=text)
             raise_with_tb(rhnFault(1000,
-                      _("SUSE Manager Proxy error (auth caching issue). "
-                        "Please contact your system administrator.")), sys.exc_info()[2])
+                                   _("SUSE Manager Proxy error (auth caching issue). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
         log_debug(4, "successfully returning")
         return token
 
@@ -317,8 +317,8 @@ problems, isn't running, or the token is somehow corrupt.
                 # And raise a Proxy Error - the server made its point loud and
                 # clear
                 raise_with_tb(rhnFault(1000,
-                          _("SUSE Manager Proxy error (during proxy login). "
-                            "Please contact your system administrator.")), sys.exc_info()[2])
+                                       _("SUSE Manager Proxy error (during proxy login). "
+                                         "Please contact your system administrator.")), sys.exc_info()[2])
             except Exception as e:
                 token = None
                 log_error("Unhandled exception", e)
@@ -332,12 +332,12 @@ problems, isn't running, or the token is somehow corrupt.
             if error:
                 if error[0] in ('xmlrpclib.ProtocolError', 'socket.error', 'socket'):
                     raise rhnFault(1000,
-                                _("SUSE Manager Proxy error (error: %s). "
-                                  "Please contact your system administrator.") % error[0])
+                                   _("SUSE Manager Proxy error (error: %s). "
+                                     "Please contact your system administrator.") % error[0])
                 if error[0] in ('rhn.SSL.SSL.SSLError', 'socket.sslerror'):
                     raise rhnFault(1000,
-                                _("SUSE Manager Proxy error (SSL issues? Error: %s). "
-                                  "Please contact your system administrator.") % error[0])
+                                   _("SUSE Manager Proxy error (SSL issues? Error: %s). "
+                                     "Please contact your system administrator.") % error[0])
                 else:
                     raise rhnFault(1002, err_text='%s' % e)
             else:
@@ -416,9 +416,9 @@ problems, isn't running, or the token is somehow corrupt.
             if not os.access(CFG.CA_CHAIN, os.R_OK):
                 log_error('ERROR: missing or cannot access (for ca_chain): %s' % CFG.CA_CHAIN)
                 raise rhnFault(1000,
-                          _("SUSE Manager Proxy error (file access issues). "
-                            "Please contact your system administrator. "
-                            "Please refer to SUSE Manager Proxy logs."))
+                               _("SUSE Manager Proxy error (file access issues). "
+                                 "Please contact your system administrator. "
+                                 "Please refer to SUSE Manager Proxy logs."))
             serverObj.add_trusted_cert(CFG.CA_CHAIN)
         serverObj.add_header('X-RHN-Client-Version', 2)
         return serverObj
