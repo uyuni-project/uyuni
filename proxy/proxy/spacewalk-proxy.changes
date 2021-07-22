@@ -1,3 +1,4 @@
+- Fix build on Enterprise Linux
 - Fix traceback on handling sslerror (bsc#1187673)
 - Bump version to 4.3.0
 
