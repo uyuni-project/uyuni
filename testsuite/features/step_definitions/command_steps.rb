@@ -1678,7 +1678,7 @@ When(/^I copy unset package file on server$/) do
   raise 'File injection failed' unless return_code.zero?
 end
 
-And(/^I copy vcenter configuration file on server$/) do
+And(/^I copy vCenter configuration file on server$/) do
   base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
   return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
   raise 'File injection failed' unless return_code.zero?
