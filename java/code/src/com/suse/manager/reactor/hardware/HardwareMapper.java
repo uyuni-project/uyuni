@@ -559,8 +559,8 @@ public class HardwareMapper {
                 virtualInstance.getHostSystem().hasEntitlement(EntitlementManager.FOREIGN);
         long newMemory = memory;
         // Only foreign system (s390 and VHM) and systems with no memory set should have updated memory
-        if (!isForeign && 0 != virtualInstance.getTotalMemory() &&
-                virtualInstance.getTotalMemory() != null) {
+        if (!isForeign && virtualInstance.getTotalMemory() != null &&
+                0 != virtualInstance.getTotalMemory()) {
             newMemory = virtualInstance.getTotalMemory();
         }
         return newMemory;
