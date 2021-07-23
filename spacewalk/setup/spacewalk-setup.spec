@@ -102,9 +102,6 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
 %endif
-%if 0%{?fedora} >= 22
-Recommends:     cobbler20
-%endif
 Requires:       /usr/bin/gpg
 Requires:       curl
 Requires:       perl-DateTime
@@ -282,7 +279,6 @@ make test
 # check coding style
 pylint --rcfile /etc/spacewalk-python3-pylint.rc \
     $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
-    $RPM_BUILD_ROOT%{_bindir}/cobbler20-setup
 %endif
 
 %files
@@ -299,7 +295,6 @@ pylint --rcfile /etc/spacewalk-python3-pylint.rc \
 %{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/spacewalk-setup-ipa-authentication
 %{_bindir}/spacewalk-setup-db-ssl-certificates
-%{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/
 %dir %attr(0755, root, root) %{_prefix}/share/salt-formulas/states/
