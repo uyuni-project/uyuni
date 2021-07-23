@@ -1608,3 +1608,9 @@ When(/^I copy unset package file on server$/) do
   return_code = file_inject($server, base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
   raise 'File injection failed' unless return_code.zero?
 end
+
+And(/^I copy vcenter configuration file on server$/) do
+  base_dir = File.dirname(__FILE__) + "/../upload_files/virtualization/"
+  return_code = file_inject($server, base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
+  raise 'File injection failed' unless return_code.zero?
+end
