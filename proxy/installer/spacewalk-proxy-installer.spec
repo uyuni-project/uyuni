@@ -18,11 +18,12 @@
 
 
 #!BuildIgnore:  udev-mini libudev-mini1
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} 
 %{!?pylint_check: %global pylint_check 1}
-%endif
-
+%define apacheconfdir %{_sysconfdir}/httpd
+%else
 %define apacheconfdir %{_sysconfdir}/apache2
+%endif
 
 Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
@@ -35,28 +36,25 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
+Requires:       firewalld
 Requires:       mgr-cfg
 Requires:       mgr-cfg-actions
 Requires:       mgr-cfg-client
 Requires:       mgr-cfg-management
+Requires(pre):  spacewalk-proxy-common
+Requires:       spacewalk-proxy-salt
 %if 0%{?suse_version}
 Requires:       aaa_base
 Requires:       apache2
 Requires:       glibc
-Requires(pre):  spacewalk-proxy-common
-Requires:       firewalld
-Requires:       spacewalk-proxy-salt
 %else
-Requires:       glibc-common
-
-%if 0%{?fedora}
-Requires:       hostname
-%endif
-%if 0%{?rhel} > 5
-Requires:       net-tools
-%endif
-
 Requires:       chkconfig
+Requires:       glibc-common
+Requires:       hostname
+Requires:       httpd
+Requires:       net-tools
+Requires:       rhn-client-tools > 2.8.4
+Requires:       rhnlib
 %endif
 Requires:       libxslt
 Requires:       spacewalk-certs-tools >= 1.6.4
@@ -65,11 +63,6 @@ BuildRequires:  python3-rhn-client-tools
 BuildRequires:  spacewalk-python3-pylint
 %endif
 BuildRequires:  /usr/bin/docbook2man
-
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires:       rhn-client-tools > 2.8.4
-Requires:       rhnlib
-%endif
 
 Obsoletes:      proxy-installer < 5.3.0
 Provides:       proxy-installer = 5.3.0
@@ -113,6 +106,8 @@ mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/share/rhn/installer/jabberd
+mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
+
 install -m 755 -d $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 squid.conf $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 rhn.conf $RPM_BUILD_ROOT%{defaultdir}
@@ -123,6 +118,7 @@ install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/installer/jabberd
+install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
 
 # Fixing shebang for Python 3
 for i in $(find . -type f);
@@ -131,11 +127,6 @@ do
 done
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT/%{_usr}/sbin/rhn-proxy-activate
 install -m 755 fetch-certificate.py  $RPM_BUILD_ROOT/%{_usr}/sbin/fetch-certificate
-
-%if 0%{?suse_version} > 1320
-mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
-install -m 0644 suse-manager-proxy.xml %{buildroot}/%{_prefix}/lib/firewalld/services
-%endif
 
 %check
 %if 0%{?pylint_check}
@@ -162,8 +153,6 @@ spacewalk-python3-pylint .
 %dir %{_usr}/share/rhn/proxy-template
 %dir %{_usr}/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
-%if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-proxy.xml
-%endif
 
 %changelog
