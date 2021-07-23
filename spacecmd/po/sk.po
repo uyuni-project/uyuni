@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-21 19:11+0000\n"
+"PO-Revision-Date: 2021-07-23 19:12+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -1008,7 +1008,7 @@ msgstr "Iba hodnoty [normal/state] sú prípustné pre typ"
 #: ../src/spacecmd/configchannel.py:488 ../src/spacecmd/distribution.py:110
 #: ../src/spacecmd/repo.py:358 ../src/spacecmd/repo.py:468
 msgid "A name is required"
-msgstr "Názov je povinný"
+msgstr "Vyžaduje sa názov"
 
 #: ../src/spacecmd/configchannel.py:497
 msgid "Only [normal/state] values are acceptable for --type parameter"
@@ -4799,16 +4799,16 @@ msgstr "Názov:   %s"
 #: ../src/spacecmd/snippet.py:99
 #, python-format
 msgid "Macro:  %s"
-msgstr ""
+msgstr "Makro:  %s"
 
 #: ../src/spacecmd/snippet.py:100
 #, python-format
 msgid "File:   %s"
-msgstr ""
+msgstr "Súbor:   %s"
 
 #: ../src/spacecmd/snippet.py:111
 msgid "snippet_create: Create a Kickstart snippet"
-msgstr ""
+msgstr "snippet_create: Vytvoriť úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:112
 msgid ""
@@ -4818,31 +4818,36 @@ msgid ""
 "  -n NAME\n"
 "  -f FILE"
 msgstr ""
+"použitie: snippet_create [voľby])\n"
+"\n"
+"voľby:\n"
+"  -n NÁZOV\n"
+"  -f SÚBOR"
 
 #: ../src/spacecmd/snippet.py:150
 msgid "A name is required for the snippet"
-msgstr ""
+msgstr "Pre úryvok sa vyžaduje názov"
 
 #: ../src/spacecmd/snippet.py:154
 msgid "A file is required"
-msgstr ""
+msgstr "Vyžaduje sa súbor"
 
 #: ../src/spacecmd/snippet.py:161
 #, python-format
 msgid "Snippet: %s"
-msgstr ""
+msgstr "Úryvok: %s"
 
 #: ../src/spacecmd/snippet.py:177
 msgid "snippet_update: Update a Kickstart snippet"
-msgstr ""
+msgstr "snippet_update: Aktualizovať úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:178
 msgid "usage: snippet_update NAME"
-msgstr ""
+msgstr "použitie: snippet_update NÁZOV"
 
 #: ../src/spacecmd/snippet.py:200
 msgid "snippet_delete: Delete a Kickstart snippet"
-msgstr ""
+msgstr "snippet_delete: Vymazať úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:201
 msgid "usage: snippet_delete NAME"
