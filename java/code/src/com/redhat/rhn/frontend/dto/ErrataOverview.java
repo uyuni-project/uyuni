@@ -227,6 +227,16 @@ public class ErrataOverview extends BaseDto {
         return LocalizationService.getInstance().formatShortDate(updateDate);
     }
     /**
+     * @return Returns the advisoryLastUpdated in ISO format (YYYY-MM-DD).
+     */
+    public String getUpdateDateIsoFormat() {
+        if (updateDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(updateDate);
+    }
+    /**
      * @return Returns the advisoryLastUpdated.
      */
     public Date getUpdateDateObj() {
