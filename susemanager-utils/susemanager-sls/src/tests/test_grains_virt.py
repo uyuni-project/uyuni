@@ -1,9 +1,16 @@
 import pytest
-from mock import MagicMock, patch
+from mock import MagicMock, patch, Mock
 from . import mockery
 mockery.setup_environment()
 
 from ..grains import virt
+
+@pytest.fixture
+def libvirt():
+    if not hasattr(virt, "libvirt"):
+        virt.libvirt = Mock()
+    return virt.libvirt
+
 
 @pytest.mark.parametrize("network", [True, False])
 def test_features_network(network):
@@ -46,3 +53,12 @@ def test_features_cluster(cluster, start_resources):
             assert virt.features()["virt_features"]["cluster"] == cluster
             assert virt.features()["virt_features"]["resource_agent_start_resources"] == start_resources
 
+
+@pytest.mark.parametrize("version, expected", [(5001000, False), (7003000, True)])
+def test_features_efi(version, expected, libvirt):
+    """
+    Test the uefi auto discovery feature
+    """
+    with patch.object(libvirt, "open", MagicMock()) as mock_conn:
+        mock_conn.return_value.getLibVersion.return_value = version
+        assert virt.features()["virt_features"]["uefi_auto_loader"] == expected
