@@ -136,7 +136,7 @@
         "cpe" : null,
         "free" : false,
         "description" : null,
-        "release_stage" : "beta",
+        "release_stage" : "released",
         "eula_url" : "",
         "product_type" : "base",
         "offline_predecessor_ids" : [
