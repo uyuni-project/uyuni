@@ -62,8 +62,8 @@ public class ErrataOverviewSerializer extends RhnXmlRpcCustomSerializer {
 
         helper.add("id", errata.getId());
         helper.add("issue_date", errata.getIssueDateIsoFormat());
-        helper.add("date", errata.getUpdateDate());
-        helper.add("update_date", errata.getUpdateDate());
+        helper.add("date", errata.getUpdateDateIsoFormat());
+        helper.add("update_date", errata.getUpdateDateIsoFormat());
         helper.add("advisory_synopsis", errata.getAdvisorySynopsis());
         helper.add("advisory_type", errata.getAdvisoryType());
         helper.add("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
