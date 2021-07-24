@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-23 19:12+0000\n"
+"PO-Revision-Date: 2021-07-24 20:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4851,15 +4851,16 @@ msgstr "snippet_delete: Vymazať úryvok Kickstart"
 
 #: ../src/spacecmd/snippet.py:201
 msgid "usage: snippet_delete NAME"
-msgstr ""
+msgstr "použitie: snippet_delete NÁZOV"
 
 #: ../src/spacecmd/snippet.py:219
 msgid "Remove this snippet [y/N]:"
-msgstr ""
+msgstr "Odstrániť tento úryvok [a/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:58
 msgid "softwarechannel_list: List all available software channels"
 msgstr ""
+"softwarechannel_list: Vypísať zoznam všetkých dostupných softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:59
 msgid ""
@@ -4868,14 +4869,22 @@ msgid ""
 "  -v verbose (display label and summary)\n"
 "  -t tree view (pretty-print(child-channels))\n"
 msgstr ""
+"použitie: softwarechannel_list [voľby]')\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)\n"
+"  -t stromové zobrazenie (pekná tlač (kanály potomkov))\n"
 
 #: ../src/spacecmd/softwarechannel.py:107
 msgid "softwarechannel_listmanageablechannels: List all software channels"
 msgstr ""
+"softwarechannel_listmanageablechannels: Vypísať zoznam všetkých softvérových "
+"kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:108
 msgid "                                        manageable by current user"
 msgstr ""
+"                                        spravovateľných aktuálnym "
+"používateľom"
 
 #: ../src/spacecmd/softwarechannel.py:109
 msgid ""
@@ -4883,10 +4892,15 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"použitie: softwarechannel_listmanageablechannels [voľby]\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:144
 msgid "softwarechannel_listbasechannels: List all base software channels"
 msgstr ""
+"softwarechannel_listbasechannels: Vypísať zoznam všetkých základných "
+"softvérových kanálov"
 
 #: ../src/spacecmd/softwarechannel.py:145
 msgid ""
@@ -4894,10 +4908,15 @@ msgid ""
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
+"použitie: softwarechannel_listbasechannels [voľby])\n"
+"voľby:\n"
+"  -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:173
 msgid "softwarechannel_listchildchannels: List child software channels"
 msgstr ""
+"softwarechannel_listchildchannels: Vypísať zoznam všetkých softvérových "
+"kanálov potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:174
 #: ../src/spacecmd/softwarechannel.py:2734
