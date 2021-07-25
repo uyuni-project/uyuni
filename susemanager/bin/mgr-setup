@@ -204,13 +204,29 @@ setup_db_postgres() {
         # Create the PostgreSQL data folder, should it not exist.
         if [ ! -f $DATADIR/PG_VERSION ]; then
             rm -Rf ${DATADIR}
+            POSTGRES_LANG=en_US.UTF-8
+
+            # Define LC_CTYPE in postgres user profile. (Used during any DB creation)
+            PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
+            . $PGHOME/.i18n 2>/dev/null
+            if [ -z $LC_CTYPE ]; then
+                grep "^LC_CTYPE" $PGHOME/.i18n > /dev/null 2>&1
+                if [ $? = 0 ]; then
+                    sed -i -e "s/^LC_CTYPE.*$/LC_CTYPE=${POSTGRES_LANG}/" $PGHOME/.i18n
+                else
+                    echo -e "LC_CTYPE=${POSTGRES_LANG}\nexport LC_CTYPE" >> $PGHOME/.i18n
+                fi
+            fi
+
             echo "Initializing PostgreSQL $VERSION at location ${DATADIR}"
-            runuser -l postgres -c "/usr/bin/initdb --auth=ident $DATADIR" &> initlog || {
+            # Redundant locale flag for clarity
+            runuser -l postgres -c "/usr/bin/initdb --locale=${POSTGRES_LANG} --auth=ident $DATADIR" &> initlog || {
                 echo "Initialisation failed. See $PWD/initlog ."
                 exit 1
             }
         fi
     else
+        # Define POSTGRES_LANG in system wide config. (Used during any DB creation)
         . /etc/sysconfig/postgresql
         if [ -z $POSTGRES_LANG ]; then
             grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1

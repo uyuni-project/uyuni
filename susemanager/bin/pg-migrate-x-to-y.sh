@@ -150,10 +150,14 @@ mkdir /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data
 
 echo "$(timestamp)   Initialize new postgresql $NEW_VERSION database..."
-. /etc/sysconfig/postgresql
+. /etc/sysconfig/postgresql 2>/dev/null # Load locale for SUSE
+PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
+. $PGHOME/.i18n 2>/dev/null # Load locale for Enterprise Linux
 if [ -z $POSTGRES_LANG ]; then
     POSTGRES_LANG="en_US.UTF-8"
+    [ ! -z $LC_CTYPE ] && POSTGRES_LANG=$LC_CTYPE
 fi
+
 su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_LANG"
 if [ $? -eq 0 ]; then
     echo "$(timestamp)   Successfully initialized new postgresql $NEW_VERSION database."
