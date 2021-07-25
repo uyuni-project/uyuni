@@ -210,6 +210,16 @@ setup_db_postgres() {
                 exit 1
             }
         fi
+    else
+        . /etc/sysconfig/postgresql
+        if [ -z $POSTGRES_LANG ]; then
+            grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
+            if [ $? = 0 ]; then
+                sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
+            else
+                echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
+            fi
+        fi
     fi
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
