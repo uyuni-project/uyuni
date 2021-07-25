@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-24 20:10+0000\n"
+"PO-Revision-Date: 2021-07-25 18:10+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4921,27 +4921,32 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:174
 #: ../src/spacecmd/softwarechannel.py:2734
 msgid "usage:"
-msgstr ""
+msgstr "použitie:"
 
 #: ../src/spacecmd/softwarechannel.py:175
 msgid "softwarechannel_listchildchannels [options]"
-msgstr ""
+msgstr "softwarechannel_listchildchannels [voľby]"
 
 #: ../src/spacecmd/softwarechannel.py:176
 msgid "softwarechannel_listchildchannels : List all child channels"
 msgstr ""
+"softwarechannel_listchildchannels : Vypísať zoznam všetkých kanálov potomkov"
 
 #: ../src/spacecmd/softwarechannel.py:177
 msgid ""
 "softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
 "channel"
 msgstr ""
+"softwarechannel_listchildchannels KANÁL : Vypísať zoznam potomkov pre "
+"konkrétny základný kanál"
 
 #: ../src/spacecmd/softwarechannel.py:179
 msgid ""
 "options:\n"
 " -v verbose (display label and summary)"
 msgstr ""
+"voľby:\n"
+" -v podrobný (zobrazenie označenia a súhrnu)"
 
 #: ../src/spacecmd/softwarechannel.py:207
 msgid "softwarechannel_listsystems: List all systems subscribed to"
@@ -4950,23 +4955,23 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:208
 msgid "                             a software channel"
-msgstr ""
+msgstr "                             softvérovému kanálu"
 
 #: ../src/spacecmd/softwarechannel.py:209
 msgid "usage: softwarechannel_listsystems CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listsystems KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:243
 msgid "softwarechannel_listpackages: List the most recent packages"
-msgstr ""
+msgstr "softwarechannel_listpackages: Vypísať zoznam najnovších balíkov"
 
 #: ../src/spacecmd/softwarechannel.py:244
 msgid "                              available from a software channel"
-msgstr ""
+msgstr "                              dostupných zo softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:245
 msgid "usage: softwarechannel_listpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:282
 msgid "softwarechannel_listallpackages: List all packages in a channel"
