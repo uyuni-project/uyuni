@@ -31,7 +31,6 @@
 # pylint: disable=C0103
 
 import gettext
-from operator import itemgetter
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -56,9 +55,10 @@ def do_errata_list(self, args, doreturn=False):
 
     if doreturn:
         return self.all_errata.keys()
-    else:
-        if self.all_errata.keys():
-            print('\n'.join(sorted(self.all_errata.keys())))
+    if self.all_errata.keys():
+        print('\n'.join(sorted(self.all_errata.keys())))
+
+    return None
 
 ####################
 
@@ -71,7 +71,7 @@ def help_errata_summary(self):
 def do_errata_summary(self, args):
     self.generate_errata_cache()
     for erratum in sorted(self.all_errata.values(), key=lambda x: (x['advisory_name']), reverse=True):
-         print_errata_summary(erratum=erratum)
+        print_errata_summary(erratum=erratum)
 
     return 0
 
@@ -505,6 +505,8 @@ def complete_errata_publish(self, text, line, beg, end):
     elif len(parts) > 2:
         return tab_completer(self.do_softwarechannel_list('', True), text)
 
+    return None
+
 
 def do_errata_publish(self, args):
     arg_parser = get_argument_parser()
@@ -557,7 +559,7 @@ def do_errata_search(self, args, doreturn=False):
 
     if not args:
         self.help_errata_search()
-        return
+        return None
 
     out = []
     add_separator = False
