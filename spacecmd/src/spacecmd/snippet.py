@@ -50,9 +50,10 @@ def do_snippet_list(self, args, doreturn=False):
 
     if doreturn:
         return snippets
-    else:
-        if snippets:
-            print('\n'.join(snippets))
+    if snippets:
+        print('\n'.join(snippets))
+
+    return None
 
 ####################
 
