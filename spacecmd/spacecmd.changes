@@ -1,3 +1,4 @@
+- Improved and modified files to pass pylint checks.
 - Removed duplicate group in spec file.
 - Use correct API endpoint in list_proxies (bsc#1188042)
 - Add schedule_deletearchived to bulk delete archived actions (bsc#1181223)
