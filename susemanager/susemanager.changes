@@ -1,3 +1,4 @@
+- Moved postgresql config from spec to mgr-setup.
 - Improve the error management for the PostgreSQL migration script (bsc#1188297)
 - Add the salt bundle support to mgr-create-bootstrap-repo
 - Add bootstrap repository definitions for Rocky Linux 8
