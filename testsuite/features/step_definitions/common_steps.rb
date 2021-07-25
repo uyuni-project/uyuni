@@ -686,7 +686,7 @@ Then(/^I add (server|proxy) record into hosts file on "([^"]*)" if avahi is used
   if node.full_hostname.include? 'tf.local'
     output, _code = record.run("ip address show dev eth0")
     ip = output.split("\n")[2].split[1].split('/')[0]
-    node.run("echo '#{ip} #{record.full_hostname} #{record.hostname}' >> /etc/hosts")
+    node.run("echo '#{record.public_ip} #{record.full_hostname} #{record.hostname}' >> /etc/hosts")
   else
     puts 'Record not added - avahi domain is not detected'
   end
