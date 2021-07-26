@@ -131,8 +131,8 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Test for PXE environment files
     Given cobblerd is running
-    Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
-    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
+    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
