@@ -235,7 +235,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Create a virtual storage pool for KVM
     When I follow "Storage"
     And I follow "Create Pool"
-    And I wait until option "dir" appears in list "type"
+    And I wait until I see "General" text
     And I select "dir" from "type"
     And I enter "test-pool1" as "name"
     And I uncheck "autostart"
