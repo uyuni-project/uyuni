@@ -474,11 +474,11 @@ def do_schedule_deletearchived(self, args):
                     action_length = ">10000"
                 else:
                     action_length = len(actions)
-                user_answer = prompt_user(_("Do you want to delete all ({}) archived actions? [y/N]").format(action_length))
+                user_answer = prompt_user(_("Do you want to delete all ({}) archived actions? [y/N]"
+                                           ).format(action_length))
                 if user_answer not in ("y", "Y", "yes", "Yes", "YES"):
                     break
-                else:
-                    user_already_prompted = True
+                user_already_prompted = True
 
             # Collect IDs of actions that should be deleted
             action_ids = [action.get('id') for action in actions]
