@@ -1,3 +1,4 @@
+- Modified to pass pylint checks.
 - Enable uyuni proxy stable leap 15.3
 - Add Rocky Linux 8 repositories
 - Fix a typo at the AlmaLinux 8 Uyuni client tools for devel

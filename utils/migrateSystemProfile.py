@@ -100,7 +100,7 @@ def main():
             server_id = [int(server_id)]
         try:
             migrate_system(sessionKey, int(to_org_id), server_id)
-        except Exception:  # pylint: disable=try-except-raise
+        except Exception:  # pylint: disable=bad-option-value,try-except-raise
             raise
 
     if DEBUG:

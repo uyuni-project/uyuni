@@ -511,7 +511,7 @@ class ChannelTreeCloner:
         self.process_deps(dep_results)
 
     def process_deps(self, deps):
-        list_to_set = lambda x: set([tuple(y) for y in x])  # pylint: disable=consider-using-set-comprehension
+        list_to_set = lambda x: set([tuple(y) for y in x])  # pylint: disable=bad-option-value,consider-using-set-comprehension
         needed_list = dict((channel[0], [])
                            for channel in list(self.channel_map.values()))
         for cloner in self.cloners:
