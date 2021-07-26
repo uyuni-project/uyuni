@@ -21,6 +21,7 @@ CREATE TABLE rhnActionVirtCreate
                                  ON DELETE CASCADE
                              CONSTRAINT rhn_action_virt_create_aid_pk
                                  PRIMARY KEY,
+    uuid                 VARCHAR(128),
     details              TEXT
 )
 
