@@ -48,6 +48,12 @@ pools-{{ pillar['name'] }}:
         {{ pillar['graphics'] }}
 {%- endmacro %}
 
+{%- macro uefi() %}
+  {%- for param, value in pillar.get("uefi", {}).items() %}
+        {{ param }}: {{ value }}
+  {%- endfor %}
+{%- endmacro %}
+
 {%- set cdrom_boot = pillar.get('boot_dev', 'hd').startswith('cdrom') -%}
 {%- set ks_boot = pillar.get('boot', {}).get('kernel') is not none -%}
 domain_first_boot_define:
@@ -63,6 +69,7 @@ domain_first_boot_define:
         kernel: /tmp/virt/{{ pillar['name'] }}/kernel
         initrd: /tmp/virt/{{ pillar['name'] }}/initrd
         cmdline: {{ pillar['boot']['kopts'] }}
+        {{ uefi() }}
     - require:
       - file: kernel_cached
       - file: initrd_cached
@@ -72,6 +79,9 @@ domain_first_boot_define:
   {%- if 'disks' in pillar %}
       - virt_utils: pools-{{ pillar['name'] }}
   {%- endif %}
+{%- elif "uefi" in pillar %}
+    - boot:
+        {{ uefi() }}
 {%- endif %}
 
 {%- if cdrom_boot or ks_boot %}
@@ -88,6 +98,10 @@ domain_define:
         kernel: null
         initrd: null
         cmdline: null
+        {{ uefi() }}
+{%- elif "uefi" in pillar %}
+    - boot:
+        {{ uefi() }}
 {%- endif %}
     - require:
       - virt: domain_first_boot_define

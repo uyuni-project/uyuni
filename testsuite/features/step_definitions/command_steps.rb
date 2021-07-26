@@ -1461,6 +1461,17 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, host|
+  node = get_target(host)
+  output, _code = node.run("virsh dumpxml #{vm}")
+  tree = Nokogiri::XML(output)
+  has_loader = tree.xpath('//os/loader').size == 1
+  has_nvram = tree.xpath('//os/nvram').size == 1
+  unless has_loader && has_nvram
+    raise "No loader and nvram set: not UEFI enabled"
+  end
+end
+
 When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
   node = get_target(host)
   node.run("qemu-img create -f qcow2 #{path} 1G")

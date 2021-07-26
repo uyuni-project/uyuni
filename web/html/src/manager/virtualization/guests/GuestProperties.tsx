@@ -189,6 +189,29 @@ export function GuestProperties(props: Props) {
                                       .filter((item, index, array) => array.indexOf(item) === index)}
                                   />
                                 )}
+                                <Check
+                                  name="uefi"
+                                  label={t('Enable UEFI')}
+                                  divClass="col-md-6 col-md-offset-3"
+                                />
+                                {model["uefi"] && (
+                                  <>
+                                    <Text
+                                      name="uefiLoader"
+                                      label={t('UEFI firmware path')}
+                                      required={model["uefi"] && !props.host.uefiAutoLoader}
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                    />
+                                    <Text
+                                      name="nvramTemplate"
+                                      label={t('NVRAM template path')}
+                                      required={model["uefi"] && !props.host.uefiAutoLoader}
+                                      labelClass="col-md-3"
+                                      divClass="col-md-6"
+                                    />
+                                  </>
+                                )}
                                 {initialModel.vmType === undefined && props.cobblerProfiles !== {} && (
                                   <>
                                     <Select

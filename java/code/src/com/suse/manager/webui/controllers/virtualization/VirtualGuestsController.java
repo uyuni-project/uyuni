@@ -394,6 +394,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         data.put("raCanStartResources",
                 features.getOrDefault("resource_agent_start_resources", false));
         data.put("templates", GSON.toJson(templates));
+        data.put("uefiAutoLoader", features.getOrDefault("uefi_auto_loader", false));
 
         KickstartScheduleCommand cmd = new ProvisionVirtualInstanceCommand(host.getId(), user);
         DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();

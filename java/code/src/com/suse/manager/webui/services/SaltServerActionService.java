@@ -1791,6 +1791,18 @@ public class SaltServerActionService {
                     pillar.put("cluster_definitions", action.getDetails().getClusterDefinitions());
                     pillar.put("template", action.getDetails().getTemplate());
 
+                    if (action.getDetails().isUefi()) {
+                        Map<String, Object> uefiData = new HashMap<>();
+                        if (action.getDetails().getUefiLoader() == null) {
+                            uefiData.put("efi", true);
+                        }
+                        else {
+                            uefiData.put("loader", action.getDetails().getUefiLoader());
+                            uefiData.put("nvram", action.getDetails().getNvramTemplate());
+                        }
+                        pillar.put("uefi", uefiData);
+                    }
+
                     // No need to handle copying the image to the minion, salt does it for us
                     if (!action.getDetails().getDisks().isEmpty() || action.getDetails().isRemoveDisks()) {
                         pillar.put("disks", IntStream.range(0, action.getDetails().getDisks().size()).mapToObj(i -> {
@@ -1844,7 +1856,10 @@ public class SaltServerActionService {
                     boolean hasCdromIso = action.getDetails().getDisks().stream()
                             .anyMatch(disk -> disk.getDevice().equals("cdrom") && disk.getSourceFile() != null &&
                                     !disk.getSourceFile().isEmpty());
-                    pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : "network hd");
+                    boolean noTemplateImage = action.getDetails().getDisks().stream()
+                            .noneMatch(disk -> disk.getTemplate() != null);
+                    String bootDev = noTemplateImage ? "network hd" : "hd";
+                    pillar.put("boot_dev", hasCdromIso ? "cdrom hd" : bootDev);
 
                     return State.apply(
                             Collections.singletonList(state),

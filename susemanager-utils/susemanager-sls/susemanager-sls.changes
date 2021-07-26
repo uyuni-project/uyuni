@@ -1,3 +1,4 @@
+- Add UEFI support for VM creation
 - Add virt-tuner templates to VM creation
 - Handle more ocsf2 setups in virt_utils module
 - Add missing symlinks to generate the "certs" state for
