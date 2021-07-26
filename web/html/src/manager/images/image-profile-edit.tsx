@@ -97,6 +97,7 @@ class CreateImageProfile extends React.Component<Props, State> {
             label: data.label,
             activationKey: data.activationKey ? data.activationKey.key : undefined,
             path: data.path,
+            kiwiOptions: data.kiwiOptions,
             imageType: data.imageType,
             imageStore: data.store,
           },
@@ -357,6 +358,22 @@ class CreateImageProfile extends React.Component<Props, State> {
             divClass="col-md-6"
           />
         );
+        typeInputs.push(
+          <Text
+            key="kiwiOptions"
+            name="kiwiOptions"
+            label={t("Kiwi options")}
+            hint={
+              <span>
+                Kiwi command line options
+                <br />
+                Example: <em>--profile jeos</em>
+              </span>
+            }
+            labelClass="col-md-3"
+            divClass="col-md-6"
+          />
+        );
         typeInputs.push(this.renderTokenSelect(true));
         break;
       default:
@@ -386,6 +403,7 @@ class CreateImageProfile extends React.Component<Props, State> {
 
     return (
       <Select
+        key="activationKey"
         name="activationKey"
         label={t("Activation Key")}
         invalidHint={t("Activation key is required for kiwi images.")}

@@ -24,6 +24,7 @@ public class ImageProfileCreateRequest {
 
     private String label;
     private String path;
+    private String kiwiOptions;
     private String imageType;
     private String imageStore;
     private String activationKey;
@@ -41,6 +42,13 @@ public class ImageProfileCreateRequest {
      */
     public String getPath() {
         return path;
+    }
+
+    /**
+     * @return the Kiwi options
+     */
+    public String getKiwiOptions() {
+        return kiwiOptions;
     }
 
     /**

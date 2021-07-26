@@ -1523,6 +1523,7 @@ public class SaltServerActionService {
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {
                         pillar.put("source", kiwiProfile.getPath());
                         pillar.put("build_id", "build" + actionId);
+                        pillar.put("kiwi_options", kiwiProfile.getKiwiOptions());
                         List<String> repos = new ArrayList<>();
                         final ActivationKey activationKey = ActivationKeyFactory.lookupByToken(profile.getToken());
                         Set<Channel> channels = activationKey.getChannels();
