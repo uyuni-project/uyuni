@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers.virtualization.gson;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +31,8 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private String osType;
     private String arch;
     private Long memory;
-    private List<DiskData> disks;
-    private List<InterfaceData> interfaces;
+    private List<DiskData> disks = new ArrayList<>();
+    private List<InterfaceData> interfaces = new ArrayList<>();
     private String graphicsType;
     @SerializedName("cobbler_profile")
     private String cobblerId;

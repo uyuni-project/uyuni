@@ -66,7 +66,6 @@ DO $$
 
             -- Remove the now useless columns and tables
             ALTER TABLE rhnactionvirtcreate
-                DROP COLUMN IF EXISTS uuid CASCADE,
                 DROP COLUMN IF EXISTS vm_type CASCADE,
                 DROP COLUMN IF EXISTS vm_name CASCADE,
                 DROP COLUMN IF EXISTS os_type CASCADE,

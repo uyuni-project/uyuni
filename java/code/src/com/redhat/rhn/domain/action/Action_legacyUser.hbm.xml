@@ -355,6 +355,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 discriminator-value="508" lazy="true">
           <join table="rhnActionVirtCreate">
             <key column="action_id"/>
+            <property name="uuid" type="string" column="uuid"/>
             <property name="detailsAsString" type="string" column="details"/>
           </join>
         </subclass>
