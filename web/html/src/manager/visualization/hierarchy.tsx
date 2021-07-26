@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as d3 from "d3";
 import SpaRenderer from "core/spa/spa-renderer";
 import Network from "../../utils/network";
 import { TopPanel } from "components/panels/TopPanel";

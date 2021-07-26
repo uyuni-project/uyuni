@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import * as HierarchyView from "./ui/hierarchy-view";
 import * as Filters from "./data-processing/filters";
 import * as Partitioning from "./data-processing/partitioning";
