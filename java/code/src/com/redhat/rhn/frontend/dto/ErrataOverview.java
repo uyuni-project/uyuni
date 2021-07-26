@@ -228,6 +228,16 @@ public class ErrataOverview extends BaseDto {
         return LocalizationService.getInstance().formatShortDate(updateDate);
     }
     /**
+     * @return Returns the advisoryLastUpdated in ISO format (YYYY-MM-DD).
+     */
+    public String getUpdateDateIsoFormat() {
+        if (updateDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(updateDate);
+    }
+    /**
      * @return Returns the advisoryLastUpdated.
      */
     public Date getUpdateDateObj() {
@@ -249,6 +259,16 @@ public class ErrataOverview extends BaseDto {
         return LocalizationService.getInstance().formatShortDate(issueDate);
     }
     /**
+     * @return Returns the issueDate in ISO format (YYYY-MM-DD).
+     */
+    public String getIssueDateIsoFormat() {
+        if (issueDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(issueDate);
+    }
+    /**
      * @return Returns the advisoryLastUpdated.
      */
     public Date getIssueDateObj() {
@@ -265,7 +285,7 @@ public class ErrataOverview extends BaseDto {
      * @throws ParseException when issueDateIn can't be parsed
      */
     public void setIssueDate(String issueDateIn) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         issueDate = sdf.parse(issueDateIn);
     }
     /**
