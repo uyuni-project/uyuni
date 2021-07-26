@@ -20,3 +20,7 @@ mgrchannels_repo_clean_keyring:
   file.absent:
     - name: /usr/share/keyrings/mgr-archive-keyring.gpg
 {%- endif %}
+
+mgr_mark_no_longer_managed:
+  file.absent:
+    - name: /etc/sysconfig/rhn/systemid
