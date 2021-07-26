@@ -41,6 +41,9 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     @SerializedName("cluster_definitions")
     private String clusterDefinitions;
     private String template;
+    private boolean uefi;
+    private String uefiLoader;
+    private String nvramTemplate;
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -222,6 +225,48 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      */
     public void setTemplate(String templateIn) {
         template = templateIn;
+    }
+
+    /**
+     * @return value of uefi
+     */
+    public boolean isUefi() {
+        return uefi;
+    }
+
+    /**
+     * @param uefiIn value of uefi
+     */
+    public void setUefi(boolean uefiIn) {
+        uefi = uefiIn;
+    }
+
+    /**
+     * @return value of uefiLoader
+     */
+    public String getUefiLoader() {
+        return uefiLoader;
+    }
+
+    /**
+     * @param uefiLoaderIn value of uefiLoader
+     */
+    public void setUefiLoader(String uefiLoaderIn) {
+        uefiLoader = uefiLoaderIn;
+    }
+
+    /**
+     * @return value of nvramTemplate
+     */
+    public String getNvramTemplate() {
+        return nvramTemplate;
+    }
+
+    /**
+     * @param nvramTemplateIn value of nvramTemplate
+     */
+    public void setNvramTemplate(String nvramTemplateIn) {
+        nvramTemplate = nvramTemplateIn;
     }
 
     /**

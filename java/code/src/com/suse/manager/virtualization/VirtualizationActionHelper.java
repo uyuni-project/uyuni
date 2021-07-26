@@ -237,6 +237,9 @@ public class VirtualizationActionHelper {
             details.setKernelOptions(data.getKernelOptions());
             details.setClusterDefinitions(data.getClusterDefinitions());
             details.setTemplate(data.getTemplate());
+            details.setUefi(data.isUefi());
+            details.setUefiLoader(data.getUefiLoader());
+            details.setNvramTemplate(data.getNvramTemplate());
 
             if (name.isEmpty() && data.getCobblerId() != null && !data.getCobblerId().isEmpty()) {
                 // Create cobbler profile
