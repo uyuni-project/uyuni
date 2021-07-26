@@ -23,8 +23,8 @@
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
+%global pylint_check 1
 %if 0%{?suse_version}
-%{!?pylint_check: %global pylint_check 0}
 %define apache_user wwwrun
 %define apache_group www
 %define misc_path /srv/
@@ -280,7 +280,7 @@ exit 0
 make test
 %if 0%{?pylint_check}
 # check coding style
-pylint --rcfile /etc/spacewalk-python3-pylint.rc \
+spacewalk-python3-pylint \
     $RPM_BUILD_ROOT%{_datadir}/spacewalk/setup/*.py \
     $RPM_BUILD_ROOT%{_bindir}/cobbler20-setup
 %endif
