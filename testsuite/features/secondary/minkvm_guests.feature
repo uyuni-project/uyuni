@@ -21,8 +21,10 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm_server"
 
-  Scenario: Setting the virtualization entitlement for KVM
+  Scenario: Show the KVM host system overview
     Given I am on the Systems overview page of this "kvm_server"
+
+  Scenario: Set the virtualization entitlement for KVM
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "virtualization_host"
@@ -63,6 +65,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create "test-vm" virtual machine on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
+
+  Scenario: Show the KVM host virtualization tab
+    Given I follow "Virtualization" in the content area
 
   Scenario: Start a KVM virtual machine
     When I click on "Start" in row "test-vm"
