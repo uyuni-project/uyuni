@@ -1,3 +1,4 @@
+- Ensure XMLRPC returns 'issue_date' in ISO format when listing erratas (bsc#1188260)
 - Fix NullPointerException in HardwareMapper.getUpdatedGuestMemory
 - Fix entitlements not being updated during system transfer (bsc#1188032)
 - Simplify the VM creation action in DB
