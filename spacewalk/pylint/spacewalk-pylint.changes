@@ -1,3 +1,4 @@
+- Detect pylint executable with minor python version in name.
 - Bump version to 4.3.0
 
 -------------------------------------------------------------------
