@@ -1,3 +1,4 @@
+- Expose UEFI parameters in the VM creation/editing pages
 - Add virt-tuner templates to VM creation
 - Fix virtualization guests to handle null HostInfo
 - Compare lowercase CPU arch with libvirt domain capabilities

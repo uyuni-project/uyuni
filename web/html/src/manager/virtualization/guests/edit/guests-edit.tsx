@@ -31,6 +31,9 @@ class GuestsEdit extends React.Component<Props> {
         osType: definition.os.type,
         arch: definition.os.arch,
         vmType: definition.type,
+        uefi: definition.os.uefiLoader != null,
+        uefiLoader: definition.os.uefiLoader,
+        nvramTemplate: definition.os.nvramTemplate,
       },
       GuestNicsPanel.getModelFromDefinition(definition),
       DiskUtils.getModelFromDefinition(definition)
