@@ -29,7 +29,7 @@ declare global {
 }
 
 const messagesCounterLimit = 1;
-const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
+const hashUrlRegex = /^#\/([^/]*)(?:\/(.+))?$/;
 
 function getHashId() {
   const match = window.location.hash.match(hashUrlRegex);
