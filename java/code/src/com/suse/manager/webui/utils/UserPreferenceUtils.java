@@ -18,12 +18,18 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.struts.RequestContext;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-
+import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
@@ -116,5 +122,52 @@ public class UserPreferenceUtils {
         aclContext.put("user", user);
         Acl acl = aclFactory.getAcl(Access.class.getName());
         return acl.evalAcl(aclContext, "user_authenticated()");
+    }
+
+    /**
+     * Get the current user timezone.
+     * If no user is available, fallback and return the client context timezone from where the request comes from.
+     * Double fallback on the server timezone if there is no request context
+     *
+     * @param pageContext the current PageContext
+     * @return the user timezone
+     */
+    public String getUserTimeZone(PageContext pageContext) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
+            RhnTimeZone timezone = user.getTimeZone();
+            if (timezone != null) {
+                return timezone.getOlsonName();
+            }
+        }
+
+        Context ctx = Context.getCurrentContext();
+        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
+        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        DateFormat tzFormat = new SimpleDateFormat("z", locale);
+        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return tzFormat.format(new Date());
+    }
+
+    /**
+     * TODO
+     * Make the parameter configurable from the configuration file
+     *
+     * @param pageContext the current PageContext
+     * @return the String format of the Date
+     */
+    public String getUserDateFormat(PageContext pageContext) {
+        return "YYYY-MM-DD";
+    }
+
+    /**
+     * TODO
+     * Make the parameter configurable from the configuration file
+     *
+     * @param pageContext the current PageContext
+     * @return the String format of the Time
+     */
+    public String getUserTimeFormat(PageContext pageContext) {
+        return "HH:mm:ss";
     }
 }

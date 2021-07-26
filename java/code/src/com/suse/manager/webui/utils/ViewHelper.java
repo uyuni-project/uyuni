@@ -107,6 +107,12 @@ public enum ViewHelper {
     }
 
     /**
+     * TODO -> DROP
+     * This is a buggy method, it does not return the "user" timezone but the timezone of the "Context" from where
+     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     *
+     *
      * Render the current user's configured timezone for being displayed (falling back to
      * the system default in case there is currently no user context).
      *
@@ -122,6 +128,12 @@ public enum ViewHelper {
     }
 
     /**
+     * TODO -> DROP
+     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
+     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     *
+     *
      * Render the time in the current user's configured timezone (falling back to
      * the system default in case there is currently no user context).
      *
@@ -132,6 +144,12 @@ public enum ViewHelper {
     }
 
     /**
+     * TODO -> DROP
+     * This is a buggy method, it does not use the "user" timezone but the timezone of the "Context" from where
+     * the request comes from, AKA the client/browser timezone. Uyuni/SUSE Manager user has a dedicated preference
+     * parameter to define it. See UserPreferenceUtils.java > getUserTimeZone
+     *
+     *
      * Render a given time in the current user's configured timezone
      * @param date the date
      * @return user's local time
@@ -152,6 +170,32 @@ public enum ViewHelper {
      */
     public String renderDate(Instant instant) {
         return renderDate(new Date(instant.toEpochMilli()));
+    }
+
+    /**
+     * Render a date time configured on the server default timezone
+     *
+     * @return server default time as a string
+     */
+    public String getServerTime() {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(new Date());
+    }
+
+    /**
+     * Render the server timezone
+     *
+     * @return server timezone to be displayed as a string
+     */
+    public String getServerTimeZone() {
+        Locale locale = Locale.getDefault();
+        TimeZone timezone = TimeZone.getDefault();
+        DateFormat tzFormat = new SimpleDateFormat("z", locale);
+        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return tzFormat.format(new Date());
     }
 
     /**

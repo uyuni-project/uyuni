@@ -51,6 +51,20 @@
     <c:set var="docsLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(pageContext)}"/>
     <script>window.docsLocale='${docsLocale}'</script>
 
+    <!-- expose server and user datetime globally to handle localization -->
+    <c:set var="serverTime" value="${GlobalInstanceHolder.VIEW_HELPER.getServerTime()}"/>
+    <c:set var="serverTimeZone" value="${GlobalInstanceHolder.VIEW_HELPER.getServerTimeZone()}"/>
+    <c:set var="userTimeZone" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeZone(pageContext)}"/>
+    <c:set var="userDateFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserDateFormat(pageContext)}"/>
+    <c:set var="userTimeFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeFormat(pageContext)}"/>
+    <script>
+        window.serverTime='${serverTime}'
+        window.serverTimeZone='${serverTimeZone}'
+        window.userTimeZone='${userTimeZone}'
+        window.userDateFormat='${userDateFormat}'
+        window.userTimeFormat='${userTimeFormat}'
+    </script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 
