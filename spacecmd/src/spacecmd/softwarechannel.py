@@ -103,6 +103,8 @@ def do_softwarechannel_list(self, args, doreturn=False):
                     for c in self.list_child_channels(parent=l):
                         print(" |-%s" % c)
 
+    return None
+
 ####################
 
 
@@ -136,6 +138,8 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
         else:
             for l in labels:
                 print("%s" % l)
+
+    return None
 
 ####################
 
@@ -175,7 +179,7 @@ def help_softwarechannel_listchildchannels(self):
     print(_('softwarechannel_listchildchannels [options]'))
     print(_('softwarechannel_listchildchannels : List all child channels'))
     print(_('softwarechannel_listchildchannels CHANNEL : List children for a' +
-          'specific base channel'))
+            'specific base channel'))
     print(_('options:\n -v verbose (display label and summary)'))
 
 
@@ -214,15 +218,16 @@ def do_softwarechannel_listsystems(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_softwarechannel_listsystems()
-        return
+        return None
 
     systems = sorted([s.get('name') for s in self.client.channel.software.listSubscribedSystems(self.session, args[0])])
 
     if doreturn:
         return systems
-    else:
-        if systems:
-            print('\n'.join(systems))
+    if systems:
+        print('\n'.join(systems))
+
+    return None
 
 ####################
 
@@ -246,16 +251,17 @@ def do_softwarechannel_listpackages(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_softwarechannel_listpackages()
-        return
+        return None
 
     packages = list(sorted(build_package_names(
         self.client.channel.software.listLatestPackages(self.session, args[0]))))
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(packages))
+    if packages:
+        print('\n'.join(packages))
+
+    return None
 
 ####################
 
@@ -278,15 +284,16 @@ def do_softwarechannel_listallpackages(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_softwarechannel_listallpackages()
-        return
+        return None
 
     packages = list(sorted(build_package_names(self.client.channel.software.listAllPackages(self.session, args[0]))))
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(packages))
+    if packages:
+        print('\n'.join(packages))
+
+    return None
 
 ####################
 
@@ -330,16 +337,17 @@ def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_softwarechannel_listlatestpackages()
-        return
+        return None
 
     packages = list(sorted(build_package_names(list(filter_latest_packages(
         self.client.channel.software.listAllPackages(self.session, args[0]))))))
 
     if doreturn:
         return packages
-    else:
-        if packages:
-            print('\n'.join(packages))
+    if packages:
+        print('\n'.join(packages))
+
+    return None
 
 ####################
 
@@ -937,7 +945,7 @@ def do_softwarechannel_create(self, args):
         print('---------------')
         print('')
         options.disable_gpg_check = self.user_confirm(_('Disable GPG Check [y/N]? '),
-                                nospacer=True, ignore_yes=True)
+                                                      nospacer=True, ignore_yes=True)
 
     if validate_required_data(options):
         set_default_data(options)
@@ -945,7 +953,7 @@ def do_softwarechannel_create(self, args):
         self.client.channel.software.create(self.session, options.label, options.name, options.summary,
                                             'channel-%s' % options.arch, options.parent_channel,
                                             options.checksum, gpgData, not options.disable_gpg_check
-                                       )
+                                           )
 
     return 0
 
@@ -1138,7 +1146,7 @@ options:
         replaces foo with bar in the clone name, label and description'''))
 
 
-def do_softwarechannel_clonetree(self, args):
+def do_softwarechannel_clonetree(self, args):                 # pylint: disable=too-many-return-statements
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-s', '--source-channel')
     arg_parser.add_argument('-p', '--prefix')
@@ -1239,7 +1247,7 @@ def clone_channel(self, channel, options, details) :
 
     if options.gpg_copy:
         srcdetails = self.client.channel.software.getDetails(self.session, channel)
-        copy_gpg_values_from_source(details, srcdetails);
+        copy_gpg_values_from_source(details, srcdetails)
 
     if options.gpg_id:
         details['gpg_id'] = options.gpg_id
@@ -1307,7 +1315,7 @@ def do_regx_replacement(self,channel, options):
     newvalues['label'] = re.sub(findstr, replacestr, channel)
     logging.debug("regex mode : %s %s %s" % (options.source_channel,  newvalues['name'], newvalues['label']))
 
-    return newvalues;
+    return newvalues
 
 ####################
 
@@ -1325,6 +1333,8 @@ def complete_softwarechannel_addpackages(self, text, line, beg, end):
                              text)
     elif len(parts) > 2:
         return tab_completer(self.get_package_names(True), text)
+
+    return None
 
 
 def do_softwarechannel_addpackages(self, args):
@@ -1384,6 +1394,8 @@ def complete_softwarechannel_mergepackages(self, text, line, beg, end):
         return tab_completer(self.do_softwarechannel_list('', True),
                              text)
 
+    return None
+
 def do_softwarechannel_mergepackages(self, args):
     '''
     Does the same thing as do_softwarechannel_sync
@@ -1397,7 +1409,7 @@ def do_softwarechannel_mergepackages(self, args):
 
 def help_softwarechannel_removeerrata(self):
     print(_('softwarechannel_removeerrata: Remove patches from a ' +
-          'software channel'))
+            'software channel'))
     print(_('usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>'))
 
 
@@ -1409,6 +1421,8 @@ def complete_softwarechannel_removeerrata(self, text, line, beg, end):
                              text)
     elif len(parts) > 2:
         return self.tab_complete_errata(text)
+
+    return None
 
 
 def do_softwarechannel_removeerrata(self, args):
@@ -1481,7 +1495,7 @@ def do_softwarechannel_removeerrata(self, args):
 
 def help_softwarechannel_removepackages(self):
     print(_('softwarechannel_removepackages: Remove packages from a ' +
-          'software channel'))
+            'software channel'))
     print(_('usage: softwarechannel_removepackages CHANNEL <PACKAGE ...>'))
 
 
@@ -1505,6 +1519,8 @@ def complete_softwarechannel_removepackages(self, text, line, beg,
             package_names = []
 
         return tab_completer(package_names, text)
+
+    return None
 
 
 def do_softwarechannel_removepackages(self, args):
@@ -1557,7 +1573,7 @@ def do_softwarechannel_removepackages(self, args):
 
 def help_softwarechannel_adderratabydate(self):
     print(_('softwarechannel_adderratabydate: Add errata from one channel ' +
-          'into another channel based on a date range'))
+            'into another channel based on a date range'))
     print(_('usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE'))
     print(_('Date format : YYYYMMDD'))
     print(_('Options:'))
@@ -1570,6 +1586,8 @@ def complete_softwarechannel_adderratabydate(self, text, line, beg, end):
     if len(parts) <= 3:
         return tab_completer(self.do_softwarechannel_list('', True),
                              text)
+
+    return None
 
 
 def do_softwarechannel_adderratabydate(self, args):
@@ -1632,7 +1650,7 @@ def do_softwarechannel_adderratabydate(self, args):
 
 def help_softwarechannel_listerratabydate(self):
     print(_('softwarechannel_listerratabydate: list errata from channel' +
-          'based on a date range'))
+            'based on a date range'))
     print(_('usage: softwarechannel_listerratabydate CHANNEL BEGINDATE ENDDATE'))
     print(_('Date format : YYYYMMDD'))
 
@@ -1643,6 +1661,8 @@ def complete_softwarechannel_listerratabydate(self, text, line, beg, end):
     if len(parts) <= 3:
         return tab_completer(self.do_softwarechannel_list('', True),
                              text)
+
+    return None
 
 
 def do_softwarechannel_listerratabydate(self, args):
@@ -1689,7 +1709,7 @@ def do_softwarechannel_listerratabydate(self, args):
 
 def help_softwarechannel_adderrata(self):
     print(_('softwarechannel_adderrata: Add patches from one channel ' +
-          'into another channel'))
+            'into another channel'))
     print(_('usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>'))
     print(_('Options:'))
     print(_('    -q/--quick : Don\'t display list of packages (slightly faster)'))
@@ -1703,6 +1723,8 @@ def complete_softwarechannel_adderrata(self, text, line, beg, end):
         return tab_completer(self.do_softwarechannel_list('', True), text)
     elif len(parts) > 3:
         return self.tab_complete_errata(text)
+
+    return None
 
 
 def do_softwarechannel_adderrata(self, args):
@@ -1812,7 +1834,7 @@ def do_softwarechannel_adderrata(self, args):
         else:
             logging.warning(_N("Using the old errata.clone function"))
             logging.warning(_N("If you have base channels for multiple OS" +
-                            " versions, check no unexpected packages have been added"))
+                               " versions, check no unexpected packages have been added"))
             self.client.errata.clone(self.session, dest_channel, [erratum])
 
     # regenerate the errata cache since we just cloned errata
@@ -2070,7 +2092,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
 
 def is_softwarechannel(self, name):
     if not name:
-        return
+        return None
     return name in self.do_softwarechannel_list(name, True)
 
 
@@ -2122,11 +2144,11 @@ def do_softwarechannel_diff(self, args):
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_diff()
-        return
+        return None
 
     source_channel = args[0]
     if not self.check_softwarechannel(source_channel):
-        return
+        return None
 
     target_channel = None
     if len(args) == 2:
@@ -2136,7 +2158,7 @@ def do_softwarechannel_diff(self, args):
         target_channel = self.do_softwarechannel_getcorresponding(
             source_channel)
     if not self.check_softwarechannel(target_channel):
-        return
+        return None
 
     # softwarechannel do not contain references to other components,
     # therefore there is no need to use replace dicts
@@ -2185,11 +2207,11 @@ def do_softwarechannel_errata_diff(self, args):
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_diff()
-        return
+        return None
 
     source_channel = args[0]
     if not self.check_softwarechannel(source_channel):
-        return
+        return None
 
     target_channel = None
     if len(args) == 2:
@@ -2199,7 +2221,7 @@ def do_softwarechannel_errata_diff(self, args):
         target_channel = self.do_softwarechannel_getcorresponding(
             source_channel)
     if not self.check_softwarechannel(target_channel):
-        return
+        return None
 
     # softwarechannel do not contain references to other components,
     # therefore there is no need to use replace dicts
@@ -2238,7 +2260,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
-        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages()
+        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages() # pylint: disable=expression-not-assigned
         return 1
 
     source_channel = args[0]
@@ -2321,19 +2343,19 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
                 len(target_only)).rjust(5) + _(" packages from ") + target_channel)
 
         if not self.user_confirm(_('Perform these changes to channel ') + target_channel + ' [y/N]:'):
-            return
+            return None
 
         if deleteFromTarget:
             self.client.channel.software.addPackages(self.session,
-                                                    target_channel,
-                                                    list(source_only))
+                                                     target_channel,
+                                                     list(source_only))
             self.client.channel.software.removePackages(self.session,
-                                                    target_channel,
-                                                    list(target_only))
+                                                        target_channel,
+                                                        list(target_only))
         else:
             self.client.channel.software.mergePackages(self.session,
-                                                    source_channel,
-                                                    target_channel)
+                                                       source_channel,
+                                                       target_channel)
 
     return 0
 
@@ -2483,7 +2505,7 @@ def complete_softwarechannel_errata_merge(self, text, line, beg, end):
         return tab_completer(self.do_softwarechannel_list('', True), text)
     return []
 
-def do_softwarechannel_errata_merge(self, args):
+def do_softwarechannel_errata_merge(self, args): # pylint: disable=too-many-return-statements
     arg_parser = get_argument_parser()
 
     (args, _options) = parse_command_arguments(args, arg_parser)
@@ -2551,7 +2573,7 @@ def do_softwarechannel_errata_merge(self, args):
     # check for errata only in the source channel
     source_only = list(source_ids.difference(target_ids))
 
-    if len(source_only) == 0:
+    if len(source_only) == 0:     # pylint: disable=len-as-condition
         print(_('{} contains no errata which is not already present in {}').format(source_channel, target_channel))
         return 1
 
@@ -2747,6 +2769,8 @@ def complete_softwarechannel_addrepo(self, text, line, beg, end):
     elif len(parts) == 3:
         return tab_completer(self.do_repo_list('', True), text)
 
+    return None
+
 
 def do_softwarechannel_addrepo(self, args):
     arg_parser = get_argument_parser()
@@ -2784,9 +2808,11 @@ def complete_softwarechannel_removerepo(self, text, line, beg, end):
                                                               parts[1])
             repos = [r.get('label') for r in details.get('contentSources')]
         except xmlrpclib.Fault:
-            return
+            return None
 
         return tab_completer(repos, text)
+
+    return None
 
 
 def do_softwarechannel_removerepo(self, args):
