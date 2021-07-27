@@ -1,3 +1,4 @@
+- Add missing symlink to generate the "certs" state for SLE Micro 5.0 (bsc#1188503)
 - Add findutils to Kiwi bootstrap packages
 - Remove systemid file on salt client cleanup
 - Add support for Kiwi options
