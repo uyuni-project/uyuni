@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 13:18+0200\n"
-"PO-Revision-Date: 2021-07-25 18:10+0000\n"
+"PO-Revision-Date: 2021-07-27 19:11+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>"
 "\n"
@@ -4976,24 +4976,27 @@ msgstr "použitie: softwarechannel_listpackages KANÁL"
 #: ../src/spacecmd/softwarechannel.py:282
 msgid "softwarechannel_listallpackages: List all packages in a channel"
 msgstr ""
+"softwarechannel_listallpackages: Vypísať zoznam všetkých balíkov v kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:283
 msgid "usage: softwarechannel_listallpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listallpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:341
 msgid ""
 "softwarechannel_listlatestpackages: List the newest version of all packages "
 "in a channel"
 msgstr ""
+"softwarechannel_listlatestpackages: Vypísať zoznam najnovších verzií "
+"všetkých balíkov v kanáli"
 
 #: ../src/spacecmd/softwarechannel.py:342
 msgid "usage: softwarechannel_listlatestpackages CHANNEL"
-msgstr ""
+msgstr "použitie: softwarechannel_listlatestpackages KANÁL"
 
 #: ../src/spacecmd/softwarechannel.py:381
 msgid "softwarechannel_setdetails: Modify details of a software channel"
-msgstr ""
+msgstr "softwarechannel_setdetails: Upraviť podrobnosti softvérového kanála"
 
 #: ../src/spacecmd/softwarechannel.py:382
 #, python-format
@@ -5012,23 +5015,36 @@ msgid ""
 "  -i GPG_ID\n"
 "  -f GPG_FINGERPRINT"
 msgstr ""
+"použitie: softwarechannel_setdetails [voľby] <KANÁL ...>)\n"
+"\n"
+"voľby, z ktorých aspoň jedna musí byť zadaná:\n"
+"  -n NÁZOV\n"
+"  -d POPIS\n"
+"  -s SÚHRN\n"
+"  -c KONTROLNÝ_SÚČET %s\n"
+"  -m MENO_SPRÁVCU\n"
+"  -e EMAIL_SPRÁVCU\n"
+"  -p TELEFÓN_SPRÁVCU\n"
+"  -u URL_GPG\n"
+"  -i ID_GPG\n"
+"  -f ODTLAČOK_GPG"
 
 #: ../src/spacecmd/softwarechannel.py:444
 msgid "At least one attribute to set must be given"
-msgstr ""
+msgstr "Musí byť zadaný aspoň jeden atribút na nastavenie"
 
 #: ../src/spacecmd/softwarechannel.py:450
 msgid "No channels matching that label"
-msgstr ""
+msgstr "Žiadne kanály zodpovedajúce tomuto označeniu"
 
 #: ../src/spacecmd/softwarechannel.py:462
 msgid "Setting same name for more than one channel will fail"
-msgstr ""
+msgstr "Nastavenie rovnakého názvu pre viac ako jeden kanál zlyhá"
 
 #: ../src/spacecmd/softwarechannel.py:470
 #, python-format
 msgid "Name \"%s\" already in use by channel %s"
-msgstr ""
+msgstr "Názov \"%s\" už používa kanál %s"
 
 #. get confirmation
 #: ../src/spacecmd/softwarechannel.py:475
