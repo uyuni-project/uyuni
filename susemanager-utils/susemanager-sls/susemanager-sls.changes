@@ -1,3 +1,4 @@
+- Add findutils to Kiwi bootstrap packages
 - Remove systemid file on salt client cleanup
 - Add support for Kiwi options
 - Skip 'update-ca-certificates' run if the certs are updated automatically
