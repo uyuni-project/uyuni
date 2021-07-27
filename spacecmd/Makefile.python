@@ -3,8 +3,7 @@ CURRENT_DIR := $(dir $(THIS_MAKEFILE))
 include $(CURRENT_DIR)../rel-eng/Makefile.python
 
 # Docker tests variables
-DOCKER_CONTAINER_BASE = uyuni-master
-DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_REF            = $(DOCKER_REGISTRY)/$(DOCKER_IMAGE)
 DOCKER_RUN_EXPORT     = "PYTHONPATH=$PYTHONPATH"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 
@@ -20,10 +19,13 @@ __pytest ::
 	pytest --disable-warnings --tb=native --color=yes -v
 
 docker_pylint ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pylint"
+	docker pull $(DOCKER_REF)
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REF) /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pylint"
 
 docker_pytest ::
-	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pytest"
+	docker pull $(DOCKER_REF)
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REF) /bin/sh -c "cd /manager/spacecmd; make -f Makefile.python __pytest"
 
 docker_shell ::
-	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/bash
+	docker pull $(DOCKER_REF)
+	docker run -t -i --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REF) /bin/bash
