@@ -10,6 +10,13 @@ if [ $# -gt 1 ]; then
     exit 1
 fi
 
+if [ -d "/var/lib/pgsql/data-pg$OLD_VERSION" ]; then
+    echo "/var/lib/pgsql/data-pg$OLD_VERSION exists." 
+    echo "Maybe a previous migration was cancelled?"
+    echo "Please check and cleanup prior to running the script"
+    exit 1
+fi
+
 if [ $# == 1 ]; then
     if [ $1 == "fast" ]; then
         FAST_UPGRADE="-f"
